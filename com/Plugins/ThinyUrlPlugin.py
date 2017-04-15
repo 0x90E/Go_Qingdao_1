@@ -16,11 +16,3 @@ class ThinyUrlPlugin(AbstractPlugin):
             features.append("feature_" + simple)
 
         return Series(features)
-
-    def get_feature_name(self):
-        return self.feature_name
-
-
-        
-
-

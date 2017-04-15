@@ -9,4 +9,4 @@ if __name__ == "__main__":
     extraction_exector = ExtractionExector()
     extraction_exector.register_plugin(ThinyUrlPlugin())
 
-    extraction_exector.do_extract("com/Files/cn_top100.csv", "com/Files/outputcsv",)
+    extraction_exector.do_extract("com/Files/cn_top100.csv", "com/Files/output.csv",)

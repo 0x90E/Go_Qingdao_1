@@ -21,5 +21,4 @@ class AbstractPlugin:
         """
             return the feature name.
         """
-        
-        
+        return self.feature_name
