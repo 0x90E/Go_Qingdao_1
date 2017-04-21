@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+ <head> 
+  <meta charset="utf-8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+  <title>spring AOP自定义注解方式实现日志管理 - 杨小剑 - 博客园</title> 
+  <link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=m_FXmwz3wxZoecUwNEK23PAzc-j9vbX_C6MblJ5ouMc1" /> 
+  <link id="MainCss" type="text/css" rel="stylesheet" href="/skins/coffee/bundle-coffee.css?v=H7P3zU3_M529NtLVh9kKULJaZLDGv9Qz_L_VdgyN1P41" /> 
+  <link id="mobile-style" media="only screen and (max-width: 768px)" type="text/css" rel="stylesheet" href="/skins/coffee/bundle-coffee-mobile.css?v=LDuiIhaTfI3rLBcAhOM0aaKFaacbL5rZrIdshlNHGs81" /> 
+  <link title="RSS" type="application/rss+xml" rel="alternate" href="http://www.cnblogs.com/jianjianyang/rss" /> 
+  <link title="RSD" type="application/rsd+xml" rel="EditURI" href="http://www.cnblogs.com/jianjianyang/rsd.xml" /> 
+  <link type="application/wlwmanifest+xml" rel="wlwmanifest" href="http://www.cnblogs.com/jianjianyang/wlwmanifest.xml" /> 
+  <script src="//common.cnblogs.com/script/jquery.js" type="text/javascript"></script> 
+  <script type="text/javascript">var currentBlogApp = 'jianjianyang', cb_enable_mathjax=false;var isLogined=false;</script> 
+  <script src="/bundles/blog-common.js?v=HjE8xh24aOra0V_HP38wxIHV3lfHC5polwLAK3mmjdg1" type="text/javascript"></script> 
+ </head> 
+ <body> 
+  <a name="top"></a> 
+  <!--done--> 
+  <div id="home"> 
+   <div id="header"> 
+    <div id="blogTitle"> 
+     <a id="lnkBlogLogo" href="http://www.cnblogs.com/jianjianyang/"><img id="blogLogo" src="/Skins/custom/images/logo.gif" alt="返回主页" /></a> 
+     <!--done--> 
+     <h1><a id="Header1_HeaderTitle" class="headermaintitle" href="http://www.cnblogs.com/jianjianyang/">杨小剑</a></h1> 
+     <h2>生活源于拼搏！！</h2> 
+    </div>
+    <!--end: blogTitle 博客的标题和副标题 --> 
+   </div>
+   <!--end: header 头部 --> 
+   <div id="main"> 
+    <div id="mainContent"> 
+     <div class="forFlow"> 
+      <div id="navigator"> 
+       <ul id="navList"> 
+        <li><a id="blog_nav_sitehome" class="menu" href="http://www.cnblogs.com/">博客园</a></li> 
+        <li><a id="blog_nav_myhome" class="menu" href="http://www.cnblogs.com/jianjianyang/">首页</a></li> 
+        <li><a id="blog_nav_newpost" class="menu" rel="nofollow" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">新随笔</a></li> 
+        <li><a id="blog_nav_contact" accesskey="9" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/%E6%9D%A8%E5%B0%8F%E5%89%91">联系</a></li> 
+        <li><a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a></li> 
+        <li><a id="blog_nav_rss" class="menu" href="http://www.cnblogs.com/jianjianyang/rss">订阅</a> <a id="blog_nav_rss_image" class="aHeaderXML" href="http://www.cnblogs.com/jianjianyang/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a></li> 
+       </ul> 
+       <div class="blogStats"> 
+        <div id="blog_stats"> 
+         <!--done--> 随笔- 17&nbsp; 文章- 0&nbsp; 评论- 55&nbsp; 
+        </div> 
+       </div>
+       <!--end: blogStats --> 
+      </div>
+      <!--end: navigator 博客导航栏 --> 
+      <div id="post_detail"> 
+       <!--done--> 
+       <div id="topics"> 
+        <div class="post"> 
+         <h1 class="postTitle"> <a id="cb_post_title_url" class="postTitle2" href="http://www.cnblogs.com/jianjianyang/p/4910851.html">spring AOP自定义注解方式实现日志管理</a> </h1> 
+         <div class="clear"></div> 
+         <div class="postBody"> 
+          <div id="cnblogs_post_body">
+           <p>今天继续实现AOP，到这里我个人认为是最灵活，可扩展的方式了，就拿日志管理来说，用Spring AOP 自定义注解形式实现日志管理。废话不多说，直接开始！！！</p> 
+           <p>关于配置我还是的再说一遍。</p> 
+           <p>&nbsp;</p> 
+           <p>在applicationContext-mvc.xml中要添加的</p> 
+           <p>&nbsp;&nbsp;&nbsp;&nbsp; &lt;mvc:annotation-driven /&gt;<br />&nbsp;&nbsp; &nbsp; &lt;!-- 激活组件扫描功能,在包com.gcx及其子包下面自动扫描通过注解配置的组件 --&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp; &lt;context:component-scan base-package=&quot;com.gcx&quot; /&gt; </p> 
+           <p>&nbsp;&nbsp; </p> 
+           <p>&nbsp;&nbsp;&nbsp;&nbsp; &lt;!-- 启动对@AspectJ注解的支持 --&gt; <br />&nbsp;&nbsp;&nbsp;&nbsp; &lt;!-- proxy-target-class等于true是强制使用cglib代理，proxy-target-class默认是false，如果你的类实现了接口 就走JDK代理，如果没有，走cglib代理&nbsp; --&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp; &lt;!-- 注：对于单利模式建议使用cglib代理，虽然JDK动态代理比cglib代理速度快，但性能不如cglib --&gt;</p> 
+           <p>&nbsp;&nbsp;&nbsp;&nbsp; &lt;!--如果不写proxy-target-class=&quot;true&quot;这句话也没问题--&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp; &lt;aop:aspectj-autoproxy proxy-target-class=&quot;true&quot;/&gt; </p> 
+           <p>&nbsp;&nbsp;&nbsp;&nbsp; &lt;!--切面--&gt;<br />&nbsp;&nbsp;&nbsp;&nbsp; &lt;bean id=&quot;systemLogAspect&quot; class=&quot;com.gcx.annotation.SystemLogAspect&quot;&gt;&lt;/bean&gt;</p> 
+           <p>接下来开始编写代码。</p> 
+           <p>&nbsp;&nbsp;&nbsp;&nbsp; 创建日志类实体</p> 
+           <div class="cnblogs_code" onclick="cnblogs_code_show('b8cfddc7-1c84-4992-89ec-e97be71f2438')">
+            <img id="code_img_closed_b8cfddc7-1c84-4992-89ec-e97be71f2438" class="code_img_closed" src="http://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt="" />
+            <img id="code_img_opened_b8cfddc7-1c84-4992-89ec-e97be71f2438" class="code_img_opened" style="display: none;" onclick="cnblogs_code_hide('b8cfddc7-1c84-4992-89ec-e97be71f2438',event)" src="http://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif" alt="" /> 
+            <div id="cnblogs_code_open_b8cfddc7-1c84-4992-89ec-e97be71f2438" class="cnblogs_code_hide"> 
+             <pre><span style="color: #008080;">  1</span> <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span><span style="color: #000000;"> SystemLog {
+</span><span style="color: #008080;">  2</span>     <span style="color: #0000ff;">private</span><span style="color: #000000;"> String id;
+</span><span style="color: #008080;">  3</span> 
+<span style="color: #008080;">  4</span>     <span style="color: #0000ff;">private</span><span style="color: #000000;"> String description;
+</span><span style="color: #008080;">  5</span> 
+<span style="color: #008080;">  6</span>     <span style="color: #0000ff;">private</span><span style="color: #000000;"> String method;
+</span><span style="color: #008080;">  7</span> 
+<span style="color: #008080;">  8</span>     <span style="color: #0000ff;">private</span><span style="color: #000000;"> Long logType;
+</span><span style="color: #008080;">  9</span> 
+<span style="color: #008080;"> 10</span>     <span style="color: #0000ff;">private</span><span style="color: #000000;"> String requestIp;
+</span><span style="color: #008080;"> 11</span> 
+<span style="color: #008080;"> 12</span>     <span style="color: #0000ff;">private</span><span style="color: #000000;"> String exceptioncode;
+</span><span style="color: #008080;"> 13</span> 
+<span style="color: #008080;"> 14</span>     <span style="color: #0000ff;">private</span><span style="color: #000000;"> String exceptionDetail;
+</span><span style="color: #008080;"> 15</span> 
+<span style="color: #008080;"> 16</span>     <span style="color: #0000ff;">private</span><span style="color: #000000;"> String params;
+</span><span style="color: #008080;"> 17</span> 
+<span style="color: #008080;"> 18</span>     <span style="color: #0000ff;">private</span><span style="color: #000000;"> String createBy;
+</span><span style="color: #008080;"> 19</span> 
+<span style="color: #008080;"> 20</span>     <span style="color: #0000ff;">private</span><span style="color: #000000;"> Date createDate;
+</span><span style="color: #008080;"> 21</span> 
+<span style="color: #008080;"> 22</span>     <span style="color: #0000ff;">public</span><span style="color: #000000;"> String getId() {
+</span><span style="color: #008080;"> 23</span>         <span style="color: #0000ff;">return</span><span style="color: #000000;"> id;
+</span><span style="color: #008080;"> 24</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;"> 25</span> 
+<span style="color: #008080;"> 26</span>     <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> setId(String id) {
+</span><span style="color: #008080;"> 27</span>         <span style="color: #0000ff;">this</span>.id = id == <span style="color: #0000ff;">null</span> ? <span style="color: #0000ff;">null</span><span style="color: #000000;"> : id.trim();
+</span><span style="color: #008080;"> 28</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;"> 29</span> 
+<span style="color: #008080;"> 30</span>     <span style="color: #0000ff;">public</span><span style="color: #000000;"> String getDescription() {
+</span><span style="color: #008080;"> 31</span>         <span style="color: #0000ff;">return</span><span style="color: #000000;"> description;
+</span><span style="color: #008080;"> 32</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;"> 33</span> 
+<span style="color: #008080;"> 34</span>     <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> setDescription(String description) {
+</span><span style="color: #008080;"> 35</span>         <span style="color: #0000ff;">this</span>.description = description == <span style="color: #0000ff;">null</span> ? <span style="color: #0000ff;">null</span><span style="color: #000000;"> : description.trim();
+</span><span style="color: #008080;"> 36</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;"> 37</span> 
+<span style="color: #008080;"> 38</span>     <span style="color: #0000ff;">public</span><span style="color: #000000;"> String getMethod() {
+</span><span style="color: #008080;"> 39</span>         <span style="color: #0000ff;">return</span><span style="color: #000000;"> method;
+</span><span style="color: #008080;"> 40</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;"> 41</span> 
+<span style="color: #008080;"> 42</span>     <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> setMethod(String method) {
+</span><span style="color: #008080;"> 43</span>         <span style="color: #0000ff;">this</span>.method = method == <span style="color: #0000ff;">null</span> ? <span style="color: #0000ff;">null</span><span style="color: #000000;"> : method.trim();
+</span><span style="color: #008080;"> 44</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;"> 45</span> 
+<span style="color: #008080;"> 46</span>     <span style="color: #0000ff;">public</span><span style="color: #000000;"> Long getLogType() {
+</span><span style="color: #008080;"> 47</span>         <span style="color: #0000ff;">return</span><span style="color: #000000;"> logType;
+</span><span style="color: #008080;"> 48</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;"> 49</span> 
+<span style="color: #008080;"> 50</span>     <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> setLogType(Long logType) {
+</span><span style="color: #008080;"> 51</span>         <span style="color: #0000ff;">this</span>.logType =<span style="color: #000000;"> logType;
+</span><span style="color: #008080;"> 52</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;"> 53</span> 
+<span style="color: #008080;"> 54</span>     <span style="color: #0000ff;">public</span><span style="color: #000000;"> String getRequestIp() {
+</span><span style="color: #008080;"> 55</span>         <span style="color: #0000ff;">return</span><span style="color: #000000;"> requestIp;
+</span><span style="color: #008080;"> 56</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;"> 57</span> 
+<span style="color: #008080;"> 58</span>     <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> setRequestIp(String requestIp) {
+</span><span style="color: #008080;"> 59</span>         <span style="color: #0000ff;">this</span>.requestIp = requestIp == <span style="color: #0000ff;">null</span> ? <span style="color: #0000ff;">null</span><span style="color: #000000;"> : requestIp.trim();
+</span><span style="color: #008080;"> 60</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;"> 61</span> 
+<span style="color: #008080;"> 62</span>     <span style="color: #0000ff;">public</span><span style="color: #000000;"> String getExceptioncode() {
+</span><span style="color: #008080;"> 63</span>         <span style="color: #0000ff;">return</span><span style="color: #000000;"> exceptioncode;
+</span><span style="color: #008080;"> 64</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;"> 65</span> 
+<span style="color: #008080;"> 66</span>     <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> setExceptioncode(String exceptioncode) {
+</span><span style="color: #008080;"> 67</span>         <span style="color: #0000ff;">this</span>.exceptioncode = exceptioncode == <span style="color: #0000ff;">null</span> ? <span style="color: #0000ff;">null</span><span style="color: #000000;"> : exceptioncode.trim();
+</span><span style="color: #008080;"> 68</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;"> 69</span> 
+<span style="color: #008080;"> 70</span>     <span style="color: #0000ff;">public</span><span style="color: #000000;"> String getExceptionDetail() {
+</span><span style="color: #008080;"> 71</span>         <span style="color: #0000ff;">return</span><span style="color: #000000;"> exceptionDetail;
+</span><span style="color: #008080;"> 72</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;"> 73</span> 
+<span style="color: #008080;"> 74</span>     <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> setExceptionDetail(String exceptionDetail) {
+</span><span style="color: #008080;"> 75</span>         <span style="color: #0000ff;">this</span>.exceptionDetail = exceptionDetail == <span style="color: #0000ff;">null</span> ? <span style="color: #0000ff;">null</span><span style="color: #000000;"> : exceptionDetail.trim();
+</span><span style="color: #008080;"> 76</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;"> 77</span> 
+<span style="color: #008080;"> 78</span>     <span style="color: #0000ff;">public</span><span style="color: #000000;"> String getParams() {
+</span><span style="color: #008080;"> 79</span>         <span style="color: #0000ff;">return</span><span style="color: #000000;"> params;
+</span><span style="color: #008080;"> 80</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;"> 81</span> 
+<span style="color: #008080;"> 82</span>     <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> setParams(String params) {
+</span><span style="color: #008080;"> 83</span>         <span style="color: #0000ff;">this</span>.params = params == <span style="color: #0000ff;">null</span> ? <span style="color: #0000ff;">null</span><span style="color: #000000;"> : params.trim();
+</span><span style="color: #008080;"> 84</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;"> 85</span> 
+<span style="color: #008080;"> 86</span>     <span style="color: #0000ff;">public</span><span style="color: #000000;"> String getCreateBy() {
+</span><span style="color: #008080;"> 87</span>         <span style="color: #0000ff;">return</span><span style="color: #000000;"> createBy;
+</span><span style="color: #008080;"> 88</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;"> 89</span> 
+<span style="color: #008080;"> 90</span>     <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> setCreateBy(String createBy) {
+</span><span style="color: #008080;"> 91</span>         <span style="color: #0000ff;">this</span>.createBy = createBy == <span style="color: #0000ff;">null</span> ? <span style="color: #0000ff;">null</span><span style="color: #000000;"> : createBy.trim();
+</span><span style="color: #008080;"> 92</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;"> 93</span> 
+<span style="color: #008080;"> 94</span>     <span style="color: #0000ff;">public</span><span style="color: #000000;"> Date getCreateDate() {
+</span><span style="color: #008080;"> 95</span>         <span style="color: #0000ff;">return</span><span style="color: #000000;"> createDate;
+</span><span style="color: #008080;"> 96</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;"> 97</span> 
+<span style="color: #008080;"> 98</span>     <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> setCreateDate(Date createDate) {
+</span><span style="color: #008080;"> 99</span>         <span style="color: #0000ff;">this</span>.createDate =<span style="color: #000000;"> createDate;
+</span><span style="color: #008080;">100</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;">101</span> }</pre> 
+            </div> 
+            <span class="cnblogs_code_collapse">View Code</span>
+           </div> 
+           <p>&nbsp;&nbsp;&nbsp;&nbsp; 编写dao接口</p> 
+           <div class="cnblogs_code" onclick="cnblogs_code_show('4494d0c4-5719-4f77-9544-9cde88c8e6ab')">
+            <img id="code_img_closed_4494d0c4-5719-4f77-9544-9cde88c8e6ab" class="code_img_closed" src="http://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt="" />
+            <img id="code_img_opened_4494d0c4-5719-4f77-9544-9cde88c8e6ab" class="code_img_opened" style="display: none;" onclick="cnblogs_code_hide('4494d0c4-5719-4f77-9544-9cde88c8e6ab',event)" src="http://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif" alt="" /> 
+            <div id="cnblogs_code_open_4494d0c4-5719-4f77-9544-9cde88c8e6ab" class="cnblogs_code_hide"> 
+             <pre><span style="color: #008080;"> 1</span> <span style="color: #0000ff;">package</span><span style="color: #000000;"> com.gcx.dao;
+</span><span style="color: #008080;"> 2</span> 
+<span style="color: #008080;"> 3</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> com.gcx.entity.SystemLog;
+</span><span style="color: #008080;"> 4</span> 
+<span style="color: #008080;"> 5</span> <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">interface</span><span style="color: #000000;"> SystemLogMapper {
+</span><span style="color: #008080;"> 6</span>     <span style="color: #0000ff;">int</span><span style="color: #000000;"> deleteByPrimaryKey(String id);
+</span><span style="color: #008080;"> 7</span> 
+<span style="color: #008080;"> 8</span>     <span style="color: #0000ff;">int</span><span style="color: #000000;"> insert(SystemLog record);
+</span><span style="color: #008080;"> 9</span> 
+<span style="color: #008080;">10</span>     <span style="color: #0000ff;">int</span><span style="color: #000000;"> insertSelective(SystemLog record);
+</span><span style="color: #008080;">11</span> 
+<span style="color: #008080;">12</span> <span style="color: #000000;">    SystemLog selectByPrimaryKey(String id);
+</span><span style="color: #008080;">13</span> 
+<span style="color: #008080;">14</span>     <span style="color: #0000ff;">int</span><span style="color: #000000;"> updateByPrimaryKeySelective(SystemLog record);
+</span><span style="color: #008080;">15</span> 
+<span style="color: #008080;">16</span>     <span style="color: #0000ff;">int</span><span style="color: #000000;"> updateByPrimaryKey(SystemLog record);
+</span><span style="color: #008080;">17</span> }</pre> 
+            </div> 
+            <span class="cnblogs_code_collapse">View Code</span>
+           </div> 
+           <p>&nbsp;&nbsp;&nbsp; 编写service层</p> 
+           <div class="cnblogs_code" onclick="cnblogs_code_show('d7a7d8f8-3aac-453d-b65d-b3032d477360')">
+            <img id="code_img_closed_d7a7d8f8-3aac-453d-b65d-b3032d477360" class="code_img_closed" src="http://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt="" />
+            <img id="code_img_opened_d7a7d8f8-3aac-453d-b65d-b3032d477360" class="code_img_opened" style="display: none;" onclick="cnblogs_code_hide('d7a7d8f8-3aac-453d-b65d-b3032d477360',event)" src="http://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif" alt="" /> 
+            <div id="cnblogs_code_open_d7a7d8f8-3aac-453d-b65d-b3032d477360" class="cnblogs_code_hide"> 
+             <pre><span style="color: #008080;"> 1</span> <span style="color: #0000ff;">package</span><span style="color: #000000;"> com.gcx.service;
+</span><span style="color: #008080;"> 2</span> 
+<span style="color: #008080;"> 3</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> com.gcx.entity.SystemLog;
+</span><span style="color: #008080;"> 4</span> 
+<span style="color: #008080;"> 5</span> <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">interface</span><span style="color: #000000;"> SystemLogService {
+</span><span style="color: #008080;"> 6</span> 
+<span style="color: #008080;"> 7</span>     <span style="color: #0000ff;">int</span><span style="color: #000000;"> deleteSystemLog(String id);
+</span><span style="color: #008080;"> 8</span> 
+<span style="color: #008080;"> 9</span>     <span style="color: #0000ff;">int</span><span style="color: #000000;"> insert(SystemLog record);
+</span><span style="color: #008080;">10</span>     
+<span style="color: #008080;">11</span>     <span style="color: #0000ff;">int</span><span style="color: #000000;"> insertTest(SystemLog record);
+</span><span style="color: #008080;">12</span> 
+<span style="color: #008080;">13</span> <span style="color: #000000;">    SystemLog selectSystemLog(String id);
+</span><span style="color: #008080;">14</span>     
+<span style="color: #008080;">15</span>     <span style="color: #0000ff;">int</span><span style="color: #000000;"> updateSystemLog(SystemLog record);
+</span><span style="color: #008080;">16</span> }</pre> 
+            </div> 
+            <span class="cnblogs_code_collapse">View Code</span>
+           </div> 
+           <p>&nbsp;&nbsp; 编写service实现类serviceImpl</p> 
+           <div class="cnblogs_code" onclick="cnblogs_code_show('cf0ebf3c-1d7d-4742-bc1b-f71ab15d1135')">
+            <img id="code_img_closed_cf0ebf3c-1d7d-4742-bc1b-f71ab15d1135" class="code_img_closed" src="http://images.cnblogs.com/OutliningIndicators/ContractedBlock.gif" alt="" />
+            <img id="code_img_opened_cf0ebf3c-1d7d-4742-bc1b-f71ab15d1135" class="code_img_opened" style="display: none;" onclick="cnblogs_code_hide('cf0ebf3c-1d7d-4742-bc1b-f71ab15d1135',event)" src="http://images.cnblogs.com/OutliningIndicators/ExpandedBlockStart.gif" alt="" /> 
+            <div id="cnblogs_code_open_cf0ebf3c-1d7d-4742-bc1b-f71ab15d1135" class="cnblogs_code_hide"> 
+             <pre><span style="color: #008080;"> 1</span> <span style="color: #0000ff;">package</span><span style="color: #000000;"> com.gcx.service.impl;
+</span><span style="color: #008080;"> 2</span> 
+<span style="color: #008080;"> 3</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> javax.annotation.Resource;
+</span><span style="color: #008080;"> 4</span> 
+<span style="color: #008080;"> 5</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> org.springframework.stereotype.Service;
+</span><span style="color: #008080;"> 6</span> 
+<span style="color: #008080;"> 7</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> com.gcx.annotation.Log;
+</span><span style="color: #008080;"> 8</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> com.gcx.dao.SystemLogMapper;
+</span><span style="color: #008080;"> 9</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> com.gcx.entity.SystemLog;
+</span><span style="color: #008080;">10</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> com.gcx.service.SystemLogService;
+</span><span style="color: #008080;">11</span> 
+<span style="color: #008080;">12</span> @Service(&quot;systemLogService&quot;<span style="color: #000000;">)
+</span><span style="color: #008080;">13</span> <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span> SystemLogServiceImpl <span style="color: #0000ff;">implements</span><span style="color: #000000;"> SystemLogService {
+</span><span style="color: #008080;">14</span> 
+<span style="color: #008080;">15</span> <span style="color: #000000;">    @Resource
+</span><span style="color: #008080;">16</span>     <span style="color: #0000ff;">private</span><span style="color: #000000;"> SystemLogMapper systemLogMapper;
+</span><span style="color: #008080;">17</span>     
+<span style="color: #008080;">18</span> <span style="color: #000000;">    @Override
+</span><span style="color: #008080;">19</span>     <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">int</span><span style="color: #000000;"> deleteSystemLog(String id) {
+</span><span style="color: #008080;">20</span>         
+<span style="color: #008080;">21</span>         <span style="color: #0000ff;">return</span><span style="color: #000000;"> systemLogMapper.deleteByPrimaryKey(id);
+</span><span style="color: #008080;">22</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;">23</span> 
+<span style="color: #008080;">24</span> <span style="color: #000000;">    @Override
+</span><span style="color: #008080;">25</span>     
+<span style="color: #008080;">26</span>     <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">int</span><span style="color: #000000;"> insert(SystemLog record) {
+</span><span style="color: #008080;">27</span>         
+<span style="color: #008080;">28</span>         <span style="color: #0000ff;">return</span><span style="color: #000000;"> systemLogMapper.insertSelective(record);
+</span><span style="color: #008080;">29</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;">30</span> 
+<span style="color: #008080;">31</span> <span style="color: #000000;">    @Override
+</span><span style="color: #008080;">32</span>     <span style="color: #0000ff;">public</span><span style="color: #000000;"> SystemLog selectSystemLog(String id) {
+</span><span style="color: #008080;">33</span>         
+<span style="color: #008080;">34</span>         <span style="color: #0000ff;">return</span><span style="color: #000000;"> systemLogMapper.selectByPrimaryKey(id);
+</span><span style="color: #008080;">35</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;">36</span> 
+<span style="color: #008080;">37</span> <span style="color: #000000;">    @Override
+</span><span style="color: #008080;">38</span>     <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">int</span><span style="color: #000000;"> updateSystemLog(SystemLog record) {
+</span><span style="color: #008080;">39</span>         
+<span style="color: #008080;">40</span>         <span style="color: #0000ff;">return</span><span style="color: #000000;"> systemLogMapper.updateByPrimaryKeySelective(record);
+</span><span style="color: #008080;">41</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;">42</span> 
+<span style="color: #008080;">43</span> <span style="color: #000000;">    @Override
+</span><span style="color: #008080;">44</span>     <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">int</span><span style="color: #000000;"> insertTest(SystemLog record) {
+</span><span style="color: #008080;">45</span>         
+<span style="color: #008080;">46</span>         <span style="color: #0000ff;">return</span><span style="color: #000000;"> systemLogMapper.insert(record);
+</span><span style="color: #008080;">47</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;">48</span> 
+<span style="color: #008080;">49</span> }</pre> 
+            </div> 
+            <span class="cnblogs_code_collapse">View Code</span>
+           </div> 
+           <p>到这里基本程序编写完毕</p> 
+           <p>下面开始自定义注解</p> 
+           <div class="cnblogs_code"> 
+            <pre><span style="color: #008080;"> 1</span> <span style="color: #0000ff;">package</span><span style="color: #000000;"> com.gcx.annotation;
+</span><span style="color: #008080;"> 2</span> 
+<span style="color: #008080;"> 3</span> <span style="color: #0000ff;">import</span> java.lang.annotation.*<span style="color: #000000;">;
+</span><span style="color: #008080;"> 4</span> 
+<span style="color: #008080;"> 5</span> <span style="color: #000000;">@Target({ElementType.PARAMETER, ElementType.METHOD})  
+</span><span style="color: #008080;"> 6</span> <span style="color: #000000;">@Retention(RetentionPolicy.RUNTIME)  
+</span><span style="color: #008080;"> 7</span> <span style="color: #000000;">@Documented  
+</span><span style="color: #008080;"> 8</span> <span style="color: #0000ff;">public</span> @<span style="color: #0000ff;">interface</span><span style="color: #000000;"> Log {
+</span><span style="color: #008080;"> 9</span> 
+<span style="color: #008080;">10</span>     <span style="color: #008000;">/**</span><span style="color: #008000;"> 要执行的操作类型比如：add操作 *</span><span style="color: #008000;">*/</span>  
+<span style="color: #008080;">11</span>     <span style="color: #0000ff;">public</span> String operationType() <span style="color: #0000ff;">default</span> &quot;&quot;<span style="color: #000000;">;  
+</span><span style="color: #008080;">12</span>      
+<span style="color: #008080;">13</span>     <span style="color: #008000;">/**</span><span style="color: #008000;"> 要执行的具体操作比如：添加用户 *</span><span style="color: #008000;">*/</span>  
+<span style="color: #008080;">14</span>     <span style="color: #0000ff;">public</span> String operationName() <span style="color: #0000ff;">default</span> &quot;&quot;<span style="color: #000000;">;
+</span><span style="color: #008080;">15</span> }</pre> 
+           </div> 
+           <p>&nbsp;</p> 
+           <p>下面编写切面</p> 
+           <div class="cnblogs_code"> 
+            <pre><span style="color: #008080;">  1</span> <span style="color: #0000ff;">package</span><span style="color: #000000;"> com.gcx.annotation;
+</span><span style="color: #008080;">  2</span> 
+<span style="color: #008080;">  3</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> java.lang.reflect.Method;
+</span><span style="color: #008080;">  4</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> java.util.Date;
+</span><span style="color: #008080;">  5</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> java.util.UUID;
+</span><span style="color: #008080;">  6</span> 
+<span style="color: #008080;">  7</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> javax.annotation.Resource;
+</span><span style="color: #008080;">  8</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> javax.servlet.http.HttpServletRequest;
+</span><span style="color: #008080;">  9</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> javax.servlet.http.HttpSession;
+</span><span style="color: #008080;"> 10</span> 
+<span style="color: #008080;"> 11</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> org.aspectj.lang.JoinPoint;
+</span><span style="color: #008080;"> 12</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> org.aspectj.lang.ProceedingJoinPoint;
+</span><span style="color: #008080;"> 13</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> org.aspectj.lang.annotation.After;
+</span><span style="color: #008080;"> 14</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> org.aspectj.lang.annotation.AfterReturning;
+</span><span style="color: #008080;"> 15</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> org.aspectj.lang.annotation.AfterThrowing;
+</span><span style="color: #008080;"> 16</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> org.aspectj.lang.annotation.Around;
+</span><span style="color: #008080;"> 17</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> org.aspectj.lang.annotation.Aspect;
+</span><span style="color: #008080;"> 18</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> org.aspectj.lang.annotation.Before;
+</span><span style="color: #008080;"> 19</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> org.aspectj.lang.annotation.Pointcut;
+</span><span style="color: #008080;"> 20</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> org.slf4j.Logger;
+</span><span style="color: #008080;"> 21</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> org.slf4j.LoggerFactory;
+</span><span style="color: #008080;"> 22</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> org.springframework.stereotype.Component;
+</span><span style="color: #008080;"> 23</span> 
+<span style="color: #008080;"> 24</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> com.gcx.entity.SystemLog;
+</span><span style="color: #008080;"> 25</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> com.gcx.entity.User;
+</span><span style="color: #008080;"> 26</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> com.gcx.service.SystemLogService;
+</span><span style="color: #008080;"> 27</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> com.gcx.util.JsonUtil;
+</span><span style="color: #008080;"> 28</span> 
+<span style="color: #008080;"> 29</span> <span style="color: #008000;">/**</span>
+<span style="color: #008080;"> 30</span> <span style="color: #008000;"> * </span><span style="color: #808080;">@author</span><span style="color: #008000;"> 杨建 
+</span><span style="color: #008080;"> 31</span> <span style="color: #008000;"> * @E-mail: email
+</span><span style="color: #008080;"> 32</span> <span style="color: #008000;"> * </span><span style="color: #808080;">@version</span><span style="color: #008000;"> 创建时间：2015-10-19 下午4:29:05
+</span><span style="color: #008080;"> 33</span> <span style="color: #008000;"> * @desc 切点类 
+</span><span style="color: #008080;"> 34</span>  <span style="color: #008000;">*/</span>
+<span style="color: #008080;"> 35</span> 
+<span style="color: #008080;"> 36</span> <span style="color: #000000;">@Aspect
+</span><span style="color: #008080;"> 37</span> <span style="color: #000000;">@Component
+</span><span style="color: #008080;"> 38</span> <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span><span style="color: #000000;"> SystemLogAspect {
+</span><span style="color: #008080;"> 39</span> 
+<span style="color: #008080;"> 40</span>     <span style="color: #008000;">//</span><span style="color: #008000;">注入Service用于把日志保存数据库  </span>
+<span style="color: #008080;"> 41</span>     @Resource  <span style="color: #008000;">//</span><span style="color: #ff0000;">这里我用resource注解，一般用的是@Autowired，他们的区别如有时间我会在后面的博客中来写</span>
+<span style="color: #008080;"> 42</span>     <span style="color: #0000ff;">private</span><span style="color: #000000;"> SystemLogService systemLogService;  
+</span><span style="color: #008080;"> 43</span>     
+<span style="color: #008080;"> 44</span>     <span style="color: #0000ff;">private</span>  <span style="color: #0000ff;">static</span>  <span style="color: #0000ff;">final</span> Logger logger = LoggerFactory.getLogger(SystemLogAspect. <span style="color: #0000ff;">class</span><span style="color: #000000;">);  
+</span><span style="color: #008080;"> 45</span>     
+<span style="color: #008080;"> 46</span>     <span style="color: #008000;">//</span><span style="color: #008000;">Controller层切点  </span>
+<span style="color: #008080;"> 47</span>     @Pointcut(&quot;execution (* com.gcx.controller..*.*(..))&quot;<span style="color: #000000;">)  
+</span><span style="color: #008080;"> 48</span>     <span style="color: #0000ff;">public</span>  <span style="color: #0000ff;">void</span><span style="color: #000000;"> controllerAspect() {  
+</span><span style="color: #008080;"> 49</span> <span style="color: #000000;">    }  
+</span><span style="color: #008080;"> 50</span>     
+<span style="color: #008080;"> 51</span>     <span style="color: #008000;">/**</span> 
+<span style="color: #008080;"> 52</span> <span style="color: #008000;">     * 前置通知 用于拦截Controller层记录用户的操作 
+</span><span style="color: #008080;"> 53</span> <span style="color: #008000;">     * 
+</span><span style="color: #008080;"> 54</span> <span style="color: #008000;">     * </span><span style="color: #808080;">@param</span><span style="color: #008000;"> joinPoint 切点 
+</span><span style="color: #008080;"> 55</span>      <span style="color: #008000;">*/</span> 
+<span style="color: #008080;"> 56</span>     @Before(&quot;controllerAspect()&quot;<span style="color: #000000;">)
+</span><span style="color: #008080;"> 57</span>     <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> doBefore(JoinPoint joinPoint) {
+</span><span style="color: #008080;"> 58</span>         System.out.println(&quot;==========执行controller前置通知===============&quot;<span style="color: #000000;">);
+</span><span style="color: #008080;"> 59</span>         <span style="color: #0000ff;">if</span><span style="color: #000000;">(logger.isInfoEnabled()){
+</span><span style="color: #008080;"> 60</span>             logger.info(&quot;before &quot; +<span style="color: #000000;"> joinPoint);
+</span><span style="color: #008080;"> 61</span> <span style="color: #000000;">        }
+</span><span style="color: #008080;"> 62</span> <span style="color: #000000;">    }    
+</span><span style="color: #008080;"> 63</span>     
+<span style="color: #008080;"> 64</span>     <span style="color: #008000;">//</span><span style="color: #008000;">配置controller环绕通知,使用在方法aspect()上注册的切入点</span>
+<span style="color: #008080;"> 65</span>       @Around(&quot;controllerAspect()&quot;<span style="color: #000000;">)
+</span><span style="color: #008080;"> 66</span>       <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> around(JoinPoint joinPoint){
+</span><span style="color: #008080;"> 67</span>           System.out.println(&quot;==========开始执行controller环绕通知===============&quot;<span style="color: #000000;">);
+</span><span style="color: #008080;"> 68</span>           <span style="color: #0000ff;">long</span> start =<span style="color: #000000;"> System.currentTimeMillis();
+</span><span style="color: #008080;"> 69</span>           <span style="color: #0000ff;">try</span><span style="color: #000000;"> {
+</span><span style="color: #008080;"> 70</span> <span style="color: #000000;">              ((ProceedingJoinPoint) joinPoint).proceed();
+</span><span style="color: #008080;"> 71</span>               <span style="color: #0000ff;">long</span> end =<span style="color: #000000;"> System.currentTimeMillis();
+</span><span style="color: #008080;"> 72</span>               <span style="color: #0000ff;">if</span><span style="color: #000000;">(logger.isInfoEnabled()){
+</span><span style="color: #008080;"> 73</span>                   logger.info(&quot;around &quot; + joinPoint + &quot;\tUse time : &quot; + (end - start) + &quot; ms!&quot;<span style="color: #000000;">);
+</span><span style="color: #008080;"> 74</span> <span style="color: #000000;">              }
+</span><span style="color: #008080;"> 75</span>               System.out.println(&quot;==========结束执行controller环绕通知===============&quot;<span style="color: #000000;">);
+</span><span style="color: #008080;"> 76</span>           } <span style="color: #0000ff;">catch</span><span style="color: #000000;"> (Throwable e) {
+</span><span style="color: #008080;"> 77</span>               <span style="color: #0000ff;">long</span> end =<span style="color: #000000;"> System.currentTimeMillis();
+</span><span style="color: #008080;"> 78</span>               <span style="color: #0000ff;">if</span><span style="color: #000000;">(logger.isInfoEnabled()){
+</span><span style="color: #008080;"> 79</span>                   logger.info(&quot;around &quot; + joinPoint + &quot;\tUse time : &quot; + (end - start) + &quot; ms with exception : &quot; +<span style="color: #000000;"> e.getMessage());
+</span><span style="color: #008080;"> 80</span> <span style="color: #000000;">              }
+</span><span style="color: #008080;"> 81</span> <span style="color: #000000;">          }
+</span><span style="color: #008080;"> 82</span> <span style="color: #000000;">      }
+</span><span style="color: #008080;"> 83</span>     
+<span style="color: #008080;"> 84</span>     <span style="color: #008000;">/**</span> 
+<span style="color: #008080;"> 85</span> <span style="color: #008000;">     * 后置通知 用于拦截Controller层记录用户的操作 
+</span><span style="color: #008080;"> 86</span> <span style="color: #008000;">     * 
+</span><span style="color: #008080;"> 87</span> <span style="color: #008000;">     * </span><span style="color: #808080;">@param</span><span style="color: #008000;"> joinPoint 切点 
+</span><span style="color: #008080;"> 88</span>      <span style="color: #008000;">*/</span>  
+<span style="color: #008080;"> 89</span>     @After(&quot;controllerAspect()&quot;<span style="color: #000000;">)  
+</span><span style="color: #008080;"> 90</span>     <span style="color: #0000ff;">public</span>  <span style="color: #0000ff;">void</span><span style="color: #000000;"> after(JoinPoint joinPoint) {  
+</span><span style="color: #008080;"> 91</span>   
+<span style="color: #008080;"> 92</span>        <span style="color: #008000;">/*</span><span style="color: #008000;"> HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();  
+</span><span style="color: #008080;"> 93</span> <span style="color: #008000;">        HttpSession session = request.getSession();  </span><span style="color: #008000;">*/</span>
+<span style="color: #008080;"> 94</span>         <span style="color: #008000;">//</span><span style="color: #008000;">读取session中的用户  
+</span><span style="color: #008080;"> 95</span>        <span style="color: #008000;">//</span><span style="color: #008000;"> User user = (User) session.getAttribute(&quot;user&quot;);  
+</span><span style="color: #008080;"> 96</span>         <span style="color: #008000;">//</span><span style="color: #008000;">请求的IP  
+</span><span style="color: #008080;"> 97</span>         <span style="color: #008000;">//</span><span style="color: #008000;">String ip = request.getRemoteAddr();</span>
+<span style="color: #008080;"> 98</span>         User user = <span style="color: #0000ff;">new</span><span style="color: #000000;"> User();
+</span><span style="color: #008080;"> 99</span>         user.setId(1<span style="color: #000000;">);
+</span><span style="color: #008080;">100</span>         user.setName(&quot;张三&quot;<span style="color: #000000;">);
+</span><span style="color: #008080;">101</span>         String ip = &quot;127.0.0.1&quot;<span style="color: #000000;">;
+</span><span style="color: #008080;">102</span>          <span style="color: #0000ff;">try</span><span style="color: #000000;"> {  
+</span><span style="color: #008080;">103</span>             
+<span style="color: #008080;">104</span>             String targetName =<span style="color: #000000;"> joinPoint.getTarget().getClass().getName();  
+</span><span style="color: #008080;">105</span>             String methodName =<span style="color: #000000;"> joinPoint.getSignature().getName();  
+</span><span style="color: #008080;">106</span>             Object[] arguments =<span style="color: #000000;"> joinPoint.getArgs();  
+</span><span style="color: #008080;">107</span>             Class targetClass =<span style="color: #000000;"> Class.forName(targetName);  
+</span><span style="color: #008080;">108</span>             Method[] methods =<span style="color: #000000;"> targetClass.getMethods();
+</span><span style="color: #008080;">109</span>             String operationType = &quot;&quot;<span style="color: #000000;">;
+</span><span style="color: #008080;">110</span>             String operationName = &quot;&quot;<span style="color: #000000;">;
+</span><span style="color: #008080;">111</span>              <span style="color: #0000ff;">for</span><span style="color: #000000;"> (Method method : methods) {  
+</span><span style="color: #008080;">112</span>                  <span style="color: #0000ff;">if</span><span style="color: #000000;"> (method.getName().equals(methodName)) {  
+</span><span style="color: #008080;">113</span>                     Class[] clazzs =<span style="color: #000000;"> method.getParameterTypes();  
+</span><span style="color: #008080;">114</span>                      <span style="color: #0000ff;">if</span> (clazzs.length ==<span style="color: #000000;"> arguments.length) {  
+</span><span style="color: #008080;">115</span>                          operationType = method.getAnnotation(Log.<span style="color: #0000ff;">class</span><span style="color: #000000;">).operationType();
+</span><span style="color: #008080;">116</span>                          operationName = method.getAnnotation(Log.<span style="color: #0000ff;">class</span><span style="color: #000000;">).operationName();
+</span><span style="color: #008080;">117</span>                          <span style="color: #0000ff;">break</span><span style="color: #000000;">;  
+</span><span style="color: #008080;">118</span> <span style="color: #000000;">                    }  
+</span><span style="color: #008080;">119</span> <span style="color: #000000;">                }  
+</span><span style="color: #008080;">120</span> <span style="color: #000000;">            }
+</span><span style="color: #008080;">121</span>             <span style="color: #008000;">//</span><span style="color: #008000;">*========控制台输出=========*</span><span style="color: #008000;">//</span>  
+<span style="color: #008080;">122</span>             System.out.println(&quot;=====controller后置通知开始=====&quot;<span style="color: #000000;">);  
+</span><span style="color: #008080;">123</span>             System.out.println(&quot;请求方法:&quot; + (joinPoint.getTarget().getClass().getName() + &quot;.&quot; + joinPoint.getSignature().getName() + &quot;()&quot;)+&quot;.&quot;+<span style="color: #000000;">operationType);  
+</span><span style="color: #008080;">124</span>             System.out.println(&quot;方法描述:&quot; +<span style="color: #000000;"> operationName);  
+</span><span style="color: #008080;">125</span>             System.out.println(&quot;请求人:&quot; +<span style="color: #000000;"> user.getName());  
+</span><span style="color: #008080;">126</span>             System.out.println(&quot;请求IP:&quot; +<span style="color: #000000;"> ip);  
+</span><span style="color: #008080;">127</span>             <span style="color: #008000;">//</span><span style="color: #008000;">*========数据库日志=========*</span><span style="color: #008000;">//</span>  
+<span style="color: #008080;">128</span>             SystemLog log = <span style="color: #0000ff;">new</span><span style="color: #000000;"> SystemLog();  
+</span><span style="color: #008080;">129</span> <span style="color: #000000;">            log.setId(UUID.randomUUID().toString());
+</span><span style="color: #008080;">130</span> <span style="color: #000000;">            log.setDescription(operationName);  
+</span><span style="color: #008080;">131</span>             log.setMethod((joinPoint.getTarget().getClass().getName() + &quot;.&quot; + joinPoint.getSignature().getName() + &quot;()&quot;)+&quot;.&quot;+<span style="color: #000000;">operationType);  
+</span><span style="color: #008080;">132</span>             log.setLogType((<span style="color: #0000ff;">long</span>)0<span style="color: #000000;">);  
+</span><span style="color: #008080;">133</span> <span style="color: #000000;">            log.setRequestIp(ip);  
+</span><span style="color: #008080;">134</span>             log.setExceptioncode( <span style="color: #0000ff;">null</span><span style="color: #000000;">);  
+</span><span style="color: #008080;">135</span>             log.setExceptionDetail( <span style="color: #0000ff;">null</span><span style="color: #000000;">);  
+</span><span style="color: #008080;">136</span>             log.setParams( <span style="color: #0000ff;">null</span><span style="color: #000000;">);  
+</span><span style="color: #008080;">137</span> <span style="color: #000000;">            log.setCreateBy(user.getName());  
+</span><span style="color: #008080;">138</span>             log.setCreateDate(<span style="color: #0000ff;">new</span><span style="color: #000000;"> Date());  
+</span><span style="color: #008080;">139</span>             <span style="color: #008000;">//</span><span style="color: #008000;">保存数据库  </span>
+<span style="color: #008080;">140</span> <span style="color: #000000;">            systemLogService.insert(log);  
+</span><span style="color: #008080;">141</span>             System.out.println(&quot;=====controller后置通知结束=====&quot;<span style="color: #000000;">);  
+</span><span style="color: #008080;">142</span>         }  <span style="color: #0000ff;">catch</span><span style="color: #000000;"> (Exception e) {  
+</span><span style="color: #008080;">143</span>             <span style="color: #008000;">//</span><span style="color: #008000;">记录本地异常日志  </span>
+<span style="color: #008080;">144</span>             logger.error(&quot;==后置通知异常==&quot;<span style="color: #000000;">);  
+</span><span style="color: #008080;">145</span>             logger.error(&quot;异常信息:{}&quot;<span style="color: #000000;">, e.getMessage());  
+</span><span style="color: #008080;">146</span> <span style="color: #000000;">        }  
+</span><span style="color: #008080;">147</span> <span style="color: #000000;">    } 
+</span><span style="color: #008080;">148</span>     
+<span style="color: #008080;">149</span>     <span style="color: #008000;">//</span><span style="color: #008000;">配置后置返回通知,使用在方法aspect()上注册的切入点</span>
+<span style="color: #008080;">150</span>       @AfterReturning(&quot;controllerAspect()&quot;<span style="color: #000000;">)
+</span><span style="color: #008080;">151</span>       <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> afterReturn(JoinPoint joinPoint){
+</span><span style="color: #008080;">152</span>           System.out.println(&quot;=====执行controller后置返回通知=====&quot;<span style="color: #000000;">);  
+</span><span style="color: #008080;">153</span>               <span style="color: #0000ff;">if</span><span style="color: #000000;">(logger.isInfoEnabled()){
+</span><span style="color: #008080;">154</span>                   logger.info(&quot;afterReturn &quot; +<span style="color: #000000;"> joinPoint);
+</span><span style="color: #008080;">155</span> <span style="color: #000000;">              }
+</span><span style="color: #008080;">156</span> <span style="color: #000000;">      }
+</span><span style="color: #008080;">157</span>     
+<span style="color: #008080;">158</span>     <span style="color: #008000;">/**</span> 
+<span style="color: #008080;">159</span> <span style="color: #008000;">     * 异常通知 用于拦截记录异常日志 
+</span><span style="color: #008080;">160</span> <span style="color: #008000;">     * 
+</span><span style="color: #008080;">161</span> <span style="color: #008000;">     * </span><span style="color: #808080;">@param</span><span style="color: #008000;"> joinPoint 
+</span><span style="color: #008080;">162</span> <span style="color: #008000;">     * </span><span style="color: #808080;">@param</span><span style="color: #008000;"> e 
+</span><span style="color: #008080;">163</span>      <span style="color: #008000;">*/</span>  
+<span style="color: #008080;">164</span>      @AfterThrowing(pointcut = &quot;controllerAspect()&quot;, throwing=&quot;e&quot;<span style="color: #000000;">)  
+</span><span style="color: #008080;">165</span>      <span style="color: #0000ff;">public</span>  <span style="color: #0000ff;">void</span><span style="color: #000000;"> doAfterThrowing(JoinPoint joinPoint, Throwable e) {  
+</span><span style="color: #008080;">166</span>         <span style="color: #008000;">/*</span><span style="color: #008000;">HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();  
+</span><span style="color: #008080;">167</span> <span style="color: #008000;">        HttpSession session = request.getSession();  
+</span><span style="color: #008080;">168</span> <span style="color: #008000;">        //读取session中的用户  
+</span><span style="color: #008080;">169</span> <span style="color: #008000;">        User user = (User) session.getAttribute(WebConstants.CURRENT_USER);  
+</span><span style="color: #008080;">170</span> <span style="color: #008000;">        //获取请求ip  
+</span><span style="color: #008080;">171</span> <span style="color: #008000;">        String ip = request.getRemoteAddr(); </span><span style="color: #008000;">*/</span> 
+<span style="color: #008080;">172</span>         <span style="color: #008000;">//</span><span style="color: #008000;">获取用户请求方法的参数并序列化为JSON格式字符串  </span>
+<span style="color: #008080;">173</span>         
+<span style="color: #008080;">174</span>         User user = <span style="color: #0000ff;">new</span><span style="color: #000000;"> User();
+</span><span style="color: #008080;">175</span>         user.setId(1<span style="color: #000000;">);
+</span><span style="color: #008080;">176</span>         user.setName(&quot;张三&quot;<span style="color: #000000;">);
+</span><span style="color: #008080;">177</span>         String ip = &quot;127.0.0.1&quot;<span style="color: #000000;">;
+</span><span style="color: #008080;">178</span>         
+<span style="color: #008080;">179</span>         String params = &quot;&quot;<span style="color: #000000;">;  
+</span><span style="color: #008080;">180</span>          <span style="color: #0000ff;">if</span> (joinPoint.getArgs() !=  <span style="color: #0000ff;">null</span> &amp;&amp; joinPoint.getArgs().length &gt; 0<span style="color: #000000;">) {  
+</span><span style="color: #008080;">181</span>              <span style="color: #0000ff;">for</span> ( <span style="color: #0000ff;">int</span> i = 0; i &lt; joinPoint.getArgs().length; i++<span style="color: #000000;">) {  
+</span><span style="color: #008080;">182</span>                 params += JsonUtil.getJsonStr(joinPoint.getArgs()[i]) + &quot;;&quot;<span style="color: #000000;">;  
+</span><span style="color: #008080;">183</span> <span style="color: #000000;">            }  
+</span><span style="color: #008080;">184</span> <span style="color: #000000;">        }  
+</span><span style="color: #008080;">185</span>          <span style="color: #0000ff;">try</span><span style="color: #000000;"> {  
+</span><span style="color: #008080;">186</span>              
+<span style="color: #008080;">187</span>              String targetName =<span style="color: #000000;"> joinPoint.getTarget().getClass().getName();  
+</span><span style="color: #008080;">188</span>              String methodName =<span style="color: #000000;"> joinPoint.getSignature().getName();  
+</span><span style="color: #008080;">189</span>              Object[] arguments =<span style="color: #000000;"> joinPoint.getArgs();  
+</span><span style="color: #008080;">190</span>              Class targetClass =<span style="color: #000000;"> Class.forName(targetName);  
+</span><span style="color: #008080;">191</span>              Method[] methods =<span style="color: #000000;"> targetClass.getMethods();
+</span><span style="color: #008080;">192</span>              String operationType = &quot;&quot;<span style="color: #000000;">;
+</span><span style="color: #008080;">193</span>              String operationName = &quot;&quot;<span style="color: #000000;">;
+</span><span style="color: #008080;">194</span>               <span style="color: #0000ff;">for</span><span style="color: #000000;"> (Method method : methods) {  
+</span><span style="color: #008080;">195</span>                   <span style="color: #0000ff;">if</span><span style="color: #000000;"> (method.getName().equals(methodName)) {  
+</span><span style="color: #008080;">196</span>                      Class[] clazzs =<span style="color: #000000;"> method.getParameterTypes();  
+</span><span style="color: #008080;">197</span>                       <span style="color: #0000ff;">if</span> (clazzs.length ==<span style="color: #000000;"> arguments.length) {  
+</span><span style="color: #008080;">198</span>                           operationType = method.getAnnotation(Log.<span style="color: #0000ff;">class</span><span style="color: #000000;">).operationType();
+</span><span style="color: #008080;">199</span>                           operationName = method.getAnnotation(Log.<span style="color: #0000ff;">class</span><span style="color: #000000;">).operationName();
+</span><span style="color: #008080;">200</span>                           <span style="color: #0000ff;">break</span><span style="color: #000000;">;  
+</span><span style="color: #008080;">201</span> <span style="color: #000000;">                     }  
+</span><span style="color: #008080;">202</span> <span style="color: #000000;">                 }  
+</span><span style="color: #008080;">203</span> <span style="color: #000000;">             }
+</span><span style="color: #008080;">204</span>              <span style="color: #008000;">/*</span><span style="color: #008000;">========控制台输出=========</span><span style="color: #008000;">*/</span>  
+<span style="color: #008080;">205</span>             System.out.println(&quot;=====异常通知开始=====&quot;<span style="color: #000000;">);  
+</span><span style="color: #008080;">206</span>             System.out.println(&quot;异常代码:&quot; +<span style="color: #000000;"> e.getClass().getName());  
+</span><span style="color: #008080;">207</span>             System.out.println(&quot;异常信息:&quot; +<span style="color: #000000;"> e.getMessage());  
+</span><span style="color: #008080;">208</span>             System.out.println(&quot;异常方法:&quot; + (joinPoint.getTarget().getClass().getName() + &quot;.&quot; + joinPoint.getSignature().getName() + &quot;()&quot;)+&quot;.&quot;+<span style="color: #000000;">operationType);  
+</span><span style="color: #008080;">209</span>             System.out.println(&quot;方法描述:&quot; +<span style="color: #000000;"> operationName);  
+</span><span style="color: #008080;">210</span>             System.out.println(&quot;请求人:&quot; +<span style="color: #000000;"> user.getName());  
+</span><span style="color: #008080;">211</span>             System.out.println(&quot;请求IP:&quot; +<span style="color: #000000;"> ip);  
+</span><span style="color: #008080;">212</span>             System.out.println(&quot;请求参数:&quot; +<span style="color: #000000;"> params);  
+</span><span style="color: #008080;">213</span>                <span style="color: #008000;">/*</span><span style="color: #008000;">==========数据库日志=========</span><span style="color: #008000;">*/</span>  
+<span style="color: #008080;">214</span>             SystemLog log = <span style="color: #0000ff;">new</span><span style="color: #000000;"> SystemLog();
+</span><span style="color: #008080;">215</span> <span style="color: #000000;">            log.setId(UUID.randomUUID().toString());
+</span><span style="color: #008080;">216</span> <span style="color: #000000;">            log.setDescription(operationName);  
+</span><span style="color: #008080;">217</span> <span style="color: #000000;">            log.setExceptioncode(e.getClass().getName());  
+</span><span style="color: #008080;">218</span>             log.setLogType((<span style="color: #0000ff;">long</span>)1<span style="color: #000000;">);  
+</span><span style="color: #008080;">219</span> <span style="color: #000000;">            log.setExceptionDetail(e.getMessage());  
+</span><span style="color: #008080;">220</span>             log.setMethod((joinPoint.getTarget().getClass().getName() + &quot;.&quot; + joinPoint.getSignature().getName() + &quot;()&quot;<span style="color: #000000;">));  
+</span><span style="color: #008080;">221</span> <span style="color: #000000;">            log.setParams(params);  
+</span><span style="color: #008080;">222</span> <span style="color: #000000;">            log.setCreateBy(user.getName());  
+</span><span style="color: #008080;">223</span>             log.setCreateDate(<span style="color: #0000ff;">new</span><span style="color: #000000;"> Date());  
+</span><span style="color: #008080;">224</span> <span style="color: #000000;">            log.setRequestIp(ip);  
+</span><span style="color: #008080;">225</span>             <span style="color: #008000;">//</span><span style="color: #008000;">保存数据库  </span>
+<span style="color: #008080;">226</span> <span style="color: #000000;">            systemLogService.insert(log);  
+</span><span style="color: #008080;">227</span>             System.out.println(&quot;=====异常通知结束=====&quot;<span style="color: #000000;">);  
+</span><span style="color: #008080;">228</span>         }  <span style="color: #0000ff;">catch</span><span style="color: #000000;"> (Exception ex) {  
+</span><span style="color: #008080;">229</span>             <span style="color: #008000;">//</span><span style="color: #008000;">记录本地异常日志  </span>
+<span style="color: #008080;">230</span>             logger.error(&quot;==异常通知异常==&quot;<span style="color: #000000;">);  
+</span><span style="color: #008080;">231</span>             logger.error(&quot;异常信息:{}&quot;<span style="color: #000000;">, ex.getMessage());  
+</span><span style="color: #008080;">232</span> <span style="color: #000000;">        }  
+</span><span style="color: #008080;">233</span>          <span style="color: #008000;">/*</span><span style="color: #008000;">==========记录本地异常日志==========</span><span style="color: #008000;">*/</span>  
+<span style="color: #008080;">234</span>         logger.error(&quot;异常方法:{}异常代码:{}异常信息:{}参数:{}&quot;, joinPoint.getTarget().getClass().getName() +<span style="color: #000000;"> joinPoint.getSignature().getName(), e.getClass().getName(), e.getMessage(), params);  
+</span><span style="color: #008080;">235</span>   
+<span style="color: #008080;">236</span> <span style="color: #000000;">    }  
+</span><span style="color: #008080;">237</span>     
+<span style="color: #008080;">238</span> }</pre> 
+           </div> 
+           <p><span style="color: #ff0000;">&nbsp;我这里写的比较全，前置通知，环绕通知，后置通知，异常通知，后置饭后通知，都写上了，在我们实际编写中不写全也没事，我习惯上把记录日志的逻辑写在后置通知里面，我看网上也有些在前置通知里面的，但我感觉写在后置通知里比较好。</span></p> 
+           <p><span style="color: #000000;">下面开始在controller中加入自定义的注解！！</span></p> 
+           <div class="cnblogs_code"> 
+            <pre><span style="color: #008080;"> 1</span> <span style="color: #0000ff;">package</span><span style="color: #000000;"> com.gcx.controller;
+</span><span style="color: #008080;"> 2</span> 
+<span style="color: #008080;"> 3</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> org.springframework.beans.factory.annotation.Autowired;
+</span><span style="color: #008080;"> 4</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> org.springframework.stereotype.Controller;
+</span><span style="color: #008080;"> 5</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> org.springframework.web.bind.annotation.RequestMapping;
+</span><span style="color: #008080;"> 6</span> 
+<span style="color: #008080;"> 7</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> com.gcx.annotation.Log;
+</span><span style="color: #008080;"> 8</span> <span style="color: #0000ff;">import</span><span style="color: #000000;"> com.gcx.service.UserService;
+</span><span style="color: #008080;"> 9</span> 
+<span style="color: #008080;">10</span> <span style="color: #000000;">@Controller
+</span><span style="color: #008080;">11</span> @RequestMapping(&quot;userController&quot;<span style="color: #000000;">)
+</span><span style="color: #008080;">12</span> <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">class</span><span style="color: #000000;"> UserController {
+</span><span style="color: #008080;">13</span> 
+<span style="color: #008080;">14</span> <span style="color: #000000;">    @Autowired
+</span><span style="color: #008080;">15</span>     <span style="color: #0000ff;">private</span><span style="color: #000000;"> UserService userService;
+</span><span style="color: #008080;">16</span>     
+<span style="color: #008080;">17</span>     @RequestMapping(&quot;testAOP&quot;<span style="color: #000000;">)
+</span><span style="color: #008080;">18</span>     @Log(operationType=&quot;add操作:&quot;,operationName=&quot;添加用户&quot;<span style="color: #000000;">)  
+</span><span style="color: #008080;">19</span>     <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> testAOP(String userName,String password){        
+</span><span style="color: #008080;">20</span> <span style="color: #000000;">        userService.addUser(userName, password);
+</span><span style="color: #008080;">21</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;">22</span> }</pre> 
+           </div> 
+           <p>下面编写测试类</p> 
+           <div class="cnblogs_code"> 
+            <pre><span style="color: #008080;">1</span> <span style="color: #000000;">@Test
+</span><span style="color: #008080;">2</span>     <span style="color: #0000ff;">public</span> <span style="color: #0000ff;">void</span><span style="color: #000000;"> testAOP1(){
+</span><span style="color: #008080;">3</span>         <span style="color: #008000;">//</span><span style="color: #008000;">启动Spring容器        </span>
+<span style="color: #008080;">4</span>         ApplicationContext ctx = <span style="color: #0000ff;">new</span> ClassPathXmlApplicationContext(<span style="color: #0000ff;">new</span> String[]{&quot;classpath:applicationContext-mvc.xml&quot;,&quot;classpath:applicationContext-dataSource.xml&quot;<span style="color: #000000;">});
+</span><span style="color: #008080;">5</span>         <span style="color: #008000;">//</span><span style="color: #008000;">获取service或controller组件</span>
+<span style="color: #008080;">6</span>         UserController userController = (UserController) ctx.getBean(&quot;userController&quot;<span style="color: #000000;">);
+</span><span style="color: #008080;">7</span>         userController.testAOP(&quot;zhangsan&quot;, &quot;123456&quot;<span style="color: #000000;">);
+</span><span style="color: #008080;">8</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;">9</span>     </pre> 
+           </div> 
+           <p><img src="http://images2015.cnblogs.com/blog/825618/201510/825618-20151026135246872-1100715505.png" alt="" width="1001" height="293" /></p> 
+           <p>数据库数据：</p> 
+           <p><img src="http://images2015.cnblogs.com/blog/825618/201510/825618-20151026135714310-1310013961.png" alt="" width="1503" height="72" /></p> 
+           <p><span style="color: #000000;"> <span style="color: #ff0000;">我原本想写两个切点，一个是service层，一个是controller层，service层是用来记录异常信息的日志，而controller层的是用来记录功能的日志，运行结果如下。</span>&nbsp;&nbsp;&nbsp;</span>&nbsp; <img src="http://images2015.cnblogs.com/blog/825618/201510/825618-20151026140518029-589447091.jpg" alt="" width="954" height="420" /></p> 
+           <p>这样做的话不知道在实际的项目中运行效率好不好，在这里请看到博客的大牛给点建议！！</p>
+          </div>
+          <div id="MySignature"></div> 
+          <div class="clear"></div> 
+          <div id="blog_post_info_block"> 
+           <div id="BlogPostCategory"></div> 
+           <div id="EntryTag"></div> 
+           <div id="blog_post_info"> 
+           </div> 
+           <div class="clear"></div> 
+           <div id="post_next_prev"></div> 
+          </div> 
+         </div> 
+         <div class="postDesc">
+          posted @ 
+          <span id="post-date">2015-10-26 14:08</span> 
+          <a href="http://www.cnblogs.com/jianjianyang/">杨小剑</a> 阅读(
+          <span id="post_view_count">...</span>) 评论(
+          <span id="post_comment_count">...</span>) 
+          <a href="https://i.cnblogs.com/EditPosts.aspx?postid=4910851" rel="nofollow">编辑</a> 
+          <a href="#" onclick="AddToWz(4910851);return false;">收藏</a>
+         </div> 
+        </div> 
+        <script type="text/javascript">var allowComments=true,cb_blogId=250053,cb_entryId=4910851,cb_blogApp=currentBlogApp,cb_blogUserGuid='9c09606f-b177-e511-9fc1-ac853d9f53cc',cb_entryCreatedDate='2015/10/26 14:08:00';loadViewCount(cb_entryId);</script> 
+       </div>
+       <!--end: topics 文章、评论容器--> 
+      </div>
+      <a name="!comments"></a>
+      <div id="blog-comments-placeholder"></div>
+      <script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script> 
+      <div id="comment_form" class="commentform"> 
+       <a name="commentform"></a> 
+       <div id="divCommentShow"></div> 
+       <div id="comment_nav">
+        <span id="span_refresh_tips"></span>
+        <a href="javascript:void(0);" onclick="return RefreshCommentList();" id="lnk_RefreshComments" runat="server" clientidmode="Static">刷新评论</a>
+        <a href="#" onclick="return RefreshPage();">刷新页面</a>
+        <a href="#top">返回顶部</a>
+       </div> 
+       <div id="comment_form_container"></div> 
+       <div class="ad_text_commentbox" id="ad_text_under_commentbox"></div> 
+       <div id="ad_t2"></div> 
+       <div id="opt_under_post"></div> 
+       <div id="ad_c1" class="c_ad_block"></div> 
+       <div id="under_post_news"></div> 
+       <div id="ad_c2" class="c_ad_block"></div> 
+       <div id="under_post_kb"></div> 
+       <div id="HistoryToday" class="c_ad_block"></div> 
+       <script type="text/javascript">
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverAdT2();
+    deliverAdC1();
+    deliverAdC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);   
+</script> 
+      </div> 
+     </div>
+     <!--end: forFlow --> 
+    </div>
+    <!--end: mainContent 主体内容容器--> 
+    <div id="sideBar"> 
+     <div id="sideBarMain"> 
+      <!--done--> 
+      <div class="newsItem"> 
+       <h3 class="catListTitle">公告</h3> 
+       <div id="blog-news"></div>
+       <script type="text/javascript">loadBlogNews();</script> 
+      </div> 
+      <div id="calendar">
+       <div id="blog-calendar" style="display:none"></div>
+       <script type="text/javascript">loadBlogDefaultCalendar();</script>
+      </div> 
+      <div id="leftcontentcontainer"> 
+       <div id="blog-sidecolumn"></div>
+       <script type="text/javascript">loadBlogSideColumn();</script> 
+      </div> 
+     </div>
+     <!--end: sideBarMain --> 
+    </div>
+    <!--end: sideBar 侧边栏容器 --> 
+    <div class="clear"></div> 
+   </div>
+   <!--end: main --> 
+   <div class="clear"></div> 
+   <div id="footer"> 
+    <!--done--> Copyright &copy;2017 杨小剑 
+   </div>
+   <!--end: footer --> 
+  </div>
+  <!--end: home 自定义的最大容器 -->   
+ </body>
+</html>

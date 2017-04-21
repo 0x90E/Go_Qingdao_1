@@ -1,0 +1,474 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head><link href="/ids/admin/style/index_v5.css" rel="stylesheet" type="text/css">
+<link href="/ids/admin/style/common_v5.css" rel="stylesheet" type="text/css">
+<link href="/ids/admin/style/tabbox_v5.css" rel="stylesheet" type="text/css">
+<link href="/ids/admin/style/listbox_v5.css" rel="stylesheet" type="text/css">
+<link href="/ids/admin/style/foreground_v5.css" rel="stylesheet" type="text/css">
+<style type="text/css">
+@import url("/ids/admin/style/calendar-blue.css");
+</style>
+<script type="text/javascript" src="/ids/admin/js/oslib/jquery/core/jquery.js"></script>
+<script type="text/javascript" src="/ids/admin/js/jj_news_tab_v5.js"></script>
+<script type="text/javascript" src="/ids/admin/js/IDSUtil_v5.js"></script>
+<script>
+sc = {
+	     //classes
+	     _className:['/ids/admin/style/index1.css','/ids/admin/style/index2.css' ],
+	     newStyle:null,
+	     
+	    init:function(){
+	         if(this.newStyle === null){
+	             this.newStyle = document.createElement('link');
+	             this.newStyle.setAttribute('type' , 'text/css');
+	             this.newStyle.setAttribute('rel' , 'StyleSheet');
+	             document.getElementsByTagName('head')[0].appendChild(this.newStyle);
+	         }
+	         var frame = window.top.mainFrame;
+	         if(null == frame){
+	        	 frame = window;
+	         }
+	         if(null != frame.document.body){
+	        var width = frame.document.body.offsetWidth;
+		         if(width <= 1024){
+		             this.newStyle.setAttribute('href', this._className[1]);           
+		        }else{
+		             this.newStyle.setAttribute('href', this._className[0]);            
+		        }
+	         }
+	     }
+	 }
+	 
+	window.onload = function(){sc.init()};
+	window.onresize = function(){sc.init()};
+var yPosition=0; //鼠标位置
+function computePosition(event){
+	yPosition = event.pageY || event.clientY;
+	//alert("computePosition event.pageY=" +event.pageY + ", event.clientY=" +event.clientY + ", yPosition=" + yPosition);
+}
+</script>
+<script language="JavaScript" src="./admin/js/oslib/jquery/core/jquery.js" type="text/javascript"></script>
+<script language="JavaScript" src="./admin/js/trs/ids/base64.min.js" type="text/javascript"></script>
+<link href="/ids/admin/style/login_v5.css" rel="stylesheet" type="text/css">
+
+
+
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<title>Identity Server</title>
+<link href="admin/csair/css/i_login.css" rel="stylesheet" type="text/css">
+<style>
+	.wronginfo_csair { margin-left: 0px; font-size: 12px; font-weight: bold; color: #b43535; }
+	.login_2 P { text-align : left; line-height : 20px; width : 260px;}
+</style>
+<script type="text/javascript">
+<!--
+//刷新验证码功能
+function refreshVerifyCode() {
+	var verifyCodeHtml = "<a href=\"#\" onClick=\"refreshVerifyCode();\" ><img src=\"/ids/admin/abc.code?random=" + Math.random()+" onClick=\"refreshVerifyCode();\"  width=\"85\" height=\"30\" /></a>"
+    $(".x_yzm").html(verifyCodeHtml);
+}
+
+//点击显示验证码
+function displayVerifyCode() {
+	var verifyCodeImgHtml = $("#verifyCodeImg").html();
+	if(verifyCodeImgHtml != ""){
+		document.getElementById("refreshVerifyCodeDesc").innerHTML = "Change code on click?";
+		return;
+	}
+	//alert("aaa=" +document.getElementById("verifyCodeImg").innerHTML);
+	var verifyCodeHtml = "<a href=\"#\" onClick=\"refreshVerifyCode();\" ><img src=\"/ids/admin/abc.code?random=" + Math.random()+" onClick=\"refreshVerifyCode();\"  width=\"85\" height=\"30\" /></a>"
+    
+    $("#verifyCodeImg").html( "<img align='middle' src='/ids/admin/abc.code?random=" + Math.random() +"' onclick='refreshVerifyCode();' style='cursor: pointer' />");
+	$(".x_yzm").html(verifyCodeHtml);
+    document.getElementById("refreshVerifyCodeDesc").innerHTML = "Change code on click?";
+}	
+
+
+//鼠标单击触发登录事件，兼容IE\FF\Chrame
+document.onkeydown=function(event){
+	   e = event ? event :(window.event ? window.event : null);
+	   if(e.keyCode==13){ 
+		   send2FAVerifyCode("true");                        
+	   }
+}	
+
+//页面加载时，获取焦点
+function obtainFocus(){
+	if(null != document.getElementById('loginKey'))
+		document.getElementById('loginKey').focus();
+}
+
+//点击登录按钮或者获取验证码按钮时调用此方法
+function send2FAVerifyCode(login){
+	var loginKey = $("#loginKey").val(); 
+	$("#loginType").val("userName");
+	if((/^\d+$/.test(loginKey)) && loginKey.length==11)
+	{
+		$("#loginType").val("mobile");
+	}else{
+		//判断身份证数字开头并且是18位
+		if($("#loginKey").length==18 && (/^[0-9]+[\s\S]*$/.test(loginKey))){
+			$("#loginType").val("creditID");
+		}
+		if(loginKey.indexOf("@")>=0){
+			$("#loginType").val("email");
+		}
+	}
+	var loginTypeObj = document.getElementById("loginType");
+	var loginType = "userName";
+	if(loginTypeObj != null){
+		loginType = Trim(loginTypeObj.value);
+	}
+	if("admin" == loginKey){
+		loginType = "userName";
+	}
+	if(loginKey == "" || loginKey == "userName"){
+		$("#loginFail").show();
+		$("#loginFail").html("Please enter account");
+		document.getElementById("loginKey").focus();
+		return;
+	}
+	var passwordObj = document.getElementById("password");
+	if(passwordObj == null || Trim(passwordObj.value) == ""){
+		$("#loginFail").show();
+		$("#loginFail").html("Please enter password");
+		document.getElementById("password").focus();
+		return;
+	}
+	
+	var password = Trim(passwordObj.value);
+	var source = document.getElementById("sourceName");
+	var sourceName = "ids_internal";
+	if(source != null){
+		sourceName = source.value;
+	}
+	var codeObj = document.getElementById("verifycode");
+	var codeDivObj = document.getElementById("verifyCode-div");
+	var display = "none";
+	if(codeDivObj != null){
+		display = codeDivObj.style.display;
+	}
+	var code = "";
+	if(null != codeObj && "" == display ){
+		code = Trim(codeObj.value);
+		if(code == "" || code == "Verification Code"){
+			$("#loginFail").show();
+			$("#loginFail").html("Verification code is null");
+			document.getElementById("verifycode").focus();
+			return;
+		}
+	}
+	
+	var myDate = new Date();
+
+	var FAValue = $("#2FAVerifyCode").val();
+	var paras = 'loginType='+loginType + '&loginKey=' + loginKey + '&password=' + password + '&sourceName=' + sourceName + '&login=' + login +'&FAValue=' + FAValue +'&verifycode=' +code+'&time=' + myDate.getTime();
+	var myAjax = $.ajax({
+		type:"POST",
+		url:"./admin/sendVerifyCodeFor2FA.jsp",
+		data:{"loginType":loginType,"loginKey":loginKey,"password":password,"sourceName":sourceName,"login":login,"FAValue":FAValue,"verifycode":code,"time":myDate.getTime()},
+		dataType:"text",
+		complete: checkUserFinish
+		
+	})
+}
+
+//处理ajax返回的结果
+function checkUserFinish(oXmlHttp) {
+	var result = Trim(oXmlHttp.responseText);
+	//alert("result="+result);
+	
+	var display = document.getElementById("2FAVerifyCode-tr").style.display;
+	// 如果提示不需要输入验证码，则直接返回true，继续提交表单的操作
+	var names = new Array();
+	names = result.split("|");
+	
+	// 如果不需要提交验证码的话
+	if("NO" == names[0]){
+		// 如果是登录请求，则直接登录
+		if( names[1] == "true" ){
+			doForm();
+			// 否则提示不需要
+		}else{
+			$("#loginFail").show();
+			$("#loginFail").html("Please click and enter double factor verification code");
+			return;
+		}
+		// 如果存在异常，则直接弹出提示
+	}else if(result.indexOf("YES") < 0){
+		$("#loginFail").show();
+		$("#loginFail").html(names[0]);
+		if(names[2] == 1056 || names[2] == 1052){
+			// forward
+			var loginTypeObj = document.getElementById("loginType");
+			var loginType = "userName";
+			if(loginTypeObj != null){
+				loginType = loginTypeObj.value;
+			}
+			var loginKey = document.getElementById("loginKey").value;
+			var returnUrl = "http%3A%2F%2Fssc.csair.com%2FMyHR%2FServiceCenter%2FSVR%2FEmpIncomeList.aspx%3Ffromsource";
+			if("true" == "false"){
+				document.location.href="https://ids.csair.com/ids/custom/ChangePassword.jsp&errCode=" + names[2] + "&loginKey=" + loginKey + "&loginType=" + loginType + "&returnUrl=" + returnUrl;
+			}else{
+				document.location.href="https://ids.csair.com/ids/custom/ChangePassword.jsp?errCode=" + names[2] + "&loginKey=" + loginKey + "&loginType=" + loginType + "&returnUrl=" + returnUrl;
+			}
+			return;
+		}
+		if(names[3] == 'true'){
+			document.getElementById("verifyCode-div").style.display = "";
+		}
+		if(document.getElementById("verifycode") != null){
+			refreshVerifyCode();
+		}
+		return;
+		// 否则，是提示需要输入验证码
+	}else{	
+		var login = names[2];
+		
+		// 如果提示需要输入验证码，但是验证码输入框未显示，则让其显示，并提示，返回false
+		if("none" == display && "true" == login){
+			document.getElementById("2FAVerifyCode-tr").style.display = "";
+			$("#loginFail").show();
+			$("#loginFail").html("Please enter double factor verification code");
+			return;
+		}
+		// 如果双因子验证码显示
+		if("block" == display || "" == display){
+			 // 如果是登录提交，则校验双因子验证码是否填写
+			var FAValue = document.getElementById("2FAVerifyCode").value;
+			if(FAValue != "Double factor verification code" && FAValue !="" && "true" == login){
+				doForm();
+				return;
+			}
+			// 如果没有填写，则提示用户填写
+			if((FAValue == "" || FAValue == "Double factor verification code")  && "true" == login){
+				$("#loginFail").show();
+				$("#loginFail").html("Please enter double factor verification code");
+				return;
+				
+			}
+			// 不管有没有填写，如果不是登录则，直接提示
+			if("false" == login){
+				$("#loginFail").show();
+				$("#loginFail").html(names[1]);
+				return;
+			} 
+		}
+		return;
+	}
+}
+
+function doForm(){
+	var loginKey = Trim(document.getElementById("loginKey").value);
+
+	 document.getElementById("loginType").value="userName";
+	if((/^\d+$/.test(loginKey)) && loginKey.length==11)
+	{
+		 document.getElementById("loginType").value="mobile";
+	}else{
+		//判断身份证数字开头并且是18位
+		if(loginKey.length==18 && (/^[0-9]+[\s\S]*$/.test(loginKey))){
+		  document.getElementById("loginType").value="creditID";
+		}
+		if(loginKey.indexOf("@")>=0){
+		  document.getElementById("loginType").value="email";
+		}
+	}
+	if("admin" == loginKey){
+		document.getElementById("loginType").value="userName";
+	}
+
+    //处理访问应用时报空指针错误。取UserName值。by czh 2016.3.23
+    if(true){
+	//var surl="https://ids.csair.com/sso/notice/show/filter/filterUrl/show?userName="+loginKey+"&coAppName=U1ND&surl=aHR0cDovL3NzYy5jc2Fpci5jb20vTXlIUi9TZXJ2aWNlQ2VudGVyL1NWUi9FbXBJbmNvbWVMaXN0LmFzcHg/ZnJvbXNvdXJjZQ==";
+	var surl="https://ids.csair.com/sso/notice/show?coAppName=U1ND&surl=aHR0cDovL3NzYy5jc2Fpci5jb20vTXlIUi9TZXJ2aWNlQ2VudGVyL1NWUi9FbXBJbmNvbWVMaXN0LmFzcHg/ZnJvbXNvdXJjZQ==";
+	var Rurl=Base64.encode(surl);
+	$("#surl").val(Rurl);
+}
+	document.logon.submit();
+}
+
+function showDiv(hideId, showId){
+	$("#"+showId).show();
+	$("#"+hideId).hide();
+}
+
+
+//-->
+</script>
+<link type="text/css" rel="StyleSheet" href="/ids/admin/style/index2.css"></head>
+<body>
+<form id="logon" name="logon" action="GlobalLoginServlet" method="post">
+<input type="hidden" name="returnUrl" value="http://ssc.csair.com/MyHR/ServiceCenter/SVR/EmpIncomeList.aspx?fromsource">
+<input type="hidden" name="loginType" id="loginType" value="userName">
+<input type="hidden" id="show2FA" name="show2FA" value="false">
+
+<input type="hidden" name="gSessionId" value="MDU4MTIxMkJGM0FCRjEzODI4NTJCODYzRjRFN0FBOTYtMTAuMTEuMTIuMTc=">
+<input type="hidden" name="coSessionId" value="dXFnZHZ2dTVmdnVieXQ1cnhmeTRheHJ4">
+<input type="hidden" name="coAppName" value="U1ND" id="coAppName">
+<input type="hidden" name="surl" id="surl" value="aHR0cDovL3NzYy5jc2Fpci5jb20vTXlIUi9TZXJ2aWNlQ2VudGVyL1NWUi9FbXBJbmNvbWVMaXN0LmFzcHg/ZnJvbXNvdXJjZQ==">
+<input type="hidden" name="afterLoginOk.gotoUrl" value="">
+
+<div class="skin">
+	<div class="left">
+	</div>
+        <div class="center">
+            <div class="login_1">
+            </div>
+            <div class="login_2">
+                <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tbody><tr>
+                        <td width="260">
+                            
+
+                            <ul>
+							
+								
+                                
+									<li>用户名：
+									<input tabindex="1" title="userName" type="text" name="loginKey" id="loginKey" value="" onfocus="if(value=='userName') {value='';this.style.color='#fff';}" onblur="if(value=='') {value='';}" class="txt" style="width: 139px;">
+								 </li>
+								 
+								 <li>密　码：
+								 <input tabindex="1" type="password" name="password" id="password" class="txt" style="width: 139px;">
+									 
+								 </li>
+								 
+								 
+<script type="text/javascript">
+<!--
+//刷新验证码功能
+function refreshVerifyCode() {
+	var verifyCodeHtml = "<a href=\"#\" onClick=\"refreshVerifyCode();\" ><img width=\"85\" height=\"30\" style=\"width: 85px\" src=\"/ids/admin/abc.code?random=" + Math.random()+" onClick=\"refreshVerifyCode();\"  width=\"85\" height=\"30\" /></a>"
+    $(".x_yzm").html(verifyCodeHtml);
+}
+
+//点击显示验证码
+function displayVerifyCode() {
+	var verifyCodeHtml = "<a href=\"#\" onClick=\"refreshVerifyCode();\" ><img width=\"85\" height=\"30\" style=\"width: 85px\" src=\"/ids/admin/abc.code?random=" + Math.random()+" onClick=\"refreshVerifyCode();\"  width=\"85\" height=\"30\" /></a>"
+    //alert("aaa=" +document.getElementById("verifyCodeImg").innerHTML);
+    $("#codeImg").html(verifyCodeHtml);
+    $("#codeDesc").hide();
+}	
+//-->
+</script>
+
+
+
+
+<li id="verifyCode-div">验证码：<b>
+<input class="txt" tabindex="1" type="text" name="verifycode" title="" id="verifycode" value="" onfocus="if(value=='Verification Code') {value='';}" onblur="if(value=='') {value='';}" style="width:66px;">
+
+
+<span class="x_yzm" style="width: 85px">
+<a href="#" onclick="refreshVerifyCode();">
+<img style="width: 85px" src="/ids/admin/abc.code" onclick="refreshVerifyCode();" title="" width="85" height="30">
+</a>
+</span>
+
+</b>
+</li> 
+
+	  
+								
+								 <li class="x_dlh" id="2FAVerifyCode-tr" style="display:none;">验证码：
+									 <input tabindex="1" onfocus="if(value=='Double factor verification code') {value='';}" onblur="if(value=='') {value='';}" type="text" name="2FAVerifyCode" id="2FAVerifyCode" class="txt" value="" style="width:66px;">
+									 <a href="#" name="sendCode" onclick="send2FAVerifyCode('false');" class="x_phone">Click and get</a>
+								 </li>
+								 <li class="wronginfo_csair"><p id="loginFail" style="display:none;">User is not exist in IDS!</p>
+								 </li>
+								 <li class="x_dlh">
+									 
+									 
+									 <input tabindex="1" style="cursor: pointer;" type="button" class="sub" id="submitLoginBtn" value="Sign in" name="isl" onclick="send2FAVerifyCode('true')">
+
+									 <input class="sub2" name="Button" onclick="window.open ('/ids/custom/PasswordManage.html','newwindow3','height=760,width=840,top=0,left=0,  toolbar=no,menubar=no,scrollbars=no,resizable=no,  location=no,status=no')" type="button" value="密码管理">
+								 </li>
+                            </ul>
+                            
+                            
+                        </td>
+                        <td valign="top" style="padding: 40px 0px 0px 0px">
+                            <div class="date_tit" id="myDate">2017年4月2日</div>
+                            <div class="date_box">
+                                <span id="myDate2">星期日</span>
+                                <br>
+                                <b id="myday1">2</b>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody></table>
+                <div class="line">
+                </div>
+               
+            </div>
+
+ 
+
+            <div class="login_3">
+                南航官方网站：<a href="http://www.csair.com/cn/index.shtml?WT.mc_id=oa-denglu-01" style="text-decoration: none" target="_blank"><b class="red">www.csair.com</b></a> &nbsp;<span style="color: #808080">|</span>&nbsp;南航全国服务热线：<b class="red">95539</b> &nbsp;<span style="color: #808080">|</span>&nbsp;南航微信：<b class="red">CS95539</b>&nbsp;<span style="color: #808080">|</span>&nbsp;IT服务热线（广州地区）：<b class="red">020-86112345</b>
+                &nbsp;
+            </div>
+        </div>
+        <div class="right">
+        </div>
+        <div class="bottom">
+        </div>
+
+        <script language="javascript">
+            document.forms["logon"].elements["loginKey"].focus();
+        </script>
+	
+   <div class="bttxt1">Copyright&nbsp;©&nbsp;2004 - 2014 北京拓尔思信息技术股份有限公司</div>
+   </div>
+    
+
+<script type="text/javascript">
+
+
+    var d = new Date()
+    document.getElementById("myday1").innerHTML = d.getDate()
+
+
+
+    switch (d.getDay()) {
+        case 0:
+            theWeek = "星期日"
+            break
+        case 1:
+            theWeek = "星期一"
+            break
+        case 2:
+            theWeek = "星期二"
+            break
+        case 3:
+            theWeek = "星期三"
+            break
+        case 4:
+            theWeek = "星期四"
+            break
+        case 5:
+            theWeek = "星期五"
+            break
+        case 6:
+            theWeek = "星期六"
+            break
+        default:
+            document.write("难道有传说中的星期八")
+    }
+
+    theMonth = d.getMonth() + 1
+    theDate = d.getFullYear() + "年" + theMonth + "月" + d.getDate() + "日"
+    document.getElementById("myDate").innerHTML = theDate //修改页面布局，获取日期
+    document.getElementById("myDate2").innerHTML = theWeek //修改页面布局，获取星期
+</script>
+
+   
+    
+
+
+    
+	
+<!--contentbox ending-->
+</form>
+
+
+</body></html>

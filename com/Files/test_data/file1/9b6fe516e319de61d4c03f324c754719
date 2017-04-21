@@ -1,0 +1,549 @@
+<!DOCTYPE html><html><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>缴存提取业务网点查询</title>
+    <link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/0.4.0/weui.css">
+	<style>
+		body {
+		  background-color: #efeff4;
+		}
+		.weui_cells_title{font-size: 1.2em;}
+		.title {
+		  font-weight: 400;
+		  margin-right: 15px;
+		  font-size: 1em;
+		}
+		.summary {
+		  font-size: 0.8em;
+		  margin-right: 15px;
+		  color: #888888;
+		  display: -webkit-box;
+		  max-width: 100%;
+		  -webkit-line-clamp: 1;
+		  -webkit-box-orient: vertical;
+		  overflow: hidden;
+		  text-overflow: ellipsis;
+		}
+		a:link,a:active,a:hover{color:#666}
+
+	</style>
+	  <style>
+
+  html {
+    font-size: 50px;
+    -webkit-tap-highlight-color: transparent;
+    height: 100%;
+    min-width: 320px;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: .28em;
+    line-height: 1;
+    color: #333;
+	background-color: #efeff4;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-weight: 500;
+    line-height: 1.1;
+}
+	 dl.list {
+		border-top: 1px solid #DDD8CE;
+		border-bottom: 1px solid #DDD8CE;
+		margin-top: .2rem;
+		margin-bottom: 0;
+		background-color: #fff;
+	}
+	.nomargin {
+		margin: 0!important;
+	}
+
+	dl.list dt, dl.list dd {
+    margin: 0;
+    border-bottom: 1px solid #DDD8CE;
+    overflow: hidden;
+    font-size: inherit;
+    font-weight: 400;
+    position: relative;
+	}
+
+	dl.list .dd-padding, dl.list dt, dl.list dd>.react {
+    padding: .28rem .2rem;
+	}
+
+	.merchant {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -ms-box-align: center;
+}
+
+.merchant .biz-detail {
+    -webkit-box-flex: 1;
+    -ms-box-flex: 1;
+}
+
+.merchant .biz-detail h5 {
+    font-size: .32rem;
+    margin-top: 0;
+    margin-bottom: .18rem;
+    color: #000;
+}
+
+.merchant .biz-detail .address {
+    padding-right: .2rem;
+    color: #666;
+}
+.single-line {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.merchant .dist {
+    margin-top: .2rem;
+    color: #666;
+}
+.merchant .dist span{
+    margin-left: .1rem;
+}
+
+.text-icon {
+    margin-top: -0.1rem;
+    font-family: base_icon;
+    display: inline-block;
+    vertical-align: middle;
+    font-style: normal;
+}
+
+.merchant .biz-call {
+    width: 1.4rem;
+    text-align: center;
+    border-left: 1px solid #DDD8CE;
+    font-size: .5rem;
+    height: 1.2rem;
+    line-height: 1.2rem;
+	color:#00bb9c;
+    /*color: #06c1ae;*/
+}
+
+a.react, label.react {
+    display: block;
+    color: inherit;
+    height: 100%;
+}
+a {
+    color: #06c1ae;
+    text-decoration: none;
+    outline: 0;
+}
+
+.merchant .biz-detail .redfont{color:red}
+
+  </style>
+
+  <style>
+    @font-face {
+        font-family: 'cate_icon';
+        src: url(./fonts/cate4.woff) format("woff"), url(./fonts/cate4.otf); }
+    @font-face {
+        font-family: 'base_icon';
+        src: url(./fonts/base14.woff) format("woff"), url(./fonts/base14.otf); }
+</style>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&amp;ak=R6SoRKIrWZipdqdmHQPtD3MnHg1TRkTU"></script><script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&amp;ak=R6SoRKIrWZipdqdmHQPtD3MnHg1TRkTU&amp;services=&amp;t=20170324173232"></script>
+<script async="" src="http://api.map.baidu.com/geosearch/v3/nearby?callback=jQuery21405672681063879281_1491053521036&amp;q=&amp;page_index=0&amp;page_size=30&amp;filter=doctype%3A1&amp;location=119.33022111%2C26.0471255&amp;coord_type=3&amp;sortby=distance%3A1&amp;radius=200000&amp;geotable_id=137093&amp;ak=R6SoRKIrWZipdqdmHQPtD3MnHg1TRkTU&amp;_=1491053521038"></script></head>
+<body ontouchstart="">
+<div class="container" style="overflow:auto;">
+
+
+        <div class="weui_search_bar" id="search_bar">
+            <div class="weui_search_outer">
+                <div class="weui_search_inner">
+                    <i class="weui_icon_search"></i>
+                    <input type="search" class="weui_search_input" id="search_input" placeholder="搜索" required="">
+                    <a href="javascript:" class="weui_icon_clear" id="search_clear"></a>
+                </div>
+                <label for="search_input" class="weui_search_text" id="search_text" style="padding-top:6px;">
+                    <i class="weui_icon_search"></i>
+                    <span>搜索</span>
+                </label>
+            </div>
+            <a href="javascript:" class="weui_search_cancel" id="search_cancel">取消</a>
+        </div>
+
+
+
+	<div id="loadingToast" class="weui_loading_toast" style="display: none; ">
+        <div class="weui_mask_transparent"></div>
+        <div class="weui_toast">
+            <div class="weui_loading">
+                <div class="weui_loading_leaf weui_loading_leaf_0"></div>
+                <div class="weui_loading_leaf weui_loading_leaf_1"></div>
+                <div class="weui_loading_leaf weui_loading_leaf_2"></div>
+                <div class="weui_loading_leaf weui_loading_leaf_3"></div>
+                <div class="weui_loading_leaf weui_loading_leaf_4"></div>
+                <div class="weui_loading_leaf weui_loading_leaf_5"></div>
+                <div class="weui_loading_leaf weui_loading_leaf_6"></div>
+                <div class="weui_loading_leaf weui_loading_leaf_7"></div>
+                <div class="weui_loading_leaf weui_loading_leaf_8"></div>
+                <div class="weui_loading_leaf weui_loading_leaf_9"></div>
+                <div class="weui_loading_leaf weui_loading_leaf_10"></div>
+                <div class="weui_loading_leaf weui_loading_leaf_11"></div>
+            </div>
+            <p class="weui_toast_content">搜寻附近网点</p>
+        </div>
+    </div>
+
+
+	<div id="toast" style="display: none;">
+        <div class="weui_mask_transparent"></div>
+        <div class="weui_toast">
+            <i class="weui_icon_toast"></i>
+            <p class="weui_toast_content">已完成</p>
+        </div>
+    </div>
+       
+
+	  <dl class="list nomargin" id="listBoby"><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402775&amp;dis=0&amp;loc=114.071836,22.528642&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 中信银行(皇岗支行)</h5>				<div class="address single-line" style="line-height:23px;">深圳市福田区福民路福民佳园首层</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:88307163" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402777&amp;dis=0&amp;loc=114.020672,22.558258&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 公积金中心(福田管理部)</h5>				<div class="address single-line" style="line-height:23px;">深圳市福田区侨香路2008号侨香村1栋裙楼</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:12329" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402778&amp;dis=0&amp;loc=114.0702,22.548245&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 招商银行(安联支行)</h5>				<div class="address single-line" style="line-height:23px;">深圳市福田区金田路4018号安联大厦首层</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:88285313" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402779&amp;dis=0&amp;loc=114.130933,22.599922&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 建设银行(罗岗支行)</h5>				<div class="address single-line" style="line-height:23px;">深圳市龙岗区布吉街道信义逸翠园2号楼首层</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:28584647" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402780&amp;dis=0&amp;loc=114.10617,22.546101&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 中信银行(城市广场旗舰支行)</h5>				<div class="address single-line" style="line-height:23px;">深圳市福田区深南中路1093号中信大厦1楼</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:83054966" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402781&amp;dis=0&amp;loc=113.868993,22.578522&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 公积金中心(宝安管理部)</h5>				<div class="address single-line" style="line-height:23px;">深圳市宝安区西乡大道288号华丰经济大厦东侧2楼</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:12329" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402782&amp;dis=0&amp;loc=114.075221,22.535928&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 中信银行(福田支行)</h5>				<div class="address single-line" style="line-height:23px;">深圳市福田区彩田南路联合广场大厦一楼1-1(裙楼)</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:82910659" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402783&amp;dis=0&amp;loc=114.0702,22.548245&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 招商银行(金中环支行)</h5>				<div class="address single-line" style="line-height:23px;">深圳市福田区金田路金中环大厦首层</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:23942357" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402784&amp;dis=0&amp;loc=114.270079,22.733577&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 建设银行(龙兴支行)</h5>				<div class="address single-line" style="line-height:23px;">深圳市龙岗区龙岗街道龙园路九州家园三栋首层</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:89612239" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402785&amp;dis=0&amp;loc=114.223662,22.727119&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 公积金中心(龙岗管理部)</h5>				<div class="address single-line" style="line-height:23px;">深圳市龙岗区黄阁北路龙岗天安数码新城2号楼2层A202</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:12329" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402786&amp;dis=0&amp;loc=114.090155,22.544757&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 招商银行(福华支行)</h5>				<div class="address single-line" style="line-height:23px;">深圳市福田区福虹路9号世贸广场首层</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:83778273" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402787&amp;dis=0&amp;loc=114.101719,22.564925&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 中信银行(八卦岭支行)</h5>				<div class="address single-line" style="line-height:23px;">深圳市福田区八卦二路鹏益花园一楼</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:25873268" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402790&amp;dis=0&amp;loc=114.276316,22.729035&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 建设银行(双龙支行)</h5>				<div class="address single-line" style="line-height:23px;">深圳市龙岗区龙岗街道龙岗路19号东森大厦101A</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:84800672" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402791&amp;dis=0&amp;loc=114.090466,22.550098&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 工商银行(振华支行)</h5>				<div class="address single-line" style="line-height:23px;">深圳市福田区振华路中航苑飞亚达大厦首层</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:83258476" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402792&amp;dis=0&amp;loc=114.064211,22.569856&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 招商银行(梅林支行)</h5>				<div class="address single-line" style="line-height:23px;">深圳市福田区上梅林理想时代大厦1-2层</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:83167817" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402793&amp;dis=0&amp;loc=114.060358,22.54434&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 中信银行(福南支行)</h5>				<div class="address single-line" style="line-height:23px;">深圳市福田区中心区深南大道4009号投资大厦首层</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:82912253" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402794&amp;dis=0&amp;loc=114.075575,22.642481&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 建设银行(坂田支行)</h5>				<div class="address single-line" style="line-height:23px;">深圳市龙岗区坂田街道雪岗路2018号天安云谷产业园一期2栋一层101-103</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:28227407" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402795&amp;dis=0&amp;loc=114.094699,22.546708&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 工商银行(华强支行)</h5>				<div class="address single-line" style="line-height:23px;">深圳市福田区深南中路2074号电子大厦一楼</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:83781355" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402797&amp;dis=0&amp;loc=114.062379,22.550824&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 招商银行(新世界支行)</h5>				<div class="address single-line" style="line-height:23px;">深圳市福田区益田路6009号新世界商务中心首层</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:82520635" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402798&amp;dis=0&amp;loc=114.064837,22.539658&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 中信银行(分行营业部)</h5>				<div class="address single-line" style="line-height:23px;">深圳市福田区中心三路卓越时代广场首层</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:23610799" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402800&amp;dis=0&amp;loc=114.156629,22.616804&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 建设银行(南岭支行)</h5>				<div class="address single-line" style="line-height:23px;">深圳市龙岗区布吉南岭村开放街三号南岭建行</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:85223704" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402801&amp;dis=0&amp;loc=114.05994,22.537998&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 工商银行(星河支行)</h5>				<div class="address single-line" style="line-height:23px;">深圳市福田区福华三路星河国际花园B2座裙楼1层</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:82036259" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402802&amp;dis=0&amp;loc=114.052666,22.523635&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 中信银行(福强支行)</h5>				<div class="address single-line" style="line-height:23px;">深圳市福田区沙尾工业区307栋首层</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:88993528" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402803&amp;dis=0&amp;loc=114.05081,22.55946&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 招商银行(金色家园支行)</h5>				<div class="address single-line" style="line-height:23px;">深圳市福田区莲花路万科金色家园首层</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:83169529" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402806&amp;dis=0&amp;loc=114.030239,22.54101&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 工商银行(喜年支行)</h5>				<div class="address single-line" style="line-height:23px;">深圳市福田区深南大道6021号喜年中心大厦一楼</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:82024469" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402807&amp;dis=0&amp;loc=114.032047,22.541177&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 招商银行(泰然支行)</h5>				<div class="address single-line" style="line-height:23px;">深圳市福田区深南大道6017号都市阳光名苑首层</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:82044260" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402808&amp;dis=0&amp;loc=114.044568,22.556031&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 中信银行(景田支行)</h5>				<div class="address single-line" style="line-height:23px;">深圳市福田区水榭花都三期商业广场</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:25942299" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402809&amp;dis=0&amp;loc=114.318316,22.777278&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 建设银行(坪地支行)</h5>				<div class="address single-line" style="line-height:23px;">深圳市龙岗区坪地街道坪东社区湖田路70号</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:89947106" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd><dd class="dd-padding">		<div class="merchant">		<div class="biz-detail">			<a class="react" href="detail.html?uid=1844402811&amp;dis=0&amp;loc=114.094159,22.54419&amp;cloc=114.068146,22.546965&amp;t=1" title="">				<h5 class="title single-line"> 工商银行(福园支行)</h5>				<div class="address single-line" style="line-height:23px;">深圳市福田区南园路234号工商银行公寓首层</div>					<div class="dist"><i class="text-icon">⦿</i><span>0m</span>					</div>			</a>		</div>		<div class="biz-call">			<a href="tel:83224309" class="react phone"><i class="text-icon">✆</i></a>		</div>	</div>	</dd></dl>
+
+</div>
+<script src="//apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript">
+//检索模块相关代码
+var keyword     = "",   //检索关键词
+	page        = 0,    //当前页码
+	nearbyurl = "http://api.map.baidu.com/geosearch/v3/nearby?callback=?",//附近搜索URL
+	localurl = "http://api.map.baidu.com/geosearch/v3/local?callback=?",//本地搜索URL
+	szlocation = "114.068146,22.546965",//深圳中心点百度坐标
+	doctype = 1, //网点类型
+	yh = "";//银行
+//百度定位接口，有两三秒延迟
+var geolocation = new BMap.Geolocation();
+	geolocation.getCurrentPosition(function(r){
+		if(this.getStatus() == BMAP_STATUS_SUCCESS){
+			$("#loadingToast").hide();
+			szlocation = r.point.lng+","+r.point.lat;
+			searchAction('',0,1,0,szlocation);
+		}
+		else {
+			alert('定位失败！'+this.getStatus());
+		}        
+	},{enableHighAccuracy: true})
+	//关于状态码
+	//BMAP_STATUS_SUCCESS	检索成功。对应数值“0”。
+	//BMAP_STATUS_CITY_LIST	城市列表。对应数值“1”。
+	//BMAP_STATUS_UNKNOWN_LOCATION	位置结果未知。对应数值“2”。
+	//BMAP_STATUS_UNKNOWN_ROUTE	导航结果未知。对应数值“3”。
+	//BMAP_STATUS_INVALID_KEY	非法密钥。对应数值“4”。
+	//BMAP_STATUS_INVALID_REQUEST	非法请求。对应数值“5”。
+	//BMAP_STATUS_PERMISSION_DENIED	没有权限。对应数值“6”。(自 1.1 新增)
+	//BMAP_STATUS_SERVICE_UNAVAILABLE	服务不可用。对应数值“7”。(自 1.1 新增)
+	//BMAP_STATUS_TIMEOUT	超时。对应数值“8”。(自 1.1 新增)
+
+
+
+
+//绑定检索按钮事件
+$('#search_input').bind('input', function(){
+	keyword = $.trim($('#search_input').val());
+	searchAction(keyword,0,1,0,szlocation,1);
+});
+
+
+/**
+ * 进行检索操作
+ * @param 关键词
+ * @param 当前页码
+ * @param 参数类型 0|1 0是本地搜索，1是附近搜索
+ * @param 是否滚动加载
+ * @param 百度坐标
+ * @param 是否搜索
+ */
+function searchAction(keyword, page,type,iscroll,lc,issearch) {
+	page = page || 0;
+	var filter = []; //过滤条件
+	//if(issearch){
+	filter.push('doctype:' + doctype);
+	if(yh && yh.length>=1)
+		filter.push('yhcode:' + yh);
+		//filter.push('address:' + keyword);
+		//filter.push('bgdh:' + keyword);
+	//}
+	if(type==0){
+		$.getJSON(localurl, {
+			'q'          : keyword, //检索关键字
+			'page_index' : page,  //页码
+			'page_size'  :  30,
+			'filter'     : filter.join('|'),  //过滤条件
+			'region'     : "深圳市",  //搜索区域
+			'coord_type'      : '3',  //坐标系 3代表百度经纬度坐标系统 4代表百度墨卡托系统
+			'sortby'     :  'distance:1',
+			'geotable_id': 137093,
+			'ak'         : 'R6SoRKIrWZipdqdmHQPtD3MnHg1TRkTU'  //用户ak
+		},function(e) {
+			if(iscroll)
+				renderList2(e, page + 1,issearch,lc);
+			else
+				renderList(e, page + 1,issearch,lc);
+		});
+	}else if(type==1){
+		$.getJSON(nearbyurl, {
+			'q'          : keyword, //检索关键字
+			'page_index' : page,  //页码
+			'page_size'  :  30,
+			'filter'     : filter.join('|'),  //过滤条件
+			'location'     : lc,  //侨香村坐标 检索的中心点
+			'coord_type'      : '3',  //坐标系 3代表百度经纬度坐标系统 4代表百度墨卡托系统
+			'sortby'     :  'distance:1',
+			'radius'     :  '200000',//检索半径
+			'geotable_id': 137093,
+			'ak'         : 'R6SoRKIrWZipdqdmHQPtD3MnHg1TRkTU'  //用户ak
+		},function(e) {
+			if(iscroll)
+				renderList2(e, page + 1,issearch,lc);
+			else
+				renderList(e, page + 1,issearch,lc);
+		});
+	}
+}
+
+
+ /**
+ * 渲染列表模式
+ * @param result
+ * @param page
+ * @param issearch
+ * @param clocations
+ */
+function renderList(res, page,issearch,clocations) {
+	var content = res.contents;
+	$('#listBoby').html('');
+
+	if (content.length == 0) {
+		$('#listBoby').append($('<p style="border-top:1px solid #DDDDDD;padding-top:10px;text-align:center;text-align:center;font-size:16px;line-height:27px;" class="text-warning">抱歉，在您附近没有搜索到相关网点信息.</p>'));
+		return;
+	}
+
+	$.each(content, function(i, item){
+		var dist = toDecimal2(parseInt(item.distance)/1000);
+		var distans= dist>=1?dist+"km":item.distance + "m";
+		//if(issearch)distans="";
+
+		var htmlcon = [];
+						
+
+		htmlcon.push("<dd class='dd-padding'>");
+		htmlcon.push("		<div class='merchant'>");
+		htmlcon.push("		<div class='biz-detail'>");
+		htmlcon.push("			<a class='react' href='detail.html?uid="+item.uid+"&dis="+item.distance+"&loc="+item.location+"&cloc="+clocations+"&t="+doctype+"' title=''>");
+		htmlcon.push("				<h5 class='title single-line'> " + item.yhname + "("+item.branch+")</h5>");
+		htmlcon.push("				<div class='address single-line' style='line-height:23px;'>" + item.address + "</div>");
+		if(doctype==5){
+			htmlcon.push("				<div class='address single-line redfont' style='line-height:23px;'>"+showmark(item.marks)+"</div>");
+		}
+		htmlcon.push("					<div class='dist'><i class='text-icon'>⦿</i><span>"+distans+"</span>");
+		htmlcon.push("					</div>");
+		htmlcon.push("			</a>");
+		htmlcon.push("		</div>");
+		htmlcon.push("		<div class='biz-call'>");
+		htmlcon.push("			<a href='tel:"+item.bgdh+"' class='react phone'><i class='text-icon'>✆</i></a>");
+		htmlcon.push("		</div>");
+		htmlcon.push("	</div>");
+		htmlcon.push("	</dd>");
+		$('#listBoby').append(htmlcon.join(""));
+		//$('#listBoby').append("<div class='weui_media_box weui_media_text'><a href='detail.html?uid="+item.uid+"&dis="+dist+"&loc="+item.location+"' ><h4 class='weui_media_title'> " + item.title + "  "+distans+"</h4><p class='weui_media_desc' style='font-size:16px;color:#888;line-height:18px;'><img src='img/addres24.png' width='16'/> " + item.address + "</p></a><ul class='weui_media_info' style='font-size:16px;color:#888;line-height:18px;'><li class='weui_media_info_meta'><a href='tel:"+item.bgdh+"'><img src='img/telphone24.png' width='16'/> " + item.bgdh + "</a></li><li class='weui_media_info_meta weui_media_info_meta_extra'>"+item.district+"</li></ul></div>");
+	});
+
+}
+
+ /**
+ * 渲染列表模式
+ * @param result
+ * @param page
+ * @param issearch
+ * @param clocations
+ */
+function renderList2(res, page,issearch,clocations) {
+	$("#loadingToast").show();
+	var content = res.contents;
+	var count = 0;
+	$.each(content, function(i, item){
+		var dist = toDecimal2(parseInt(item.distance)/1000);
+		var distans= dist>=1?dist+"km":item.distance + "m";
+		//if(issearch)distans="";
+
+		var htmlcon = [];
+
+		htmlcon.push("<dd class='dd-padding'>");
+		htmlcon.push("		<div class='merchant'>");
+		htmlcon.push("		<div class='biz-detail'>");
+		htmlcon.push("			<a class='react' href='detail.html?uid="+item.uid+"&dis="+item.distance+"&loc="+item.location+"&cloc="+clocations+"&t="+doctype+"' title=''>");
+		htmlcon.push("				<h5 class='title single-line'> " + item.yhname + "("+item.branch+")</h5>");
+		htmlcon.push("				<div class='address single-line' style='line-height:23px;'>" + item.address + "</div>");
+		if(doctype==5){
+			htmlcon.push("				<div class='address single-line redfont' style='line-height:23px;'>"+showmark(item.marks)+"</div>");
+		}
+		htmlcon.push("					<div class='dist'><i class='text-icon'>⦿</i><span>"+distans+"</span>");
+		htmlcon.push("					</div>");
+		htmlcon.push("			</a>");
+		htmlcon.push("		</div>");
+		htmlcon.push("		<div class='biz-call'>");
+		htmlcon.push("			<a href='tel:"+item.bgdh+"' class='react phone'><i class='text-icon'>✆</i></a>");
+		htmlcon.push("		</div>");
+		htmlcon.push("	</div>");
+		htmlcon.push("	</dd>");
+		$('#listBoby').append(htmlcon.join(""));
+		//$('#listBoby').append("<div class='weui_media_box weui_media_text'><a href='detail.html?uid="+item.uid+"&dis="+dist+"&loc="+item.location+"' ><h4 class='weui_media_title'> " + item.title + "  "+distans+"</h4><p class='weui_media_desc' style='font-size:16px;color:#888;line-height:18px;'><img src='img/addres24.png' width='16'/> " + item.address + "</p></a><ul class='weui_media_info' style='font-size:16px;color:#888;line-height:18px;'><li class='weui_media_info_meta'><a href='tel:"+item.bgdh+"'><img src='img/telphone24.png' width='16'/> " + item.bgdh + "</a></li><li class='weui_media_info_meta weui_media_info_meta_extra'>"+item.district+"</li></ul></div>");
+		count++;
+	});
+	
+	$("#loadingToast").hide();
+	return count;
+
+}
+
+
+
+$('#search_input').focus(function(){
+                    //searchBar
+                    var $weuiSearchBar = $('#search_bar');
+                    $weuiSearchBar.addClass('weui_search_focusing');
+                })
+                .blur(function(){
+                    var $weuiSearchBar = $('#search_bar');
+                    $weuiSearchBar.removeClass('weui_search_focusing');
+                    if($(this).val()){
+                        $('#search_text').hide();
+                    }else{
+                        $('#search_text').show();
+                    }
+                });
+
+$('#search_cancel').click(function(){
+                    $('#search_input').val('');
+                });
+$('#search_clear').click(function(){
+                    $('#search_input').val('');
+                });
+
+function toDecimal2(x) {              
+	var f = parseFloat(x);              
+	if (isNaN(f)) {   
+		return false;              
+	}              
+	var f = Math.round(x*100)/100;              
+	var s = f.toString();              
+	var rs = s.indexOf('.');              
+	if (rs < 0) {   
+		rs = s.length;                  
+	　　s += '.';   
+	}              
+	while (s.length <= rs + 2) {   
+		s += '0';              
+	}              
+	return s;   
+}  
+</script>
+
+<script>
+var page=1;
+var finished=0;
+var sover=0;
+
+//加载完
+function loadover(){
+	if(sover==1)
+	{	
+		var overtext="Duang～到底了";
+		$(".loadmore").remove();
+		if($(".loadover").length>0)
+		{
+			$(".loadover span").eq(0).html(overtext);
+		}
+		else
+		{
+			var txt='<div class="loadover"><span>'+overtext+'</span></div>';
+			$(".container").append(txt);
+		}
+	}
+}
+
+function showmark(smark){
+ if(smark)
+	return smark.replace(/（/g, "").replace(/）/g, "");
+ else
+	return '';
+}
+
+//加载更多
+var vid=0;
+function loadmore(){
+	if(finished==0 && sover==0)
+	{	
+		//if($(".loadmore").length==0){
+		//	var txt='<div class="loadmore"><span class="loading"></span>加载中..</div>';
+		//	$(".container").append(txt);
+		//}
+		
+		finished=1;
+		var count = searchAction('',page,1,1,szlocation);
+		//$(".loadmore").remove();
+		page+=1;
+		finished=0;
+		//最后一页
+		if(count<=30){
+			sover=1;
+			$("#toast").show();
+			$(document).unbind("scroll");
+			//loadover();
+		}
+	}
+}
+
+
+/*
+ * This function parses ampersand-separated name=value argument pairs from
+ * the query string of the URL. It stores the name=value pairs in
+ * properties of an object and returns that object. Use it like this:
+ *
+ * var args = getArgs( );  // Parse args from URL
+ * var q = args.q || "";  // Use argument, if defined, or a default value
+ * var n = args.n ? parseInt(args.n) : 10;
+ */
+function getArgs( ) {
+    var args = new Object( );
+    var query = location.search.substring(1);     // Get query string
+    var pairs = query.split("&");                 // Break at ampersand
+    for(var i = 0; i < pairs.length; i++) {
+        var pos = pairs[i].indexOf('=');          // Look for "name=value"
+        if (pos == -1) continue;                  // If not found, skip
+        var argname = pairs[i].substring(0,pos);  // Extract the name
+        var value = pairs[i].substring(pos+1);    // Extract the value
+        value = decodeURIComponent(value);        // Decode it, if needed
+        args[argname] = value;                    // Store as a property
+    }
+    return args;                                  // Return the object
+}
+var args = getArgs();  // Parse args from URL
+//页面滚动执行事件
+$(document).ready(function(){
+	doctype = args.t || 1;
+	if(doctype==1){
+		$("title").text("缴存提取业务网点查询");
+	}
+	yh = args.y || "";
+	searchAction('',0,0,0,szlocation);
+	$(document).unbind("scroll").bind("scroll", function(e){
+	if( $(document).scrollTop() >= $(document).height()-$(window).height() -60 ){
+			loadmore();
+		}
+	});
+});
+</script>
+
+</body></html>

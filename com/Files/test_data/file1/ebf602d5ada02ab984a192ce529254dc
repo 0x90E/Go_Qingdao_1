@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head>
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+    <title>Web based Mail Service Login</title>
+    <script type="text/javascript" src="/PortalUSR/JS/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="/PortalUSR/JS/jquery-ui-1.8.2.custom.min.js"></script>
+    <script type="text/javascript" src="/PortalUSR/JS/Cookie.js"></script>
+    <script type="text/javascript" src="/PortalUSR/JS/util.js"></script>
+    <script type="text/javascript">
+        window.history.forward(1);
+        function chkForm(){
+            if(!chkTxtFormValue(document.frmLogin.name,'txtPassword',"密码不能输入空值")) {
+                return false;
+            } else if(!chkTxtFormValue(document.frmLogin.name,'txtAccount',"帐号不能输入空值")) {
+                return false;
+            } else if(!chkTxtFormValue(document.frmLogin.name,'txtCheckCode',"机码不能输入空值")) {
+                return false;
+            } else if(!validTxtFields(document.frmLogin.name,'txtAccount',"帐号请不要输入‘ -- , / , \\ , \' ’等符号")) {
+                return false;
+            } else if(!validTxtFields(document.frmLogin.name,'txtPassword',"密码请不要输入‘ -- , / , \\ , \' ’等符号")) {
+                return false;
+            } else if(!validTxtFields(document.frmLogin.name,'txtCheckCode',"机码,请不要输入‘ -- , / , \\ , \' ’等符号")) {
+                return false;
+            } else {
+                var account = document.frmLogin.txtAccount.value.replace(" ","");
+                var idxOfAcc = account.indexOf("-");
+                if(idxOfAcc < 0 || !chkTextEngNum(account.substring(0,idxOfAcc)) || !chkTextEngNum(account.substring(idxOfAcc+1))){  <!-- å¤æ·å¸³èæ ¼å¼æ¯å¦æ­£ç¢º -->
+                    alert("帐号,格式错误");
+                    return false;
+                }
+                if(isNaN(document.frmLogin.txtCheckCode.value)){  <!-- å¤æ·æ©ç¢¼æ ¼å¼æ¯å¦æ­£ç¢º -->
+                    alert("机码,格式错误");
+                    return false;
+                }
+               if(screen.width != undefined){
+                   if(screen.width<1024 || screen.height<768){
+                       alert("建议您以IE6.0 1024*768以上高彩模式浏览本站");
+                   }
+                   document.frmLogin.txtUserScreen.value = screen.width + "x" + screen.height;
+               }
+                return true;
+            }
+        }
+        function filterField(obj,e) {
+            var _value = obj.value;
+            var _key = (e == null) ? e.which : e.keyCode;
+            if (_key == 0x0d && _value) {
+                document.frmLogin.butLogin.click();
+            }
+        }
+    </script>
+</head>
+<body>
+
+
+    <style type="text/css" charset="utf-8">
+#dIEVersion { position:fixed; top:0; left:0; z-index:100; text-align:center; width:100%; padding:5px 0; background:#FF3; color:#000; font-weight:bold; _position:absolute; _top:expression(documentElement.scrollTop+0) }
+	#dIEVersion a { color:#F00; font-size:13px }
+		#dIEVersion a:hover { text-decoration:underline }
+</style>
+<script type="text/javascript">
+    
+    function checkIEVersion() {
+        var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
+        reIE.test(navigator.userAgent);
+        var fIEVersion = parseFloat(RegExp["$1"]);
+        if (fIEVersion == 6.0 || fIEVersion == 7.0) {
+            document.getElementById('dIEVersion').style.display = 'block';
+        }
+    }
+</script>
+<div id="dIEVersion" style="display:none">
+    建议使用Internet Explorer 8 以提升浏览速度拥有更佳的使用体验。<br>
+    <a target="_blank" href="http://windows.microsoft.com/zh-CN/internet-explorer/downloads/ie-8/">
+        &lt;点选下载&gt;
+    </a>
+</div>
+    <link rel="stylesheet" type="text/css" href="/PortalUSR/CSS/Login.css">
+<div id="wrapper">
+	<div id="topcontent">
+        <div id="select_container">
+			<ul>
+    			<li onmouseover="this.className=&quot;hover&quot;" onmouseout="this.className=&quot;&quot;">
+                	<span><a href="#" onclick="return false;">简体</a>▼</span>
+                	<ul class="menu_in">
+                        <li><a href="index.jsp?txtDevice=DESKTOP&amp;language=zh_TW">
+                            繁體</a></li>
+                    </ul>
+                </li>
+		    </ul>
+            <span id="lanuage">Language</span>
+		</div>
+	</div>
+    <div id="main">
+        <div id="logo"></div>
+        <div id="login">
+            <form action="/PortalUSR/EPCB1101009.jsp" name="frmLogin" method="POST" onsubmit="return chkForm();">
+                <div id="login_content">
+                    <input type="hidden" name="txtUserScreen">
+                    <input name="txtAccount" type="text" class="Idfocus" maxlength="14" onkeypress="return checkTextInputKeyPress(event, true, true, '-');" onkeyup="filterField(this,event);" onfocus="this.className='Idfocus';" onblur="if(this.value!='') this.className='Idnofocus'; else if(this.value=='') this.className='Id';" tabindex="1">
+                    <input name="txtPassword" type="password" class="Pw" onkeyup="filterField(this,event);" onfocus="this.className='Pwfocus';" onblur="if(this.value!='') this.className='Pwnofocus'; else if(this.value=='') this.className='Pw';" tabindex="2">
+                    <input name="txtCheckCode" type="text" class="Pc" maxlength="4" onkeypress="return checkTextInputKeyPress(event, false, true);" onkeyup="filterField(this,event);" onfocus="this.className='Pcfocus';" onblur="if(this.value!='') this.className='Pcnofocus'; else if(this.value=='') this.className='Pc';" tabindex="3">
+                    <img src="/PortalUSR/rnd.jpg" border="0">
+                    <p><input name="butLogin" class="Login" alt="log me in!" type="button" onclick="if(chkForm()) document.frmLogin.submit();" tabindex="4"></p>
+                    <a class="download" href="http://help.bolyfun.com/FRService/CA/root.cer">证书下载</a><span class="line">|</span>
+                    <a class="help" href="#" onclick="window.open('http://help.bolyfun.com/FRService/FR900008.do','CAGuide','height=768,width=1010,top=0,left=0,toolbar=no,menubar=no,scrollbars=yes,resizable=no,location=no,status=no'); return false;">安装教学</a>
+                </div>
+            </form>
+            <span id="sErrorMsg">
+                
+            </span>
+        </div><!-- end of login-->
+
+        <div id="footercontent">
+        	<a id="aMusr" href="/PortalUSR/index.jsp?txtDevice=MOBILE">进入手机版</a>
+        </div>
+    </div><!-- end of main-->
+</div><!-- end of wrapper-->
+    <script type="text/javascript">checkIEVersion();</script>
+
+
+
+<script type="text/javascript">
+    //focuså¨ç¬¬ä¸åinput
+    $("input[type='text']:first", document.forms[0]).focus();
+
+    
+    eraseCookie("cookietest");
+    createCookie("cookietest","on",1);
+    if(null == readCookie("cookietest")){
+        document.getElementById("sErrorMsg").innerHTML = "请打开Cookie功能!!";
+    }
+    eraseCookie("cookietest");
+</script>
+
+
+</body></html>

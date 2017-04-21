@@ -1,0 +1,501 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+  <link href="/public/page/css/public.css" type="text/css" rel="stylesheet" /> 
+  <link href="/public/page/css/page.css" type="text/css" rel="stylesheet" /> 
+  <script src="/public/page/js/jquery-1.4.2.min.js"></script> 
+  <script src="/public/page/js/user_ajax.js"></script> 
+  <script src="/public/page/js/commom.js"></script> 
+  <!--加载CSS--> 
+  <link href="/public/face/green/css/css.css" type="text/css" rel="stylesheet" /> 
+  <title>向圣云优质空间课堂</title> 
+ </head> 
+ <body> 
+  <!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=908aa74072fce84f0bc8365ee7566ec2"></script>--> 
+  <div id="allmap"></div> 
+  <script>
+/*
+// 百度地图API功能
+	var map = new BMap.Map("allmap");
+	var point = new BMap.Point(116.331398,39.897445);
+	map.centerAndZoom(point,12);
+
+	function myFun(result){
+		var cityName = result.name;
+		if(cityName=="湘西土家族苗族自治州"){
+			cityName="吉首市";
+		}
+		//map.setCenter(cityName);
+		var str=cityName;
+		var newstr=str.substring(0,str.length-1);
+		$("#city").html(newstr);
+
+		$.getScript('http://php.weather.sina.com.cn/iframe/index/w_cl.php?code=js&day=0&city='+newstr+'&dfc=1&charset=utf-8',function(a){
+    var s="",r="",q="";for(s in window.SWther.w){
+    	var d=new Date();
+		var nowtime=d.getHours();
+		var nowdate=d.getFullYear()+"年"+(d.getMonth()+1)+"月"+d.getDate()+"日";
+		//alert(nowdate)
+		var xingqi=d.getDay();
+		switch (xingqi) {
+　　case 0:
+　　today = "星期天";
+break;
+	case 1:
+　　today = "星期一";
+break;
+	case 2:
+　　today = "星期二";
+break;
+	case 3:
+　　today = "星期三";
+break;
+	case 4:
+　　today = "星期四";
+break;
+	case 5:
+　　today = "星期五";
+break;
+	case 6:
+　　today = "星期六";
+break;
+}
+        q=SWther.w[s][0];
+        r={city:s,date:SWther.add.now.split(" ")[0]||"",day_weather:q.s1,night_weather:q.s2,day_temp:q.t1,night_temp:q.t2,fengji:q.p2,day_tianqi:q.f1,night_tianqi:q.f2,day_feng:q.d1,nowtime:nowtime,nowdate:nowdate,today:today},
+        $("#temp").html(r.night_temp+"℃/"+r.day_temp+"℃");
+        $("#date").html(r.nowdate);
+        $("#today").html(r.today);
+        if(r.nowtime>6&&r.nowtime<18){
+        $("#feng").html(r.day_feng+r.fengji+"级");
+        $("#weather").html(r.day_weather);
+    }else{
+    	$("#feng").html(r.day_feng+r.fengji+"级");
+        $("#weather").html(r.day_weather);
+        }
+    }
+});
+
+
+	}
+	var myCity = new BMap.LocalCity();
+	myCity.get(myFun);
+*/
+	
+</script> 
+  <!--透明层--> 
+  <div class="OpraFrom" id="OpraFriends"> 
+   <script>CenterFriendsWindow();</script> 
+   <div class="OpraTitle"> 
+    <h1 id="FriendsH1Name">添加“向圣云”为好友</h1> 
+    <a href="javascript:void(0)" onclick="ViewFrom('no','OpraFriends')">[关闭]</a> 
+   </div> 
+   <form id="FriendFrom" name="FriendFrom" method="post"> 
+    <input type="hidden" name="FriendUser" id="FriendUser" value="1071601" /> 
+    <input type="hidden" name="FriendMy" id="FriendMy" value="" /> 
+    <input type="hidden" name="FriendShow" id="FriendShow" value="" /> 
+    <div class="Opra_forContent" id="LoadMain"> 
+     <div class="OpraSpan"> 
+      <span>验证消息：</span> 
+      <textarea name="FriendContent" id="FriendContent" cols="45" rows="5" class="set_input OpraCont fl"></textarea> 
+     </div> 
+     <div class="OpraSpan" style="padding-bottom:10px;"> 
+      <span>备注姓名：</span> 
+      <input type="text" name="FriendsName" id="FriendsName" class="set_input fl" value="向圣云" /> 
+     </div> 
+     <div class="OpraBottom"> 
+      <span class="pop_button1 fr mr10"><a href="javascript:void(0)" onclick="ViewFrom('no','OpraFriends')">取消</a></span> 
+      <span class="pop_button1 fr mr10"><a href="javascript:void(0)" onclick="CreateFriends()">确定</a></span> 
+     </div> 
+    </div> 
+    <div class="Opra_load" id="LoadImg">
+     <img src="/public/page/images/loading.gif" width="16" height="16" />
+    </div> 
+   </form> 
+  </div> 
+  <div class="OpraDiv" id="OpraBg"></div> 
+  <!--结束透明层--> 
+  <!--引用头部--> 
+  <link href="/public/page/css/public.css" type="text/css" rel="stylesheet" /> 
+  <link href="/public/page/css/page.css" type="text/css" rel="stylesheet" /> 
+  <!--闆嗘垚鎻愮ず--> 
+  <div style="position:relative;float:left;"> 
+   <span class="ShowInfoSpan" id="ShowInfoSpan">抱歉，您未修改任何资料！</span> 
+  </div> 
+  <!--闆嗘垚鎻愮ず--> 
+  <form id="PublicFrom" name="PublicFrom"> 
+   <input type="hidden" name="PublicMyNumber" id="PublicMyNumber" value="" /> 
+  </form> 
+  <div class="head_black_bg fl"> 
+   <div class="head_black_bg fc w1000" style="width:1024px;"> 
+    <div class="top_count fl" style="width:528px;"> 
+     <div class="top_left_span fl"> 
+      <a href="/" style="width:171px; height:42px; float:left;" title="公共主页"><img src="/public/page/images/public_head_logo.png" width="171" height="42" /></a> 
+     </div> 
+     <div class="top_left_span fl pl10"> 
+      <a href="/" title="公共主页">公共主页</a> 
+      <a href="/user//" title="个人主页">个人主页</a> 
+      <a style=" font-weight:bold;" href="/Activity/appraised/ca15377e941a54f9f38309f544f983e5/" title="优秀课件征评">课件大赛</a> 
+      <a href="/bbs/" title="社区论坛">社区论坛</a> 
+     </div> 
+    </div> 
+    <div class="top_menu_you"> 
+     <!--鑿滃崟--> 
+     <div class="top_menu_user"> 
+      <div class="top_menu_user_ico">
+       <a href="/Login/" title="账户登陆" target="_blank"><img alt="账户登陆" id="LitterUserFace" src="/public/page/images/nologin.png" border="0" style="width:16px; height:21px; margin-left:15px; margin-top:5px; " /></a>
+      </div> 
+      <div class="top_menu_user_txt">
+       <a href="/Login/" title="账户登陆" target="_blank">账户登陆</a>
+      </div> 
+     </div> 
+     <div class="retive" style="z-index:5;"> 
+      <!--涓汉璁剧疆妯″瀷--> 
+      <div class="top_menu_dram top_menu_dram0" id="Menu_li_obj0"> 
+       <div class="User_ul"> 
+        <span class="user_ico1"><a href="/user//" title="我的主页"><img src="/public/page/images/teent_ico_01-02.png" width="50" height="50" /></a></span> 
+        <span class="user_txt"><a href="/user//">我的主页</a></span> 
+       </div> 
+       <div class="User_ul"> 
+        <span class="user_ico1"><a href="/user//poto/" title="我的相册"><img src="/public/page/images/teent_ico_20-24.png" width="50" height="50" /></a></span> 
+        <span class="user_txt"><a href="/user//poto/">我的相册</a></span> 
+       </div> 
+       <div class="User_ul"> 
+        <span class="user_ico1"><a href="/user//Collect/" title="我的收藏"><img src="/public/page/images/teent_ico_21.png" width="50" height="50" /></a></span> 
+        <span class="user_txt"><a href="/user//Collect/">我的收藏</a></span> 
+       </div> 
+       <div class="User_ul"> 
+        <span class="user_ico1"><a href="/user//Courseware/0/" title="我的课件"><img src="/public/page/images/teent_ico_07-09.png" width="50" height="50" /></a></span> 
+        <span class="user_txt"><a href="/user//Courseware/0/">我的课件</a></span> 
+       </div> 
+       <div class="User_ul"> 
+        <span class="user_ico1"><a href="/user//write/0/" title="我的日志"><img src="/public/page/images/teent_ico_09.png" width="50" height="50" /></a></span> 
+        <span class="user_txt"><a href="/user//write/0/">我的日志</a></span> 
+       </div> 
+       <div class="User_ul"> 
+        <span class="user_ico1"><a href="/user//set/basic/" title="修改资料"><img src="/public/page/images/teent_ico_03-04.png" width="50" height="50" /></a></span> 
+        <span class="user_txt"><a href="/user//set/basic/">修改资料</a></span> 
+       </div> 
+      </div> 
+      <!--缁撴潫涓汉璁剧疆--> 
+      <div class="top_menu_dram" id="Menu_li_obj1"> 
+       <div class="friends_div" style="width:390px; padding-right:0px; "> 
+        <div class="friends_menu"> 
+         <div class="User_ul"> 
+          <span class="user_ico1"><a href="/user//Friends/1/" title="好友列表"><img src="/public/page/images/friends_ico.png" width="50" height="50" /></a></span> 
+          <span class="user_txt"><a href="/user//Friends/1/">好友列表</a></span> 
+         </div> 
+         <div class="User_ul mt15"> 
+          <span class="user_ico1"><a href="/user//Friends/2/" title="寻找好友"><img src="/public/page/images/friends_list.png" width="50" height="50" /></a></span> 
+          <span class="user_txt"><a href="/user//Friends/2/">寻找好友</a></span> 
+         </div> 
+        </div> 
+        <!--鍙充晶鏈嬪弸鍒楄〃--> 
+        <span class="friens_page" style=" width:304px; margin-top:-10px; padding-left:0px; float:right; height:auto;" id="Friends_Top_list"></span> 
+       </div> 
+      </div> 
+      <div class="top_menu_dram top_menu_dram2" id="Menu_li_obj2"> 
+       <div class="friends_div" style="width:390px; padding-right:0px; "> 
+        <div class="friends_menu"> 
+         <div class="User_ul"> 
+          <span class="user_ico1"><a title="应用中心"><img src="/public/page/images/y_ico.png" width="50" height="50" /></a></span> 
+         </div> 
+        </div> 
+        <!--搴旂敤涓績寰幆--> 
+        <span class="friens_page" style=" width:304px; margin-top:-10px; padding-left:0px; float:right; height:auto;"> 
+         <div class="look"> 
+          <div class="look_face"> 
+           <a href="/Debate/home/" title="教育辩论台" target="_blank"><img src="/public/page/images/do/b.png" /></a> 
+           <div class="look_title">
+            <a href="/Debate/home/" title="教育辩论台" target="_blank">教育辩论台</a>
+           </div> 
+          </div> 
+         </div> 
+         <div class="look"> 
+          <div class="look_face"> 
+           <a href="/Activity/appraised/ca15377e941a54f9f38309f544f983e5/" title="课件大赛" target="_blank"><img src="/public/page/images/do/poto.png" /></a> 
+           <div class="look_title">
+            <a href="/Activity/appraised/ca15377e941a54f9f38309f544f983e5/" title="课件大赛" target="_blank">课件大赛</a>
+           </div> 
+          </div> 
+         </div> 
+         <div class="look"> 
+          <div class="look_face"> 
+           <a href="/Moke/select/" title="幕课课程" target="_blank"><img src="/public/page/images/do/moke.png" /></a> 
+           <div class="look_title">
+            <a href="/Moke/select/" title="幕课课程" target="_blank">幕课课程</a>
+           </div> 
+          </div> 
+         </div> 
+         <div class="look"> 
+          <div class="look_face"> 
+           <a href="/Ku/content/" title="考试题库" target="_blank"><img src="/public/page/images/do/exam.png" /></a> 
+           <div class="look_title">
+            <a href="/Ku/content/" title="考试题库" target="_blank">考试题库</a>
+           </div> 
+          </div> 
+         </div> 
+         <div class="look"> 
+          <div class="look_face"> 
+           <a href="/blog/" title="云博客" target="_blank"><img src="/public/page/images/do/blog.png" /></a> 
+           <div class="look_title">
+            <a href="/blog/" title="云博客 " target="_blank">云博客</a>
+           </div> 
+          </div> 
+         </div> 
+         <div class="look"> 
+          <div class="look_face"> 
+           <a href="/Train/train/all-all-all-1/" title="学习培训" target="_blank"><img src="/public/page/images/do/px.png" /></a> 
+           <div class="look_title">
+            <a href="/Train/train/" title="学习培训" target="_blank">学习培训</a>
+           </div> 
+          </div> 
+         </div> 
+         <div class="look"> 
+          <div class="look_face"> 
+           <a href="/Chat/chat/quan/" title="聊天室" target="_blank"><img src="/public/page/images/do/chatbar.png" /></a> 
+           <div class="look_title">
+            <a href="/Chat/chat/quan/" title="聊天室" target="_blank">聊天室</a>
+           </div> 
+          </div> 
+         </div> </span> 
+       </div> 
+      </div> 
+     </div> 
+     <div class="top_menu_big0" id="Menu_li_Start0" onclick="ViewSet('view','0')" style="display:none;"> 
+      <div class="top_menu_ico"></div> 
+      <span>个人中心</span> 
+     </div> 
+     <div class="top_menu_big1" id="Menu_li_Start1" onclick="ViewSet('view','1')" style="display:none;"> 
+      <div class="top_menu_ico"></div> 
+      <span>好友列表</span> 
+     </div> 
+     <div class="top_menu_big2" id="Menu_li_Start2" onclick="ViewSet('view','2')"> 
+      <div class="top_menu_ico"></div> 
+      <span>应用中心</span> 
+     </div> 
+     <!--缁撴潫--> 
+    </div> 
+   </div> 
+  </div> 
+  <!--引用头部--> 
+  <div class="d_banner_bg"> 
+   <div class="d_tianqi" style="margin-right:100px;"> 
+    <div class="tianqi_riqi">
+     <span id="date" style="font-weight:blod;color:white;font-size:18px;"></span>　
+     <span id="today" style="font-weight:blod;color:white;font-size:18px;"></span>
+    </div> 
+    <div class="tianqi_chengshi">
+     　　　
+     <span id="city" style="font-weight:blod;color:white;font-size:18px;"></span>　
+     <span id="temp" style="font-weight:blod;color:white;font-size:18px;"></span>
+    </div> 
+    <div class="tianqi_tianqi">
+     　　　
+     <span id="weather" style="font-weight:blod;color:white;font-size:18px;"></span>　
+     <span id="feng" style="font-weight:blod;color:white;font-size:18px;"></span>
+    </div> 
+   </div> 
+   <div class="d_banner"> 
+   </div> 
+  </div>  
+  <!--导航--> 
+  <div class="d_daohang"> 
+   <div class="d_daohang_div"> 
+    <div class="d_head"> 
+     <div class="d_head_logo"> 
+      <div class="d_head_edit" id="Vhead">
+       <a href="javascript:void(0)">编辑头像</a>
+      </div> 
+      <a href="javascript:void(0)" title="向圣云优质空间课堂"><img alt="向圣云优质空间课堂" id="UserFace" src="/public/p/577f2e2116e92.jpg" border="0" /></a>
+     </div> 
+     <div class="d_name"> 
+      <h1>向圣云优质空间课堂 <font> </font><img src="/public/images/ico_daitouren.png" /></h1> 
+      <span>在古丈县红石林完小 教 六年级数学&nbsp;&nbsp;2013年10月10日加入</span> 
+     </div> 
+     <div class="d_content">
+       湘西土家族苗族自治州人 
+      <br /> 男 宝瓶座
+      <br /> 
+      <!--暂时未加载更多资料--> 
+      <!--<br/>
+画画、做杂志、做书、做展览。<br/>--> 生活因教育而精彩，教育因生活而厚重。脚踏实地，守望教育。分享我们的教育喜悦，共享我们的教育资源，为了美丽的乡村教育梦，我...
+     </div> 
+    </div> 
+    <!--<div class="d_title">个人中心</div>--> 
+    <div class="d_title_menu"></div> 
+    <div class="d_menu" style="width:auto; padding-right:25px;">
+     <a href="/user/1071601/">TA的主页</a>
+    </div> 
+    <div class="d_menu">
+     <a href="/user/1071601/write/0/">日志</a>
+    </div> 
+    <div class="d_menu">
+     <a href="/user/1071601/poto/">相册</a>
+    </div> 
+    <div class="d_menu">
+     <a href="/user/1071601/Courseware/0/">课件</a>
+    </div> 
+    <div class="d_menu">
+     <a href="/user/1071601/v/0/">视频</a>
+    </div> 
+    <div class="d_menu">
+     <a href="/user/1071601/lesson/0/">教案</a>
+    </div> 
+    <div class="d_menu" style="display:none;">
+     <a href="/user/1071601/Collect/">收藏</a>
+    </div> 
+    <div class="d_menu">
+     <a href="/user/1071601/set/basic/">个人档</a>
+    </div> 
+    <div class="d_menu" style="width:120px; padding-left:10px; font-weight:bold; position:relative; z-index:1;">
+     <img src="/public/images/hot.gif" width="25" height="16" style=" position:absolute; top:0px; left:110px; z-index:1;" />
+     <a href="/Activity/weike/00e425edb4924d8c88b694e307a4e295/" style="position:absolute; z-index:2;" target="_blank" title="微课大赛">微课大赛</a>
+    </div> 
+    <div class="d_focus" style="display:none;"> 
+     <a href="javascript:void(0)" onclick="ViewFrom('view','OpraFriends')">加为好友</a>
+    </div> 
+   </div> 
+  </div> 
+  <!--主面板--> 
+  <form id="LessonFrom" name="LessonFrom" method="post" onsubmit="return AjaxSubmitWrite()"> 
+   <input type="hidden" name="WriteNumber" id="WriteNumber" value="201703271206099232" /> 
+   <div class="d_main"> 
+    <div class="set_title ptitlecolor"> 
+     <span>日志</span> 
+     <a href="/user/1071601/write/0/">返回日志列表</a> 
+     <div class="all_ico"></div> 
+    </div> 
+    <!--相册主框架--> 
+    <div class="set_main"> 
+     <div class="lesson_create_big"> 
+      <div class="Rizhi_i_title">
+        新型毒品及其危害
+      </div> 
+     </div> 
+     <div class="lesson_i_body" style="border:0px; padding-top:0px;  padding-bottom:0px;"> 
+      <!--循环数据--> 
+      <div class="lesson_i_line" style="padding-top:0px; margin-top:0px; padding-bottom:0px;"> 
+       <div class="Rizhi_i_content" style="line-height:280%; color:#000; font-size:14px;"> 
+        <p class="MsoNormal" style="text-indent:108.6500pt;mso-char-indent-count:4.9400;_line-height:150%;"><b><span style="font-family:宋体;_line-height:150%;font-size:22pt;">新型毒品及其危害</span></b><b><span style="font-family:宋体;_line-height:150%;font-size:22pt;">
+           <o:p></o:p></span></b></p> 
+        <p class="MsoNormal" style="_line-height:150%;"><span style="font-family:宋体;_line-height:150%;font-size:14pt;">&nbsp;</span></p> 
+        <p class="MsoNormal" style="text-indent:24.0000pt;mso-char-indent-count:1.5000;_line-height:150%;"><b><span style="font-family:宋体;_line-height:150%;font-size:16pt;">一、什么叫新型毒品？</span></b><b><span class="16" style="font-family:宋体;_line-height:150%;font-size:16pt;">&nbsp;</span></b><span style="font-family:宋体;_line-height:150%;font-size:14pt;"><br /> </span><span style="font-family:宋体;_line-height:150%;font-size:14pt;">&nbsp;</span><span style="font-family:宋体;_line-height:150%;font-size:14pt;">&nbsp;&nbsp;</span><span style="font-family:宋体;_line-height:150%;font-size:14pt;"><span style="font-family:宋体;">所谓新型毒品是相对海洛因、大麻和可卡因等传统毒品而言，主要指人工合成的精神类毒品，是由国际禁毒公约和我国法律法规所规定管制的、直接作用于人的中枢神经系统，使人兴奋或抑制，连续使用能使人产生依赖性的一类药品（毒品）。鸦片、海洛因等麻醉药品主要是罂粟等毒品原植物再加工得到的的半合成类毒品，而新型毒品大部分是通过人工合成的化学合成类毒品，所以新型毒品又名</span>“实验室毒品”、“化学合成毒品”。</span><span style="font-family:宋体;_line-height:150%;font-size:14pt;">
+          <o:p></o:p></span></p> 
+        <p class="MsoNormal"><b><span style="font-family:宋体;font-size:15pt;">二、新型毒品的主要种类</span></b><b><span class="16" style="font-family:宋体;font-size:15pt;">&nbsp;</span></b><span style="font-family:宋体;font-size:14pt;"><br /> </span><span style="font-family:宋体;font-size:14pt;">&nbsp;&nbsp;根据新型毒品的毒理学性质，可以将其分为四类：第一类以中枢兴奋作用为主，代表物质是包括甲基苯丙胺（我国俗成冰毒）在内的苯丙胺类兴奋剂；第二类是致幻剂，代表物质有麦角酰二乙胺（LSD）、麦司卡林和分离性麻醉剂（苯环已哌啶和氯胺酮）；第三类兼具兴奋和致幻作用，代表物质是亚甲二氧基甲基苯丙胺（MDMA，我国俗成摇头丸）；第四类是一些以中枢抑制作用为主的物质，包括三唑仑、氟硝安定和γ-羟基丁丙酯。</span><span class="16" style="font-family:宋体;font-size:14pt;">&nbsp;</span><span style="font-family:宋体;font-size:14pt;"><br /> </span><span style="font-family:宋体;font-size:14pt;">&nbsp;&nbsp;——冰毒 即甲基苯丙胺,外观为纯白结晶体,吸食后对人的中枢神经系统产生极强的刺激作用，能大量消耗人的体力和降低免疫功能，严重损害心脏、大脑组织甚至导致死亡，吸食成瘾者还会造成精神障碍，表现出妄想、好斗等。冰毒是联合国禁毒公约和我国政府规定依法管制的一类精神药物。</span><span class="16" style="font-family:宋体;font-size:14pt;">&nbsp;</span><span style="font-family:宋体;font-size:14pt;"><br /> </span><span style="font-family:宋体;font-size:14pt;">&nbsp;&nbsp;——摇头丸 学名是3,4-亚甲二氧甲基苯丙胺（MDMA），属于具有明显致幻作用的苯丙胺类中枢兴奋剂。由于滥用者服用后可出现长时间难以控制随音乐剧烈摆动头部的现象，故称为“摇头丸”。外观多呈片剂，形状多种多样，五颜六色，用药者常表现为时间概念和认知混乱，行为失控，异常活跃，常常引发集体淫乱、自伤与伤人，并可诱发精神分裂症及急性心脑疾病。</span><span class="16" style="font-family:宋体;font-size:14pt;">&nbsp;</span><span style="font-family:宋体;font-size:14pt;"><br /> </span><span style="font-family:宋体;font-size:14pt;">&nbsp;</span><span style="font-family:宋体;font-size:14pt;">&nbsp;&nbsp;</span><span style="font-family:宋体;font-size:14pt;">——K粉 学名氯胺酮，属于静脉全麻药，临床上用作手术麻醉剂或麻醉诱导剂，具有一定精神依赖性潜力。滥用70-200毫克便会产生幻觉，一般人只要足量接触一次即可上瘾。K粉外观上是白色结晶性粉末，无臭，易溶于水。滥用氯胺酮会导致十分严重的后遗症，轻则神志不清，重则可以使中枢神经麻痹，继而丧命。另外还让人产生性冲动，导致许多少女失身，所以又称之为“迷奸粉”或“强奸粉”。</span><span class="16" style="font-family:宋体;font-size:14pt;">&nbsp;</span><span style="font-family:宋体;font-size:14pt;"><br /> </span><span style="font-family:宋体;font-size:14pt;">&nbsp;&nbsp;——三唑仑 又名三唑氯安定、海乐神，是一种新型的苯二氮卓类药物，具有催眠、镇静、抗焦虑和松肌作用，长期服用极易导致药物依赖。因这种药品的催眠、麻醉效果比普通安定强45-100倍，口服后可以迅速使人昏迷晕倒，故俗称迷药、蒙汗药、迷魂药。三唑仑无色无味，可以伴随酒精类共同服用，也可溶于水及各种饮料中。近年来，常被一些犯罪分子用来实施抢劫、强奸等不法活动。此外，三唑仑还使人出现狂躁、好斗甚至人性改变等情况。</span><span class="16" style="font-family:宋体;font-size:14pt;">&nbsp;</span><span style="font-family:宋体;font-size:14pt;"><br /> </span><span style="font-family:宋体;font-size:14pt;">&nbsp;&nbsp;</span><span style="font-family:宋体;font-size:14pt;">&nbsp;</span><b><span style="font-family:宋体;font-size:15pt;">三、新型毒品的危害</span></b><b><span class="16" style="font-family:宋体;font-size:15pt;">&nbsp;</span></b><b><span style="font-family:宋体;font-size:15pt;"><br /> </span></b><span style="font-family:宋体;font-size:14pt;">&nbsp;&nbsp;吸食新型毒品会严重损害人体组织器官功能，形成难以逆转的病变。大量的临床资料表明，冰毒和摇头丸等可以对大脑神经细胞产生直接的损害作用，导致神经细胞变性、坏死，出现急慢性精神障碍。吸毒者还可以出现被害妄想、追踪妄想、嫉妒妄想以及幻听等病理性精神症状，在这些病理性精神症状的作用下吸毒者极易实施暴力行为。研究表明，82%的苯丙胺滥用者即使停止滥用8年至12年，仍然有一些精神病症状，乃至精神分裂，一遇刺激便会发作。吸食苯丙胺类型毒品还可以产生其他损害，如，可以导致吸毒者全身骨骼肌痉挛、肌溶解，出现恶性高热、死亡或对肾功能造成严重损害等。</span><span class="16" style="font-family:宋体;font-size:14pt;">&nbsp;</span><span style="font-family:宋体;font-size:14pt;"><br /> </span><span style="font-family:宋体;font-size:14pt;">&nbsp;&nbsp;此外，吸毒耗费大量钱财，导致家庭破裂，破坏社会安定，影响经济发展，毒化社会风气，对整个社会的文明进程构成威胁。</span><span class="16" style="font-family:宋体;font-size:14pt;">&nbsp;</span></p>
+       </div> 
+      </div> 
+      <!--结束循环数据--> 
+     </div> 
+     <!--评论区域--> 
+     <div class="Lesson_show_body" style="padding:0px; padding-left:15px;">    
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+      <link href="/public/page/css/public.css" type="text/css" rel="stylesheet" /> 
+      <link href="/public/page/css/page.css" type="text/css" rel="stylesheet" /> 
+      <script src="/public/page/js/jquery-1.4.2.min.js"></script> 
+      <script language="javascript" src="/public/My97DatePicker/WdatePicker.js"></script> 
+      <script language="javascript" src="/public/js/jsAddress.js"></script> 
+      <script language="javascript" src="/public/page/js/user_ajax.js"></script> 
+      <script language="javascript" src="/public/page/js/pinglun.js"></script> 
+      <script type="text/javascript" charset="utf-8" src="/public/kedit/face_kindeditor.js"></script> 
+      <script type="text/javascript">
+		KE.show({
+			id : 'PinglunContent',
+			imageUploadJson : '../../upload_json.php',
+			fileManagerJson : '../../file_manager_json.php',
+			allowFileManager : true,
+			afterCreate : function(id) {
+				KE.event.ctrl(document, 13, function() {
+					KE.util.setData(id);
+					document.forms['form1'].submit();
+				});
+				KE.event.ctrl(KE.g[id].iframeDoc, 13, function() {
+					KE.util.setData(id);
+					document.forms['form1'].submit();
+				});
+			}
+		});
+</script> 
+      <!--默认模板CSS--> 
+      <link href="/public/face/green/css/css.css" type="text/css" rel="stylesheet" /> 
+      <title>向圣云优质空间课堂</title>    
+      <!--服务器端提供参数--> 
+      <input type="hidden" name="PingNumber" id="PingNumber" value="201703271206099232" /> 
+      <input type="hidden" name="PingNowUser" id="PingNowUser" value="" /> 
+      <input type="hidden" name="PingInfoUser" id="PingInfoUser" value="1071601" /> 
+      <input type="hidden" name="PingDataDate" id="PingDataDate" value="" /> 
+      <!--Ajax端提供的数据--> 
+      <input type="hidden" name="PingNowPage" id="PingNowPage" value="0" /> 
+      <input type="hidden" name="PingNowState" id="PingNowState" value="no" /> 
+      <input type="hidden" name="PingNowSum" id="PingNowSum" value="0" /> 
+      <div style="padding:10px 0px 10px 0px;padding-top:40px; width:920px; height:auto; overflow:hidden; margin:0px auto;  background-color:#FFF;"> 
+       <!--最近访客--> 
+       <div class="ask_look"> 
+        <div class="ask_look_title">
+         最近访客
+        </div> 
+        <span class="ask_look_ul" id="LookContent"></span> 
+        <div class="AjaxPingLunLoad" id="AjaxLookLoad">
+         <img src="/public/images/mload.gif" width="32" height="32" />
+        </div> 
+        <script>AjaxShowLook();</script> 
+       </div> 
+       <!--评论内容--> 
+       <div class="pl_content"> 
+        <div class="pl_title"> 
+         <span class="pl_title_h1" id="PinglunSumSPan">评论(0)</span> 
+        </div> 
+        <!--主题内容显示--> 
+        <span class="pl_AjaxSpan" id="pl_AjaxSpan"> </span> 
+        <div class="AjaxPingLunOneFloat" id="AjaxPingLunOneFloat">
+         还没有人发表评论，沙发很寂寞！
+        </div> 
+        <div class="AjaxPingLunLoad" id="AjaxPingLunLoad">
+         <img src="/public/images/mload.gif" width="32" height="32" />
+        </div> 
+        <script>ShowAllPinglun();</script> 
+        <!--标准评论发布中心--> 
+        <div class="pinglun_fabu_big"> 
+         <h1>发表评论</h1> 
+         <div class="ping_left"> 
+          <div class="face">
+           <img src="/public/upload/userface/100.jpg" width="105" height="105" />
+          </div> 
+         </div> 
+         <div class="ping_right"> 
+          <div class="pinglun_Face_content" id="PinglunFocus"> 
+           <textarea name="PinglunContent" id="PinglunContent" cols="45" rows="5" class="pinglun_Face_content_v"></textarea>
+          </div> 
+          <div class="pinglun_tijiao"> 
+           <input type="button" onclick="window.location='/user/1071601/write/0/'" class="button_black fr" value="返回" /> 
+           <input type="button" class="button_blue mr10 fr" value="评论" onclick="PinglunSubmitContent('您可以在这里发表评论')" /> 
+          </div> 
+         </div> 
+        </div> 
+        <!--结束主题内容--> 
+        <script language="javascript" src="/public/page/js/pinglun.js"></script> 
+       </div> 
+      </div>    
+     </div> 
+     <!--结束评论区域--> 
+    </div> 
+   </div>
+  </form>  
+  <!--引用底部--> 
+  <div class="footer_txt w1000 pd20 fc clear" style="height:30px; "> 
+   <div class="footer_txt_copy fl">
+    (C)2017 edu3w.com 版权所有 
+    <!--湘ICP13002922号备--> 
+    <a href="/about/about.html" target="_blank">湖南三维教育科技有限公司</a>
+   </div> 
+   <div class="footer_txt_about fr">
+    <a href="/About/about/">关于我们</a> | 
+    <a href="/About/contact/">联系我们</a> | 
+    <a href="/About/news/">新闻动态</a> | 
+    <a href="/About/help/">帮助中心</a> 
+    <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5939950'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D5939950%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script>
+   </div> 
+  </div> 
+  <!--引用底部-->  
+ </body>
+</html>

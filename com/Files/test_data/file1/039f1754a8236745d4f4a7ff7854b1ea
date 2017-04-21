@@ -1,0 +1,75 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+    <meta name="viewport" content="width=320, minimum-scale=1.0, maximum-scale=1.0">
+    <link href="../../css/default.css" rel="stylesheet">
+    <link href="Css/Index.css" rel="stylesheet">
+    <script src="../../js/jquery-1.8.3.min.js"></script>
+    <script src="../../js/base.min.js"></script><script type="text/javascript" id="jsonp615js" defer="" src="http://cdn.weather.hao.360.cn/sed_api_weather_info.php?code=101120101"></script><script type="text/javascript" id="jsonp615fuctiondefault" defer="">function callback(data){Weather.WeatherSuccess(data);}</script></head><body onload="load()"><div id="loadDiv"><div><img src="http://service.17186.cn/active/images/loading.gif"></div></div>
+    <script src="Js/jquery.tmpl.min.js"></script>
+    <script src="../../js/jquery.cookie.js"></script>
+    <script src="Js/Index.js"></script>
+    <title></title>
+
+
+    <div class="div-content">
+        <header style="height: 40px; background-color: #EEF3FA;">
+            <!--<img src="" />-->
+            <span style="margin-left: 5%; font-size: 19px;"></span>
+            <div data-type="back" class="weather">
+                <span id="weatherdiv">济南今日天气：&nbsp;晴<br>20℃~10℃</span>
+            </div>
+        </header>
+        <br>
+        <br>
+        <section>
+            <div class="div-font" id="data" style="padding-left: 15%"><tr id="628" style="height: 30px;">         <td>             <a onclick="RecordPvuv('盈利分红新型诈骗需要警惕', 'http://allook.cn/?nuERje')">盈利分红新型诈骗需要警惕</a>         </td>     </tr><tr id="629" style="height: 30px;">         <td>             <a onclick="RecordPvuv('济南添高速大东环年底开建', 'http://allook.cn/?EbaAb2')">济南添高速大东环年底开建</a>         </td>     </tr><tr id="630" style="height: 30px;">         <td>             <a onclick="RecordPvuv('睡眠质量是健康重要的信号', 'http://allook.cn/?uErmIz')">睡眠质量是健康重要的信号</a>         </td>     </tr><tr id="631" style="height: 30px;">         <td>             <a onclick="RecordPvuv('厨余垃圾当天必须扔掉处理', 'http://allook.cn/?jyeiqy')">厨余垃圾当天必须扔掉处理</a>         </td>     </tr><tr id="632" style="height: 30px;">         <td>             <a onclick="RecordPvuv('银行卫生间为啥不对外开放', 'http://allook.cn/?nauUZr')">银行卫生间为啥不对外开放</a>         </td>     </tr><tr id="633" style="height: 30px;">         <td>             <a onclick="RecordPvuv('苹果产品优惠购，分期付款无费用', 'http://dxb.51pinzhi.cn/imoral_plus/home/march#')">苹果产品优惠购，分期付款无费用</a>         </td>     </tr></div>
+            <!--温馨提示-->
+            <div class="div-rule">
+                <br>
+                <br>
+                <div class="div-title">
+                    <p style="font-size: 15px;">以上信息由新华社山东分社、山东手机台提供</p>
+                    <p style="font-size: 15px;">本条信息接收免费，流量费正常收取</p>
+                </div>
+            </div>
+        </section>
+        <footer>
+        </footer>
+        <br>
+        <br>
+    </div>
+
+
+<script id="listdata" type="text/x-jquery-tmpl">
+    <tr id="${id}" style="height: 30px;">
+        <td>
+            <a onclick="RecordPvuv('${name}', '${link}')">{{html name}}</a>
+        </td>
+    </tr>
+</script>
+
+<script type="text/javascript">
+            var page = GetParameter("page");
+
+            $.ajax({
+                type: "post",
+                url: "Api/ManageHandler.ashx",
+                data: {
+                    'action': 'managelist',
+                    'page': page
+                },
+                success: function(result) {
+                    if (result=="") {
+                        window.location.href = window.location.href;
+                    }else{
+                        var data = eval("(" + result + ")");
+                        if (data.result == 'success') {
+                            $("#data").html("");
+                            $("#listdata").tmpl(data.data).appendTo('#data');
+                        }
+                    }
+                }
+            });
+</script>
+
+</body></html>

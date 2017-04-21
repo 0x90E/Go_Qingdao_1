@@ -1,0 +1,321 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <link rel="icon" type="image/png" href="images/icon.png">
+    <title>课程详情</title>
+    <link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css">
+    <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+	<script src="js/config.js"></script>
+    <script>
+        var page_offset = 1;
+        var page_size = 10;
+        var getSize = 0;
+        var isEmpty = false;
+        var classId = getUrlParam("course_id");
+		var login_name = getUrlParam("login_name");
+        var Terminal;
+        $(document).ready(function(){
+            getDetail();
+            getComments();
+            Terminal = {
+                // 辨别移动终端类型
+                platform : function(){
+                    var u = navigator.userAgent, app = navigator.appVersion;
+                    return {
+                        // android终端或者uc浏览器
+                        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1,
+                        // 是否为iPhone或者QQHD浏览器
+                        iPhone: u.indexOf('iPhone') > -1 ,
+                        // 是否iPad
+                        iPad: u.indexOf('iPad') > -1,
+                        // 是否是通过微信的扫一扫打开的
+                        weChat: u.indexOf('MicroMessenger') > -1
+
+                    };
+                }(),
+                // 辨别移动终端的语言：zh-cn、en-us、ko-kr、ja-jp...
+                // language : (navigator.browserLanguage || navigator.language).toLowerCase()
+            }
+            //下拉加载更多
+            $(window).scroll(function(){
+                var scrollTop = $(this).scrollTop();
+                var scrollHeight = $(document).height();
+                var windowHeight = $(this).height();
+                if(scrollTop + windowHeight == scrollHeight && getSize == page_size){
+                    page_offset ++ ;
+                    getComments();
+                }
+            });
+        });
+
+        //根据课程Id获取课程详情
+        function getDetail(){
+            $.ajax({
+                type: "GET",
+                url: url_course_info,
+                data:{course_id:classId,login_name:login_name},
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                dataType: "json",
+                success: function(data){
+                        if(data && data.course){
+                            if(data.course.video || data.course.image_url){
+                                $("#vedio_model").show();
+                                if(data.course.video){
+                                    $("#vedio_model").attr("src",res_url+data.course.video);
+                                }
+                                if(data.course.image_url){
+                                    $("#vedio_model").attr("poster",res_url+data.course.image_url);
+                                }
+
+                            }else{
+                                $("#vedio_model").hide();
+                            }
+                            $("video").not(".comment-photo").error(function(){
+                                $(this).attr("poster","images/default_null.png");
+                            });
+                            if(data.course.name){
+                                $(".title").html(data.course.name);
+                            }
+                            var tagsHtml = "";
+                            tagsHtml += '<span class="glyphicon glyphicon-tags"></span>';
+                            if(data.course.tags){
+                                var temp = data.course.tags;
+                                var tags = temp.split("|");
+                                $.each(tags, function(i, item) {
+                                    tagsHtml +=' <span>'+item+'</span>';
+                                });
+                            }
+                            $(".tag").html(tagsHtml);
+                            if(data.course.desc){
+                                var content = data.course.desc ;
+                                if(content.length > 75){
+                                    var temp =  content.substr(0,75).concat("...");
+                                    console.log(temp);
+                                    $("#content").html(temp);
+                                    $('.open-more').show();
+
+                                }else{
+                                    $("#content").html(content);
+                                    $('.open-more').hide();
+                                }
+                                $('.open-more').click(function(){
+                                    $("#content").html(content);
+                                    $('.open-more').hide();
+                                });
+                            }
+//                            var url = location.href +"&share=1";
+//                            if(Terminal.platform.android){
+//                                javascript:android.setShare(classId,data.course.is_favor,data.course.has_voted,data.course.votes,"融学圈子",data.course.content,url,res_url+data.course.image_url);
+//                            }else if(Terminal.platform.iPhone || Terminal.platform.iPad){
+//                                setShare(classId,data.course.is_favor,data.course.has_voted,data.course.votes,"融学圈子",data.course.content,url,res_url+data.course.image_url);
+//                            }
+                        }
+
+                }
+            });
+        }
+
+        function getComments(){
+            $.ajax({
+                type: "GET",
+                url:url_comments,
+                data:{business_id:classId,page_offset:page_offset,page_size:page_size,type:"course",login_name :login_name},
+                dataType: "json",
+                success: function(data){
+                    //判断是否继续加载下页
+                    $("#postCount").html("0条");
+                    if(data.comment && data.comment.list){
+                        getSize = data.comment.list.length;
+                        var tempHtml ="";
+                        $.each(data.comment.list,function(i,item){
+                            tempHtml+='<div class="comment-item">';
+                            tempHtml+='<div class="comment-left"><img src="'+item.author.avatar_url+'" class="comment-photo"></div>';
+                            tempHtml+='<div class="comment-right">';
+                            tempHtml+='<div class="comment-main">';
+                            tempHtml+='<div class="comment-user">'+item.author.name+'</div>';
+                            tempHtml+='<div class="comment-date">'+item.create_time+'</div>';
+                            tempHtml+='</div>';
+                            if(item.author.login_name == login_name){
+                                tempHtml+='<div class="comment-detail">'+item.content+'</div>';
+                                tempHtml+='<div class="comment-delete"><img src="images/finance_help_delete_my.png" onclick="deleteComment(\''+item.id+'\');"></div>';
+                            }else{
+                                tempHtml+='<div class="comment-info">'+item.content+'</div>';
+                            }
+                            tempHtml+='</div>';
+                            tempHtml+='</div>';
+
+                        })
+                        $(".comment-list").append(tempHtml);
+                        if(data.comment.count){
+                            $("#postCount").html(data.comment.count+"条");
+                        }
+                        $(".comment-photo").error(function(){
+                            $(this).attr("src","images/user_default_avatar.png");
+                        });
+                    }
+                    if(isEmpty){
+                        var t = $(".comment-list").offset().top;
+                        $(window).scrollTop(t);
+                    }
+                }
+            });
+        }
+
+        //删除评论
+        function deleteComment(comment_id){
+            $.ajax({
+                type: "POST",
+                url:url_delete_comments,
+                data:{login_name:login_name,comment_id:comment_id,type:"course"},
+                dataType: "json",
+                success: function(data){
+                    if(data.status == 0){
+                        $(".comment-list").empty();
+                        isEmpty = true;
+                        getComments();
+                    }
+                }
+            });
+
+        }
+
+        function refreshComments(){
+            page_offset = 1;
+            $(".comment-list").empty();
+            isEmpty = true;
+            getComments();
+
+        }
+    </script>
+    <style>
+        @media (min-width: 640px) {
+            body{
+                width: 640px;
+                box-shadow: 0 1px 5px #a6a6a4;
+                margin: 0 auto;
+                padding: 15px;
+            }
+        }
+        body{
+            padding: 0;
+            font-family: "黑体";
+        }
+        .class_content{
+            margin: 0 15px;
+        }
+        .title{
+            font-size: 20px;
+            margin: 10px 0 5px;
+        }
+        .tag{
+            font-size:14px;
+            color: #999;
+        }
+        .tag span{
+            margin: 5px;
+        }
+        .line{
+            background: #d9d9d9;
+            width: 100%;
+            height: 1px;
+            margin: 5px 0;
+        }
+        .desc{
+            font-size: 16px;
+        }
+        .open-more{
+            text-align: center;
+            cursor: pointer;
+            display: none;
+            color: #999;
+            font-size: 15px;
+        }
+        .comment-count{
+            margin: 15px 0;
+            font-size: 16px;
+        }
+        .comment-item{
+            width: 100%;
+            float: left;
+            padding: 15px 0;
+            border-bottom: 1px #cfcfcf solid;
+        }
+        .comment-left{
+            float: left;
+            width: 10%;
+        }
+        .comment-right{
+            float: left;
+            width: 90%;
+            padding-left: 5px;
+        }
+        .comment-photo{
+            width: 30px;
+            height: 30px;
+            border-radius: 15px;
+        }
+        .comment-main{
+            float: left;
+            width: 100%;
+        }
+        .comment-user{
+            float: left;
+        }
+        .comment-date{
+            float: right;
+            color: #999;
+        }
+        .comment-detail{
+            float: left;
+            width: 85%;
+            margin-top: 10px;
+        }
+
+        .comment-delete{
+            float: left;
+            width: 15%;
+            margin-top: 10px;
+        }
+        .comment-delete img{
+            width: 16px;
+            height: 16px;
+            float: right;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+        .comment-list{
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body style="zoom: 1; ">
+    <div class="class_content">
+        <div class="title"></div>
+        <div class="tag"></div>
+        <div class="line"></div><video src="#" controls="controls" id="vedio_model" style="display: none;width: 100%;">您的浏览器不支持 video 标签。</video></div>
+        <div class="desc">
+            <p id="content" style=" text-indent: 2em;"></p>
+            <div class="open-more">查看更多</div>
+        </div>
+    
+    <div class="line"></div>
+    <div class="class_content">
+        <div class="comment-count">评论(<span id="postCount">0</span>)</div>
+        <div class="comment-list">
+        </div>
+    </div>
+
+    <div class="download-container" style="display: none; clear: both;">
+        <div class="download clearfix">
+            <a href="http://download.chinahrt.com">
+                <img src="images/logo-download.png" alt="" width="180"></a>
+            <a class="single-download" href="http://download.chinahrt.com">立即下载</a>
+        </div>
+        <div>
+        </div>
+    </div>
+    <iframe id="app_frame" src="" style="display:none;"></iframe>
+
+</body></html>

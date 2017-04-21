@@ -1,0 +1,142 @@
+<html><head></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">var RainbowAppHelper={
+    popBox:{},
+    userScreen:{},
+    CHBZ_outerFrame:function(){
+    	RainbowAppHelper.popBox.outBox=document.createElement("div");//弹出外框
+	    RainbowAppHelper.popBox.outBox.className="CHBZ-out-border";
+	    RainbowAppHelper.popBox.outBox.innerHTML="&lt;div class=\"CHBZ-header\"&gt;&lt;a href=\"javascript:void(0)\" class=\"CHBZ-pop-close-btn\" title=\"关闭\" id=\"CHBZ-close-btn\"&gt;关闭&lt;/a&gt;&lt;span class=\"CHBZ-pop-title\"&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=\"CHBZ-middle\"&gt;&lt;div class=\"CHBZ-middle-inner\" id=\"CHBZ-content-box\"&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=\"CHBZ-footer\"&gt;&lt;/div&gt;&lt;iframe class=\"bkgmask\"&gt;&lt;/iframe&gt;";
+	    document.body.appendChild(RainbowAppHelper.popBox.outBox);
+	    RainbowAppHelper.popBox.closeBtn=document.getElementById("CHBZ-close-btn");//关闭按钮
+	    RainbowAppHelper.popBox.contentBox=document.getElementById("CHBZ-content-box");//内容区域
+    },
+    pop_mask:function(){
+        RainbowAppHelper.popBox.mask=document.createElement("div");
+	    RainbowAppHelper.popBox.clearElement=document.createElement("div");
+	    RainbowAppHelper.popBox.mask.className="CHBZ-pop-mask";
+	    RainbowAppHelper.popBox.clearElement.className="CHBZ-clear-box";
+	    document.body.appendChild(RainbowAppHelper.popBox.clearElement);//给body添加一个清除margin溢出的元素
+	    RainbowAppHelper.getScreen_size();
+	    RainbowAppHelper.popBox.mask.style.height=RainbowAppHelper.userScreen.height+"px";//获取当前屏幕的高度
+	    document.body.appendChild(RainbowAppHelper.popBox.mask);//添加mask
+    },
+    getScreen_size:function () {//获得屏幕当前尺寸的方法
+        if (window.navigator.userAgent.indexOf("Chrome")!=-1){
+            RainbowAppHelper.userScreen.height=(document.documentElement.clientHeight&gt;=document.body.scrollHeight)?document.documentElement.clientHeight:document.body.scrollHeight;
+        }else{
+            RainbowAppHelper.userScreen.height=(document.documentElement.clientHeight&gt;=document.documentElement.scrollHeight)?document.documentElement.clientHeight:document.documentElement.scrollHeight;
+        }
+    },
+    Close_outFrame:function () {//关闭的方法
+        try{
+                var frames=document.getElementById("ifmRainbowApp");
+                if(frames!=null)                
+                {
+                    RainbowAppHelper.msg.send(frames,'queryclose');
+                    return;
+                }
+            }catch(e){            
+            }    
+       RainbowAppHelper.Close();
+    },
+    Close:function () {
+        try{
+            document.body.removeChild(RainbowAppHelper.popBox.outBox);
+	        document.body.removeChild(RainbowAppHelper.popBox.mask);
+	        document.body.removeChild(RainbowAppHelper.popBox.clearElement);
+	        document.getElementById("sdoquestion").value = "";
+		    document.getElementById("sdoquestion").focus();	
+	    }catch(e){
+	    }
+    },
+    ScreenResize:function () {//屏幕resize方法
+        if(RainbowAppHelper.popBox.mask){
+	      RainbowAppHelper.popBox.mask.style.display="none";
+	      RainbowAppHelper.getScreen_size();
+	      RainbowAppHelper.popBox.mask.style.height=RainbowAppHelper.userScreen.height+"px";
+	      RainbowAppHelper.popBox.mask.style.display="block";
+	    }
+	    setTimeout(RainbowAppHelper.ScreenResize,100);
+    },
+    Y_position:function () {//Y轴定位方法
+        if(RainbowAppHelper.popBox.outBox){
+        var boxTop=0;
+		    if(document.documentElement.clientHeight&gt;495){
+		        
+			    if(document.documentElement.scrollTop!=0){
+	                boxTop=Math.round((document.documentElement.clientHeight-RainbowAppHelper.popBox.outBox.offsetHeight)*.5)+document.documentElement.scrollTop;
+			    }	
+			    else{
+				    boxTop=Math.round((document.documentElement.clientHeight-RainbowAppHelper.popBox.outBox.offsetHeight)*.5)+document.body.scrollTop;
+			    }
+		    }
+		    if(boxTop&lt;50)
+		     boxTop=50;
+		    RainbowAppHelper.popBox.outBox.style.top=boxTop+"px";
+	    }
+	    setTimeout(RainbowAppHelper.Y_position,100);
+    },
+    popupCHBZ:function (q,url) {//弹出动作
+        RainbowAppHelper.pop_mask();
+	    RainbowAppHelper.CHBZ_outerFrame();
+	    //关闭按钮动作
+	    RainbowAppHelper.popBox.closeBtn.onclick=function(){
+	          RainbowAppHelper.Close_outFrame();	        
+	    };
+	    //弹出框内容
+	    RainbowAppHelper.popBox.contentBox.innerHTML=RainbowAppHelper.Template(q,url);
+    },
+    Template:function (q,urlbase) {//内容函数
+        var url = urlbase + encodeURIComponent(q);
+	    RainbowAppHelper.getScreen_size();
+	    var ppheight=RainbowAppHelper.userScreen.height+"px";
+	    return "&lt;iframe src =\""+url+"\" frameborder=\"0\" marginheight=\"0\" marginwidth=\"0\" frameborder=\"0\" scrolling=\"no\" id=\"ifmRainbowApp\" name=\"ifm\" height=\"455px\" width=\"100%\"&gt;&lt;/iframe&gt; ";
+    },
+    SetDomain:function () {
+        try{
+            document.domain="sdo.com";
+        }catch(e){            
+        }        
+    },
+    ForbidSplash:function () {
+       var border = document.body.style.border ; 
+       document.body.style.border = border == 'solid 1px #000'  ?  'solid 2px #000' : 'solid 1px #000'; 
+       document.body.offsetWidth; //强制浏览器flush当前的ui update 队列.
+       document.body.style.border = border; //恢复border 原始值.
+    },
+     InitMsg:function(){
+      RainbowAppHelper.msg=new Message();
+      RainbowAppHelper.msg.on(function(data){
+        if(data=='close')
+        {
+         RainbowAppHelper.Close();
+        }
+        });
+    } ,
+    Init:function () {
+        try{
+            RainbowAppHelper.ScreenResize();
+            RainbowAppHelper.Y_position();
+            RainbowAppHelper.InitMsg();
+            //RainbowAppHelper.SetDomain();
+            RainbowAppHelper.ForbidSplash();       
+        }catch(e){        
+        }
+    },
+    KeyDownSearch:function(event,url)
+    {
+      event = window.event ? window.event: event;
+        if (event.keyCode == 13) 
+        {
+            var strQuestion=document.getElementById('sdoquestion').value;
+            if (strQuestion == "") 
+            {
+            event.returnValue=false;
+                return;
+            }
+            RainbowAppHelper.popupCHBZ(strQuestion,url);
+            event.returnValue=false;
+        }
+    }
+      
+};
+RainbowAppHelper.Init();</pre></body></html>

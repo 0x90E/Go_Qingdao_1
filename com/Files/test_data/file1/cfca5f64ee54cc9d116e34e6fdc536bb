@@ -1,0 +1,447 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<meta content="width=device-width, initial-scale=1.0,minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<title>完美自驾路线生成器</title>
+<link rel="stylesheet" type="text/css" href="css/idangerous.swiper.css">
+<link rel="stylesheet" href="css/style.css?v4">
+<link rel="stylesheet" href="css/animation.css">
+<link rel="stylesheet" href="css/setAnimation.css?v4">
+
+<script type="text/javascript" async="" src="http://stm-cdn.cn.miaozhen.com/plugins/heatmap.js" id="plugin_2015_heatmap"></script><script async="" src="https://www.google-analytics.com/analytics.js"></script><script async="" src="http://stm-cdn.cn.miaozhen.com/clicki.min.js"></script><script type="text/javascript" src="javascript/idangerous.swiper.min.js"></script>
+<script type="text/javascript" src="javascript/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="javascript/jpreLoader.min.js"></script>
+<script type="text/javascript" src="javascript/tools.js"></script>
+<script type="text/javascript" src="javascript/main.js?v11"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="javascript/share.js?v1"></script>
+<script>
+	var currentBrowser="normal";
+	currentBrowser=checkBrowser();
+	//alert(currentBrowser);
+	if(currentBrowser=="wx"){
+		//window.location.href="http://campaign.tyreplus.com.cn/wechat/index.html"+GetUrlSearch();
+	}
+
+</script>
+
+<script>
+ (function(a, e, f, g, b, c, d) {a.ClickiTrackerName = b;
+ a[b] = a[b] || function() {(a[b].queue = a[b].queue || []).push(arguments)};
+ a[b].start = +new Date; c = e.createElement(f); d = e.getElementsByTagName(f)[0];
+ c.async = 1; c.src = g; d.parentNode.insertBefore(c, d)
+ })(window, document, 'script', ('https:' == document.location.protocol ? 'https://stm-collect' : 'http://stm-cdn') + '.cn.miaozhen.com/clicki.min.js', 'stm_clicki');
+ stm_clicki('create', 'dc-513', 'auto');
+ stm_clicki('send', 'pageview');
+</script>
+
+<script>
+
+stm_clicki('require','heatmap', ('https:'==document.location.protocol?'https://stm-collect':'http://stm-cdn')+'.cn.miaozhen.com/plugins/heatmap.js');
+stm_clicki('heatmap:on',5);
+</script>
+
+</head>
+
+<body>
+
+<!--<div class="testMsg" style="position:absolute;z-index:99999;left:0px;top:0px; background-color:#000;color:#FFF;padding:10px;">fdfd</div>
+-->
+<div class="rotate" style="width: 0px; height: 0px; -webkit-transform: rotate(0deg) translate3d(0px, 0px, 0px); ">
+<div style="display:none;">
+   <!-- <img src="images/shareImg.jpg" width="450" height="450">-->
+</div>
+
+<div id="screenTips" style="display:none;"></div>
+
+<div id="loadingBox" style="opacity: 0.6243449435824273; ">
+       <div id="loading" percent="{w:50}" style="width: 0px; ">
+            <img src="images/loading.gif" width="18" style="opacity:.5">
+            <div class="percentNum" percent="{w:50,mt:5,f:18}" style="opacity: 0.5; width: 0px; font-size: 0px; margin-top: 0px; ">100%</div>
+       </div>
+</div>
+
+<div id="subLoadingBox" style="display:none;">
+       <div id="loading" percent="{w:100}" style="width: 0px; ">
+            <img src="images/loading.gif" width="18" style="opacity:.5">
+            <div class="percentNum" percent="{w:100,mt:5,f:18}" style="opacity: 0.5; width: 0px; font-size: 0px; margin-top: 0px; ">生成中...</div>
+       </div>
+</div>
+
+
+
+
+<div class="main" style="display: block; width: 0px; height: 0px; " percent="{w:1336,h:648}">
+	<div class="page startPage startPageAnimate" percent="{w:1336,h:648}" style="width: 0px; height: 0px; ">
+    	 <div class="container" style="margin-top: 0px; ">
+            <img src="images/logo.png" width="219" height="241" class="logo" percent="{w:219,h:241,l:559,t:30}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+            <img src="images/slogan.png" width="685" height="110" class="slogan" percent="{w:685,h:110,l:326,t:308}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+            <img src="images/goBtn.png" width="314" height="122" class="goBtn" percent="{w:314,h:122,l:505,t:467}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+        </div>
+    </div>
+    
+    
+  <!-- gamePage begin-->
+    
+    <div class="page gamePage" percent="{w:1336,h:648}" style="display: none; width: 0px; height: 0px; ">
+    	<div class="container" style="margin-top: 0px; ">
+    	<div class="cont" percent="{w:1110,h:489,l:113,t:83}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+	      <img src="images/gamePageFrame.png" width="100%">
+          <div class="title" percent="{f:24,ls:5,l:55,t:26}" style="font-size: 0px; top: 0px; left: 0px; letter-spacing: 0px; ">始 发 地</div>
+          <div class="title" percent="{f:24,ls:5,l:436,t:26}" style="font-size: 0px; top: 0px; left: 0px; letter-spacing: 0px; ">旅 行 主 题</div>
+          <div class="title" percent="{f:24,ls:5,l:128,t:107}" style="font-size: 0px; top: 0px; left: 0px; letter-spacing: 0px; ">计 划 天 数</div>
+          <div class="title" percent="{f:24,ls:5,l:436,t:268}" style="font-size: 0px; top: 0px; left: 0px; letter-spacing: 0px; ">旅 行 人 数</div>
+          
+          <!-- planDay begin-->
+                <div class="swiper-container planDay" percent="{w:280,h:400,l:66,t:84}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+                      <div class="swiper-wrapper " percent="{w:280,h:400}" style="width: 0px; height: 0px; "><div class="swiper-slide swiper-slide-duplicate" percent="{w:280,h:400}" style="width: 0px; height: 0px; "> 
+                                <img src="images/num6.png" width="100%">
+                            </div>            
+                            <div class="swiper-slide" percent="{w:280,h:400}" style="width: 0px; height: 0px; "> 
+                                <img src="images/num2.png" width="100%">
+                            </div>
+                            
+                            <div class="swiper-slide" percent="{w:280,h:400}" style="width: 0px; height: 0px; "> 
+                                <img src="images/num3.png" width="100%">
+                            </div>
+                            
+                            <div class="swiper-slide" percent="{w:280,h:400}" style="width: 0px; height: 0px; "> 
+                                <img src="images/num4.png" width="100%">
+                            </div>
+                            
+                            <div class="swiper-slide" percent="{w:280,h:400}" style="width: 0px; height: 0px; "> 
+                                <img src="images/num5.png" width="100%">
+                            </div>
+                            
+                            <div class="swiper-slide" percent="{w:280,h:400}" style="width: 0px; height: 0px; "> 
+                                <img src="images/num6.png" width="100%">
+                            </div>
+                            
+                  <div class="swiper-slide swiper-slide-duplicate" percent="{w:280,h:400}" style="width: 0px; height: 0px; "> 
+                                <img src="images/num2.png" width="100%">
+                            </div></div>
+              </div>
+                  <img src="images/prevArrow.png" width="38" height="54" class="arrowBtn prevArrow_planDay" percent="{w:58,h:54,l:10,t:260}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+         		  <img src="images/nextArrow.png" width="38" height="54" class="arrowBtn nextArrow_planDay" percent="{w:58,h:54,l:344,t:260}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+            <!-- planDay end-->
+            
+            
+            
+          <!-- themes begin-->
+                <div class="swiper-container themes" percent="{w:695,h:310,l:412,t:-68}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+                      <div class="swiper-wrapper " percent="{w:695,h:310}" style="width: 0px; height: 0px; "><div class="swiper-slide swiper-slide-duplicate" percent="{w:695,h:310}" style="width: 0px; height: 0px; "> 
+                                <img src="images/theme2.png" width="100%">
+                                <div class="txt" percent="{f:24,ls:5,t:268}" style="font-size: 0px; top: 0px; letter-spacing: 0px; ">人文历史</div>
+                            </div>       
+                            <div class="swiper-slide" percent="{w:695,h:310}" style="width: 0px; height: 0px; "> 
+                                <img src="images/theme3.png" width="100%">
+                                <div class="txt" percent="{f:24,ls:5,t:268}" style="font-size: 0px; top: 0px; letter-spacing: 0px; ">购物休闲</div>
+                            </div>
+                           
+                            <div class="swiper-slide" percent="{w:695,h:310}" style="width: 0px; height: 0px; "> 
+                                <img src="images/theme1.png" width="100%">
+                                <div class="txt" percent="{f:24,ls:5,t:268}" style="font-size: 0px; top: 0px; letter-spacing: 0px; ">游山玩水</div>
+                            </div>
+                            
+                            <div class="swiper-slide" percent="{w:695,h:310}" style="width: 0px; height: 0px; "> 
+                                <img src="images/theme5.png" width="100%">
+                                <div class="txt" percent="{f:24,ls:5,t:268}" style="font-size: 0px; top: 0px; letter-spacing: 0px; ">亲子之行</div> 
+                            </div>
+                            
+                             <div class="swiper-slide" percent="{w:695,h:310}" style="width: 0px; height: 0px; "> 
+                                <img src="images/theme4.png" width="100%">
+                                <div class="txt" percent="{f:24,ls:5,t:268}" style="font-size: 0px; top: 0px; letter-spacing: 0px; ">吃货之旅</div>
+                            </div>
+
+                            <div class="swiper-slide" percent="{w:695,h:310}" style="width: 0px; height: 0px; "> 
+                                <img src="images/theme2.png" width="100%">
+                                <div class="txt" percent="{f:24,ls:5,t:268}" style="font-size: 0px; top: 0px; letter-spacing: 0px; ">人文历史</div>
+                            </div>
+                           
+                      <div class="swiper-slide swiper-slide-duplicate" percent="{w:695,h:310}" style="width: 0px; height: 0px; "> 
+                                <img src="images/theme3.png" width="100%">
+                                <div class="txt" percent="{f:24,ls:5,t:268}" style="font-size: 0px; top: 0px; letter-spacing: 0px; ">购物休闲</div>
+                            </div></div>
+               </div>
+                  <img src="images/prevArrow.png" width="38" height="54" class="arrowBtn prevArrow_themes" percent="{w:58,h:54,l:427,t:94}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+         		  <img src="images/nextArrow.png" width="38" height="54" class="arrowBtn nextArrow_themes" percent="{w:58,h:54,l:1037,t:94}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+            <!-- themes end-->
+            
+            
+            
+            
+            
+          <!-- cars begin-->
+                <div class="swiper-container cars" percent="{w:436,h:238,l:413,t:247}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+                      <div class="swiper-wrapper " percent="{w:436,h:238}" style="width: 0px; height: 0px; "><div class="swiper-slide swiper-slide-duplicate" percent="{w:436,h:238}" style="width: 0px; height: 0px; "> 
+                                <img src="images/car3.png" width="100%">
+                                 <div class="txt" percent="{f:24,ls:5,t:192}" style="font-size: 0px; top: 0px; letter-spacing: 0px; ">五人小队</div>
+                            </div>            
+                            <div class="swiper-slide" percent="{w:436,h:238}" style="width: 0px; height: 0px; "> 
+                                <img src="images/car1.png" width="100%">
+                                <div class="txt" percent="{f:24,ls:5,t:192}" style="font-size: 0px; top: 0px; letter-spacing: 0px; ">二人世界</div>
+                            </div>
+                            <div class="swiper-slide" percent="{w:436,h:238}" style="width: 0px; height: 0px; "> 
+                                <img src="images/car2.png" width="100%">
+                                 <div class="txt" percent="{f:24,ls:5,t:192}" style="font-size: 0px; top: 0px; letter-spacing: 0px; ">三口之家</div>
+                            </div>
+                            
+                            <div class="swiper-slide" percent="{w:436,h:238}" style="width: 0px; height: 0px; "> 
+                                <img src="images/car3.png" width="100%">
+                                 <div class="txt" percent="{f:24,ls:5,t:192}" style="font-size: 0px; top: 0px; letter-spacing: 0px; ">五人小队</div>
+                            </div>
+                            
+                      <div class="swiper-slide swiper-slide-duplicate" percent="{w:436,h:238}" style="width: 0px; height: 0px; "> 
+                                <img src="images/car1.png" width="100%">
+                                <div class="txt" percent="{f:24,ls:5,t:192}" style="font-size: 0px; top: 0px; letter-spacing: 0px; ">二人世界</div>
+                            </div></div>
+              </div>
+                  <img src="images/prevArrow.png" width="38" height="54" class="arrowBtn prevArrow_cars" percent="{w:58,h:54,l:427,t:350}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+         		  <img src="images/nextArrow.png" width="38" height="54" class="arrowBtn nextArrow_cars" percent="{w:58,h:54,l:780,t:350}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+            <!-- cars end-->
+            
+            
+            <!-- chooseCity begin -->
+            <div class="chooseCity" percent="{w:200,h:75,l:210,t:4}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+                    <input name="" type="text" id="cityName" value="上海" placeholder="输入城市" percent="{f:24}" style="font-size: 0px; ">
+                    <select name="" id="cityNameList" style="display:none;">
+                      <option value="上海">上海</option>
+                      <option value="广州">广州</option>
+                      <option value="天津">天津</option>
+                      <option value="苏州">苏州</option>
+                      <option value="输入城市">输入城市</option>
+          </select>
+            </div>
+            <!-- chooseCity end -->
+          
+          
+        <img src="images/generateBtn.png" width="220" height="219" class="generateBtn" percent="{w:220,h:219,l:871,t:256}" style="width: 0px; height: 0px; top: 0px; left: 0px; "></div>
+        
+        </div>
+    </div>
+    
+    
+    <!-- gamePage end-->
+    
+    <!-- faultPage begin -->
+     <div class="page faultPage" percent="{w:1336,h:648}" style="display: none; width: 0px; height: 0px; ">
+      <div class="container" style="margin-top: 0px; ">
+       <div class="faultGif" percent="{mt:-50}" style="margin-top: 0px; "></div>
+       <img src="images/faultAlert.png" width="393" height="345" class="faultAlert" percent="{w:393,h:345,l:472,t:64}" style="opacity: 0; width: 0px; height: 0px; top: 0px; left: 0px; ">
+       
+       <div class="faultTips" percent="{w:625,h:199,l:356,t:353}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+         <img src="images/faultTipsBg.png" width="100%">
+         <div class="tipsTxt" percent="{f:41,lh:56,ls:12,l:27,t:60}" style="font-size: 0px; line-height: 0px; top: 0px; left: 0px; letter-spacing: 0px; ">
+           		<div class="txt" style="display:block;">爱车半路抛锚，<br>计划再好有什么用？</div>
+         </div>
+         <img src="images/faultTipsArrow.png" width="55" height="53" class="faultTipsArrow " percent="{w:55,h:53,l:515,t:53}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+       
+       </div>
+       </div>
+     </div>
+    
+    <!-- faultPage end -->
+    
+    
+    <!-- faultResultPage begin -->
+<div class="page faultResultPage" percent="{w:1336,h:648}" style="display: none; width: 0px; height: 0px; ">
+<div class="container" style="margin-top: 0px; ">
+         <div class="cont" percent="{w:1110,h:491,l:112,t:80}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+           <img src="images/faultResultPageBg.png" width="100%">
+           <div class="green absolute" percent="{f:26,ls:5,l:96,t:415}" style="font-size: 0px; top: 0px; left: 0px; letter-spacing: 0px; ">假期出行，你的爱车准备好了吗？</div>
+           <div class="experienceBtn absolute" percent="{w:437,h:170,l:720,t:292}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+   		 	  <img src="images/experienceBtn.png" width="100%">
+              <img src="images/experienceBtnArrow.png" width="21" height="25" class="experienceBtnArrow absolute" percent="{w:21,h:25,l:370,t:70}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+           
+           </div>
+           
+       	   <div class="tipsItem" percent="{w:1030,h:232,l:40,t:30}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+             <div percent="{ml:55,mt:38}" style="margin-top: 0px; margin-left: 0px; ">
+                 <p class="green" percent="{f:36,ls:5}" style="font-size: 0px; letter-spacing: 0px; ">知道吗？</p>
+                 <p class="grey" percent="{f:45,ls:3,mt:10}" style="font-size: 0px; margin-top: 0px; letter-spacing: 0px; ">经历了夏天的高温，轮胎检查很必要</p>
+                 <p class="grey" percent="{f:24,mt:10}" style="font-size: 0px; margin-top: 0px; ">炎热干燥的路面对轮胎是严峻考验，需检查是否有鼓包、加速磨损等情况</p>
+             </div>
+             <img src="images/icon_fault2.png" width="151" height="151" class="icon" percent="{w:151,h:151}" style="width: 0px; height: 0px; ">
+           </div>
+           
+           
+       	   <div class="tipsItem" percent="{w:1030,h:232,l:40,t:30}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+             <div percent="{ml:55,mt:38}" style="margin-top: 0px; margin-left: 0px; ">
+                 <p class="green" percent="{f:36,ls:5}" style="font-size: 0px; letter-spacing: 0px; ">知道吗？</p>
+                 <p class="grey" percent="{f:45,ls:10,mt:10}" style="font-size: 0px; margin-top: 0px; letter-spacing: 0px; ">大多数发动机故障都与机油有关</p>
+                 <p class="grey" percent="{f:26,ls:1,mt:10}" style="font-size: 0px; margin-top: 0px; letter-spacing: 0px; ">特别是日常使用率较低的汽车，在出发前更要仔细检查机油情况</p>
+             </div>
+             <img src="images/icon_fault1.png" width="151" height="151" class="icon" percent="{w:151,h:151}" style="width: 0px; height: 0px; ">
+           </div>
+           
+           
+       	   <div class="tipsItem" percent="{w:1030,h:232,l:40,t:30}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+             <div percent="{ml:55,mt:38}" style="margin-top: 0px; margin-left: 0px; ">
+                 <p class="green" percent="{f:36,ls:5}" style="font-size: 0px; letter-spacing: 0px; ">知道吗？</p>
+                 <p class="grey" percent="{f:45,ls:4,mt:10}" style="font-size: 0px; margin-top: 0px; letter-spacing: 0px; ">良好的制动系统，是行驶安全的关键</p>
+                 <p class="grey" percent="{f:26,ls:4,mt:10}" style="font-size: 0px; margin-top: 0px; letter-spacing: 0px; ">刹车片和制动液需经常检查，做到有备无患，避免事故发生</p>
+             </div>
+             <img src="images/icon_fault3.png" width="151" height="151" class="icon" percent="{w:151,h:151}" style="width: 0px; height: 0px; ">
+           </div>
+           
+           
+           
+       	   <div class="tipsItem" percent="{w:1030,h:232,l:40,t:30}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+             <div percent="{ml:55,mt:38}" style="margin-top: 0px; margin-left: 0px; ">
+                 <p class="green" percent="{f:36,ls:5}" style="font-size: 0px; letter-spacing: 0px; ">知道吗？</p>
+                 <p class="grey" percent="{f:45,mt:10}" style="font-size: 0px; margin-top: 0px; ">更换老化雨刮器，避免视线遮挡酿事故</p>
+                 <p class="grey" percent="{f:27,ls:0.5,mt:10}" style="font-size: 0px; margin-top: 0px; letter-spacing: 0px; ">当雨刮工作时留下明显水痕，就表示胶条已老化，需要及时更换</p>
+             </div>
+             <img src="images/icon_fault5.png" width="151" height="151" class="icon" percent="{w:151,h:151}" style="width: 0px; height: 0px; ">
+           </div>
+           
+           
+
+       	   <div class="tipsItem" percent="{w:1030,h:232,l:40,t:30}" style="display: block; width: 0px; height: 0px; top: 0px; left: 0px; ">
+             <div percent="{ml:55,mt:38}" style="margin-top: 0px; margin-left: 0px; ">
+                 <p class="green" percent="{f:36,ls:5}" style="font-size: 0px; letter-spacing: 0px; ">知道吗？</p>
+                 <p class="grey" percent="{f:45,ls:10,mt:10}" style="font-size: 0px; margin-top: 0px; letter-spacing: 0px; ">蓄电池使用2年以上需注意检查</p>
+                 <p class="grey" percent="{f:28,ls:1.5,mt:10}" style="font-size: 0px; margin-top: 0px; letter-spacing: 0px; ">出发前检测电压、电流，避免蓄电池突然"趴窝"影响行程</p>
+             </div>
+             <img src="images/icon_fault6.png" width="151" height="151" class="icon" percent="{w:151,h:151}" style="width: 0px; height: 0px; ">
+           </div>
+           
+           
+       	   <div class="tipsItem" percent="{w:1030,h:232,l:40,t:30}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+             <div percent="{ml:55,mt:38}" style="margin-top: 0px; margin-left: 0px; ">
+                 <p class="green" percent="{f:36,ls:5}" style="font-size: 0px; letter-spacing: 0px; ">知道吗？</p>
+                 <p class="grey" percent="{f:45,ls:3,mt:10}" style="font-size: 0px; margin-top: 0px; letter-spacing: 0px; ">选择合适的车灯，确保汽车照明效果</p>
+                 <p class="grey" percent="{f:28,ls:5,mt:10}" style="font-size: 0px; margin-top: 0px; letter-spacing: 0px; ">车灯亮度、色温都会影响照明效果和雨雾天的穿透力</p>
+             </div>
+             <img src="images/icon_fault4.png" width="151" height="151" class="icon" percent="{w:151,h:151}" style="width: 0px; height: 0px; ">
+           </div>
+           
+
+           
+            
+    </div>
+         
+   </div>      
+         
+         
+  </div>
+    
+    <!-- faultResultPage end -->
+    
+    
+    
+    <!-- experiencePage begin -->
+    
+  <div class="page experiencePage" percent="{w:1336,h:648}" style="display: none; width: 0px; height: 0px; ">
+  <div class="container" style="margin-top: 0px; ">
+    <div class="cont absolute" percent="{w:1102,h:471,l:113,t:93}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+            <img src="images/experiencePageBg.png?v1" width="100%">
+            <div class="videoBox" percent="{w:485,h:273,l:120,t:48}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+                  <img src="images/poster.jpg" width="100%" id="videoPoster" class="poster">
+                  <img src="images/poster.jpg" width="100%" id="videoPosterEnd" class="poster" style="display:none;">
+                  <div class="videoPlayerBox" percent="{w:485,h:273}" style="display: none; width: 0px; height: 0px; ">
+                      <!--<video width="100%" height="100%" controls="controls" id="videoPlayer" >
+                        <source src="http://www.tyreplus.com.cn/campaign/video/brandvideo.mp4" type="video/mp4" />
+                      </video>-->
+                  </div>
+            </div>
+            
+
+            
+        <img src="images/cuponTips.png" width="232" height="79" class="absolute" percent="{w:232,h:79,l:798,t:16}" style="width: 0px; height: 0px; top: 0px; left: 0px; "> 
+        <img src="images/qrCode2.png" width="202" height="248" class="QR1 absolute" percent="{w:202,h:248,l:808,t:110}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+      <img src="images/guidBtn.png" width="241" height="60" class="guidBtn absolute" percent="{w:241,h:60,l:785,t:370}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+      
+      </div>
+    
+    </div>
+   
+   
+    <div class="shareTipsPanel" style="display:none;">
+        <img src="images/shareTipsImg.png" width="142" height="479" class="fr" percent="{w:142,h:479}" style="width: 0px; height: 0px; ">
+    </div>
+   
+   
+   </div>   
+    
+    
+    <!-- experiencePage end -->
+    
+    <div class="raidersPanel" style="display:none;">
+   	    <div class="container">
+         <img src="images/cuponTxt.png" width="644" height="442" class="absolute" percent="{w:644,h:442,l:377,t:168}" style="width: 0px; height: 0px; top: 0px; left: 0px; ">
+         <img src="images/closeBtn.png" width="80" height="80" class="closeBtn fr" percent="{w:80,h:80,mr:20,mt:110}" style="width: 0px; height: 0px; margin-top: 0px; margin-right: 0px; ">
+         </div>
+        
+    </div>    
+    
+    
+    
+
+
+        
+</div>
+
+
+
+<script>
+
+
+var loadingTimer;
+var site = {
+	_init:function(){
+	$('#loadingBox').fadeOut(600);
+	$(".main").css({"display":"block"});
+	loaded=true;
+	ready();
+	trackPageview("home");	
+	
+	}   
+};
+
+
+
+$('body').jpreLoader({
+	}, function() {	//jPreLoader callback function
+		clearInterval(loadingTimer);
+		site._init(); 
+});
+$("#jpreOverlay").css({"display":"none","width":0,"height":0});
+$("#jprePercentage").html("0%");
+
+loadingTimer=setInterval(function(){
+  var percentStr=String($("#jprePercentage").text());
+  $("#loadingBox .percentNum").html(percentStr);
+},100);	
+
+
+$(function(){
+	trackPageview("loading");
+	})
+	
+
+</script>
+
+
+
+
+<div style="display:none;">
+<script>
+
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-83419222-3', 'auto');
+  ga('send', 'pageview');
+	
+</script>
+</div>
+</div>
+
+
+
+
+
+
+</body></html>

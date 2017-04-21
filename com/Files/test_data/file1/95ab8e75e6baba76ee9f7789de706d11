@@ -1,0 +1,403 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+		<title>平安理赔服务_理赔进度查询-中国平安官方直销网站</title>
+		<meta name="keywords" content="平安理赔服务、理赔进度查询">
+		<meta name="description" content="中国平安官方直销网站的理赔服务进度查询，让您随时了解您的理赔服务进度。买保险，理赔快，就选平安，省心又省钱！">
+		<meta content="text/html;charset=utf-8;" http-equiv="content-type">
+		<meta content="zh-cn" http-equiv="content-language">
+		<meta http-equiv="x-ua-compatible" content="ie=emulateie7">
+		<meta content="本页版权归中国平安所有。all rights reserved" name="copyright">
+		<meta name="WT.channel" content="pingan">
+		<link rel="stylesheet" href="https://pcss1s.4008000000.com/app_css/4008000000/v10/base.css">
+		<link rel="stylesheet" href="https://pcss1s.4008000000.com/app_css/4008000000/v10/public.css">
+		<link rel="stylesheet" href="https://pcss1s.4008000000.com/app_css/4008000000/v10/login/signUp.css?v=201409111">
+		<link rel="stylesheet" type="text/css" href="https://pscript1s.4008000000.com/app_js/ui30/themes/pingan/pa_ui.css">
+		<link rel="stylesheet" type="text/css" href="./css/simple_e_one.css" media="all">
+		<script type="text/javascript">
+			 // 退出一账通系统
+		     function oneAccountLogout(callback) {
+				var iframe = document.createElement("iframe");
+				var isLoaded = false; // 判断退出操作是否完成
+				iframe.style.display = 'none';
+				iframe.name = "logoutToaIframe";
+				iframe.src = 'https://member.pingan.com.cn/pinganone/pa/fcmmLogOut.do';
+
+				if (/stg|p1|test/.test(document.domain)) {
+					iframe.src = 'https://test-member.pingan.com.cn/pinganone/pa/fcmmLogOut.do';
+				}
+
+				if (iframe.attachEvent) {
+					iframe.attachEvent("onload",function(){
+						if(!isLoaded){
+							isLoaded = true;
+							callback && callback();
+						}
+					});
+				}else{
+					iframe.onload = function() {
+						if(!isLoaded){
+							isLoaded = true;
+							callback && callback();
+						}
+					};
+				}
+				document.body.appendChild(iframe);
+				// 延时两秒，执行第三方登录跳转
+				setTimeout(function(){
+					if(!isLoaded){
+						isLoaded = true;
+						callback && callback();
+					}
+				},2000);
+			};
+			// 第三方登录调用接口
+			function otherAccountLogin(loginType, back) {
+				var R = RumAuth;
+				var goToOtherAccount = function(){
+					var  url = '/customer/otheraccount-sign.ajax?type=otherAccount&target=', openUrl = 'https://member.pingan.com.cn/pinganone/pa/otherMemberLogin.view?';
+					var targetMatch = location.search.match(/target=([^&]+)/);
+					
+					$.ajax({
+						type : "GET",
+						sync : false,
+						cache : false,
+						url : url + (targetMatch ? decodeURIComponent(targetMatch[1]) : ''),
+						// data : {
+						// 	type : "otherAccount",
+						// 	target : targetMatch ?  encodeURI(targetMatch[1]) : ''
+						// },
+						success : function(json) {
+							eval("var obj=" + json);
+							if(obj.status == "success") {
+								obj.status = '';
+								obj.loginType = loginType;
+								var sendData = {
+									loginType : loginType||'',
+									appId : obj.appId||'',
+									signType : obj.signType||'',
+									timestamp : obj.timestamp||'',
+									signature : obj.signature||'',
+									ptag : obj.ptag||''
+								}
+								openUrl += $.param(sendData).replace(/\%5B\%5D/g, "");
+								window.winChildren = openNewWin(openUrl);
+							} else {
+								showOtherMsg("操作失败，请重试!")
+							}
+						}
+					});
+				};
+				// RUM未登陆则先判断一账通是否登陆
+				R.one.isLogin(function(clientNo) {
+					// 1.一账通登陆,先发起一账通退出请求，再跳转到第三方接口
+					if(clientNo) {
+						oneAccountLogout(function(){
+							goToOtherAccount();
+						});
+					}
+					// 未登录则直接跳转第三方接口
+					else{
+						goToOtherAccount();
+					}
+				});				
+			}
+
+			//提示消息
+			function showOtherMsg(msg) {
+				showErrorInfo(msg, "sysTip"); 
+			}
+
+			//弹出新窗口
+			function openNewWin(url) {
+				if(!url)
+					return;
+				var child = window.open(url, "", "height=600px,width=960px,top=0,left=0");
+				if(child)
+					return child;
+				else
+					return null;
+			}
+		</script>
+
+	<script src="https://sdc.pingan.com/dcs82b9ujitigdu3gaykxw0hn_5p6b/wtid.js"></script><script src="https://pscript1s.4008000000.com/app_js/ui30/js/pa_ui_validator.js" type="text/javascript"></script><script src="https://pscript1s.4008000000.com/app_js/ui30/js/pa_ui_misc.js" type="text/javascript"></script><script src="https://pa-ssl.pingan.com/app_js/sdc/src/toa.js"></script><script src="https://pa-ssl.pingan.com/app_js/sdc/src/web.js"></script><script src="https://pa-ssl.pingan.com/app_js/pingan/v20/iw_cookie.js"></script><script type="text/javascript" async="" src="https://pa-ssl.pingan.com/app_js/sdc/prd/sdc9.js"></script><script type="text/javascript" async="" src="https://pa-ssl.pingan.com/app_js/sdc/prd/sdc9.js"></script></head>
+	<body id="simple_b_wrapper">
+
+		<!-- START: 隐藏域 -->
+		<input type="hidden" id="actionSource" value="">
+		<!-- END: 隐藏域 -->
+
+		<!-- START: 公用头部 -->
+
+		<div class="b_5s_f63">
+			<div class="header_signUp">
+				<div class="head_logo">
+					<a href="http://www.4008000000.com/" target="_blank" title="平安直通保险" otitle="页头logo" otype="button">平安直通保险</a>
+				</div>
+			</div>
+		</div>
+		<!-- END: 公用头部 -->
+		<!--main begin-->
+		<div class="sclogin_wrap">
+		
+			<div class="ad-normal">
+				<iframe src="//www.pingan.com/adng/s?areaId=QY17031516464406" frameborder="no" scrolling="no" marginwidth="0" marginheight="0" width="470" height="380" allowtransparency="true"></iframe>
+				<dl class="sclogin-wordcup-text c">
+					<dt class="s-w-text-tit">我的保险 我的生活</dt>
+					<dd class="s-w-text-item"><span class="s-w-text-point">·</span>订单管理 掌控由心</dd>
+					<dd class="s-w-text-item"><span class="s-w-text-point">·</span>特权优惠 会员尊享</dd>
+				</dl>
+			</div>
+			<!-- <div class="ad-emall">
+				<iframe src="//www.pingan.com/adms/area.ctrl?AREAID=QY14080614090316" frameborder="no" scrolling="no" marginWidth="0" marginHeight="0" width="470" height="380" allowtransparency="true"></iframe>
+				<dl class="sclogin-wordcup-text c">
+					<dt class="s-w-text-tit">我的保险 我的生活</dt>
+					<dd class="s-w-text-item"><span class="s-w-text-point">·</span>订单管理 掌控由心</dd>
+					<dd class="s-w-text-item"><span class="s-w-text-point">·</span>特权优惠 会员尊享</dd>
+				</dl>
+			</div>
+			<div class="ad-big">
+				<iframe src="//www.pingan.com/adms/area.ctrl?AREAID=QY14062417585795" frameborder="no" scrolling="no" marginWidth="0" marginHeight="0" width="1600" height="562" allowtransparency="true"></iframe>
+			</div> -->
+		
+			<div class="sclogin">
+
+				<h2 class="c"><span class="sclogin_tit">会员登录</span><span class="f_c_999">还不是会员？</span><a href="http://www.pingan.com/customer/toRegisterUser.do?type=01&amp;flowID=J0LifeBLv5ALH5hL" class="ano_2e84ca" title="立即注册" otitle="立即注册" otype="button">立即注册</a><span id="J-carnivalShow" class="f_c_f63 pl20 fwb" style="display:none">请使用投保车险预留的手机号码登录或注册</span></h2>
+				<div class="sclogin_container c">
+					<div class="sclogin_tab">
+						<ul id="J-tabTitle" class="c">
+							<li class="current"><span>普通登录</span></li>
+							<li><span>手机动态码登录</span></li>
+						</ul>
+						<div class="sclogin_tab_line"></div>
+					</div>
+					<div id="J-tabCont1">
+						<form id="login_form" method="post">
+							<input type="hidden" name="type" value="1">
+							<input type="hidden" name="signature" id="signature" value="">
+							<input type="hidden" name="appId" id="appId" value="">
+							<input type="hidden" name="timestamp" id="timestamp" value="">
+							<input type="hidden" id="validCodeId" name="validCodeId" value="">
+							<input id="loginPwd" type="hidden" name="loginPwd" value="">
+							<input type="hidden" name="regResource" id="regResource" value="">
+							<input id="vcodeVer" type="hidden" name="vcodeVer" value="2.0">
+							<input type="hidden" name="registerKeyStr" value="FCMMREGISTER#EMPTY#TOATOPIC">
+							<input id="ptag" type="hidden" name="ptag" value="J0LifeBLv5ALH5hL">
+							<div id="sysTip" style="border:0px;background:none;margin-left:45px;margin-top:20px;margin-bottom:20px;margin-right:45px;">
+			                	
+							<div class="pa_ui_valid_tip" style="display: none; "></div></div>
+							<div class="scloginCont">
+								<table>
+									<tbody><tr class="mh70" style="margin-bottom: 5px;">
+										<td width="290px">
+										<div class="inputline user dib">
+											<span class="pic01"></span>
+											<input pa_ui_name="validator" name="userID" otitle="用户名" title="用户名" maxlength="100" type="text" id="userID" value="" style="width: 225px;border: 0px;" pa_ui_valid_tipbox="sysTip" pa_ui_valid_csselerror="valid_csselerror" class="pa_ui_element_normal">
+										</div></td>
+										<td><a target="_blank" href="https://www.pingan.com.cn/pinganone/pa/retrieveVerify.do" class="ano_2e84ca" title="忘记用户名" otitle="忘记用户名" otype="button">忘记用户名</a></td>
+									</tr>
+									<tr height="7.5px"></tr>
+									<tr>
+										<td colspan="2">
+										<p class="pt5" style="color: #999;">
+											支持一账通用户名，或已设置为登录账号的手机号码、Email作为登录账号
+										</p></td>
+									</tr>
+									<tr height="7.5px"></tr>
+									<tr class="mh70">
+										<td>
+										<div id="pwdArea" class="inputline password dib por">
+											<span class="pic02"></span>
+											<input type="password" style="width:180px;border:0px;" pa_ui_name="validator,keyboard" id="v_password" title="密码" otitle="密码" maxlength="16" onkeydown="if(event.keyCode == 13){clickSubmit();}" pa_ui_valid_tipbox="sysTip" pa_ui_keyboard_position="k1" pa_ui_keyboard_trigger="2" pa_ui_valid_csselerror="valid_csselerror" class="pa_ui_element_normal"><button type="button" class="pa_ui_keyboard_click"></button>
+										</div>
+										<div style="display:block;clear:both;position:relative;">
+											<div class="keybox" id="k1"></div>
+										</div>
+										</td>
+										<td><a target="_blank" href="https://www.pingan.com.cn/pinganone/pa/paResetIndex.screen" class="ano_2e84ca" title="忘记密码" otitle="忘记密码" otype="button">忘记密码</a></td>
+									</tr>
+									<tr height="35px"></tr>
+									<tr class="mh70 dsn" style="margin-top: 63px;" id="J_verifyCode_tr">
+										<td>
+										<div class="inputline verify dib">
+											<span class="pic03"></span>
+											<input pa_ui_name="validator" style="width:100px;border:0px;" class="input_text fl mr5 pa_ui_element_normal" type="text" name="validCode" id="validCode" otitle="验证码" title="验证码" maxlength="4" onkeydown="if(event.keyCode == 13){clickSubmit();}" pa_ui_valid_tipbox="sysTip" pa_ui_valid_csselerror="valid_csselerror">
+										</div>
+											<img class="verifyImg" alt="验证码" id="validateImg" title="" align="absmiddle" width="60" height="30">
+											<!-- <a href="javascript:getFcmmValidCode('validateImg','validCodeId','https://member.pingan.com.cn/pinganone/pa/paic/common/urlvcode.do');" class="ano_2e84ca" title="换一张">换一张</a></td> -->
+											<a href="javascript:;" onclick="return false;" class="ano_2e84ca" title="换一张" id="J-changeVerifyImg">换一张</a></td>
+									</tr>
+									<tr>
+										<td>
+										<p class="pt5">
+											<input type="checkbox" id="remember" class="vam mr5" checked="checked">
+											<label for="remember" hidefocus="hidefocus">记住用户名</label>
+										</p></td>
+									</tr>
+									<tr height="25px"></tr>
+									<tr>
+										<td><a href="javascript:;" onclick="return false;" class="btn_submit" title="登录" otitle="登录" id="loginlink">登录</a></td>
+									</tr>
+
+									<tr class="third-party-login" id="J-thirdPartyLogin">
+									<td colspan="2" align="left">
+									<div style="margin: 20px 0px 20px 0px;">
+									<p style="padding-bottom:10px;">你也可以用如下方式登录：</p>
+									<p><a id="J-qqLogin" href="javascript:void(0);" onclick="otherAccountLogin('newqq','false')"><img style="vertical-align:middle;" src="./images/newqqLogin.png" alt=""></a>&nbsp;&nbsp;
+									<a id="J-sinaLogin" href="javascript:void(0);" onclick="otherAccountLogin('newsina','false')"><img style="vertical-align:middle;" src="./images/newsinaLogin.png" alt=""></a>&nbsp;&nbsp;
+									<a id="J-wltLogin" href="javascript:void(0);" onclick="otherAccountLogin('newlpms','false')"><img style="vertical-align:middle;" src="./images/newwanlitonglogin.jpg" alt=""></a>
+									</p>
+								</div>
+									</td>
+									</tr>
+
+								</tbody></table>
+								<div style="display:none;height:80px" id="J-noThirdPartyLoginShow"></div>
+							</div>
+						</form>
+					</div>
+					<div id="J-tabCont2" class="phoneLogin-wrap" style="display:none">
+			            <form id="" method="post">
+			            	<div id="J-phoneLogin-prompt" class="phoneLogin-prompt"><div class="pa_ui_valid_tip" style="display: none; "></div></div>
+			            	<div class="scloginCont">
+								<table>
+                                    <tbody><tr><td class="f_yahei font14 pb10">验证即登录，未注册将自动创建会员账号</td></tr>
+									<tr class="phoneLogin-phone-wrap mh70">
+										<td>
+											<div class="inputline teluser dib">
+												<span class="pic04"></span>
+												<input type="text" id="J-phoneLogin-phone" class="phoneLogin-phone pa_ui_element_normal" name="" otitle="手机号" title="请输入手机号" maxlength="11" placeholder="请输入手机号码" pa_ui_name="validator" pa_ui_valid_rules="{required:{error:'手机号码不能为空。'},regex:{value:/^1[34578]{1}[0-9]{9}$/}}" pa_ui_valid_error="手机号码不符合规范，请您重新输入。" pa_ui_valid_eventonempty="true" pa_ui_valid_tipbox="J-phoneLogin-prompt" pa_ui_valid_csselerror="valid_csselerror">
+											</div>
+										</td>
+									</tr>
+
+									<tr class="phoneLogin-authCode-wrap mh70" id="J-phoneLogin-authCode-wrap" style="display:none">
+										<td>
+											<div class="inputline telverify dib">
+												<span class="pic03"></span>
+												<input type="text" id="J-phoneLogin-authCode" class="phoneLogin-authCode input_text fl mr5" name="validCode" otitle="验证码" title="验证码" maxlength="4">
+											</div>
+											<img class="verifyImg" alt="验证码" id="J-phoneLogin-authCode-img" title="" align="absmiddle" width="60" height="30">
+											<a href="javascript:;" id="J-phoneLogin-authCode-change" class="ano_2e84ca" title="换一张">换一张</a>
+										</td>
+									</tr>
+
+									<tr class="phoneLogin-sms-wrap mh70">
+										<td>
+											<div id="pwdArea" class="inputline telpassword dib por">
+												<span class="pic02"></span>
+												<input type="text" id="J-phoneLogin-sms" class="phoneLogin-sms pa_ui_element_normal" title="请输入短信动态密码" otitle="短信动态密码" maxlength="8" pa_ui_name="validator" pa_ui_valid_rules="{required:{error:'短信动态密码不能为空。'}}" pa_ui_valid_eventonempty="true" pa_ui_valid_tipbox="J-phoneLogin-prompt" pa_ui_valid_csselerror="valid_csselerror">
+											</div>
+											<a href="javascript:;" id="J-phoneLogin-sms-btn" otitle="发送短信动态密码" otype="button" class="telsend">发送短信动态密码</a>
+										</td>
+									</tr>
+
+									<tr>
+										<td>
+											<p class="pt5">
+												<input type="checkbox" id="J-phoneLogin-remembertel" class="vam mr5" checked="checked">
+												<label for="J-phoneLogin-remembertel" hidefocus="hidefocus" class="f_c_666">记住手机号</label>
+											</p>
+										</td>
+									</tr>
+
+									<tr height="22"></tr>
+
+									<tr>
+										<td><a href="javascript:;" onclick="return false;" class="btn_submit" title="登录" otitle="登录" id="J-phoneLogin-submit">登录</a></td>
+									</tr>
+			 
+									<tr class="third-party-login">
+										<td colspan="2" align="left">
+											<div style="margin: 20px 0px 20px 0px;">
+												<p class="f_c_666 fwb pb5">注意：</p>
+												<p class="f_c_999">1、手机动态码登录适用于该手机号仅在一个会员账户内登记过</p>
+												<p class="f_c_999">2、手机动态码登录为快捷查询，登陆成功后，使用部分功能可能还需要您通过固定密码再次登陆</p>
+											</div>
+										</td>
+									</tr>
+
+								</tbody></table>
+							</div>
+			            </form>
+            		</div>
+            	</div>
+            </div>
+
+		</div>
+		<!-- START: 公用底部 -->
+		<div class="footer">
+			<p>
+				版权所有 © 中国平安保险（集团）股份有限公司 未经许可不得复制、转载或摘编，违者必究!
+			</p>
+			<p>
+				Copyright © PING AN INSURANCE (GROUP) COMPANY OF CHINA ,LTD. All Rights Reserved
+			</p>
+			<p>
+				<a href="http://www.sznet110.gov.cn/index.jsp" class="footer_icon_szgabm" target="_blank"></a><a href="http://www.sznet110.gov.cn/webrecord/innernet/Welcome.jsp?bano=440310120110" class="footer_icon_sznet110" target="_blank"></a>ICP许可证号 粤ICP备06118290号
+			</p>
+		</div>
+
+		<!-- 弹出层：注册-手机号没有投过保 -->
+		<div class="dn">
+			<div id="registerNoAccount">
+				<div class="content-box">
+					<p class="cry mb50">手机号<span class="co-ff1300 J-register-mobileNo"></span>还没有注册过一账通会员，您可以通过手机动态验证后快速注册为一账通会员。</p>
+					<p class="tac c"><a href="javascript:void(0);" title="注册" otitle="注册" otype="button" class="btn-orange mr15 J-registerBtn">注&nbsp;册</a><a href="javascript:void(0);" title="取消" otitle="取消" otype="button" class="btn-gray ml15" onclick="$.pa_ui.dialog.close();">取&nbsp;消</a></p>
+					</div>
+				</div>
+			</div>
+		
+		
+		<!-- 弹出层：注册-手机号有投过保 -->
+		<div class="dn">
+			<div id="registerHasAccount">
+				<div class="content-box">
+					<p class="cry mb25"><span class="co-ff1300 J-register-mobileNo"></span>关联的会员账户<span class="co-ff1300 J-register-username"></span>没有进行过手机验证，您暂不能通过手机动态码登录到该账户。我们建议您：</p>
+					<p class="smile mb20"><span class="f16 fwb">开通手机登录</span><br>请先以<span class="co-ff1300 J-register-username"></span>作为用户名加密码登录，在个人信息中验证并开通手机登录。</p>
+					<p class="tac mb30 c"><a href="javascript:void(0);" title="开通登录" otitle="开通登录" otype="button" class="btn-orange" id="J-loginUserInfo">开通登录</a></p>
+					<p class="content-text">*忘记用户名或密码？<span class="co-ff1300">您可以用手机号<span class="J-register-mobileNo"></span></span>注册一个新的账户。<a href="javascript:void(0);" title="重新注册" otitle="重新注册" otype="button" class="a-un-1177bb J-registerBtn">重新注册</a><br>注：关联账号内的订单将不会出现在新账号。</p>
+				</div>
+			</div>
+		</div>
+		
+		<!-- END: 公用底部 -->
+		<script type="text/javascript" charset="gbk" src="https://script1s.4008000000.com/app_series/shop/rum/js/form_validator_list.js"></script>
+		<script type="text/javascript" charset="gbk" src="https://member.pingan.com.cn/pinganone/pa/app_js/fcmm_valid_code.js"></script>
+
+		<script type="text/javascript" src="https://member.pingan.com.cn/pinganone/pa/app_js/unionrsa.js"></script>
+		<script type="text/javascript" src="https://member.pingan.com.cn/pinganone/pa/app_js/toa/sdc.js"></script>
+		
+		<script type="text/javascript" src="https://pscript1s.4008000000.com/app_js/ui30/js/jquery-1.3.2.js"></script>
+		<script type="text/javascript" src="https://pscript1s.4008000000.com/app_js/ui30/js/jquery-ui-1.7.1.js"></script>
+		<script type="text/javascript" src="https://pscript1s.4008000000.com/app_js/ui30/js/pa_ui.js"></script>
+		<!-- <script type="text/javascript" src="https://resources.pingancdn.com/customer/js/jquery.form.js"></script> -->
+		<script type="text/javascript" src="https://script1s.4008000000.com/app_series/shop/rum/js/auth.utf8.js"></script>	
+		<script type="text/javascript">
+
+			var InterfaceLoginObj = {
+				pinganoneUrl : 'https://member.pingan.com.cn',
+				publicKey : 'BB955F6C6185B341C1A42EBF1FF9971B273878DBDAB252A0F1C305EBB529E116D807E0108BE6EDD47FF8DC5B6720FFE7F413CBB4ACDFB4C6BE609A5D60F5ADB261690A77755E058D4D9C0EC4FC2F5EB623DEBC88896003FBD8AFC4C3990828C66062A6D6CE509A2B0F8E06C4E332673FB86D235164B62B6110C1F1E0625B20ED',
+				appId : '10023' || '10023',
+				targetUrl : 'http://www.pingan.com:80/member/order/policy-list.shtml' || '',
+				ptag: 'J0LifeBLv5ALH5hL',
+				actionSource: ''
+			};
+			
+			setTimeout('exesdcjs()', 0);
+			function exesdcjs() {
+				var jDomain="www.pingan.com";
+     			var jDomains="pa-ssl.pingan.com";
+				var js_path = "/app_js/sdc/src/web.js";
+				var domain = "http" + (window.location.protocol.indexOf('https:') == 0 ? 's://'+jDomains : '://'+jDomain);
+				var SDC_js = document.createElement("script");
+				SDC_js.src = domain + js_path;
+				var headElem = document.getElementsByTagName("head")[0];
+				headElem.appendChild(SDC_js);
+			}
+			
+		</script>
+		<!--防攻击1-->
+		<script src="https://pv.sohu.com/cityjson?ie=utf-8"></script>
+		<script type="text/javascript" src="https://script1s.4008000000.com/app_series/shop/rum/js/psaWebAccountJS.min.js"></script>
+		<script type="text/javascript" src="https://script1s.4008000000.com/app_series/shop/rum/js/interfaceLogin.js?v=20160622"></script>
+	
+</body></html>

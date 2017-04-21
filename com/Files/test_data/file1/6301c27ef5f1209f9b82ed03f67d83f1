@@ -1,0 +1,151 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="format-detection" content="telephone=no">
+	<meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <title>APP下载</title>
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">    
+	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+	<meta http-equiv="description" content="This is my page">
+	<!--
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	-->
+	<style>
+		@charset "utf-8";body,p,h1,h2,h3,h4,h5,h6,ul,ol,li,dl,dt,dd,table,th,td,form,fieldset,legend,input,textarea,button,select{margin:0;padding:0;}ol,li{list-style:none;}img{border:0}a{ text-decoration:none; color:#999; margin:0; padding:0;}.mt5{ margin-top:5px;}.mt10{ margin-top:10px;}.mt20{ margin-top:20px;}.fl{ float:left;}.fr{ float:right;}.ml10{ margin-left:10px;}.p10{ padding-top:10px;}.pt5{ padding-top:5px;}.red{ color:#B32833;}.green{ color:#16B471;}
+		.center_xz{ position:relative;max-width:640px; min-width:320px; margin:auto;}
+		img{margin:0;padding:0;display:block}
+		.cent{ width:200px; margin:auto; position:absolute; top:20px; left:50%; margin-left:-100px;}
+		#tanc_zz{width: 100%;height: 100%;background-color: #000;z-index: 99;opacity: 0.4;position: absolute;top: 0;left: 0; display:none;}
+		#tanchuang{position: absolute;top: 0;left:50%;z-index: 999;margin-left:-145px;width:300px; display:none;}
+	</style>
+	<script type="text/javascript" language="javascript" src="/ydsw_webservice/js/jquery-1.7.2.min.js"></script>
+	<script src="/ydsw_webservice/js/ajaxtools.js"></script>
+	<script type="text/javascript">
+			$(function(){
+				  if (/android/i.test(navigator.userAgent)){
+					$(".ios").css("display","none");
+				}
+			
+				if (/ipad|iphone|mac/i.test(navigator.userAgent)){
+					$(".android").css("display","none");
+				}
+				})
+			
+			function is_weixn(){
+			    var isweixin = document.getElementById("isweixin");
+				var noweixin = document.getElementById("noweixin");
+			    var ua = navigator.userAgent.toLowerCase();
+			    if(ua.match(/MicroMessenger/i)=="micromessenger") {
+			    	//alert(1111);    
+			    	isweixin.style.display="block";
+			    	noweixin.style.display="none"; 	
+			    } else {
+			    	//alert(2222);  
+			    	isweixin.style.display="none";
+			    	noweixin.style.display="block";
+			     }
+			}
+			
+			function weixin_xz(){
+				//var zhezhao = $("#tanc_zz");
+				//zhezhao.style.height=document.body.offsetHeight;
+				$("#tanc_zz").css("height",window.document.body.offsetHeight);
+				//zhezhao.style.display="block";
+				$("#tanc_zz").css("display","block");
+				
+				var tanchuang = document.getElementById("tanchuang");
+				tanchuang.style.display="block";
+			}
+			function getResStr() {
+		        if (http_request.readyState == 4) {
+		            if (http_request.status == 200) {              
+		               var xmlDoc = new ActiveXObject("MSXML2.DOMDocument");
+		               window.status="请求完成";
+		               xmlDoc.async = false;
+		               var array;
+		               var arr;
+		               if(method=="android"){
+		                   var resStr=http_request.responseText;
+		                   var str = resStr.split("#");
+		                   var to_url='';
+		                   alert(resStr);
+		                   if(str[0]=="true"){
+		                   		to_url=str[1];
+		                   } else{
+		                   		to_url=str[1];
+		                   }
+		                   window.location.href=to_url;
+				  		}else if(method=="ios"){
+		                   var resStr=http_request.responseText;
+		                   var to_url='';
+		                   if(resStr=="true"){
+		                   		//to_url="itms://itunes.apple.com/gb/app/yi-dong-cai-bian/id824071332?mt=8";
+		                   } else{
+		                   		//to_url="itms://itunes.apple.com/gb/app/yi-dong-cai-bian/id824071332?mt=8";
+		                   }
+		                   //window.location.href=to_url;
+				  		}
+		        	 }
+		     	 }
+		    }
+			function getApp( type ){
+				var to_url='';
+				if(type=='android'){
+					//method="android";
+					//var sj = get_date();
+	    			//makeRequest('/ydsw_webservice/GSJ/GSJ_YDSW_XT_ERWEIMASM?method=androidw&sj='+sj,'xmlx=W');
+					//to_url+="http://192.168.0.102/ydsw_webservice/download_android/TaxMobile_2.0.7.apk";
+					document.form1.action='/ydsw_webservice/GSJ/GSJ_YDSW_XT_ERWEIMASM?method=androidw';
+  					document.form1.submit();
+				}else if(type=='ios'){
+					method="ios";
+					var sj = get_date();
+	    			makeRequest('/ydsw_webservice/GSJ/GSJ_YDSW_XT_ERWEIMASM?method=iosw&sj='+sj);
+	    			to_url+="https://itunes.apple.com/cn/app/yi-dong-ban-shui-fu-wu-ping-tai/id824071332?mt=8";
+  					window.location.href=to_url;
+  					//document.form1.action='/ydsw_webservice/GSJ/GSJ_YDSW_XT_ERWEIMASM?method=ios&xmlx=W';
+  					//document.form1.submit();
+				}
+				
+			}
+	</script>
+  </head>
+  <body onload="is_weixn()">
+  	<form action="" id="form1" name="form1" method="post">
+	<div class="center_xz" style="width:100%; text-align:center;">
+   		<img src="./miages/wxsm_01.jpg" width="100%" alt="">
+ 		<div id="isweixin" style="display: none; ">  
+		   	<div class="ios cent" style="top:30px">
+		   		<span onclick="weixin_xz()">
+		   			<img src="./miages/weixin_xz_03.png" width="200">
+		   		</span>
+		   	</div>
+		   	<div class="android cent" style="top:30px">
+		   		<span onclick="weixin_xz()">
+		   			<img src="./miages/weixin_xz_06.png" width="200">
+		   		</span>
+		   	</div>
+ 		</div> 
+ 		<div id="noweixin" style="display: block; ">  
+  			<div class="ios cent" style="top:30px">
+				<a href="javascript:void(0);" onclick="getApp('ios')"><img src="./miages/weixin_xz_03.png" width="200"></a>
+  			</div>
+   			<div class="android cent" style="top:90px">  			
+				<a href="javascript:void(0);" onclick="getApp('android')"><img src="./miages/weixin_xz_06.png" width="200"></a>
+   			</div>
+		</div>   
+	   	<img src="./miages/weixin_xz_08.jpg" width="100%" alt="">
+    	<img src="./miages/weixin_xz_09.jpg" width="100%" alt="">
+	</div>
+
+	<div id="tanc_zz"></div>
+	<div id="tanchuang">
+	    <img src="./miages/tishi_03.png" width="290px">
+	</div>
+	</form>
+
+
+</body></html>

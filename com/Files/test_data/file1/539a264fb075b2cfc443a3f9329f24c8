@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+  <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport" /> 
+  <meta name="applicable-device" content="pc,mobile" /> 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /> 
+  <meta name="renderer" content="webkit" /> 
+  <meta http-equiv="Access-Control-Allow-Origin" content="*" /> 
+  <meta http-equiv="Cache-Control" content="no-transform" /> 
+  <meta content="true" name="HandheldFriendly" /> 
+  <meta name="keywords" content="Python网络爬虫，实战，Scrapy，python学习，python教程" /> 
+  <meta name="description" content="这是一门网络爬虫实战课程，让我们带你揭开爬虫的神秘面纱，掌握爬虫的基本原理，深入理解scrapy框架，使用scrapy进行项目实战，解决在数据抓取过程中遇到的常见问题。" /> 
+  <title>初步使用scrapy视频教程-Python网络爬虫实战-Scrapy-麦子学院</title> 
+  <link rel="shortcut icon" type="image/x-icon" href="/static/images/favicon.ico" /> 
+  <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css?v=201701131700" /> 
+  <script type="text/javascript">
+    function is_int(x) {
+        var y = parseInt(x, 10);
+        return !isNaN(y) && x == y && x.toString() == y.toString();
+    }
+
+    function snap_callback_for_project_upload(data) {
+        if (data.result == null) {
+            console.log(data.msg);
+        } else {
+            var result = JSON.parse(data.result);
+            if (is_int(result.coach_id) == true) {
+                window.location.href = "/lps4/teacher_coach_project/" + result.coach_id + "/";
+                return;
+            }
+            if (is_int(result.class_id) == true && is_int(result.stage_task_id) == true && is_int(result.item_id) == true && is_int(result.lps_version) == true) {
+                if (result.lps_version == 4) {
+                    window.location.href = "/lps4/student_coach_project/" + result.class_id + "_" + result.stage_task_id + "_" + result.item_id + "/";
+                } else {
+                    if (result.item_id == 0){
+                        window.location.href = "/lps3/student/task_project/" + result.class_id + "_" + result.stage_task_id + "/";
+                    } else {
+                        window.location.href = "/lps3/student/item_project/" + result.class_id + "_" + result.stage_task_id + "_" + result.item_id + "/";
+                    }
+                }
+                return;
+            }
+        }
+    }
+
+    (function () {
+        var reg = RegExp(/.*?\/lps4\/teacher_coach_project\/\d+?/);
+        if (reg.test(window.location.href) == true) {
+            return;
+        }
+        reg = RegExp(/.*?\/lps4\/student_coach_project\/\d+?_\d+?_\d+?/);
+        if (reg.test(window.location.href) == true) {
+            return;
+        }
+        reg = RegExp(/.*?\/lps3\/student\/task_project\/\d+?_\d+?/);
+        if (reg.test(window.location.href) == true) {
+            return;
+        }
+        reg = RegExp(/.*?\/lps3\/student\/item_project\/\d+?_\d+?_\d+?/);
+        if (reg.test(window.location.href) == true) {
+            return;
+        }
+
+        var url_prefix = "";
+        reg = RegExp(/maiziedu.com/);
+        if (reg.test(window.location.hostname) == true) {
+            url_prefix = "https://snap.maiziedu.com/get/?snap_key=project_upload_";
+        } else {
+            url_prefix = "http://121.41.96.44:34000/get/?snap_key=project_upload_";
+        }
+
+        var url = "";
+
+        if ("" == "True") {
+            url = url_prefix + encodeURIComponent("student_None") + "&callback=snap_callback_for_project_upload";
+        }
+        if ("" == "True") {
+            url = url_prefix + encodeURIComponent("teacher_None") + "&callback=snap_callback_for_project_upload";
+        }
+
+        if (url == "") {
+            return;
+        }
+
+        var script = document.createElement("script");
+        script.setAttribute("src", url);
+        document.getElementsByTagName("head")[0].appendChild(script);
+    })();
+</script> 
+  <link rel="stylesheet" type="text/css" href="/css/small_course_video_play.css?v=201701131700" /> 
+  <link type="text/css" rel="stylesheet" href="/css/showBigImg.css?v=201701131700" /> 
+  <script type="text/javascript">
+	var $ad = "",
+	    $groupName = "",
+	    $classId = "",
+	    $courseId = "458",
+	    $lessonId = "7431",
+	    $thisUser = "False",
+	    $needPay = "True",
+	    $isPaid = "",
+	    $videoLength = "927",
+	    $videoExamComplete = "",
+	    $userItem = "",
+	    $userId = "None",
+	    $MEDIAURL = "/uploads/",
+	    $ifHaveCareerCourse = "python",
+	    $studentClass = "",
+	    $vipUrl = "",
+	    $lessonUrl = "http://newoss.maiziedu.com/qiniu/Scrapy-02.mp4"
+</script> 
+  <script type="text/javascript">
+
+    var get_cookie = function(c_name) {
+        if (document.cookie.length > 0) {
+            var c_start = document.cookie.indexOf(c_name + "=");
+            if (c_start != -1) {
+                c_start = c_start + c_name.length + 1;
+                c_end = document.cookie.indexOf(";", c_start);
+                if (c_end == -1) {
+                    c_end = document.cookie.length;
+                }
+                return unescape(document.cookie.substring(c_start, c_end));
+            }
+        }
+        return "";
+    }
+
+    var set_cookie = function (c_name,value,exdays) {
+        var exdate = new Date();
+        exdate.setDate(exdate.getDate() + exdays);
+        var c_value = escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+        document.cookie = c_name + "=" + c_value + "; path=/";
+    }
+
+
+    /*
+     * set maiziuid
+    */
+
+    var uid_gen = function() {
+        function s4() {
+            return Math.floor((1 + Math.random()) * 0x10000).toString(16).substring(1);
+        }
+        return s4() + s4() + s4() + s4() + s4() + s4() + s4() + s4();
+    }
+
+    if (get_cookie("maiziuid") == "") {
+        set_cookie("maiziuid", uid_gen(), 1024);
+    }
+
+    if (window.location.hostname.indexOf("maiziedu.com") >= 0) {
+        (function () {
+            var query_string = "url=" + escape(window.location.href) + "&";
+            query_string = query_string + "maiziuid=" + get_cookie("maiziuid") + "&";
+            query_string = query_string + "referrer=" + escape(document.referrer);
+
+            var url = "http://hit.maiziedu.com/?" + query_string + "&callback=" + new Date().getTime();
+            var script = document.createElement("script");
+            script.setAttribute("src", url);
+            document.getElementsByTagName("head")[0].appendChild(script);
+        })();
+    }
+
+</script> 
+  <script type="text/javascript">
+//页面手机跳转
+if(/AppleWebKit.*Mobile/i.test(navigator.userAgent) || (/MIDP|android|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(navigator.userAgent))){if(window.location.href.indexOf("http://m.maiziedu.com")<0){window.location.href="http://m.maiziedu.com" + window.location.pathname;}};
+</script> 
+  <script type="text/javascript">
+<!-- 百度统计代码 -->
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?e3879546912fd4b2d6e909e064d49262";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+  <script type="text/javascript">var login_popupvar=false;</script> 
+  <script type="text/javascript" src="/2016/lib/geetest/gt.min.js"></script> 
+  <script type="text/javascript">
+window.zhuge = window.zhuge || [];window.zhuge.methods = "_init debug identify track trackLink trackForm page".split(" ");window.zhuge.factory = function(b){return function() {var a = Array.prototype.slice.call(arguments);a.unshift(b);window.zhuge.push(a);return window.zhuge;}};for(var i = 0; i < window.zhuge.methods.length; i++){var key = window.zhuge.methods[i];window.zhuge[key] = window.zhuge.factory(key);}window.zhuge.load=function(b, x){if (!document.getElementById("zhuge-js")){var a = document.createElement("script");var verDate=new Date();var verStr=verDate.getFullYear().toString()+verDate.getMonth().toString()+verDate.getDate().toString();a.type = "text/javascript";a.id = "zhuge-js";a.async = !0;a.src = (location.protocol == 'http:' ? "http://sdk.zhugeio.com/zhuge-lastest.min.js?v=" : 'https://zgsdk.zhugeio.com/zhuge-lastest.min.js?v=') + verStr;var c = document.getElementsByTagName("script")[0];c.parentNode.insertBefore(a, c);window.zhuge._init(b, x)}};
+window.zhuge.load('7bdc65f630344e4fa3b5d23e5c096d35');
+//window.zhuge.load('7bdc65f630344e4fa3b5d23e5c096d35', {debug:true});
+</script> 
+ </head> 
+ <body class="YaHei "> 
+  <div id="maizi_trace_common_data" style="display: none;"> 
+   <p id="trace_pay_type_common_data" style="display: none;" value=""></p> 
+   <p id="trace_user_type_common_data" style="display: none;" value=""></p> 
+   <p id="trace_career_name_common_data" style="display: none;" value=""></p> 
+   <p id="trace_taskball_name_common_data" style="display: none;" value=""></p> 
+   <p id="trace_project_name_common_data" style="display: none;" value=""></p> 
+   <p id="trace_video_name_common_data" style="display: none;" value=""></p> 
+  </div> 
+  <!--视频播放顶部--> 
+  <div class="video_play_top"> 
+   <a href="/course/458/" class="go_back"></a> 
+   <span class="lesson_name">Python网络爬虫实战-Scrapy</span> 
+   <div class="zynewLogin colorff"> 
+   </div> 
+  </div> 
+  <div class="video"> 
+   <!--视频播放器右侧导师信息和提问--> 
+   <div class="course_teacher"> 
+    <h3>课程导师</h3> 
+    <a href="/u/32587/" target="0"> <img src="/uploads/avatar/18_samll.jpg" alt="Chris老师" /> <em title="金牌老师" class="role gold_tea"></em> </a> 
+    <a href="/u/32587/" class="teacher_name" target="0">Chris老师</a> 
+    <div class="tea_intro scroll-pane">
+     <div class="tea_scroll ">
+      十余年Web开发经验，主导会员营销、财务管理、游戏管理等三十余个大中型Web项目的设计与研发，项目体验人数超过千万。
+     </div>
+    </div> 
+    <div class="message_wrap marginB29"> 
+     <textarea name="discuss" class="quiz_input" placeholder="在这里输入你的问题吧!"></textarea> 
+     <a href="javascript:void(0)" class="upload-img upload_btn"></a> 
+    </div> 
+    <div class="submit_div"> 
+     <input type="button" class="submit" value="向老师提问" /> 
+    </div> 
+   </div> 
+   <!--视频播放左侧章节数--> 
+   <div class="catalog"> 
+    <span class="page prev"></span> 
+    <span class="page next"></span> 
+    <div class="lesson"> 
+     <div class="title">
+      <span></span>
+     </div> 
+     <ul style="margin-top: 0"> 
+      <li> <a href="/course/458-7430/" class="" name="1.scrapy是什么">1</a> </li> 
+      <li> <span href="/course/458-7431/" class="selected" name="2.初步使用scrapy">2</span> </li> 
+      <li> <a href="/course/458-7432/" class="needPay" name="3.scrapy的基本使用步骤">3</a> </li> 
+      <li> <a href="/course/458-7433/" class="needPay" name="4.基本概念介绍1-scrapy命令行工具">4</a> </li> 
+      <li> <a href="/course/458-7901/" class="needPay" name="5.基本概念介绍2-scrapy的重要组件">5</a> </li> 
+      <li> <a href="/course/458-7902/" class="needPay" name="6.基本概念介绍3-scrapy中的重要对象">6</a> </li> 
+      <li> <a href="/course/458-7903/" class="needPay" name="7.scrapy内置服务介绍">7</a> </li> 
+      <li> <a href="/course/458-7904/" class="needPay" name="8.抓取进阶-对“西刺”网站的抓取">8</a> </li> 
+      <li> <a href="/course/458-7905/" class="needPay" name="9.“西刺”网站爬虫的核心代码解读">9</a> </li> 
+      <li> <a href="/course/458-8059/" class="needPay" name="10.Scrapy框架解读—深入理解爬虫原理">10</a> </li> 
+      <li> <a href="/course/458-8060/" class="needPay" name="11.实用技巧1—多级页面的抓取技巧">11</a> </li> 
+      <li> <a href="/course/458-8061/" class="needPay" name="12.实用技巧2—图片的抓取">12</a> </li> 
+      <li> <a href="/course/458-8139/" class="needPay" name="13.抓取过程中的常见问题1—代理ip的使用">13</a> </li> 
+      <li> <a href="/course/458-8140/" class="needPay" name="14.抓取过程中的常见问题2—cookie的处理">14</a> </li> 
+      <li> <a href="/course/458-8230/" class="needPay" name="15.抓取过程中的常见问题3—js的处理技巧">15</a> </li> 
+      <li> <a href="/course/458-8231/" class="needPay" name="16.scrapy的部署工具介绍-scrapyd">16</a> </li> 
+      <li> <a href="/course/458-8247/" class="needPay" name="17.部署scrapy到scrapyd">17</a> </li> 
+      <li> <a href="/course/458-8248/" class="needPay" name="18.Scrapy课程总结">18</a> </li> 
+     </ul> 
+    </div> 
+   </div> 
+   <!--视频播放器--> 
+   <div class="play_panel"> 
+    <link rel="stylesheet" type="text/css" href="/css/play_area.css" /> 
+    <link rel="stylesheet" type="text/css" href="/2016/lib/layer/skin/layer.css?v=201701131700" /> 
+    <link rel="stylesheet" type="text/css" href="/2016/lib/video/video_play.css?v=201701131700" /> 
+    <style type="text/css">body {background:#333333;position: relative;}</style> 
+    <!-- 视频播放 --> 
+    <div class="zyNewVideo_main"> 
+     <div class="zvideo_index t5o"> 
+      <div class="zvideo"> 
+       <video id="myVideo" width="100%" height="100%"> 
+        <source src="" type="video/mp4"></source> 
+        <p class="vjs-no-js">无法运行，请执行js权限</p> 
+       </video> 
+       <div class="loading-video">
+        <a href="javascript:void(0)"></a>
+       </div> 
+       <div class="vip big-play-button">
+        <a href="javascript:void(0)"></a>
+       </div> 
+       <div class="ordinary big-play-button"> 
+        <div class="ad"> 
+         <span class="off"></span> 
+         <a href="/course/python-px/" target="_blank"> <img src="/uploads/" /> </a> 
+        </div> 
+        <a href="javascript:void(0)"></a> 
+       </div> 
+       <div class="videoStopMeg textC"> 
+        <div style="height: 110px;margin-top: -55px;"> 
+         <p class="font14 VSMbtn"><a class="VSMbtn1"><i></i>重新观看</a><a class="VSMbtn2">下一节</a></p> 
+        </div> 
+       </div> 
+       <div class="video-header" style="display: none"> 
+        <h1 class="video-name">2.初步使用scrapy</h1> 
+        <div class="view-port"> 
+         <a class="Small" href="javascript:void(0)">50%</a> 
+         <a class="Normal" href="javascript:void(0)">75%</a> 
+         <a class="Big" href="javascript:void(0)">100%</a> 
+        </div> 
+        <div class="out-full"> 
+         <a href="javascript:void(0)">退出全屏</a> 
+        </div> 
+       </div> 
+       <div class="control-bar"> 
+        <div class="progressBar"> 
+         <div class="current_time"></div> 
+         <span class="slider"></span> 
+         <div class="timeBar">
+          <span></span>
+         </div> 
+         <div class="bufferBar"></div> 
+         <div class="hover-time">
+          00:00:00
+         </div> 
+        </div> 
+        <div class="play-control">
+         <span class="control-text playing" title="播放">Play</span>
+        </div> 
+        <div class="play-next-control">
+         <span class="control-text play-next" title="下一节">Next</span>
+        </div> 
+        <div class="progressTime"> 
+         <span class="current">00:00</span> 
+         <i>/</i> 
+         <span class="duration">00:00</span> 
+        </div> 
+        <div class="full-screen">
+         <span></span>
+        </div> 
+        <div class="volume"> 
+         <span></span> 
+         <div class="volume-bar"> 
+          <div class="volume-size"> 
+           <div class="volume-level"></div> 
+           <div class="volume-dot"> 
+            <div class="volume-prompt">
+             40%
+            </div> 
+           </div> 
+          </div> 
+         </div> 
+        </div> 
+        <div class="play-rate"> 
+         <div class="play-rate-menu"> 
+          <ul> 
+           <li>2x</li> 
+           <li>1.5x</li> 
+           <li>1.25x</li> 
+           <li class="on">1x</li> 
+          </ul> 
+         </div> 
+         <span>1x</span> 
+        </div> 
+       </div> 
+      </div> 
+      <div class="bottom-module"> 
+       <span class="title">2.初步使用scrapy</span> 
+       <div class="fr"> 
+        <div class="share"> 
+         <i></i>
+         <span>分享</span> 
+         <div class="jiathis_style"> 
+          <a class="jiathis_button_cqq"></a> 
+          <a class="jiathis_button_qzone"></a> 
+          <a class="jiathis_button_tsina"></a> 
+         </div> 
+        </div> 
+        <div class="down-load"> 
+         <i></i>
+         <span>离线学习</span> 
+         <div class="weixin-box">
+          <em></em>
+          <p>下载APP离线观看</p>
+         </div> 
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+  </div> 
+  <!--视频播放器底部--> 
+  <div style="width:100%;background-color: #ddd;padding-top: 20px;"> 
+   <div class="small_course_content"> 
+    <!--技能补充--> 
+    <div class="content_right"> 
+     <div class="header">
+      <span class="title">技能补充</span>
+      <a href="/course/all/" target="0" class="more">更多</a>
+     </div> 
+     <div class="skill"> 
+      <ul> 
+       <li> 
+        <div class="img"> 
+         <a href="/course/229/" title="Javascript初步" target="0"><img src="/uploads/course/2016/06/javascript.jpg" alt="Javascript初步" /></a> 
+        </div> 
+        <div class="content"> 
+         <a href="/course/229/" target="0">Javascript初步</a> 
+         <p>Javascript是web前端开发常用技术之一，也是web前端开发必学技术之一，本章麦子学院原创JavaScript视频教程，将围绕其相关基础知识和实际应用全面讲解，让你轻松掌握并精通JavaScript的使用。</p> 
+        </div> </li> 
+       <li> 
+        <div class="img"> 
+         <a href="/course/231/" title="Photoshop切片" target="0"><img src="/uploads/course/2015/07/1.5Web前端开发之Photoshop切片.jpg" alt="Photoshop切片" /></a> 
+        </div> 
+        <div class="content"> 
+         <a href="/course/231/" target="0">Photoshop切片</a> 
+         <p>Photoshop切片是web前端开发常用技术之一，本章将由麦子学院资深web前端工程师为你讲解ps切片的基本操作、技巧及要点，让你快速入门Photoshop切片。 </p> 
+        </div> </li> 
+       <li> 
+        <div class="img"> 
+         <a href="/course/276/" title="Python语言编程基础" target="0"><img src="/uploads/course/2015/07/1.5Python语言编程基础.png" alt="Python语言编程基础" /></a> 
+        </div> 
+        <div class="content"> 
+         <a href="/course/276/" target="0">Python语言编程基础</a> 
+         <p>Python是一种面向对象、解释型计算机程序设计语言，语法简洁而清晰，具有丰富和强大的类库。本章Python编程基础的视频教程，为现目前国内最全面的Python视频教程之一，由麦子学院资深Python工程师录制，主要围绕Python编程实战方方面面展开。</p> 
+        </div> </li> 
+       <li> 
+        <div class="img"> 
+         <a href="/course/302/" title="Javascript初步" target="0"><img src="/uploads/course/2016/06/javascript_kvRO4x3.jpg" alt="Javascript初步" /></a> 
+        </div> 
+        <div class="content"> 
+         <a href="/course/302/" target="0">Javascript初步</a> 
+         <p>javascript是一种动态类型、弱类型、基于原型的语言，广泛应用于客户端，而在Python中，JavaScript是 web前端开发不可或缺的一个技术，本章主要是麦子学院资深web前端开发工程师通过系统讲解js的语法、对象、函数、变量及其的使用等等，让零基础学员迅速入门。</p> 
+        </div> </li> 
+      </ul> 
+     </div> 
+    </div> 
+    <div class="content_left"> 
+     <!--tab切换--> 
+     <div class="tab"> 
+      <ul> 
+       <li class="interlocution selected">最新问答</li> 
+       <li class="wiki_data">WIKI资料</li> 
+       <li class="kj_download">课件下载</li> 
+      </ul> 
+      <div class="my_join">
+       <em value="me" class=""></em>
+       <span>只看我参与的</span>
+      </div> 
+     </div> 
+     <div class="tab_content"> 
+      <!--最新问答--> 
+      <div class="newest_QA"> 
+       <!--隐藏域--> 
+       <input id="lesson_id" type="hidden" value="7431" /> 
+       <input id="lesson_name" type="hidden" value="初步使用scrapy" /> 
+       <input id="discuss_location" value="458_7431" type="hidden" /> 
+       <ul class="QA_lists"> 
+        <li class="parent_discuss" id="10929"> <input class="object_id" type="hidden" value="7431" /> <input class="last_id" type="hidden" value="10929" /> <input class="answer_user_id" type="hidden" value="210667" /> <input class="answer_nick_name" type="hidden" value="15117935043" /> 
+         <div class="avatar colorf3"> 
+          <a href="
+                     /u/210667/
+                 " title="15117935043" target="0"> <img src="/uploads/avatar/16_samll.jpg" alt="15117935043" /> </a> 
+         </div> 
+         <div class="parent_text _reply"> 
+          <h3> <a href="/u/210667/" class="colorf3 font18" target="0">15117935043</a> <span class="time colorC0">24天前</span> </h3> 
+          <p class="color33">我想指导括号里边的属性 html标签是怎么选的 怎么指导该写哪些标签</p> 
+          <div class="txt_img"> 
+           <ul> 
+            <li class="img_mc 
+                                  "> <img _src="/uploads/temp/2017/03/02/dc7cff5bdf2a42159493e0bb0c359d39.png" src="/uploads/temp/2017/03/02/7a3fcb5454104b629dd8cef6a8967906.png" data-tag="showBigImg" /> <span class="ckdt">查看大图</span> </li> 
+           </ul> 
+          </div> 
+          <div class="parent_lower" data-discuss-id="10929"> 
+           <em class="reply" title="回复"></em> 
+           <em value="1920" class="like " title="点赞"></em> 
+           <span class="quiz_time question-current color6f">提问于 <span class="color4c">03:15</span></span> 
+          </div> 
+          <div class="parent_reply"> 
+           <div class="log_user_avatar"> 
+            <a href="/home/" title=""><img src="/uploads/" alt="" /> </a> 
+           </div> 
+           <div class="input_area"> 
+            <textarea name="reply_content" id=""></textarea> 
+           </div> 
+           <div class="button"> 
+            <button name="cancel" class="cancel">取消</button> 
+            <button name="submit" class="submit">回复</button> 
+           </div> 
+          </div> 
+         </div> <p class="more_discuss" value="查看剩余0条回复↓" style="display: none">收起↑</p> 
+         <dl class="children_discuss" style="display: none"></dl> </li> 
+        <li class="parent_discuss" id="10928"> <input class="object_id" type="hidden" value="7431" /> <input class="last_id" type="hidden" value="10928" /> <input class="answer_user_id" type="hidden" value="210667" /> <input class="answer_nick_name" type="hidden" value="15117935043" /> 
+         <div class="avatar colorf3"> 
+          <a href="
+                     /u/210667/
+                 " title="15117935043" target="0"> <img src="/uploads/avatar/16_samll.jpg" alt="15117935043" /> </a> 
+         </div> 
+         <div class="parent_text _reply"> 
+          <h3> <a href="/u/210667/" class="colorf3 font18" target="0">15117935043</a> <span class="time colorC0">24天前</span> </h3> 
+          <p class="color33">最后的结果我没看懂 没看到咱们要爬取的信息呀</p> 
+          <div class="parent_lower" data-discuss-id="10928"> 
+           <em class="reply" title="回复"></em> 
+           <em value="1920" class="like " title="点赞"></em> 
+           <span class="quiz_time question-current color6f">提问于 <span class="color4c">06:09</span></span> 
+          </div> 
+          <div class="parent_reply"> 
+           <div class="log_user_avatar"> 
+            <a href="/home/" title=""><img src="/uploads/" alt="" /> </a> 
+           </div> 
+           <div class="input_area"> 
+            <textarea name="reply_content" id=""></textarea> 
+           </div> 
+           <div class="button"> 
+            <button name="cancel" class="cancel">取消</button> 
+            <button name="submit" class="submit">回复</button> 
+           </div> 
+          </div> 
+         </div> <p class="more_discuss" value="查看剩余0条回复↓" style="display: none">收起↑</p> 
+         <dl class="children_discuss" style="display: none"></dl> </li> 
+        <li class="parent_discuss" id="10927"> <input class="object_id" type="hidden" value="7431" /> <input class="last_id" type="hidden" value="10927" /> <input class="answer_user_id" type="hidden" value="210667" /> <input class="answer_nick_name" type="hidden" value="15117935043" /> 
+         <div class="avatar colorf3"> 
+          <a href="
+                     /u/210667/
+                 " title="15117935043" target="0"> <img src="/uploads/avatar/16_samll.jpg" alt="15117935043" /> </a> 
+         </div> 
+         <div class="parent_text _reply"> 
+          <h3> <a href="/u/210667/" class="colorf3 font18" target="0">15117935043</a> <span class="time colorC0">24天前</span> </h3> 
+          <p class="color33">课程里有没有网页分析的课程 没有的话学这个挺费劲 找标签就很麻烦</p> 
+          <div class="parent_lower" data-discuss-id="10927"> 
+           <em class="reply" title="回复"></em> 
+           <em value="1920" class="like " title="点赞"></em> 
+           <span class="quiz_time question-current color6f">提问于 <span class="color4c">03:50</span></span> 
+          </div> 
+          <div class="parent_reply"> 
+           <div class="log_user_avatar"> 
+            <a href="/home/" title=""><img src="/uploads/" alt="" /> </a> 
+           </div> 
+           <div class="input_area"> 
+            <textarea name="reply_content" id=""></textarea> 
+           </div> 
+           <div class="button"> 
+            <button name="cancel" class="cancel">取消</button> 
+            <button name="submit" class="submit">回复</button> 
+           </div> 
+          </div> 
+         </div> <p class="more_discuss" value="查看剩余0条回复↓" style="display: none">收起↑</p> 
+         <dl class="children_discuss" style="display: none"></dl> </li> 
+        <li class="parent_discuss" id="6517"> <input class="object_id" type="hidden" value="7431" /> <input class="last_id" type="hidden" value="6517" /> <input class="answer_user_id" type="hidden" value="169856" /> <input class="answer_nick_name" type="hidden" value="13752152624" /> 
+         <div class="avatar colorf3"> 
+          <a href="
+                     /u/169856/
+                 " title="13752152624" target="0"> <img src="/uploads/avatar/5_middle.jpg" alt="13752152624" /> </a> 
+         </div> 
+         <div class="parent_text _reply"> 
+          <h3> <a href="/u/169856/" class="colorf3 font18" target="0">13752152624</a> <span class="time colorC0">2个月前</span> </h3> 
+          <p class="color33">a::attr(href)，a::text都是什么意思</p> 
+          <div class="parent_lower" data-discuss-id="6517"> 
+           <em class="reply" title="回复"></em> 
+           <em value="1920" class="like " title="点赞"></em> 
+          </div> 
+          <div class="parent_reply"> 
+           <div class="log_user_avatar"> 
+            <a href="/home/" title=""><img src="/uploads/" alt="" /> </a> 
+           </div> 
+           <div class="input_area"> 
+            <textarea name="reply_content" id=""></textarea> 
+           </div> 
+           <div class="button"> 
+            <button name="cancel" class="cancel">取消</button> 
+            <button name="submit" class="submit">回复</button> 
+           </div> 
+          </div> 
+         </div> 
+         <dl class="children_discuss"> 
+          <dd id="10930"> 
+           <input class="last_id" type="hidden" value="10930" /> 
+           <input class="problem_id" type="hidden" value="6517" /> 
+           <input class="answer_user_id" type="hidden" value="210667" /> 
+           <input class="answer_nick_name" type="hidden" value="15117935043" /> 
+           <div class="avatar colorf3"> 
+            <a href="
+                             /u/210667/
+                         " title="15117935043"> <img src="/uploads/avatar/16_samll.jpg" alt="15117935043" /> </a> 
+           </div> 
+           <div class="children_text _reply"> 
+            <h3> <a href="
+                                 /u/210667/
+                             " class="colorf3 font18">15117935043</a> <span class="time colorC0">24天前</span> </h3> 
+            <p class="color33">能不能加个好友</p> 
+            <div class="children_lower" data-discuss-id="10930"> 
+             <em class="reply"></em> 
+             <em value="1920" class="like "></em> 
+             <span class="quiz_time color6f"></span> 
+            </div> 
+            <div class="children_reply"> 
+             <div class="log_user_avatar"> 
+              <a href="/home/"> <img src="/uploads/" alt="" /> </a> 
+             </div> 
+             <div class="input_area"> 
+              <textarea name="reply_content" id="" placeholder="回复 15117935043:"></textarea> 
+             </div> 
+             <div class="button"> 
+              <button name="cancel" class="cancel">取消</button> 
+              <button name="submit" class="submit">回复</button> 
+             </div> 
+            </div> 
+           </div> 
+          </dd> 
+         </dl> </li> 
+        <li class="parent_discuss" id="5055"> <input class="object_id" type="hidden" value="7431" /> <input class="last_id" type="hidden" value="5055" /> <input class="answer_user_id" type="hidden" value="105919" /> <input class="answer_nick_name" type="hidden" value="LoveSpider" /> 
+         <div class="avatar colorf3"> 
+          <a href="
+                     /u/105919/
+                 " title="LoveSpider" target="0"> <img src="/uploads/avatar/6_samll.jpg" alt="LoveSpider" /> </a> 
+         </div> 
+         <div class="parent_text _reply"> 
+          <h3> <a href="/u/105919/" class="colorf3 font18" target="0">LoveSpider</a> <span class="time colorC0">4个月前</span> </h3> 
+          <p class="color33">您好老师,我在爬去天猫数据的时候无法爬去，包括shell爬去都无法爬去，不知道对反爬虫网站如何处理和分析</p> 
+          <div class="parent_lower" data-discuss-id="5055"> 
+           <em class="reply" title="回复"></em> 
+           <em value="1920" class="like " title="点赞"></em> 
+           <span class="quiz_time question-current color6f">提问于 <span class="color4c">00:00</span></span> 
+          </div> 
+          <div class="parent_reply"> 
+           <div class="log_user_avatar"> 
+            <a href="/home/" title=""><img src="/uploads/" alt="" /> </a> 
+           </div> 
+           <div class="input_area"> 
+            <textarea name="reply_content" id=""></textarea> 
+           </div> 
+           <div class="button"> 
+            <button name="cancel" class="cancel">取消</button> 
+            <button name="submit" class="submit">回复</button> 
+           </div> 
+          </div> 
+         </div> <p class="more_discuss" value="查看剩余0条回复↓" style="display: none">收起↑</p> 
+         <dl class="children_discuss" style="display: none"></dl> </li> 
+        <li class="parent_discuss" id="3657"> <input class="object_id" type="hidden" value="7431" /> <input class="last_id" type="hidden" value="3657" /> <input class="answer_user_id" type="hidden" value="150456" /> <input class="answer_nick_name" type="hidden" value="15253247236" /> 
+         <div class="avatar colorf3"> 
+          <a href="
+                     /u/150456/
+                 " title="15253247236" target="0"> <img src="/uploads/avatar/2_samll.jpg" alt="15253247236" /> </a> 
+         </div> 
+         <div class="parent_text _reply"> 
+          <h3> <a href="/u/150456/" class="colorf3 font18" target="0">15253247236</a> <span class="time colorC0">6个月前</span> </h3> 
+          <p class="color33">我想问一下老师这堂课的课件没法下载吗？</p> 
+          <div class="parent_lower" data-discuss-id="3657"> 
+           <em class="reply" title="回复"></em> 
+           <em value="1920" class="like " title="点赞"></em> 
+           <span class="quiz_time question-current color6f">提问于 <span class="color4c">14:25</span></span> 
+          </div> 
+          <div class="parent_reply"> 
+           <div class="log_user_avatar"> 
+            <a href="/home/" title=""><img src="/uploads/" alt="" /> </a> 
+           </div> 
+           <div class="input_area"> 
+            <textarea name="reply_content" id=""></textarea> 
+           </div> 
+           <div class="button"> 
+            <button name="cancel" class="cancel">取消</button> 
+            <button name="submit" class="submit">回复</button> 
+           </div> 
+          </div> 
+         </div> 
+         <dl class="children_discuss"> 
+          <dd id="3663"> 
+           <input class="last_id" type="hidden" value="3663" /> 
+           <input class="problem_id" type="hidden" value="3657" /> 
+           <input class="answer_user_id" type="hidden" value="3472" /> 
+           <input class="answer_nick_name" type="hidden" value="胡明星" /> 
+           <div class="avatar colorf3"> 
+            <a href="
+                             /u/3472/
+                         " title="胡明星"> <img src="/uploads/avatar/2015/05/yopoing_small.jpg" alt="胡明星" /> </a> 
+           </div> 
+           <div class="children_text _reply"> 
+            <h3> <a href="
+                                 /u/3472/
+                             " class="colorf3 font18">胡明星</a> <span class="reply_font">回复</span> <a href="
+                                 /u/150456/
+                             " class="colorf3 font18">15253247236</a> <span class="time colorC0">6个月前</span> </h3> 
+            <p class="color33">你好，可以下载的。</p> 
+            <div class="children_lower" data-discuss-id="3663"> 
+             <em class="reply"></em> 
+             <em value="1920" class="like "></em> 
+             <span class="quiz_time color6f"></span> 
+            </div> 
+            <div class="children_reply"> 
+             <div class="log_user_avatar"> 
+              <a href="/home/"> <img src="/uploads/" alt="" /> </a> 
+             </div> 
+             <div class="input_area"> 
+              <textarea name="reply_content" id="" placeholder="回复 胡明星:"></textarea> 
+             </div> 
+             <div class="button"> 
+              <button name="cancel" class="cancel">取消</button> 
+              <button name="submit" class="submit">回复</button> 
+             </div> 
+            </div> 
+           </div> 
+          </dd> 
+          <dd id="6508"> 
+           <input class="last_id" type="hidden" value="6508" /> 
+           <input class="problem_id" type="hidden" value="3657" /> 
+           <input class="answer_user_id" type="hidden" value="195433" /> 
+           <input class="answer_nick_name" type="hidden" value="2375008665" /> 
+           <div class="avatar colorf3"> 
+            <a href="
+                             /u/195433/
+                         " title="2375008665"> <img src="/uploads/avatar/1_samll.jpg" alt="2375008665" /> </a> 
+           </div> 
+           <div class="children_text _reply"> 
+            <h3> <a href="
+                                 /u/195433/
+                             " class="colorf3 font18">2375008665</a> <span class="reply_font">回复</span> <a href="
+                                 /u/3472/
+                             " class="colorf3 font18">胡明星</a> <span class="time colorC0">2个月前</span> </h3> 
+            <p class="color33">老师你好，为什么课件点了没有反应呢？</p> 
+            <div class="children_lower" data-discuss-id="6508"> 
+             <em class="reply"></em> 
+             <em value="1920" class="like "></em> 
+             <span class="quiz_time color6f"></span> 
+            </div> 
+            <div class="children_reply"> 
+             <div class="log_user_avatar"> 
+              <a href="/home/"> <img src="/uploads/" alt="" /> </a> 
+             </div> 
+             <div class="input_area"> 
+              <textarea name="reply_content" id="" placeholder="回复 2375008665:"></textarea> 
+             </div> 
+             <div class="button"> 
+              <button name="cancel" class="cancel">取消</button> 
+              <button name="submit" class="submit">回复</button> 
+             </div> 
+            </div> 
+           </div> 
+          </dd> 
+         </dl> </li> 
+       </ul> 
+       <div class="QA_more">
+        加载更多↓
+       </div> 
+      </div> 
+      <!--wiki资料--> 
+      <div class="wiki"> 
+       <ul> 
+        <li><a href="/wiki/crawler/scrapy/" title="scrapy简介" target="0"><img src="/uploads/new_img/20160809141611_15675.png" alt="学习Python爬虫" /></a> 
+         <div class="wiki_text"> 
+          <a href="/wiki/crawler/scrapy/" title="scrapy简介" target="0"><h3>scrapy简介</h3></a> 
+          <p>Scrapy是什么？An open source and collaborative framework for extracting the data you need from websites.Scrapy优点优点？①Fast and powerful：write the rules to e...</p> 
+         </div> </li> 
+        <li><a href="/wiki/crawler/use/" title="初步使用scrapy" target="0"><img src="/uploads/new_img/20160809141611_15675.png" alt="学习Python爬虫" /></a> 
+         <div class="wiki_text"> 
+          <a href="/wiki/crawler/use/" title="初步使用scrapy" target="0"><h3>初步使用scrapy</h3></a> 
+          <p>源代码&nbsp;原理讲解1、在somefile.py文件中找到已定义的爬虫，然后通过抓取引擎运行爬虫。2、具体的抓取过程：1） 使用start_urls作为初始url生成Request，并默认把parse作为它的回调函数。2）在parse中采用css选择器获得目标URL，并注册parse_question作...</p> 
+         </div> </li> 
+        <li><a href="/wiki/crawler/step/" title="scrapy使用步骤" target="0"><img src="/uploads/new_img/20160809141611_15675.png" alt="学习Python爬虫" /></a> 
+         <div class="wiki_text"> 
+          <a href="/wiki/crawler/step/" title="scrapy使用步骤" target="0"><h3>scrapy使用步骤</h3></a> 
+          <p>安装步骤1、安装python2.72、安装pip3、安装lxml4、安装OpenSSL5、安装scrapy注：如果安装过程中碰到问题，请百度/谷歌；或者查看老师博客：http://www.cnblogs.com/python-life使用步骤1、Creating a project2、Definin...</p> 
+         </div> </li> 
+        <li><a href="/wiki/crawler/command/" title="scrapy的命令行工具" target="0"><img src="/uploads/new_img/20160809141611_15675.png" alt="学习Python爬虫" /></a> 
+         <div class="wiki_text"> 
+          <a href="/wiki/crawler/command/" title="scrapy的命令行工具" target="0"><h3>scrapy的命令行工具</h3></a> 
+          <p>1、help、versionhelp：scrapy的基本命令，用于查看帮助信息。version：查看版本信息，可见-v参数查看各组件的版本信息；①help&nbsp;② version&nbsp;我们可以清楚看到，scrapy版本为1.0.3&nbsp;③在version后加-v 会列出更加详细的信息&nbsp;&nbsp;2、startproje...</p> 
+         </div> </li> 
+        <li><a href="/wiki/crawler/spider/" title="Spider" target="0"><img src="/uploads/new_img/20160809141611_15675.png" alt="学习Python爬虫" /></a> 
+         <div class="wiki_text"> 
+          <a href="/wiki/crawler/spider/" title="Spider" target="0"><h3>Spider</h3></a> 
+          <p>基本介绍 概念spider是一个类，它定义了这样爬取一个网站，包括怎样跟踪连接、怎样抓取数据循环执行流程Generating the initial requestsParse the responseUsing selectorStore item之前项目中的一个实例&nbsp;基类（scrapy.spid...</p> 
+         </div> </li> 
+        <li><a href="/wiki/crawler/selector/" title="Selector" target="0"><img src="/uploads/new_img/20160809141611_15675.png" alt="学习Python爬虫" /></a> 
+         <div class="wiki_text"> 
+          <a href="/wiki/crawler/selector/" title="Selector" target="0"><h3>Selector</h3></a> 
+          <p>基本介绍实例化：CrawlSpider example&nbsp;Let’s now take a look at an example CrawlSpider with rules:&nbsp;import scrapy&nbsp;from scrapy.spiders import CrawlSpider, Rule fro...</p> 
+         </div> </li> 
+        <li><a href="/wiki/crawler/other/" title="其他重要组件" target="0"><img src="/uploads/new_img/20160809141611_15675.png" alt="学习Python爬虫" /></a> 
+         <div class="wiki_text"> 
+          <a href="/wiki/crawler/other/" title="其他重要组件" target="0"><h3>其他重要组件</h3></a> 
+          <p>items一个items的完整示例import scrapy&nbsp;class Product(scrapy.Item):name = scrapy.Field()price = scrapy.Field()stock = scrapy.Field()last_updated = scrapy.Field...</p> 
+         </div> </li> 
+        <li><a href="/wiki/crawler/requests/" title="Requests" target="0"><img src="/uploads/new_img/20160809141611_15675.png" alt="学习Python爬虫" /></a> 
+         <div class="wiki_text"> 
+          <a href="/wiki/crawler/requests/" title="Requests" target="0"><h3>Requests</h3></a> 
+          <p>初始化参数class scrapy.http.Request(url [ ,&nbsp;callback,&nbsp;method='GET',headers,&nbsp;body,cookies,&nbsp;meta,encoding='utf-8', &nbsp;priority=0,&nbsp;don't_filter=False,&nbsp;errback ]...</p> 
+         </div> </li> 
+        <li><a href="/wiki/crawler/response/" title="Responses" target="0"><img src="/uploads/new_img/20160809141611_15675.png" alt="学习Python爬虫" /></a> 
+         <div class="wiki_text"> 
+          <a href="/wiki/crawler/response/" title="Responses" target="0"><h3>Responses</h3></a> 
+          <p>初始化参数class scrapy.http.Response(url [ ,&nbsp;status=200,&nbsp;headers,&nbsp;body,&nbsp;flags&nbsp;] )url&nbsp;(string) – the URL of this response&nbsp;headers&nbsp;(dict) – the headers of th...</p> 
+         </div> </li> 
+        <li><a href="/wiki/crawler/logging/" title="logging" target="0"><img src="/uploads/new_img/20160809141611_15675.png" alt="学习Python爬虫" /></a> 
+         <div class="wiki_text"> 
+          <a href="/wiki/crawler/logging/" title="logging" target="0"><h3>logging</h3></a> 
+          <p>scrapy使用python内置的logging模块记录日志&nbsp;日志的级别1. logging.CRITICAL - for critical errors (highest severity)2. logging.ERROR - for regular errors3. logging.WARNIN...</p> 
+         </div> </li> 
+        <li><a href="/wiki/crawler/stats/" title="Stats Collections" target="0"><img src="/uploads/new_img/20160809141611_15675.png" alt="学习Python爬虫" /></a> 
+         <div class="wiki_text"> 
+          <a href="/wiki/crawler/stats/" title="Stats Collections" target="0"><h3>Stats Collections</h3></a> 
+          <p>基本操作Access the stats collector through the stats&nbsp;attribute. Here is an example of an extension that access stats:class ExtensionThatAccessStats(object...</p> 
+         </div> </li> 
+        <li><a href="/wiki/crawler/email/" title="Sending-email" target="0"><img src="/uploads/new_img/20160809141611_15675.png" alt="学习Python爬虫" /></a> 
+         <div class="wiki_text"> 
+          <a href="/wiki/crawler/email/" title="Sending-email" target="0"><h3>Sending-email</h3></a> 
+          <p>基本使用方法There are two ways to instantiate the mail sender. You can instantiate it using the standard constructor:from scrapy.mail import MailSender&nbsp;mail...</p> 
+         </div> </li> 
+        <li><a href="/wiki/crawler/grab/" title="对“西刺”网站的抓取" target="0"><img src="/uploads/new_img/20160809141611_15675.png" alt="学习Python爬虫" /></a> 
+         <div class="wiki_text"> 
+          <a href="/wiki/crawler/grab/" title="对“西刺”网站的抓取" target="0"><h3>对“西刺”网站的抓取</h3></a> 
+          <p>需求分析使用单一ip抓取网页过程中，经常碰到IP被封的情况；现需要获取一批代理IP进行网页抓取；目前找到一个叫&quot;西刺&quot;的网站，可以提供免费代理IP，领导要求对上面的IP进行爬取，以供日后使用；&nbsp;网站结构分析步骤：&nbsp;首页各分类IP列表连接&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IP列表（多页）&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;具体IP获取①进入“西刺...</p> 
+         </div> </li> 
+        <li><a href="/wiki/crawler/code/" title="西刺网站爬虫代码解读" target="0"><img src="/uploads/new_img/20160809141611_15675.png" alt="学习Python爬虫" /></a> 
+         <div class="wiki_text"> 
+          <a href="/wiki/crawler/code/" title="西刺网站爬虫代码解读" target="0"><h3>西刺网站爬虫代码解读</h3></a> 
+          <p>创建工程1、创建工程的命令 scrapy startproject collectips（工程名称）编写item1、编写好的item：&nbsp;编写spider1、Spider是爬虫的核心，也是用户自定义的部分：&nbsp;&nbsp;&nbsp;&nbsp;编写&amp;配置pipeline1、编写好的pipeline：&nbsp;2、配置pipeline，在s...</p> 
+         </div> </li> 
+        <li><a href="/wiki/crawler/theory/" title="深入理解爬虫原理" target="0"><img src="/uploads/new_img/20160809141611_15675.png" alt="学习Python爬虫" /></a> 
+         <div class="wiki_text"> 
+          <a href="/wiki/crawler/theory/" title="深入理解爬虫原理" target="0"><h3>深入理解爬虫原理</h3></a> 
+          <p>组成部分介绍1、Scrapy Engine：负责组件之间数据的流转，当某个动作发生时触发事件；&nbsp;2、Scheduler：接收requests，并把他们入队，以便后续的调度；&nbsp;3、Downloader：负责抓取网页，并传送给引擎，之后抓取结果将传给spider；&nbsp;4、Spiders：用户编写的可定制化...</p> 
+         </div> </li> 
+        <li><a href="/wiki/crawler/multi/" title="多级页面抓取技巧" target="0"><img src="/uploads/new_img/20160809141611_15675.png" alt="学习Python爬虫" /></a> 
+         <div class="wiki_text"> 
+          <a href="/wiki/crawler/multi/" title="多级页面抓取技巧" target="0"><h3>多级页面抓取技巧</h3></a> 
+          <p>需求分析1、目标网站——天猫商城2、抓取内容——天猫商城销量前60的商品的情况（商品价格、商品名称、商品URL）、店铺的情况（店铺名称、店铺URL、公司名称、公司地址）3、存储格式——Excel表格&nbsp;代码解读1、item编写&nbsp;2、spider编写&nbsp;&nbsp;&nbsp;浏览网页内容&nbsp;&nbsp;右击某个元素，点击“使用fire...</p> 
+         </div> </li> 
+        <li><a href="/wiki/crawler/picture/" title="图片的抓取" target="0"><img src="/uploads/new_img/20160809141611_15675.png" alt="学习Python爬虫" /></a> 
+         <div class="wiki_text"> 
+          <a href="/wiki/crawler/picture/" title="图片的抓取" target="0"><h3>图片的抓取</h3></a> 
+          <p>需求分析1、目标网站——天猫商城2、抓取内容——天猫商城销量前60的商品的情况（商品价格、商品名称、商品URL）、店铺的情况（店铺名称、店铺URL、公司名称、公司地址），以及商品的图片3、存储格式——图片存储到本地文件夹，数据存储到csv文件中代码解读1、item编写&nbsp;2、spider编写&nbsp;&nbsp;&nbsp;3、...</p> 
+         </div> </li> 
+        <li><a href="/wiki/crawler/ip/" title="代理IP的使用" target="0"><img src="/uploads/new_img/20160809141611_15675.png" alt="学习Python爬虫" /></a> 
+         <div class="wiki_text"> 
+          <a href="/wiki/crawler/ip/" title="代理IP的使用" target="0"><h3>代理IP的使用</h3></a> 
+          <p>原理简述原理可以简单的概述为:用户(A)-在线代理服务器(B)-目标网站(C)，即：A向B发送浏览请求-B执行请求发送给C-C收到请求，回应。实现方法1, Spider MiddlewaresEach middleware component is a Python class that defin...</p> 
+         </div> </li> 
+        <li><a href="/wiki/crawler/cookie/" title="cookie的处理" target="0"><img src="/uploads/new_img/20160809141611_15675.png" alt="学习Python爬虫" /></a> 
+         <div class="wiki_text"> 
+          <a href="/wiki/crawler/cookie/" title="cookie的处理" target="0"><h3>cookie的处理</h3></a> 
+          <p>登陆的原理话（Session）跟踪是Web程序中常用的技术，用来跟踪用户的整个会话。常用的会话跟踪技术是Cookie与Session。1、身份识别①用户名②密码③密钥2、web中的身份识别①cookie通过在客户端记录信息确定用户身份,Cookie实际上是一小段的文本信息。客户端请求服务器，如果服务...</p> 
+         </div> </li> 
+        <li><a href="/wiki/crawler/js/" title="js的处理技巧" target="0"><img src="/uploads/new_img/20160809141611_15675.png" alt="学习Python爬虫" /></a> 
+         <div class="wiki_text"> 
+          <a href="/wiki/crawler/js/" title="js的处理技巧" target="0"><h3>js的处理技巧</h3></a> 
+          <p>通过第三方工具执行js脚本1、selenium&gt;&gt;&gt; from selenium import webdriver&gt;&gt;&gt; driver =webdriver.Firefox()&gt;&gt;&gt; driver.get('http://www.baidu.com')driver.page_source实际操作：①...</p> 
+         </div> </li> 
+       </ul> 
+       <div class="wiki_more">
+        <a href="/wiki/" target="0">更多wiki&gt;&gt;</a>
+       </div> 
+      </div> 
+      <!--课件下载--> 
+      <div class="kj"> 
+       <ul> 
+        <li> 
+         <div class="kj_text"> 
+          <h3>1——4 课件</h3> 
+          <p>1——4 课件</p> 
+         </div> <a href="javascript:void(0)"> </a> </li> 
+        <li> 
+         <div class="kj_text"> 
+          <h3>1-3 源码</h3> 
+          <p>1-3 源码</p> 
+         </div> <a href="javascript:void(0)"> </a> </li> 
+        <li> 
+         <div class="kj_text"> 
+          <h3>06——13 课件</h3> 
+          <p>06——13 课件</p> 
+         </div> <a href="javascript:void(0)"> </a> </li> 
+        <li> 
+         <div class="kj_text"> 
+          <h3>05——13 源码</h3> 
+          <p>05——13 源码</p> 
+         </div> <a href="javascript:void(0)"> </a> </li> 
+        <li> 
+         <div class="kj_text"> 
+          <h3>14——18 课件</h3> 
+          <p>14——18 课件</p> 
+         </div> <a href="javascript:void(0)"> </a> </li> 
+        <li> 
+         <div class="kj_text"> 
+          <h3>14——17 源码</h3> 
+          <p>14——17 源码</p> 
+         </div> <a href="javascript:void(0)"> </a> </li> 
+        <li> 
+         <div class="kj_text"> 
+          <h3>6_项目制作资料</h3> 
+          <p>6_项目制作资料</p> 
+         </div> <a href="javascript:void(0)"> </a> </li> 
+        <li> 
+         <div class="kj_text"> 
+          <h3>课件</h3> 
+          <p>课件</p> 
+         </div> <a href="javascript:void(0)"> </a> </li> 
+       </ul> 
+      </div> 
+     </div> 
+    </div> 
+    <!--用户反馈弹出层--> 
+    <div class="modal fade" id="feedbakBox" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true"> 
+     <div class="modal-dialog font14 color66"> 
+      <div class="modal-content"> 
+       <div class="modal-header"> 
+        <a class="zy_close"></a> 
+        <h4 class="modal-title font18">期待你的反馈</h4> 
+       </div> 
+       <div class="modal-body"> 
+        <form id="feedback_modal_form" action="/common/feedback/save/" method="post" enctype="multipart/form-data"> 
+         <div class="form-group type"> 
+          <label class="control-label">选择反馈类型</label> 
+          <select id="feedback_type" class="form-control" name="feedback_type"> <option value="" selected="selected">请选择分类</option> <option value="0">bug</option> <option value="1">功能建议</option> <option value="2">交互体验</option> <option value="3">吐个槽</option> <option value="4">表个扬</option> <option value="5">课程建议</option> </select> 
+          <em id="selectError">请选择反馈类型</em> 
+         </div> 
+         <div class="form-group"> 
+          <div class="textareaBox"> 
+           <textarea id="feedback_content" name="feedback_content" maxlength="200" placeholder="意见和建议"></textarea> 
+           <span>你还可以输入<em>200</em>字</span> 
+          </div> 
+          <em id="textareaError">请留下你的宝贵意见！～</em> 
+         </div> 
+         <div class="form-group"> 
+          <input type="hidden" id="hideen_image_url" name="image_url" value="" /> 
+          <p> <a href="javascript:;" class="file"><span>上传图片</span><input type="file" id="feedbackupload" name="image" accept="images/*" /></a> <span class="showFileName"></span> </p> 
+          <em class="fileerrorTip"></em> 
+         </div> 
+         <div class="form-group"> 
+          <input type="tel" class="form-control" name="contact" id="telphone" placeholder="联系方式" /> 
+          <em id="telError">请留下正确的电话号码，以便我们能帮助你！</em> 
+         </div> 
+         <div class="form-group"> 
+          <div style="margin-bottom:6px;"> 
+           <label class="control-label">滑动完成验证</label> 
+           <div id="captcha" class="feedbackcaptcha"></div> 
+          </div> 
+          <em>请滑动进行验证</em> 
+         </div> 
+         <input id="feedback_submit_btn" type="button" class="subminBtn disable" value="提交" disabled="disabled" /> 
+         <input type="reset" name="reset" style="display:none" /> 
+        </form> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div class="modal fade" id="feedbakBoxSuccess" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true"> 
+     <div class="modal-dialog font16 color33"> 
+      <div class="modal-content"> 
+       <em></em> 
+       <p>感谢你的反馈，你的支持永远是我们前进的动力！</p> 
+      </div> 
+     </div> 
+    </div> 
+    <!-- 查看职业课程大纲弹窗 --> 
+    <div class="modal fade YaHei" id="check_lesson_lists" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
+     <div class="modal-dialog modal-sm modal-content" style="width: 470px;"> 
+      <i class="close"></i> 
+      <div class="modal-body"> 
+       <h4 class="font24 color66 marginB29">亲爱的学员</h4> 
+       <p class="font14 color66 marginB20">该课程还有更完整的<span class="color5e font20">职业课程大纲</span>哦~</p> 
+       <p class="font14 color66 marginB29">体系化学习，会有更好的学习效果！</p> 
+       <a target="0" href="/course/python-px/" class="check_lists font14 colorff">查看职业课程大纲</a> 
+       <p class="font14 color66"><i class="check_box"></i>不再提醒</p> 
+      </div> 
+     </div> 
+    </div> 
+    <!-- 立即付费弹窗 --> 
+    <div class="modal fade YaHei" id="just_pay" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
+     <div class="modal-dialog modal-sm modal-content" style="width: 400px;"> 
+      <i class="close"></i> 
+      <h4 class="font18 color5e">直通班课程</h4> 
+      <div class="modal-body"> 
+       <p class="color66 font14 marginB16">抱歉，该课程视频仅限该直通班学员观看哦~</p> 
+       <div class="div_1"> 
+        <p>立即报名，您可享有</p> 
+        <ul> 
+         <li><span>•</span> 免费观看所有课程视频</li> 
+         <li><span>•</span> 智能在线学习系统</li> 
+         <li><span>•</span> 名师小班指导</li> 
+         <li><span>•</span> 全国就业服务</li> 
+        </ul> 
+       </div> 
+       <div class="div_2"> 
+        <!-- <p>现在开通试学班，只需要<span>488元</span></p> --> 
+        <p><a class="zdiv2_btn class53" target="0">立即咨询</a></p> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <!-- 插入图片弹窗 --> 
+    <div class="modal fade YaHei" id="insert-img" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"> 
+     <div class="modal-dialog"> 
+      <div class="modal-content" style="width: 600px;"> 
+       <h3>插入图片</h3> 
+       <div class="modal-body"> 
+        <ul id="insert-img-list" class="clearfix"> 
+        </ul> 
+       </div> 
+       <div class="modal-foot"> 
+        <span class="msg font14 color66"><i>*</i>格式：.jpg,.png,.jpeg&nbsp;&nbsp;&nbsp;大小：500k以内</span> 
+        <button class="cancel-insert-btn color66">取消</button> 
+        <button class="insert-img-btn colorff">确认</button> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+  </div> 
+  <!--查看大图--> 
+  <div class="show_big_image"> 
+   <div class="images"></div> 
+   <span class="viewer-close"></span> 
+   <div class="viewer-footer"> 
+    <ul class="viewer-toolbar"> 
+     <li class="viewer-zoom-in"></li> 
+     <li class="viewer-zoom-out"></li> 
+     <li class="viewer-prev"></li> 
+     <li class="viewer-next"></li> 
+     <li class="viewer-rotate-left"></li> 
+     <li class="viewer-rotate-right"></li> 
+    </ul> 
+   </div> 
+  </div> 
+  <!--footer--> 
+  <div class="footer-container"> 
+   <div class="mainfoot2 textC font14 color99"> 
+    <img src="/images/footer_logo.png" class="marginB14" alt="logo" />
+    <br /> &copy; 2012-2016 www.maiziedu.com
+    <br />蜀ICP备13014270号-4 Version 5.0.0 release20160127 
+   </div> 
+  </div> 
+  <div class="footNewBox2 textC color99"> 
+   <p class="p">&copy; 2012-2016 <a href="http://www.maiziedu.com">www.maiziedu.com</a></p> 
+   <p>蜀ICP备13014270号-4 Version 5.0.0 release20160127 </p> 
+  </div> 
+  <!--登录--> 
+  <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"> 
+   <div class="modal-dialog modal-sm" style="width:540px;"> 
+    <div class="modal-content" style="border: none;"> 
+     <div class="col-left"></div> 
+     <div class="col-right"> 
+      <div class="modal-header"> 
+       <button type="button" id="login_close" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button> 
+       <h4 class="modal-title" id="loginModalLabel" style="font-size: 18px;">登录</h4> 
+      </div> 
+      <div class="modal-body"> 
+       <section class="box-login v5-input-txt" id="box-login"> 
+        <form id="login_form" action="/user/login/" method="post" autocomplete="off"> 
+         <ul> 
+          <li class="form-group"><input class="form-control" id="id_account_l" maxlength="50" name="account_l" placeholder="请输入邮箱账号/手机号" type="text" /></li> 
+          <li class="form-group"><input class="form-control" id="id_password_l" name="password_l" placeholder="请输入密码" type="password" /></li> 
+         </ul> 
+        </form> 
+        <p class="good-tips marginB10"><a id="btnForgetpsw" class="fr">忘记密码？</a>还没有账号？<a href="/user/signup/" target="_blank" id="btnRegister">立即注册</a></p> 
+        <div class="login-box marginB10"> 
+         <button id="login_btn" type="button" class="btn btn-micv5 btn-block globalLogin">登录</button> 
+         <div id="login-form-tips" class="tips-error bg-danger" style="display: none;">
+          错误提示
+         </div> 
+        </div> 
+        <div class="threeLogin">
+         <span>其他方式登录</span>
+         <a class="nqq" href="/user/connect/?partner=qq"></a>
+         <a class="nwx" href="/user/connect/?partner=wechat"></a>
+         <!--<a class="nwb"></a>-->
+        </div> 
+       </section> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+  </div> 
+  <!--找回密码--> 
+  <div class="modal fade" id="forgetpswModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"> 
+   <div class="modal-dialog modal-sm"> 
+    <div class="modal-content"> 
+     <div class="modal-header"> 
+      <button type="button" class="close" data-dismiss="modal" data-toggle="modal" data-target="#loginModal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button> 
+      <h4 class="modal-title" id="forgetpswModalLabel" style="font-size: 18px;">找回密码</h4> 
+     </div> 
+     <div class="modal-body"> 
+      <section class="box-forgetpsw v5-input-txt" id="box-forgetpsw"> 
+       <form id="find_password_form" action="/user/password/find/" method="post" autocomplete="off"> 
+        <ul> 
+         <li class="form-group"><input class="form-control" id="id_account" maxlength="50" name="account" placeholder="请输入注册邮箱账号或手机号码" type="text" /></li> 
+         <li class="form-group font14 color99">滑动完成验证</li> 
+         <li class="form-group">
+          <div class="newcaptcha"></div></li> 
+        </ul> 
+        <div> 
+         <button id="findpassword_btn" type="button" class="btn btn-micv5 btn-block">提交</button> 
+        </div> 
+        <div id="findpassword-tips" class="tips-error bg-danger">
+         错误提示
+        </div> 
+       </form> 
+      </section> 
+     </div> 
+    </div> 
+   </div> 
+  </div> 
+  <!-- 忘记密码，手机验证码输入界面 --> 
+  <div class="modal fade" id="forgetpswMobileModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"> 
+   <div class="modal-dialog modal-sm"> 
+    <div class="modal-content"> 
+     <div class="modal-header"> 
+      <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button> 
+      <h4 class="modal-title" id="forgetpswMobileModalLabel" style="font-size: 18px;">手机验证</h4> 
+     </div> 
+     <div class="modal-body"> 
+      <section class="box-forgetpsw v5-input-txt" id="box-forgetpsw-mobile-code"> 
+       <form id="mobile_code_password_form" action="/user/password/find/mobile/" method="post" autocomplete="off"> 
+        <ul> 
+         <li class="form-group"><input class="form-control" id="id_mobile_code_f" name="mobile_code_f" placeholder="请输入短信验证码" type="text" /> <button type="button" class="send-verify font14">重发验证码</button> </li> 
+         <li class="form-group" id="mobile_code_password_form_message">手机短信验证码已发送，请查收！</li> 
+         <input id="id_mobile_f" name="mobile_f" type="hidden" /> 
+        </ul> 
+        <div> 
+         <button id="mobile_code_password_btn" type="button" class="btn btn-micv5 btn-block">下一步</button> 
+        </div> 
+        <div id="mobile_code_password-tips" class="tips-error bg-danger">
+         错误提示
+        </div> 
+       </form> 
+      </section> 
+     </div> 
+    </div> 
+   </div> 
+  </div> 
+  <!--邮件验证--> 
+  <div class="modal fade" id="emailValidate" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
+   <div class="modal-dialog modal-sm modal-content zy_email"> 
+    <a class="close"></a> 
+    <p class="i"><img src="/static/images/zy_send.png" /></p> 
+    <p id="emailValidateEE">我们向您的邮箱<span>548748451@qq.com</span>发送了一封验证邮件</p> 
+    <p>为保证您账号的安全和方便您参加我们的活动，邮箱完成验证才能继续学习哦</p> 
+    <p class="a"><a target="_blank">去邮箱验证</a></p> 
+    <p class="sendE2" style="display: none;">没收到，您可以查看您的垃圾邮件和被过滤邮件，也可以再次发送验证邮件（<span class="c5c">60s</span>）</p> 
+    <p class="sendE">没收到，您可以查看您的垃圾邮件和被过滤邮件，也可以<a class="c5c">再次发送验证邮件</a></p> 
+    <p class="zy_success t5o upmove"><img src="/static/images/zy_right.png" /><span>验证邮件发送成功</span></p> 
+   </div> 
+  </div> 
+  <div class="toolbar"> 
+   <div class="toolbar-item"> 
+    <a href="javascript:;" class="toolbar-item toolbar-item-weixin"></a> 
+    <div class="toolbar-kf"> 
+     <div class="ball-scale"> 
+      <!-- <span>你有一个红包等你领取!</span> --> 
+      <span>有一位课程导师想与你聊聊</span> 
+      <!--[if IE]> <div style="background:transparent"></div> <![endif]--> 
+      <!--[if !IE]><!--> 
+      <div></div> 
+      <!--<![endif]--> 
+     </div> 
+    </div> 
+   </div> 
+   <a href="javascript:;" class="toolbar-item toolbar-item-weibo"> 
+    <div class="lixianB"> 
+     <p class="font12 colorff textC marginB6">免费电话咨询</p> 
+     <p class="marginB6"><input type="text" class="intxt" id="telInput" placeholder="请输入您的电话号码" /></p> 
+     <p class="textC"><input type="button" class="inbtn" id="callBtn" value="" /></p> 
+    </div> </a> 
+   <!-- <a href="http://q.maiziedu.com/common/feedback/publish/" target="_blank" class="toolbar-item toolbar-item-fankui"></a> --> 
+   <!--<a id="feedbakbtn" class="toolbar-item toolbar-item-fankui"><span>意见反馈</span></a>--> 
+   <div class="toolbar-item toolbar-item-gotop"></div> 
+  </div> 
+  <script type="text/javascript" src="/2016/lib/jquery/jquery2.2.2.min.js?v=201701131700"></script> 
+  <script type="text/javascript" src="/2016/dev/maizi_trace.js?v=201701131700"></script> 
+  <script type="text/javascript" src="/2016/lib/bootstrap/js/bootstrap.min.js?v=201701131700"></script> 
+  <script type="text/javascript" src="/2016/src/common.js?v=201701131700"></script> 
+  <script type="text/javascript" src="/2016/src/captcha.js?v=201701131700"></script> 
+  <script type="text/javascript" src="/2016/src/login.js?v=201701131700"></script> 
+  <script type="text/javascript" src="/2016/lib/jscrollbar/jquery.mousewheel.js?v=201701131700"></script> 
+  <script type="text/javascript" src="/2016/lib/jscrollbar/jquery.jscrollbar.min.js?v=201701131700"></script> 
+  <script type="text/javascript" src="/2016/lib/jquery/uiwidget.js?v=201701131700"></script> 
+  <script type="text/javascript" src="/2016/lib/jquery/fileupload.js?v=201701131700"></script> 
+  <script type="text/javascript" src="/2016/lib/jquery/jquery.cookie.js?v=201701131700"></script> 
+  <script type="text/javascript" src="/2016/lib/jquery/global.js?v=201701131700"></script> 
+  <script type="text/javascript" src="/2016/lib/layer/layer.js?v=201701131700"></script> 
+  <script type="text/javascript" src="/2016/dev/feedbackBox.js?v=201701131700"></script> 
+  <script type="text/javascript" src="/2016/lib/video/video_play.js?v=201701131700"></script> 
+  <script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1680508" charset="utf-8"></script> 
+  <script type="text/javascript" src="/2016/src/lessonVideoPlay.js?v=201701131700"></script> 
+  <script type="text/javascript" src="/2016/src/small_course.js?v=201701131700"></script> 
+  <script type="text/javascript" src="/2016/src/showBigImg.js?v=201701131700"></script> 
+  <script type="text/javascript">
+var jiathis_config = {
+    data_track_clickback: true,
+    shortUrl: false,
+    hideMore: false,
+    url: window.location.href,
+    title: "初步使用scrapy-Python网络爬虫实战-Scrapy-麦子学院",
+    summary: "我正在麦子学院学习初步使用scrapy-Python网络爬虫实战-Scrapy,赶快和我一起来感受神奇的在线学习方式吧！——麦子学院，在线学习好工作。"
+}
+var setBodyWidth = function(){		
+		var bcss = document.body.className;
+		if(document.documentElement.clientWidth>1640) {
+			if (bcss != 'W_1380 YaHei ') {
+				document.body.className = 'W_1380 YaHei ';
+			}		
+		} else if(document.documentElement.clientWidth<1470){
+			if (bcss != 'W_1000 YaHei ') {
+				document.body.className = 'W_1000 YaHei ';
+			}
+		} 	
+	}		
+	setBodyWidth();
+	if ( window.addEventListener ) {
+		window.addEventListener( 'resize', function(){
+			setTimeout(setBodyWidth,600);
+		});
+	} else if ( window.attachEvent ) {
+		window['eresize'] = setBodyWidth; 
+		window['resize'] = function () {
+			window['eresize']( window.event );
+		};
+		window.attachEvent( 'onresize', function(){
+			setTimeout(window['resize'],600);
+		});
+	} else {
+		window['onresize'] = function(){
+			setTimeout(setBodyWidth,600);
+		};
+	}
+</script> 
+  <script type="text/javascript">// 谷歌
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create', 'UA-61416428-1', 'auto');ga('send', 'pageview');
+</script> 
+  <script type="text/javascript">// 离线宝
+document.write('<script type="text/javascript"  data-lxb-uid="10986738" data-lxb-gid="198532" src="http://lxbjs.baidu.com/api/asset/api.js?t=' + new Date().getTime() + '" charset="utf-8"></scr' + 'ipt>' );if(document.getElementById("callBtn"))document.getElementById("callBtn").onclick = function (){lxb.call(document.getElementById("telInput"));}
+</script> 
+  <script type="text/javascript">
+(function(){var _53code = document.createElement("script");_53code.src = "//tb.53kf.com/code/code/10111642/3";var s = document.getElementsByTagName("script")[0];s.parentNode.insertBefore(_53code, s);})();
+</script>   
+ </body>
+</html>

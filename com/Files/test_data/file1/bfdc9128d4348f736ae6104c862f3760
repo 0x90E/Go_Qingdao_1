@@ -1,0 +1,505 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<meta http-equiv="keywords" content="招标、投标、苏宁、平台、招投标">
+<meta http-equiv="description" content="苏宁招标平台">
+<title>苏宁招标平台</title>
+<link rel="shortcut icon" href="http://www.suning.com/favicon.ico" type="image/x-icon"> 
+<link rel="stylesheet" type="text/css" href="/bid-web/RES/css/bp.css">
+<script type="text/javascript" src="/bid-web/RES/js/jquery/jquery.js"></script>
+<script type="text/javascript" src="/bid-web/RES/js/main.js"></script>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<meta http-equiv="keywords" content="招标、投标、苏宁、平台、招投标">
+<meta http-equiv="description" content="苏宁招标平台">
+	<script type="text/javascript" src="/bid-web/RES/js/supmanage/mainPageLogin.js"></script>
+	<script type="text/javascript" src="/bid-web/RES/js/md5/md5.js"></script>
+
+<link rel="shortcut icon" href="http://www.suning.com/favicon.ico" type="image/x-icon"> 
+	<script type="text/javascript">
+    	$(document).ready(function(){
+    		// 加载帮助中心列表
+    		$("#div_help").load("/bid-web/showHelpListFormain.htm");
+    		$("input").keydown(function(e){   
+				var curKey = e.which;   
+				if(curKey == 13){   
+		 			submit_form();
+				}   
+			});
+    	});
+	</script>
+</head> 
+<body style="word-break:break-all">
+<script type="text/javascript">
+	
+	function searchIssue(){
+		window.location = "/bid-web/searchIssue.htm?issue.msgType="+$('#msgType').val()+
+		                  "&issue.title="+$('#searchName').val()+"&issue.isFromOutside=Y";
+	}	
+	
+	function changeTab(value){
+		$('#msgType').val(value);
+	}
+	
+	function AddFavorite(sURL, sTitle){
+	    try
+	    {
+	        window.external.addFavorite(sURL, sTitle);
+	    }
+	    catch (e)
+	    {
+	        try
+	        {
+	            window.sidebar.addPanel(sTitle, sURL, "");
+	        }
+	        catch (e)
+	        {
+	            alert("加入收藏失败，请使用Ctrl+D进行添加");
+	        }
+	    }
+	}
+	
+	function SetHome(obj,vrl){
+        try{
+             obj.style.behavior='url(#default#homepage)';obj.setHomePage(vrl);
+        }
+        catch(e){
+                if(window.netscape) {
+                        try {
+                                netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                        }
+                        catch (e) {
+                                alert("此操作被浏览器拒绝！\n请在浏览器地址栏输入“about:config”并回车\n然后将 [signed.applets.codebase_principal_support]的值设置为'true',双击即可。");
+                        }
+                        var prefs = Components.classes['@mozilla.org/preferences-service;1'].getService(Components.interfaces.nsIPrefBranch);
+                        prefs.setCharPref('browser.startup.homepage',vrl);
+                 }
+        }
+}	
+</script>
+<div id="head">
+	<div class="it-site-nav">
+		<div class="it-nav-bg">
+			<div class="it-nav-left">
+				<span>您好，欢迎来苏宁招标平台</span>
+					<a href="/bid-web/initSupplierLogin.htm">登录</a>
+						<em class="it-vertical">|</em>
+					<a href="/bid-web/supRegisterInitArticle.htm">注册</a>
+			</div>
+			<div class="it-nav-right">
+				<a href="#" onclick="AddFavorite(window.location,document.title)" title="收藏本站到你的收藏夹">添加收藏</a>
+				<em class="it-vertical">|</em>
+				<a href="#" onclick="SetHome(this,window.location)" title="设置本站为浏览器首页(启始页)">设为首页</a>
+			</div>
+		</div>
+	</div>
+	<div class="header" style="background-image:url(/bid-web/picView.htm?name=outLogoBg.jpg)">
+		<div class="header-in">
+			<div class="logo"><a href="/bid-web"><img class="pngfix" src="/bid-web/RES/css/bidimages/logo.png" alt="苏宁招标平台"></a></div>
+			<div class="search-div">
+				<ul class="clearfix">
+					<li class="current"><a href="#" onclick="changeTab('m1')">招标预告</a></li>
+					<li><a href="#" onclick="changeTab('m2')">招标公告</a></li>
+					<li><a href="#" onclick="changeTab('m3')">中标通知</a></li>
+				</ul>
+				<div>
+					<div class="it-input-div">
+						<input class="it-fst-search" id="searchName" type="text" autocomplete="off" value="请输入搜索关键字">
+						<input class="it-fst-btn hide-text" onclick="searchIssue();" type="submit">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<input type="hidden" id="msgType" value="m1">
+</div><div class="it-nav">
+		<ul class="it-nav-ul">
+			<li class="first"><a class="on" href="/bid-web/main.htm">首页</a></li>
+			<li><a href="/bid-web/initBidInfo.htm">招标信息</a></li>
+			<li><a href="/bid-web/listSupProject.htm">我的投标</a></li>
+			<li><a href="/bid-web/coopCenter.htm">供应商协同</a></li>
+			<li><a href="/bid-web/supplierEvaluation.htm">供应商评价</a></li>
+            <li><a href="/bid-web/userCenter.htm">用户中心</a></li>
+			<li class="last"><a href="/bid-web/listOutHelpDoc.htm">帮助中心</a></li>
+		</ul>
+	</div>
+	<div class="it-content clearfix">
+		<div class="it-left-column">
+			<div class="it-left-img">
+				<img src="/bid-web/picView.htm?name=outIndexBanaer.jpg" alt="">
+			</div>
+			<div class="it-sec">
+				<div>
+					<h3><span>招标预告<em>The tender notice</em></span></h3>
+					<a class="more" href="/bid-web/searchIssue.htm?issue.msgType=m1">更多 &gt;</a>
+				</div>
+				<ul>
+						<li>
+							<a class="index-ul-a" href="openIssueDetail.htm?issueNo=2017032814442495835097b18c3dc455&amp;msgType=m1" target="_blank">
+								<span>
+									<span class="point"></span>
+									<em class="fl">【总部】</em>
+									<em class="elli lasp" title="苏宁影城战略合作单位邀请函">苏宁影城战略合作单位邀请函</em>
+								</span>
+								<span class="it-hot">推荐！</span>
+								<span class="it-sec-time">
+								2017-03-28
+								</span>
+							</a>
+						</li>
+						<li>
+							<a class="index-ul-a" href="openIssueDetail.htm?issueNo=20170308145359783841c6f89449bae8&amp;msgType=m1" target="_blank">
+								<span>
+									<span class="point"></span>
+									<em class="fl">【总部】</em>
+									<em class="elli lasp" title="关于合同结算操作必须使用结算管理平台的通知">关于合同结算操作必须使用结算管理平台的通知</em>
+								</span>
+								<span class="it-hot">推荐！</span>
+								<span class="it-sec-time">
+								2017-03-08
+								</span>
+							</a>
+						</li>
+						<li>
+							<a class="index-ul-a" href="openIssueDetail.htm?issueNo=201703081429085848305cb01a636dcc&amp;msgType=m1" target="_blank">
+								<span>
+									<span class="point"></span>
+									<em class="fl">【河南】</em>
+									<em class="elli lasp" title="河南苏宁云商销售有限公司印刷类招标申请">河南苏宁云商销售有限公司印刷类招标申请</em>
+								</span>
+								<span class="it-hot">推荐！</span>
+								<span class="it-sec-time">
+								2017-03-08
+								</span>
+							</a>
+						</li>
+						<li>
+							<a class="index-ul-a" href="openIssueDetail.htm?issueNo=20170308142605156829936e2f55112e&amp;msgType=m1" target="_blank">
+								<span>
+									<span class="point"></span>
+									<em class="fl">【河南】</em>
+									<em class="elli lasp" title="河南苏宁云商销售有限公司制作类招标申请">河南苏宁云商销售有限公司制作类招标申请</em>
+								</span>
+								<span class="it-hot">推荐！</span>
+								<span class="it-sec-time">
+								2017-03-08
+								</span>
+							</a>
+						</li>
+						<li>
+							<a class="index-ul-a" href="openIssueDetail.htm?issueNo=2017022816291351124033a9eb45009c&amp;msgType=m1" target="_blank">
+								<span>
+									<span class="point"></span>
+									<em class="fl">【总部】</em>
+									<em class="elli lasp" title="PPTV智能硬件2017年度服务商招标">PPTV智能硬件2017年度服务商招标</em>
+								</span>
+								<span class="it-hot">推荐！</span>
+								<span class="it-sec-time">
+								2017-02-28
+								</span>
+							</a>
+						</li>
+						<li>
+							<a class="index-ul-a" href="openIssueDetail.htm?issueNo=20170119174159192075a172d6b2504a&amp;msgType=m1" target="_blank">
+								<span>
+									<span class="point"></span>
+									<em class="fl">【总部】</em>
+									<em class="elli lasp" title="关于猫宁公司客服中心外包项目预告">关于猫宁公司客服中心外包项目预告</em>
+								</span>
+								
+								<span class="it-sec-time">
+								2017-01-19
+								</span>
+							</a>
+						</li>
+						<li>
+							<a class="index-ul-a" href="openIssueDetail.htm?issueNo=20161110120700668783ccfd42a9c25c&amp;msgType=m1" target="_blank">
+								<span>
+									<span class="point"></span>
+									<em class="fl">【上海】</em>
+									<em class="elli lasp" title="苏宁云商集团不良品回收商招标预告（2）">苏宁云商集团不良品回收商招标预告（2）</em>
+								</span>
+								
+								<span class="it-sec-time">
+								2016-11-10
+								</span>
+							</a>
+						</li>
+						<li>
+							<a class="index-ul-a" href="openIssueDetail.htm?issueNo=20160413220258474018ee911c50a049&amp;msgType=m1" target="_blank">
+								<span>
+									<span class="point"></span>
+									<em class="fl">【总部】</em>
+									<em class="elli lasp" title="关于供应商在苏宁招标平台提交三证合一证书时的操作注意事项 ">关于供应商在苏宁招标平台提交三证合一证书时的操作注意事项 </em>
+								</span>
+								
+								<span class="it-sec-time">
+								2016-04-13
+								</span>
+							</a>
+						</li>
+				</ul>
+			</div>
+			<div class="it-sec">
+				<div>
+					<h3><span>招标公告<em>Bidding announcement</em></span></h3>
+					<a class="more" href="/bid-web/searchAnnouncementIssue.htm?issue.msgType=m2">更多 &gt;</a>
+				</div>
+				<ul>
+						<li>
+							<a class="index-ul-a" href="/bid-web/openIssueDetail.htm?issueNo=2017040118531596324881ba6625968b&amp;msgType=m2" target="_blank">
+							<span><em class="fl">
+                    			正在进行
+                    			
+							<b>|</b></em><em class="elli lasp" title="石家庄苏宁物流有限公司2017年仓储服务招标招标项目招标公告">石家庄苏宁物流有限公司2017年仓储服务招标招标项目招标公告</em></span>
+							<span class="it-hot">推荐！</span>
+							<span class="it-sec-time">
+							2017-04-01
+							</span>
+							</a>
+						</li>
+						<li>
+							<a class="index-ul-a" href="/bid-web/openIssueDetail.htm?issueNo=201704011529154281823162041d7b4c&amp;msgType=m2" target="_blank">
+							<span><em class="fl">
+                    			正在进行
+                    			
+							<b>|</b></em><em class="elli lasp" title="宁波苏宁物流有限公司2017年度仓储服务招标 招标项目招标公告">宁波苏宁物流有限公司2017年度仓储服务招标 招标项目招标公告</em></span>
+							<span class="it-hot">推荐！</span>
+							<span class="it-sec-time">
+							2017-04-01
+							</span>
+							</a>
+						</li>
+						<li>
+							<a class="index-ul-a" href="/bid-web/openIssueDetail.htm?issueNo=20170401150324085122709ce70c0ee3&amp;msgType=m2" target="_blank">
+							<span><em class="fl">
+                    			正在进行
+                    			
+							<b>|</b></em><em class="elli lasp" title="昆明苏宁物流有限公司2017年度仓储服务商引进二次招标招标项目招标公告">昆明苏宁物流有限公司2017年度仓储服务商引进二次招标招标项目招标公告</em></span>
+							<span class="it-hot">推荐！</span>
+							<span class="it-sec-time">
+							2017-04-01
+							</span>
+							</a>
+						</li>
+						<li>
+							<a class="index-ul-a" href="/bid-web/openIssueDetail.htm?issueNo=2017040110172265715454684bd4a078&amp;msgType=m2" target="_blank">
+							<span><em class="fl">
+                    			正在进行
+                    			
+							<b>|</b></em><em class="elli lasp" title="分拨轻型塑料托盘大盘招标招标项目招标公告">分拨轻型塑料托盘大盘招标招标项目招标公告</em></span>
+							<span class="it-hot">推荐！</span>
+							<span class="it-sec-time">
+							2017-04-01
+							</span>
+							</a>
+						</li>
+						<li>
+							<a class="index-ul-a" href="/bid-web/openIssueDetail.htm?issueNo=201703201532022935840c2a9fd66ddb&amp;msgType=m2" target="_blank">
+							<span><em class="fl">
+                    			正在进行
+                    			
+							<b>|</b></em><em class="elli lasp" title="苏州大区苏宁区域装饰工程招标项目招标公告">苏州大区苏宁区域装饰工程招标项目招标公告</em></span>
+							<span class="it-hot">推荐！</span>
+							<span class="it-sec-time">
+							2017-04-01
+							</span>
+							</a>
+						</li>
+						<li>
+							<a class="index-ul-a" href="/bid-web/openIssueDetail.htm?issueNo=20170331192339352083837aa9b1e0cd&amp;msgType=m2" target="_blank">
+							<span><em class="fl">
+                    			
+                    			已经关闭
+							<b>|</b></em><em class="elli lasp" title="2017年厦门苏宁物流大件零配承运商招标公告招标项目招标公告">2017年厦门苏宁物流大件零配承运商招标公告招标项目招标公告</em></span>
+							
+							<span class="it-sec-time">
+							2017-03-31
+							</span>
+							</a>
+						</li>
+						<li>
+							<a class="index-ul-a" href="/bid-web/openIssueDetail.htm?issueNo=201703311909405730817ed055ed08fa&amp;msgType=m2" target="_blank">
+							<span><em class="fl">
+                    			正在进行
+                    			
+							<b>|</b></em><em class="elli lasp" title="2017年海口连锁店保洁业务比选测试公告">2017年海口连锁店保洁业务比选测试公告</em></span>
+							
+							<span class="it-sec-time">
+							2017-03-31
+							</span>
+							</a>
+						</li>
+						<li>
+							<a class="index-ul-a" href="/bid-web/openIssueDetail.htm?issueNo=20170331180542173075dc458e09959a&amp;msgType=m2" target="_blank">
+							<span><em class="fl">
+                    			正在进行
+                    			
+							<b>|</b></em><em class="elli lasp" title=": 天津市苏宁现场布置活动类--路演招标  招标项目招标公告">: 天津市苏宁现场布置活动类--路演招标  招标项目招标公告</em></span>
+							
+							<span class="it-sec-time">
+							2017-03-31
+							</span>
+							</a>
+						</li>
+				</ul>
+			</div>
+			<div class="it-sec">
+				<div>
+					<h3><span>中标通知<em>The notification of award</em></span></h3>
+					<a class="more" href="/bid-web/searchAwardIssue.htm?issue.msgType=m3">更多 &gt;</a>
+				</div>
+				<ul>
+						<li>
+							<a class="index-ul-a" href="/bid-web/openIssueDetail.htm?issueNo=20170401162442040186e663a1297989&amp;msgType=m3" target="_blank">
+							<span><span class="point"></span>
+							<em class="fl">【山东】</em>
+							<em class="elli lasp" title="青岛苏宁物流有限公司快递承运商招标项目中标通知">青岛苏宁物流有限公司快递承运商招标项目中标通知</em></span>
+							<span class="it-hot">推荐！</span>
+							<span class="it-sec-time">
+								2017-04-01
+							</span></a>
+						</li>
+						<li>
+							<a class="index-ul-a" href="/bid-web/openIssueDetail.htm?issueNo=20170401095923829100dd96a390f32b&amp;msgType=m3" target="_blank">
+							<span><span class="point"></span>
+							<em class="fl">【湖南】</em>
+							<em class="elli lasp" title="﻿﻿﻿﻿长沙苏宁物流有限公司2017年仓储服务招标中标公示">﻿﻿﻿﻿长沙苏宁物流有限公司2017年仓储服务招标中标公示</em></span>
+							<span class="it-hot">推荐！</span>
+							<span class="it-sec-time">
+								2017-04-01
+							</span></a>
+						</li>
+						<li>
+							<a class="index-ul-a" href="/bid-web/openIssueDetail.htm?issueNo=20170331183312483080069abce08871&amp;msgType=m3" target="_blank">
+							<span><span class="point"></span>
+							<em class="fl">【陕西】</em>
+							<em class="elli lasp" title="西安泾阳物流基地通勤班车服务中标公示">西安泾阳物流基地通勤班车服务中标公示</em></span>
+							<span class="it-hot">推荐！</span>
+							<span class="it-sec-time">
+								2017-03-31
+							</span></a>
+						</li>
+						<li>
+							<a class="index-ul-a" href="/bid-web/openIssueDetail.htm?issueNo=201703311740240070672ef8627a9740&amp;msgType=m3" target="_blank">
+							<span><span class="point"></span>
+							<em class="fl">【内蒙古】</em>
+							<em class="elli lasp" title="2017年包头支线运输项目中标通知">2017年包头支线运输项目中标通知</em></span>
+							<span class="it-hot">推荐！</span>
+							<span class="it-sec-time">
+								2017-03-31
+							</span></a>
+						</li>
+						<li>
+							<a class="index-ul-a" href="/bid-web/openIssueDetail.htm?issueNo=20170331141550091045dad228133cae&amp;msgType=m3" target="_blank">
+							<span><span class="point"></span>
+							<em class="fl">【山东】</em>
+							<em class="elli lasp" title="济南市苏宁终端物料制作类广告招标中标公示">济南市苏宁终端物料制作类广告招标中标公示</em></span>
+							<span class="it-hot">推荐！</span>
+							<span class="it-sec-time">
+								2017-03-31
+							</span></a>
+						</li>
+						<li>
+							<a class="index-ul-a" href="/bid-web/openIssueDetail.htm?issueNo=201704011132540241640c92bd9aa766&amp;msgType=m3" target="_blank">
+							<span><span class="point"></span>
+							<em class="fl">【湖南】</em>
+							<em class="elli lasp" title="2017年长沙苏宁小件仓储服务商招标中标公示">2017年长沙苏宁小件仓储服务商招标中标公示</em></span>
+							
+							<span class="it-sec-time">
+								2017-04-01
+							</span></a>
+						</li>
+						<li>
+							<a class="index-ul-a" href="/bid-web/openIssueDetail.htm?issueNo=20170330182650474595fe1eb85bb3be&amp;msgType=m3" target="_blank">
+							<span><span class="point"></span>
+							<em class="fl">【北京】</em>
+							<em class="elli lasp" title="关于北京（含下属XD）零配以及调拨承运商招标定标公告">关于北京（含下属XD）零配以及调拨承运商招标定标公告</em></span>
+							
+							<span class="it-sec-time">
+								2017-03-31
+							</span></a>
+						</li>
+						<li>
+							<a class="index-ul-a" href="/bid-web/openIssueDetail.htm?issueNo=201703311949278921411f645bc34c6a&amp;msgType=m3" target="_blank">
+							<span><span class="point"></span>
+							<em class="fl">【湖北】</em>
+							<em class="elli lasp" title="2017年度武汉苏宁物流零配承运商招标中标公示">2017年度武汉苏宁物流零配承运商招标中标公示</em></span>
+							
+							<span class="it-sec-time">
+								2017-03-31
+							</span></a>
+						</li>
+				</ul>
+			</div>
+		</div>
+		<div class="it-right-column">
+			<div class="it-total user-login">
+				<h2>用户登录<em>Sign in</em></h2>
+				<div class="it-tldiv">
+					<form name="form1" action="/bid-web/supplierLogin.htm" method="post">
+					<span id="message_p" style="display:none;"><span id="message" style="color:red;"></span></span>
+					<div class="user-name">
+						<em></em>
+						<label>请输入用户名</label>
+						<input type="text" id="loginUserName" name="userName" onblur="checkUserName('/bid-web/supLoginCheckLoginName.htm')">
+					</div>
+					<div class="user-pass">
+						<em></em>
+						<label>请输入密码</label>
+						<input type="password" name="password" autocomplete="off">
+					</div>
+					<div class="verify clearfix">
+						<label>请输入验证码</label>
+						<input type="text" name="authCode" maxlength="4">
+						<img id="imgObj" alt="验证码，换一张" src="/bid-web/createAuthCode.htm" onclick="changeImg();">
+					</div>
+                    <div class="ul-register clearfix">
+                        <a href="/bid-web/supRegisterInitArticle.htm" class="fl reg">注册</a>
+                        <a href="/bid-web/supRegisterInitForPw.htm" class="fr">忘记密码？</a>
+                    </div>
+					<a class="sc-a" id="loginButton" href="javascript:;" onclick="submit_form()">登录</a>
+					</form>
+				</div>
+			</div>
+			<div class="it-total help-center">
+				<h2>帮助中心<em>Help</em>
+					<a class="more" href="/bid-web/listOutHelpDoc.htm">更多 &gt;</a>
+				</h2>
+				<ul id="div_help">	
+		<li><em></em><a href="/bid-web/openHelpContent.htm?serviceId=2017021719345068649992d40bfcd919">供应商注册指南-2017版</a></li>
+
+		<li><em></em><a href="/bid-web/openHelpContent.htm?serviceId=20160506173946115009496947fa73a1">招标平台供应商常见问题</a></li>
+
+		<li><em></em><a href="/bid-web/openHelpContent.htm?serviceId=2015083110552312902325a4916910da">供应商_采购订单/发货_操作指导</a></li>
+</ul>
+			</div>
+			<div class="it-total">
+				<h2>联系我们<em>Contact</em></h2>
+				<div class="it-tldiv">
+					<p class="it-title">云商招投标业务响应部门：</p>
+					<p class="tele-fst">025-66996699-880046</p>
+					<p class="it-title">置业招投标业务响应部门：</p>
+					<p class="tele-fst">025-66996699-777299</p>
+					<p class="it-title">监察投诉电话：<a class="more" href="http://jc.suning.com/snjc-web/giftsReport/reportIndex.htm?issueType=02&amp;system=BID&amp;userInfo=" target="_blank">廉正举报入口</a></p>
+					<p class="tele-fst">025-84209982</p>
+					<p class="it-title">云商QQ联系方式：</p>
+					<p class="tele-fst">3319205280</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<div id="bottom">
+	<div class="it-footer">
+        <ul class="clearfix">
+            <li><a href="http://www.suning.cn/" target="_blank">苏宁官网</a></li>
+            <li><a href="http://www.suning.com/" target="_blank">苏宁易购</a></li>
+            <li><a href="http://www.suningestate.com" target="_blank">苏宁置业</a></li>
+            <li class="last"><a href="http://b2b.suning.com/" target="_blank">供应链管理系统</a></li>
+        </ul>
+		<p>Copyright© 2015 苏宁版权所有 SUNING CORPORATION, ALL RIGHTS RESERVED 苏ICP备10207551号</p>
+		<p>总访问量4,949,382</p>
+</div></div>
+ 
+ 
+
+</body></html>

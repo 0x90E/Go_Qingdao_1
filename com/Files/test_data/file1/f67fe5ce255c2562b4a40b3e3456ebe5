@@ -1,0 +1,1938 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+		<title>酷我游戏</title>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+		<link href="/g/jsp/newer/newer2014/css/game14.css?ver=201503181" rel="stylesheet" type="text/css">
+		<link href="/g/jsp/newer/newer2014/css/gTab.css" rel="stylesheet" type="text/css">
+		<link href="/g/jsp/newer/newer2014/css/search.css?ver=201503182" rel="stylesheet" type="text/css">
+        <link href="/g/css/jquery-ui.css" rel="stylesheet" type="text/css">
+		<style type="text/css">
+			.img_tip{height:34px;line-height:34px;filter:progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr='#7F000000', endColorstr='#7F000000');background:rgba(0,0,0,0.5);position:absolute;bottom:0;left:0;width:142px;padding:0 10px;}
+			.img_tip a{float:left;color:#fff;width:108px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+			.img_tip span{float:right;color:#d5d5d5}
+		
+			.slide{margin-top:5px; float:right; overflow:hidden; position:relative; width:725px; height:250px; border:1px solid #777; background:#000;}
+			.slide a{color:#eee;text-decoration:none;}
+			.slide .box{overflow:hidden;width:725px;position:relative;height:250px;}
+			.slide .list{overflow:hidden;width:9999px;}
+			.slide .list li{float:left;position:relative;width:725px;}
+			.slide .list img{vertical-align:top;}
+			.slide .btn{overflow:hidden; position:absolute; left:290px; bottom:10px; height:13px; cursor:pointer;}
+			.minus{position:absolute;top:0px;width:50px;height:250px;background-image:url(/g/jsp/newer/newer2014/img/a.png);background-repeat:no-repeat;text-align:center;cursor:pointer;left:15px;_background:none;_FILTER: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/g/jsp/newer/newer2014/img/a.png"); display:block;}
+			.minus:hover{background-image:url(/g/jsp/newer/newer2014/img/aa.png);_background:none;_FILTER: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/g/jsp/newer/newer2014/img/aa.png");}
+			.plus{position:absolute;top:0px;width:50px;height:250px;background-image:url(/g/jsp/newer/newer2014/img/b.png);background-repeat:no-repeat;text-align:center;cursor:pointer;right:15px;_background:none;_FILTER: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/g/jsp/newer/newer2014/img/b.png"); display:block;}
+			.plus:hover{background-image:url(/g/jsp/newer/newer2014/img/bb.png);_background:none;_FILTER:progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/g/jsp/newer/newer2014/img/bb.png");}
+			.nTis a.dea{ color:#269;}
+			.nTis a.def{ color:#269;}
+			
+			.trNew{ overflow:hidden;zoom:1; padding:10px 0 0 8px;}
+			.trnPs{width:225px; height:200px; float:left; overflow:hidden;_zoom:1; margin-right:20px;}
+			.trPa{width:223px; height:143px; border:1px solid #fff;}
+			.trpTex{width:143px; height:40px; display:block; padding:0 40px; line-height:20px; overflow:hidden; margin-top:10px; color:#000002;}
+			.trnList{width:215px; overflow:hidden;_zoom:1;}
+			.trnList li{width:215px; height:20px; line-height:20px; overflow:hidden;}
+			.trnList a{color:#000002}
+			.trnList li.lis{ margin-top:8px;}
+			.game_weixin{top:250px;}
+			.ui-autocomplete-loading {
+               background: white url("/g/css/images/ui-anim_basic_16x16.gif") right center no-repeat;
+            }
+		</style>
+		<style>
+			.ui-autocomplete {
+			  max-height: 200px;
+			  overflow-y: auto;
+			  /* prevent horizontal scrollbar */
+			  overflow-x: hidden;
+			}
+			/* IE 6 doesn't support max-height
+			 * we use height instead, but this forces the menu to always be this tall
+			 */
+			* html .ui-autocomplete {
+			  height: 100px;
+			}
+        </style>
+		<!--[if IE 6]><style>
+				.game_weixin{top:266}
+			</style><![endif]-->
+		<script type="text/javascript" src="http://js.kuwo.cn/jquery/jquery-1.9.1.min.js"></script>
+		<script type="text/javascript" src="/g/js/jquery-ui.js"></script>
+<!-- 		<script type="text/javascript" src="http://js.kuwo.cn/jquery/jquery-1.4.2.min.js"></script> -->
+		<!-- <script type="text/javascript" src="http://js.kuwo.cn/game/newer/newer2014/newer2014.js?2.js"></script> -->
+		<script type="text/javascript" src="/g/jsp/newer/newer2014/js/newer2014.js?ver=20150319"></script>
+		<script type="text/javascript" src="http://js.kuwo.cn/game/newer/newer2014/jquery.cxslide.js"></script>
+		<script type="text/javascript" src="http://js.kuwo.cn/game/js/cookie.js"></script>
+		<script type="text/javascript" src="/g/jsp/newer/newer2014/js/lyz.delayLoading.min.js"></script>
+		<script type="text/javascript">
+			// 第三方登录跳转地址
+			var loginUrl = 'http://game.kuwo.cn:80/g/st/Entry_2014?src=NewerIndex_2014';
+			
+			jQuery(document).ready(function(){
+				gameSearchText();
+				// 网页游戏
+				var detail = null;
+				jQuery(".cAcm").mouseenter(function(){
+					var my = jQuery(this); 
+					detail = setTimeout(function(){
+						my.find(".cAbg").slideDown("fast");
+						my.find(".cAtex").slideDown("fast");
+						my.find(".cAtYk").slideDown("fast");
+					}, 200);
+				}).mouseleave(function(){
+					clearTimeout(detail);
+					jQuery(this).find(".cAbg").css("display","none");
+					jQuery(this).find(".cAtex").css("display","none");
+					jQuery(this).find(".cAtYk").css("display","none");
+				});
+				
+				jQuery("#closeweixin").click(function(){
+					jQuery("#gamehall_weixin").hide();
+				});
+				
+				// 文字滚动
+				wordScroll("boxm", 34, 30, 3000);
+				
+				// 轮播图
+				$("#slide").cxSlide({
+					speed:800, //切换速度(ms)
+					time:5000, //自动轮播间隔时间(ms)
+					plus:true,
+					minus:true
+				});
+				
+				// 右下角广告
+				var www_game_popup_cookie = getCookie('www_game_popup');
+				if(www_game_popup_cookie==null || www_game_popup_cookie==''){
+					document.getElementById('ad_div_id').style.display = 'block';
+					var oHead = document.getElementsByTagName("head")[0];
+					var oScript = document.createElement("script");
+					oScript.src = "http://wa.kuwo.cn/lyrics/img/kwgg/kwgg_207.js";
+					oScript.charset = "gbk"
+					oHead.appendChild(oScript);
+					addCookie('www_game_popup','show_www_game', 24*60*60, '/', 'kuwo.cn');
+					window.onresize = window.onscroll = window.onload = getNavi;
+				}
+				
+				// 检查cookie信息
+				var username = getCookie('username');
+				var userid = getCookie('userid');
+				var uph = getCookie('uph');
+				if(username!=null && username!='' && userid!=null && userid!='' && uph!=null && uph!=''){
+					var date = new Date().getTime();
+					$.get("/g/st/Entry_2014?logSrc=index&date="+date, function(data, status){
+						var jsonData = eval('(' + data + ')');
+						var result = jsonData.result;
+						if(result == "succ"){
+							showUserInfo(jsonData);
+						}
+					});
+				}
+				
+				//进入页面  加载数据 避免varnish缓存
+        	  	$.post("/g/st/CheckEnterGameTime",{type:"newserver"},function(data, status){
+        	    	$("#newServer").append(data);
+				});
+			});
+			
+		</script>
+	<script type="text/javascript" src="http://wa.kuwo.cn/lyrics/img/kwgg/personalAd.js"></script><script type="text/javascript" src="http://wa.kuwo.cn/lyrics/img/kwgg/personalAd.js"></script><script type="text/javascript" src="http://ipdomainserver.kuwo.cn/ip_domain"></script><script type="text/javascript" src="http://ipdomainserver.kuwo.cn/ip_domain"></script><script src="http://wa.kuwo.cn/lyrics/img/kwgg/kwgg_207.js" charset="gbk"></script><script type="text/javascript" src="http://wa.kuwo.cn/lyrics/img/kwgg/personalAd.js"></script><script type="text/javascript" src="http://wa.kuwo.cn/lyrics/img/kwgg/kwgg_381_1.js"></script><script type="text/javascript" src="http://wa.kuwo.cn/lyrics/img/kwgg/kwgg_380_1.js"></script><script type="text/javascript" src="http://wa.kuwo.cn/lyrics/img/kwgg/kwgg_207_1.js"></script></head>
+
+	<body>
+		<!-- 添加右下角广告开始 -->
+		<div id="ad_div_id" style="width: 300px; height: 200px; position: fixed; display: block; bottom: 3px; right: 4px; z-index: 1000; ">
+			<a style="width:40px; height:18px; display:block; position:absolute; top:0; right:0; line-height:18px; font-size:12px; font-weight:bold;text-decoration:none;color:#fff;background:#6e777b;z-index:1005;" href="javascript:void(0));" onclick="document.getElementById('ad_div_id').style.display='none'">关闭</a>
+			<div id="delay_load_www_game_popup" style="width:300px; overflow:hidden;"><div id="www_game_popup_div_0" style="display: block; "><iframe width="300" height="200" scrolling="no" frameborder="0" src="http://wa.kuwo.cn/lyrics/img/kwgg/adv2887/index.htm?ver="></iframe></div></div>
+		</div>
+		
+
+
+<div class="headBg">
+	<div class="headTm">
+		<div class="headCv">
+			
+				<!-- 搜索框开始 -->
+				<div class="seach">
+					<form id="homeSearchForm" action="/g/st/gameSearch" method="post">
+						
+							<input type="hidden" id="recommendGameName" value="少年群侠传">
+							<input type="hidden" id="recommendGameUrl" value="http://game.kuwo.cn/g/st/newdl?dlid=gsnqxz18&amp;gameid=261&amp;serverid=999&amp;at=34&amp;ap=46">
+							<span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input type="text" id="searchText" class="intTex ui-autocomplete-input" value="少年群侠传" onfocus="if(this.value=='请输入游戏名字或拼音') this.value='';" onblur="if(this.value=='') this.value='请输入游戏名字或拼音';" autocomplete="off">
+						
+						
+		
+						<input type="hidden" id="op" name="op" value="">
+						<input type="hidden" id="gn" name="gn" value="">
+						<input type="text" style="display:none;">
+			           	<a href="javascript:void();" onclick="gameSearch();" class="seachBtn"></a>
+					</form>
+				</div>
+	    		<!-- 搜索框结束 -->
+			
+			<div class="cvUp">
+				<a href="http://game.kuwo.cn" class="logo"></a>
+				<div class="nav">
+				    <em class="tipNew"></em>
+					<a href="/g/st/NewerIndex_2014" class="navKa"></a>
+					<a href="/g/st/WebGameCenter_2014" class="navb"></a>
+					<a href="javascript:comingSoon();" class="navc"></a>
+					<a href="https://pay.kuwo.cn/pay/" target="_blank" class="navd"></a>
+					<a href="/g/st/VipHelp" target="_blank" class="navf"></a>
+					<a href="http://game.kuwo.cn/g/st/PersonalCenter" target="_blank" class="nave"></a>
+					<a href="http://kwbbs.kuwo.cn/" target="_blank" class="navg"></a>
+				</div> 
+				<a href="http://game.kuwo.cn/g/jsp/newer/d/gameBoxDown2014.jsp" target="_blank" class="down"><img src="/g/jsp/newer/newer2014/img/down.gif"></a>
+			</div>
+			<p class="cvDm">全球已有<span id="tipno">60,125,599</span>位玩家入驻</p>
+			
+		</div>
+	</div>
+</div>
+
+<!-- 遮罩层 -->
+<div id="layerMask" style="display: none; position: fixed; top: 0px; left: 0px; width: 100%; min-width: 1000px; height: 100%; z-index: 999; background-color: rgb(0, 0, 0); opacity: 0.7; background-position: initial initial; background-repeat: initial initial; "></div>
+
+<!-- 注册框 -->
+<div id="regbox" style="display: none; position: fixed; z-index: 9999; width: 940px; left: -470px; top: -271px; ">
+
+<div class="zhuceBox" style="background-color:#fff;">
+	<p class="zcbTit"><span class="zcbLe">注册</span><a href="javascript:log();" class="closeMe"><img src="/g/jsp/newer/newer2014/img/closeMe.gif"></a></p>
+	<div class="zcbTex">
+		<div class="zcList">
+			<div class="intBx">
+				<span class="inta">用户名：</span>
+				<input type="text" class="intb" id="regname">
+				<em class="intc">*</em>
+			</div>
+			<p class="adda">由数字、字母、中文，长度为2-20位字符</p>
+			<div class="intBx">
+				<span class="inta">密码：</span>
+				<input type="password" class="intb" id="regpwd">
+				<em class="intc">*</em>
+			</div>
+			<p class="adda">由数字、字母、符号，长度为6-16位字符</p>
+			<div class="intBx">
+				<span class="inta">确认密码：</span>
+				<input type="password" class="intb" id="regpwd2">
+				<em class="intc">*</em>
+			</div>
+			<p class="adda">请再输一次密码</p>
+			<div class="intBx">
+				<span class="inta">验证码：</span>
+				<input type="text" class="inte" id="code" maxlength="4">
+				<script>tm=new Date().getMilliseconds();document.write('<img id="signVerifyImg" class="left" style="margin-right:5px;" src="/US/verifycode?d='+tm+'"><input type="hidden" id="tm" name="tm" value="'+tm+'">');</script><img id="signVerifyImg" class="left" style="margin-right:5px;" src="/US/verifycode?d=324"><input type="hidden" id="tm" name="tm" value="324">
+				<em class="intc">*</em>
+	        	<a href="javascript:void(0);" class="hha" onclick="updateCode()">换一张</a>
+	        </div>
+			<p class="h10"></p>
+			<p class="h10"></p>
+			<div class="intBx">
+				<span class="inta">真实姓名：</span>
+				<input type="text" class="intb" id="realname">
+				<em class="intc">*</em>
+			</div>
+			<p class="adda">请输入真实姓名</p>
+			<div class="intBx">
+				<span class="inta">身份证号：</span>
+	           	<input type="text" class="intb" id="idcode">
+	           	<em class="intc">*</em>
+			</div>
+			<p class="adda">请输入18位身份证号码</p>
+			<p class="allDown"><input type="checkbox" class="adPa" name="regchk" value="chked" checked="checked"><a href="/g/jsp/newer/newer2014/doc.html?ver=20140711" target="_blank" class="adPb">我已阅读并接受《酷我游戏网服务使用协议》</a></p>
+			<p class="h10"></p>
+			<p id="regMsg" style="text-align:center; color:red;">&nbsp;</p>
+			<p class="h10"></p>
+			<a href="javascript:chkreg();" class="zcQk"><img src="/g/jsp/newer/newer2014/img/nowzc.gif"></a>
+		</div>
+		<div class="zcThree">
+			<p class="h10"></p>
+			<p class="h10"></p>
+			<p class="h10"></p>
+			<p class="thaTit">已有账号,直接登录:</p>
+			<p class="h10"></p>
+			<p class="h10"></p>
+			<p class="h10"></p>
+			<p class="h10"></p>
+			<a href="javascript:log();" class="loginQk"><img src="/g/jsp/newer/newer2014/img/nowlog.gif"></a>
+			<p class="h10"></p>
+			<p class="h10"></p>
+			<p class="h10"></p>
+			<p class="h10"></p>
+			<p class="thaTit">没有账号其它方式登录:</p>
+			<p class="h10"></p>
+			<p class="h10"></p>
+			<p class="h10"></p>
+			<p class="h10"></p>
+			<a href="javascript:qq();" class="loginQk"><img src="/g/jsp/newer/newer2014/img/qq.gif"></a>
+			<p class="h10"></p>
+			<p class="h10"></p>
+			<a href="javascript:sina();" class="loginQk"><img src="/g/jsp/newer/newer2014/img/weibo.gif"></a>
+		</div>
+	</div>
+</div></div>
+		<div class="w1000">
+			<div class="loginBox">
+				
+
+
+
+	
+	
+		<div class="loginx" id="loginx" style="display:none;">
+	    	<p class="overTit"><a href="javascript:logout();">[退出]</a><a href="http://game.kuwo.cn/g/st/PersonalCenter?act=changePwd" target="_blank">[修改密码]</a></p>
+			<p class="h10"></p>
+			<div class="overTex">
+	        	<em class="texHead">
+					<img src="" id="userPic" width="68" height="68">
+				</em>
+				<div class="texVip">
+					<p class="vipTa">
+						<a href="http://game.kuwo.cn/g/st/PersonalCenter" target="_blank" class="vipName" id="usernameHtml"></a>
+						<!-- <a href="https://pay.kuwo.cn/pay/" target="_blank" title="VIP会员" class="vipBtn">vip7</a> -->
+						<a href="/g/jsp/newer/newer2014/topic.jsp" target="_blank" title="快到游戏盒中签到吧！" class="vipCli"><img src="/g/jsp/newer/newer2014/img/checkIn1.gif" id="checkIn1" style="display: none; "><img src="/g/jsp/newer/newer2014/img/checkIn2.gif" id="checkIn2" style="display: inline; "></a>
+					</p>
+					<p class="h10Href"></p>
+					<p class="h10Href"></p>
+					<p class="jfNum"><em></em><a href="/g/jsp/newer/newer2014/topic.jsp" target="_blank" id="credit">酷积分：</a></p>
+				</div>
+			</div>
+			<p class="h10Href"></p>
+			<p class="h10Href"></p>
+			<p class="overBtnImg" id="overBtn">
+				<a href="https://pay.kuwo.cn/pay/st/PYue" target="_blank" title="点击查看酷我币详情" class="overBa"><img src="/g/jsp/newer/newer2014/img/iconA1.gif" id="iconA1"><img src="/g/jsp/newer/newer2014/img/iconA2.gif" id="iconA2" style="display:none;"></a>
+				<a href="https://pay.kuwo.cn/pay/st/PGameGiftList" target="_blank" title="点击查看现金券" class="overBb"><img src="/g/jsp/newer/newer2014/img/iconB1.gif" id="iconB1"><img src="/g/jsp/newer/newer2014/img/iconB2.gif" id="iconB2" style="display:none;"></a>
+				<a href="http://game.kuwo.cn/g/st/MobileGift" target="_blank" title="点击领取礼包" class="overBc"><img src="/g/jsp/newer/newer2014/img/iconC1.gif" id="iconC1"><img src="/g/jsp/newer/newer2014/img/iconC2.gif" id="iconC2" style="display:none;"></a>
+				
+				<a href="https://pay.kuwo.cn/pay/st/PGameGiftList?src=dhq" target="_blank" title="点击查看酷豆！" class="overBd"><img src="/g/jsp/newer/newer2014/img/iconF1.gif" id="iconF1" style="display: none; "><img src="/g/jsp/newer/newer2014/img/iconF2.gif" id="iconF2" style="display: inline; "></a>
+				<a href="/g/jsp/newer/newer2014/topic.jsp" target="_blank" title="积分酷商城有新物品上架哦！" class="overBe"><img src="/g/jsp/newer/newer2014/img/iconE1.gif" id="iconE1"><img src="/g/jsp/newer/newer2014/img/iconE2.gif" id="iconE2" style="display:none;"></a>
+			</p>
+			<p class="overBtnHref">
+				<a href="http://game.kuwo.cn/g/st/PersonalCenter?act=index" target="_blank" title="密保邮箱" class="overBaHref">密保邮箱</a>
+				<a href="http://game.kuwo.cn/g/st/PersonalCenter?act=index" target="_blank" title="安全手机" class="overBaHref">安全手机</a>
+				<a href="http://game.kuwo.cn/g/st/PersonalCenter?act=antiAddiction" target="_blank" title="防沉迷" class="overBaHref">防沉迷</a>
+				<a href="http://game.kuwo.cn/g/jsp/kfCenter/question.jsp?type=chongzhi" target="_blank" title="常见问题" class="overBaHref">常见问题</a>
+			</p>
+			
+			<p class="h10Href"></p>
+			<div id="historyHtml"></div>
+		</div>
+	
+
+
+<div class="login" id="login" style="display:block">
+	<p class="btnTab">
+		<a href="javascript:void(0);" id="login1" class="tabBa">登录</a>
+		<a href="javascript:log();" id="login2" class="tabBb" style="display:none">登录</a>
+		<a href="javascript:reg();" id="reg1" class="tabZa">注册</a>
+		<a href="javascript:void(0);" id="reg2" class="tabZb" style="display:none">注册</a>
+	</p>
+	<input type="hidden" id="logSrc" value="index">
+	<p class="intBg">
+		<span>账 号：</span><input type="text" id="username" class="intSm">
+	</p>
+	<p class="h5"></p>
+	<p class="intBg">
+		<span>密 码：</span><input type="password" id="password" onkeydown="return enterSubmit(this, event, 'login()')" class="intSm">
+	</p>
+	<p class="h10"></p>
+	<p class="remanber">
+		<input type="checkbox" name="useCookie" value="use" class="check">
+		<span class="chTex">记住我</span>
+		<a href="http://game.kuwo.cn/g/jsp/safeCenter/index.jsp" target="_blank">忘记密码</a>
+	</p>
+	<p class="h10"></p>
+	<a href="javascript:login();" class="logBtn">登录</a>
+	<p class="h10"></p>
+	<p class="thss">
+		<span>其它账号登录：</span>
+		<a href="javascript:qq();" class="deg"><img src="/g/jsp/newer/newer2014/img/qq.jpg"></a>
+		<a href="javascript:sina();"><img src="/g/jsp/newer/newer2014/img/sn.jpg"></a>
+	</p>
+</div>
+
+<script type="text/javascript">
+	var checkIn = null;
+	/* var iconC = null;
+	var iconD = null;
+	var iconE = null; */
+	var iconF = null;
+	$(document).ready(function(){
+		if($("#checkIn1").css("display") == "block"){checkIn = setval("checkIn");}
+		
+		if($("#overBtn")[0]){
+			/* iconC = setval("iconC");
+			iconD = setval("iconD");
+			iconE = setval("iconE"); */
+			iconF = setval("iconF");
+		}
+		
+		// 图标点击事件
+		$("img[id^=checkIn]").click(function(){clsval(checkIn, "checkIn");});
+		/* $("img[id^=iconC]").click(function(){clsval(iconC, "iconC");});
+		$("img[id^=iconD]").click(function(){clsval(iconD, "iconD");});
+		$("img[id^=iconE]").click(function(){clsval(iconE, "iconE");}); */
+		$("img[id^=iconF]").click(function(){clsval(iconF, "iconF");});
+	});
+	
+	// 设置计时器
+	function setval(str){
+		var cookie = getCookie('www_game_' + str);
+		var val = null;
+		if(cookie==null || cookie==""){
+			val = setInterval(function(){iBlink(str)}, 500);
+		}
+		
+		return val;
+	}
+	
+	// 图标闪动
+	function iBlink(type){
+		var t1 = $("#" + type + "1");
+		var t2 = $("#" + type + "2");
+		if(t1.css("display") == "none"){
+			t2.hide();
+			t1.show();
+		}else{
+			t1.hide();
+			t2.show();
+		}
+	}
+	
+	// 清除计时器并添加cookie
+	function clsval(val, str){
+		if(val != null){
+			clearInterval(val);
+		}
+		$("#"+str+"2").hide();
+		$("#"+str+"1").show();
+		addCookie('www_game_'+str, 'show_www_game', 24*60*60, '/', 'kuwo.cn');
+	}
+</script>
+
+				<div class="slide" id="slide">
+					<div class="box">
+						<ul class="list" style="height:250px;">
+							
+								<li style="height: 250px; "><a href="http://game.kuwo.cn/g/st/newdl?dlid=gqkzj8&amp;gameid=266&amp;serverid=999&amp;s=2&amp;at=21&amp;ap=31" target="_blank" onclick="javascript:addTongJi('HOMEPAGE_LUNBO');"><img src="http://img2.kuwo.cn/star/upload/5/5/1489716647141_.jpg" style="width:725px; height:250px;"></a></li>
+							
+								<li style="height:250px;"><a href="http://game.kuwo.cn/g/st/newdl?dlid=gsxj8&amp;gameid=264&amp;serverid=999&amp;s=2&amp;at=21&amp;ap=31" target="_blank" onclick="javascript:addTongJi('HOMEPAGE_LUNBO');"><img src="http://img2.kuwo.cn/star/upload/0/0/1489284937872_.jpg" style="width:725px; height:250px;"></a></li>
+							
+								<li style="height:250px;"><a href="http://game.kuwo.cn/g/st/newdl?dlid=glscq8&amp;gameid=265&amp;serverid=999&amp;s=2&amp;at=21&amp;ap=31" target="_blank" onclick="javascript:addTongJi('HOMEPAGE_LUNBO');"><img src="http://img1.kuwo.cn/star/upload/11/11/1487384271899_.jpg" style="width:725px; height:250px;"></a></li>
+							
+								<li style="height:250px;"><a href="http://game.kuwo.cn/g/st/newdl?dlid=glycq8&amp;gameid=239&amp;serverid=999&amp;s=2&amp;at=21&amp;ap=31" target="_blank" onclick="javascript:addTongJi('HOMEPAGE_LUNBO');"><img src="http://img3.kuwo.cn/star/upload/10/10/1490407618618_.png" style="width:725px; height:250px;"></a></li>
+							
+								<li style="height:250px;"><a href="http://game.kuwo.cn/g/st/newdl?dlid=gsnqxz8&amp;gameid=261&amp;serverid=999&amp;s=2&amp;at=21&amp;ap=31" target="_blank" onclick="javascript:addTongJi('HOMEPAGE_LUNBO');"><img src="http://img2.kuwo.cn/star/upload/0/0/1490234892912_.jpg" style="width:725px; height:250px;"></a></li>
+							
+								<li style="height:250px;"><a href="http://game.kuwo.cn/g/st/newdl?dlid=gsgws8&amp;gameid=263&amp;serverid=999&amp;s=2&amp;at=21&amp;ap=31" target="_blank" onclick="javascript:addTongJi('HOMEPAGE_LUNBO');"><img src="http://img4.kuwo.cn/star/upload/4/4/1487383936548_.jpg" style="width:725px; height:250px;"></a></li>
+							
+								<li style="height:250px;"><a href="http://game.kuwo.cn/g/st/newdl?dlid=gcqby9&amp;gameid=188&amp;serverid=999&amp;at=22&amp;ap=32" target="_blank" onclick="javascript:addTongJi('HOMEPAGE_LUNBO');"><img src="http://img4.kuwo.cn/star/upload/11/11/1480558808475_.jpg" style="width:725px; height:250px;"></a></li>
+							
+						</ul>
+					</div>
+				<ul class="btn"><li class="dita"></li><li class="dita"></li><li class="dita"></li><li class="ditb"></li><li class="dita"></li><li class="dita"></li><li class="dita"></li></ul><a href="javascript:void(0)" class="plus"></a><a href="javascript:void(0)" class="minus"></a></div>
+			</div>
+			<p class="h10"></p>
+		</div>
+		<div class="w1000">
+			<!-----浮动广告start---->
+			<div id="adLeft" style="width: 200px; height: 500px; background-color: rgb(0, 0, 0); position: fixed; top: 160px; left: -708px; background-position: initial initial; background-repeat: initial initial; ">
+				<a href="javascript:void(0);" onclick="document.getElementById('adLeft').style.display='none'" style="position:absolute; bottom:-20px; right:5px; color:black;">关闭</a>
+				<div id="delay_load_game_360_page_left"><div id="game_360_page_left_div_0" style="display: block; "><iframe width="200" height="500" scrolling="no" frameborder="0" src="http://wa.kuwo.cn/lyrics/img/kwgg/adv4962/index.htm?ver="></iframe></div></div>
+				<script type="text/javascript" src="http://wa.kuwo.cn/lyrics/img/kwgg/kwgg_381.js?4567890" charset="gbk"></script>
+				<br><br>
+			</div>
+			<div class="game_weixin" id="gamehall_weixin" style="width: 200px; height: 200px; position: fixed; left: -708px; top: 700px; ">
+				<div style="position: absolute; padding-left: 175px;top:15px;cursor: pointer;" id="closeweixin"><img src="/g/jsp/newer/newer2014/img/xx.png"></div>
+				<object height="200" width="200" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000">
+					<param value="/g/jsp/newer/newer2014/img/bearweixin.swf" name="movie">
+                    <param value="high" name="quality">
+                    <param value="transparent" name="wmode">
+                    <param name="allowScriptAccess" value="always">
+                    <embed height="200" width="200" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="&amp;ran=59" src="/g/jsp/newer/newer2014/img/bearweixin.swf" allowscriptaccess="always" quality="high" wmode="transparent">
+				</object>
+			</div>  
+			<div id="adRight" style="width: 200px; height: 500px; background-color: rgb(0, 0, 0); position: fixed; top: 160px; right: -708px; background-position: initial initial; background-repeat: initial initial; ">
+				<a href="javascript:void(0);" onclick="document.getElementById('adRight').style.display='none'" style="position:absolute; bottom:-20px; left:5px; color:black;">关闭</a>
+				<div id="delay_load_game_360_page"><div id="game_360_page_div_0" style="display: block; "><iframe width="200" height="500" scrolling="no" frameborder="0" src="http://wa.kuwo.cn/lyrics/img/kwgg/adv4960/index.htm?ver="></iframe></div></div>
+				<script type="text/javascript" src="http://wa.kuwo.cn/lyrics/img/kwgg/kwgg_380.js?4567890" charset="gbk"></script>
+			</div>
+			<!-----浮动广告end---->
+			<div class="gameLe">
+				<script type="text/javascript"> 
+                        $(document).ready(function(){
+                        	
+							 //鼠标滑动 触发ajax事件
+                              $(".navLe").mouseover(function(){
+                            	  	 $("#newServer").empty();
+                            	  	 $.post("/g/st/CheckEnterGameTime",{type:"newserver"},function(data, status){
+                            	    	$("#newServer").append(data);
+          							 });
+                            	  
+                                     $(".cmLista").show();
+									 $(".cmListb").hide();
+                              });
+                              
+                              $(".navRi").mouseover(function(){
+                            	    $("#closePre").empty();
+                            	    $.post("/g/st/CheckEnterGameTime",{type:"close"},function(data, status){
+                            	    	$("#closePre").append(data);
+          							});
+                            	  
+                                    $(".navRi").addClass("navLea");
+									$(".navLe").addClass("navRia");
+									$(".cmListb").show();
+									$(".cmLista").hide();
+                              });
+                              
+							  $(".navLe").mouseover(function(){
+								     $(".navLe").removeClass("navRia");
+									 $(".navRi").removeClass("navLea");
+                              });
+							  
+                              
+                        });
+                        
+                        function gameTip(gid,sid){
+                        	window.open("/g/st/CheckEnterGameTime?gid="+gid+"&sid="+sid);
+            			}
+              </script>
+				
+				<div class="navNew">
+                     <a href="#" class="navLe">最新开服</a>
+                     <a href="#" class="navRi">最新预告</a>
+                </div>
+                <!-- 最新开服 -->
+                <div class="cmLista" id="newServer">
+                	
+                <em class="oba"><img src="http://image.kuwo.cn/NewGameBox/smsnqxz.jpg" width="18"></em><a href="http://sn.kuwo.cn" class="obb" style="color:#ff6600" target="_blank" onclick="javascript:addTongJi('HOMEPAGE_XINFU')">少年群侠传</a><a href="http://game.kuwo.cn/g/st/newdl?dlid=gsnqxz9&amp;gameid=261&amp;serverid=107&amp;at=22&amp;ap=32" class="obc" style="color:#ff6600" target="_blank" onclick="javascript:addTongJi('HOMEPAGE_XINFU')">酷我107区</a><span class="obd">04-01</span><em class="oba"><img src="http://image.kuwo.cn/NewGameBox/smlscq.jpg" width="18"></em><a href="http://lscq.kuwo.cn" class="obb" style="color:" target="_blank" onclick="javascript:addTongJi('HOMEPAGE_XINFU')">梁山传奇</a><a href="http://game.kuwo.cn/g/st/newdl?dlid=glscq9&amp;gameid=265&amp;serverid=50&amp;at=22&amp;ap=32" class="obc" style="color:" target="_blank" onclick="javascript:addTongJi('HOMEPAGE_XINFU')">酷我50区</a><span class="obd">04-01</span><em class="oba"><img src="http://image.kuwo.cn/NewGameBox/smqkzj.jpg" width="18"></em><a href="http://qkzj.kuwo.cn" class="obb" style="color:" target="_blank" onclick="javascript:addTongJi('HOMEPAGE_XINFU')">乾坤战纪</a><a href="http://game.kuwo.cn/g/st/newdl?dlid=gqkzj9&amp;gameid=266&amp;serverid=24&amp;at=22&amp;ap=32" class="obc" style="color:" target="_blank" onclick="javascript:addTongJi('HOMEPAGE_XINFU')">酷我24区</a><span class="obd">04-01</span><em class="oba"><img src="http://image.kuwo.cn/NewGameBox/smsxj.jpg" width="18"></em><a href="http://sxj.kuwo.cn" class="obb" style="color:" target="_blank" onclick="javascript:addTongJi('HOMEPAGE_XINFU')">神仙劫</a><a href="http://game.kuwo.cn/g/st/newdl?dlid=gsxj9&amp;gameid=264&amp;serverid=75&amp;at=22&amp;ap=32" class="obc" style="color:" target="_blank" onclick="javascript:addTongJi('HOMEPAGE_XINFU')">酷我75区</a><span class="obd">04-01</span><em class="oba"><img src="http://image.kuwo.cn/NewGameBox/smcqby.jpg" width="18"></em><a href="http://cqby.kuwo.cn" class="obb" style="color:" target="_blank" onclick="javascript:addTongJi('HOMEPAGE_XINFU')">传奇霸业</a><a href="http://game.kuwo.cn/g/st/newdl?dlid=gcqby9&amp;gameid=188&amp;serverid=1077&amp;at=22&amp;ap=32" class="obc" style="color:" target="_blank" onclick="javascript:addTongJi('HOMEPAGE_XINFU')">酷我1077区</a><span class="obd">04-01</span><em class="oba"><img src="http://image.kuwo.cn/NewGameBox/smlycq.jpg" width="18"></em><a href="http://lycq.kuwo.cn" class="obb" style="color:" target="_blank" onclick="javascript:addTongJi('HOMEPAGE_XINFU')">蓝月传奇</a><a href="http://game.kuwo.cn/g/st/newdl?dlid=glycq9&amp;gameid=239&amp;serverid=321&amp;at=22&amp;ap=32" class="obc" style="color:" target="_blank" onclick="javascript:addTongJi('HOMEPAGE_XINFU')">酷我321区</a><span class="obd">04-01</span></div>
+                
+                <!-- 最新预告 -->
+		        <div class="cmListb" id="closePre" style=" display:none;">
+	                <!-- ajax请求 返回 html -->
+		        </div>
+				<p class="h10"></p>
+				<p class="mTit">最新游戏</p>
+				<div class="objet">
+					
+						<div class="alone">
+							<a href="http://sgqxz.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_NEWGAME')" target="_blank" class="ala"><img originalsrc="http://image.kuwo.cn/NewGameBox/smallaccount/267_new_d.jpg"></a>
+							<div class="alRi">
+								<a href="http://sgqxz.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_NEWGAME')" target="_blank" class="alTa">三国群雄传</a>
+								<p class="alTb">类型 | 
+									
+										角色扮演
+									
+										
+									
+										
+									
+										
+									
+								</p>
+								<p class="alTc">
+									
+									<a href="http://game.kuwo.cn/g/st/JumpSgqxz?s=1" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_NEWGAME','55','56','sgqxz.jpg','15_2')" target="_blank" style="float:left;">酷我首服</a>
+									<em>
+										
+										
+											03/17
+										
+									</em>
+								</p>
+							</div>
+						</div>
+					
+						<div class="alone">
+							<a href="http://qkzj.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_NEWGAME')" target="_blank" class="ala"><img originalsrc="http://image.kuwo.cn/NewGameBox/smallaccount/266_new_d.jpg"></a>
+							<div class="alRi">
+								<a href="http://qkzj.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_NEWGAME')" target="_blank" class="alTa">乾坤战纪</a>
+								<p class="alTb">类型 | 
+									
+										角色扮演
+									
+										
+									
+										
+									
+										
+									
+								</p>
+								<p class="alTc">
+									
+									<a href="http://game.kuwo.cn/g/st/JumpQkzj?s=24" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_NEWGAME','55','56','qkzj.jpg','15_2')" target="_blank" style="float:left;">酷我24区</a>
+									<em>
+										
+										
+											04/01
+										
+									</em>
+								</p>
+							</div>
+						</div>
+					
+						<div class="alone">
+							<a href="http://lscq.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_NEWGAME')" target="_blank" class="ala"><img originalsrc="http://image.kuwo.cn/NewGameBox/smallaccount/265_new_d.jpg"></a>
+							<div class="alRi">
+								<a href="http://lscq.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_NEWGAME')" target="_blank" class="alTa">梁山传奇</a>
+								<p class="alTb">类型 | 
+									
+										角色扮演
+									
+										
+									
+										
+									
+										
+									
+								</p>
+								<p class="alTc">
+									
+									<a href="http://game.kuwo.cn/g/st/JumpLscq?s=50" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_NEWGAME','55','56','lscq.jpg','15_2')" target="_blank" style="float:left;">酷我50区</a>
+									<em>
+										
+										
+											04/01
+										
+									</em>
+								</p>
+							</div>
+						</div>
+					
+						<div class="alone">
+							<a href="http://sxj.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_NEWGAME')" target="_blank" class="ala"><img originalsrc="http://image.kuwo.cn/NewGameBox/smallaccount/264_new_d.jpg"></a>
+							<div class="alRi">
+								<a href="http://sxj.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_NEWGAME')" target="_blank" class="alTa">神仙劫</a>
+								<p class="alTb">类型 | 
+									
+										角色扮演
+									
+										
+									
+										
+									
+										
+									
+								</p>
+								<p class="alTc">
+									
+									<a href="http://game.kuwo.cn/g/st/JumpSxj?s=75" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_NEWGAME','55','56','sxj.jpg','15_2')" target="_blank" style="float:left;">酷我75区</a>
+									<em>
+										
+										
+											04/01
+										
+									</em>
+								</p>
+							</div>
+						</div>
+					
+					<p class="h10"></p>
+				</div>
+				<p class="h10"></p>
+				<a href="http://game.kuwo.cn/g/jsp/kfCenter/index.jsp" target="_blank"><img src="/g/jsp/newer/newer2014/img/severs.png?ver=20150227"></a>
+			</div>
+			<div class="gameRi">
+				<div class="nTis" style="padding:0 0 0 10px;">
+					<span class="ded">火爆热门</span>
+					<a href="javascript:void(0);" onclick="javascript:showAndHideTab('dea', 'cenAm', 'cAcm', '网页游戏', jQuery(this))" class="dea">网页游戏</a>
+					<a href="javascript:void(0);" onclick="javascript:showAndHideTab('dea', 'cenAm', 'cAcm', 'flash小游戏', jQuery(this))">flash小游戏</a>
+					<ul style="height:34px; width:406px; overflow:hidden; _zoom:1; float:right;" id="boxm">
+						<li><a href="http://game.kuwo.cn/g/st/newdl?dlid=gqkzj9&amp;gameid=266&amp;serverid=999&amp;s=1&amp;at=23&amp;ap=33" class="xinshou fr" target="_blank"><img src="http://img1.kuwo.cn/star/upload/7/7/1489026037111_.jpg"></a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">q475736374</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2990</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">yuwestjjsg</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1170</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wzh7755</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2150</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">ly19860913</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">520</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wangzheng222222</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1630</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">lms1581</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">4120</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">xxb780818</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">610</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">1377660550932qq</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">4590</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">ly19860913</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">310</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">riveray</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">450</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wxlzxw5</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">390</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">demaxiya111</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">670</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">juventus0301</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">620</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">alicia1977</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">720</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wxlzxw5</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2340</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">yuwestjjsg</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1250</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">gztrczw</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1170</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">lixiaonuo826</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">3100</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">chris0331</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2130</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">nice5487</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">3220</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">171447402@qq.com</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">420</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">vipqjw</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2950</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wjy13009757768</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1400</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">demaxiya111</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">3630</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wzh7748</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2340</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">surprise123456</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2360</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">dean1205</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">5370</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">crazynoel</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2060</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">dmxyws</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2220</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wynloveljj</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">740</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">xiaonuoaijiajia</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1320</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">liuxintao0829</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">570</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">nice5487</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">4650</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">yf15914789</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1630</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">riveray</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">430</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">vipqjw</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1580</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">crazynoel</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2180</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wynloveljj</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2510</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">missk614</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2260</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wzh7751</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">3320</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">lixiaole850120</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1230</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wzh7755</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1100</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">171447402@qq.com</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">3220</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">yf15914789</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1790</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">gztrczw</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">5870</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">longlong6479</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2230</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">yf15914789</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1230</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">xxb780818</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2390</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wzh7749</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2260</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">1377660550932qq</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1210</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">fr525037869</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2380</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">dean1205</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2370</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">demaxiya111</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2430</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">hawk2002</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">690</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wzh7748</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">710</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wzh7751</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2290</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">demaxiya111</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">5630</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">lixiaonuo826</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2300</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">cici800806</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1350</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wzh7749</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">570</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">juventus0301</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2280</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">lixiaole850120</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1950</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">surprise123456</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1270</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wzh7747</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2300</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">cici800806</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">320</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">yf15914789</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">3730</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">chris0331</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">3580</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">missk614</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">5460</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">alicia1977</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">540</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">xiaonuoaijiajia</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2360</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">liuxintao0829</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">570</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wjy13009757768</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">440</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">hawk2002</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2180</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wzh7747</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">4150</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wangzheng222222</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">6530</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">fr525037869</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2380</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wjy13009757768</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">500</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">lms1581</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2580</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">q475736374</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">490</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">longlong6479</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1240</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">dmxyws</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1320</strong>倍奖励</a></li>
+						
+					
+						<li><a href="http://game.kuwo.cn/g/st/newdl?dlid=gqkzj9&amp;gameid=266&amp;serverid=999&amp;s=1&amp;at=23&amp;ap=33" class="xinshou fr" target="_blank"><img src="http://img1.kuwo.cn/star/upload/7/7/1489026037111_.jpg"></a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">q475736374</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2990</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">yuwestjjsg</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1170</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wzh7755</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2150</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">ly19860913</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">520</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wangzheng222222</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1630</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">lms1581</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">4120</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">xxb780818</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">610</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">1377660550932qq</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">4590</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">ly19860913</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">310</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">riveray</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">450</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wxlzxw5</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">390</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">demaxiya111</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">670</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">juventus0301</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">620</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">alicia1977</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">720</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wxlzxw5</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2340</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">yuwestjjsg</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1250</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">gztrczw</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1170</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">lixiaonuo826</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">3100</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">chris0331</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2130</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">nice5487</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">3220</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">171447402@qq.com</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">420</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">vipqjw</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2950</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wjy13009757768</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1400</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">demaxiya111</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">3630</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wzh7748</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2340</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">surprise123456</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2360</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">dean1205</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">5370</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">crazynoel</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2060</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">dmxyws</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2220</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wynloveljj</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">740</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">xiaonuoaijiajia</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1320</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">liuxintao0829</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">570</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">nice5487</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">4650</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">yf15914789</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1630</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">riveray</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">430</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">vipqjw</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1580</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">crazynoel</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2180</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wynloveljj</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2510</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">missk614</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2260</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wzh7751</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">3320</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">lixiaole850120</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1230</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wzh7755</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1100</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">171447402@qq.com</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">3220</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">yf15914789</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1790</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">gztrczw</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">5870</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">longlong6479</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2230</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">yf15914789</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1230</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">xxb780818</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2390</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wzh7749</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2260</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">1377660550932qq</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1210</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">fr525037869</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2380</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">dean1205</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2370</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">demaxiya111</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2430</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">hawk2002</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">690</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wzh7748</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">710</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wzh7751</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2290</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">demaxiya111</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">5630</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">lixiaonuo826</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2300</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">cici800806</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1350</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wzh7749</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">570</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">juventus0301</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2280</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">lixiaole850120</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1950</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">surprise123456</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1270</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wzh7747</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2300</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">cici800806</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">320</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">yf15914789</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">3730</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">chris0331</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">3580</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">missk614</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">5460</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">alicia1977</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">540</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">xiaonuoaijiajia</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2360</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">liuxintao0829</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">570</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wjy13009757768</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">440</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">hawk2002</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2180</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wzh7747</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">4150</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wangzheng222222</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">6530</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">fr525037869</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2380</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">wjy13009757768</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">500</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">lms1581</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">2580</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">q475736374</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">490</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">longlong6479</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1240</strong>倍奖励</a></li>
+						
+							<li style="text-align:right;"><a href="http://buyu.kuwo.cn/g/st/JumpBydr2?s=2" target="_blank" style="margin-right:10px; width:380px; height:34px; float:right; overflow:hidden;"><font color="#f60">dmxyws</font>玩捕鱼二<img src="http://game.kuwo.cn/g/img/fishII_30.png" width="24px" height="24px">赢了<strong style="color:red;">1320</strong>倍奖励</a></li>
+						
+					</ul>
+				</div>
+				<div class="cenBox heighta">
+					<div class="cenAm">
+						
+							<div class="cAcm" tab="网页游戏">
+								<img src="http://img1.kuwo.cn/star/upload/6/6/1488532340422_.jpg" style="cursor:pointer; width:170px; height:170px;">
+								<p class="cAbg" style="display:none;"></p>
+								<div class="cAtex" style="display:none;"></div>
+								<div class="cAtYk" style="display:none;">
+									<p class="yka">
+										梁山传奇<span>角色扮演</span>
+									</p>
+									<p class="h10"></p>
+									<p class="ykb">重温经典，再续传奇。2017传奇页游开年巨作！</p>
+									<p class="h10"></p>
+									<p class="ykc">
+										<a href="http://lscq.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTCENTER');" target="_blank" class="ukBta">官网</a><a href="http://game.kuwo.cn/g/st/newdl?dlid=glscq9&amp;gameid=265&amp;serverid=999&amp;s=2&amp;at=30&amp;ap=40" onclick="javascript:addTongJi('HOMEPAGE_RIGHTCENTER');" target="_blank" class="ukBtb">开始游戏</a>
+									</p>
+								</div>
+							</div>		
+						
+							<div class="cAcm" tab="网页游戏">
+								<img src="http://img2.kuwo.cn/star/upload/3/3/1484618451667_.jpg" style="cursor:pointer; width:170px; height:170px;">
+								<p class="cAbg" style="display:none;"></p>
+								<div class="cAtex" style="display:none;"></div>
+								<div class="cAtYk" style="display:none;">
+									<p class="yka">
+										神仙劫<span>角色扮演</span>
+									</p>
+									<p class="h10"></p>
+									<p class="ykb">唐嫣倾情推荐，2017修仙游戏开年大作！</p>
+									<p class="h10"></p>
+									<p class="ykc">
+										<a href="http://sxj.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTCENTER');" target="_blank" class="ukBta">官网</a><a href="http://game.kuwo.cn/g/st/newdl?dlid=gsxj9&amp;gameid=264&amp;serverid=999&amp;s=2&amp;at=30&amp;ap=40" onclick="javascript:addTongJi('HOMEPAGE_RIGHTCENTER');" target="_blank" class="ukBtb">开始游戏</a>
+									</p>
+								</div>
+							</div>		
+						
+							<div class="cAcm" tab="网页游戏">
+								<img src="http://img3.kuwo.cn/star/upload/3/3/1470796770083_.jpg" style="cursor:pointer; width:170px; height:170px;">
+								<p class="cAbg" style="display:none;"></p>
+								<div class="cAtex" style="display:none;"></div>
+								<div class="cAtYk" style="display:none;">
+									<p class="yka">
+										蓝月传奇<span>角色扮演</span>
+									</p>
+									<p class="h10"></p>
+									<p class="ykb">1.85版传奇3大职业6大合技，一切如你所愿！</p>
+									<p class="h10"></p>
+									<p class="ykc">
+										<a href="http://lycq.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTCENTER');" target="_blank" class="ukBta">官网</a><a href="http://game.kuwo.cn/g/st/newdl?dlid=glycq9&amp;gameid=239&amp;serverid=99&amp;s=2&amp;at=30&amp;ap=40" onclick="javascript:addTongJi('HOMEPAGE_RIGHTCENTER');" target="_blank" class="ukBtb">开始游戏</a>
+									</p>
+								</div>
+							</div>		
+						
+							<div class="cAcm" tab="网页游戏">
+								<img src="http://img1.kuwo.cn/star/upload/2/2/1470713738434_.jpg" style="cursor:pointer; width:170px; height:170px;">
+								<p class="cAbg" style="display:none;"></p>
+								<div class="cAtex" style="display:none;"></div>
+								<div class="cAtYk" style="display:none;">
+									<p class="yka">
+										传奇霸业<span>角色扮演</span>
+									</p>
+									<p class="h10"></p>
+									<p class="ykb">还原经典传奇，寻昔日兄弟，战热血沙城！尽在《传奇霸业》！</p>
+									<p class="h10"></p>
+									<p class="ykc">
+										<a href="http://cqby.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTCENTER');" target="_blank" class="ukBta">官网</a><a href="http://game.kuwo.cn/g/st/newdl?dlid=gcqby9&amp;gameid=188&amp;serverid=99&amp;s=2&amp;at=30&amp;ap=40" onclick="javascript:addTongJi('HOMEPAGE_RIGHTCENTER');" target="_blank" class="ukBtb">开始游戏</a>
+									</p>
+								</div>
+							</div>		
+						
+					</div>
+					<div class="cenAm">
+						
+							<div class="cAcm" tab="flash小游戏" style="display:none;">
+								<a href="/g/st/PlayFlash_2014?id=118456" onclick="javascript:addTongJi('HOMEPAGE_CENTERFLASH');" target="_blank"><img src="http://img4.kwcdn.kuwo.cn:81/star/upload/5/5/1475224531317_.jpg" width="170px" height="170px"></a>
+								<p class="img_tip">
+									<a href="/g/st/PlayFlash_2014?id=118456" onclick="javascript:addTongJi('HOMEPAGE_CENTERFLASH');" target="_blank">棋牌游戏大厅</a><span>策略</span>
+								</p>
+							</div>
+						
+							<div class="cAcm" tab="flash小游戏" style="display:none;">
+								<a href="/g/st/PlayFlash_2014?id=116771" onclick="javascript:addTongJi('HOMEPAGE_CENTERFLASH');" target="_blank"><img src="http://pic2.17yy.com/swf/minjie/2015-06-10/f4988bf5c90a64fb4caca26b0d14bab1.jpg" width="170px" height="170px"></a>
+								<p class="img_tip">
+									<a href="/g/st/PlayFlash_2014?id=116771" onclick="javascript:addTongJi('HOMEPAGE_CENTERFLASH');" target="_blank">导弹袭击</a><span>敏捷</span>
+								</p>
+							</div>
+						
+							<div class="cAcm" tab="flash小游戏" style="display:none;">
+								<a href="/g/st/PlayFlash_2014?id=116770" onclick="javascript:addTongJi('HOMEPAGE_CENTERFLASH');" target="_blank"><img src="http://pic2.17yy.com/swf/sheji/2015-06-10/d7f16a69ea9ec13dea7c14b11385b918.jpg" width="170px" height="170px"></a>
+								<p class="img_tip">
+									<a href="/g/st/PlayFlash_2014?id=116770" onclick="javascript:addTongJi('HOMEPAGE_CENTERFLASH');" target="_blank">植物僵尸杀戮</a><span>射击</span>
+								</p>
+							</div>
+						
+							<div class="cAcm" tab="flash小游戏" style="display:none;">
+								<a href="/g/st/PlayFlash_2014?id=116769" onclick="javascript:addTongJi('HOMEPAGE_CENTERFLASH');" target="_blank"><img src="http://pic3.17yy.com/swf/maoxian/2015-06-10/c7ede9c84126c11c66c43690c8d2bc6b.jpg" width="170px" height="170px"></a>
+								<p class="img_tip">
+									<a href="/g/st/PlayFlash_2014?id=116769" onclick="javascript:addTongJi('HOMEPAGE_CENTERFLASH');" target="_blank">小白回家历险记</a><span>冒险</span>
+								</p>
+							</div>
+						
+					</div>
+				</div>
+				<p class="h10"></p>
+				<div class="nTis">
+					<span class="ded">精品推荐</span>
+					<a href="javascript:void(0);" onclick="javascript:showAndHideTab('dec', 'cBVm', 'cBbox', '角色扮演',jQuery(this))" class="dec">角色扮演</a>
+					<a href="javascript:void(0);" onclick="javascript:showAndHideTab('dec', 'cBVm', 'cBbox', '棋牌游戏',jQuery(this))">棋牌游戏</a>
+					<a href="javascript:void(0);" onclick="javascript:showAndHideTab('dec', 'cBVm', 'cBbox', '休闲竞技',jQuery(this))">休闲竞技</a>
+					<a href="javascript:void(0);" onclick="javascript:showAndHideTab('dec', 'cBVm', 'cBbox', '战争策略',jQuery(this))">战争策略</a>
+					<a href="/g/st/WebGameCenter_2014" target="_blank" class="more">更多&gt;&gt;</a>
+				</div>
+				<div class="cenBox heightb">
+					<div class="cBVm">
+						
+							<div class="cBbox" tab="角色扮演">
+								<em class="cbImg"><img originalsrc="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/157_z.png"></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://dts.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">大天使之剑</a>
+									</p>
+									<p class="cbTax">《大天使之剑》给你全新奇迹体验,无数次等待,只为你归来!</p>
+									<p class="cbBtn">
+										<a href="http://dts.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpDtszj?s=544" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','dtszj.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+							<div class="cBbox" tab="角色扮演">
+								<em class="cbImg"><img originalsrc="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/219_z.png"></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://fbdl.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">风暴大陆</a>
+									</p>
+									<p class="cbTax">风暴大陆，王权争霸！2015日韩魔幻巨作！</p>
+									<p class="cbBtn">
+										<a href="http://fbdl.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpFbdl?s=138" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','fbdl.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+							<div class="cBbox" tab="角色扮演">
+								<em class="cbImg"><img originalsrc="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/220_z.png"></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://cqss.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">传奇盛世</a>
+									</p>
+									<p class="cbTax">《传奇盛世》是一款东方魔幻风格的即时战斗类页游大作</p>
+									<p class="cbBtn">
+										<a href="http://cqss.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpCqss?s=275" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','cqss.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+							<div class="cBbox" tab="角色扮演">
+								<em class="cbImg"><img originalsrc="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/226_z.png"></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://jyjh.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">剑雨江湖</a>
+									</p>
+									<p class="cbTax">一款全新玄幻武侠题材的角色扮演类游戏</p>
+									<p class="cbBtn">
+										<a href="http://jyjh.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpJyjh?s=158" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','jyjh.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+							<div class="cBbox" tab="角色扮演">
+								<em class="cbImg"><img originalsrc="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/206_z.png"></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://lyb.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">琅琊榜</a>
+									</p>
+									<p class="cbTax">《琅琊榜》由同名电视剧授权改编，真实还原原著。</p>
+									<p class="cbBtn">
+										<a href="http://lyb.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpLyb?s=30" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','lyb.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+							<div class="cBbox" tab="角色扮演">
+								<em class="cbImg"><img originalsrc="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/231_z.png"></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://jyjx.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">九阴绝学</a>
+									</p>
+									<p class="cbTax">一款传奇武侠力作，带领广大玩家在武侠世界寻找传奇精髓！</p>
+									<p class="cbBtn">
+										<a href="http://jyjx.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpJyjx?s=54" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','jyjx.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+							<div class="cBbox" tab="角色扮演">
+								<em class="cbImg"><img originalsrc="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/108_z.png"></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://gcld.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">攻城掠地</a>
+									</p>
+									<p class="cbTax">一款强调“国战”的战争策略页游，开创全景即时国战</p>
+									<p class="cbBtn">
+										<a href="http://gcld.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpGcld?s=624" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','gcld.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+							<div class="cBbox" tab="角色扮演">
+								<em class="cbImg"><img originalsrc="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/99_z.png"></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://jjsg.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">街机三国</a>
+									</p>
+									<p class="cbTax">极具打击感的横版街机过关游戏！</p>
+									<p class="cbBtn">
+										<a href="http://jjsg.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpJjsg?s=43" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','jjsg.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+							<div class="cBbox" tab="角色扮演">
+								<em class="cbImg"><img originalsrc="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/78_z.png"></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://shen.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">神曲</a>
+									</p>
+									<p class="cbTax">魔幻RPG网页游戏,独创QTE战斗模式</p>
+									<p class="cbBtn">
+										<a href="http://shen.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpKwsq?s=68" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','kwsq.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+						
+							<div class="cBbox" tab="棋牌游戏" style="display:none;">
+								<em class="cbImg"><img src="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/52_z.png" style="display: inline; "></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://dzpk.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">德克萨斯扑克</a>
+									</p>
+									<p class="cbTax">全球最具影响力的扑克游戏！</p>
+									<p class="cbBtn">
+										<a href="http://dzpk.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpDzpk?s=1" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','dzpk.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+							<div class="cBbox" tab="棋牌游戏" style="display:none;">
+								<em class="cbImg"><img src="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/90_z.png" style="display: inline; "></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://ddz.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">天天斗地主</a>
+									</p>
+									<p class="cbTax">全新斗地主玩法，疯狂斗地主等您来体验</p>
+									<p class="cbBtn">
+										<a href="http://ddz.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpDdz?s=1" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','ddz.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+							<div class="cBbox" tab="棋牌游戏" style="display:none;">
+								<em class="cbImg"><img src="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/91_z.png" style="display: inline; "></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://kwdz.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">酷我德州</a>
+									</p>
+									<p class="cbTax">智力游戏，入门简单，策略多变，斗智斗心</p>
+									<p class="cbBtn">
+										<a href="http://kwdz.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpKwdz?s=1" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','kwdz.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+							<div class="cBbox" tab="棋牌游戏" style="display:none;">
+								<em class="cbImg"><img src="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/92_z.png" style="display: inline; "></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://drmj.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">达人麻将</a>
+									</p>
+									<p class="cbTax">由四人麻将简化为二人麻将,游戏更加紧凑、刺激、有趣</p>
+									<p class="cbBtn">
+										<a href="http://drmj.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpDrmj?s=1" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','drmj.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+						
+							<div class="cBbox" tab="休闲竞技" style="display:none;">
+								<em class="cbImg"><img src="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/15_z.png" style="display: inline; "></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://ddt.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">弹弹堂</a>
+									</p>
+									<p class="cbTax">经久不衰的Q版休闲竞技页游！全球每天350万人在玩！</p>
+									<p class="cbBtn">
+										<a href="http://ddt.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpDdt?s=35" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','ddt.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+							<div class="cBbox" tab="休闲竞技" style="display:none;">
+								<em class="cbImg"><img src="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/172_z.png" style="display: inline; "></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://ftx2.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">范特西篮球经理2</a>
+									</p>
+									<p class="cbTax">《范特西篮球经理2》是一款根据实时体育赛事竞争的实时网络体育策略游戏</p>
+									<p class="cbBtn">
+										<a href="http://ftx2.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpFtx2?s=1" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','ftx2.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+							<div class="cBbox" tab="休闲竞技" style="display:none;">
+								<em class="cbImg"><img src="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/113_z.png" style="display: inline; "></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://buyu.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">捕鱼</a>
+									</p>
+									<p class="cbTax">讲述的是渔夫进入深海龙宫探寻宝藏的故事</p>
+									<p class="cbBtn">
+										<a href="http://buyu.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpBydr2?s=2" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','bydr2.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+							<div class="cBbox" tab="休闲竞技" style="display:none;">
+								<em class="cbImg"><img src="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/115_z.png" style="display: inline; "></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://mxt.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">海洋马戏团</a>
+									</p>
+									<p class="cbTax">时下电玩城、游戏厅里非常受玩家欢迎的大型游戏</p>
+									<p class="cbBtn">
+										<a href="http://mxt.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpHymxt?s=1" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','hymxt.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+							<div class="cBbox" tab="休闲竞技" style="display:none;">
+								<em class="cbImg"><img src="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/140_z.png" style="display: inline; "></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://sgs.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">三国杀</a>
+									</p>
+									<p class="cbTax">风靡中国的智力卡牌桌游，杀！闪！之间尽显王者霸气</p>
+									<p class="cbBtn">
+										<a href="http://sgs.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpSgs?s=1" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','sgs.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+						
+							<div class="cBbox" tab="战争策略" style="display:none;">
+								<em class="cbImg"><img src="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/136_z.png" style="display: inline; "></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://sgh.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">三国魂</a>
+									</p>
+									<p class="cbTax">再现三国时期沙场点兵、摧城拔寨壮观场面</p>
+									<p class="cbBtn">
+										<a href="http://sgh.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpSgh?s=19" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','sgh.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+							<div class="cBbox" tab="战争策略" style="display:none;">
+								<em class="cbImg"><img src="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/119_z.png" style="display: inline; "></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://dhhj.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">大航海家</a>
+									</p>
+									<p class="cbTax">驰骋大海，征服世界！</p>
+									<p class="cbBtn">
+										<a href="http://dhhj.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpDhhj?s=3" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','dhhj.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+							<div class="cBbox" tab="战争策略" style="display:none;">
+								<em class="cbImg"><img src="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/126_z.png" style="display: inline; "></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://zlsg.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">战略三国</a>
+									</p>
+									<p class="cbTax">回合策略战斗模式,真正体现智谋的战争策略类页游</p>
+									<p class="cbBtn">
+										<a href="http://zlsg.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpZlsg?s=1" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','zlsg.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+							<div class="cBbox" tab="战争策略" style="display:none;">
+								<em class="cbImg"><img src="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/104_z.png" style="display: inline; "></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://jfzy.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">九伐中原</a>
+									</p>
+									<p class="cbTax">以三国时代为背景的全球首款沙盘策略竞技网游。</p>
+									<p class="cbBtn">
+										<a href="http://jfzy.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpJfzy?s=2" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','jfzy.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+							<div class="cBbox" tab="战争策略" style="display:none;">
+								<em class="cbImg"><img src="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/102_z.png" style="display: inline; "></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://hdz.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">皇帝传</a>
+									</p>
+									<p class="cbTax">全新玩法成就帝王之路</p>
+									<p class="cbBtn">
+										<a href="http://hdz.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpHdz?s=2" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','hdz.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+							<div class="cBbox" tab="战争策略" style="display:none;">
+								<em class="cbImg"><img src="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/120_z.png" style="display: inline; "></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://dqby.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">大秦霸业</a>
+									</p>
+									<p class="cbTax">穿越入秦地，领略七雄争霸的华夏统一之路。风起云涌，英雄辈出。武有白起、王翦、文有李斯、韩非。收蔺相如、廉颇，雇佣刺客荆轲……</p>
+									<p class="cbBtn">
+										<a href="http://dqby.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpDqby?s=2" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','dqby.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+							<div class="cBbox" tab="战争策略" style="display:none;">
+								<em class="cbImg"><img src="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/26_z.png" style="display: inline; "></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://astd.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">傲视天地</a>
+									</p>
+									<p class="cbTax">三国大型战争策略类网页游戏！</p>
+									<p class="cbBtn">
+										<a href="http://astd.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpAstd?s=17" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','astd.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+							<div class="cBbox" tab="战争策略" style="display:none;">
+								<em class="cbImg"><img src="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/65_z.png" style="display: inline; "></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://zzsf.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">征战四方</a>
+									</p>
+									<p class="cbTax">新时代三国策略页游，全程战斗体验。纯正国风策略演绎颠覆性三国交战！</p>
+									<p class="cbBtn">
+										<a href="http://zzsf.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpZzsf?s=4" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','zzsf.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+							<div class="cBbox" tab="战争策略" style="display:none;">
+								<em class="cbImg"><img src="http://star.kwcdn.kuwo.cn:81/star/NewKwGameBox/img/game/108_z.png" style="display: inline; "></em>
+								<div class="cbTex">
+									<p class="yka">
+										<a href="http://gcld.kuwo.cn" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank">攻城掠地</a>
+									</p>
+									<p class="cbTax">一款强调“国战”的战争策略页游，开创全景即时国战</p>
+									<p class="cbBtn">
+										<a href="http://gcld.kuwo.cn" class="cBtna" onclick="javascript:addTongJi('HOMEPAGE_RIGHTFOOT');" target="_blank"><img src="/g/jsp/newer/newer2014/img/home.jpg"></a>
+										<a href="http://game.kuwo.cn/g/st/JumpGcld?s=624" class="cBtnb" onclick="javascript:addTongJiAndAtAp('HOMEPAGE_RIGHTFOOT','59','60','gcld.jpg','16_1');" target="_blank"><img src="/g/jsp/newer/newer2014/img/start.jpg"></a>
+									</p>
+								</div>
+							</div>
+						
+					</div>
+				</div>
+				<p class="h10"></p>
+				<div class="nTis">
+					<span class="ded">flash小游戏</span>
+					
+						<a href="javascript:void(0);" onclick="javascript:showAndHideTab('def', 'heightc', 'flashCm', '益智', jQuery(this));" class="def">益智</a>
+					
+						<a href="javascript:void(0);" onclick="javascript:showAndHideTab('def', 'heightc', 'flashCm', '休闲', jQuery(this));" class="">休闲</a>
+					
+						<a href="javascript:void(0);" onclick="javascript:showAndHideTab('def', 'heightc', 'flashCm', '射击', jQuery(this));" class="">射击</a>
+					
+						<a href="javascript:void(0);" onclick="javascript:showAndHideTab('def', 'heightc', 'flashCm', '冒险', jQuery(this));" class="">冒险</a>
+					
+						<a href="javascript:void(0);" onclick="javascript:showAndHideTab('def', 'heightc', 'flashCm', '策略', jQuery(this));" class="">策略</a>
+					
+					<a href="/g/st/FlashCenter_2014" target="_blank" class="more">更多&gt;&gt;</a>
+				</div>
+				<div class="cenBox heightc">
+					
+						<div class="flashCm" tab="益智" style="block;">
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117826" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic3.17yy.com/swf/yizhi/2015-11-16/bfa4ad50e3d54fda275f5d229c6481a6.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117826" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">索尼克沙漠竞速拼图</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117821" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic1.17yy.com/swf/yizhi/2015-11-13/48e54f82cd164f7a36893fafbc210fef.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117821" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">灵魂小屋逃脱</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117818" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic4.17yy.com/swf/yizhi/2015-11-15/b8e2ee99b300fa215575999725df3b87.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117818" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">小怪轰轰轰</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117817" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic4.17yy.com/swf/yizhi/2015-11-15/4a66aecbc62d36cb64ad58746204718a.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117817" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">环游世界对对碰</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117816" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic4.17yy.com/swf/yizhi/2015-11-15/fcc5a305e401d8aaca6ff37f0df58ad2.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117816" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">外星小伙伴</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117812" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic3.17yy.com/swf/yizhi/2015-11-12/7f5b494c1174e167480768af59f13f52.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117812" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">神秘雕像岛逃脱2</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117811" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic3.17yy.com/swf/yizhi/2015-11-12/95153b046a080debc4afb21d4e43a010.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117811" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">魔鬼的城堡逃脱</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117807" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic4.17yy.com/swf/yizhi/2015-11-12/6be2421c2fd76033456d1d69bfc0e4a9.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117807" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">最美女生来找茬</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117805" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic1.17yy.com/swf/yizhi/2015-11-12/53905462944fb1b93d0789c3b9c969c0.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117805" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">莫纳迪斯尼公主拼图</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117804" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic3.17yy.com/swf/yizhi/2015-11-11/8bcb8c9365abe253687e73f51d1aaaef.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117804" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">保护橙子之黑帮城市</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117802" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic1.17yy.com/swf/yizhi/2015-11-11/5cd7ba5e7096fb2863c796d3a24d167f.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117802" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">鬼镇逃脱</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117801" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic2.17yy.com/swf/yizhi/2015-11-11/b0988a545d0b75536b17b6cd02ed754b.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117801" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">暴雨黑森林逃脱</a>
+								</p>
+							
+						</div>
+					
+						<div class="flashCm" tab="休闲" style="none;">
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117814" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic1.17yy.com/swf/xiuxian/2015-11-12/0552c1a64829c0ce17b561290808bd82_100_75.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117814" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">组装机械铁甲骑士</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117806" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic1.17yy.com/swf/xiuxian/2015-11-12/356cb29ea74b3e1c4486e425af4f9334.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117806" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">艾莎遭遇暴风雨</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117803" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic3.17yy.com/swf/xiuxian/2015-11-11/768fd7d0c5538ca7536bccdfdfd1df2e.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117803" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">龟兔赛跑找茬</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117798" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic3.17yy.com/swf/xiuxian/2015-11-11/cc199306d35347f8b45b69a389999cd7_100_75.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117798" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">厨师朱迪之零食制作</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117790" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic3.17yy.com/swf/xiuxian/2015-11-10/eabea6cb6faedc68f0b734aa5c635085.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117790" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">鸟哥吃豆豆</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117783" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic4.17yy.com/swf/xiuxian/2015-11-09/fa117ae169d42c0f18bf4313c4cd640d.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117783" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">愤怒的小鸟吃豆豆</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117781" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic1.17yy.com/swf/xiuxian/2015-11-09/cfaf577f6364bdea98d1bc715939c606.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117781" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">趣味麻将消除</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117777" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic1.17yy.com/swf/xiuxian/2015-11-09/f60c5a65463f20862cf385b1384a276d.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117777" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">杰克勇闯梦幻岛</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117775" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic4.17yy.com/swf/xiuxian/2015-11-09/aa76d1e02ee25668b7bc88c33096140c.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117775" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">长发公主的婚礼派对</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117765" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic1.17yy.com/swf/xiuxian/2015-11-09/4bb6f8f953d565c424dce794f289b90e.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117765" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">植物虐僵尸</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117746" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic3.17yy.com/swf/xiuxian/2015-11-04/524f2db239b16fbfb236b4ce54e76626.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117746" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">长发公主的婚礼美发</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117744" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic2.17yy.com/swf/xiuxian/2015-11-03/e53ae25c39b9f14fd31d6c68478edab9.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117744" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">鸟哥俄罗斯方块</a>
+								</p>
+							
+						</div>
+					
+						<div class="flashCm" tab="射击" style="none;">
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117822" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic3.17yy.com/swf/sheji/2015-11-13/02040f2b0a321db05cf0fd5222811c4f.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117822" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">射杀疯狂丧尸2</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117774" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic2.17yy.com/swf/sheji/2015-11-06/76cef4a66b30663a27479ba5ce2cc05a.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117774" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">幻想大战之枪林弹雨2</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117771" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic4.17yy.com/swf/sheji/2015-11-06/5876df4bd96b1dc95e3a7134c5b779eb.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117771" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">特警反恐战</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117768" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic2.17yy.com/swf/sheji/2015-11-07/f88d162d0188eb8557e90e4f62fc0f34.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117768" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">汤锅大乱战中文版(翻汤倒海中文版)</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117756" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic1.17yy.com/swf/sheji/2015-11-05/c58bf5ec64d16d1fe36fb0fdf2752c89.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117756" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">兰博大战怪物之西部战斗2</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117750" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic1.17yy.com/swf/sheji/2015-11-04/d6bbc550ffd2eb9c2866a705cf6743e4.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117750" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">马里奥疯狂射手</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117728" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic2.17yy.com/swf/sheji/2015-11-02/5630b6f3ad739e65bdc0b20a9a59d34d.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117728" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">烈焰战舰</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117721" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic2.17yy.com/swf/sheji/2015-10-31/d4fa5ab71bad9a12941b27e57f8aaab6.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117721" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">反恐现场</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117719" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic3.17yy.com/swf/sheji/2015-10-30/c83f48986d33307e57f8cc46dc5df383.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117719" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">少年骇客疯狂火箭筒</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117671" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic2.17yy.com/swf/sheji/2015-10-23/d32087c085367fc625f0d8e4935bf68a.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117671" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">少年骇客防御战</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117667" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic4.17yy.com/swf/sheji/2015-10-24/fad95bb3c9d4866b7680db9ae60826bd.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117667" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">灰猫警长</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117652" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic2.17yy.com/swf/sheji/2015-10-21/1abe745eb401d59ce07241c782b9513f.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117652" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">火箭筒大兵</a>
+								</p>
+							
+						</div>
+					
+						<div class="flashCm" tab="冒险" style="none;">
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117788" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic1.17yy.com/swf/maoxian/2015-11-10/bf0fd1dee690bb64a1a43c28a107c78d.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117788" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">钢铁侠生存战</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117779" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic2.17yy.com/swf/maoxian/2015-11-09/3ab082823ea225773dbbe41f121a16e1.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117779" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">朵拉伙伴大逃亡</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117770" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic3.17yy.com/swf/maoxian/2015-11-06/5e950c2e964719514684196998300aee.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117770" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">海绵宝宝闯僵尸墓地</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117759" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic1.17yy.com/swf/maoxian/2015-11-05/c6585527694512f8a3e894eae1a09f1d.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117759" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">最Q蜡笔小新</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117736" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic1.17yy.com/swf/maoxian/2015-11-03/aa3d8f9047a15dc84af5f6a7d9341782.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117736" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">国王大战僵尸中文版</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117733" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic4.17yy.com/swf/maoxian/2015-11-02/03c07fc88656508430de75b55a5d7d48.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117733" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">小熊加里大逃亡</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117723" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic4.17yy.com/swf/maoxian/2015-10-31/1880b24132e3e93ecfb3d58efb63138c.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117723" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">奥特曼大历险</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117706" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic4.17yy.com/swf/maoxian/2015-10-29/7bf7b75c55f65a3967aefb6b60d973e2.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117706" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">哆啦A梦的摇钱树5</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117704" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic4.17yy.com/swf/maoxian/2015-10-28/8ccdd8c3fad312e90f2b992e7c6282f2.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117704" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">朱丽叶大战僵尸</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117699" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic3.17yy.com/swf/maoxian/2015-10-28/1cbb445c100eb8bdfe454d26ccf3aab3.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117699" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">万圣节的传说</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117696" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic2.17yy.com/swf/maoxian/2015-10-28/4af9c740cb562811f6bdc8d6af2011d1.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117696" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">最Q美国队长</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117695" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic1.17yy.com/swf/maoxian/2015-10-28/ba0ab7d9ccf353a0e24b66131fa93f43.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117695" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">超数码宝贝冒险</a>
+								</p>
+							
+						</div>
+					
+						<div class="flashCm" tab="策略" style="none;">
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=118456" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://img4.kwcdn.kuwo.cn:81/star/upload/5/5/1475224531317_.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=118456" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">棋牌游戏大厅</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117792" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic4.17yy.com/swf/celue/2015-11-10/d08f4ebaadc85da35ffc4db679f0355f.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117792" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">魔法师守卫战中文版(花园守卫者中文版)</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117763" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic3.17yy.com/swf/celue/2015-11-05/485a00b2f3f132f0520e4195cd88ec6a.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117763" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">愤怒的矮人挂机</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117747" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic3.17yy.com/swf/celue/2015-11-04/43100bcce4f4773cfb367b6665510656.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117747" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">炉石挂机中文版</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117743" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic3.17yy.com/swf/celue/2015-11-03/357d727aa692c0a31fac52305744ac3d.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117743" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">矢量围攻塔防战</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117684" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic1.17yy.com/swf/celue/2015-10-26/dc821681e8cae92a3431a50aca7eca33.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117684" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">竞技场之神</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117660" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic3.17yy.com/swf/celue/2015-10-22/34f86afe7da61e46cf0a41bdf8b71067.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117660" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">航海战役中文版(扬帆-加勒比英雄)</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117656" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic3.17yy.com/swf/celue/2015-10-22/27707267f9742acf3a29b602e242a073.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117656" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">大规模防御2</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117643" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic1.17yy.com/swf/celue/2015-10-20/00dc5aa08a2f89a575ecb136c0da4c92.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117643" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">勇者任务中文版</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117641" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic4.17yy.com/swf/yizhi/2015-10-20/83a08995e2fe0779674c85c78570aedd.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117641" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">拦路强盗挂机</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117573" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic3.17yy.com/swf/celue/2015-10-10/935593f252d0f8330d1cf37d76ddc2d8.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117573" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">石油危机中文版(石油大亨中文版)</a>
+								</p>
+							
+								<p class="flashBox">
+									<a href="/g/st/PlayFlash_2014?id=117554" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaImg"><img originalsrc="http://pic2.17yy.com/swf/celue/2015-10-08/226bc1e15faa1d2d397f95ec23d4a950.jpg"></a>
+									<a href="/g/st/PlayFlash_2014?id=117554" onclick="javascript:addTongJi('HOMEPAGE_FOOTFLASH');" target="_blank" class="flaTex">最后的僵尸围攻战中文版(疯狂丧尸围城中文版)</a>
+								</p>
+							
+						</div>
+					
+				</div>
+				
+			</div>
+		</div>
+		<p class="h10"></p>
+		<div class="fooder">
+<div class="footer">
+	<div class="w1000 lianjie">
+		<h2 class="box_titlp"><span>友情链接</span></h2>
+		<p class="pb10">
+			<a href="http://www.webgame.com.cn" target="_blank">广州捷游</a>&nbsp;|&nbsp;
+			<a href="http://www.265g.com" target="_blank">265g游戏</a>&nbsp;|&nbsp;
+			<a href="http://www.cndw.com" target="_blank">动网先锋</a>&nbsp;|&nbsp;
+			<a href="http://www.uqee.com" target="_blank">游奇网络</a>&nbsp;|&nbsp;
+			<a href="http://www.91wan.com" target="_blank">91玩网页游戏</a>&nbsp;|&nbsp;
+			<a href="http://www.xd.com" target="_blank">心动游戏</a>&nbsp;|&nbsp;
+			<a href="http://www.yegame.com" target="_blank">页游科技</a>&nbsp;|&nbsp;
+			<a href="http://www.7road.com" target="_blank">第七大道</a>&nbsp;|&nbsp;
+			<a href="http://www.xunwan.com" target="_blank">广州菲音</a>&nbsp;|&nbsp;
+			<a href="http://www.my9yu.com" target="_blank">九娱网络</a>&nbsp;|&nbsp;
+			<a href="http://www.mingchao.com" target="_blank">明朝网络</a>&nbsp;|&nbsp;
+			<a href="http://www.kunlun.com" target="_blank">昆仑万维</a>&nbsp;|
+			<a href="http://www.dreamwork.cn" target="_blank">成都梦工厂</a>&nbsp;|
+			<br>
+			<a href="http://www.yingjiazu.com" target="_blank">影新社</a>&nbsp;|&nbsp;
+			<a href="http://www.51wan.com" target="_blank">51wan</a>&nbsp;|&nbsp;
+			<a href="http://www.92ay.com/" target="_blank">哎呀游戏网</a>&nbsp;|&nbsp;
+			<a href="http://www.feihuo.com/" target="_blank">飞火游戏 </a>&nbsp;|&nbsp;
+			<a href="http://www.eyugame.com/" target="_blank">易娱网络</a>
+		</p>
+		<div class="foot">
+			<p class="col6a">抵制不良游戏  拒绝盗版游戏  &nbsp;&nbsp; 注意自我保护 预防上当受骗</p>
+			<p class="col6a pb10">适度游戏宜脑  沉迷游戏伤身   &nbsp;&nbsp;&nbsp;合理安排时间 享受健康生活</p>
+			<p class="col6a pb10">以上游戏适合18岁以上用户，不含有暴力、恐怖、残酷、色情等妨碍未成年人身心健康的内容，属于绿色健康产品。</p>
+			<p class="pb10">
+               	<a target="_blank" href="http://yinyue.kuwo.cn/yy/s2/contact.htm">联系我们</a>
+				<span class="foot_vline">|</span>
+				<a target="_blank" href="http://yinyue.kuwo.cn/yy/s2/fuwu.html">广告服务</a>
+				<span class="foot_vline">|</span>
+				<a target="_blank" href="http://yinyue.kuwo.cn/yy/s2/introduction.htm">诚聘英才</a>
+				<span class="foot_vline">|</span>
+				<a target="_blank" href="http://i.kuwo.cn/US/docs/NoBlameDoc.htm">酷我网站免责声明</a>
+				<span class="foot_vline">|</span>
+				<a target="_blank" href="http://i.kuwo.cn/US/docs/ProtectDoc.htm">酷我网站著作保护声明</a>
+				<span class="foot_vline">|</span>
+				<a target="_blank" href="http://yinyue.kuwo.cn/yy/s2/jianhu1.jsp">家长监护工程</a>
+			</p>
+					北京酷我科技有限公司版权所有&nbsp;<a target="_blank" href="http://img1.kuwo.cn/star/game/xkz.pdf">网络文化经营许可证：京网文[2015]0525-205号</a> &nbsp;信息网络传播视听节目许可证0109362号 &nbsp;增值电信业务经营许可证B2-20090418&nbsp; 京ICP证060261号<br>
+			广播电视节目制作经营许可证京字第2037号&nbsp; 营业性演出许可证京市演1574 &nbsp;<a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11010502030216" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
+				<img src="http://image.kuwo.cn/website/pc/ghs.png" style="float:left;">
+				<p style="float:left;height:20px;line-height:20px;margin: 5px 0px 0px 5px; color:#939393;">京公网安备 11010502030216号</p>
+			</a>&nbsp; 京ICP备09014827号<br>
+            <script type="text/javascript">
+            	var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+               	document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fcdb021f3257f215ddc622af5e5b503a5' type='text/javascript'%3E%3C/script%3E"));
+            </script><script src=" http://hm.baidu.com/h.js?cdb021f3257f215ddc622af5e5b503a5" type="text/javascript"></script><a href="http://tongji.baidu.com/hm-web/welcome/ico?s=cdb021f3257f215ddc622af5e5b503a5" target="_blank"><img border="0" src="http://eiv.baidu.com/hmt/icon/21.gif" width="20" height="20"></a>
+            <iframe style="display: none;" width="219" height="200" src="" scrolling="no" frameborder="0" name="tongjiiframe" id="tongjiiframe"></iframe>
+			<script>
+			//游戏的各栏目统计
+			</script>
+		</div>
+	</div>
+</div></div>
+		<script type="text/javascript">
+			var gamecenter_href=window.location.href;
+			if(gamecenter_href.indexOf("test1")>-1){
+				var img=new Image();
+				img.src='http://webstat.kuwo.cn/npv/gamecenter_1.jpg?'+Math.random();
+				img.style.display='none';
+				document.body.appendChild(img);
+			}else if(gamecenter_href.indexOf("test2")>-1){
+				var img=new Image();
+				img.src='http://webstat.kuwo.cn/npv/gamecenter_2.jpg?'+Math.random();
+				img.style.display='none';
+				document.body.appendChild(img);
+			}
+			
+			if(gamecenter_href.indexOf("uid=")>-1&&gamecenter_href.indexOf("ver=")){
+				addCookie('gadtype',"desktop_game",'0','/','kuwo.cn');
+				addCookie('gadposition',"desktop_game",'0','/','kuwo.cn');
+			}
+			if(gamecenter_href.indexOf('uid=')>-1&&gamecenter_href.indexOf('ver=')>-1){
+				var img=new Image();
+				img.src='http://webstat.kuwo.cn/g/stat/game_yuan.jpg';
+				img.style.display='none';
+				document.body.appendChild(img);
+			}
+			
+			$(function () {
+				$("img").delayLoading({
+					defaultImg: "/g/jsp/newer/newer2014/img/loading.jpg",           // 预加载前显示的图片
+					errorImg: "",                        // 读取图片错误时替换图片(默认：与defaultImg一样)
+					imgSrcAttr: "originalSrc",           // 记录图片路径的属性(默认：originalSrc，页面img的src属性也要替换为originalSrc)
+					beforehand: 0,                       // 预先提前多少像素加载图片(默认：0)
+					event: "scroll",                     // 触发加载图片事件(默认：scroll)
+					duration: "normal",                  // 三种预定淡出(入)速度之一的字符串("slow", "normal", or "fast")或表示动画时长的毫秒数值(如：1000),默认:"normal"
+					container: window,                   // 对象加载的位置容器(默认：window)
+					success: function (imgObj) { },      // 加载图片成功后的回调函数(默认：不执行任何操作)
+					error: function (imgObj) { }         // 加载图片失败后的回调函数(默认：不执行任何操作)
+				});
+			});
+		</script>
+		
+
+<img src="http://webstat.kuwo.cn/g/stat/game_all.jpg" style="display:none;">
+<img src="http://webstat.kuwo.cn/npv/game.jpg" style="display:none;">
+<img src="http://webstat.kuwo.cn/npv/all.jpg" style="display:none;">
+<img src="http://webstat.kuwo.cn/g/stat/bindex.jpg" style="display:none;">
+<script src="http://js.kuwo.cn/stat/stat_1.js?091104.js" type="text/javascript"></script><img src="http://webstat.kuwo.cn/user/1491041965563x452_0.jpg" style="display:none;">
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript"></script>
+<script type="text/javascript">
+	try {
+		if(addAnayltics3()){
+			_uacct = "UA-8349541-3";
+			_udn="kuwo.cn";
+			urchinTracker();
+		}
+	} catch(err) {}
+</script>
+<script type="text/javascript">
+	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script src="http://www.google-analytics.com/ga.js" type="text/javascript"></script>
+<script type="text/javascript">
+	try {
+		if(addAnayltics3()){
+			var pageTracker = _gat._getTracker("UA-7621837-8");
+			pageTracker._trackPageview();
+		}
+	} catch(err) {}
+</script>
+	
+<ul class="ui-autocomplete ui-front ui-menu ui-widget ui-widget-content ui-corner-all" id="ui-id-1" tabindex="0" style="display: none; "></ul></body></html>

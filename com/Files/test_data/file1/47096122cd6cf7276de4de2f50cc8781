@@ -1,0 +1,399 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+<meta name="format-detection" content="telephone=no,email=no,adress=no">
+<script type="text/javascript" src="/res/share/js/jquery-1.9.1.js"></script>
+<script src="/res/js/CXJSBridge.js" type="text/javascript"></script>
+<script src="/res/zt/js/app.utils.js" type="text/javascript"></script>
+<script src="/res/pc/template/share/topicInfo.util.js" type="text/javascript"></script>
+<script src="/res/js/jquery.md5.js" type="text/javascript"></script>
+<script src="/res/pc/template/share/search.util.js" type="text/javascript"></script>
+<script src="/res/js/touch.min.js" type="text/javascript"></script>
+<style>
+*{margin:0;padding:0;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;-webkit-appearance:none;-webkit-tap-highlight-color:rgba(0,0,0,0);}
+h1,h2,h3,h4,h5,h6{ font-weight:normal; font-size:100%;}
+body{font:14px/1.5 微软雅黑;color:#333;}
+ul{list-style-type:none;}
+input,select,textarea{vertical-align:middle; font:14px 微软雅黑; color:#333; outline:none;-webkit-tap-highlight-color:rgba(0,0,0,0);}
+a{text-decoration:none;color:#333;}
+table{border-spacing:0px; border-collapse:collapse;width:100%; border:0px;margin:0;padding:0;}
+img{border:0px;}
+em,i{font-style:normal;}
+b{ font-weight:normal;}
+.clearfix{overflow:hidden;zoom:1;}
+.clear{clear:both; height:0px; font-size:0px; line-height:0px; overflow:hidden;}
+.fl{float:left;}
+.fr{float:right;}
+.onload_pos{ height:50px;}
+.tishi{ position:fixed;top:0; left:0; z-index:8; width:100%; height:50px; background:#4a4a4a;padding:0 100px 0 11px;}
+.tishi .close{width:35px; height:50px; position:absolute; top:0; right:0;}
+.tishi .close::before{ content:"";display:inline-block;width:14px; height:14px; position:absolute; left:50%; top:50%; margin:-7px 0 0 -7px; background:url(/res/share/images/tishi_close.png) no-repeat; background-size:contain;}
+.tishi .btn{display:inline-block; position:absolute; top:50%; right:35px; width:64px; height:30px; line-height:30px; background:#0099ff; border-radius:5px; color:#FFF; text-align:center; margin-top:-15px; font-size:12px;}
+.tishi .logo{ width:100%; height:100%; overflow:hidden;}
+.tishi .logo img{ display:block; margin-right:5px; margin-top:5px;}
+.shareBox{padding:20px 10px;max-width: 720px; margin: 0 auto;}
+.shareTit{ font-size:16px; color:#000; line-height:20px; margin-bottom:10px; font-weight:bold;}
+.shareCon{font-size:16px; line-height:1.8; word-wrap:break-word; word-break:normal;}
+.shareAuthor{font-size:16px;color:#999;}
+.shareCon p{ margin:1em 0;}
+.shareCon img{ display:block; max-width:100%; margin:15px auto;}
+
+.sortOrder{width:95px;height:82px;position:fixed;background:#fff;border:solid 1px #ebeced;right:5%;top:5px;border-radius:5px;padding:0 5px;z-index: 999;}
+.sortOrder b{width:10px;height:4px;background:url(/res/images/share/to_03.png) no-repeat;top:-4px;right:43px;position:absolute}
+.sortOrder ul li{height:40px;line-height:40px;font-size:14px;border-bottom:solid 1px #ebeced}
+.sortOrder ul li a{display:block;text-align:center}
+.sortOrder ul li a:hover{color:#13a1ff}
+
+/*设置字体2016.12.13*/
+.feedback{ z-index:2; background:transparent;position: fixed;left: 0;top: 0;height: 100%; width: 100%; opacity:0; visibility:hidden;}
+.feedback.is-visible {opacity: 1; visibility: visible;}
+.fontSizeBox{ position:absolute; bottom:0; left:0; right:0;width:100%; padding:0 16px 13px; background:rgba(0,0,0,.85);}
+.fontSizeBox li{ display:-webkit-box; -webkit-box-align:center; margin-top:20px;}
+.fontSizeBox h2{ font-size:15px; color:#FFF; margin-right:25px;}
+.fontSizeBox li > div{ -webkit-box-flex:1;width:100%;display: -webkit-box;-webkit-box-align: center;}
+.sm-font > * {width:50px; height:33px; }
+.mb-sz {margin-right: 15px;text-align: center;border: 1px solid #fff;line-height: 33px;border-radius: 5px;color: #fff;}
+.mb-sz.sel {border: 1px solid #e3670d;color: #e3670d;}
+.sm-skin > *{width:50px; height:25px; margin-right:8px; border-radius:3px;}
+.sm-skin>.sel { border:1px solid #e3670d;}
+.mb-ntmd{ background:url(/res/images/share/light.png) 20px center  no-repeat #464d55; background-size:16px auto;}
+.ztArtWrap[data-skin=hyl],.mb-skin-hyl{ background: #add0b2;}
+.ztArtWrap[data-skin=dyb],.mb-skin-dyb{background:#FFF;}
+.ztArtWrap[data-skin=ypz],.mb-skin-ypz{ background:#faf3e3;}
+.ztArtWrap[data-skin=ntmd]{ background:#4d4d4d; color:#acacac;}
+.ztArtWrap[data-skin=ntmd] .shareBox *{color: #acacac !important;}
+
+a{text-decoration:none;color:#333;}
+img{border:0px;}
+.clearfix{overflow:hidden;zoom:1;}
+.clear{clear:both; height:0px; font-size:0px; line-height:0px; overflow:hidden;}
+.fl{float:left;}
+.fr{float:right;}
+.notes-forward{ position:relative; padding:12px; display:block; margin-top:6px; z-index:0;}
+.notes-forward::before{position: absolute; z-index: -1;top: 0;left: 0;width: 200%;height: 200%;border: 1px #0099ff solid;content: ""; border-radius:10px; box-sizing: border-box;-webkit-transform: scale(.5);transform: scale(.5); -webkit-transform-origin: left top;transform-origin: left top;}
+.notes-forward .img{width:60px; height: 60px;margin-right:10px; overflow:hidden;}
+.notes-forward .img img{width:100%; min-height:100%;}
+.notes-forward .dl{ display:-webkit-box; -webkit-box-orient:vertical;}
+.notes-forward h2{width:100%; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; color:#000; line-height:16px;}
+.notes-forward p{ font-size:12px; line-height:15px;  color:#999;}
+.notes-forward .aside{overflow:hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp:2;-webkit-box-orient: vertical; max-height:30px;}
+.notes-forward .blue{ color:#0066cc;}
+.linkBox {margin-top: 40px;margin-bottom: 40px;}
+.linkBox .link{ font-size:14px; color:#0099ff; display:block; text-align:right;margin-right: 10px;}
+.linkBox .link2{ font-size:14px; color:#0099ff; display:block; text-align:left;margin-left: 10px;}
+</style>
+<title>【超星讲座直播〡第38期】飞天——近现代中国的未来想象</title>
+<script type="text/javascript">
+
+function replaceImg(imgId,logo){
+	if($.trim(logo) == "" || $.trim(imgId) == "") {
+		return;
+	}
+// 	var reg = /[{A-Z}]_+[{A-Z}+c]g/;
+	var width_height = '{WIDTH}_{HEIGHT}';
+	logo = logo.replace(width_height,"60_60");
+	$("#"+imgId).attr("width","60px");
+	$("#"+imgId).attr("height","60px");
+	$("#"+imgId).attr("src",logo);
+}
+</script>
+</head>
+<body class="ztArtWrap">
+<div class="sortOrder" id="menu" style="display: none;">
+	<b></b>
+    <ul>
+        <li style="background:#fff;"><a style="color:black;" onclick="feedback();">调整字体</a></li>
+        
+        	
+        	
+        		 <li style="background:#fff;"><a style="color:black;" att="2" onclick="addOrDeleteBookmarks(this);">添加书签</a></li>
+        	
+        
+       
+    </ul>
+</div>
+<div class="onloadBox">
+    <div class="tishi">
+        <div class="logo">
+            
+         	 	
+         	 	
+         	 		 <img src="/res/share/images/tishi_logo.png" width="128" height="40">
+         	 	
+         	 
+        </div>
+        <a class="btn fr openApp">立即打开</a>  
+        <a class="close"></a>
+    </div>
+    <div class="onload_pos"></div>
+</div>
+<div class="shareBox" style="font-size: 16px; ">
+	<h2 class="shareTit" style="font-size: 16px; "></h2>
+	 <div class="shareAuthor creator" style="font-size: 16px; "></div>
+    <div class="shareCon" style="font-size: 16px; "></div>
+</div>
+<div style="padding: 0 10px 20px;">
+    
+     
+	<!--附件为专题 -->
+     
+     <!--附件为话题 -->
+     
+     <!--附件为笔记 -->
+     
+     <!--附件为通知 -->
+     
+     
+     <!--附件为云盘-->
+     
+     
+</div>
+<div class="feedback">
+    <ul class="fontSizeBox">
+        <li>
+        	<h2>字号</h2>
+            <div class="sm-font">
+        		<div class="mb-sz sel" id="font_sz_16" onclick="fontUtil.changeContent(0,this)">小</div>
+                <div class="mb-sz" id="font_sz_18" onclick="fontUtil.changeContent(1,this)">中</div>
+                <div class="mb-sz" id="font_sz_20" onclick="fontUtil.changeContent(2,this)">大</div>
+                <div class="mb-sz" id="font_sz_21" onclick="fontUtil.changeContent(3,this)">超大</div>
+            </div>
+        </li>
+        <li>
+        	<h2>背景</h2>
+            <div class="sm-skin">
+        		<div class="mb-skin-dyb sel" id="dyb" onclick="skinDyb(this)"></div>
+        		<div class="mb-skin-ypz" id="ypz" onclick="skinYpz(this)"></div>
+        		<div class="mb-skin-hyl" id="hyl" onclick="skinHyl(this)"></div>
+        		<div class="mb-ntmd" id="ntmd" onclick="skinNtmd(this)"></div>
+            </div>
+        </li>
+    </ul>
+</div>
+<div id="div_debugger"></div>
+<div class="clearfix linkBox" style="display: none;">
+	<a class="link fr" id="nextChapter"></a>
+ 	<a class="link2 fl" id="prevChapter"></a>	              
+</div>
+<div id="defaultLogo" style="display: none;">
+	
+   	 	
+   	 	
+   	 		 <img src="http://p.ananas.chaoxing.com/star3/300_300c/42ae8254a6bfa9d64f34aaca86f174aa.jpg">
+   	 	
+   	 
+</div>
+
+<script src="/res/pc/template/share/shareCommon.js" type="text/javascript"></script>
+<script type="text/javascript">
+$(function(){
+	var ua = navigator.userAgent.toLowerCase();
+	if(ua!=null && ua!="" && ua.indexOf("chaoxingstudy")!=-1){
+		$(".tishi").hide();
+		$(".onload_pos").hide();
+		
+		var prevKnowledgeName = '' || '';
+		if(prevKnowledgeName != ''){
+			prevKnowledgeName = prevKnowledgeName.replace(/\'/g,"\\\'").replace(/\"/g,"“");
+		}
+		var nextKnowledgeName = '' || '';
+		if(nextKnowledgeName != ''){
+			nextKnowledgeName = nextKnowledgeName.replace(/\'/g,"\\\'").replace(/\"/g,"“");
+		}
+		var prevKnowledgeUrl = '' || '';
+		var nextKnowledgeUrl = '' || '';
+		
+		if(prevKnowledgeUrl != '' || nextKnowledgeUrl != ''){
+			if(prevKnowledgeUrl != ''){
+				$("#prevChapter").html("上一章").click(function(){
+					GroupTopicAppUtils.openUrl({
+						loadType: 0,
+						title:prevKnowledgeName,
+						webUrl:prevKnowledgeUrl+'#INNER'
+					});
+				});
+			}
+			if(nextKnowledgeUrl != ''){
+				$("#nextChapter").html("下一章").click(function(){
+					GroupTopicAppUtils.openUrl({
+						loadType: 0,
+						title:nextKnowledgeName,
+						webUrl:nextKnowledgeUrl+'#INNER'
+					});
+				});
+			}
+		}
+		
+	}
+	$(".close").click(function(){
+		$(".onloadBox").fadeOut(500);
+	});
+	var topicId = '17757501' || 0;
+	if(topicId == 0) return;
+	var url = '/share/topic/'+topicId+'/getTopicInfo';
+	$.getJSON(url,function(data){
+		$(".linkBox").show();
+		if(undefined ==  data || data == '') return;
+		var status = data.status;
+		if(!status) {
+			alert("话题不存在！");
+			return;
+		}
+		var topicObj = data.datas;
+		if(undefined == topicObj) return;
+		var imgs = topicObj.img_data;
+		var content = topicObj.text_content || '';
+		var topicTitle = topicObj.title || "";
+		var createName = topicObj.createrName || "";
+		if(content != ''){
+			//内容换行空格处理
+			content = content.replace(/\n|\t|\r/g, "<br/>");
+			content = content.replace(/\s/g,"&nbsp;");
+		}
+		var imgContent = '';
+		if(undefined != imgs && imgs.length > 0) {
+			for(var i=0; i<imgs.length;i++){
+				var imgurl = imgs[i].imgUrl;
+				var imgWidth = parseInt(imgurl.substring(imgurl.indexOf("rw=")+3,imgurl.lastIndexOf("&")));
+				var imgHeigth = parseInt(imgurl.substring(imgurl.indexOf("rh=") + 3,imgurl.length));
+				var winWidth = 1000;
+				if(imgurl.indexOf("origin") != -1){
+					imgurl = imgurl.replace("origin",winWidth+"_"+parseInt((winWidth/(imgWidth/imgHeigth)))+"c");
+				}
+				imgContent += "<img src='"+imgurl+"'>";
+			}
+		}
+		$(".shareTit").html(topicTitle);
+		$(".creator").html(createName);
+		$(".shareCon").html(content+imgContent);
+	});
+	 var getIOSVersion = function(){
+		 var ua = navigator.userAgent.toLowerCase();
+			if(ua.match(/(iphone|ipod);?/i)){
+				return ua.match(/iphone os ([0-9]+)_/)[1];
+			}else if(ua.match(/(ipad);?/i)){
+				return (ua.match(/cpu os ([0-9]+)_/))[1];
+			}
+	 }
+	$(".openApp").click(function(){
+	    var appUrl = "chaoxingshareback://groupId=443297&topicId="+topicId+"&sharebacktype=2";
+	    var tipUrl = "http://"+location.host+"/share/topic/tips?apptag=0&appScheme=" + encodeURIComponent(appUrl);
+	    //如果是ios
+	 	   var ua = navigator.userAgent.toLowerCase();
+	 	   if(ua.match(/(iphone|ipod|ipad);?/i)){
+	   		   //如果版本大于等于IOS9
+	   		   var iosVersion = getIOSVersion();
+	   		   if(iosVersion >= 9){
+	   				tipUrl = 'http://share1.chaoxing.com/share/topic/'+topicId+'/getTopic?sharebacktype=2&apptag=0&appScheme='+encodeURIComponent(appUrl)+'&groupId=443297&topicId='+topicId; 
+	   		   }
+	   	   }
+		   document.location.href = tipUrl;
+   });
+});
+
+var appurl=document.location.href;//章节地址
+var chapterName="";//章节名称
+var chapterId="";//章节id
+var author="";//专题署名
+var courseId="" || "";//课程id
+var courseName="";//专题名称
+var cover="";//专题封面
+var courseCreateName="";//专题创建者
+var courseLevel="";//专题level
+
+var appid =  $.md5(appurl);
+var otherConfig = {
+	author:author,//专题作者
+	id:"mooc_"+courseId//专题的id
+};
+var specialUrl="http://zhuanti.chaoxing.com/mobile/mooc/tocourse/"+courseId;
+var content = {
+	cataid: "100000001",
+	aid:"mooc_"+courseId,//章节id
+	appid: appid,//当前的章节的链接的md5
+	appname: courseName, //专题名称
+	appurl: appurl, //章节的地址
+	logopath: cover, //专题封面
+	otherConfig:JSON.stringify(otherConfig),
+	available: 1, 
+	bind:1,			
+	isWebapp: 1, 
+	useClientTool: 2, 
+	needLogin: 0, 
+	needRegist: 0, 
+	norder: 0, 
+	loginUrl: '', 
+	properties: '', 
+	description: '', 
+	usable: '', 
+	logoshowtype: 1, 
+	rights: 1, 
+	loginkey: '',
+	level:courseLevel//章节的level
+};
+content.sourceConfig = {
+		cataid:"100000001",
+		author:courseCreateName,
+		magname:"《"+courseName+"》"
+};
+
+var _aname = chapterName;
+var aName = _aname.replace(/\'/g,"\\\'").replace(/\"/g,"“");
+var transferContent="";
+if(transferContent.length>50){
+	transferContent=transferContent.substring(0,50);
+}
+var quoteInfo = {
+	transferLogo:cover,
+	transferLink:specialUrl,
+	transferTitle:courseName,
+	transferDescription:aName,//章节的名称
+	transferDescriptionLink:appurl,//章节地址
+	transferContent:transferContent,//章节的部分内容
+	transferType:1,
+	transferTypeTitle:"专题章节",
+	tabBarShowFlag:1,
+	type:3,
+	transferKey:"300000001_"+courseId+"-"+chapterId
+};
+window.cardObj = {
+	content:content,
+	quoteInfo:quoteInfo,
+	courseId:courseId,
+	chapterId:chapterId
+};
+
+var operLoad = true;
+function addOrDeleteBookmarks(THIS){
+	$("#menu").hide();
+	if(!operLoad){
+		GroupTopicAppUtils.clientMessageDisplay("处理中，请稍候...");
+	}
+	operLoad = false;
+	var att = parseInt($(THIS).attr("att"));
+	var url = "";
+	if(att == 1){
+		url += "/share/topic/chapterBookMarks//"+courseId+"/"+chapterId+"/2";
+	}else if(att == 2){
+		url += "/share/topic/chapterBookMarks//"+courseId+"/"+chapterId+"/1";
+	}
+	$.getJSON(url,function(data){
+		operLoad = true;
+		var status = data.status;
+		GroupTopicAppUtils.clientMessageDisplay(data.msg);
+		if(!status) {
+			return;
+		}
+		if(att == 1){
+			$(THIS).attr("att",2).html("添加书签");
+		}else if(att == 2){
+			$(THIS).attr("att",1).html("删除书签");
+		}
+	});
+}
+
+</script>
+</body><iframe style="display: none; " src="jsbridge://NotificationReady"></iframe></html>

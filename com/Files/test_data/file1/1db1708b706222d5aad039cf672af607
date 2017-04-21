@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+  <meta charset="UTF-8" /> 
+  <meta http-equiv="X-UA-Compatible" content="IE=10,IE=9,IE=8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" /> 
+  <title>非官方浙江大学校园网认证客户端开发笔记（一） - 系统运维 - IT问道</title> 
+  <meta name="keywords" content="IT问道，软件开发技术问答，面试题，移动开发问题，网站架构技术" /> 
+  <meta name="msvalidate.01" content="268EA0F20BE84A284A0B04F80F8AC9E3" /> 
+  <meta name="360_ssp_verify" content="d031d93aef9e27c50999841ce761f46f" /> 
+  <meta name="description" content="为什么会有这个项目在浙大是通过VPN认证上网的，在windows下官方的校园网客户端表现非常好，可以自动解决部分问题，而且不需要什么配置，输入 用户名和密码即可实现一键上网。但是很多同学使用Linu..." /> 
+  <link rel="icon" href="/images/favicon.ico" mce_href="favicon.ico" type="image/x-icon" /> 
+  <link rel="shortcut icon" href="/images/favicon.ico" mce_href="favicon.ico" type="image/x-icon" /> 
+  <script>
+        window._deel = {name: 'IT问道',url: '', ajaxpager: '', commenton: 0, roll: [5,]}
+    </script> 
+  <link rel="stylesheet" id="style-css" href="/css/stylenew.css" type="text/css" media="all" /> 
+  <script type="text/javascript" src="/js/jquery.min.js"></script> 
+  <script type="text/javascript" src="/js/jquery.js"></script> 
+  <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?fddd3fc14c6c5084e4a6a4e1214e0383";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script> 
+  <script type="text/javascript" src="/js/jquery.lazyload.js"></script> 
+  <!--[if lt IE 9]><!--<script src="/js/html5.js"></script>-->
+  <!--[endif]----> 
+ </head> 
+ <body class="home blog"> 
+  <header id="masthead" class="site-header"> 
+   <div id="nav-header"> 
+    <div id="top-menu"> 
+     <div id="top-menu_1"> 
+      <span class="nav-search"><i class="fa fa-search"></i></span> 
+      <span class="nav-search_1"><a href="javascript:void(0);"><i class="fa fa-navicon"></i></a></span> 
+      <hgroup class="logo-site"> 
+       <h1 class="site-title"> <a href="http://www.itwendao.com"><img src="/images/logonew.png" alt="IT问道" /></a></h1> 
+      </hgroup> 
+      <div id="site-nav-wrap"> 
+       <nav id="site-nav" class="main-nav"> 
+        <div> 
+         <ul class="down-menu nav-menu"> 
+          <li id="menu-item-23" class="menu-item menu-item-type-custom menu-item-object-custom  menu-item-home menu-item-23"><a href="http://www.itwendao.com">首页</a></li> 
+          <li class="menu-item menu-item-type-taxonomy menu-item-object-category  menu-item-10"><a href="/interview/">面试题</a></li> 
+          <li class="menu-item menu-item-type-taxonomy menu-item-object-category  menu-item-11"><a href="/codelife/">程序人生</a></li> 
+          <li class="menu-item menu-item-type-taxonomy menu-item-object-category  menu-item-12"><a href="/opensource/">开源代码库</a></li> 
+          <li class="menu-item menu-item-type-taxonomy menu-item-object-category  menu-item-13"><a href="/more/">关于</a></li> 
+         </ul> 
+        </div> 
+       </nav> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+   <nav> 
+    <ul class="nav_sj" id="nav-search_1"> 
+     <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-23"><a href="">首页</a></li> 
+     <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10"><a href="/interview/">面试题</a></li> 
+     <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-11"><a href="/codelife/">程序人生</a></li> 
+     <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12"><a href="/opensource/">开源代码库</a></li> 
+     <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-13"><a href="/more/">关于</a></li> 
+    </ul> 
+   </nav> 
+   <div class="main-nav-sub"> 
+    <div class="central"> 
+     <ul> 
+      <li class=""><a href="/interview/">大话面试</a></li> 
+      <li class=""><a href="/interview/android/">Android试题</a></li> 
+      <li class=""><a href="/interview/ios/">IOS试题</a></li> 
+      <li class=""><a href="/interview/java/">Java试题</a></li> 
+      <li class=""><a href="/interview/web/">前端试题</a></li> 
+      <li class=""><a href="/interview/Jiagou/">架构师试题</a></li> 
+      <li class=""><a href="/interview/python/">Python试题</a></li> 
+      <li class=""><a href="/interview/dotnet/">.NET试题</a></li> 
+      <li class=""><a href="/interview/php/">PHP试题</a></li> 
+      <li class=""><a href="/interview/algorithm/">算法试题</a></li> 
+      <li class=""><a href="/interview/cpp/">C++试题</a></li> 
+      <li class=""><a href="/interview/base/">计算机基础试题</a></li> 
+     </ul> 
+    </div> 
+   </div> 
+  </header> 
+  <div id="search-main"> 
+   <div id="searchbar"> 
+    <script type="text/javascript">(function(){
+                document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));
+                var bdcs = document.createElement('script');
+                bdcs.type = 'text/javascript';
+                bdcs.async = true;
+                bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=6715120765284361828' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);
+                var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();
+            </script> 
+   </div> 
+   <div class="clear"></div> 
+  </div> 
+  <section class="container"> 
+   <div class="speedbar"> 
+   </div> 
+   <div class="content-wrap"> 
+    <div class="content"> 
+     <div class="breadcrumbs">
+      <a title="返回首页" href="http://www.itwendao.com"><i class="fa fa-home"></i></a> 
+      <small>&gt;</small> 
+      <a href="/system/">系统运维</a> 
+      <small>&gt;</small> 
+      <span class="muted">非官方浙江大学校园网认证客户端开发笔记（一）</span>
+     </div> 
+     <header class="article-header"> 
+      <h1 class="article-title"><a href="/article/detail/155480.html">非官方浙江大学校园网认证客户端开发笔记（一）</a> </h1> 
+      <div class="meta"> 
+       <span id="mute-category" class="muted"><i class="fa fa-list-alt"></i><a href="/system/"> 系统运维</a></span> 
+       <span class="muted"><i class="fa fa-user"></i> 来源:<a href="http://blog.csdn.net/inszva/article/details/53641436" target="_blank" rel="nofollow">InsZVA</a></span> 
+       <time class="muted"><i class="fa fa-clock-o"></i> 2016-12-14 16:49 </time> 
+       <span class="muted"><i class="fa fa-eye"></i> 18℃</span> 
+       <span class="muted"><i class="fa fa-comments-o"></i> <a href="/article/detail/155480.html#ds-thread"> 0评论</a></span>
+      </div> 
+     </header> 
+     <article class="article-content"> 
+      <div id="article_content" class="article_content"> 
+       <div id="markdown_views"> 
+        <h1 id="为什么会有这个项目">为什么会有这个项目</h1> 
+        <p>在浙大是通过VPN认证上网的，在windows下官方的校园网客户端表现非常好，可以自动解决部分问题，而且不需要什么配置，输入 <br /> 用户名和密码即可实现一键上网。但是很多同学使用Linux系统，尤其是刚开始学习Linux的苦手，有线网的上网便成为了最大的问题。 <br /> 当然cc98流传着多种版本的bash脚本，可以通过自动配置xl2tpd和pppd实现一键上网。因为脚本普遍依赖xl2tpd和pppd，所以需要 <br /> 用户先下载这两个依赖项，但是对于新手，可能很难配置好。于是后来有大神出了deb包，在ubuntu下可以直接下载安装。但是总会 <br /> 由于莫名的问题，使得小白上网很难。本着如果能做出和windows下一样强大的客户端会有多好的想法，并且可以了解很多VPN底层 <br /> 实现的想法，做了一些研究。</p> 
+        <h1 id="思路">思路</h1> 
+        <p>Linux下有TAP/TUN设备，可以实现虚拟网卡的作用，其中TAP设备是2层设备，可以控制到以太网帧，TUN是3层设备，控制IP包。 <br /> 例如<code>/tap/tap01</code>可以视为以太网设备，如果应用程序使用<code>tap01</code>来发送数据，应用层可以在<code>/tap/tap01</code>文件中读到以太网帧， <br /> 同样也可以在应用层向<code>tap01</code>设备写入以太网帧，那么侦听<code>tap01</code>的设备也会受到写入的以太网帧。如下图：</p> 
+        <p><img src="http://www.itwendao.com/images/load.gif" rel="nofollow" target="_blank" class="lazy" data-original="http://img.blog.csdn.net/20161214160802675?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSW5zWlZB/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast " width="auto" height="auto" "="" alt="tap01" title="" /></p> 
+        <p>用户模式读取<code>tap01</code>文件的程序，如果拿到数据包之后，先进行处理，再通过真实网卡发出去，那么就可以实现类似钩子的操作， <br /> 对网络数据包进行截获处理。浙大校园网传输时使用L2TP协议承载PPP协议，PPP协议里面是真实的IP数据包，像下图。</p> 
+        <p><img src="http://www.itwendao.com/images/load.gif" rel="nofollow" target="_blank" class="lazy" data-original="http://img.blog.csdn.net/20161214160819920?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSW5zWlZB/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast " width="auto" height="auto" "="" alt="zjuvpn1" title="" /></p> 
+        <p>但是L2TP数据包自己也要发送出去，它被承载在UDP协议中，从真实本地网卡的1701端口发送到LNS服务器（一般为10.5.1.9） <br /> 的1701端口。于是就出现了下图所示的情况，有两个IP报文头，内层IP是内网IP，外层IP是分配给你自己网卡的IP（玉泉校区 <br /> 的网卡MAC地址和IP地址绑定），所以我们平时有时候内网互相传个文件，想开个FTP或者HTTP传，使用的IP必须是内层的IP。</p> 
+        <p><img src="http://www.itwendao.com/images/load.gif" rel="nofollow" target="_blank" class="lazy" data-original="http://img.blog.csdn.net/20161214161038053?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSW5zWlZB/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast " width="auto" height="auto" "="" alt="zjuvpn2" title="" /></p> 
+        <p>既然TAP/TUN虚拟网卡可以实现对报文处理后发送，我是不是也可以利用它实现VPN登录客户端呢，想一想应该把正常发送的IP包 <br /> 外面包装好PPP包，再包装一层L2TP包就可以了。于是便开始了。</p> 
+        <h1 id="l2tp建立">L2TP建立</h1> 
+        <p>查阅资料以及通过自己抓包（自己使用windows下的校园网客户端抓包）发现，L2TP进行传输前需要以下几个过程来建立连接：</p> 
+        <p><img src="http://www.itwendao.com/images/load.gif" rel="nofollow" target="_blank" class="lazy" data-original="http://img.blog.csdn.net/20161214161341776?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSW5zWlZB/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast " width="auto" height="auto" "="" alt="l2tp1" title="" /></p> 
+        <p>就像WireShark所描述的，最开始是我自己的客户端发送一个SCCRQ消息给LNS服务器（10.5.1.9），这个报文的内容如下：</p> 
+        <p><img src="http://www.itwendao.com/images/load.gif" rel="nofollow" target="_blank" class="lazy" data-original="http://img.blog.csdn.net/20161214161413120?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSW5zWlZB/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast " width="auto" height="auto" "="" alt="l2tp2" title="" /></p> 
+        <p>也可以看出，这些L2TP报文实际发送都是通过UDP，从本地1701端口发送给LNS服务器的1701端口。同时L2TP协议与很多协议 <br /> 相似，由一个协议头和很多个属性组成（AVP），这个报文中先是报文头，说明类型是控制消息，TunnelID是隧道ID，SessionID <br /> 是会话ID。这时候TunnelID和SessionID都没有确定下来，所以还是0，而且L2TP头里面写的TunnelID和SessionID都是收件人 <br /> 的ID（每个人自己的ID可以自己决定）。下面的AVP就是具体的一些属性，告知LNS服务器自己的一些状态，比如Host Name AVP <br /> 告诉服务器客户端的主机名。比较重要的是Assigned Tunnel ID告诉服务器客户端的TunnelID是多少（服务器下次的L2TP头里面 <br /> 就用这个TunnelID给你发消息了），Received Window Size告诉服务器自己的接收窗口是多大。</p> 
+        <p>服务器收到这个请求之后，就会发送一个SCCRP回来：</p> 
+        <p><img src="http://www.itwendao.com/images/load.gif" rel="nofollow" target="_blank" class="lazy" data-original="http://img.blog.csdn.net/20161214161443033?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSW5zWlZB/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast " width="auto" height="auto" "="" alt="l2tp3" title="" /></p> 
+        <p>在这个请求里，服务器也告诉客户端它的一些状态，接收窗口，主机名称等等，当然最重要的是服务器分配给这次通信的Tunnel ID， <br /> 并且L2TP头中以客户端之前发送过去的Tunnel ID，表示认可这个Tunnel ID。熟悉TCP的朋友这时候应该明白了，不就是三次握手吗， <br /> 接下来客户端只需要说我也收到了消息就行：</p> 
+        <p><img src="http://www.itwendao.com/images/load.gif" rel="nofollow" target="_blank" class="lazy" data-original="http://img.blog.csdn.net/20161214161512362?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSW5zWlZB/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast " width="auto" height="auto" "="" alt="l2tp4" title="" /></p> 
+        <p>客户端表示我也收到了，我知道你的Tunnel ID了，这个时候Tunnel已经打开，可以进行Session的建立了，Session建立过程类似 <br /> Tunnel，也是客户端先发送一个request过去（ICRQ）：</p> 
+        <p><img src="http://www.itwendao.com/images/load.gif" rel="nofollow" target="_blank" class="lazy" data-original="http://img.blog.csdn.net/20161214161625686?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSW5zWlZB/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast " width="auto" height="auto" "="" alt="l2tp5" title="" /></p> 
+        <p>服务器收到这个请求之后，知道了客户端那边的Session ID，就给客户端回应一个相应（ICRP），告诉自己这边的Session ID，当然 <br /> Session的建立过程是在Tunnel的基础上，所以报文中自然有对方的Tunnel ID：</p> 
+        <p><img src="http://www.itwendao.com/images/load.gif" rel="nofollow" target="_blank" class="lazy" data-original="http://img.blog.csdn.net/20161214162245569?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSW5zWlZB/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast " width="auto" height="auto" "="" alt="l2tp6" title="" /></p> 
+        <p>这时候，客户端完成三次握手，发送给服务器ICCN来确认建立Session：</p> 
+        <p><img src="http://www.itwendao.com/images/load.gif" rel="nofollow" target="_blank" class="lazy" data-original="http://img.blog.csdn.net/20161214162307037?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSW5zWlZB/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast " width="auto" height="auto" "="" alt="l2tpd7" title="" /></p> 
+        <p>自此L2TP链接已经建立，服务器会发送ZLB（一个空的L2TP头）来确定已经成功建立连接：</p> 
+        <p><img src="http://www.itwendao.com/images/load.gif" rel="nofollow" target="_blank" class="lazy" data-original="http://img.blog.csdn.net/20161214162322521?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSW5zWlZB/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast " width="auto" height="auto" "="" alt="l2tpd8" title="" /></p> 
+        <p>自此进入到PPP协商阶段，当然我忽略了其中一些属性，感兴趣的同学可以自己抓包，或者通过阅读RFC文档来查看详情。</p> 
+        <h1 id="ppp建立">PPP建立</h1> 
+        <p>L2TP通道建立之后，就去建立PPP通道，PPP协商过程中，会对网络IP、DNS服务器地址等进行协商，具体分为以下几个步骤：</p> 
+        <p><img src="http://www.itwendao.com/images/load.gif" rel="nofollow" target="_blank" class="lazy" data-original="http://img.blog.csdn.net/20161214162338225?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSW5zWlZB/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast " width="auto" height="auto" "="" alt="ppp1" title="" /></p> 
+        <p>最开始是互发LCP（连接控制）的阶段，这个阶段客户端和服务器互发配置请求，直到达成一致。每个请求包里面包含多个属性，比如使用的认证 <br /> 方式啊，MRU啊，魔数(magic number)等等：</p> 
+        <p><img src="http://www.itwendao.com/images/load.gif" rel="nofollow" target="_blank" class="lazy" data-original="http://img.blog.csdn.net/20161214162348803?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSW5zWlZB/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast " width="auto" height="auto" "="" alt="ppp2" title="" /></p> 
+        <p>如果某一端接受对方的配置，那么就回复一个ACK响应，里面带上请求端发送的各种配置，表示都接受了：</p> 
+        <p><img src="http://www.itwendao.com/images/load.gif" rel="nofollow" target="_blank" class="lazy" data-original="http://img.blog.csdn.net/20161214162358789?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSW5zWlZB/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast " width="auto" height="auto" "="" alt="ppp3" title="" /></p> 
+        <p>如果某一端觉得对方发过来的配置里面有一部分不能接受，那么就发送一个Reject相应，并带上不能接受的属性，对端就会调整 <br /> 再发配置请求来进行协商：</p> 
+        <p><img src="http://www.itwendao.com/images/load.gif" rel="nofollow" target="_blank" class="lazy" data-original="http://img.blog.csdn.net/20161214162407696?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSW5zWlZB/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast " width="auto" height="auto" "="" alt="ppp4" title="" /></p> 
+        <p>如此来往几次，直到双方达成一致。LCP阶段结束，这时候，校园网是需要认证的，而且在LCP阶段要求的认证方式是使用MD5的CHAP， <br /> 挑战认证。CHAP认证方法大概是这样的：服务器发送一个随机的挑战字符串，客户端需要将其与自己的密码和正在ppp协商使用的identical <br /> 连接进行md5单向加密，然后发送给服务器，服务器在自己那边也执行同样的操作来验证客户端的身份，这种加密避免了明文传输密码， <br /> 较为安全：</p> 
+        <p><img src="http://www.itwendao.com/images/load.gif" rel="nofollow" target="_blank" class="lazy" data-original="http://img.blog.csdn.net/20161214162416537?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSW5zWlZB/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast " width="auto" height="auto" "="" alt="ppp5" title="" /></p> 
+        <p>在开发过程中，由于不了解具体这个连接是什么样的顺序，于是参阅了<a href="https://github.com/wkz/pppd/blob/master/pppd/chap-md5.c" rel="nofollow" target="_blank">pppd</a> <br /> 源码中这部分的内容：</p> 
+        <pre class="prettyprint"><code class="language-c hljs "><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span>
+chap_md5_make_response(<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> *response, <span class="hljs-keyword">int</span> id, <span class="hljs-keyword">char</span> *our_name,
+               <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> *challenge, <span class="hljs-keyword">char</span> *secret, <span class="hljs-keyword">int</span> secret_len,
+               <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> *<span class="hljs-keyword">private</span>)
+{
+    MD5_CTX ctx;
+    <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span> idbyte = id;
+    <span class="hljs-keyword">int</span> challenge_len = *challenge++;
+
+    MD5_Init(&amp;ctx);
+    MD5_Update(&amp;ctx, &amp;idbyte, <span class="hljs-number">1</span>);
+    MD5_Update(&amp;ctx, (u_char *)secret, secret_len);
+    MD5_Update(&amp;ctx, challenge, challenge_len);
+    MD5_Final(&amp;response[<span class="hljs-number">1</span>], &amp;ctx);
+    response[<span class="hljs-number">0</span>] = MD5_HASH_SIZE;
+}</code></pre> 
+        <p>果然没有读源码解决不了的问题。认证通过后，服务器会发送success，之后就是协商使用的IP和DNS的问题了：</p> 
+        <p><img src="http://www.itwendao.com/images/load.gif" rel="nofollow" target="_blank" class="lazy" data-original="http://img.blog.csdn.net/20161214162425678?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSW5zWlZB/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast " width="auto" height="auto" "="" alt="ppp6" title="" /></p> 
+        <p>这张图中可以看到一点，客户端试图使用IPv6，被学校服务器拒绝了。这个阶段和ppp的第一个阶段比较类似， <br /> 不过是客户端会先发送，比如客户端会先发送自己设定的ip地址，dns地址等：</p> 
+        <p><img src="http://www.itwendao.com/images/load.gif" rel="nofollow" target="_blank" class="lazy" data-original="http://img.blog.csdn.net/20161214162434616?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSW5zWlZB/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast " width="auto" height="auto" "="" alt="ppp7" title="" /></p> 
+        <p>服务器如果发现有它不支持的属性（NBNS），也会发送拒绝：</p> 
+        <p><img src="http://www.itwendao.com/images/load.gif" rel="nofollow" target="_blank" class="lazy" data-original="http://img.blog.csdn.net/20161214162441569?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSW5zWlZB/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast " width="auto" height="auto" "="" alt="ppp8" title="" /></p> 
+        <p>而真正设定IP的过程，是客户端发送请求之后，服务器发送的Nak响应，Nak会告诉客户端，服务器给你分配的IP是 <br /> 多少（即内网IP）：</p> 
+        <p><img src="http://www.itwendao.com/images/load.gif" rel="nofollow" target="_blank" class="lazy" data-original="http://img.blog.csdn.net/20161214162448853?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSW5zWlZB/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast " width="auto" height="auto" "="" alt="ppp9" title="" /></p> 
+        <p>然后客户端设定自己的网卡ip，dns等，照着服务器给的ip，发送配置请求，就会得到ACK，之后使用这块网卡的程序 <br /> 发送的IP报文，全部包装ppp，再包装L2tp，通过UDP的1701端口，用真实网卡发送给LNS服务器的1701端口，就能成功了。 <br /> 当然从互联网上得到的相应，也是从LNS服务器的1701端口发回来，所以需要客户端侦听真实网卡的1701端口，然后把从 <br /> L2tp和ppp中取出的IP报文交给应用程序处理就实现了上网。</p> 
+        <h1 id="windows下的尴尬">Windows下的尴尬</h1> 
+        <p>由于本来是给Linux用户准备的，但是我自己的电脑是windows，所以我使用了windows下的TAP/TUN设备的模拟驱动：tap0901， <br /> 项目地址：<a href="https://github.com/OpenVPN/tap-windows6" rel="nofollow" target="_blank">TAP-windows6项目</a>，OpenVPN使用tap0901在windows下模拟 <br /> TAP/TUN设备实现VPN。在做这个项目的过程中，我也发现网易UU加速器也是使用了tap0901（之前听说国内很多产品都是借用 <br /> 开源项目）。在调教网卡的过程中，发现了windows其实配置都存在注册表里面，比如这个东东：</p> 
+        <p><img src="http://www.itwendao.com/images/load.gif" rel="nofollow" target="_blank" class="lazy" data-original="http://img.blog.csdn.net/20161214162501381?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSW5zWlZB/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast " width="auto" height="auto" "="" alt="windows1" title="" /></p> 
+        <p>他其实就在这里：</p> 
+        <p><img src="http://www.itwendao.com/images/load.gif" rel="nofollow" target="_blank" class="lazy" data-original="http://img.blog.csdn.net/20161214162510881?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSW5zWlZB/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast " width="auto" height="auto" "="" alt="windows2" title="" /></p> 
+        <p>大括号括起来的一长串是设备名称，这个可以在注册表的这里找到：</p> 
+        <p><img src="http://www.itwendao.com/images/load.gif" rel="nofollow" target="_blank" class="lazy" data-original="http://img.blog.csdn.net/20161214162519350?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSW5zWlZB/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast " width="auto" height="auto" "="" alt="windows3" title="" /></p> 
+        <p>这里有网卡的制造商等等信息，也可以查到它的设备名称。但是实际上，不论是通过注册表更改IP地址，还是通过在适配器属性的 <br /> 窗口里面更改，都需要重启网卡（禁用和启用）才能生效。于是我找到了一个微软未公开的API：<code>DhcpNotifyConfigChange</code>，但是 <br /> 发现在Win7以及以后的系统中不被支持，于是最后采用了命令行<code>netsh</code>的方式，虽然有点慢。。。但是有效。</p> 
+        <p>但是<code>netsh</code>需要知道网络连接的名字，比如“网络 4”，这个在哪里呢？通过搜索注册表，发现也在注册表中：</p> 
+        <p><img src="http://www.itwendao.com/images/load.gif" rel="nofollow" target="_blank" class="lazy" data-original="http://img.blog.csdn.net/20161214162527229?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSW5zWlZB/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast " width="auto" height="auto" "="" alt="windows4" title="" /></p> 
+        <p>接下来只需要让<code>tap0901</code>虚拟网卡运行就好了，通过翻阅源代码，看到网卡开启的指令：</p> 
+        <pre class="prettyprint"><code class="language-c hljs "><span class="hljs-preprocessor">#define TAP_WIN_CONTROL_CODE(request,method) \</span>
+  CTL_CODE (FILE_DEVICE_UNKNOWN, request, method, FILE_ANY_ACCESS)
+
+<span class="hljs-comment">/* Present in 8.1 */</span>
+
+<span class="hljs-preprocessor">#define TAP_WIN_IOCTL_GET_MAC TAP_WIN_CONTROL_CODE (1, METHOD_BUFFERED)</span>
+<span class="hljs-preprocessor">#define TAP_WIN_IOCTL_GET_VERSION TAP_WIN_CONTROL_CODE (2, METHOD_BUFFERED)</span>
+<span class="hljs-preprocessor">#define TAP_WIN_IOCTL_GET_MTU TAP_WIN_CONTROL_CODE (3, METHOD_BUFFERED)</span>
+<span class="hljs-preprocessor">#define TAP_WIN_IOCTL_GET_INFO TAP_WIN_CONTROL_CODE (4, METHOD_BUFFERED)</span>
+<span class="hljs-preprocessor">#define TAP_WIN_IOCTL_CONFIG_POINT_TO_POINT TAP_WIN_CONTROL_CODE (5, METHOD_BUFFERED)</span>
+<span class="hljs-preprocessor">#define TAP_WIN_IOCTL_SET_MEDIA_STATUS TAP_WIN_CONTROL_CODE (6, METHOD_BUFFERED)</span>
+<span class="hljs-preprocessor">#define TAP_WIN_IOCTL_CONFIG_DHCP_MASQ TAP_WIN_CONTROL_CODE (7, METHOD_BUFFERED)</span>
+<span class="hljs-preprocessor">#define TAP_WIN_IOCTL_GET_LOG_LINE TAP_WIN_CONTROL_CODE (8, METHOD_BUFFERED)</span>
+<span class="hljs-preprocessor">#define TAP_WIN_IOCTL_CONFIG_DHCP_SET_OPT TAP_WIN_CONTROL_CODE (9, METHOD_BUFFERED)</span>
+
+<span class="hljs-comment">/* Added in 8.2 */</span>
+
+<span class="hljs-comment">/* obsoletes TAP_WIN_IOCTL_CONFIG_POINT_TO_POINT */</span>
+<span class="hljs-preprocessor">#define TAP_WIN_IOCTL_CONFIG_TUN TAP_WIN_CONTROL_CODE (10, METHOD_BUFFERED)</span></code></pre> 
+        <p>通过查阅源代码，了解了驱动程序的命令，然后在用户态使用<code>DeviceToControl</code>API发送过去即可开启。一切准备完毕后， <br /> 使用Go语言编写了一个Demo（修改使用了<a href="https://github.com/FlexibleBroadband/tun-go" rel="nofollow" target="_blank">tun-go项目</a>），测试连接 <br /> 虽然可以成功上网了，但是却非常卡，QQ等文本消息还可以，新浪等网站刷了一分钟，刷出来半个网站，而且只有一张图片， <br /> 浏览网站效果是这样的：</p> 
+        <p><img src="http://www.itwendao.com/images/load.gif" rel="nofollow" target="_blank" class="lazy" data-original="http://img.blog.csdn.net/20161214162536683?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvSW5zWlZB/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast " width="auto" height="auto" "="" alt="windows5" title="" /></p> 
+        <p>看来还得多多优化啊！我会继续优化这个客户端，以及提供跨平台的支持。</p> 
+       </div> 
+       <script type="text/javascript">
+            $(function () {
+                $('pre.prettyprint code').each(function () {
+                    var lines = $(this).text().split('\n').length;
+                    var $numbering = $('<ul/>').addClass('pre-numbering').hide();
+                    $(this).addClass('has-numbering').parent().append($numbering);
+                    for (i = 1; i <= lines; i++) {
+                        $numbering.append($('<li/>').text(i));
+                    };
+                    $numbering.fadeIn(1700);
+                });
+            });
+        </script> 
+      </div> 
+      <div class="article-social"> 
+       <div class="bdsharebuttonbox">
+        <a href="#" class="bds_more" data-cmd="more"></a>
+        <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+        <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a>
+        <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+       </div> 
+       <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","weixin","tsina","tqq","renren","tieba"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script> 
+      </div> 
+     </article> 
+     <footer class="article-footer"> 
+     </footer> 
+     <!--推荐开始--> 
+     <nav class="article-nav"> 
+      <script type="text/javascript">var jd_union_unid="262770481",jd_ad_ids="507:6",jd_union_pid="CLzO/qSLKxCxnqZ9GgAgtP3FiwIqAA==";var jd_width=728;var jd_height=90;var jd_union_euid="";var p="BhUHVRtdFQUbNwpfBkgyTUMIRmtKRk9aZV8ETVxNNwpfBkgyVUwdZB4WVFllUnkpEwphBCgZM3RHcgtZK18SAhMBVhtZFDIRAFYdXRQHGwdlKwRRX083HnVaJV1WWggrWxALEwJdE1sVAhQCVStaJTIi";</script>
+      <script type="text/javascript" charset="utf-8" src="//u.x.jd.com/static/js/auto.js"></script> 
+     </nav> 
+     <!--推荐结束--> 
+     <div class="related_top"> 
+      <div class="related_posts"> 
+       <ul class="relates"> 
+        <h2>相关推荐</h2> 
+        <li> <a target="_blank" href="/article/detail/337497.html" title="通过简单的处理去除WinRAR中文版的广告"> <i class="fa fa-circle-thin"></i> 通过简单的处理去除WinRAR中文版的广告</a> </li> 
+        <li> <a target="_blank" href="/article/detail/199402.html" title="Nginx源码分析 - Nginx启动以及IOCP模型"> <i class="fa fa-circle-thin"></i> Nginx源码分析 - Nginx启动以及IOCP模型</a> </li> 
+        <li> <a target="_blank" href="/article/detail/73445.html" title="Sapphire 算法简要分析"> <i class="fa fa-circle-thin"></i> Sapphire 算法简要分析</a> </li> 
+        <li> <a target="_blank" href="/article/detail/50195.html" title="关于NAT的一些事儿"> <i class="fa fa-circle-thin"></i> 关于NAT的一些事儿</a> </li> 
+        <li> <a target="_blank" href="/article/detail/369170.html" title="蓝桥杯模拟赛猜算式"> <i class="fa fa-circle-thin"></i> 蓝桥杯模拟赛猜算式</a> </li> 
+        <li> <a target="_blank" href="/article/detail/369171.html" title="02-线性结构2 一元多项式的乘法与加法运算 (20分)"> <i class="fa fa-circle-thin"></i> 02-线性结构2 一元多项式的乘法与加法运算 (20分)</a> </li> 
+        <li> <a target="_blank" href="/article/detail/369166.html" title="hdu2046 看了许多大佬的想法 就是找小数点 比较两个字符串的函数"> <i class="fa fa-circle-thin"></i> hdu2046 看了许多大佬的想法 就是找小数点 比较两个字符串的函数</a> </li> 
+        <li> <a target="_blank" href="/article/detail/369161.html" title="[leetcode] - 541 Reverse String II"> <i class="fa fa-circle-thin"></i> [leetcode] - 541 Reverse String II</a> </li> 
+        <li> <a target="_blank" href="/article/detail/369162.html" title="Unspeciflied Number of Arguments"> <i class="fa fa-circle-thin"></i> Unspeciflied Number of Arguments</a> </li> 
+        <li> <a target="_blank" href="/article/detail/369156.html" title="CJOJ 2422 [USACO Mar08] 奶牛跑步"> <i class="fa fa-circle-thin"></i> CJOJ 2422 [USACO Mar08] 奶牛跑步</a> </li> 
+        <li> <a target="_blank" href="/article/detail/369159.html" title="洛谷 P1722 矩阵 II"> <i class="fa fa-circle-thin"></i> 洛谷 P1722 矩阵 II</a> </li> 
+        <li> <a target="_blank" href="/article/detail/369160.html" title="Educational Codeforces Round 8 D. Magic Numbers 数位DP"> <i class="fa fa-circle-thin"></i> Educational Codeforces Round 8 D. Magic Numbers 数位DP</a> </li> 
+        <li> <a target="_blank" href="/article/detail/369151.html" title="strtok函数"> <i class="fa fa-circle-thin"></i> strtok函数</a> </li> 
+       </ul> 
+      </div> 
+     </div> 
+     <!-- 多说评论框 start --> 
+     <!-- 多说公共JS代码 end --> 
+     <!--PC版--> 
+     <div id="SOHUCS" sid="155480"></div> 
+     <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js"></script> 
+     <script type="text/javascript">
+                window.changyan.api.config({
+                    appid: 'cysUrEee9',
+                    conf: 'prod_9bb0a9a7629e8ad9278744c810eaddf3'
+                });
+            </script> 
+    </div> 
+   </div> 
+   <aside class="sidebar"> 
+    <div class="widget widget_umucenter form-inline"> 
+     <div class="title"> 
+      <h2> 
+       <sapn class="title_span">
+        精选源码分享
+       </sapn> </h2> 
+     </div> 
+     <li> <span class="local-account"><a data-sign="0" target="_blank" href="/opensource/android/" class="btn btn-primary user-login"><i class="fa fa-android"></i>安卓源码</a></span> <span class="other-sign"><a class="qqlogin btn" target="_blank" href="/opensource/ios/"><i class="fa fa-apple"></i><span>IOS源码</span></a></span> <span class="other-sign"><a class="weibologin btn" target="_blank" href="/opensource/html5/"><i class="fa fa-html5"></i><span>H5源码</span></a></span> </li> 
+    </div> 
+    <div class="widget d_banner"> 
+     <div class="d_banner_inner"> 
+      <script type="text/javascript">var jd_union_unid="262770481",jd_ad_ids="512:6",jd_union_pid="CIKwy6SLKxCxnqZ9GgAg3+rGiwIqAA==";var jd_width=336;var jd_height=280;var jd_union_euid="";var p="BhUHVRtSFQURNwpfBkgyTUMIRmtKRk9aZV8ETVxNNwpfBkgyQFoJfyVpYGtnAVsIYmlQcghkPnxfcgtZK18SAhMBVhtZFDIRAFYdXRQHGwdlKwRRX083HnVaJV1WWggrWxALEwJdElgTAREDXStaJTIi";</script>
+      <script type="text/javascript" charset="utf-8" src="//u.x.jd.com/static/js/auto.js"></script> 
+     </div> 
+    </div> 
+    <div class="widget d_postlist"> 
+     <div class="title"> 
+      <h2> 
+       <sapn class="title_span">
+        热门推荐
+       </sapn> </h2> 
+     </div> 
+     <ul> 
+      <li> <a href="/article/detail/56703.html" target="_blank" title="Python学习基础知识概要"> <span class="text">Python学习基础知识概要</span> <span class="muted">2016-10-25 07:36</span> <span class="muted_1">1750次浏览</span> </a> </li> 
+      <li> <a href="/article/detail/67547.html" target="_blank" title="从零开始的 JSON 库教程（六）：解析对象解答篇"> <span class="text">从零开始的 JSON 库教程（六）：解析对象解答篇</span> <span class="muted">2016-11-16 00:13</span> <span class="muted_1">563次浏览</span> </a> </li> 
+      <li> <a href="/article/detail/62875.html" target="_blank" title="初识android中的动画"> <span class="text">初识android中的动画</span> <span class="muted">2016-11-05 00:06</span> <span class="muted_1">403次浏览</span> </a> </li> 
+      <li> <a href="/article/detail/161790.html" target="_blank" title="解决Ubuntu 16.10 fcitx 开机不能自动启动"> <span class="text">解决Ubuntu 16.10 fcitx 开机不能自动启动</span> <span class="muted">2016-12-15 21:49</span> <span class="muted_1">389次浏览</span> </a> </li> 
+      <li> <a href="/article/detail/50960.html" target="_blank" title="架设Jetbrains家族IDE授权服务器"> <span class="text">架设Jetbrains家族IDE授权服务器</span> <span class="muted">2016-10-06 01:55</span> <span class="muted_1">373次浏览</span> </a> </li> 
+      <li> <a href="/article/detail/177372.html" target="_blank" title="ElasticSearch5.1.1集群部署"> <span class="text">ElasticSearch5.1.1集群部署</span> <span class="muted">2016-12-19 18:32</span> <span class="muted_1">283次浏览</span> </a> </li> 
+      <li> <a href="/article/detail/306107.html" target="_blank" title="服务器挖矿又出新服务 wnTKYg"> <span class="text">服务器挖矿又出新服务 wnTKYg</span> <span class="muted">2017-03-06 12:39</span> <span class="muted_1">256次浏览</span> </a> </li> 
+      <li> <a href="/article/detail/65998.html" target="_blank" title="瑞士军刀nc-CentOS下调试探测检测工具netcat(Linux命令nc)"> <span class="text">瑞士军刀nc-CentOS下调试探测检测工具netcat(Linux命令nc)</span> <span class="muted">2016-11-13 11:56</span> <span class="muted_1">249次浏览</span> </a> </li> 
+      <li> <a href="/article/detail/66123.html" target="_blank" title="360加固保的dex脱壳方法"> <span class="text">360加固保的dex脱壳方法</span> <span class="muted">2016-11-13 16:58</span> <span class="muted_1">233次浏览</span> </a> </li> 
+     </ul> 
+    </div> 
+    <div class="widget widget_categories">
+     <div class="title">
+      <h2>
+       <sapn class="title_span">
+        分类目录
+       </sapn></h2>
+     </div> 
+     <ul> 
+      <li class="cat-item cat-item-3"><a href="/mobile">移动开发</a> </li> 
+      <li class="cat-item cat-item-3"><a href="/web">Web前端</a> </li> 
+      <li class="cat-item cat-item-3"><a href="/architect">架构师</a> </li> 
+      <li class="cat-item cat-item-3"><a href="/code">编程语言</a> </li> 
+      <li class="cat-item cat-item-3"><a href="/internet">互联网</a> </li> 
+      <li class="cat-item cat-item-3"><a href="/database">数据库</a> </li> 
+      <li class="cat-item cat-item-3"><a href="/system">系统运维</a> </li> 
+      <li class="cat-item cat-item-3"><a href="/cloud">云计算</a> </li> 
+      <li class="cat-item cat-item-3"><a href="/softmanager">项目管理</a> </li> 
+      <li class="cat-item cat-item-3"><a href="/other">综合</a> </li> 
+     </ul> 
+    </div> 
+    <div class="widget d_tag"> 
+     <div class="title"> 
+      <h2> 
+       <sapn class="title_span">
+        热门标签
+       </sapn> <a class="btn" target="_blank" href="/tag/">更多标签</a> </h2> 
+     </div> 
+     <div class="d_tags"> 
+      <a title="" href="javascript:void(0)" data-original-title="0个话题">ios(0)</a> 
+      <a title="" href="javascript:void(0)" data-original-title="0个话题">swift(0)</a> 
+      <a title="" href="javascript:void(0)" data-original-title="0个话题">android(0)</a> 
+      <a title="" href="javascript:void(0)" data-original-title="0个话题">python(0)</a> 
+      <a title="" href="javascript:void(0)" data-original-title="0个话题">java(0)</a> 
+      <a title="" href="javascript:void(0)" data-original-title="0个话题">php(0)</a> 
+      <a title="" href="javascript:void(0)" data-original-title="0个话题">html5(0)</a> 
+      <a title="" href="javascript:void(0)" data-original-title="0个话题">mysql(0)</a> 
+      <a title="" href="javascript:void(0)" data-original-title="0个话题">redis(0)</a> 
+      <a title="" href="javascript:void(0)" data-original-title="0个话题">javascript(0)</a> 
+      <a title="" href="javascript:void(0)" data-original-title="0个话题">jquery(0)</a> 
+      <a title="" href="javascript:void(0)" data-original-title="0个话题">linux(0)</a> 
+     </div> 
+    </div> 
+    <div class="widget d_postlist"> 
+     <div class="title"> 
+      <h2> 
+       <sapn class="title_span">
+        热门评论
+       </sapn> </h2> 
+     </div> 
+     <ul> 
+      <li> <a href="/article/detail/368541.html" target="_blank" title="iptables详解"> <span class="text">iptables详解</span> <span class="muted">2017-03-28 17:59</span> <span class="muted_1">0个评论</span> </a> </li> 
+      <li> <a href="/article/detail/368534.html" target="_blank" title="mysql删除bin-log日志"> <span class="text">mysql删除bin-log日志</span> <span class="muted">2017-03-28 17:59</span> <span class="muted_1">0个评论</span> </a> </li> 
+      <li> <a href="/article/detail/368527.html" target="_blank" title="Linux命令--rm"> <span class="text">Linux命令--rm</span> <span class="muted">2017-03-28 17:59</span> <span class="muted_1">0个评论</span> </a> </li> 
+      <li> <a href="/article/detail/368518.html" target="_blank" title="SIGPIPE信号"> <span class="text">SIGPIPE信号</span> <span class="muted">2017-03-28 17:59</span> <span class="muted_1">0个评论</span> </a> </li> 
+      <li> <a href="/article/detail/368510.html" target="_blank" title="文章标题"> <span class="text">文章标题</span> <span class="muted">2017-03-28 17:59</span> <span class="muted_1">0个评论</span> </a> </li> 
+      <li> <a href="/article/detail/368506.html" target="_blank" title="鸟哥学习笔记8：Linux磁盘与文件系统管理"> <span class="text">鸟哥学习笔记8：Linux磁盘与文件系统管理</span> <span class="muted">2017-03-28 17:59</span> <span class="muted_1">0个评论</span> </a> </li> 
+      <li> <a href="/article/detail/368500.html" target="_blank" title="shell脚本清空文件内容"> <span class="text">shell脚本清空文件内容</span> <span class="muted">2017-03-28 17:59</span> <span class="muted_1">0个评论</span> </a> </li> 
+      <li> <a href="/article/detail/368494.html" target="_blank" title="Ubuntu Lamp 环境搭建"> <span class="text">Ubuntu Lamp 环境搭建</span> <span class="muted">2017-03-28 17:59</span> <span class="muted_1">0个评论</span> </a> </li> 
+      <li> <a href="/article/detail/368487.html" target="_blank" title="tomcat改跳转地址不用写项目名，swithHosts"> <span class="text">tomcat改跳转地址不用写项目名，swithHosts</span> <span class="muted">2017-03-28 17:59</span> <span class="muted_1">0个评论</span> </a> </li> 
+     </ul> 
+    </div> 
+    <!--评论开始--> 
+    <!--评论结束--> 
+    <!--订阅开始--> 
+    <!--订阅结束--> 
+    <!--友情链接--> 
+    <div class="widget widget_text"> 
+     <div class="title"> 
+      <h2> 
+       <sapn class="title_span">
+        友情链接
+       </sapn> </h2> 
+     </div> 
+     <div class="textwidget"> 
+      <div class="d_tags_1"> 
+       <a target="_blank" href="http://www.itwendao.com/">IT问道</a> 
+      </div> 
+     </div> 
+    </div> 
+    <!--友情结束--> 
+   </aside>
+  </section> 
+  <script type="text/javascript">
+    var username = "zhangyufeng0126";
+    var _blogger = username;
+    var blog_address = "http://blog.csdn.net/zhangyufeng0126";
+    var static_host = "http://static.blog.csdn.net";
+    var currentUserName = "";
+</script> 
+  <script type="text/javascript" src="/js/newBlog.js"></script> 
+  <link rel="stylesheet" id="style-css" href="/css/mark_down.css" type="text/css" media="all" /> 
+  <link rel="stylesheet" id="style-css" href="/css/csdn_default.css" type="text/css" media="all" /> 
+  <script>
+    (function(){
+        var src = (document.location.protocol == "http:") ? "http://js.passport.qihucdn.com/11.0.1.js?8d851cb6f7ad6c0a38dcdd4179a37a92":"https://jspassport.ssl.qhimg.com/11.0.1.js?8d851cb6f7ad6c0a38dcdd4179a37a92";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+    })();
+</script> 
+  <script type="text/javascript">
+
+
+        jQuery(document).ready(function ($) {
+            $("img").lazyload();
+        });
+//        $(function() {
+//            $("open-img").lazyload();
+//        });
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+
+    </script> 
+  <footer class="footer"> 
+   <div class="footer-inner"> 
+    <p> </p> 
+    <p> 版权所有 &copy; IT问道网 2016 粤ICP备16049987号-1 </p> 
+    <p> </p> 
+   </div> 
+  </footer>
+ </body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=5.0">
+    <title>微产品</title>
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        /*====首页头部轮播图====*/
+        /*图片*/
+        .sliderContainer {
+            position: relative;
+            width: 100%;
+            /* 39% being the ratio we are maintaining
+             * calculated by looking at the image
+             * ratio: 400/1024 = ~0.39 */
+            height: 28%;
+        }
+
+        .iosSlider {
+            width: 100%;
+            /* this height ends up being your maximum height,
+             * if you want it to scale forever, set it to
+             * a very high number */
+            height: 100%;
+        }
+
+        .iosSlider .slider {
+            width: 100%;
+        }
+
+        .iosSlider .slider .item {
+            top: 0;
+            left: 0;
+            width: 100%;
+            margin: 0;
+        }
+
+        .iosSlider .slider .item img {
+            width: 100%;
+        }
+    </style>
+    <!--<script>window.inDebug = true;</script>-->
+    <script type="text/javascript" src="../js/config.js"></script>
+    <script src="../js/jquery-1.10.2.min.js"></script>
+    <script src="../js/jquery.iosslider.js"></script>
+    <script src="../js/script.js"></script>
+    <script type="text/javascript" src="../js/jquery.query.js"></script>
+    <script type="text/javascript" src="../js/common/jquery.tkyl.js"></script>
+    <script src="../dwr/engine.js"></script>
+    <script src="../dwr/util.js"></script>
+    <script src="../dwr/interface/commonService.js"></script>
+    <script type="text/javascript">
+        function initSlider() {
+            $('.iosSlider').iosSlider({
+                autoSlide: true,
+                scrollbar: true,
+                snapToChildren: true,//
+                desktopClickDrag: true,//
+                scrollbarLocation: 'top',
+                scrollbarMargin: '10px 10px 0 10px',
+                scrollbarBorderRadius: '0',
+                responsiveSlideWidth: true,
+                navSlideSelector: $('.iosSliderButtons .button'),
+                autoSlideTimer: 4000,
+                infiniteSlider: true,
+                //startAtSlide: '0',
+                onSlideChange: slideContentChange
+            });
+
+            function slideContentChange(args) {
+                /* indicator */
+                $(args.sliderObject).parent().find('.iosSliderButtons .button').removeClass('selected');
+                $(args.sliderObject).parent().find('.iosSliderButtons .button:eq(' + (args.currentSlideNumber - 1) + ')').addClass('selected');
+
+            }
+        }
+        function showBannerImgs(config) {
+            var bannerImages = config.bannerImages || [];
+            bannerImages = bannerImages.filter(function (img) {
+                return img.enable == true;
+            });
+            if (bannerImages.length == 0) {
+                $('#iosSliderContainer').removeClass();
+                $('#iosSliderContainer').append(
+                        "<section id='logo' class='logo'><img src='../images/logo.png'></section>");
+                return;
+            }
+            var eleLogo = $("#logo");
+            eleLogo.html("");
+            eleLogo.removeClass("logo");
+            var div_slider = $('<div>');
+            div_slider.addClass("slider");
+            bannerImages.forEach(function (img) {
+                var div_item = $('<a>');
+                div_item.prop('href', img.linkToUrl);
+                var eleImg = $("<img width='100%' alt='slideImg'>");
+                eleImg.prop('src', img.imgUrl);
+                div_item.append(eleImg);
+                div_item.addClass("item");
+                div_slider.append(div_item);
+            });
+
+            var div_iosSlider = $('<div>');
+            div_iosSlider.addClass("iosSlider")
+            div_iosSlider.append(div_slider);
+            $("#iosSliderContainer").append(div_iosSlider);
+        }
+        $(function () {
+            // 首页轮播图
+            $.get('IndexConfig.json')
+                    .success(function (result) {
+                        // 在有配置时，使用配置。没有时，使用原来的logo定义。
+                        showBannerImgs(result);
+                        initSlider();
+                    })
+                    .error(function () {
+                        console.warn("cant get IndexConfig.json!");
+                    });
+
+            var openId = $.query.get("openid");
+            if (openId) {
+                sessionStorage.setItem("openId", openId);
+            } else {
+                openId = sessionStorage.getItem("openId");
+            }
+            var headImgUrl = sessionStorage.getItem("HeadImgUrl");
+            if (!headImgUrl) {
+                commonService.getUserImage(openId, function (data) {
+                    sessionStorage.setItem("HeadImgUrl", data.HeadImgUrl);
+                });
+            }
+            var customtype = sessionStorage.getItem("CustomType");
+            if (customtype) {
+                if (customtype == "2") {
+                    $("#per").hide();
+                    $("#grp").show();
+                }
+            }
+            $("#sale").click(function () {
+                window.location.href = "../productpage/proswitch/odds.html";
+            });
+            $("#health").click(function () {
+                //zalert("页面建设中。。。");
+                //return;
+                window.location.href = "../productpage/proswitch/health.html";
+            });
+            $("#tax").click(function () {
+                //			zalert("页面建设中。。。");
+                //			return ;
+                window.location.href = "../productpage/proswitch/taxPro.html";
+            });
+            $("#pension").click(function () {
+                zalert("页面建设中。。。");
+                return;
+            });
+        });
+    </script>
+</head>
+<body class="tax" style="min-height: 0px; ">
+<div class="z_index_wrap">
+    <div id="iosSliderContainer" class="sliderContainer"></div>
+    <!--<section class="container">
+    <div class="nav z-searchnav">
+    <div class="left">
+    <img src="../images/search.jpg" />
+    <img src="../images/loudou.png" class="iconloudou"/>
+    <input type="text" placeholder="搜索" />
+    </div>
+    <div class="right">
+    <div class="message">...<div class="messagenum">2</div></div>
+    </div>
+    </div>
+    <div class="cf"></div>
+    </section> -->
+    <section class="content z-prolist">
+        <ul>
+            <li id="health">
+                <div class="leftcon">
+                    <div>
+                        <h1>健康专区</h1>
+                        <h2>健康有约重疾</h2>
+                        <p>费率低、保障全、保障久</p>
+                        <p>最高享受60+26种的重大疾病</p>
+                    </div>
+                </div>
+                <div class="rightcon"><img src="../images/menulist2.png"></div>
+            </li>
+            <li id="tax">
+                <div class="leftcon">
+                    <div>
+                        <h1>税优专区</h1>
+                        <h2>税优健康保险</h2>
+                        <p>价格实惠、保障全面、性价比爆表</p>
+                        <p>多重优势，企业员工福利的必备之选</p>
+                    </div>
+                </div>
+                <div class="rightcon"><img src="../images/menulist1.png"></div>
+            </li>
+            <!--	<li id="pension">
+            <div class="leftcon">
+            <h1>养老专区</h1>
+            <h2>汇享有约</h2>
+            <p>终身有保障</p>
+            <p>年度有分红，养老保险金递增</p>
+            <p>&nbsp</p>				</div>
+            <div class="rightcon"><img src="../images/menulist3.png"></div>
+            </li>
+            -->
+            <li id="sale">
+                <div class="leftcon">
+                    <div>
+                        <h1>特惠区</h1>
+                        <h2>交通意外险</h2>
+                        <p>保障责任自由选择，按需定制</p>
+                        <p>适合日常出行、差旅、自驾车人</p>
+                    </div>
+                </div>
+                <div class="rightcon"><img src="../images/menulist6.png"></div>
+            </li>
+            <!--
+            <li>
+            <div class="leftcon">
+            <h1>弹性福利</h1>
+            <h2>弹性福利产品</h2>
+            <p>全网性价比最高的大病保险，最高50万！</p>
+            <p>满期返还130%！</p>
+            </div>
+            <div class="rightcon"><img src="../images/menulist4.png"></div>
+            </li>
+            <li>
+            <div class="leftcon">
+            <h1>团体专区</h1>
+            <h2>健康有约团体终身重大疾病保险</h2>
+            <p>全网性价比最高的大病保险，最高50万！</p>
+            <p>满期返还130%！</p>
+            </div>
+            <div class="rightcon"><img src="../images/menulist5.png"></div>
+            </li> -->
+        </ul>
+    </section>
+</div>
+<section id="per" class="bottommenu">
+    <a href="javascript:void(0);" class="mactive"><img src="../images/home.png" alt=""><span>首页</span></a>
+    <a href="pay/shopbuket.html"><img src="../images/shop.png" alt=""><span>购物车</span></a>
+    <a href="../userpage/login.html"><img src="../images/myhome.png" alt=""><span>我</span></a>
+</section>
+<section id="grp" class="bottommenu" style="display:none;">
+    <a href="../productpage/productIndex.html" class="mactive"><img src="..//images/home.png" alt=""><span>首页</span></a>
+    <a href="../userpage/filingApplication.html"><img src="..//images/baoshui.png" alt=""><span>报税</span></a>
+    <a href="../userpage/login.html"><img src="..//images/myhome.png" alt=""><span>我</span></a>
+</section>
+
+</body></html>

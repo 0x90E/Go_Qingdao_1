@@ -1,0 +1,379 @@
+<!DOCTYPE html><html class="ui-mobile"><head><base href="http://m.oschina.net/question/234345_52622">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	    <meta name="robots" content="index, follow">
+		    <title>开源中国(OSChina.NET)</title>
+		<link rel="stylesheet" href="/js/jquery.mobile-1.2.0/jquery.mobile-1.2.0.min.css?t=1451961936000">
+	<link rel="stylesheet" href="/css/mobile.css?t=1451961935000">
+	<script src="/js/2011/jquery-1.6.4.min.js?t=1451961936000"></script>
+		<script src="/js/jquery.mobile-1.2.0/jquery.mobile-1.2.0.min.js?t=1451961936000"></script>
+	
+	<script type="text/javascript">
+	<!--
+    /**
+     * 使用ajax提交数据
+     */
+    function ajax_post(the_url,the_param,succ_callback){
+    	jQuery.ajax({
+    		type	: 'POST',
+    		cache	: false,
+    		url		: the_url,
+    		data	: the_param,
+    		success	: succ_callback,
+    		error	: function(html){
+    			alert("提交数据失败，代码:" +html.status+ "，请稍候再试");
+    		}
+    	});
+    }
+    function delete_tweet(logid){
+    	if(confirm("确认要删除这条信息吗？"))
+    	ajax_post("/action/tweet/delete?log="+logid+"&user_code=","",function(html){
+    		if(html.length==0){
+    			var elem = $('#LI_'+logid);
+    			if(elem.length > 0)
+    				$('#LI_'+logid).fadeOut();
+    			else
+    				location.reload();
+    		}
+    	});
+    }	
+    function reply_rtweet(logid, rid, toname){
+    	var edtPost = $('#edt_tweet_post_' + logid);
+    	var old_v = edtPost.val();
+    	if(old_v.length > 0)
+    		edtPost.val(old_v + ',@'+toname+' ');
+    	else
+    		edtPost.val('回复 @'+toname+' : ');
+    	edtPost.focus();
+    }
+    //-->
+	</script>
+</head> 
+<body class="ui-mobile-viewport ui-overlay-c">
+<div data-role="page" data-url="/question/234345_52622" tabindex="0" class="ui-page ui-body-c ui-page-active" style="min-height: 0px; ">
+	
+
+<style>
+	.div_imgs{width:60px;height:30px;line-height:30px;cursor:pointer;border:solid 1px #ccc;text-align:center;font-size:x-small}
+</style>
+<div data-role="header" data-position="inline" class="ui-header ui-bar-a" role="banner">
+	<a href="/question?catalog=2" data-icon="back" data-direction="reverse" class="ui-btn-left ui-btn ui-btn-up-a ui-shadow ui-btn-corner-all ui-btn-icon-left" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="a"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">返回</span><span class="ui-icon ui-icon-back ui-icon-shadow">&nbsp;</span></span></a>
+	<h1 class="ui-title" role="heading" aria-level="1"> </h1>
+	<a href="/question/ask" data-icon="plus" class="ui-btn-right ui-btn ui-btn-up-a ui-shadow ui-btn-corner-all ui-btn-icon-left" style="margin-right:100px;" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="a"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">提问</span><span class="ui-icon ui-icon-plus ui-icon-shadow">&nbsp;</span></span></a>
+		<script type="text/javascript">
+	var delete_url = '/action/favorite/cancel';
+	var add_url = '/action/favorite/add';
+	var id = 52622;
+	var type = '2'; 
+	function add_to_favor(){
+					alert("请登录后再收藏");
+			}
+	function delete_favor(){
+					alert("请登录后再操作");
+			}
+</script>
+	<a href="javascript:add_to_favor();" data-icon="plus" class="ui-btn-right favor ui-btn ui-btn-up-a ui-shadow ui-btn-corner-all ui-btn-icon-left" id="favor_trigger" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="a"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">添加收藏</span><span class="ui-icon ui-icon-plus ui-icon-shadow">&nbsp;</span></span></a>
+	<a href="javascript:delete_favor();" style="display:none;" data-icon="minus" class="ui-btn-right favor ui-btn ui-btn-up-a ui-shadow ui-btn-corner-all ui-btn-icon-left" id="favor_trigger" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="a"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">取消收藏</span><span class="ui-icon ui-icon-minus ui-icon-shadow">&nbsp;</span></span></a>
+</div>
+<div data-role="content" class="ui-content" role="main">
+	<h1 class="title">Log4Qt使用笔记(三)</h1>
+    	<p style="color:#666;font-size:x-small;">
+		<a href="/u/234345" class="ui-link">晨曦之光</a> 发布于 2012年05月08日 (共有<mark>0</mark>个回帖)
+			</p>	
+	<div class="TextContent">
+ 
+ 
+  <span style=""></span> 
+  <ul> 
+   <li style="list-style-type:none"> <p class="line862" style="margin-top:0.25em; margin-right:0px; margin-bottom:0.25em; margin-left:0px"> 接前面<a href="http://blog.csdn.net/dbzhang800/article/details/6916948" style="color:rgb(4,115,7); border-top-width:0px; border-right-width:0px; border-bottom-width:0px; border-left-width:0px; border-style:initial; border-color:initial" target="_blank" class="ui-link">Log4Qt 使用笔记(一)</a>，继续学习一下，关注环境变量和初始化：<span class="anchor" id="line-2-8"></span><span class="anchor" id="line-3-7"></span></p> </li> 
+  </ul> 
+  <h2 id="Logger" style="padding-top:0px; padding-right:0px; padding-bottom:0.3em; padding-left:0px; border-bottom-width:3px; border-bottom-style:solid; border-bottom-color:rgb(4,115,7)"> Logger</h2> 
+  <span class="anchor" id="line-4-6"></span> 
+  <p class="line862">在前面，我们提到，除了一个根root之外，还可以有多个命名的Logger存在，为了直观，我们可以看LogManager的成员函数：<span class="anchor" id="line-5-4"></span></p> 
+  <ul> 
+   <li>static Logger * logLogger ()<span class="anchor" id="line-6-3"></span></li> 
+   <li>static Logger * qtLogger ()<span class="anchor" id="line-7-3"></span></li> 
+   <li>static Logger * rootLogger ()<span class="anchor" id="line-8-3"></span></li> 
+   <li> <p class="line862" style="margin-top:0.25em; margin-right:0px; margin-bottom:0.25em; margin-left:0px"> static Logger * logger (const QString &amp;rName)<span class="anchor" id="line-9-2"></span><span class="anchor" id="line-10-2"></span></p> </li> 
+  </ul> 
+  <p class="line874">奇怪，除了我们提到的，还有qtLogger和logLogger两个东西存在，这两个是什么东西？原来<span class="anchor" id="line-11-2"></span></p> 
+  <div> 
+   <table style="margin-top:0.5em; margin-right:0px; margin-bottom:0px; margin-left:0.5em; border-collapse:collapse"> 
+    <tbody> 
+     <tr> 
+      <td style="padding-top:0.25em; padding-right:0.5em; padding-bottom:0.25em; padding-left:0.5em; border-top-width:1px; border-right-width:1px; border-bottom-width:1px; border-left-width:1px; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(4,115,7); border-right-color:rgb(4,115,7); border-bottom-color:rgb(4,115,7); border-left-color:rgb(4,115,7)"> <p class="line862" style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; padding-top:0px; padding-right:0px; padding-bottom:0px; padding-left:0px"> 马甲</p> </td> 
+      <td style="padding-top:0.25em; padding-right:0.5em; padding-bottom:0.25em; padding-left:0.5em; border-top-width:1px; border-right-width:1px; border-bottom-width:1px; border-left-width:1px; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(4,115,7); border-right-color:rgb(4,115,7); border-bottom-color:rgb(4,115,7); border-left-color:rgb(4,115,7)"> <p class="line862" style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; padding-top:0px; padding-right:0px; padding-bottom:0px; padding-left:0px"> 真实身份</p> </td> 
+      <td style="padding-top:0.25em; padding-right:0.5em; padding-bottom:0.25em; padding-left:0.5em; border-top-width:1px; border-right-width:1px; border-bottom-width:1px; border-left-width:1px; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(4,115,7); border-right-color:rgb(4,115,7); border-bottom-color:rgb(4,115,7); border-left-color:rgb(4,115,7)"> <p class="line862" style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; padding-top:0px; padding-right:0px; padding-bottom:0px; padding-left:0px"> 作用</p> </td> 
+     </tr> 
+     <tr> 
+      <td style="padding-top:0.25em; padding-right:0.5em; padding-bottom:0.25em; padding-left:0.5em; border-top-width:1px; border-right-width:1px; border-bottom-width:1px; border-left-width:1px; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(4,115,7); border-right-color:rgb(4,115,7); border-bottom-color:rgb(4,115,7); border-left-color:rgb(4,115,7)"> <span class="anchor" id="line-12-2"></span> <p class="line862" style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; padding-top:0px; padding-right:0px; padding-bottom:0px; padding-left:0px"> qtLogger()</p> </td> 
+      <td style="padding-top:0.25em; padding-right:0.5em; padding-bottom:0.25em; padding-left:0.5em; border-top-width:1px; border-right-width:1px; border-bottom-width:1px; border-left-width:1px; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(4,115,7); border-right-color:rgb(4,115,7); border-bottom-color:rgb(4,115,7); border-left-color:rgb(4,115,7)"> <p class="line862" style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; padding-top:0px; padding-right:0px; padding-bottom:0px; padding-left:0px"> logger("Qt")</p> </td> 
+      <td style="padding-top:0.25em; padding-right:0.5em; padding-bottom:0.25em; padding-left:0.5em; border-top-width:1px; border-right-width:1px; border-bottom-width:1px; border-left-width:1px; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(4,115,7); border-right-color:rgb(4,115,7); border-bottom-color:rgb(4,115,7); border-left-color:rgb(4,115,7)"> <p class="line862" style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; padding-top:0px; padding-right:0px; padding-bottom:0px; padding-left:0px"> 用来处理Qt中的qDebug() qWarning ...</p> </td> 
+     </tr> 
+     <tr> 
+      <td style="padding-top:0.25em; padding-right:0.5em; padding-bottom:0.25em; padding-left:0.5em; border-top-width:1px; border-right-width:1px; border-bottom-width:1px; border-left-width:1px; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(4,115,7); border-right-color:rgb(4,115,7); border-bottom-color:rgb(4,115,7); border-left-color:rgb(4,115,7)"> <span class="anchor" id="line-13-1"></span> <p class="line862" style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; padding-top:0px; padding-right:0px; padding-bottom:0px; padding-left:0px"> logLogger()</p> </td> 
+      <td style="padding-top:0.25em; padding-right:0.5em; padding-bottom:0.25em; padding-left:0.5em; border-top-width:1px; border-right-width:1px; border-bottom-width:1px; border-left-width:1px; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(4,115,7); border-right-color:rgb(4,115,7); border-bottom-color:rgb(4,115,7); border-left-color:rgb(4,115,7)"> <p class="line862" style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; padding-top:0px; padding-right:0px; padding-bottom:0px; padding-left:0px"> logger("<a class="nonexistent ui-link" href="http://127.0.0.1/wiki/Log4Qt" style="color:rgb(64,64,64); border-top-width:0px; border-right-width:0px; border-bottom-width:0px; border-left-width:0px; border-style:initial; border-color:initial" target="_blank">Log4Qt</a>")</p> </td> 
+      <td style="padding-top:0.25em; padding-right:0.5em; padding-bottom:0.25em; padding-left:0.5em; border-top-width:1px; border-right-width:1px; border-bottom-width:1px; border-left-width:1px; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(4,115,7); border-right-color:rgb(4,115,7); border-bottom-color:rgb(4,115,7); border-left-color:rgb(4,115,7)"> <p class="line862" style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; padding-top:0px; padding-right:0px; padding-bottom:0px; padding-left:0px"> 用来记录该库自身的日志</p> </td> 
+     </tr> 
+    </tbody> 
+   </table> 
+  </div> 
+  <span class="anchor" id="line-14"></span> 
+  <span class="anchor" id="line-15"></span> 
+  <span class="anchor" id="line-16"></span> 
+  <h2 id="A.2Bc69Yg1PYkc8-" style="padding-top:0px; padding-right:0px; padding-bottom:0.3em; padding-left:0px; border-bottom-width:3px; border-bottom-style:solid; border-bottom-color:rgb(4,115,7)"> 环境变量</h2> 
+  <span class="anchor" id="line-17"></span> 
+  <p class="line867">Log4Qt 有4个环境变量：<span class="anchor" id="line-18"></span><span class="anchor" id="line-19"></span></p> 
+  <div> 
+   <table style="margin-top:0.5em; margin-right:0px; margin-bottom:0px; margin-left:0.5em; border-collapse:collapse"> 
+    <tbody> 
+     <tr> 
+      <td style="padding-top:0.25em; padding-right:0.5em; padding-bottom:0.25em; padding-left:0.5em; border-top-width:1px; border-right-width:1px; border-bottom-width:1px; border-left-width:1px; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(4,115,7); border-right-color:rgb(4,115,7); border-bottom-color:rgb(4,115,7); border-left-color:rgb(4,115,7)"> <p class="line862" style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; padding-top:0px; padding-right:0px; padding-bottom:0px; padding-left:0px"> LOG4QT_DEBUG</p> </td> 
+      <td style="padding-top:0.25em; padding-right:0.5em; padding-bottom:0.25em; padding-left:0.5em; border-top-width:1px; border-right-width:1px; border-bottom-width:1px; border-left-width:1px; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(4,115,7); border-right-color:rgb(4,115,7); border-bottom-color:rgb(4,115,7); border-left-color:rgb(4,115,7)"> <p class="line862" style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; padding-top:0px; padding-right:0px; padding-bottom:0px; padding-left:0px"> 控制Log4Qt自身输出日志的级别，前面的logLogger()</p> </td> 
+     </tr> 
+     <tr> 
+      <td style="padding-top:0.25em; padding-right:0.5em; padding-bottom:0.25em; padding-left:0.5em; border-top-width:1px; border-right-width:1px; border-bottom-width:1px; border-left-width:1px; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(4,115,7); border-right-color:rgb(4,115,7); border-bottom-color:rgb(4,115,7); border-left-color:rgb(4,115,7)"> <span class="anchor" id="line-20"></span> <p class="line862" style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; padding-top:0px; padding-right:0px; padding-bottom:0px; padding-left:0px"> LOG4QT_DEFAULTINITOVERRIDE</p> </td> 
+      <td style="padding-top:0.25em; padding-right:0.5em; padding-bottom:0.25em; padding-left:0.5em; border-top-width:1px; border-right-width:1px; border-bottom-width:1px; border-left-width:1px; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(4,115,7); border-right-color:rgb(4,115,7); border-bottom-color:rgb(4,115,7); border-left-color:rgb(4,115,7)"> <p class="line862" style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; padding-top:0px; padding-right:0px; padding-bottom:0px; padding-left:0px"> 是否忽略默认的初始化（除"false"外均忽略）</p> </td> 
+     </tr> 
+     <tr> 
+      <td style="padding-top:0.25em; padding-right:0.5em; padding-bottom:0.25em; padding-left:0.5em; border-top-width:1px; border-right-width:1px; border-bottom-width:1px; border-left-width:1px; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(4,115,7); border-right-color:rgb(4,115,7); border-bottom-color:rgb(4,115,7); border-left-color:rgb(4,115,7)"> <span class="anchor" id="line-21"></span> <p class="line862" style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; padding-top:0px; padding-right:0px; padding-bottom:0px; padding-left:0px"> LOG4QT_CONFIGURATION</p> </td> 
+      <td style="padding-top:0.25em; padding-right:0.5em; padding-bottom:0.25em; padding-left:0.5em; border-top-width:1px; border-right-width:1px; border-bottom-width:1px; border-left-width:1px; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(4,115,7); border-right-color:rgb(4,115,7); border-bottom-color:rgb(4,115,7); border-left-color:rgb(4,115,7)"> <p class="line862" style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; padding-top:0px; padding-right:0px; padding-bottom:0px; padding-left:0px"> 用来指定初始化用的配置文件，在前文的例子中我们代码中指定的配置文件，也可以在此指定</p> </td> 
+     </tr> 
+     <tr> 
+      <td style="padding-top:0.25em; padding-right:0.5em; padding-bottom:0.25em; padding-left:0.5em; border-top-width:1px; border-right-width:1px; border-bottom-width:1px; border-left-width:1px; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(4,115,7); border-right-color:rgb(4,115,7); border-bottom-color:rgb(4,115,7); border-left-color:rgb(4,115,7)"> <span class="anchor" id="line-22"></span> <p class="line862" style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; padding-top:0px; padding-right:0px; padding-bottom:0px; padding-left:0px"> LOG4QT_CONFIGURATORCLASS</p> </td> 
+      <td style="padding-top:0.25em; padding-right:0.5em; padding-bottom:0.25em; padding-left:0.5em; border-top-width:1px; border-right-width:1px; border-bottom-width:1px; border-left-width:1px; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(4,115,7); border-right-color:rgb(4,115,7); border-bottom-color:rgb(4,115,7); border-left-color:rgb(4,115,7)"> <p class="line862" style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; padding-top:0px; padding-right:0px; padding-bottom:0px; padding-left:0px"> 这个东西？在Log4Qt中似乎没有使用(fixme)</p> </td> 
+     </tr> 
+    </tbody> 
+   </table> 
+  </div> 
+  <span class="anchor" id="line-23"></span> 
+  <span class="anchor" id="line-24"></span> 
+  <p class="line874">继续看例子：<span class="anchor" id="line-25"></span></p> 
+  <h3 id="A.2BT4tbUFbb-" style="padding-top:0px; padding-right:0px; padding-bottom:0.3em; padding-left:0px; border-bottom-width:3px; border-bottom-style:solid; border-bottom-color:rgb(4,115,7)"> 例子四</h3> 
+  <span class="anchor" id="line-26"></span> 
+  <p class="line862">将前面的例子一，注释掉BasicConfigure<span class="anchor" id="line-27"></span><span class="anchor" id="line-28"></span><span class="anchor" id="line-29"></span><span class="anchor" id="line-30"></span><span class="anchor" id="line-31"></span><span class="anchor" id="line-32"></span><span class="anchor" id="line-33"></span><span class="anchor" id="line-34"></span><span class="anchor" id="line-35"></span><span class="anchor" id="line-36"></span><span class="anchor" id="line-37"></span><span class="anchor" id="line-38"></span><span class="anchor" id="line-39"></span><span class="anchor" id="line-40"></span><span class="anchor" id="line-41"></span></p> 
+  <pre style="padding-top:0.5em; padding-right:0.5em; padding-bottom:0.5em; padding-left:0.5em; font-family:courier,monospace; border-top-width:1pt; border-right-width:1pt; border-bottom-width:1pt; border-left-width:1pt; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(192,192,192); border-right-color:rgb(192,192,192); border-bottom-color:rgb(192,192,192); border-left-color:rgb(192,192,192); background-color:rgb(240,236,230); white-space:pre-wrap; word-wrap:break-word"><span class="anchor" id="line-1"></span>#include &lt;QtCore&gt;
+<span class="anchor" id="line-2"></span>#include "logger.h"
+<span class="anchor" id="line-3"></span>//#include "basicconfigurator.h"
+<span class="anchor" id="line-4"></span>int main(int argc, char *argv[])
+<span class="anchor" id="line-5"></span>{
+<span class="anchor" id="line-6"></span>    QCoreApplication a(argc, argv);
+<span class="anchor" id="line-7"></span>// Log4Qt::BasicConfigurator::configure();
+<span class="anchor" id="line-8"></span>    Log4Qt::Logger * log = Log4Qt::Logger::rootLogger();
+<span class="anchor" id="line-9"></span>    log-&gt;debug("Hello DbZhang800!");
+<span class="anchor" id="line-10"></span>    log-&gt;info("Hello Qt!");
+<span class="anchor" id="line-11"></span>    log-&gt;warn("Hello 1+1=2");
+<span class="anchor" id="line-12"></span>    return 0;
+<span class="anchor" id="line-13"></span>}</pre> 
+  <span class="anchor" id="line-42"></span> 
+  <p class="line874">此时运行程序，将没有任何输出。<span class="anchor" id="line-43"></span><span class="anchor" id="line-44"></span><span class="anchor" id="line-45"></span><span class="anchor" id="line-46"></span></p> 
+  <pre style="padding-top:0.5em; padding-right:0.5em; padding-bottom:0.5em; padding-left:0.5em; font-family:courier,monospace; border-top-width:1pt; border-right-width:1pt; border-bottom-width:1pt; border-left-width:1pt; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(192,192,192); border-right-color:rgb(192,192,192); border-bottom-color:rgb(192,192,192); border-left-color:rgb(192,192,192); background-color:rgb(240,236,230); white-space:pre-wrap; word-wrap:break-word"><span class="anchor" id="line-1-1"></span>F:\bin\&gt; console.exe
+<span class="anchor" id="line-2-1"></span>F:\bin\&gt;</pre> 
+  <span class="anchor" id="line-47"></span> 
+  <p class="line874">而如果设置环境变量：<span class="anchor" id="line-48"></span><span class="anchor" id="line-49"></span><span class="anchor" id="line-50"></span><span class="anchor" id="line-51"></span><span class="anchor" id="line-52"></span><span class="anchor" id="line-53"></span><span class="anchor" id="line-54"></span></p> 
+  <pre style="padding-top:0.5em; padding-right:0.5em; padding-bottom:0.5em; padding-left:0.5em; font-family:courier,monospace; border-top-width:1pt; border-right-width:1pt; border-bottom-width:1pt; border-left-width:1pt; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(192,192,192); border-right-color:rgb(192,192,192); border-bottom-color:rgb(192,192,192); border-left-color:rgb(192,192,192); background-color:rgb(240,236,230); white-space:pre-wrap; word-wrap:break-word"><span class="anchor" id="line-1-2"></span>F:\bin&gt;set LOG4QT_CONFIGURATION=F:\bin\log4qt.conf
+<span class="anchor" id="line-2-2"></span>2011-10-29 19:30:55 [root]-[DEBUG] Hello DbZhang800!
+<span class="anchor" id="line-3-1"></span>2011-10-29 19:30:55 [root]-[INFO] Hello Qt!
+<span class="anchor" id="line-4-1"></span>2011-10-29 19:30:55 [root]-[WARN] Hello 1+1=2
+<span class="anchor" id="line-5-1"></span>F:\bin\&gt;</pre> 
+  <span class="anchor" id="line-55"></span> 
+  <span class="anchor" id="line-56"></span> 
+  <p class="line874">配置的文件的内容如下：<span class="anchor" id="line-57"></span><span class="anchor" id="line-58"></span><span class="anchor" id="line-59"></span><span class="anchor" id="line-60"></span><span class="anchor" id="line-61"></span><span class="anchor" id="line-62"></span></p> 
+  <pre style="padding-top:0.5em; padding-right:0.5em; padding-bottom:0.5em; padding-left:0.5em; font-family:courier,monospace; border-top-width:1pt; border-right-width:1pt; border-bottom-width:1pt; border-left-width:1pt; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(192,192,192); border-right-color:rgb(192,192,192); border-bottom-color:rgb(192,192,192); border-left-color:rgb(192,192,192); background-color:rgb(240,236,230); white-space:pre-wrap; word-wrap:break-word"><span class="anchor" id="line-1-3"></span>log4j.rootLogger=DEBUG,A1
+<span class="anchor" id="line-2-3"></span>log4j.appender.A1=org.apache.log4j.ConsoleAppender
+<span class="anchor" id="line-3-2"></span>log4j.appender.A1.layout=org.apache.log4j.PatternLayout
+<span class="anchor" id="line-4-2"></span>log4j.appender.A1.layout.ConversionPattern=%-d{yyyy-MM-dd HH:mm:ss} [%c]-[%p] %m%n</pre> 
+  <span class="anchor" id="line-63"></span> 
+  <span class="anchor" id="line-64"></span> 
+  <h3 id="A.2BT4tbUE6U-" style="padding-top:0px; padding-right:0px; padding-bottom:0.3em; padding-left:0px; border-bottom-width:3px; border-bottom-style:solid; border-bottom-color:rgb(4,115,7)"> 例子五</h3> 
+  <span class="anchor" id="line-65"></span> 
+  <p class="line874">接下来看看 LOG4QT_DEFAULTINITOVERRIDE 这个东西有什么用。<span class="anchor" id="line-66"></span><span class="anchor" id="line-67"></span></p> 
+  <p class="line874">同样是前一个例子：如果设置还设置了这个环境变量，结果如何？<span class="anchor" id="line-68"></span><span class="anchor" id="line-69"></span></p> 
+  <p class="line867"><span class="anchor" id="line-70"></span><span class="anchor" id="line-71"></span><span class="anchor" id="line-72"></span><span class="anchor" id="line-73"></span><span class="anchor" id="line-74"></span></p> 
+  <pre style="padding-top:0.5em; padding-right:0.5em; padding-bottom:0.5em; padding-left:0.5em; font-family:courier,monospace; border-top-width:1pt; border-right-width:1pt; border-bottom-width:1pt; border-left-width:1pt; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(192,192,192); border-right-color:rgb(192,192,192); border-bottom-color:rgb(192,192,192); border-left-color:rgb(192,192,192); background-color:rgb(240,236,230); white-space:pre-wrap; word-wrap:break-word"><span class="anchor" id="line-1-4"></span>F:\bin&gt; set LOG4QT_CONFIGURATION=F:\bin\log4qt.conf
+<span class="anchor" id="line-2-4"></span>F:\bin&gt; set LOG4QT_DEFAULTINITOVERRIDE=true
+<span class="anchor" id="line-3-3"></span>F:\bin&gt; console.exe
+<span class="anchor" id="line-4-3"></span>F:\bin</pre> 
+  <span class="anchor" id="line-75"></span> 
+  <span class="anchor" id="line-76"></span> 
+  <p class="line874">恩，又没有任何输出了。<span class="anchor" id="line-77"></span><span class="anchor" id="line-78"></span></p> 
+  <p class="line874">只要我们设置了该环境变量，而且其值不是false，那么就会跳过这些初始化文件。<span class="anchor" id="line-79"></span><span class="anchor" id="line-80"></span></p> 
+  <p class="line874">重新起作用，需要设为false<span class="anchor" id="line-81"></span><span class="anchor" id="line-82"></span><span class="anchor" id="line-83"></span></p> 
+  <pre style="padding-top:0.5em; padding-right:0.5em; padding-bottom:0.5em; padding-left:0.5em; font-family:courier,monospace; border-top-width:1pt; border-right-width:1pt; border-bottom-width:1pt; border-left-width:1pt; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(192,192,192); border-right-color:rgb(192,192,192); border-bottom-color:rgb(192,192,192); border-left-color:rgb(192,192,192); background-color:rgb(240,236,230); white-space:pre-wrap; word-wrap:break-word"><span class="anchor" id="line-1-5"></span>F:\bin&gt; set LOG4QT_DEFAULTINITOVERRIDE=false</pre> 
+  <span class="anchor" id="line-84"></span> 
+  <p class="line874">或者删除<span class="anchor" id="line-85"></span><span class="anchor" id="line-86"></span><span class="anchor" id="line-87"></span></p> 
+  <pre style="padding-top:0.5em; padding-right:0.5em; padding-bottom:0.5em; padding-left:0.5em; font-family:courier,monospace; border-top-width:1pt; border-right-width:1pt; border-bottom-width:1pt; border-left-width:1pt; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(192,192,192); border-right-color:rgb(192,192,192); border-bottom-color:rgb(192,192,192); border-left-color:rgb(192,192,192); background-color:rgb(240,236,230); white-space:pre-wrap; word-wrap:break-word"><span class="anchor" id="line-1-6"></span>F:\bin&gt; set LOG4QT_DEFAULTINITOVERRIDE=</pre> 
+  <span class="anchor" id="line-88"></span> 
+  <span class="anchor" id="line-89"></span> 
+  <h2 id="A.2BUh1Zy1MW-" style="padding-top:0px; padding-right:0px; padding-bottom:0.3em; padding-left:0px; border-bottom-width:3px; border-bottom-style:solid; border-bottom-color:rgb(4,115,7)"> 初始化</h2> 
+  <span class="anchor" id="line-90"></span> 
+  <p class="line874">只要前面的 LOG4QT_DEFAULTINITOVERRIDE 没有被设置为flase以外的值，初始化时就会尝试加载默认配置，它找依次尝试3个东西<span class="anchor" id="line-91"></span></p> 
+  <ul> 
+   <li>1. 我们提到的LOG4QT_CONFIGURATION指定的配置文件，如果不存在，则<span class="anchor" id="line-92"></span></li> 
+   <li>2. 默认的QSettings 中的 Log4Qt/Properties 中的内容，比如：下面代码设置的东西就可以<span class="anchor" id="line-93"></span></li> 
+  </ul> 
+  <p class="line867"><span class="anchor" id="line-94"></span><span class="anchor" id="line-95"></span><span class="anchor" id="line-96"></span><span class="anchor" id="line-97"></span><span class="anchor" id="line-98"></span><span class="anchor" id="line-99"></span><span class="anchor" id="line-100"></span><span class="anchor" id="line-101"></span><span class="anchor" id="line-102"></span></p> 
+  <pre style="padding-top:0.5em; padding-right:0.5em; padding-bottom:0.5em; padding-left:0.5em; font-family:courier,monospace; border-top-width:1pt; border-right-width:1pt; border-bottom-width:1pt; border-left-width:1pt; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(192,192,192); border-right-color:rgb(192,192,192); border-bottom-color:rgb(192,192,192); border-left-color:rgb(192,192,192); background-color:rgb(240,236,230); white-space:pre-wrap; word-wrap:break-word"><span class="anchor" id="line-1-7"></span>     QSettings s;
+<span class="anchor" id="line-2-5"></span>     s.beginGroup("Log4Qt");
+<span class="anchor" id="line-3-4"></span>     s.beginGroup("Properties");
+<span class="anchor" id="line-4-4"></span>     s.setValue("log4j.appender.A1", "org.apache.log4j.FileAppender");
+<span class="anchor" id="line-5-2"></span>     s.setValue("log4j.appender.A1.file", "F:/bin/myapp.log");
+<span class="anchor" id="line-6-1"></span>     s.setValue("log4j.appender.A1.layout", "org.apache.log4j.TTCCLayout");
+<span class="anchor" id="line-7-1"></span>     s.setValue("log4j.appender.A1.layout.DateFormat", "ISO8601");
+<span class="anchor" id="line-8-1"></span>     s.setValue("log4j.rootLogger", "TRACE, A1");</pre> 
+  <span class="anchor" id="line-103"></span> 
+  <ul> 
+   <li> <p class="line862" style="margin-top:0.25em; margin-right:0px; margin-bottom:0.25em; margin-left:0px"> 3. 如果还没找到，则尝试当前<strong>工作目录</strong>下的 log4qt.properties 文件<span class="anchor" id="line-104"></span><span class="anchor" id="line-105"></span></p> </li> 
+  </ul> 
+  <h2 id="A.2Bj9hnCXC5TsBOSP8f-" style="padding-top:0px; padding-right:0px; padding-bottom:0.3em; padding-left:0px; border-bottom-width:3px; border-bottom-style:solid; border-bottom-color:rgb(4,115,7)"> 还有点什么？</h2> 
+  <span class="anchor" id="line-106"></span> 
+  <p class="line874">零零散散，随便记录一下，备忘...<span class="anchor" id="line-107"></span><span class="anchor" id="line-108"></span></p> 
+  <h3 id="A.2BW55zsH7GgoI-" style="padding-top:0px; padding-right:0px; padding-bottom:0.3em; padding-left:0px; border-bottom-width:3px; border-bottom-style:solid; border-bottom-color:rgb(4,115,7)"> 实现细节</h3> 
+  <span class="anchor" id="line-109"></span> 
+  <p class="line862">环境变量在 静态单件对象InitialisationHelper 的初始化时被读取。(对用户透明)<span class="anchor" id="line-110"></span><span class="anchor" id="line-111"></span></p> 
+  <p class="line874">这些值在程序内可以通过<span class="anchor" id="line-112"></span><span class="anchor" id="line-113"></span><span class="anchor" id="line-114"></span></p> 
+  <pre style="padding-top:0.5em; padding-right:0.5em; padding-bottom:0.5em; padding-left:0.5em; font-family:courier,monospace; border-top-width:1pt; border-right-width:1pt; border-bottom-width:1pt; border-left-width:1pt; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(192,192,192); border-right-color:rgb(192,192,192); border-bottom-color:rgb(192,192,192); border-left-color:rgb(192,192,192); background-color:rgb(240,236,230); white-space:pre-wrap; word-wrap:break-word"><span class="anchor" id="line-1-8"></span>QHash&lt; QString, QString &gt; Log4Qt::InitialisationHelper::environmentSettings ( )         </pre> 
+  <span class="anchor" id="line-115"></span> 
+  <p class="line874">来获取。对应的key<span class="anchor" id="line-116"></span></p> 
+  <div> 
+   <table style="margin-top:0.5em; margin-right:0px; margin-bottom:0px; margin-left:0.5em; border-collapse:collapse"> 
+    <tbody> 
+     <tr> 
+      <td style="padding-top:0.25em; padding-right:0.5em; padding-bottom:0.25em; padding-left:0.5em; border-top-width:1px; border-right-width:1px; border-bottom-width:1px; border-left-width:1px; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(4,115,7); border-right-color:rgb(4,115,7); border-bottom-color:rgb(4,115,7); border-left-color:rgb(4,115,7)"> <p class="line862" style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; padding-top:0px; padding-right:0px; padding-bottom:0px; padding-left:0px"> LOG4QT_DEBUG</p> </td> 
+      <td style="padding-top:0.25em; padding-right:0.5em; padding-bottom:0.25em; padding-left:0.5em; border-top-width:1px; border-right-width:1px; border-bottom-width:1px; border-left-width:1px; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(4,115,7); border-right-color:rgb(4,115,7); border-bottom-color:rgb(4,115,7); border-left-color:rgb(4,115,7)"> <p class="line862" style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; padding-top:0px; padding-right:0px; padding-bottom:0px; padding-left:0px"> Debug</p> </td> 
+     </tr> 
+     <tr> 
+      <td style="padding-top:0.25em; padding-right:0.5em; padding-bottom:0.25em; padding-left:0.5em; border-top-width:1px; border-right-width:1px; border-bottom-width:1px; border-left-width:1px; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(4,115,7); border-right-color:rgb(4,115,7); border-bottom-color:rgb(4,115,7); border-left-color:rgb(4,115,7)"> <span class="anchor" id="line-117"></span> <p class="line862" style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; padding-top:0px; padding-right:0px; padding-bottom:0px; padding-left:0px"> LOG4QT_DEFAULTINITOVERRIDE</p> </td> 
+      <td style="padding-top:0.25em; padding-right:0.5em; padding-bottom:0.25em; padding-left:0.5em; border-top-width:1px; border-right-width:1px; border-bottom-width:1px; border-left-width:1px; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(4,115,7); border-right-color:rgb(4,115,7); border-bottom-color:rgb(4,115,7); border-left-color:rgb(4,115,7)"> <p class="line891" style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; padding-top:0px; padding-right:0px; padding-bottom:0px; padding-left:0px"> DefaultInitOverride</p> </td> 
+     </tr> 
+     <tr> 
+      <td style="padding-top:0.25em; padding-right:0.5em; padding-bottom:0.25em; padding-left:0.5em; border-top-width:1px; border-right-width:1px; border-bottom-width:1px; border-left-width:1px; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(4,115,7); border-right-color:rgb(4,115,7); border-bottom-color:rgb(4,115,7); border-left-color:rgb(4,115,7)"> <span class="anchor" id="line-118"></span> <p class="line862" style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; padding-top:0px; padding-right:0px; padding-bottom:0px; padding-left:0px"> LOG4QT_CONFIGURATION</p> </td> 
+      <td style="padding-top:0.25em; padding-right:0.5em; padding-bottom:0.25em; padding-left:0.5em; border-top-width:1px; border-right-width:1px; border-bottom-width:1px; border-left-width:1px; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(4,115,7); border-right-color:rgb(4,115,7); border-bottom-color:rgb(4,115,7); border-left-color:rgb(4,115,7)"> <p class="line862" style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; padding-top:0px; padding-right:0px; padding-bottom:0px; padding-left:0px"> Configuration</p> </td> 
+     </tr> 
+     <tr> 
+      <td style="padding-top:0.25em; padding-right:0.5em; padding-bottom:0.25em; padding-left:0.5em; border-top-width:1px; border-right-width:1px; border-bottom-width:1px; border-left-width:1px; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(4,115,7); border-right-color:rgb(4,115,7); border-bottom-color:rgb(4,115,7); border-left-color:rgb(4,115,7)"> <span class="anchor" id="line-119"></span> <p class="line862" style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; padding-top:0px; padding-right:0px; padding-bottom:0px; padding-left:0px"> LOG4QT_CONFIGURATORCLASS</p> </td> 
+      <td style="padding-top:0.25em; padding-right:0.5em; padding-bottom:0.25em; padding-left:0.5em; border-top-width:1px; border-right-width:1px; border-bottom-width:1px; border-left-width:1px; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(4,115,7); border-right-color:rgb(4,115,7); border-bottom-color:rgb(4,115,7); border-left-color:rgb(4,115,7)"> <p class="line862" style="margin-top:0px; margin-right:0px; margin-bottom:0px; margin-left:0px; padding-top:0px; padding-right:0px; padding-bottom:0px; padding-left:0px"> ConfiguratorClass</p> </td> 
+     </tr> 
+    </tbody> 
+   </table> 
+  </div> 
+  <span class="anchor" id="line-120"></span> 
+  <span class="anchor" id="line-121"></span> 
+  <h3 id="A.2BT4tbUFFt-" style="padding-top:0px; padding-right:0px; padding-bottom:0.3em; padding-left:0px; border-bottom-width:3px; border-bottom-style:solid; border-bottom-color:rgb(4,115,7)"> 例子六</h3> 
+  <span class="anchor" id="line-122"></span> 
+  <p class="line874">忘记qDebug()这些东西了，补一个例子<span class="anchor" id="line-123"></span><span class="anchor" id="line-124"></span></p> 
+  <p class="line867"><span class="anchor" id="line-125"></span><span class="anchor" id="line-126"></span><span class="anchor" id="line-127"></span><span class="anchor" id="line-128"></span><span class="anchor" id="line-129"></span><span class="anchor" id="line-130"></span><span class="anchor" id="line-131"></span><span class="anchor" id="line-132"></span><span class="anchor" id="line-133"></span><span class="anchor" id="line-134"></span><span class="anchor" id="line-135"></span><span class="anchor" id="line-136"></span><span class="anchor" id="line-137"></span></p> 
+  <pre style="padding-top:0.5em; padding-right:0.5em; padding-bottom:0.5em; padding-left:0.5em; font-family:courier,monospace; border-top-width:1pt; border-right-width:1pt; border-bottom-width:1pt; border-left-width:1pt; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(192,192,192); border-right-color:rgb(192,192,192); border-bottom-color:rgb(192,192,192); border-left-color:rgb(192,192,192); background-color:rgb(240,236,230); white-space:pre-wrap; word-wrap:break-word"><span class="anchor" id="line-1-9"></span>#include &lt;QtCore&gt;
+<span class="anchor" id="line-2-6"></span>#include "logmanager.h"
+<span class="anchor" id="line-3-5"></span>
+<span class="anchor" id="line-4-5"></span>int main(int argc, char *argv[])
+<span class="anchor" id="line-5-3"></span>{
+<span class="anchor" id="line-6-2"></span>    QCoreApplication a(argc, argv);
+<span class="anchor" id="line-7-2"></span>    Log4Qt::LogManager::setHandleQtMessages(true);
+<span class="anchor" id="line-8-2"></span>    qDebug("Hello DbZhang800!");
+<span class="anchor" id="line-9-1"></span>    qWarning("Hello Qt!");
+<span class="anchor" id="line-10-1"></span>    qErrnoWarning("Hello 1+1=2");
+<span class="anchor" id="line-11-1"></span>    return 0;
+<span class="anchor" id="line-12-1"></span>}</pre> 
+  <span class="anchor" id="line-138"></span> 
+  <p class="line874">结果如下：<span class="anchor" id="line-139"></span><span class="anchor" id="line-140"></span><span class="anchor" id="line-141"></span><span class="anchor" id="line-142"></span><span class="anchor" id="line-143"></span></p> 
+  <pre style="padding-top:0.5em; padding-right:0.5em; padding-bottom:0.5em; padding-left:0.5em; font-family:courier,monospace; border-top-width:1pt; border-right-width:1pt; border-bottom-width:1pt; border-left-width:1pt; border-top-style:solid; border-right-style:solid; border-bottom-style:solid; border-left-style:solid; border-top-color:rgb(192,192,192); border-right-color:rgb(192,192,192); border-bottom-color:rgb(192,192,192); border-left-color:rgb(192,192,192); background-color:rgb(240,236,230); white-space:pre-wrap; word-wrap:break-word"><span class="anchor" id="line-1-10"></span>2011-10-29 19:59:10 [Qt]-[DEBUG] Hello DbZhang800!
+<span class="anchor" id="line-2-7"></span>2011-10-29 19:59:10 [Qt]-[WARN] Hello Qt!
+<span class="anchor" id="line-3-6"></span>2011-10-29 19:59:10 [Qt]-[ERROR] Hello 1+1=2 ()</pre> 
+  <span class="anchor" id="line-144"></span> 
+  <p class="line874">采用的前面例子使用的配置文件。</p> 
+  <br> 
+  <link rel="stylesheet" href="/js/syntax_highlighter/SyntaxHighlighter.css" type="text/css"> 
+  <script src="/js/syntax_highlighter/shCore.js"></script> 
+  <script src="/js/syntax_highlighter/shSyntax.js"></script> 
+  <script>$(document).ready(function(){dp.SyntaxHighlighter.HighlightAll('code');});</script>
+  <br>原文链接：
+  <a href="http://blog.csdn.net/dbzhang800/article/details/6917462" target="_blank" class="ui-link">http://blog.csdn.net/dbzhang800/article/details/6917462</a>
+ 
+</div>
+    <p><a href="http://v.t.sina.com.cn/share/share.php?title=Log4Qt%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0%28%E4%B8%89%29-%E5%BC%80%E6%BA%90%E4%B8%AD%E5%9B%BD%E7%A4%BE%E5%8C%BA&amp;url=https://www.oschina.net/question/234345_52622&amp;source=bookmark&amp;appkey=723362457&amp;pic=" class="ui-link"><img src="/img/weibo_share.gif?t=1451961935000"></a></p>
+			<form id="form_comment" action="/action/question/answer?question=52622" method="post">
+		<input type="hidden" name="client_type" value="2">
+		<input type="hidden" name="user" value="${g_user.id}">
+		<input type="hidden" name="goto_page" value="/question/post_ok?question=52622">
+		<input type="hidden" name="error_page" value="/question/post_ok">
+		<textarea name="body" placeholder="请在此处输入回帖内容..." style="display: block; height: 307px; " class="ui-input-text ui-body-c ui-corner-all ui-shadow-inset"></textarea>			
+		<div data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-icon="null" data-iconpos="null" data-theme="b" data-inline="true" class="ui-btn ui-btn-up-b ui-shadow ui-btn-corner-all ui-btn-inline ui-submit" aria-disabled="false"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">我要回帖</span></span><input type="submit" value="我要回帖" data-theme="b" data-inline="true" class="ui-btn-hidden" aria-disabled="false"></div> 文明上网，理性发言
+	</form>
+</div>
+
+<script type="text/javascript" src="/action/visit/question?id=52622"></script>
+<script type="text/javascript">
+<!--
+function delete_answer(aid){
+	if(!confirm("您确认要删除此答案吗，删除的数据不可恢复？"))
+		return ;
+	ajax_post("/action/question/delete_answer?id="+aid+"&user_code=","",function(html){
+		if(html.length>0)
+			alert(html);
+		else{
+			$('#answer_'+aid).fadeOut();
+		}
+	});
+}
+
+function delete_q(qid){
+	if(!confirm("您确认要删除此问题吗，删除的数据不可恢复？"))
+		return ;
+	ajax_post("/action/question/delete?id="+qid+"&user_code=","",function(html){
+		if(html.length>0)
+			alert(html);
+		else{
+			location.href = "/question";
+		}
+	});
+}
+
+function loadImgs(t){
+	if(typeof(t)!="undefined"){
+		var i=$("#div_img_"+t);
+		var src=i.attr("src");
+		var img=$("<img/>");
+		img.attr("src",src);
+		if(i.attr("href")!=undefined){
+			var a=$("<a class='ui-link' target='_blank' href='"+i.attr("href")+"'></a>")
+			i.replaceWith(a.wrapInner(img));
+		}else{
+			i.replaceWith(img);
+		}
+	}else
+	$(".div_imgs").each(function(){
+		var src=$(this).attr("src");
+		var img=$("<img alt='...'/>");
+		img.attr("src",src);
+		if($(this).attr("href")!=undefined){
+			var a=$("<a class='ui-link' target='_blank' href='"+$(this).attr("href")+"'></a>")
+			$(this).replaceWith(a.wrapInner(img));
+		}else{
+			$(this).replaceWith(img);
+		}
+	});
+}
+
+//-->
+</script>
+		<div data-role="footer" class="footer-docs ui-footer ui-bar-c" data-theme="c" role="contentinfo">
+		<p>&nbsp;© 2008~2017 开源中国</p>
+		<div data-role="controlgroup" data-type="horizontal" class="ui-corner-all ui-controlgroup ui-controlgroup-horizontal"><div class="ui-controlgroup-controls">
+			<a href="/" data-role="button" data-ajax="false" data-icon="home" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="c" class="ui-btn ui-btn-up-c ui-btn-icon-left ui-corner-left"><span class="ui-btn-inner ui-corner-left"><span class="ui-btn-text">资讯</span><span class="ui-icon ui-icon-home ui-icon-shadow">&nbsp;</span></span></a>
+			<a href="/question?catalog=1" data-role="button" data-ajax="false" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="c" class="ui-btn ui-btn-up-c"><span class="ui-btn-inner"><span class="ui-btn-text">提问</span></span></a>
+			<a href="/question?catalog=2" data-role="button" data-ajax="false" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="c" class="ui-btn ui-btn-up-c"><span class="ui-btn-inner"><span class="ui-btn-text">分享</span></span></a>
+			<a href="/tweets" data-role="button" data-ajax="false" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="c" class="ui-btn ui-btn-up-c"><span class="ui-btn-inner"><span class="ui-btn-text">动弹</span></span></a>
+			<a href="/project" data-role="button" data-ajax="false" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="c" class="ui-btn ui-btn-up-c ui-corner-right ui-controlgroup-last"><span class="ui-btn-inner ui-corner-right ui-controlgroup-last"><span class="ui-btn-text">软件</span></span></a>
+		</div></div>		
+	</div>
+	<div data-role="controlgroup" data-type="horizontal" data-mini="true" data-theme="c" style="text-align:center;padding:20px 0;" class="ui-corner-all ui-controlgroup ui-controlgroup-horizontal ui-mini"><div class="ui-controlgroup-controls">
+    <a href="http://a.app.qq.com/o/simple.jsp?pkgname=net.oschina.app" data-role="button" data-ajax="false" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="c" class="ui-btn ui-btn-up-c ui-corner-left"><span class="ui-btn-inner ui-corner-left"><span class="ui-btn-text">客户端 Android</span></span></a>
+    <a href="http://itunes.apple.com/cn/app/kai-yuan-zhong-guo/id524298520?mt=8" data-role="button" data-ajax="false" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="c" class="ui-btn ui-btn-up-c"><span class="ui-btn-inner"><span class="ui-btn-text">iPhone</span></span></a>
+    <a href="http://windowsphone.com/s?appid=f1b59e83-d617-4f60-a17e-25021188e284" data-role="button" data-ajax="false" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" data-theme="c" class="ui-btn ui-btn-up-c ui-corner-right ui-controlgroup-last"><span class="ui-btn-inner ui-corner-right ui-controlgroup-last"><span class="ui-btn-text">WP7</span></span></a>
+    </div></div>
+	</div>
+
+
+	
+<!-- Generated by OsChina.NET (init:0[ms],page:30[ms],ip:220.181.132.198) --><div class="ui-loader ui-corner-all ui-body-a ui-loader-default ui-loader-fakefix" style="top: 100px; "><span class="ui-icon ui-icon-loading"></span><h1>loading</h1></div></body></html>

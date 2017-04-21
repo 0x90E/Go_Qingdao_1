@@ -1,0 +1,197 @@
+<!DOCTYPE html><html><head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1">
+<meta name="keywords" content="17作业，作业，一起作业下载，一起作业学生，学生APP，学生端下载，在线教育平台">
+<meta name="description" content="一起作业网是一个学生、老师和家长三方互动的作业平台，老师轻松布置作业，学生快乐做作业，家长可以定期查看孩子的学习进度及报告，情景交融的学习模式，让孩子轻松搞定各科学习！一起作业，让学习成为美好体验。">
+<meta property="qc:admins" content="2501263117617257156375">
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+<script async="" src="//www.google-analytics.com/analytics.js"></script><script type="text/javascript">
+    (function(){
+        var tid = setInterval(function(){
+            if(typeof($) == "function" && typeof($17) == "function"){
+                var uid = "",cUid = $.cookie("uid");
+                if(uid && uid != cUid) {
+                    clearInterval(tid);
+                    var goHome = function(){ location.href="/"; return false; };
+                    $17.alert("您同时用了两个不同账号登录，请刷新页面", goHome, goHome);
+                }
+            }
+        }, 5000);
+    })();
+</script>    <title>一起作业，一起作业网，一起作业学生</title>
+<script src="http://cdn-cnc.17zuoye.cn/ucenter/public/plugin/jquery/jquery-1.7.1.min-V20160711111809.js" type="text/javascript" charset="utf-8"></script><script src="http://cdn-cnc.17zuoye.cn/ucenter/public/plugin/jquery-utils/jquery-utils-V20160711111810.js" type="text/javascript" charset="utf-8"></script><script src="http://cdn-cnc.17zuoye.cn/ucenter/public/script/$17.min-V20160711111749.js" type="text/javascript" charset="utf-8"></script>
+<link href="http://cdn-cnc.17zuoye.cn/ucenter/public/plugin/jquery-impromptu/jquery-impromptu-V20160711111810.css" rel="stylesheet" type="text/css" charset="utf-8"><link href="http://cdn-cnc.17zuoye.cn/ucenter/public/skin/teacherv3/css/widget.min-V20170327115450.css" rel="stylesheet" type="text/css" charset="utf-8"><link href="http://cdn-cnc.17zuoye.cn/ucenter/public/skin/default/css/reg.min-V20160901233329.css" rel="stylesheet" type="text/css" charset="utf-8">
+<script src="http://cdn-cnc.17zuoye.cn/ucenter/public/plugin/jquery-impromptu/jquery-impromptu.min-V20160711111810.js" type="text/javascript" charset="utf-8"></script><script src="http://cdn-cnc.17zuoye.cn/ucenter/public/plugin/template.min-V20160711111810.js" type="text/javascript" charset="utf-8"></script><script type="text/javascript">
+    window._17zuoye = window._17zuoye || {};
+    window._17zuoye.pathPattern = '/ucenter/resetnavigation.vpage';
+    window._17zuoye.realRemoteAddr = '101.199.108.59';
+</script>
+</head>
+<body>
+<link href="http://cdn-cnc.17zuoye.cn/ucenter/public/skin/default/images/headfoot/head-foot.min-V20160901233329.css" rel="stylesheet" type="text/css" charset="utf-8"><!--头部-->
+<div class="m-header">
+    <div class="m-inner">
+        <div class="logo"><a href="/"></a></div>
+        <div class="r-nav">
+            <a href="/">返回首页</a>
+        </div>
+    </div>
+</div>    <div class="main">
+        <div id="signup_form_box" class="loginbox" style="height: 433px; ">
+<h4>
+    找回密码
+</h4>
+<div style="height: 80px;"> </div>
+<ul id="inId" class="formList">
+    <li id="_tipssLi" class="inp">
+        <b class="tit" style="width: 215px;">一起作业学号、绑定的手机或邮箱</b><input id="17number" name="" type="text" value="">
+        <a href="/ucenter/forgotaccount.vpage" class="w-btn w-btn-light w-btn-mini">已注册忘记账号</a>
+        <a href="/index.vpage?ref=register" class="w-btn w-btn-light w-btn-mini">未注册</a>
+    </li>
+    <li class="inp">
+        <b class="tit" style="width: 215px;">请输入验证码</b><input id="captchaCode" type="text" value="" style="width:80px">
+        &nbsp;
+        <img id="captchaImage" onclick="refreshCaptcha()" src="/captcha?module=resetpwd&amp;token=N1ZVoolw1KHDBk939GgGxXvT&amp;t=1491063259354">&nbsp;
+        看不清？<a href="javascript:refreshCaptcha();" class="clrblue">换一个</a>
+    </li>
+    <li class="btn" style="margin: 0 70px 0 0;">
+        <a href="javascript:next();" class="w-btn w-btn-small">下一步</a>
+    </li>
+</ul>
+<div style="clear: both; height: 40px;"></div>
+
+<script type="text/javascript">
+    function refreshCaptcha() {
+        $('#captchaImage').attr('src', "/captcha?" + $.param({
+            'module': 'resetpwd',
+            'token': 'N1ZVoolw1KHDBk939GgGxXvT',
+            't': new Date().getTime()
+        }));
+    }
+
+    function next(userType){
+        $.post('/ucenter/resetpwdstart.vpage', {'account': $("#17number").val(), 'captchaToken': 'N1ZVoolw1KHDBk939GgGxXvT', 'captchaCode': $('#captchaCode').val() }, function( data ) {
+            if(data.success) {
+                if(!$17.isBlank(data.needSelect) && data.needSelect){
+                    $.prompt($('[data-template="T:选择身份"]').html(), {
+                        title: "选择身份",
+                        buttons: {},
+                        position: {width: 570},
+                        close : function(){
+                            refreshCaptcha();
+                        }
+                    });
+                    return false;
+                }
+
+                location.href = "resetpwdstep.vpage?" + $.param({
+                    'step': 'step2', 'token': data.token
+                });
+            }else{
+                $17.alert(data.info ? data.info : "没有找到相关用户信息", function(){
+                    refreshCaptcha();
+				});
+            }
+        });
+    }
+
+    function selectCharacter(type){
+        $.post('/ucenter/resetpwdstart.vpage', {
+            account : $("#17number").val(),
+            captchaToken: 'N1ZVoolw1KHDBk939GgGxXvT',
+            captchaCode: $('#captchaCode').val(),
+            userType :  type
+        }, function( data ) {
+            if(data.success){
+                location.href = "resetpwdstep.vpage?" + $.param({
+                    'step': 'step2', 'token': data.token
+                });
+            }else{
+                $17.alert(data.info ? data.info : "没有找到相关用户信息", function(){
+                    refreshCaptcha();
+                });
+            }
+        });
+    }
+
+    refreshCaptcha();
+
+    setModeHeight("#signup_form_box", 700, 267);
+    $(window).resize(function () {
+        setModeHeight("#signup_form_box", 700, 267);
+    });
+    function setModeHeight(id, h ,n) {
+        var _winHeight = $(window).height();
+        var _defHeight = h || 700;
+        var _defLessCount = n || 0;
+
+        if(_winHeight <= _defHeight){
+            $(id).height(_defHeight - _defLessCount);
+        }else{
+            $(id).height( _winHeight - _defLessCount);
+        }
+    }
+</script>
+
+<div data-template="T:选择身份" style="display: none;">
+    <div class="register_box chooseNav" style="width: auto;">
+        <div class="reg_type" style="margin: 0;">
+            <ul class="mainNav">
+                <li class="teacher"><a href="javascript:selectCharacter(1);" class="mytc" title="老师"><strong>我是<span>老师</span></strong>请选择这里</a></li>
+                <li class="student"><a href="javascript:selectCharacter(3);" class="mypt " title="学生"><strong>我是<span>学生</span></strong>请选择这里</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div style="overflow: hidden; width: 0;height: 0;">
+    <a key="57d13eecefbfb021949e82f3" logo_size="83x30" logo_type="realname" href="http://v.pinpaibao.com.cn/authenticate/cert/?site=ucenter.17zuoye.com&amp;at=realname" target="_blank">
+        <script src="//static.anquan.org/static/outer/js/aq_auth.js"></script><b id="aqLogoLNENY" style="display: none;"></b><img src="//static.anquan.org/static/outer/image/sm_83x30.png?id=ucenter.17zuoye.com" alt="安全联盟认证" width="83" height="30" style="border: none;">
+    </a>
+</div>
+        </div>
+    </div>
+<link href="http://cdn-cnc.17zuoye.cn/ucenter/public/skin/default/v5/css/pc-home.min-V20170306154758.css" rel="stylesheet" type="text/css" charset="utf-8"><div class="zy-homeFooter">
+    <div class="innerBox">
+        <div class="left">
+            <div class="text">
+            <p>Copyright © 2011-2017 Yiqizuoye Corporation. All Rights Reserved.</p>
+<p>ICP证沪B2-20150026 沪ICP备13031855号-2 <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11010502032354" target="_blank" style="color:#999"><img src="https://cdn.17zuoye.com/static/project/icp-beian.png" style="display: inline-block;vertical-align: middle;">京公网安备 11010502032354号</a></p>
+
+            </div>
+        </div>
+        <div class="right">
+            <div class="cell">
+                <a href="javascript:;" class="tag" style="cursor: default;">联系我们</a>
+                <a href="javascript:;" onclick="window.open ('http://www.17zuoye.com/ucenter/teacherfeedback.vpage', 'feedbackwindow', 'height=330, width=700,top=200,left=450');"><i class="zy-icon icon-bzfk"></i><span>帮助反馈</span></a>
+                <a href="javascript:;"><i class="zy-icon icon-tel"></i><span>400-160-1717</span></a>
+            </div>
+            <div class="cell">
+                <a href="javascript:;" class="tag" style="cursor: default;">关注我们</a>
+                <a href="http://weibo.com/yiqizuoye" target="_blank"><i class="zy-icon icon-xlwb"></i><span>新浪微博</span></a>
+                <a href="javascript:;">
+                    <i class="zy-icon icon-gfwx"></i><span>官方微信</span>
+                    <div class="codeImg"></div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div><script type="text/javascript">
+    /*ga统计*/
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    /*根据用户类型区分 老师抽样率100% 学生抽样率1% */
+    var _ga_trackingId = 'UA-38181315-1',_ga_sampleRate = 1;
+    ga('create', {
+        trackingId: _ga_trackingId,
+        cookieDomain: 'auto',
+        sampleRate: _ga_sampleRate
+    });
+    ga('send', 'pageview');
+</script>
+
+
+</body></html>

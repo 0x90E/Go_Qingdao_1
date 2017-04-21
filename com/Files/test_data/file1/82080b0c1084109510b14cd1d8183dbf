@@ -1,0 +1,100 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=320, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="dist/css/weather.min.css">
+</head>
+
+<body id="weather">
+  <section class="container c-white" id="weather_content">
+    <div class="status-loading txt-center">
+      <div class="icon"><img src="dist/image/layout/loading.gif" alt="" width="16" height="16"></div>
+      <div class="info">努力定位中……</div>
+    </div>
+  </section>
+  <!--  -->
+  <script id="weather_template" type="text/x-handlebars-template">
+    <section class="whole-block" id="today_report">
+      {{#with theWeather}}
+      <div class="location txt-center">
+        <div class="date f-15">
+          {{#isPublishTime date}} {{fullYear}}-{{month}}-{{date}} {{/isPublishTime}} &nbsp; {{#isWeatherDate date date}} 星期{{day}} {{/isWeatherDate}}
+        </div>
+        <a href="./city_list.html?id={{../currentCity.id}}">
+          <div class="f-21" id="change_city"><span class="city">{{../currentCity.name}}</span><span class="f-12">[切换]</span></div>
+        </a>
+      </div>
+      <div class="section-title">
+        <div class="wrap clearfix">
+          <span class="go-left"><i class="icon i-weath"></i>天气实况</span>
+          <span class="update-time go-right f-12">更新于
+          {{#isPublishTime date}}
+            {{hours}}:{{minutes}}
+          {{/isPublishTime}}
+          </span>
+        </div>
+      </div>
+      <ul class="weather f-15">
+        <li>
+          <span class="image"><i class="icon i-template"></i></span>{{#formatTemperature temperature}} {{this}} {{/formatTemperature}} &#8451;
+        </li>
+        <li>
+          <span class="image"><i class="icon i-cloud"></i></span> {{weath}}
+        </li>
+        <li>
+          <span class="image"><i class="icon i-wind-direction"></i></span> {{windDirection}}
+        </li>
+        <li>
+          <span class="image"><i class="icon i-wind"></i></span> {{wind}}级
+        </li>
+      </ul>
+      {{/with}}
+    </section>
+    <!--  -->
+    <section class="whole-block" id="week_report">
+      <div class="section-title">
+        <div class="wrap">
+          <i class="icon i-weath"></i>天气预报
+        </div>
+      </div>
+      <div id="scroller_list">
+        <ul id="scroller" class="weather f-15 txt-center">
+          {{#each weatherList}}
+          <li>
+            {{#isWeatherDate day.date night.date}}
+            <div class="date">
+              {{#eq 0 @index}} 明天 {{else}} 星期{{this.day}} {{/eq}}
+              <br>
+              <span class="f-12 c-light-white">{{this.month}}/{{this.date}}</span>
+            </div>
+            {{/isWeatherDate}} {{#with day}}
+            <div class="day">
+              <div class="label">日</div>
+              <div class="weather">{{#formatTemperature temperature}} {{this}} {{/formatTemperature}}&#8451;{{weath}}</div>
+              <div class="wind-direction c-light-white f-12">{{windDirection}}</div>
+              <div class="wind c-light-white f-12">{{wind}}级</div>
+            </div>
+            {{/with}} {{#with night}}
+            <div class="night">
+              <div class="label">夜</div>
+              <div class="weather">
+                {{#formatTemperature temperature}} {{this}} {{/formatTemperature}}&#8451;{{weath}}</div>
+              <div class="wind-direction c-light-white f-12">{{windDirection}}</div>
+              <div class="wind c-light-white f-12">{{wind}}级</div>
+            </div>
+            {{/with}}
+          </li>
+          {{/each}}
+        </ul>
+      </div>
+    </section>
+    <div class="f-12 c-light-white txt-center" id="copyright">
+      本服务由浙江政务服务网提供
+    </div>
+  </script>
+  <!--  -->
+  <script src="dist/js/vendor/vendor.min.js"></script>
+  <script src="dist/js/weather_index.min.js"></script>
+
+
+
+</body></html>

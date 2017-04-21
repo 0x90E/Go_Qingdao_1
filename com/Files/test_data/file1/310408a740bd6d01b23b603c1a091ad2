@@ -1,0 +1,306 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<title>南航客舱业务综合管理系统</title>
+
+<link rel="stylesheet" type="text/css" href="/css/style_login.css">
+<script src="/js/jquery-1.5.2.min.js" type="text/javascript"></script>
+<script type="text/javascript"> 
+
+
+function forgetPwd(){ 
+	window.location.href="https://ids.csair.com/ids/custom/PasswordManage.html";
+}
+function needResetPassword(userId) {
+	if (userId != 'null' && userId != '') {
+		//var resetPassForm=document.getElementById("resetPassForm");
+		//resetPassForm.submit();
+		document.forms[0].submit();
+	}
+}
+
+function put(obj){
+	if(obj==1){
+		document.getElementById("no").style.display="";
+		document.getElementById("dep").style.display="none";	
+	}else{
+		document.getElementById("no").style.display="none";
+		document.getElementById("dep").style.display="";
+	}
+}
+
+$(function() {
+
+	try{
+		if (self != top) {
+			top.location = self.location;
+		}
+	}catch(e){
+		alert(e.message);
+	}
+
+    var message = $("#show_message").text();
+			if($.trim(message) != "") {
+			    document.getElementById('messageResult').innerText=$.trim(message);
+				 
+			}
+	
+	$(".loginFrameOut").css("padding-top","" + ($(window).height()-560)/2 + "px")
+	
+	var sWidth = $("#focus").width(); //获取焦点图的宽度（显示面积）
+	var len = $("#focus ul li").length; //获取焦点图个数
+	var index = 0;
+	var picTimer;
+	
+	$("#staffType").change(function(){
+		if($("#staffType").val() == 0){
+			$("#staffTypeValye").hide();
+		}else{
+			  
+			                                                            
+			$("#staffTypeValye").show();
+		}
+	})
+	
+	$("#regPasswordBtn").click(function(){
+		$("#regPassword").slideDown(100);
+		$("#loginForm").slideUp(100);
+	})
+	
+	$(".submitBtn2").click(function(){
+		$("#regPassword").slideUp(100);
+		$("#loginForm").slideDown(100);
+	})
+	
+	//以下代码添加数字按钮和按钮后的半透明条，还有上一页、下一页两个按钮
+	var btn = "<div class='btnBg'></div><div class='btn'>";
+	for(var i=0; i < len; i++) {
+		btn += "<span></span>";
+	}
+	btn += "</div>";
+	$("#focus").append(btn);
+	$("#focus .btnBg").css("opacity",0.8);
+ 
+	//为小按钮添加鼠标滑入事件，以显示相应的内容
+	$("#focus .btn span").css("opacity",0.4).mouseover(function() {
+		index = $("#focus .btn span").index(this);
+		showPics(index);
+	}).eq(0).trigger("mouseover");
+ 
+	//上一页、下一页按钮透明度处理
+	$("#focus .preNext").css("opacity",0.2).hover(function() {
+		$(this).stop(true,false).animate({"opacity":"0.5"},300);
+	},function() {
+		$(this).stop(true,false).animate({"opacity":"0.2"},300);
+	});
+ 
+	//上一页按钮
+	$("#focus .pre").click(function() {
+		index -= 1;
+		if(index == -1) {index = len - 1;}
+		showPics(index);
+	});
+ 
+	//下一页按钮
+	$("#focus .next").click(function() {
+		index += 1;
+		if(index == len) {index = 0;}
+		showPics(index);
+	});
+ 
+	//本例为左右滚动，即所有li元素都是在同一排向左浮动，所以这里需要计算出外围ul元素的宽度
+	$("#focus ul").css("width",sWidth * (len));
+	
+	//鼠标滑上焦点图时停止自动播放，滑出时开始自动播放
+	$("#focus").hover(function() {
+		clearInterval(picTimer);
+	},function() {
+		picTimer = setInterval(function() {
+			showPics(index);
+			index++;
+			if(index == len) {index = 0;}
+		},5000); //此4000代表自动播放的间隔，单位：毫秒
+	}).trigger("mouseleave");
+	
+	//显示图片函数，根据接收的index值显示相应的内容
+	function showPics(index) { //普通切换
+		var nowLeft = -index*sWidth; //根据index值计算ul元素的left值
+		$("#focus ul").stop(true,false).animate({"left":nowLeft},0); //通过animate()调整ul元素滚动到计算出的position
+		$("#focus .btn span").stop(true,false).animate({"opacity":"0.4"},300).eq(index).stop(true,false).animate({"opacity":"1"},300); //为当前的按钮切换到选中的效果
+	}
+	
+	
+	
+});
+
+
+function refresh(){
+ 	document.getElementById("authImg").src = 'authImg?now=' + new Date();
+ }
+ function chkValid(){
+ 	var staff = $("#j_username").val();
+ 	var pwd = $("#j_password").val();
+ 	var vercode = $("#j_code").val();
+ 	if((staff != "")&&(pwd != "")&&(vercode != "")){
+ 		if (!validstr(staff) || !validstr(pwd) ||  !validstr(vercode)) {
+			alert("输入信息不规范，只接受数字、英文、点号及'-'和'_'！");
+			return false;
+		}else{
+		    // 检测密码强度
+	   		return true;
+		}
+ 	}
+ 	else{
+   		alert("请完整输入!!");	
+   		return false;
+ 	}
+ }
+ 
+ function validstr(str) {
+	if (str == "")
+		return false;
+		
+//	if (str.replace(/[0-9a-zA-Z\-_\.]/g, "") != "") {
+//		return false;
+//	}
+	return true;
+ }
+ 
+   function changeStr(obj){
+  var str=obj.value;
+  var result="";
+  var change = false;
+   for (var i = 0; i < str.length; i++)
+   {
+      if (str.charCodeAt(i)==12288)
+       {
+         change = true;
+         result+= String.fromCharCode(str.charCodeAt(i)-12256);
+         continue;
+        }
+       if (str.charCodeAt(i)>65280 && str.charCodeAt(i)<65375){
+          result+= String.fromCharCode(str.charCodeAt(i)-65248);
+          change = true;
+          }
+        else
+          result+= String.fromCharCode(str.charCodeAt(i));
+    } 
+       if(change==true)
+         obj.value=result;
+}
+</script>
+<style type="text/css">
+<!--
+a {
+	color: #000000;
+	text-decoration:none;
+}
+
+a:hover {
+	text-decoration: underline;
+	color: #FF0000;
+}
+-->
+</style>
+</head>
+
+<body onload="needResetPassword('null');">
+<form method="post" id="resetPassForm" name="resetPassForm" action="/systemmanage/adminModifyPWDByExt.jsp">
+    <input type="hidden" value="true" name="isNeedUpdateResetDate">
+    <input type="hidden" value="null" name="id">
+</form>
+<form action="/j_spring_security_check" method="post">
+<div class="loginFrameOut">
+	<div class="langSelet">
+	   <a href="/login.jsp"><b>中文</b></a> |  <a href="/login_en.jsp"><b>English</b></a>
+	  </div>
+	<div class="loginFrame">
+	<div class="loginMain">
+    	<div class="loginForm">
+        	<div class="loginFormInner" id="loginForm">
+            	<div class="loginFormInnerTitle">
+                	<div>登录</div>
+                </div>
+            	<div class="loginFormInnerItem">
+                    <div class="loginFormInputArea" style="width:324px; line-height:45px; padding-left:10px;">
+                    	<label><input type="hidden" name="radio" value="crew"></label>
+                    </div>
+                </div><!--loginFormInnerItem-->
+                
+                <div class="loginFormInnerItem">
+                	<div class="loginFormTips">用 户 名：</div>
+                    <div class="loginFormInputArea">
+                    	<input style="width:140px;height:17px;" onkeyup="changeStr(this)" type="text" name="j_username" id="j_username" value="">
+                    </div>
+                </div><!--loginFormInnerItem-->
+                
+                <div class="loginFormInnerItem">
+                	<div class="loginFormTips">密&nbsp;&nbsp;&nbsp;&nbsp;码：</div>
+                    <div class="loginFormInputArea">
+                    	<input style="width:140px;height:17px;" onkeyup="changeStr(this)" type="password" name="j_password" id="j_password" value="">
+                    	
+                        <!-- <div class="errorTips">不能为空</div> -->
+                    </div>
+                </div><!--loginFormInnerItem-->
+                
+                <div class="loginFormInnerItemcode">
+                	<div class="loginFormTips">验 证 码：</div>
+                    <div class="loginFormInputArea">
+                    	<input style="width:70px;height:17px;" name="j_code" id="j_code"> <img src="authImg" id="authImg">
+                        <div class="tips"><a href="javascript:refresh();">换一张</a></div>
+                    </div>
+                </div><!--loginFormInnerItem-->
+               
+                <div class="loginFormInnerItemerror">
+                    <font color="red" size="2"><b><label id="messageResult"></label></b></font>
+                </div><!--loginFormInnerItem-->
+                
+                <div class="loginFormInnerItem ">
+                	<div class="loginFormTips"></div>
+                    <div class="loginFormInputArea">
+                    	<div class="submits">
+                        <input type="submit" class="submitBtn" value="" onclick="return chkValid();">
+                          <label onclick="forgetPwd();" style="color: red;cursor: pointer;position:absolute; padding-top: 20px;">&nbsp;忘记密码</label>
+                        </div>
+                          
+                    </div>
+                </div><!--loginFormInnerItem-->
+                <div style="font-size: 12px; color: #3171BF; margin-top: 20px;margin-left: 80px;text-align: left; ">
+                                 <font color="red"><b><label id="messageResult"></label></b></font>
+							</div>
+							
+							<div style="font-size: 14px; color: #3171BF; margin-top: 20px;margin-left: 80px;text-align: left; ">
+                                 IT热线:020-86112345<br>
+								IT支持：<a href="mailto:cimsweb@csair.com">cimsweb@csair.com</a>
+							</div>
+                
+              
+                
+            </div><!--loginFormInner-->
+        </div><!--loginForm-->
+        <div class="loginSlide">
+        	<div id="focus">
+				<ul style="left: 0px; width: 1710px; ">
+					<li><a href="#" target="_blank"><img src="images/zh_1.jpg" alt=""></a></li>
+					<li><a href="#" target="_blank"><img src="images/zh_2.jpg" alt=""></a></li>
+					<li><a href="#" target="_blank"><img src="images/zh_3.jpg" alt=""></a></li>
+				</ul>
+			<div class="btnBg" style="opacity: 0.8; "></div><div class="btn"><span style="opacity: 1; "></span><span style="opacity: 0.4; "></span><span style="opacity: 0.4; "></span></div></div>
+        </div><!--loginSlide-->
+    </div><!--loginMain-->
+    	<div id="show_message" style="display: none;">          
+            
+		    	    
+		       
+		    
+	</div>
+    <div class="ctr"></div>
+    
+    <div class="foot">
+    	Copyrights ©　1997-2009 中国南方航空股份有限公司 版权所有 不得转载
+    </div>
+    <div class="ctr"></div>
+</div></div><!--loginFrame-->
+</form>
+
+
+</body></html>

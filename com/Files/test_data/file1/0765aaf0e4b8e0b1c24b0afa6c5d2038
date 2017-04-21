@@ -1,0 +1,720 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+  <title>整理下工具，发现自己搜集了蛮多的，工具，漏洞，社工库上百G，先贴出工具图和贴出社工库地址，另外还有几十G的教程在另一台电脑 - 安云网 - AnYun.ORG |  专注于网络信息收集、网络数据分享、网络安全研究、网络各种猎奇八卦。</title> 
+  <meta name="keywords" content="密码泄露查询, 社工库地址,QQ群查询,开房数据" /> 
+  <meta name="description" content="社工库地址 Social Engineering Data QQ群： https://qqgroup.insight-labs.org https://s3.amazonaws.com/qqqun./index.html（与insight-labs类似） www.weigongkai.com http://qun.594sgk.com/ http://chaxun.langzuwl.com/qun 密码泄露查询 http://cha.xiyv.net http://594sgk.com/ http://t" /> 
+  <link href="/templets/default-black/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" /> 
+  <script type="text/javascript" src="/include/Ueditor/third-party/SyntaxHighlighter/shCore.js"></script> 
+  <link href="/include/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css" rel="stylesheet" type="text/css" /> 
+  <script type="text/javascript" src="/include/Ueditor/third-party/SyntaxHighlighter/shCoreDefault.css"></script> 
+  <script type="text/javascript">
+SyntaxHighlighter.all();
+</script> 
+  <script language="javascript" type="text/javascript" src="/include/dedeajax2.js"></script> 
+  <script language="javascript" type="text/javascript">
+<!--pl?-->
+function CheckLogin(){
+	  var taget_obj = document.getElementById('_ajax_feedback');
+	  myajax = new DedeAjax(taget_obj,false,false,'','','');
+	  myajax.SendGet2("/member/ajax_feedback.php");
+	  DedeXHTTP = null;
+}
+function postBadGood(ftype,fid)
+{
+	var taget_obj = document.getElementById(ftype+fid);
+	var saveid = GetCookie('badgoodid');
+	if(saveid != null)
+	{
+		var saveids = saveid.split(',');
+		var hasid = false;
+		saveid = '';
+		j = 1;
+		for(i=saveids.length-1;i>=0;i--)
+		{
+			if(saveids[i]==fid && hasid) continue;
+			else {
+				if(saveids[i]==fid && !hasid) hasid = true;
+				saveid += (saveid=='' ? saveids[i] : ','+saveids[i]);
+				j++;
+				if(j==10 && hasid) break;
+				if(j==9 && !hasid) break;
+			}
+		}
+		if(hasid) { alert('您刚才已表决过了喔！'); return false;}
+		else saveid += ','+fid;
+		SetCookie('badgoodid',saveid,1);
+	}
+	else
+	{
+		SetCookie('badgoodid',fid,1);
+	}
+	myajax = new DedeAjax(taget_obj,false,false,'','','');
+	myajax.SendGet2("/plus/feedback.php?aid="+fid+"&action="+ftype+"&fid="+fid);
+}
+function postDigg(ftype,aid)
+{
+	var taget_obj = document.getElementById('newdigg');
+	var saveid = GetCookie('diggid');
+	if(saveid != null)
+	{
+		var saveids = saveid.split(',');
+		var hasid = false;
+		saveid = '';
+		j = 1;
+		for(i=saveids.length-1;i>=0;i--)
+		{
+			if(saveids[i]==aid && hasid) continue;
+			else {
+				if(saveids[i]==aid && !hasid) hasid = true;
+				saveid += (saveid=='' ? saveids[i] : ','+saveids[i]);
+				j++;
+				if(j==20 && hasid) break;
+				if(j==19 && !hasid) break;
+			}
+		}
+		if(hasid) { alert("您已经顶过该帖，请不要重复顶帖 ！"); return; }
+		else saveid += ','+aid;
+		SetCookie('diggid',saveid,1);
+	}
+	else
+	{
+		SetCookie('diggid',aid,1);
+	}
+	myajax = new DedeAjax(taget_obj,false,false,'','','');
+	var url = "/plus/digg_ajax.php?action="+ftype+"&id="+aid;
+	myajax.SendGet2(url);
+}
+function getDigg(aid)
+{
+	var taget_obj = document.getElementById('newdigg');
+	myajax = new DedeAjax(taget_obj,false,false,'','','');
+	myajax.SendGet2("/plus/digg_ajax.php?id="+aid);
+	DedeXHTTP = null;
+}
+<!--pl?-->
+</script> 
+ </head> 
+ <body class="articleview">
+   ﻿ 
+  <div class="header_top"> 
+   <div class="w960 center"> 
+    <span id="time" class="time">安云网 - AnYun.ORG | 专注于网络信息收集、网络数据分享、网络安全研究、网络各种猎奇八卦。</span> 
+    <div class="toplinks">
+     <a href="/plus/heightsearch.php" target="_blank">高级搜索</a>|
+     <a href="/tags.php">Tag标签</a>|
+     <a href="/data/rssmap.html" class="rss">Rss订阅</a>|
+     <a href="/data/sitemap.html" target="_blank">Sitemap</a>
+    </div> 
+   </div> 
+  </div> 
+  <div class="header"> 
+   <div class="top w960 center"> 
+    <div class="title"> 
+     <h1><a href="http://anyun.org/"> 安云网<img src="/templets/default-black/images/logo.gif" height="150" width="2500" alt="安云网 - AnYun.ORG |  专注于网络信息收集、网络数据分享、网络安全研究、网络各种猎奇八卦。" /> </a> </h1> 
+    </div> 
+    <div class="banner"></div> 
+    <div class="banner2">
+     <script src="/plus/ad_js.php?aid=8" language="javascript"></script>
+    </div> 
+   </div>
+   <!-- //top --> 
+   <!-- //菜单 --> 
+   <div class="module blue mT10 wrapper w963"> 
+    <div id="navMenu" class="nav_bg"> 
+     <ul class="nav"> 
+      <li class="取消hover"><a href="/">首 页</a></li> 
+      <li color="#ff0000">|</li>
+      <li><a href="/a/yejiezixun/" rel="dropmenu1">业界资讯</a></li> 
+      <li class="hover"><a href="/a/jishuguanzhu/" rel="dropmenu2">技术关注</a></li> 
+      <li color="#ff0000">|</li>
+      <li><a href="/a/WordPressjiqiao/">WordPress技巧</a></li> 
+      <li color="#ff0000">|</li>
+      <li><a href="/a/yulebagua/" rel="dropmenu4">娱乐八卦</a></li> 
+      <li color="#ff0000">|</li>
+      <li><a href="/a/ziyuanlianjie/" rel="dropmenu6">资源链接</a></li> 
+      <li color="#ff0000">|</li>
+      <li><a href="/a/zhishixuetang/">知识学堂</a></li> 
+      <li color="#ff0000">|</li>
+      <li><a href="/a/jinrongxinxi/">金融信息</a></li> 
+      <li color="#ff0000">|</li>
+      <li><a href="/a/benzhanrizhi/">本站日志</a></li> 
+      <li color="#ff0000">|</li>
+      <li><a href="http://anyun.org/a/benzhanrizhi/2015/0318/5062.html">申请链接</a></li> 
+     </ul> 
+    </div> 
+    <div class="search"> 
+     <form name="formsearch" action="/plus/search.php"> 
+      <div class="form"> 
+       <h4>搜索</h4> 
+       <input type="hidden" name="kwtype" value="0" /> 
+       <input type="hidden" name="searchtype" value="title" /> 
+       <input name="q" type="text" class="search-keyword" id="search-keyword" value="在这里搜索..." onfocus="if(this.value=='在这里搜索...'){this.value='';}" onblur="if(this.value==''){this.value='在这里搜索...';}" /> 
+       <button type="submit" class="search-submit">搜索</button> 
+      </div> 
+     </form> 
+     <div class="tags"> 
+      <h4>随机标签:</h4> 
+      <ul> 
+       <li><a href="/tags.php?/%E8%84%9A%E6%9C%AC/">脚本</a></li> 
+       <li><a href="/tags.php?/%E8%93%9D%E7%89%99%E6%94%BB%E5%87%BB%E6%8A%80%E6%9C%AF/">蓝牙攻击技术</a></li> 
+       <li><a href="/tags.php?/%E9%98%BF%E9%87%8C%E9%92%B1%E7%9B%BE/">阿里钱盾</a></li> 
+       <li><a href="/tags.php?/gnuradio/">gnuradio</a></li> 
+       <li><a href="/tags.php?/%E5%9F%9F%E5%90%8D%E6%94%B6%E9%9B%86/">域名收集</a></li> 
+       <li><a href="/tags.php?/WebService/">WebService</a></li> 
+       <li><a href="/tags.php?/%E5%BC%80%E6%BA%90/">开源</a></li> 
+       <li><a href="/tags.php?/%E6%89%AB%E6%8F%8F%E5%99%A8/">扫描器</a></li> 
+       <li><a href="/tags.php?/python%E8%A1%8C%E4%B8%9A%E5%89%8D%E6%99%AF/">python行业前景</a></li> 
+       <li><a href="/tags.php?/%E7%BD%91%E7%AB%99%E5%BC%80%E5%8F%91/">网站开发</a></li> 
+       <li><a href="/tags.php?/Linux%E6%8E%A2%E9%92%88/">Linux探针</a></li> 
+       <li><a href="/tags.php?/%E4%B8%93%E4%B8%9A%E6%89%93%E8%84%B8%E5%9B%A2/">专业打脸团</a></li> 
+       <li><a href="/tags.php?/SSL/">SSL</a></li> 
+       <li><a href="/tags.php?/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/">科学上网</a></li> 
+       <li><a href="/tags.php?/3389/">3389</a></li> 
+       <li><a href="/tags.php?/%E6%B3%84%E9%9C%B2%E5%9B%BD%E5%AE%B6%E7%A7%98%E5%AF%86/">泄露国家秘密</a></li> 
+       <li><a href="/tags.php?/theHarvester/">theHarvester</a></li> 
+       <li><a href="/tags.php?/Balancing/">Balancing</a></li> 
+      </ul>
+     </div> 
+    </div> 
+   </div> 
+  </div> 
+  <!-- /header --> 
+  <div class="w960 center clear mt1"> 
+   <div class="pleft"> 
+    <div class="place"> 
+     <strong>当前位置:</strong> 
+     <a href="http://anyun.org/">安云网</a> &gt; 
+     <a href="/a/jishuguanzhu/">技术关注</a> &gt; 
+     <a href="/a/jishuguanzhu/shenbingliren/">神兵利刃</a> &gt; 整理下工具，发现自己搜集了蛮多的，工具，漏洞，社工库上百G，先贴出工具图和贴出社工库地址，另外还有几十G的教程在另一台电脑 
+    </div> 
+    <!-- /place --> 
+    <div class="viewbox"> 
+     <div class="title"> 
+      <h2>整理下工具，发现自己搜集了蛮多的，工具，漏洞，社工库上百G，先贴出工具图和贴出社工库地址，另外还有几十G的教程在另一台电脑</h2> 
+     </div> 
+     <!-- /title --> 
+     <div class="info">
+      <small>时间:</small>2014-07-24
+      <small>来源:</small>安云网 
+      <small>作者:</small>随时回来
+      <small>点击:</small> 
+      <script src="/plus/count.php?view=yes&amp;aid=2967&amp;mid=1" type="text/javascript" language="javascript"></script> 次 
+     </div> 
+     <!-- /info --> 
+     <div class="intro">
+      社工库地址 Social Engineering Data QQ群： https://qqgroup.insight-labs.org https://s3.amazonaws.com/qqqun./index.html（与insight-labs类似） www.weigongkai.com http://qun.594sgk.com/ http://chaxun.langzuwl.com/qun 密码泄露查询 http://cha.xiyv.net http://594sgk.com/ http://t
+     </div> 
+     <div class="content"> 
+      <div class="bdsharebuttonbox">
+       <a href="#" class="bds_more" data-cmd="more"></a>
+       <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+       <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+       <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+       <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a>
+       <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+      </div> 
+      <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script> 
+      <div id="wenzi_test" style="margin:10px auto">
+       <script type="text/javascript">
+    /*640*60 创建于 2017/3/5*/
+    var cpro_id = "u2912582";
+</script> 
+       <script type="text/javascript" src="http://cpro.baidustatic.com/cpro/ui/c.js"></script>
+      </div> 
+      <!--2017-03-05--> 
+      <table width="100%"> 
+       <tbody>
+        <tr> 
+         <td> 
+          <div id="contentMidPicAD" style="float:right; clear:both; top:0; vertical-align:top;"> 
+          </div> <style> .Qwj210 { display:none; } </style> <p class="topicDetail" style="margin-top: 0px; margin-bottom: 0px; padding: 15px 0px; line-height: 22px; width: 660px; font-size: 14px; word-break: break-all;">社工库地址 Social Engineering Data&nbsp;<br style="margin: 0px; padding: 0px;" />QQ群：&nbsp;<br style="margin: 0px; padding: 0px;" />https://qqgroup.insight-labs.org&nbsp;<br style="margin: 0px; padding: 0px;" />https://s3.amazonaws.com/qqqun./index.html（与insight-labs类似）&nbsp;<br style="margin: 0px; padding: 0px;" />www.weigongkai.com&nbsp;<br style="margin: 0px; padding: 0px;" />http://qun.594sgk.com/&nbsp;<br style="margin: 0px; padding: 0px;" />http://chaxun.langzuwl.com/qun&nbsp;<br style="margin: 0px; padding: 0px;" /><br style="margin: 0px; padding: 0px;" />密码泄露查询&nbsp;<br style="margin: 0px; padding: 0px;" />http://cha.xiyv.net&nbsp;<br style="margin: 0px; padding: 0px;" />http://594sgk.com/&nbsp;<br style="margin: 0px; padding: 0px;" />http://t.easyicon.net/hidden.php（CSDN、人人网、天涯论坛）&nbsp;<br style="margin: 0px; padding: 0px;" />http://9cha8.cn/index.aspx&nbsp; </p><p class="Qwj210">//ANYUN.ORG</p> <br style="margin: 0px; padding: 0px;" />http://lucky.anquanbao.com/（信息模糊）&nbsp;<br style="margin: 0px; padding: 0px;" />https://haveibeenpwned.com/（国外站）&nbsp;<br style="margin: 0px; padding: 0px;" />http://s.atv.ac/（未知）&nbsp;<br style="margin: 0px; padding: 0px;" />http://segongku.org/passwd&nbsp;<br style="margin: 0px; padding: 0px;" />http://sg.92huike.com/&nbsp;<br style="margin: 0px; padding: 0px;" />http://fuck.5nb.us/（较2）&nbsp;<br style="margin: 0px; padding: 0px;" />http://www.90geek.com/sed/（不错）&nbsp;<br style="margin: 0px; padding: 0px;" />http://chaxun.langzuwl.com/&nbsp;<br style="margin: 0px; padding: 0px;" />http://www.7bug.org/sgk.shtml（7剑）&nbsp;<br style="margin: 0px; padding: 0px;" />http://shegongku.org/passwd/（较好用）&nbsp;<br style="margin: 0px; padding: 0px;" /><br style="margin: 0px; padding: 0px;" />开房数据&nbsp;<br style="margin: 0px; padding: 0px;" />http://site1.sfz.col.pw&nbsp;<br style="margin: 0px; padding: 0px;" />http://594sgk.com/&nbsp; <font color="#FFFFFF">//内容来自安云网</font> <br style="margin: 0px; padding: 0px;" />http://www.zhaokaifang.com/（较全）&nbsp;<br style="margin: 0px; padding: 0px;" />http://chaxun.langzuwl.com/kaifang/&nbsp;<br style="margin: 0px; padding: 0px;" /><br style="margin: 0px; padding: 0px;" />其他查询&nbsp;<br style="margin: 0px; padding: 0px;" />http://segongku.org/passwd&nbsp;<br style="margin: 0px; padding: 0px;" />http://www.cnseu.org&nbsp;<br style="margin: 0px; padding: 0px;" />cha.97bug.com&nbsp;<br style="margin: 0px; padding: 0px;" />http://www.weigongkai.com/&nbsp;<br style="margin: 0px; padding: 0px;" />http://sg.cnit.pro/（调用cnseu）&nbsp;<br style="margin: 0px; padding: 0px;" /><br style="margin: 0px; padding: 0px;" /><a target="_blank" href="/uploads/allimg/140724/23314551U-0.png" title="1.png" style="margin: 0px; padding: 0px; color: rgb(0, 46, 140); text-decoration: none;"><img src="/uploads/allimg/140724/23314551U-0.png" alt="1.png" width="640" style="margin: 0px; padding: 0px; border: none;" /></a>&nbsp;<br style="margin: 0px; padding: 0px;" /> <span class="Qwj210">//安云网咨询系统</span> <br style="margin: 0px; padding: 0px;" /><a target="_blank" href="/uploads/allimg/140724/2331451925-1.png" title="2.png" style="margin: 0px; padding: 0px; color: rgb(255, 102, 0);"><img src="/uploads/allimg/140724/2331451925-1.png" alt="2.png" width="640" style="margin: 0px; padding: 0px; border: none;" /></a> <span class="Qwj210">//内容来自安云网</span> <p></p> </td> 
+        </tr> 
+       </tbody>
+      </table> 
+      <div id="anyun_art_footer" style="margin:10px auto">
+       <script type="text/javascript">
+    /*640*60 创建于 2017/3/5*/
+    var cpro_id = "u2912733";
+</script> 
+       <script type="text/javascript" src="http://cpro.baidustatic.com/cpro/ui/c.js"></script> 
+      </div> 
+      <div class="bdsharebuttonbox">
+       <a href="#" class="bds_more" data-cmd="more"></a>
+       <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+       <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+       <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+       <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a>
+       <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+      </div> 
+      <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script> 
+     </div> 
+     <!-- /content --> 
+     <!-- /pages --> 
+     <!-- //顶踩 --> 
+     <div class="newdigg" id="newdigg"> 
+      <div class="diggbox digg_good" onmousemove="this.style.backgroundPosition='left bottom';" onmouseout="this.style.backgroundPosition='left top';" onclick="javascript:postDigg('good',2967)"> 
+       <div class="digg_act">
+        顶一下
+       </div> 
+       <div class="digg_num">
+        (6)
+       </div> 
+       <div class="digg_percent"> 
+        <div class="digg_percent_bar">
+         <span style="width:85.7%"></span>
+        </div> 
+        <div class="digg_percent_num">
+         85.7%
+        </div> 
+       </div> 
+      </div> 
+      <div class="diggbox digg_bad" onmousemove="this.style.backgroundPosition='right bottom';" onmouseout="this.style.backgroundPosition='right top';" onclick="javascript:postDigg('bad',2967)"> 
+       <div class="digg_act">
+        踩一下
+       </div> 
+       <div class="digg_num">
+        (1)
+       </div> 
+       <div class="digg_percent"> 
+        <div class="digg_percent_bar">
+         <span style="width:14.3%"></span>
+        </div> 
+        <div class="digg_percent_num">
+         14.3%
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+     <script language="javascript" type="text/javascript">getDigg(2967);</script> 
+     <!-- //顶踩部份的源码结束 --> 
+     <!-- //分享代码开始 --> 
+     <!-- //分享代码结束 --> 
+     <div class="boxoff"> 
+      <strong>------分隔线----------------------------</strong> 
+     </div> 
+     <div class="handle"> 
+      <div class="context"> 
+       <ul> 
+        <li>上一篇：<a href="/plus/view.php?aid=2962">NETBOX实用代码集合</a> </li> 
+        <li>下一篇：<a href="/a/jishuguanzhu/shenbingliren/2014/0731/2968.html">Android网络嗅探器-Pixie</a> </li> 
+       </ul> 
+      </div> 
+      <!-- /context --> 
+      <div class="actbox"> 
+       <ul> 
+        <li id="act-fav"><a href="/plus/stow.php?aid=2967" target="_blank">收藏</a></li> 
+        <li id="act-err"><a href="/plus/erraddsave.php?aid=2967&amp;title=整理下工具，发现自己搜集了蛮多的，工具，漏洞，社工库上百G，先贴出工具图和贴出社工库地址，另外还有几十G的教程在另一台电脑" target="_blank">挑错</a></li> 
+        <li id="act-pus"><a href="/plus/recommend.php?aid=2967" target="_blank">推荐</a></li> 
+        <li id="act-pnt"><a href="#" onclick="window.print();">打印</a></li> 
+       </ul> 
+      </div> 
+     </div> 
+     <!-- /handle --> 
+    </div> 
+    <!-- /viewbox --> 
+    <!-- //AJAX评论区 --> 
+    <!-- //主模板必须要引入/include/dedeajax2.js --> 
+    <a name="postform"></a> 
+    <div class="mt1"> 
+     <dl class="tbox"> 
+      <dt> 
+       <strong>发表评论</strong> 
+       <span class="more"></span> 
+      </dt> 
+      <dd> 
+       <div class="dede_comment_post"> 
+        <form action="#" method="post" name="feedback" onsubmit="return false;"> 
+         <input type="hidden" name="dopost" value="send" /> 
+         <input type="hidden" name="comtype" value="comments" /> 
+         <input type="hidden" name="aid" value="2967" /> 
+         <input type="hidden" name="fid" id="feedbackfid" value="0" /> 
+         <div class="dcmp-title"> 
+          <small>请自觉遵守互联网相关的政策法规，严禁发布色情、暴力、反动的言论。</small> 
+         </div> 
+         <!-- /dcmp-title --> 
+         <div class="dcmp-stand"> 
+          <strong>评价:</strong> 
+          <input type="radio" name="feedbacktype" checked="1" value="feedback" id="dcmp-stand-neu" /> 
+          <label for="dcmp-stand-neu"><img src="/templets/default-black/images/cmt-neu.gif" />中立</label> 
+          <input type="radio" name="feedbacktype" value="good" id="dcmp-stand-good" /> 
+          <label for="dcmp-stand-good"><img src="/templets/default-black/images/cmt-good.gif" />好评</label> 
+          <input type="radio" name="feedbacktype" value="bad" id="dcmp-stand-bad" /> 
+          <label for="dcmp-stand-bad"><img src="/templets/default-black/images/cmt-bad.gif" />差评</label> 
+         </div> 
+         <!-- /dcmp-stand --> 
+         <div class="clr"></div> 
+         <div class="dcmp-content"> 
+          <script type="text/javascript">
+					//<![CDATA[
+					window.CKEDITOR_BASEPATH='/include/ckeditor/';
+					//]]>
+                    </script> 
+          <script type="text/javascript" src="/include/ckeditor/ckeditor.js?t=B8DJ5M3"></script> 
+          <script type="text/javascript" charset="utf-8" src="/include/ueditor/ueditor.config.js"></script>
+          <script type="text/javascript" charset="utf-8" src="/include/ueditor/ueditor.all.js"></script>
+          <link rel="stylesheet" type="text/css" href="/include/ueditor/themes/default/css/ueditor.css" />
+          <script type="text/plain" name="msg" id="msg"><p></p></script>
+          <script type="text/javascript">UE.getEditor("msg",{toolbars:[["Source","|",
+        "bold", "italic", "underline","|","fontsize","forecolor","emotion","Undo", "Redo"]],initialFrameHeight:100});</script> 
+         </div> 
+         <!-- /dcmp-content --> 
+         <div class="dcmp-post"> 
+          <!--未登陆--> 
+          <div class="dcmp-userinfo" id="_ajax_feedback">
+            验证码: 
+           <input type="text" name="validate" size="4" class="ipt-txt" style="text-transform:uppercase;" /> 
+           <img src="/include/vdimgck.php" id="validateimg" style="cursor:pointer" onclick="this.src=this.src+'?'" title="点击我更换图片" alt="点击我更换图片" class="vdimg" /> 
+           <input type="checkbox" name="notuser" id="dcmp-submit-guest" /> 
+           <label for="dcmp-submit-guest"></label> 匿名?  
+          </div> 
+          <div class="dcmp-submit"> 
+           <button type="button" onclick="PostComment()">发表评论</button> 
+          </div> 
+         </div> 
+        </form> 
+       </div> 
+      </dd> 
+     </dl> 
+    </div> 
+    <!-- //评论表单区结束 --> 
+    <!-- //评论内容区 --> 
+    <a name="commettop"></a> 
+    <div class="mt1"> 
+     <dl class="tbox"> 
+      <dt> 
+       <strong>最新评论</strong> 
+       <span class="more"><a href="/plus/feedback.php?aid=2967">进入详细评论页&gt;&gt;</a></span> 
+      </dt> 
+      <!-- //这两个ID的区块必须存在，否则JS会出错 --> 
+      <dd id="commetcontentNew"></dd> 
+      <dd id="commetcontent"></dd> 
+     </dl> 
+    </div> 
+    <!--
+//由于评论载入时使用异步传输，因此必须在最后一步加载（DIGG和评论框须放在评论内容前面）
+//如果一定需要提前的把myajax.SendGet改为myajax.SendGet2，但可能会引起页面阻滞
+--> 
+    <script language="javascript">
+var whichEditor = "ueditor";
+function LoadCommets(page)
+{
+		var taget_obj = document.getElementById('commetcontent');
+		var waithtml = "<div style='line-height:50px'><img src='/images/loadinglit.gif' />评论加载中...</div>";
+		var myajax = new DedeAjax(taget_obj, true, true, '', 'x', waithtml);
+		myajax.SendGet2("/plus/feedback_ajax.php?dopost=getlist&aid=2967&page="+page);
+		DedeXHTTP = null;
+}
+function PostComment()
+{
+		var f = document.feedback;
+		//var msg = CKEDITOR.instances.msg.getData();
+		if(whichEditor == 'ckeditor')
+		{
+			var msg = CKEDITOR.instances.msg.getData();
+		}
+		else if(whichEditor == 'ueditor')
+		{
+			var msg = UE.getEditor('msg').getContent()
+		}
+		var nface = '6';
+		var nfeedbacktype = 'feedback';
+		var nvalidate = '';
+		var nnotuser = '';
+		var nusername = '';
+		var npwd = '';
+		var taget_obj = $DE('commetcontentNew');
+		var waithtml = "<div style='line-height:30px'><img src='/images/loadinglit.gif' />正在发送中...</div>";
+		if(msg=='')
+		{
+			alert("评论内容不能为空！");
+			return;
+		}
+		if(f.validate)
+		{
+			if(f.validate.value=='') {
+				alert("请填写验证码！");
+				return;
+			}
+			else {
+				nvalidate = f.validate.value;
+			}
+		}
+		if(msg.length > 500)
+		{
+			alert("你的评论是不是太长了？请填写500字以内的评论。");
+			return;
+		}
+		if(f.feedbacktype) {
+			for(var i=0; i < f.feedbacktype.length; i++)
+				if(f.feedbacktype[i].checked) nfeedbacktype = f.feedbacktype[i].value;
+		}
+		/*
+		if(f.face) {
+			for(var j=0; j < f.face.length; j++)
+				if(f.face[j].checked) nface = f.face[j].value;
+		}
+		*/
+		if(f.notuser.checked) nnotuser = '1';
+		if(f.username) nusername = f.username.value;
+		if(f.pwd) npwd = f.pwd.value;
+		
+		var myajax = new DedeAjax(taget_obj, false, true, '', '', waithtml);
+		myajax.sendlang = 'utf-8';
+		myajax.AddKeyN('dopost', 'send');
+		myajax.AddKeyN('aid', '2967');
+		myajax.AddKeyN('fid', f.fid.value);
+		myajax.AddKeyN('face', nface);
+		myajax.AddKeyN('feedbacktype', nfeedbacktype);
+		myajax.AddKeyN('validate', nvalidate);
+		myajax.AddKeyN('notuser', nnotuser);
+		myajax.AddKeyN('username', nusername);
+		myajax.AddKeyN('pwd', npwd);
+		myajax.AddKeyN('msg', msg);
+		myajax.SendPost2('/plus/feedback_ajax.php');
+		//msg = '';
+		//CKEDITOR.instances.msg.setData('');
+		if(whichEditor == 'ckeditor')
+		{
+			CKEDITOR.instances.msg.setData('');
+		}
+		else if(whichEditor == 'ueditor')
+		{
+			UE.getEditor('msg').setContent('', false);
+		}
+		//taget_obj.removeAttribute('id');
+		f.fid.value = 0;
+		if(f.validate)
+		{
+			if($DE('validateimg')) $DE('validateimg').src = "/include/vdimgck.php?"+f.validate.value;
+			f.validate.value = '';
+		}
+		
+}
+function quoteCommet(fid)
+{
+	    document.feedback.fid.value = fid;
+}
+  
+function ajaxFeedback(aid, fid, type)
+{
+	
+	var taget_obj = $DE('ajaxfeedback_'+fid);
+	if(taget_obj.innerHTML == '')
+	{
+		var myajax = new DedeAjax(taget_obj, true, true, '', 'x');
+		myajax.SendGet2("/plus/feedback.php?aid="+aid+"&fid="+fid+"&action=quote&type=ajax");
+		eval('var result = typeof CKEDITOR.instances.msg_'+fid);
+		if(result != 'undefined')
+		{
+			// 删除实例
+			eval('var edit = CKEDITOR.instances.msg_'+fid);
+			CKEDITOR.remove(edit);
+		}
+		CKEDITOR.replace(document.getElementById('msg_'+fid) , CKEDITOR.instances.msg.config);
+		scroll(0, taget_obj.offsetTop - 120);
+		var formname = 'f = document.ajaxfeedback_'+fid;
+		eval(formname);
+		if(f.validate)
+		{
+			if($DE('vdimg_'+fid)) $DE('vdimg_'+fid).src = "/include/vdimgck.php?"+f.validate.value;
+			f.validate.value = '';
+		}
+		
+		DedeXHTTP = null;
+	}
+}
+
+
+
+function ajaxQuotePost(fid)
+{
+	var formname = 'f = document.ajaxfeedback_'+fid;
+	eval(formname);
+	//var f = document.formname;
+	//var f = f[0];
+	var nvalidate = '';
+	var nnotuser = '';
+	var nusername = '';
+	var npwd = '';
+	var taget_obj = $DE('commetcontentNew');
+	var waithtml = "<div style='line-height:30px'><img src='/images/loadinglit.gif' />正在发送中...</div>";
+	eval('var msg = CKEDITOR.instances.msg_'+fid+'.getData()');
+
+	if(f.validate)
+	{
+		if(f.validate.value=='') {
+			alert("请填写验证码！");
+			return;
+		}
+		else {
+			nvalidate = f.validate.value;
+		}
+	}
+	var myajax = new DedeAjax(taget_obj, false, true, '', '', waithtml);
+	
+	if(f.notuser.checked) nnotuser = '1';
+	if(f.username) nusername = f.username.value;
+	if(f.pwd) npwd = f.pwd.value;
+	
+	myajax.sendlang = 'utf-8';
+	myajax.AddKeyN('dopost', 'send');
+	myajax.AddKeyN('aid', '2967');
+	myajax.AddKeyN('fid', f.fid.value);
+	myajax.AddKeyN('type', 'ajax');
+	myajax.AddKeyN('comtype', f.comtype.value);
+	myajax.AddKeyN('isconfirm','yes');
+	
+	myajax.AddKeyN('typeid', f.typeid.value);
+	myajax.AddKeyN('quotemsg', f.quotemsg.value);
+	myajax.AddKeyN('validate', nvalidate);
+	myajax.AddKeyN('notuser', nnotuser);
+	myajax.AddKeyN('username', nusername);
+	myajax.AddKeyN('pwd', npwd);
+	myajax.AddKeyN('msg', msg);
+	myajax.SendPost2('/plus/feedback_ajax.php');
+	//alert(f.quotemsg.value);
+	if($DE('ajaxfeedback_'+fid).innerHTML != null)
+	{
+		$DE('ajaxfeedback_'+fid).innerHTML = '';
+	}
+	scroll(0, taget_obj.offsetTop);
+}
+LoadCommets(1);
+</script> 
+    <!-- //评论内容区结束 --> 
+    <div class="intro"></div> 
+    <div class="viewbox"></div> 
+   </div> 
+   <!-- //左边内容结束 --> 
+   <!-- //右边内容开始 --> 
+   <div class="pright"> 
+    <div> 
+     <dl class="tbox"> 
+      <dt>
+       <strong>相关内容</strong>
+      </dt> 
+      <dd> 
+       <ul class="c1 ico2"> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2015/0501/5398.html">解密Nuclear漏洞利用工具包中的Fla</a> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2015/0417/5168.html">brainfuck编译器</a> </li> 
+        <li><a href="/plus/view.php?aid=2962">NETBOX实用代码集合</a> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0719/2679.html">防0day工具 EMET V3官方发布</a> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0719/2550.html">Web渗透测试工具-WAppEx</a> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0719/2695.html">[技巧]使用Burpsuite辅助Sqlmap进行PO</a> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2015/0304/5055.html">nmap命令扫描服务器信息的格式</a> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2015/0501/5390.html">“高端”人士必备：新型安全加密</a> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0719/2510.html">Exploit防御工具-ExploitShield Browser E</a> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0719/2693.html">Burp Suite详细使用教程-Intruder模块详</a> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0731/3010.html">burpsuite v1.4.10发布</a> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0719/2376.html">实时协作工具库 – TogetherJS</a> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0719/2544.html">思科Cisco设备密码恢复工具-Cisco P</a> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2016/0828/6088.html">谷歌为MacOS打造开源恶意检测系统</a> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0719/2367.html">JSP端口转发工具 – KPortTran</a> </li> 
+       </ul> 
+      </dd> 
+     </dl> 
+    </div> 
+    <div class="commend mt1"> 
+     <dl class="tbox light"> 
+      <dt class="light">
+       <strong>推荐内容</strong>
+      </dt> 
+      <dd class="light"> 
+       <ul class="d4"> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2016/1226/7378.html">安全行业从业人员自研开源扫</a> <p>Scanners-Box是一个集合github平台上的安全行业从业人员自研开源扫...</p> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2016/0828/6083.html">ngrok一款内网穿透+记录HTTP请求</a> <p>双方都是内网的反弹shell工具。Ngrok的下载地址:https://ngrok.com/d...</p> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2016/0828/6053.html">攻击中东欧的间谍工具集|</a> <p>图1图1在过去的一年里，ESET检测并分析了若干有针对性的进行间...</p> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2016/0828/6024.html">基于Python的反连Shell和后渗透工</a> <p>声明：该软件供学习研究使用或作为一个POC。开发者不赞同和鼓...</p> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2016/0828/6025.html">LinuxRootkit系列二：基于修改s</a> <p>前言： 《Linux Rootkit 系列一： LKM的基础编写及隐藏》的作者似乎...</p> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2016/0828/6033.html">开源系统漏洞扫描工具Binmap使</a> <p>开源工具binmap可以帮助安全研究人员扫描文件系统，可用于获取...</p> </li> 
+       </ul> 
+      </dd> 
+     </dl> 
+    </div> 
+    <!-- /commend --> 
+    <div class="hot mt1"> 
+     <dl class="tbox light"> 
+      <dt class="light">
+       <strong>热点内容</strong>
+      </dt> 
+      <dd class="light"> 
+       <ul class="c1 ico2"> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0724/2967.html">整理下工具，发现自己搜</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0719/2684.html">XOIC DDOS压力测试工具</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0804/3097.html">AndroRAT中文版</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/1211/3777.html">如何制作属于自己的菜刀</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0719/2628.html">XSS漏洞扫描器 – Xele</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2016/1210/7368.html">锐速(lotServer) 一键安装脚</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0819/3143.html">wr703n移植wifipineapple</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/1208/3742.html">暗组2015最新渗透包</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0508/808.html">Android渗透专用测试神器</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/1028/3480.html">从入门到精通：WiFi渗透哪</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2016/0617/5972.html">fenghuangscannerV3 EXE版本</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0701/2118.html">翻墙不再需要任何软件,真</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2016/0128/5842.html">抓包工具charles</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2015/0820/5783.html"> Ashley-Madison 数据库下载地</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0914/3286.html">[转]HFS 2.3x 远程命令执行</a></li> 
+       </ul> 
+      </dd> 
+     </dl> 
+    </div> 
+    <!--<div id="contentRtPicAD222" style="margin:10px auto"></div>2017-03-05--> 
+    <div id="anyun_art_R_pic" style="margin:10px auto">
+     <script type="text/javascript">
+    /*222*500 创建于 2017/3/5*/
+    var cpro_id = "u2912732";
+</script> 
+     <script type="text/javascript" src="http://cpro.baidustatic.com/cpro/ui/c.js"></script> 
+    </div> 
+   </div> 
+   <!-- /pright --> ﻿ 
+  </div> 
+  <div class="footer"> 
+   <div class="copyright"> 
+    <span class="c2">免责申明：安云网部分内容来自互联网，如果不小心侵犯了您的权益，请与我们（<a class="__cf_email__" href="/cdn-cgi/l/email-protection" data-cfemail="f684999982b697988f8398d8998491">[email&nbsp;protected]</a><script data-cfhash="f9e31" type="text/javascript">/* <![CDATA[ */!function(t,e,r,n,c,a,p){try{t=document.currentScript||function(){for(t=document.getElementsByTagName('script'),e=t.length;e--;)if(t[e].getAttribute('data-cfhash'))return t[e]}();if(t&&(c=t.previousSibling)){p=t.parentNode;if(a=c.getAttribute('data-cfemail')){for(e='',r='0x'+a.substr(0,2)|0,n=2;a.length-n;n+=2)e+='%'+('0'+('0x'+a.substr(n,2)^r).toString(16)).slice(-2);p.replaceChild(document.createTextNode(decodeURIComponent(e)),c)}p.removeChild(t)}}catch(u){}}()/* ]]> */</script>）联系，我们会尽快为您处理。. <br />Copyright &copy; 2014-2018 安云网 版权所有. <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5882523'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D5882523' type='text/javascript'%3E%3C/script%3E"));</script> <p>你站在桥上看风景,看风景的人在楼上看你,明月装饰了你的窗子,你装饰了别人的梦.--卞之琳《断章》</p> 
+     <!-- Baidu Button BEGIN --> 
+     <!-- Baidu Button END --> </span>
+   </div> 
+  </div> 
+  <!-- //二级子类下拉菜单 ，考虑SEO原因放置于底部 
+
+--> 
+  <script type="text/javascript" src="/images/js/dropdown.js"></script> 
+  <ul id="dropmenu1" class="dropMenu"> 
+   <li><a href="/a/yejiezixun/yejierenwu/">业界人物</a></li> 
+   <li><a href="/a/jishuguanzhu/jikepinchang/">极客品尝</a></li> 
+  </ul>
+  <ul id="dropmenu2" class="dropMenu"> 
+   <li><a href="/a/jishuguanzhu/nixianggongcheng/">逆向工程</a></li> 
+   <li><a href="/a/jishuguanzhu/ExploitS/">ExploitS</a></li> 
+   <li><a href="/a/jishuguanzhu/xitongwendang/">系统文档</a></li> 
+   <li><a href="/a/jishuguanzhu/yidonganquan/">移动安全</a></li> 
+   <li><a href="/a/jishuguanzhu/yingjiananquan/">硬件安全</a></li> 
+   <li><a href="/a/jishuguanzhu/wuxiananquan/">无线安全</a></li> 
+   <li><a href="/a/jishuguanzhu/WEBjishu/">WEB安全</a></li> 
+   <li><a href="/a/jishuguanzhu/DataBase/">DataBase</a></li> 
+   <li><a href="/a/jishuguanzhu/shenbingliren/">神兵利刃</a></li> 
+   <li><a href="/a/jishuguanzhu/wangluoanquan/">网络安全</a></li> 
+   <li><a href="/a/jishuguanzhu/bianchengchalou/">编程茶楼</a></li> 
+   <li><a href="/a/jishuguanzhu/WooYun/">WooYun</a></li> 
+  </ul>
+  <ul id="dropmenu3" class="dropMenu"> 
+  </ul>
+  <ul id="dropmenu4" class="dropMenu"> 
+   <li><a href="/a/yulebagua/qiwenqushi/">奇闻趣事</a></li> 
+  </ul>
+  <ul id="dropmenu6" class="dropMenu"> 
+   <li><a href="/a/ziyuanlianjie/yule/">娱乐</a></li> 
+   <li><a href="/a/ziyuanlianjie/jishu/">技术</a></li> 
+  </ul>
+  <ul id="dropmenu18" class="dropMenu"> 
+  </ul>
+  <ul id="dropmenu5" class="dropMenu"> 
+  </ul>
+  <ul id="dropmenu37" class="dropMenu"> 
+  </ul> 
+  <script type="text/javascript">cssdropdown.startchrome("navMenu")</script>   
+ </body>
+</html>

@@ -1,0 +1,721 @@
+<html lang="zh"><head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>太平电子商务</title>
+<link href="/TPEBizWeb/css/css.css" rel="stylesheet" type="text/css">
+<script type="text/JavaScript">
+<!--
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_nbGroup(event, grpName) { //v6.0
+  var i,img,nbArr,args=MM_nbGroup.arguments;
+  if (event == "init" && args.length > 2) {
+    if ((img = MM_findObj(args[2])) != null && !img.MM_init) {
+      img.MM_init = true; img.MM_up = args[3]; img.MM_dn = img.src;
+      if ((nbArr = document[grpName]) == null) nbArr = document[grpName] = new Array();
+      nbArr[nbArr.length] = img;
+      for (i=4; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+        if (!img.MM_up) img.MM_up = img.src;
+        img.src = img.MM_dn = args[i+1];
+        nbArr[nbArr.length] = img;
+    } }
+  } else if (event == "over") {
+    document.MM_nbOver = nbArr = new Array();
+    for (i=1; i < args.length-1; i+=3) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = (img.MM_dn && args[i+2]) ? args[i+2] : ((args[i+1])? args[i+1] : img.MM_up);
+      nbArr[nbArr.length] = img;
+    }
+  } else if (event == "out" ) {
+    for (i=0; i < document.MM_nbOver.length; i++) {
+      img = document.MM_nbOver[i]; img.src = (img.MM_dn) ? img.MM_dn : img.MM_up; }
+  } else if (event == "down") {
+    nbArr = document[grpName];
+    if (nbArr)
+      for (i=0; i < nbArr.length; i++) { img=nbArr[i]; img.src = img.MM_up; img.MM_dn = 0; }
+    document[grpName] = nbArr = new Array();
+    for (i=2; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = img.MM_dn = (args[i+1])? args[i+1] : img.MM_up;
+      nbArr[nbArr.length] = img;
+  } }
+}
+//-->
+var req;
+function initCardType() {
+	var url = "/TPEBizWeb/pages/B2C/card/apply/getCardType.do";
+	executeAjaxCardType(url);
+}
+
+function executeAjaxCardType(url) {
+	var contentType = 'application/x-www-form-urlencoded;charset=utf-8';
+	getReq();
+	if(req) {
+		req.open("post", url, false); 
+	    req.setRequestHeader('Content-Type', contentType);
+	    req.onreadystatechange = callback;
+	    req.send();
+	}
+}
+function getReq() {
+	if(window.XMLHttpRequest){
+        req = new XMLHttpRequest();
+    }else if(window.ActiveXObject){
+        req = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+}
+function callback() {
+	if (req.readyState == 4){ 
+        if(req.status == 200){ 
+           getCardTpyeCallBack(); 
+        }else{ 
+            alert ("与服务器交互出现问题，请稍后再试！！");
+        }       
+   } 
+}
+function getCardTpyeCallBack() {
+	var result = req.responseText;
+	var resultArr = result.split(";");
+
+	if(resultArr.length>1){
+		document.getElementById('cardProduct').options.add(new Option("请选择","-1"));
+		for(var i=0;i<resultArr.length-1;i++){
+			var resultValue = resultArr[i];
+			var value = resultValue.split("_");
+			document.getElementById('cardProduct').options.add(new Option(value[1],value[0]));
+		}
+	}
+}
+
+function getCardCount() {
+	var url = "/TPEBizWeb/pages/B2C/card/apply/getCardCount.do";
+	var cardProduct = document.getElementById("cardProduct").value;
+	document.getElementById("cardType1").value = document.getElementById("cardProduct").value;
+	var param = 'cardProduct='+cardProduct;
+	excuteGetCardCount(url, param);
+}
+
+function excuteGetCardCount(url, param) {
+	var contentType = 'application/x-www-form-urlencoded;charset=utf-8';
+	getReq();
+	if(req) {
+		req.open("post", url, false); 
+	    req.setRequestHeader('Content-Type', contentType);
+	    req.onreadystatechange = callback1;
+	    req.send(param);
+	}
+}
+function callback1() {
+	if (req.readyState == 4){ 
+        if(req.status == 200){ 
+           getCardCountCallBack(); 
+        }else{ 
+            alert ("与服务器交互出现问题，请稍后再试！！");
+        }       
+   } 
+}
+function getCardCountCallBack() {
+	var result = req.responseText;
+	clearSelect('cardNumber');
+	for(var i=1;i<=result;i++){
+		document.getElementById('cardNumber').options.add(new Option(i,i));
+	}
+}
+
+function clearSelect(clearSelectId){
+	document.getElementById(clearSelectId).options.length=0;
+}
+
+function viewCardCountInput() {
+	document.getElementById("cardCount").value = document.getElementById("cardNumber").value;
+	var cardCount = document.getElementById("cardCount").value;
+	if(cardCount=='1') {
+		document.getElementById("card1").style.display='';
+		document.getElementById("card2").style.display='none';
+		document.getElementById("card3").style.display='none';
+		document.getElementById("card4").style.display='none';
+		document.getElementById("card5").style.display='none';
+	}
+	else if(cardCount=='2') {
+		document.getElementById("card1").style.display='';
+		document.getElementById("card2").style.display='';
+		document.getElementById("card3").style.display='none';
+		document.getElementById("card4").style.display='none';
+		document.getElementById("card5").style.display='none';
+	}
+	else if(cardCount=='3') {
+		document.getElementById("card1").style.display='';
+		document.getElementById("card2").style.display='';
+		document.getElementById("card3").style.display='';
+		document.getElementById("card4").style.display='none';
+		document.getElementById("card5").style.display='none';
+	}
+	else if(cardCount=='4') {
+		document.getElementById("card1").style.display='';
+		document.getElementById("card2").style.display='';
+		document.getElementById("card3").style.display='';
+		document.getElementById("card4").style.display='';
+		document.getElementById("card5").style.display='none';
+	}
+	else if(cardCount=='5') {
+		document.getElementById("card1").style.display='';
+		document.getElementById("card2").style.display='';
+		document.getElementById("card3").style.display='';
+		document.getElementById("card4").style.display='';
+		document.getElementById("card5").style.display='';
+	}
+	
+}
+
+function initCardMsg() {
+	document.getElementById("cardNo1").value='';
+	document.getElementById("pw1").value='';
+	document.getElementById("checkMsg1").style.visibility='hidden';
+	document.getElementById("cardNo2").value='';
+	document.getElementById("pw2").value='';
+	document.getElementById("checkMsg2").style.visibility='hidden';
+	document.getElementById("cardNo3").value='';
+	document.getElementById("pw3").value='';
+	document.getElementById("checkMsg3").style.visibility='hidden';
+	document.getElementById("cardNo4").value='';
+	document.getElementById("pw4").value='';
+	document.getElementById("checkMsg4").style.visibility='hidden';
+	document.getElementById("cardNo5").value='';
+	document.getElementById("pw5").value='';
+	document.getElementById("checkMsg5").style.visibility='hidden';
+	document.getElementById('submitButtonTr').style.display = '';
+   	document.getElementById('specialPrompt').style.display = 'none';
+   	document.getElementById('specialPrompt1').style.display = 'none';
+}
+
+function checkSameCardExtend(cardNo, pw,checkMsg,cardUFlag) {
+	if(pw!='') {
+		var cardType = document.getElementById("cardType1").value;
+		var url = "/TPEBizWeb/pages/B2C/card/apply/checkSameCard.do?cardNo=" + cardNo + "&passWord=" + pw + "&cardType=" + cardType;
+		excuteCheckSameCard(url, checkMsg,cardUFlag);
+	}
+}
+
+function checkSameCard(cardNo, pw,checkMsg,cardUFlag) {
+	if(cardNo!='') {
+		var cardType = document.getElementById("cardType1").value;
+		var url = "/TPEBizWeb/pages/B2C/card/apply/checkSameCard.do?cardNo=" + cardNo + "&passWord=" + pw + "&cardType=" + cardType;
+		excuteCheckSameCard(url, checkMsg,cardUFlag);
+	}
+}
+
+function excuteCheckSameCard(url, checkMsg,cardUFlag) {
+	var contentType = 'application/x-www-form-urlencoded;charset=utf-8';
+	getReq();
+	if(req) {
+		req.open("post", url, false); 
+	    req.setRequestHeader('Content-Type', contentType);
+	    req.onreadystatechange =function(){ callback2(checkMsg,cardUFlag);}
+	    req.send(null);
+	}
+}
+
+function callback2(checkMsg,cardUFlag) {
+	if (req.readyState == 4){ 
+        if(req.status == 200){ 
+           getCheckSameCardBack(checkMsg,cardUFlag); 
+        }else{ 
+            alert ("与服务器交互出现问题，请稍后再试！！");
+        }       
+   } 
+}
+
+function getCheckSameCardBack(checkMsg,cardUFlag) {
+	var result = req.responseText;
+	if(result != '') {
+		cardUFlag.value='N';
+		checkMsg.style.visibility='visible';
+		checkMsg.value = result;
+	}else {
+		cardUFlag.value='Y';
+		checkMsg.style.visibility='hidden';
+	}
+}
+function changeCountState() {
+	document.getElementById("cardNumber").onchange();
+}
+function initMsg (cardProductCode) {
+	if(cardProductCode!=''&&cardProductCode!='null'&&cardProductCode!=undefined) {
+	    document.getElementById('cardProduct').disabled = true;
+		document.getElementById('cardProduct').value = cardProductCode;
+		document.getElementById('cardProduct').onchange();
+	}
+	document.getElementById('cardProduct').readOnly = false;
+}
+
+</script>
+</head>
+
+<body onload="initCardType();initMsg(document.getElementById('cardProductCode').value);">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tbody><tr>
+    <td align="center" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tbody><tr>
+        <td background="/TPEBizWeb/images/B2C/bg_zbx.gif">&nbsp;</td>
+        <td width="100%"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+         
+<tbody><tr>
+  <td align="center"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tbody><tr>
+      <td width="1" bgcolor="#e1e1e1"></td>
+      <td align="center" valign="top"><table width="100%" align="left" border="0" cellpadding="0" cellspacing="0" background="/TPEBizWeb/images/B2C/bg_logo.jpg">
+        <tbody><tr>
+          <td height="74" align="left"><img src="/TPEBizWeb/images/B2C/img_logo.jpg" height="35"></td>
+        </tr>
+      </tbody></table>
+      </td><td width="1" bgcolor="#e1e1e1"></td>
+    </tr>
+  </tbody></table></td>
+</tr>
+
+          <tr>
+            <td align="center"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tbody><tr>
+                <td width="1" bgcolor="#e1e1e1"></td>
+                <td align="left" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tbody><tr>
+                      <td width="100%" height="5"></td>
+                      <td height="5"></td>
+                    </tr>
+                    <tr>
+                      <td align="left" valign="top"><title>etaiping太平财产保险有限公司保险卡</title><base href="http://ectp.tpi.cntaiping.com/TPEBizWeb/pages/mobile/card.jsp"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      
+
+
+
+
+
+
+
+
+
+
+<script language="Javascript" src="/TPEBizWeb/common/UICommon.js"></script>
+<script type="text/javascript">
+
+ function trimBank(str) {
+	str.value = str.value.replace(/(^\s*)|(\s*$)/g, "");
+ }
+ 
+ function submitForm(){
+   
+   if(document.getElementById("cardProduct").value=='-1') {
+   		alert("请选择激活保卡种类！");
+   		return false;
+   }
+   if(document.getElementById("cardProduct").value=='') {
+   		alert("请选择激活保卡份数！");
+   		return false;
+   }
+   if(document.getElementById("cardCount").value=='1') {
+		if(trim(document.getElementById("cardNo1").value)=="") {
+			alert("请检查是否录入全部的保险卡卡号！");
+			return false;
+		}
+		if(trim(document.getElementById("pw1").value)=="") {
+			alert("请检查是否录入全部的保险卡密码！");
+			return false;
+		}
+   }
+   if(document.getElementById("cardCount").value=='2') {
+		if(trim(document.getElementById("cardNo1").value)==""||trim(document.getElementById("cardNo2").value)=="") {
+			alert("请检查是否录入全部的保险卡卡号！");
+			return false;
+		}
+		if(trim(document.getElementById("pw1").value)==""||trim(document.getElementById("pw2").value)=="") {
+			alert("请检查是否录入全部的保险卡密码！");
+			return false;
+		}
+   }
+   if(document.getElementById("cardCount").value=='3') {
+		if(trim(document.getElementById("cardNo1").value)==""||trim(document.getElementById("cardNo2").value)==""||trim(document.getElementById("cardNo3").value)=="") {
+			alert("请检查是否录入全部的保险卡卡号！");
+			return false;
+		}
+		if(trim(document.getElementById("pw1").value)==""||trim(document.getElementById("pw2").value)==""||trim(document.getElementById("pw3").value)=="") {
+			alert("请检查是否录入全部的保险卡密码！");
+			return false;
+		}
+   }
+   if(document.getElementById("cardCount").value=='4') {
+		if(trim(document.getElementById("cardNo1").value)==""||trim(document.getElementById("cardNo2").value)==""||trim(document.getElementById("cardNo3").value)==""
+		||trim(document.getElementById("cardNo4").value)=="") {
+			alert("请检查是否录入全部的保险卡卡号！");
+			return false;
+		}
+		if(trim(document.getElementById("pw1").value)==""||trim(document.getElementById("pw2").value)==""||trim(document.getElementById("pw3").value)==""
+		||trim(document.getElementById("pw4").value)=="") {
+			alert("请检查是否录入全部的保险卡密码！");
+			return false;
+		}
+   }
+   if(document.getElementById("cardCount").value=='5') {
+		if(trim(document.getElementById("cardNo1").value)==""||trim(document.getElementById("cardNo2").value)==""||trim(document.getElementById("cardNo3").value)==""
+		||trim(document.getElementById("cardNo4").value)==""||trim(document.getElementById("cardNo5").value)=="") {
+			alert("请检查是否录入全部的保险卡卡号！");
+			return false;
+		}
+		if(trim(document.getElementById("pw1").value)==""||trim(document.getElementById("pw2").value)==""||trim(document.getElementById("pw3").value)==""
+		||trim(document.getElementById("pw4").value)==""||trim(document.getElementById("pw5").value)=="") {
+			alert("请检查是否录入全部的保险卡密码！");
+			return false;
+		}
+   }
+   if(document.getElementById("cardUFlag1").value=='N'||document.getElementById("cardUFlag2").value=='N'||document.getElementById("cardUFlag3").value=='N'
+   ||document.getElementById("cardUFlag4").value=='N'||document.getElementById("cardUFlag5").value=='N') {
+   		alert("请检查卡号是否都符合要求！");
+   		return false;
+   }
+   if(document.getElementById("cardProduct").value=='806001'||document.getElementById("cardProduct").value=='806005'
+   		||document.getElementById("cardProduct").value=='803801'||document.getElementById("cardProduct").value=='803401'
+   		||document.getElementById("cardProduct").value=='810101') {
+   		document.getElementById('submitButtonTr').style.display = 'none';
+   		document.getElementById('specialPrompt').style.display = '';
+   		document.getElementById('specialPrompt1').style.display = 'none';
+   		return;
+   }
+   if(document.getElementById("cardProduct").value=='807001'||document.getElementById("cardProduct").value=='807003'
+   		||document.getElementById("cardProduct").value=='807004'||document.getElementById("cardProduct").value=='807005') {
+   		document.getElementById('submitButtonTr').style.display = 'none';
+   		document.getElementById('specialPrompt').style.display = 'none';
+   		document.getElementById('specialPrompt1').style.display = '';
+   		return;
+   }
+   affirmSubmit();
+ }
+ 
+  function affirmSubmit() {
+ 	var fm = document.getElementById("fm");
+   	fm.action = "/TPEBizWeb/pages/B2C/card/apply/prepareForCheck.do";
+   	fm.submit();
+ }
+ 
+ function cancelSubmit() {
+ 	document.getElementById('submitButtonTr').style.display = '';
+   	document.getElementById('specialPrompt').style.display = 'none';
+   	document.getElementById('specialPrompt1').style.display = 'none';
+   	//初始化状态
+   	initCardMsg();
+   	document.getElementById("card1").style.display='';
+	document.getElementById("card2").style.display='none';
+	document.getElementById("card3").style.display='none';
+	document.getElementById("card4").style.display='none';
+	document.getElementById("card5").style.display='none';
+	document.getElementById('cardProduct').options.length=0;
+	document.getElementById('cardNumber').options.length=0;
+	initCardType();
+ }
+</script>
+
+
+
+<form id="fm" method="post"></form>
+<input type="hidden" name="cardCount" id="cardCount" value="1">
+<input type="hidden" name="cardType1" id="cardType1">
+<input type="hidden" name="cardUFlag1" id="cardUFlag1" value="Y">
+<input type="hidden" name="cardUFlag2" id="cardUFlag2" value="Y">
+<input type="hidden" name="cardUFlag3" id="cardUFlag3" value="Y">
+<input type="hidden" name="cardUFlag4" id="cardUFlag4" value="Y">
+<input type="hidden" name="cardUFlag5" id="cardUFlag5" value="Y">
+<input type="hidden" name="cardProductCode" id="cardProductCode" value="null">
+		<tbody><tr align="center">
+	      <td>&nbsp;&nbsp;&nbsp;&nbsp;太平自助保险卡是太平保险依托先进、强大的网络平台，推出的网上投保产品。自助保险卡客户通过网络自助保险卡投保系统，进行自助保险卡投保。通过自助保险卡账号、密码的有效验证。<br>&nbsp;&nbsp;&nbsp;&nbsp;依据提示填写投保信息，提交后，即可完成保险卡投保。请查看自助保险卡<font color="red">投保流程介绍</font><a href="/TPEBizWeb/pages/mobile/oth/cardService/proposalFlow1.jsp"><font color="red">[查看]</font></a>。
+			&nbsp;&nbsp;&nbsp;&nbsp;请完整填写您所持自助保险卡的帐号和密码，点击“保险卡激活”后可完成投保！</td>
+	    </tr>
+	    <tr>
+	    	<td height="10"></td>
+	    </tr>
+	    <tr align="center">
+	    	<td>
+	    		<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+	    			<tbody><tr align="center">
+						<td width="30%"></td>
+						<td></td>
+    				</tr>
+    				<tr align="center">
+						<td align="center">保卡种类:</td>
+						<td align="left">
+							<select id="cardProduct" onchange="getCardCount();changeCountState();initCardMsg();"><option value="-1">请选择</option><option value="803801">太平人生卡(吉祥人生卡)</option><option value="850001">爱而福德太平卡</option><option value="806005">E家幸福卡</option><option value="808005">E驾太平卡C款</option><option value="809004">E居太平卡C款</option><option value="890001">乐驾安心卡C款</option><option value="880003">乐驾安心卡A款</option><option value="114001">“淘气保”少儿无忧卡</option><option value="113901">“不倒翁”中老年无忧卡</option><option value="806001">E盛太平卡A款</option><option value="806002">E盛太平卡B款</option><option value="807003">吉祥三宝出行卡（B款）</option><option value="807004">吉祥三宝出行卡（C款）</option><option value="807005">吉祥三宝出行卡（A款）</option><option value="809003">工银家财</option><option value="111605">“乐学无忧”少儿卡（广西专版）</option><option value="111606">“乐学无忧”幼儿卡（广西专版）</option><option value="805001">E家太平卡（A）款</option><option value="805002">E家太平卡（B）款</option><option value="805003">E家太平卡（C）款</option><option value="111001">太平家无忧·增值卡升级版（江西）</option><option value="807001">E路太平卡</option><option value="809001">E居太平卡</option><option value="808001">E驾太平卡</option><option value="820001">宠物饲养人责任保险卡</option><option value="803401">夫妻联名卡</option><option value="806008">太平“家无忧·增值卡”</option><option value="111604">太平“关爱百分百”学生综合保险少儿卡</option><option value="111603">太平“关爱百分百”学生综合保险幼儿卡</option><option value="809002">E居太平卡B款</option><option value="870001">儿童齿科医疗保险卡</option><option value="808002">E驾太平卡A款（2014版）</option><option value="808003">E驾太平卡B款（2014版）</option><option value="808004">E盛太平卡D款（2014版）</option><option value="803802">太平人生卡B款</option><option value="901001">财意宝卡A款</option><option value="901002">财意宝卡B款</option><option value="806006">E家幸福卡B款</option><option value="808006">E驾太平卡D款</option><option value="807007">出行如意</option><option value="806007">E盛太平卡C款</option><option value="111002">黎明太平无忧卡</option></select>
+						</td>
+    				</tr>
+    				<tr>
+						<td align="center">份数:</td>
+						<td align="left">
+							<select id="cardNumber" style="width: 50px" onchange="viewCardCountInput();"></select>
+						</td>
+    				</tr>
+    				<tr id="card1">
+						<td colspan="2" align="center">
+							<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+								<tbody><tr>
+									<td width="20%"></td>
+									<td width="45%"></td>
+									<td></td>
+			    				</tr>
+			    				<tr>
+									<td colspan="3" align="center"><img src="/TPEBizWeb/images/B2C/img_gqkhdd.gif"></td>
+			    				</tr>
+			    				<tr>
+									<td style="height: 5px" colspan="3"></td>
+			    				</tr>
+			    				<tr>
+									<td align="center">卡号:</td>
+									<td align="left"><input name="cardNo1" id="cardNo1" size="15" class="input7" onchange="trimBank(this);checkSameCardExtend(document.getElementById('cardNo1').value, document.getElementById('pw1').value,document.getElementById('checkMsg1'),document.getElementById('cardUFlag1'));"></td>
+									<td></td>
+			    				</tr>
+			    				<tr>
+									<td align="center">密码:</td>
+									<td align="left"><input type="password" name="pw1" id="pw1" class="input7" onchange="trimBank(this);checkSameCard(document.getElementById('cardNo1').value, this.value,document.getElementById('checkMsg1'),document.getElementById('cardUFlag1'));"></td>
+									<td align="left"></td>
+			    				</tr>
+			    				<tr>
+									<td align="right"></td>
+									<td align="left" colspan="2"><input type="text" id="checkMsg1" readonly="readonly" style="visibility: hidden; color: red; font-size: 9px; border: 0px;"></td>
+			    				</tr>
+			    				<tr>
+									<td style="height: 5px" colspan="3"></td>
+			    				</tr>
+							</tbody></table>
+						</td>
+    				</tr>
+    				<tr id="card2" style="display: none;">
+						<td colspan="2" align="center">
+							<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+								<tbody><tr>
+									<td width="20%"></td>
+									<td width="45%"></td>
+									<td></td>
+			    				</tr>
+			    				<tr>
+									<td colspan="3" align="center"><img src="/TPEBizWeb/images/B2C/img_gqkhdd.gif"></td>
+			    				</tr>
+			    				<tr>
+									<td style="height: 5px" colspan="3"></td>
+			    				</tr>
+			    				<tr>
+									<td align="center">卡号:</td>
+									<td align="left"><input name="cardNo2" id="cardNo2" size="15" class="input7" onchange="trimBank(this);checkSameCardExtend(document.getElementById('cardNo2').value, document.getElementById('pw2').value,document.getElementById('checkMsg2'),document.getElementById('cardUFlag2'));"></td>
+									<td></td>
+			    				</tr>
+			    				<tr>
+									<td align="center">密码:</td>
+									<td align="left"><input type="password" name="pw2" id="pw2" class="input7" onchange="trimBank(this);checkSameCard(document.getElementById('cardNo2').value, this.value,document.getElementById('checkMsg2'),document.getElementById('cardUFlag2'));"></td>
+									<td align="left"></td>
+			    				</tr>
+			    				<tr>
+									<td align="left"></td>
+									<td align="left" colspan="2"><input type="text" id="checkMsg2" readonly="readonly" style="visibility: hidden; color: red; font-size: 9px; border: 0px;"></td>
+			    				</tr>
+			    				<tr>
+									<td style="height: 5px" colspan="3"></td>
+			    				</tr>
+							</tbody></table>
+						</td>
+    				</tr>
+    				<tr id="card3" style="display: none;">
+						<td colspan="2" align="center">
+							<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+								<tbody><tr>
+									<td width="20%"></td>
+									<td width="45%"></td>
+									<td></td>
+			    				</tr>
+			    				<tr>
+									<td colspan="3" align="center"><img src="/TPEBizWeb/images/B2C/img_gqkhdd.gif"></td>
+			    				</tr>
+			    				<tr>
+									<td style="height: 5px" colspan="3"></td>
+			    				</tr>
+			    				<tr>
+									<td align="center">卡号:</td>
+									<td align="left"><input name="cardNo3" id="cardNo3" size="15" class="input7" onchange="trimBank(this);checkSameCardExtend(document.getElementById('cardNo3').value, document.getElementById('pw3').value,document.getElementById('checkMsg3'),document.getElementById('cardUFlag3'));"></td>
+									<td></td>
+			    				</tr>
+			    				<tr>
+									<td align="center">密码:</td>
+									<td align="left"><input type="password" name="pw3" id="pw3" class="input7" onchange="trimBank(this);checkSameCard(document.getElementById('cardNo3').value, this.value,document.getElementById('checkMsg3'),document.getElementById('cardUFlag3'));"></td>
+									<td align="left"></td>
+			    				</tr>
+			    				<tr>
+									<td align="left"></td>
+									<td align="left" colspan="2"><input type="text" id="checkMsg3" readonly="readonly" style="visibility: hidden; color: red; font-size: 9px; border: 0px;"></td>
+			    				</tr>
+			    				<tr>
+									<td style="height: 5px" colspan="3"></td>
+			    				</tr>
+							</tbody></table>
+						</td>
+    				</tr>
+    				<tr id="card4" style="display: none;">
+						<td colspan="2" align="center">
+							<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+								<tbody><tr>
+									<td width="20%"></td>
+									<td width="45%"></td>
+									<td></td>
+			    				</tr>
+			    				<tr>
+									<td colspan="3" align="center"><img src="/TPEBizWeb/images/B2C/img_gqkhdd.gif"></td>
+			    				</tr>
+			    				<tr>
+									<td style="height: 5px" colspan="3"></td>
+			    				</tr>
+			    				<tr>
+									<td align="center">卡号:</td>
+									<td align="left"><input name="cardNo4" id="cardNo4" size="15" class="input7" onchange="trimBank(this);checkSameCardExtend(document.getElementById('cardNo4').value, document.getElementById('pw4').value,document.getElementById('checkMsg4'),document.getElementById('cardUFlag4'));"></td>
+									<td></td>
+			    				</tr>
+			    				<tr>
+									<td align="center">密码:</td>
+									<td align="left"><input type="password" name="pw4" id="pw4" class="input7" onchange="trimBank(this);checkSameCard(document.getElementById('cardNo4').value, this.value,document.getElementById('checkMsg4'),document.getElementById('cardUFlag4'));"></td>
+									<td align="left"></td>
+			    				</tr>
+			    				<tr>
+									<td align="left"></td>
+									<td align="left" colspan="2"><input type="text" id="checkMsg4" readonly="readonly" style="visibility: hidden; color: red; font-size: 9px; border: 0px;"></td>
+			    				</tr>
+			    				<tr>
+									<td style="height: 5px" colspan="3"></td>
+			    				</tr>
+							</tbody></table>
+						</td>
+    				</tr>
+    				<tr id="card5" style="display: none;">
+						<td colspan="2" align="center">
+							<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+								<tbody><tr>
+									<td width="20%"></td>
+									<td width="45%"></td>
+									<td></td>
+			    				</tr>
+			    				<tr>
+									<td colspan="3" align="center"><img src="/TPEBizWeb/images/B2C/img_gqkhdd.gif"></td>
+			    				</tr>
+			    				<tr>
+									<td style="height: 5px" colspan="3"></td>
+			    				</tr>
+			    				<tr>
+									<td align="center">卡号:</td>
+									<td align="left"><input name="cardNo5" id="cardNo5" size="15" class="input7" onchange="trimBank(this);checkSameCardExtend(document.getElementById('cardNo5').value, document.getElementById('pw5').value,document.getElementById('checkMsg5'),document.getElementById('cardUFlag5'));"></td>
+									<td></td>
+			    				</tr>
+			    				<tr>
+									<td align="center">密码:</td>
+									<td align="left"><input type="password" name="pw5" id="pw5" class="input7" onchange="trimBank(this);checkSameCard(document.getElementById('cardNo5').value, this.value,document.getElementById('checkMsg5'),document.getElementById('cardUFlag5'));"></td>
+									<td align="left"></td>
+			    				</tr>
+			    				<tr>
+									<td align="left"></td>
+									<td align="left" colspan="2"><input type="text" id="checkMsg5" readonly="readonly" style="visibility: hidden; color: red; font-size: 9px; border: 0px;"></td>
+			    				</tr>
+			    				<tr>
+									<td style="height: 5px" colspan="3"></td>
+			    				</tr>
+							</tbody></table>
+						</td>
+    				</tr>
+   				</tbody></table>
+	    	</td>
+	    </tr>
+	    
+        <tr id="submitButtonTr">
+             <td height="30" colspan="2" align="center" valign="bottom"><img src="/TPEBizWeb/images/B2C/btn_bxk-zc2.gif" width="88" height="23" border="0" onclick="submitForm()"></td>
+        </tr>
+         <tr><td height="20px"></td></tr>
+        <tr id="specialPrompt" style="display: none;"><td align="center"><div>
+		   		<div align="center" style="background-color: buttonshadow;">
+		   			<font color="red"><b>特别提示：</b></font><br>
+		   		</div>
+		   		<div style="border-bottom-style: solid; border-width: 1px; border-color: rgb(204,204,204); text-align: left;">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据保监会《关于人身保险伤残程度与保险金给付比例有关事项的通知》（保监发〔2013〕46 号）文件要求，
+						本卡单所附《人身保险残疾程度与保险金给付比例表》从2014年1月1日起废止，因此本卡单已于2014年1月1日已停售。
+						若您坚持激活此保险卡，则我司将按本手册所附保障计划及所涉及的保险条款承担保险责任。
+						若您希望按中国保险行业协会、中国法医学会于二零一三年六月八日联合发布的《人身保险残疾评定标准》进
+						行伤残赔付，请与我司人员联系办理退保手续，改投其他新的保险产品。<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本卡单应由被保险人自行上网激活，非被保险人本人上网操作激活的，视为被保险人的委托行为，后果由被保险人承担。
+		   		</div>
+		   		<div style="height: 10px;"></div>
+		   		<div>
+		   			<div align="center">
+		   				<img src="/TPEBizWeb/images/B2C/btn_bxk-zc2_1.gif" width="88" height="23" border="0" onclick="affirmSubmit();">
+		   				<img src="/TPEBizWeb/images/B2C/btn_bxk-zc2_2.gif" width="88" height="23" border="0" onclick="cancelSubmit();">
+		   			</div>
+		   		</div>
+		   </div><table width="98%">
+		   
+	   </table></td></tr><tr>
+	   </tr><tr id="specialPrompt1" style="display: none;"><td align="center"><div>
+		   		<div align="center" style="background-color: buttonshadow;">
+		   			<font color="red"><b>特别提示：</b></font><br>
+		   		</div>
+		   		<div style="border-bottom-style: solid; border-width: 1px; border-color: rgb(204,204,204); text-align: left;">
+　　						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;根据保监会《关于人身保险伤残程度与保险金给付比例有关事项的通知》（保监发〔2013〕46 号）文件要求，
+						《人身保险残疾程度与保险金给付比例表》（保监发〔1999〕237 号）已从2014年1月1日起废止。
+						若您所持手册所附伤残标准为《人身保险残疾程度与保险金给付比例表》，则自动转换为中国保险行业协会、
+						中国法医学会于二零一三年六月八日联合发布的《人身保险残疾评定标准》，我司将按前述新的伤残标准承担保险责任。<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;本卡单应由被保险人自行上网激活，非被保险人本人上网操作激活的，视为被保险人的委托行为，后果由被保险人承担。
+		   		</div>
+		   		<div style="height: 10px;"></div>
+		   		<div>
+		   			<div align="center">
+		   				<img src="/TPEBizWeb/images/B2C/btn_bxk-zc2_1.gif" width="88" height="23" border="0" onclick="affirmSubmit();">
+		   			</div>
+		   		</div>
+		   </div><table width="98%">
+		   
+	   </table></td></tr><tr>
+
+
+
+ 
+                      
+                       
+                      </tr></tbody></table></td>
+                    </tr>
+                </tbody></table></td>
+                <td width="1" bgcolor="#e1e1e1"></td>
+              </tr>
+            </tbody></table></td>
+          </tr>
+          	
+
+
+
+ <tr>
+            <td align="center"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tbody><tr>
+                <td width="1" bgcolor="#e1e1e1"></td>
+                <td align="left" valign="top"><table width="100%" align="left" border="0" cellspacing="0" cellpadding="0">
+                    <tbody><tr>
+                      <td align="right"><img src="/TPEBizWeb/images/B2C/img_logocig.jpg" width="40%" height="50"></td>
+                    </tr>
+                </tbody></table></td>
+                <td width="1" bgcolor="#e1e1e1"></td>
+              </tr>
+            </tbody></table></td>
+          </tr>
+        </tbody></table></td>
+        <td width="9" background="/TPEBizWeb/images/B2C/bg_ybx.gif">&nbsp;</td>
+      </tr>
+    </tbody></table></td>
+  </tr>
+</tbody></table>
+
+</body></html>

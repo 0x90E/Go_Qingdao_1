@@ -1,0 +1,611 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+  <title>Chrome调试工具developer tool技巧-网页前端图文教程-外唐视频教程网</title> 
+  <meta name="keywords" content="Chrome调试工具developer tool技巧,图文教程,外唐视频教程网" /> 
+  <meta name="description" content="Chrome的简洁、快速吸引了无数人，它的启动速度、页面解析速度都很快，同时得益于Google V8的快速，Javascript执行速度也飞快。而且它对HTML5和CSS3的支持也" /> 
+  <link rel="stylesheet" href="/template/edutube/images/common.css" type="text/css" media="all" /> 
+  <link rel="stylesheet" href="/template/edutube/images/news.css" type="text/css" media="all" /> 
+  <script>var SitePath='/',SiteAid='26',SiteTid='9',SiteId='19995';</script> 
+  <script type="text/javascript" src="/js/common.js"></script> 
+  <script type="text/javascript" src="/js/allin.js"></script> 
+  <script type="text/javascript" src="/js/jquery.js"></script> 
+  <script type="text/javascript" src="/js/jquery.lazyload.js"></script> 
+  <script type="text/javascript" src="/js/home.js"></script> 
+  <script type="text/javascript" src="/js/jquery.base.js"></script> 
+  <script type="text/javascript" src="/js/playclass.js"></script> 
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?acc422eb71b031d0d7ac253bf0cb2324";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+ </head> 
+ <body> 
+  <div class="head"> 
+   <div id="head" class="w950"> 
+    <div class="topbar"> 
+     <ul id="topnav"> 
+      <li class="even"><a href="/" title="Home">视频教程</a></li> 
+      <li><a target="_blank" href="/html/">图文教程</a></li> 
+      <li><a target="_blank" href="/XueYuan/">IT学院</a></li> 
+      <li><a target="_blank" href="http://xiazai.waitang.com/">资源下载</a></li> 
+     </ul> 
+     <ul id="topsearch" class="ui-nav"> 
+      <li class="nav-item drop-down" id="loginbarx"><a class="nav-link drop-title" id="login" href="/index.php?m=user-index.html"><i class="ui-icon sign-nav"></i>我的外唐网</a> 
+       <div class="drop-box login_box" id="login_box" style="left: 0px; top: 44px; display: none;">
+        <form id="loginform" onsubmit="return false;" action="/index.php?user-check" method="post">
+         <div class="formitem">
+          <label>用户：</label>
+          <input name="username" type="text" class="input" id="username" />
+         </div>
+         <div class="formitem">
+          <label>密码：</label>
+          <input name="userpass" type="password" class="input" id="userpass" />
+         </div>
+         <div class="formitem">
+          <a class="qq-login" href="/index.php?m=user-reg-ref-qqlogin.html"></a> 
+          <input class="formbutton" id="loginbtn" type="submit" value="登 录" />
+         </div>
+         <div class="formitem">
+          <a title="忘记密码" class="forgotpass" href="/index.php?m=user-findpass.html">忘记密码?</a> 
+          <a class="reg-btn" href="/index.php?m=user-reg.html" target="_blank">还没有账号?</a>
+         </div>
+        </form>
+       </div> </li> 
+      <li class="nav-item drop-down" id="nav-looked"> <a class="nav-link drop-title" target="_self"><i class="ui-icon looked-nav"></i>播放记录</a> 
+       <div class="drop-box" style="display: none;">
+        <div class="looked-list"> 
+         <p><a class="close-his" target="_self" href="javascript:;">关闭</a> <a href="javascript:;" id="emptybt" data="1" target="_self">清空全部播放记录</a></p> 
+         <ul class="highlight" id="playhistory"></ul>
+         <div class="his-todo" id="morelog" style="display: none;"></div> 
+         <div class="his-todo" id="his-todo">
+          <a target="_blank" class="show-login-dialog" href="/index.php?m=user-login.html">登录</a>后将能永久保存播放记录
+          <em>|</em>
+          <a target="_blank" href="/index.php?m=user-reg.html">免费注册</a>
+         </div>
+        </div> 
+        <script type="text/javascript">PlayHistoryObj.viewPlayHistory('playhistory');</script> 
+       </div></li> 
+     </ul> 
+    </div> 
+    <div class="c"></div> 
+   </div> 
+  </div> 
+  <div id="wrap"> 
+   <div id="Header"> 
+    <div class="nav"> 
+     <div class="logo">
+      <a href="/"></a>
+     </div> 
+     <div class="navall"> 
+      <div id="search"> 
+       <div class="one_sousuo"> 
+        <div class="one_sousuo_01">
+         <input value="请输入关键词" onfocus="javascript:if(this.value=='请输入关键词'){this.value='';this.style.color='#000'}" onblur="javascript:if(this.value==''){this.value='请输入关键词';this.style.color='#7B7C7D'}" id="ytsearch_input" name="q" autocomplete="off" type="text" onkeydown="entersearch()" />
+        </div> 
+        <div class="one_sousuo_02"> 
+         <input type="hidden" value="/search/?q=" name="site" id="tsearchsite" /> 
+         <div id="tSelectKey" class="sub_left"> 
+          <div id="select_area_yt" class="select_box"> 
+           <span id="selected_yt" class="search_site">所有内容</span> 
+           <div id="select_main_yt" class="select_list"> 
+            <a title="所有内容">所有内容</a> 
+            <a title="视频教程">视频教程</a>
+            <a title="图文教程">图文教程</a> 
+            <a title="资源下载">资源下载</a>
+            <a title="学友论坛">学友论坛</a> 
+           </div> 
+          </div> 
+         </div> 
+        </div> 
+        <div class="one_sousuo_03" onclick="searchs()"></div>
+       </div> 
+      </div> 
+      <div class="SearchRight"> 
+       <li><a target="_blank" href="http://shop.waitang.com/">电子书大全</a></li> 
+       <li><a target="_blank" href="/artlist/10.html">玩转手机</a></li> 
+       <li><a target="_blank" href="/PaiHang/ZuiXin.html">最新教程</a></li> 
+      </div> 
+     </div> 
+     <ul class="navtxt"> 
+      <li class="narrow"><a id="TabIndex" href="/" target="_self">首页</a></li> 
+      <li><a id="TabVideo" href="/index.html" target="_self">视频教程</a></li> 
+      <li><a id="TabNews" href="/html/" target="_self">图文教程</a></li> 
+      <li><a id="TabDown" href="http://xiazai.waitang.com/" target="_self">资料下载</a></li> 
+      <li class="narrow"><a id="TabTopic" href="/zhuanti/">专题</a></li> 
+      <li><a id="TabOffice" href="/office/">办公软件</a></li> 
+      <li><a id="TabClass" href="/zixue/" target="_blank">教程专辑</a></li> 
+      <li><a id="TabWeb" href="http://www.waitang.com/xueyuan/" target="_self">网页开发</a></li> 
+      <li class="narrow"><a id="TabGBook" href="/liuyan/">留言</a></li> 
+      <li><a id="TabMall" href="/kaidian/" target="_self">网店学院</a></li> 
+     </ul> 
+    </div> 
+   </div> 
+  </div> 
+  <!--Header End--> 
+  <script lang="Javascript">
+function searchs() {
+    var input = document.getElementById('ytsearch_input');
+    if (input.value == '请输入关键词') {
+        input.value = '';
+        input.focus();
+        input.style.color = '#000';
+        return false;
+    }
+    window.location.href = document.getElementById('tsearchsite').value + input.value;
+    return true;
+}
+
+// 按Enter键,执行事件  
+function entersearch(){  
+    var event = window.event || arguments.callee.caller.arguments[0];  
+    if (event.keyCode == 13)  
+    {  
+        searchs();  
+    }  
+}  
+
+(function NTES_Guide() {
+    function $get(id) {
+        return document.getElementById(id);
+    }
+
+    function clicktselect(e) {
+        e = e || window.event;
+        e.cancelBubble = true;
+        var name = this.innerHTML;
+        var txt = document.createTextNode(name);
+        selected.removeChild(selected.firstChild);
+        selected.appendChild(txt);
+        select_main.style.display = "none";
+        var title = this.getAttribute("title");
+        switch (title) {
+		case '所有内容':
+            document.getElementById('tsearchsite').value = "/search/?q=";
+            break;
+        case '视频教程':
+            document.getElementById('tsearchsite').value = "/index.php?m=vod-search-tag-";
+            break;
+        case '图文教程':
+            document.getElementById('tsearchsite').value = "/index.php?m=art-search-tag-";
+            break;
+        case '资源下载':
+            document.getElementById('tsearchsite').value = "http://xiazai.waitang.com/Search.asp?searchword=";
+            break;
+        }
+    }
+
+    function at_mouseover() {
+        this.className = "active";
+    }
+    function at_mouseout() {
+        this.className = "";
+    }
+    var select_area = $get("select_area_yt"),
+    selected = $get("selected_yt"),
+    select_main = $get("select_main_yt"),
+    select_list = select_main.getElementsByTagName("a"),
+    len = select_list.length;
+    select_area.onclick = select_main.onmouseover = function() {
+        select_main.style.display = "block";
+    }
+    select_main.onmouseout = function() {
+        select_main.style.display = "none";
+    }
+
+    for (var i = 0; i < len; i++) {
+        select_list[i].onclick = clicktselect;
+        select_list[i].onmouseover = at_mouseover;
+        select_list[i].onmouseout = at_mouseout;
+    }
+})();
+</script> 
+  <!-- ChannelMenu start--> 
+  <div id="ChannelMenu"> 
+   <div class="Shell"> 
+    <div class="Tab"> 
+     <ul id="nbaNav" class="topnav"> 
+      <li id="Menu1"><a href="/channel/1.html"><span>电脑教程</span></a></li> 
+      <li id="Menu2"><a href="/channel/2.html"><span>平面设计</span></a></li> 
+      <li id="Menu3"><a href="/channel/3.html"><span>三维设计</span></a></li> 
+      <li id="Menu4"><a href="/channel/4.html"><span>多媒体</span></a></li> 
+      <li id="Menu5"><a href="/channel/5.html"><span>办公软件</span></a></li> 
+      <li id="Menu6"><a href="/channel/6.html"><span>开店教程</span></a></li> 
+      <li id="Menu7"><a href="/channel/7.html"><span>编程开发</span></a></li> 
+      <li id="Menu8"><a href="/channel/8.html"><span>建站教程</span></a></li> 
+      <li class="Current MyAlipay" id="Menu9"><a href="/channel/9.html"><span>网页前端</span></a></li> 
+      <li id="Menu10"><a href="/channel/10.html"><span>手机频道</span></a></li> 
+      <li id="Menu11"><a href="/channel/11.html"><span>网络热点</span></a></li> 
+      <li id="Menu12"><a href="/channel/12.html"><span>其他教程</span></a></li> 
+     </ul> 
+     <script language="javascript">
+	var getEls = document.getElementById('nbaNav').getElementsByTagName("li");
+		for (var i=0; i<getEls.length; i++) {
+			getEls[i].onmouseover=function() {this.className+="shownav";}
+			getEls[i].onmouseout=function() {this.className=this.className.replace("shownav", "");}
+		}
+	</script> 
+    </div> 
+   </div> 
+  </div> 
+  <!-- ChannelMenu ending --> 
+  <!-- ProductMenu start--> 
+  <div id="ProductMenu"> 
+   <div class="Shell"> 
+    <div class="Tab"> 
+     <ul> 
+     </ul> 
+    </div> 
+   </div> 
+  </div> 
+  <!-- ProductMenu ending --> 
+  <script type="text/javascript" src="http://cbjs.baidu.com/js/m.js"></script> 
+  <div class="clear blank5"></div> 
+  <div class="ad980">
+   <script type="text/javascript">BAIDU_CLB_fillSlot("78377");</script>
+  </div> 
+  <div class="clear blank5"></div> 
+  <div class="main"> 
+   <div class="tit">
+    您的位置：&nbsp;
+    <a href="/">外唐教程网</a>&nbsp;&gt;&nbsp;
+    <a href="/channel/9.html">网页前端</a>&nbsp;&nbsp;&raquo;&nbsp;&nbsp;
+    <a href="/article/19995.html">Chrome调试工具developer tool技巧</a>
+   </div> 
+   <div class="inner"> 
+    <div class="a"> 
+     <h1>Chrome调试工具developer tool技巧</h1> 
+     <div class="addi2">
+       时间：2015-07-01&nbsp;&nbsp;来源：www.WaiTang.com&nbsp;&nbsp;作者：外唐教程网&nbsp;&nbsp;来源：&nbsp;&nbsp;查看：
+      <span id="infoReadNum"><em id="hits">加载中</em><script>MAC.Hits("art","19995")</script></span>&nbsp;&nbsp; 
+     </div> 
+     <div class="clear"></div> 
+    </div> 
+    <div class="clear"></div> 
+    <div class="b"> 
+     <!-- <div class="note"><b>内容摘要：</b></div> --> 
+     <div id="newsContent"> 
+      <div style="float:right;margin-left: 10px;margin-bottom:10px;"> 
+       <script type="text/javascript" language="javascript">G300x250();</script> 
+      </div> 
+      <p>Chrome的简洁、快速吸引了无数人，它的启动速度、页面解析速度都很快，同时得益于Google V8的快速，Javascript执行速度也飞快。而且它对HTML5和CSS3的支持也完善，html类的富客户端应用Chrome上无论是流畅性还是呈现的效果，都是比较出色的，这对于开发者，特别是对于那些喜欢研究前沿技术的前端开发者来说，是很重要的。</p>
+      <h2 id="h2-0">样式调试</h2>
+      <p><span>普通元素</span>：右键选择审查元素即可查看当前dom元素的样式</p>
+      <p><img class="lazyload" data-original="http://www.xuanfengge.com/wp-content/uploads/2013/11/hbjh.jpg" src="http://www.xuanfengge.com/wp-content/uploads/2013/11/hbjh.jpg" alt="hbjh" width="676" height="125" /></p>
+      <p><span>伪类样式调试</span>：伪类样式一般不显示出来，比如像调试元素hover的样式怎么办，看图勾选即可</p>
+      <p><img class="lazyload" data-original="http://www.xuanfengge.com/wp-content/uploads/2013/11/sdfg.jpg" src="http://www.xuanfengge.com/wp-content/uploads/2013/11/sdfg.jpg" alt="sdfg" width="201" height="89" /></p>
+      <p><span>查看元素盒模型</span>：盒模型对于表现的分析还是挺重要的，而且能看position的各个参数（如果设置了的话）</p>
+      <p><img class="lazyload" data-original="http://www.xuanfengge.com/wp-content/uploads/2013/11/zxf.jpg" src="http://www.xuanfengge.com/wp-content/uploads/2013/11/zxf.jpg" alt="zxf" width="185" height="243" /></p>
+      <p>&nbsp;</p>
+      <p><span>颜色表示转换</span>：用颜色的名称;以十六进制数;以RGB整数设置颜色;以RGB百分数设置颜色。Shift+click即可切换另一格式。或者直接设置使用哪一种格式（点击右上角齿轮状的图标）。</p>
+      <p><img class="lazyload" src="http://www.xuanfengge.com/wp-content/uploads/2013/11/szdf.jpg" alt="szdf" width="295" height="66" /><img class="alignnone size-full wp-image-2957" data-original="http://www.xuanfengge.com/wp-content/uploads/2013/11/sdf2.jpg" src="data:image/gif;base64,R0lGODlhAQABAIAAAOHh4QAAACH5BAAAAAAALAAAAAABAAEAQAICRAEAOw==" alt="sdf" width="178" height="109" /></p>
+      <p>&nbsp;</p>
+      <h2 id="h2-1">命令断点调试</h2>
+      <p>使用“debugger;”语句在代码中加入强制断点。</p>
+      <p>需要断点条件吗？只需将它包装它在IF子句中：</p>
+      <div id="crayon-5590185819699071106617" class="crayon-syntax crayon-theme-familiar crayon-font-consolas crayon-os-pc print-yes notranslate crayon-wrapped" data-settings=" no-popup minimize scroll-mouseover disable-anim wrap" style="margin: 12px 0px; padding: 0px; font-stretch: inherit; vertical-align: baseline; box-sizing: border-box; width: 672px; float: none; clear: both; height: auto; border: 1px !important; text-shadow: none !important; overflow: hidden !important; position: relative !important; direction: ltr !important;">
+       <div class="crayon-plain-wrap" style="border: 0px; font-stretch: inherit; vertical-align: baseline; margin: 0px !important; padding: 0px !important; height: auto !important; background-image: initial; background-attachment: initial; background-size: initial; background-origin: initial; background-clip: initial; background-position: 0px 50%; background-repeat: initial;">
+        <textarea class="crayon-plain print-no" data-settings="dblclick" readonly="readonly" style="width: 672px; overflow: hidden; padding: 0px 5px; margin: 0px; height: 47px; position: absolute; opacity: 0; border: 0px; box-sizing: border-box; box-shadow: none; border-radius: 0px; -webkit-box-shadow: none; word-wrap: normal; resize: none; tab-size: 4; z-index: 0; background-image: initial; background-attachment: initial; background-size: initial; background-origin: initial; background-clip: initial; background-position: initial; background-repeat: initial;"></textarea>
+       </div>
+       <div class="crayon-main" style="margin: 0px; padding: 0px; border: 0px; font-stretch: inherit; vertical-align: baseline; width: 672px; overflow: hidden; position: relative; z-index: 1; background-image: initial; background-attachment: initial; background-size: initial; background-origin: initial; background-clip: initial; background-position: 0px 50%; background-repeat: initial;">
+        <table class="crayon-table   " style="margin: 0px auto; border: none; font-stretch: inherit; vertical-align: baseline; display: block; overflow: auto; word-break: normal; border-collapse: collapse !important; padding: 0px !important; border-spacing: 0px !important; width: auto !important; background-image: none !important; background-attachment: initial !important; background-size: initial !important; background-origin: initial !important; background-clip: initial !important; background-position: initial !important; background-repeat: initial !important;">
+         <tbody>
+          <tr class="crayon-row" style="font-stretch: inherit; margin: 0px !important; padding: 0px !important; border: 1px solid rgb(245, 245, 245) !important; vertical-align: top !important; background-image: initial; background-attachment: initial; background-size: initial; background-origin: initial; background-clip: initial; background-position: 0px 50%; background-repeat: initial;">
+           <td class="crayon-nums " data-settings="show" style="border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; font-stretch: inherit; margin: 0px !important; padding: 0px 5px 0px 0px !important; border-right-width: 3px !important; border-right-style: solid !important; border-right-color: rgb(108, 226, 108) !important; vertical-align: top !important; background-image: initial; background-attachment: initial; background-size: initial; background-origin: initial; background-clip: initial; background-position: 0px 50%; background-repeat: initial;">
+            <div class="crayon-nums-content" style="margin: 0px; padding: 0px; border: 0px; font-stretch: inherit; vertical-align: baseline; background-image: initial; background-attachment: initial; background-size: initial; background-origin: initial; background-clip: initial; background-position: 0px 50%; background-repeat: initial;">
+             <div class="crayon-num" data-line="crayon-5590185819699071106617-1" style="margin: 0px; padding: 0px 5px; border: 0px; font-stretch: inherit; vertical-align: baseline; height: 15px; background-image: initial; background-attachment: initial; background-size: initial; background-origin: initial; background-clip: initial; background-position: 0px 50%; background-repeat: initial;">
+              1
+             </div>
+             <div class="crayon-num crayon-striped-num" data-line="crayon-5590185819699071106617-2" style="margin: 0px; padding: 0px 5px; border: 0px; font-stretch: inherit; vertical-align: baseline; height: 15px; background-image: initial; background-attachment: initial; background-size: initial; background-origin: initial; background-clip: initial; background-position: 0px 50%; background-repeat: initial;">
+              2
+             </div>
+             <div class="crayon-num" data-line="crayon-5590185819699071106617-3" style="margin: 0px; padding: 0px 5px; border: 0px; font-stretch: inherit; vertical-align: baseline; height: 15px; background-image: initial; background-attachment: initial; background-size: initial; background-origin: initial; background-clip: initial; background-position: 0px 50%; background-repeat: initial;">
+              3
+             </div>
+            </div></td>
+           <td class="crayon-code" style="border: 0px; font-stretch: inherit; width: 645px; margin: 0px !important; padding: 0px !important; vertical-align: top !important; background-image: initial; background-attachment: initial; background-size: initial; background-origin: initial; background-clip: initial; background-position: 0px 50%; background-repeat: initial;">
+            <div class="crayon-pre" style="margin: 0px; padding: 0px; font-stretch: inherit; vertical-align: baseline; overflow: visible; border: none !important; background-image: none !important; background-attachment: initial !important; background-size: initial !important; background-origin: initial !important; background-clip: initial !important; background-position: initial !important; background-repeat: initial !important;">
+             <div class="crayon-line" id="crayon-5590185819699071106617-1" style="margin: 0px; padding: 0px 5px; border: 0px; font-stretch: inherit; vertical-align: baseline; height: inherit; background-image: initial; background-attachment: initial; background-size: initial; background-origin: initial; background-clip: initial; background-position: 0px 50%; background-repeat: initial;">
+              <span class="crayon-st" style="margin: 0px; padding: 0px; border: 0px; font-stretch: inherit; vertical-align: baseline; height: inherit;">if</span>
+              <span class="crayon-h" style="margin: 0px; padding: 0px; border: 0px; font-stretch: inherit; vertical-align: baseline; height: inherit;"> </span>
+              <span class="crayon-sy" style="margin: 0px; padding: 0px; border: 0px; font-stretch: inherit; vertical-align: baseline; height: inherit;">(</span>
+              <span class="crayon-v" style="margin: 0px; padding: 0px; border: 0px; font-stretch: inherit; vertical-align: baseline; height: inherit;">somethingHappens</span>
+              <span class="crayon-sy" style="margin: 0px; padding: 0px; border: 0px; font-stretch: inherit; vertical-align: baseline; height: inherit;">)</span>
+              <span class="crayon-h" style="margin: 0px; padding: 0px; border: 0px; font-stretch: inherit; vertical-align: baseline; height: inherit;"> </span>
+              <span class="crayon-sy" style="margin: 0px; padding: 0px; border: 0px; font-stretch: inherit; vertical-align: baseline; height: inherit;">{</span>
+             </div>
+             <div class="crayon-line crayon-striped-line" id="crayon-5590185819699071106617-2" style="margin: 0px; padding: 0px 5px; border: 0px; font-stretch: inherit; vertical-align: baseline; height: inherit; background-image: initial !important; background-attachment: initial !important; background-size: initial !important; background-origin: initial !important; background-clip: initial !important; background-position: initial !important; background-repeat: initial !important;">
+              <span class="crayon-h" style="margin: 0px; padding: 0px; border: 0px; font-stretch: inherit; vertical-align: baseline; height: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+              <span class="crayon-v" style="margin: 0px; padding: 0px; border: 0px; font-stretch: inherit; vertical-align: baseline; height: inherit;">debugger</span>
+              <span class="crayon-sy" style="margin: 0px; padding: 0px; border: 0px; font-stretch: inherit; vertical-align: baseline; height: inherit;">;</span>
+             </div>
+             <div class="crayon-line" id="crayon-5590185819699071106617-3" style="margin: 0px; padding: 0px 5px; border: 0px; font-stretch: inherit; vertical-align: baseline; height: inherit; background-image: initial; background-attachment: initial; background-size: initial; background-origin: initial; background-clip: initial; background-position: 0px 50%; background-repeat: initial;">
+              <span class="crayon-sy" style="margin: 0px; padding: 0px; border: 0px; font-stretch: inherit; vertical-align: baseline; height: inherit;">}</span>
+             </div>
+            </div></td>
+          </tr>
+         </tbody>
+        </table>
+       </div>
+      </div>
+      <p>只需记住在上线前移除，另外debugger在IE下会报错。</p>
+      <p>&nbsp;</p>
+      <h2>JS代码格式化</h2>
+      <p>js 文件在上线前一般都会进行压缩, 压缩的 javascript 为一行式几乎没有可读性, 几乎无法设定断点. 在 Sources 面板下面（先在Elements打开某个js）有个 Pretty print 按钮(这种符号 {}), 点击会将压缩 js 文件格式化缩进规整的文件, 这时候在设定断点可读性就大大提高了。一秒钟由一行变成人类可读的多行式代码，再也不用粘贴到sublime再Jsformt调整格式了。</p>
+      <p><img class="lazyload" data-original="http://www.xuanfengge.com/wp-content/uploads/2013/11/asfr.jpg" src="http://www.xuanfengge.com/wp-content/uploads/2013/11/asfr.jpg" alt="asfr" width="351" height="137" /></p>
+      <p>Chrome 32 的开发者工具支持 CSS 格式化功能&nbsp;：<a href="http://t.cn/zRUVHXc" target="_blank" rel="nofollow">http://t.cn/zRUVHXc</a></p>
+      <p>&nbsp;</p>
+      <h2 id="h2-3">查看元素绑定的事件</h2>
+      <p>在 Elements 面板, 选中一个元素, 然后在右侧的 Event Listeners（被隐藏时点击箭头可展开） 下面会按类型出这个元素相关的事件, 也就是在事件捕获和冒泡阶段会经过的这个节点的事件。</p>
+      <p>在 Event Listeners 右侧下拉按钮中可以选择 Selected Node Only 只列出这个节点上的事件展开事件后会显示出这个事件是在哪个文件中绑定的, 点击文件名会直接跳到绑定事件处理函数所在行, 如果 js 是压缩了的, 可以先 Pretty print 下, 然后再查看绑定的事件。</p>
+      <p><img class="lazyload" data-original="http://www.xuanfengge.com/wp-content/uploads/2013/11/sdg.jpg" src="http://www.xuanfengge.com/wp-content/uploads/2013/11/sdg.jpg" alt="sdg" width="744" height="191" /></p>
+      <h2 id="h2-4">Ajax 时中断</h2>
+      <p>在 Scripts 面板右侧有个 XHR Breakpoints, 点右侧的 + 会添加一个 xhr 断点, 断点是根据 xhr 的 url 匹配中断的, 如果不写匹配规则会在所有 ajax, 这个匹配只是简单的字符串查找, 发送前中断, 在中断后再在 Call Stack 中查看时那个地方发起的 ajax 请求。<br /><img class="lazyload" data-original="http://www.xuanfengge.com/wp-content/uploads/2013/11/sdg-2.jpg" src="http://www.xuanfengge.com/wp-content/uploads/2013/11/sdg-2.jpg" alt="sdg (2)" width="201" height="65" /></p>
+      <p>&nbsp;</p>
+      <h2 id="h2-5">页面事件中断</h2>
+      <p>除了给设定常规断点外, 还可以在某一特定事件发生时中断(不针对元素) , 在 Scripts 面板右侧, 有个 Event Listener Breakpoints, 这里列出了支持的所有事件, 不仅 click, keyup 等事件, 还支持 Timer(在 setTimeout setInterval 处理函数开始执行时中断), onload, scroll 等事件。</p>
+      <p><img class="lazyload" data-original="http://www.xuanfengge.com/wp-content/uploads/2013/11/dfh.jpg" src="http://www.xuanfengge.com/wp-content/uploads/2013/11/dfh.jpg" alt="dfh" width="744" height="302" /></p>
+      <h2 id="h2-6">Javascript 异常时中断</h2>
+      <p>Pretty print 左侧的按钮是开启 js 抛异常时中断的开关, 有两种模式：在所有异常处中断, 在未捕获的异常处中断. 在异常处中断后就可以查看为什么抛出异常了</p>
+      <p><img class="lazyload" data-original="http://www.xuanfengge.com/wp-content/uploads/2013/11/sdfg-2.jpg" src="http://www.xuanfengge.com/wp-content/uploads/2013/11/sdfg-2.jpg" alt="sdfg (2)" width="61" height="24" /></p>
+      <p>&nbsp;</p>
+      <p>&nbsp;</p>
+      <h2 id="h2-7">所有 js 文件中搜索&amp;查找 js 函数定义</h2>
+      <ul>
+       <li>在 chrome developer tool 打开的情况下, 按 ctrl + shift + F, 在通过 js 钩子查找代码位置时很有用</li>
+       <li>查找函数定义: ctrl + shift + 0 (在 Source panel 下)</li>
+       <li>查找文件: ctrl + o (在 Source &nbsp;panel 下)</li>
+      </ul>
+      <p><img class="lazyload" data-original="http://www.xuanfengge.com/wp-content/uploads/2013/11/qwerwqr.jpg" src="http://www.xuanfengge.com/wp-content/uploads/2013/11/qwerwqr.jpg" alt="qwerwqr" width="1068" height="523" /></p>
+      <ul>
+       <li>更多快捷键: 在 chrome developer tool 中点击右下角设置图标，选择shortcuts</li>
+      </ul>
+      <p>&nbsp;</p>
+      <p><img class="lazyload" data-original="http://www.xuanfengge.com/wp-content/uploads/2013/11/fghf.jpg" src="http://www.xuanfengge.com/wp-content/uploads/2013/11/fghf.jpg" alt="fghf" width="1341" height="517" /></p>
+      <h2>command line api</h2>
+      <ul>
+       <li>$(id_selector) 这个与页面是否有 jQuery 无关</li>
+       <li>$$(css_selector)</li>
+       <li>$0, $1, $2, $3, $4
+        <ul>
+         <li style="margin: 0px; padding: 0px; border: 0px; font-stretch: inherit; vertical-align: baseline; list-style: circle inside; max-width: 660px;">Elements 面板中最近选中的 5 个元素, 最后选择的是 $0</li>
+         <li style="margin: 0px; padding: 0px; border: 0px; font-stretch: inherit; vertical-align: baseline; list-style: circle inside; max-width: 660px;">这个 5 个变量时先进先出的</li>
+        </ul></li>
+       <li>copy(str) 复制 str 到剪切板, 在断点时复制变量时有用</li>
+       <li>monitorEvents(object[, types])/unmonitorEvents(object[, types])
+        <ul>
+         <li style="margin: 0px; padding: 0px; border: 0px; font-stretch: inherit; vertical-align: baseline; list-style: circle inside; max-width: 660px;">当 object 上 types 事件发生时在 console 中输出 event 对象</li>
+        </ul></li>
+       <li>更多 console api 请 console.log(console) 或&nbsp;<a href="http://getfirebug.com/wiki/index.php/Console_API#console.trace.28.29" target="_blank" rel="nofollow">点击</a></li>
+       <li>更多 command line api&nbsp;<a href="http://getfirebug.com/wiki/index.php/Command_Line_API" target="_blank" rel="nofollow">点击</a></li>
+      </ul>
+      <p><img class="lazyload" data-original="http://www.xuanfengge.com/wp-content/uploads/2013/11/sdgsr.jpg" src="http://www.xuanfengge.com/wp-content/uploads/2013/11/sdgsr.jpg" alt="sdgsr" width="1285" height="457" /></p>
+      <h>
+       实时修改 js 代码生效
+       <ul>
+        <li>页面外部 js 文件在 Scripts 面板中可以直接修改, 改完后按 ctrl + S 保存, 会立即生效，一般用这个实时的在代码里插 console.log</li>
+        <li>注意
+         <ul>
+          <li>经测试不支持 html 页面中 js 修改</li>
+          <li>经过 Pretty print 格式化的脚本不支持修改</li>
+         </ul></li>
+       </ul>
+       <h2>console 中执行的代码可断点</h2>
+       <p>在 console 中输入代码的最后一行加上 //@ sourceURL=filename.js, 会在 Scripts 面板中有个叫 filename.js 的文件, 然后他就和外部 js 文件一样了，又可以断点调试了（如果没发现，可以再调试面板中CTRL+O，输入文件名即可）。</p>
+       <p><img class="lazyload" src="http://www.xuanfengge.com/wp-content/uploads/2013/11/asfgrg.jpg" alt="asfgrg" width="475" height="130" /><img class="alignnone size-full wp-image-2954" data-original="http://www.xuanfengge.com/wp-content/uploads/2013/11/sdgsdf.jpg" src="data:image/gif;base64,R0lGODlhAQABAIAAAOHh4QAAACH5BAAAAAAALAAAAAABAAEAQAICRAEAOw==" alt="sdgsdf" width="570" height="141" /></p>
+       <p>&nbsp;</p>
+       <h2 id="h2-11">调用栈分析</h2>
+       <p>这个非常常用，Sources 面板下右上角的那一部分，可以试试查看变量的内容，结合断点调试最佳。方法是在source面板中，选择某个变量，右键选择“Add to watch”。（点击JS代码的左侧行数可添加和删除断点）</p>
+       <p><img class="lazyload" data-original="http://www.xuanfengge.com/wp-content/uploads/2013/11/jhg.jpg" src="http://www.xuanfengge.com/wp-content/uploads/2013/11/jhg.jpg" alt="jhg" width="1366" height="631" /></p>
+       <h2>分析 HTTP 请求</h2>
+       <p>Network 面板下列出了所有的 HTTP 请求，可以很方便的查看请求内容、HTTP 头、请求时间等信息。常用于分析ajax请求等<br /><img class="lazyload" data-original="http://www.xuanfengge.com/wp-content/uploads/2013/11/sdgerg.jpg" src="http://www.xuanfengge.com/wp-content/uploads/2013/11/sdgerg.jpg" alt="sdgerg" width="1366" height="464" /></p>
+       <h2 id="h2-13">寻找bug</h2>
+       <p>以线上代码出 Bug 为例。一般上手第一步是使用代码格式化功能将被压缩的线上代码展开，然后<span>开启自动异常断点</span>，尝试重现 Bug。当 Bug 出现时代码会自动断到出错的那一行。然后通过调用栈分析结合<span>控制台</span>找到最开始出错的那个函数上。一般的 Bug 到这里就算找出来了，但是如果这个 Bug 是在事件回调函数或者 XHR 回调函数上，就得结合 DOM 事件断点和 XHR 断点 进一步往上找哪个函数出错。另外，如果是发给服务器请求没有得到正确的 response，可以通过 Network 面板查看请求的参数、Cookie、HTTP 头是否有误。<br />另外，还可以通过 Charles/Nginx/Fiddler 等工具将远程 js 代码映射到自己的电脑上，免去了代码格式化的麻烦，还可以直接编辑。</p>
+       <p>&nbsp;</p>
+       <h2>关于性能</h2>
+       <p><span>Profiles</span></p>
+       <p>可以记录JS函数和CSS选择器对CPU的占用，以及内存占用时间线。用来找出影响性能的瓶颈非常有帮助。</p>
+       <p><span>&nbsp;Timeline</span></p>
+       <p>可以记录浏览器渲染的每一帧里发生了什么，从js执行，css reflow到画面repaint，各自占用多少时间。可以帮助你定位是什么导致动态效果的帧数不流畅。</p>
+       <p>&nbsp;</p>
+       <h2>关于Chrome版本</h2>
+       <p>chrome canary （开发板，最新）：&nbsp;&nbsp;<a href="https://www.google.com/intl/zh-CN/chrome/browser/canary.html" target="_blank" rel="nofollow">https://www.google.com/intl/zh-CN/chrome/browser/canary.html</a></p>
+       <p>chrome（稳定版，常用）：<a href="http://www.google.cn/intl/zh-CN/chrome/" target="_blank" rel="nofollow">http://www.google.cn/intl/zh-CN/chrome/</a></p>
+       <p>&nbsp;</p>
+       <h2>其他功能</h2>
+       <h3 id="h3-17">开发者工具中调试修改js或者css同时自动保存文件</h3>
+       <p><a href="http://isux.tencent.com/chrome-workspace.html" target="_blank" rel="nofollow">http://isux.tencent.com/chrome-workspace.html</a></p>
+       <h3 id="h3-18">Chrome插件开发中文文档</h3>
+       <p><a href="http://open.chrome.360.cn/extension_dev/overview.html" target="_blank" rel="nofollow">http://open.chrome.360.cn/extension_dev/overview.html</a></p>
+       <p>&nbsp;</p>
+       <p><span>参考链接</span></p>
+       <ul>
+        <li><a href="https://developers.google.com/chrome-developer-tools/docs/overview" target="_blank" rel="nofollow">chrome developer tool doc</a></li>
+        <li><a href="http://ued.taobao.org/blog/?p=5534" target="_blank" rel="nofollow">http://ued.taobao.org/blog/?p=5534</a></li>
+       </ul>
+      </h> 
+     </div> 
+     <br /> 
+     <div class="tools"> 
+      <div class="post-tag">
+       <strong>标签：</strong>
+       <a target="_blank" href="/index.php?m=vod-search-tag-developer">developer</a>&nbsp;
+       <a target="_blank" href="/index.php?m=vod-search-tag-Google">Google</a>&nbsp;
+       <a target="_blank" href="/index.php?m=vod-search-tag-Chrome">Chrome</a>&nbsp;
+       <a target="_blank" href="/index.php?m=vod-search-tag-%E5%BC%80%E5%8F%91%E8%80%85">开发者</a>&nbsp;
+       <a target="_blank" href="/index.php?m=vod-search-tag-HTML5">HTML5</a>&nbsp; 
+      </div> 
+      <div class="post-digg">
+       <div class="digg_artup" onmouseout="this.style.backgroundPosition='-189px 0'" onmouseover="this.style.backgroundPosition='0 0'">
+        <div class="digg_bar">
+         <div id="digg_artup_img"></div>
+        </div>
+        <span id="digg_artup_num"><span id="digg_artup_sp">0%</span> (<span id="digg_artup_val">0</span>)</span>
+       </div>
+       <div class="digg_artdown" onmouseout="this.style.backgroundPosition='-378px 0'" onmouseover="this.style.backgroundPosition='-567px 0'">
+        <div class="digg_bar">
+         <div id="digg_artdown_img"></div>
+        </div>
+        <span id="digg_artdown_num"><span id="digg_artdown_sp">0%</span> (<span id="digg_artdown_val">0</span>)</span>
+       </div>
+      </div> 
+     </div> 
+     <div class="clear blank10"></div> 
+     <div class="bp123_zz"> 
+      <!-- Baidu Button BEGIN --> 
+      <div id="bdshare" class="bdshare_t bds_tools get-codes-bdshare">
+       <a class="bds_baidu" title="分享到百度搜藏" href="#">百度搜藏</a> 
+       <a class="bds_qq" title="分享到QQ收藏" href="#">QQ书签</a> 
+       <a class="bds_qzone" title="分享到QQ空间" href="#">QQ空间</a> 
+       <a class="bds_tqq" title="分享到腾讯微博" href="#">腾讯微博</a> 
+       <a class="bds_tsina" title="分享到新浪微博" href="#">新浪微博</a> 
+       <a class="bds_renren" title="分享到人人网" href="#">人人网</a> 
+       <span class="bds_more">更多</span> 
+       <a class="shareCount" href="#" title="累计分享1次">1</a> 
+      </div> 
+      <!-- Baidu Button END --> 
+     </div> 
+    </div> 
+    <div class="clear"></div> 
+    <div class="c" style=" border-top:1px #cccccc dotted;  border-bottom:1px #cccccc dotted; ">
+     <em>上一篇:<a href="/article/19994.html">余额宝等货币基金收益率为何会集体连续下跌</a></em> 
+     <br />
+     <em>下一篇:<a href="/article/19996.html">我们喜欢穿越：最好用的免费VPN|收费VPN软件集合 翻&amp;墙软件 免费Vpn代理</a></em> 
+    </div> 
+    <div id="hm_t_44779"></div> 
+    <!--高速版，加载速度快，使用前需测试页面的兼容性--> 
+    <div id="SOHUCS" sid="article-19995" style="margin:0 5px"></div> 
+    <script>
+	  (function(){
+		var appid = 'cyqU2FwdP',
+		conf = 'prod_c5ab6cebaca97f7171139e4d414ff5a6';
+		var doc = document,
+		s = doc.createElement('script'),
+		h = doc.getElementsByTagName('head')[0] || doc.head || doc.documentElement;
+		s.type = 'text/javascript';
+		s.charset = 'utf-8';
+		s.src =  'http://assets.changyan.sohu.com/upload/changyan.js?conf='+ conf +'&appid=' + appid;
+		h.insertBefore(s,h.firstChild);
+		window.SCS_NO_IFRAME = true;
+	  })()
+	</script> 
+   </div> 
+  </div> 
+  <div class="side"> 
+   <div class="commbox"> 
+    <div class="tit">
+     <strong>网页前端</strong> 类图文教程推荐
+    </div> 
+    <div class="inner rank"> 
+     <ol> 
+      <li class="normal num3"><em>&gt;</em><span class="word_cut"><a href="/article/20103.html" title="[信息图]一张图全面了解JavaScript">[信息图]一张图全面了解JavaScript</a> </span><span class="txt">2015-09-10</span></li> 
+      <li class="normal num3"><em>&gt;</em><span class="word_cut"><a href="/article/19995.html" title="Chrome调试工具developer tool技巧">Chrome调试工具developer tool</a> </span><span class="txt">2015-07-01</span></li> 
+     </ol> 
+    </div> 
+   </div> 
+   <div class="commbox"> 
+    <div class="tit">
+     <strong>网页前端</strong> 类图文教程排行
+    </div> 
+    <div class="inner rank"> 
+     <ol> 
+      <li class="normal "><em>1.</em><span class="word_cut"><a href="/article/19995.html" title="Chrome调试工具developer tool技巧">Chrome调试工具developer tool</a></span><span class="txt">263</span></li> 
+      <li class="normal "><em>2.</em><span class="word_cut"><a href="/article/20103.html" title="[信息图]一张图全面了解JavaScript">[信息图]一张图全面了解JavaScript</a></span><span class="txt">49</span></li> 
+     </ol> 
+    </div> 
+   </div> 
+   <div id="box" style="width:345px;"> 
+    <div class="commbox"> 
+     <div class="tit">
+      相关推荐
+     </div> 
+     <div class="inner">
+      <script type="text/javascript">G250x250();</script>
+     </div> 
+    </div> 
+    <div class="commbox" style="background-color: #fff;"> 
+     <div class="tit">
+      视频教程索引
+     </div> 
+     <div class="inner">
+      <script type="text/javascript">videoindex();</script>
+     </div> 
+    </div> 
+   </div> 
+   <div class="clear"></div> 
+  </div> 
+  <script>document.getElementById('TabNews').className = "on";</script> 
+  <script>document.getElementById('Menu{art:upid}').className = "Current MyAlipay";</script> ﻿
+  <div class="clear blank5"></div> 
+  <div class="ad980" id="light2">
+   <script type="text/javascript">allbottom();</script>
+  </div> 
+  <div class="clear blank5"></div> 
+  <div id="navfoot">
+   <a href="/index.html">外唐教程网</a> | 
+   <a href="/list/6.html" target="_self">计算机教程</a> | 
+   <a href="/list/59.html">Photoshop教程</a> | 
+   <a href="/list/62.html" target="_blank">网站制作</a> | 
+   <a href="/list/4.html" target="_self">考研辅导</a> | 
+   <a href="/index.html">远程教育</a> | 
+   <a href="/list/4.html" target="_blank">外语学习</a> | 
+   <a href="/list/65.html" target="_blank">公务员辅导</a> | 
+   <a href="/list/68.html" target="_blank">司法考试</a> | 
+   <a href="/list/89.html" target="_self">瑜伽教程</a> | 
+   <a href="/list/87.html">养生保健</a> | 
+   <a href="/office/" target="_blank">Office教程</a> | 
+   <a href="/banzhuren/" target="_blank">班主任工作</a> | 
+   <a href="/" target="_blank">视频教程网</a>
+  </div>
+  <!--Footer start--> 
+  <div id="footer"> 
+   <p class="FLeft">Copyright &copy; 2008-2014 | <a href="/"> 外唐视频教程网</a> | 鲁ICP备10023861号 | 公安备37021302000035</p> 
+   <p class="FRight"> <a href="/about/law.html" rel="nofollow">免责声明</a> | <a href="/about/contact.html" rel="nofollow">联系我们</a> | <a href="/about/help.html" rel="nofollow">相关帮助</a> | <script src="http://hm.baidu.com/h.js?acc422eb71b031d0d7ac253bf0cb2324" type="text/javascript"></script> | <script type="text/javascript" src="http://tajs.qq.com/stats?sId=15390581" charset="UTF-8"></script> </p>
+  </div> 
+  <p>&nbsp;</p>  
+  <!-- Baidu Button BEGIN --> 
+  <script type="text/javascript" id="bdshare_js" data="type=slide&amp;img=0&amp;uid=17283"></script> 
+  <script type="text/javascript" id="bdshell_js"></script> 
+  <script type="text/javascript">
+	document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?t=" + new Date().getHours();
+
+	$.fn.smartFloat = function() {
+		var position = function(element) {
+			var top = element.position().top, pos = element.css("position");
+			$(window).scroll(function() {
+			var scrolls = $(this).scrollTop();
+			if (scrolls > top) {
+				if (window.XMLHttpRequest) {
+					element.css({
+					position: "fixed",
+					top: 0
+					});
+				} else {
+					element.css({
+						top: scrolls
+					});
+				}
+			}else {
+				element.css({
+					position: pos,
+					top: top
+				});
+			}
+			});
+		};
+		return $(this).each(function() {
+			position($(this)); 
+		});
+	};
+ 
+	//绑定
+	$("#box").smartFloat();
+</script> 
+  <!-- Baidu Button END -->   
+ </body>
+</html>

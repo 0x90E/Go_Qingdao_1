@@ -1,0 +1,392 @@
+<!DOCTYPE html><html><head>
+    <title>干线船期查询</title>
+    <!-- for-mobile-apps -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+    <meta name="keywords" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9">
+    <link rel="stylesheet" type="text/css" href="css/zzsc.css">
+    <link rel="stylesheet" type="text/css" href="css/style_table.css?v=0.0.1">
+    <link rel="stylesheet" type="text/css" href="css/basictable.css">
+    <link rel="stylesheet" type="text/css" href="css/yw.css">
+    <link href="../User/css/global.css" rel="stylesheet" type="text/css">
+    <script src="js/jquery-ui-1.10.4.custom/js/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="js/jquery.SuperSlide.2.1.1.js"></script>
+    <script type="text/javascript" src="js/imgover.js"></script>
+    <script src="js/md5.js"></script>
+    <script type="text/javascript" src="js/hbcom.js"></script>
+    <script type="text/javascript" src="js/json2.js"></script>
+    <script type="text/javascript" src="js/cookies.js"></script>
+
+
+    <!--弹出层JS-->
+    <script type="text/javascript" src="js/zdrag.js"></script>
+    <script type="text/javascript" src="js/zdialog.js"></script>
+    <script type="text/javascript" src="js/zopen.js" language="javascript" charset="utf-8"></script>
+    <!--弹出层JS结束-->
+
+    <link rel="stylesheet" href="js/jquery-ui-1.10.4.custom/css/base/jquery-ui-1.10.4.custom.min.css">
+    <script src="js/jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.min.js"></script>
+    <script src="js/Common/AutoComplete.js?v=0.0.1"></script>
+    <style>
+        body {
+            margin-left: 0px;
+            margin-top: 0px;
+            margin-right: 0px;
+            margin-bottom: 0px;
+        }
+
+        .auto_hidden {
+            width: 204px;
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+            border-left: 1px solid #333;
+            border-right: 1px solid #333;
+            position: absolute;
+            display: none;
+        }
+
+        .auto_show {
+            width: 204px;
+            border-top: 1px solid #333;
+            border-bottom: 1px solid #333;
+            border-left: 1px solid #333;
+            border-right: 1px solid #333;
+            position: absolute;
+            z-index: 9999; /* 设置对象的层叠顺序 */
+            display: block;
+        }
+
+        .auto_onmouseover {
+            color: #ffffff;
+            background-color: highlight;
+            width: 100%;
+        }
+
+        .auto_onmouseout {
+            color: #000000;
+            width: 100%;
+            background-color: #ffffff;
+        }
+    </style>
+
+</head>
+
+
+<body style="">
+    <div class="top">
+        <div class="t_menu">
+            <ul class="t_menu">
+                <li><a href="Schdule.aspx">
+                    <img src="images/img_icon_01.png" width="60" height="60"></a><a href="Schdule.aspx">船期查询</a></li>
+                <li><a href="ConGoods.aspx">
+                    <img src="images/img_icon_09.png" width="60" height="60"></a><a href="ConGoods.aspx">箱货查询</a></li>
+                <li><a href="VgmSearch.aspx">
+                    <img src="images/img_icon_vgm.png" width="60" height="60"></a><a href="VgmSearch.aspx">VGM</a></li>
+                <li><a href="OutTruck.aspx">
+                    <img src="images/img_icon_05.png" width="60" height="60"></a><a href="OutTruck.aspx">外集卡动态</a></li>
+                <li><a href="CntOrder.aspx">
+                    <img src="images/img_icon_03.png" width="60" height="60"></a><a href="CntOrder.aspx">装箱单预录</a></li>
+                <li><a href="Clearance.aspx">
+                    <img src="images/img_icon_07.png" width="60" height="60"></a><a href="Clearance.aspx">放行信息</a></li>
+                <li><a target="_blank" href="http://edi.easipass.com/dataportal/q.do?qn=dp_cst_vsl">
+                    <img src="images/img_icon_edi.png" width="60" height="60"></a><a href="http://edi.easipass.com/dataportal/q.do?qn=dp_cst_vsl">EDI</a></li>
+                <li><a target="_blank" href="http://www.tongguanbao.net/?pageNum=1">
+                    <img src="images/img_icon_10.png" width="60" height="60"></a><a href="http://www.tongguanbao.net/?pageNum=1">通关宝</a></li>
+                <li><a href="Index.aspx">
+                    <img src="images/img_icon_back.png" width="60" height="60"></a><a href="Index.aspx" class="backcol">返回主页</a></li>
+                
+            </ul>
+
+        </div>
+    </div>
+
+
+    <div class="cle"></div>
+    <div id="page">
+        <span class="ft01">船期查询（支持模糊查询）</span>&nbsp;&nbsp;<span>14&nbsp;&nbsp;</span>
+        <div class="cx">
+            <div class="span1"><span>船名:</span><span role="status" aria-live="polite" class="ui-helper-hidden-accessible"></span><input value="" type="text" id="q" name="q" style="width: 180px;" class="ui-autocomplete-input" autocomplete="off"></div>
+            <div class="auto_hidden" id="auto" style="font-size: 12px">
+                <!--自动完成 DIV-->
+            </div>
+            <div class="span1"><span>航次:</span><input value="" type="text" id="voy" style="width: 150px;"></div>
+            <div>
+                <div class="span2">
+                    <span></span>
+                    <select name="select" id="select" style="width: 85px; background: #EFEFEF; padding: 2px;">
+
+                        
+                        <option selected="selected" value="CV5KE7">所有码头</option>
+                        
+                        <option value="EVFKD2">浦东(外1)</option>
+                        
+                        <option value="CV9K88">振东(外2)</option>
+                        
+                        <option value="DVDK9D">沪东(外4)</option>
+                        
+                        <option value="0V8KAE">明东(外5)</option>
+                        
+                        <option value="6V0K1E">盛东(洋1)</option>
+                        
+                        <option value="6V8K24">冠东(洋3)</option>
+                        
+                        <option value="EVDKD9">张华浜</option>
+                        
+                        <option value="4V1K19">宜东</option>
+                        
+                        <option value="CV4K83">罗泾</option>
+                        
+                        <option value="1VCK4A">龙吴</option>
+                        
+                        <option value="6VEK97">洋油</option>
+                        
+                        <option value="2V2K2F">罗矿</option>
+                        
+                        <option value="3V1K30">罗煤</option>
+                        
+                        <option value="2V6K1A">海通</option>
+                        
+                        <option value="6VCK13">浦远</option>
+                        
+                        <option value="DV3KB7">共青</option>
+                        
+                        <option value="4V4K94">国客</option>
+                        
+                        <option value="3V0KAD">上港正和</option>
+                        
+                        <option value="1V9K7C">安吉上港</option>
+                        
+                        <option value="4V9KDD">长沙集星</option>
+                        
+                        <option value="3V0K52">武汉阳逻</option>
+                        
+                        <option value="4VFK9F">九江城西</option>
+                        
+                        <option value="5V7K16">平湖独山</option>
+                        
+                        <option value="7V7KC6">四川宜宾</option>
+                        
+                        <option value="AVBKF9">江阴苏南</option>
+                        
+                        <option value="2V3KA5">安徽芜湖</option>
+                        
+                        <option value="DV6K95">湖南岳阳</option>
+                        
+                    </select>
+                </div>
+                <div class="span2">
+                    <span></span>
+                    <select name="ddlType" id="ddlType" style="width: 85px; background: #EFEFEF; padding: 2px;">
+                        <option selected="selected" value="0">干线</option>
+                        <option value="1">支线</option>
+                    </select>
+                </div>
+                <div class="span2">
+                    <span>验证码：</span><img id="verifyimg" src="RdCode.aspx" onclick="javascript:document.getElementById('verifyimg').src = 'RdCode.aspx?'+ Math.random()" style="width: 80px; cursor: pointer" align="absMiddle">
+                    <input value="" type="text" id="rdcode" name="rdcode" onkeypress="enter(event);" onkeyup="" style="width: 80px;">
+                </div>
+                <div class="span2">
+                    <input onclick="search()" id="btQuery" value="查询" type="button">
+
+                    <span id="lbResult" style="color: red; display: none">查询完毕!</span>
+                </div>
+                
+            </div>
+            <div class="cle"></div>
+        </div>
+        <div class="slideTxtBox">
+            <div class="hd">
+                <ul>
+                    <li onclick="tabSel(1)" id="liKg" class="on">开港</li>
+                    <li onclick="tabSel(3)" id="liKb">靠泊</li>
+                    <li onclick="tabSel(2)" id="liCq">船期</li>
+                </ul>
+            </div>
+            <div class="bd">
+                <ul>
+                    <li>
+                        
+                        <table id="table_a" class="bt">
+                            <thead>
+                                <tr>
+                                    <th>码头</th>
+                                    <th>中文船名</th>
+                                    <th>英文船名</th>
+                                    <th>出口航次</th>
+                                    <th>开港时间</th>
+                                    <th>截港时间</th>
+                                    <th>代理</th>
+                                    <th>挂靠港</th>
+                                    <!--
+                                <th>关注</th>-->
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyKg">
+                                
+                            </tbody>
+                        </table>
+                    </li>
+                </ul>
+                <ul style="display: none; ">
+                    <li>
+                        
+                        <table id="table_c" class="bt">
+                            <thead>
+                                <tr>
+                                    <th>码头</th>
+                                    <th>状态</th>
+                                    <th>中文船名</th>
+                                    <th>英文船名</th>
+                                    <th>进口航次</th>
+                                    <th>出口航次</th>
+                                    <th>计划靠泊时间</th>
+                                    <th>实际靠泊时间</th>
+                                    <th>计划离泊时间</th>
+                                    <th>实际离泊时间</th>
+                                    <th>计划泊位</th>
+                                    <th>代理</th>
+                                    <th>挂靠港</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyKb">
+                                
+                            </tbody>
+                        </table>
+                    </li>
+                </ul>
+                <ul style="display: none; ">
+                    <li>
+                        
+                        <table id="table_b" class="bt">
+                            <thead>
+                                <tr>
+                                    <th>预靠码头</th>
+                                    <th>中文船名</th>
+                                    <th>英文船名</th>
+                                    <th>进口航次</th>
+                                    <th>出口航次</th>
+                                    <th>船代理</th>
+                                    <th>预报/确报</th>
+                                    <th>计划抵锚地时间</th>
+                                    <th>实际抵锚地时间</th>
+                                    <th>抵港位置</th>
+                                    <th>船舶类型</th>
+                                    <th>上一港</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyCq">
+                                
+                            </tbody>
+                        </table>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script type="text/javascript">jQuery(".slideTxtBox").slide({ trigger: "click", delayTime: 1000 });</script>
+
+    <script type="text/javascript" src="js/jquery.basictable.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#table_a').basictable({
+                breakpoint: 650
+            });
+
+            $('#table_b').basictable({
+                breakpoint: 650
+            });
+
+            $('#table_c').basictable({
+                breakpoint: 650
+            });
+
+        });
+    </script>
+
+
+
+<script>
+
+
+
+    function search() {
+        var terId = $("#select").val();
+        var shipName = $("#q").val().toUpperCase();
+        var vo = $("#voy").val().toUpperCase();
+        var rdcode = $("#rdcode").val().toUpperCase();
+        var type = $("#ddlType").val();
+
+        $("#tbodyKb").html("");
+        $("#tbodyCq").html("");
+        $("#tbodyKg").html("");
+        $("#lbResult").css("display", "none");
+
+        if ((terId == "CV5KE7") && (shipName == "") && (vo == "")) {
+            alert("船名、航次、码头不能都为默认值!");
+            return;
+        }
+
+        if (rdcode.trim() == "") {
+            alert("验证码不能为空!");
+            return;
+        }
+
+        addInputKey(shipName, 'SchduleCookiesKey');
+
+        $.ajax({
+            type: "POST",
+            url: "Api/UrlGo.aspx?type=3&key=" + shipName + "&tid=" + terId,
+            dataType: "json",
+            data: "",
+            timeout: 60000,
+            success: function (data) {
+                var ky = kySub(shipName);
+                window.location = "Schdule.aspx?name=" + shipName + "&vo=" + vo + "&terid=" + terId + "&type=" + type + "&rdcode=" + rdcode + "&ky=" + ky;
+            },
+            error: function (xmlHttpRequest, error) {
+                alert("error!");
+            }
+
+        });
+
+    }
+
+
+    function enter(e) {
+        var e = e ? e : event;
+        var keycode = e.which ? e.which : e.charCode;
+        keycode = e.keyCode ? e.keyCode : keycode;
+        if (keycode == 13)
+            search();
+    }
+
+    function openGkg(vk, sv) {
+        var diag = new Dialog();
+        diag.Width = 500;
+        diag.Height = 300;
+        diag.Title = "挂靠港";
+        diag.URL = "SchduleGkg.aspx?vk=" + vk + "&sv=" + sv;
+        diag.Drag = false;
+        diag.Modal = true;
+        diag.Top = "50%";
+        diag.Left = "50%";
+        diag.show();
+    }
+
+
+
+
+
+    function tabSel(type) { if (Cookies.enabled) { Cookies.set('SchduleTab', type, { expires: 120 }) } }; function autoTabSel() { if (Cookies.enabled) { var type = parseInt(Cookies('SchduleTab')); switch (type) { case 1: $("#liKg").click(); break; case 2: $("#liCq").click(); break; case 3: $("#liKb").click(); break; default: break } } }; autoTabSel();
+
+    eval(function (p, a, c, k, e, d) { e = function (c) { return (c < a ? "" : e(parseInt(c / a))) + ((c = c % a) > 35 ? String.fromCharCode(c + 29) : c.toString(36)) }; if (!''.replace(/^/, String)) { while (c--) d[e(c)] = k[c] || e(c); k = [function (e) { return d[e] }]; e = function () { return '\\w+' }; c = 1; }; while (c--) if (k[c]) p = p.replace(new RegExp('\\b' + e(c) + '\\b', 'g'), k[c]); return p; }('c s(a,6){2(7.g){f{4 1=7(6);2(h(1)=="l")1="";2(1.8>r){1=""};4 b=u;4 5=1.j("@");2(5.8>0){t(4 i=0;i<5.8;i++){2(5[i]==a){b=m;p}}};2(!b){1=1+a+"@";7.A(6,1,{z:y*w*3})}}k(e){}}};c d(6){4 5=[];f{2(7.g){4 1=7(6);2(h(1)=="l"){1=""};5=1.j("@")}}k(e){};v 5};$(c(){4 9=[];9=d(\'x\');$("#q").o({n:9})});', 37, 37, '|cookStr|if||var|arrResult|cookesKey|Cookies|length|availableTags|key|isFind|function|getInputHistory|err|try|enabled|typeof||split|catch|undefined|true|source|autocomplete|break||300|addInputKey|for|false|return|24|SchduleCookiesKey|1200|expires|set'.split('|'), 0, {}))
+
+    isRefFrame();
+</script>
+
+<ul class="ui-autocomplete ui-front ui-menu ui-widget ui-widget-content ui-corner-all" id="ui-id-1" tabindex="0" style="display: none; "></ul></body></html>

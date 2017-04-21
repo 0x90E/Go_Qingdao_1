@@ -1,0 +1,168 @@
+<!DOCTYPE html><html><head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <title>用户登录</title>
+    <script src="/Scripts/jquery-1.8.3.js" type="text/javascript"></script>
+    <script src="/Scripts/new_js/jquery.jslides.js" type="text/javascript"></script>
+    <script src="/Scripts/new_js/open.win.js" type="text/javascript"></script>
+    <script src="/Scripts/md5.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="/Content/new_content/css/common.css">
+    <link rel="stylesheet" type="text/css" href="/Content/new_content/css/index.css?t=4.7">
+    <link rel="stylesheet" type="text/css" href="/Content/new_content/css/open.win.css">
+    <script language="javascript" type="text/javascript">
+    window.onload=function(){
+   var agent = navigator.userAgent.toLowerCase() ;
+   if(agent.indexOf("chrome") <0)
+    {
+    $.openAlter("建议使用Google浏览器登录平台，其他浏览器可能有兼容性问题，无法进行某些操作。","友情提醒");
+    }
+}
+        //判断是否在iframe中  
+        if (self != top) {
+            parent.window.location.replace(window.location.href);
+        }
+        document.onkeypress = function (e) {
+            var code;
+            if (!e) {
+                var e = window.event;
+            }
+            if (e.keyCode) {
+                code = e.keyCode;
+            }
+            else if (e.which) {
+                code = e.which;
+            }
+            
+            if (code == 13) {
+                ValiTest();
+            }
+        }
+
+        $(document).ready(function () {
+            $("#change").click(function () {
+                document.getElementById("imge").src = "/Login/GetVidateCode?t="+new Date();
+            })
+
+            $("#zc").click(function(){
+              $.openAlter('请向朋友获取注册链接，或者联系猴哥，QQ：3526808712', '温馨提示', { width: 250, height: 250 },'',"确认");
+            });
+        })
+         function ValiTest() {
+            var code = 'display:none';
+
+            $("#serviceValidation").remove();
+            $("#clientValidationOL").html("");
+            if ($.trim($("#txtLoginName").val()) == '') {
+                $.openAlter('账户不能为空', '提示', { width: 250, height: 250 });
+                return false;
+            }
+            if ($.trim($("#txtPwd").val()) == '') {
+                $.openAlter('密码不能为空', '提示', { width: 250, height: 50 });
+                return false;
+            }
+            if (code == '' && $.trim($("#txtCode").val()) == '') {
+                $.openAlter('验证码不能为空', '提示', { width: 250, height: 50 });
+                return false;
+            }
+            $("#Password").val(hex_md5($("#txtPwd").val()));
+            $("#fm").submit();
+        }
+        $(document).ready(function () {
+            if ($("#serviceValidation").length > 0) {
+                $.openAlter($("#serviceValidation").text(), "提示", { width: 250, height: 50 });
+            }
+        })
+    </script>
+</head>
+<body style="background: #fff;">
+    <!--[if lt IE 8]>
+
+<script language="javascript" type="text/javascript">
+$.openAlter('<div style="font-size:18px;text-align:left;line-height:30px;">hi,你当前的浏览器版本过低，可能存在安全风险，建议升级浏览器：<div><div style="margin-top:10px;color:red;font-weight:800;">谷歌Chrome&nbsp;&nbsp;,&nbsp;&nbsp;UC浏览器</div>', "提示", { width: 250, height: 50 });
+$("#ow_alter002_close").remove();
+</script>
+<![endif]-->
+<form action="/LogOn" id="fm" method="post">        <div class="index_top">
+            <div class="index_top_1">
+                <p class="left">
+                    <img src="/Content/images/login.jpg"></p>
+                <!--<p class="right">11111</p>-->
+            </div>
+        </div>
+        <!-- banner-->
+        <div class="banner">
+            <div style="display: none;">
+<style>
+    .infobox
+    {
+        background-color: #fff9d7;
+        border: 1px solid #e2c822;
+        color: #333333;
+        padding: 5px;
+        padding-left: 30px;
+        font-size: 13px;
+        --font-weight: bold;
+        margin: 0 auto;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        width: 85%;
+        text-align: left;
+    }
+    .errorbox
+    {
+        background-color: #ffebe8;
+        border: 1px solid #dd3c10;
+        margin: 0 auto;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        color: #333333;
+        padding: 5px;
+        padding-left: 30px;
+        font-size: 13px;
+        --font-weight: bold;
+        width: 85%;
+    }
+</style>
+            </div>
+            <!-- 代码 开始 -->
+            <div id="full-screen-slider">
+                <ul id="slides">
+                    <li style="background: url('/Content/images/banner.jpg') no-repeat center top">
+                    </li>
+                    <li style="background-image: url(http://bigger.wkquan.com/Content/images/banner.jpg); display: none; background-position: 50% 0%; background-repeat: no-repeat no-repeat; ">
+                    </li>
+                    <li style="background-image: url(http://bigger.wkquan.com/Content/images/banner.jpg); display: none; background-position: 50% 0%; background-repeat: no-repeat no-repeat; ">
+                    </li>
+                </ul><ul id="pagination" style="margin-left: 470px; "><li class="current"><a href="#">1</a></li><li><a href="#">2</a></li><li><a href="#">3</a></li></ul>
+            </div>
+            <!-- 代码 结束 -->
+            <div class="banner_login">
+                <h2>
+                    用户登录</h2>
+                <ul>
+                    <li class="yhdl" style="margin-top: 0px;">
+                        <p>
+                            帐户：</p>
+                        <p>
+                            <input class="input_216" id="txtLoginName" data-val="true" data-val-length="用户名最大长度为50" data-val-length-max="50" data-val-required="Name 字段是必需的。" maxlength="50" name="Name" placeholder="请输入账户名" type="text" value="">
+                        </p>
+                    </li>
+                    <li class="yhdl_2">
+                        <p>
+                            密码：</p>
+                        <p>
+                            <input data-val="true" data-val-length="密码处最大长度为50" data-val-length-max="50" data-val-required="Password 字段是必需的。" id="Password" name="Password" type="hidden" value="">
+                            <input type="password" class="input_216" placeholder="请输入密码" id="txtPwd" maxlength="50">
+                        </p>
+                    </li>
+                    <li class="yhdl_2"><a href="javascript:void(0)" onclick="return ValiTest()">登 录</a></li>
+                    <li class="yhdl_3" style="margin-top: 5px;"><a href="javascript:viod(0)" id="zc">商家会员注册</a><a style="margin-left:100px" href="/Login/ForgetPwd">
+                        忘记密码</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- banner-->
+</form>
+
+</body></html>

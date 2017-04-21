@@ -1,0 +1,838 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head></head>
+ <body>
+  ﻿   
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
+  <title>算命大师_算卦_真人在线算命最准的网站_善若吉命理网-</title> 
+  <meta name="Keywords" content="算命,算卦,真人算命,算命大师,算命最准的网站,善若吉命理网" /> 
+  <meta name="Description" content="善若吉命理网,算卦街云集百位知名算命大师,风水大师,起名大师真人一对一在线批八字算命,占卜,看风水,免费试算试看验证后再付费,真人实时在线算命起名,预测人生运势祸福吉凶。精心打造网上真人在线算命最准的网站。" /> 
+  <link rel="shortcut icon" href="/yixue/images/yinyang.ico" type="image/x-icon" /> 
+  <link href="/yixue/css/globle2013.css" rel="stylesheet" type="text/css" /> 
+  <link href="/yixue/css/style.css" rel="stylesheet" type="text/css" />
+  <link href="/yixue/css/inner2.css" rel="stylesheet" type="text/css" /> ﻿
+  <script src="/yixue/js/jquery-1.7.1.min.js" type="text/javascript"></script> 
+  <script src="/yixue/js/MSClass.js" type="text/javascript"></script> 
+  <script src="/yixue/js/nTabs.js" type="text/javascript"></script> 
+  <script src="/yixue/js/lanren.js" type="text/javascript"></script> 
+  <script type="text/javascript">
+//popup浮层;
+(function($) {
+	$.fn.popupFn = function(popWidth, popHeight) {
+		//获取滚动条高度 for ie6
+		var $scrHeight = window.screen.height;
+
+		// For all browsers except IE versions 8 and before
+		if (window.pageXOffset != null) {
+			XOffset = window.pageXOffset; 
+			YOffset = window.pageYOffset;
+		// For IE (or any browser) in Standards mode
+		} else if (document.compatMode == "CSS1Compat") {
+			XOffset = window.document.documentElement.scrollLeft;
+			YOffset = window.document.documentElement.scrollTop;
+		// For browsers in Quirks mode
+		} else {
+			XOffset = window.document.body.scrollLeft;
+			YOffset = window.document.body.scrollTop;
+		}
+
+		$(".tankuang").width(popWidth).height(popHeight);
+		//获得窗口高度和对象高度，除以2居中，40微调
+		var $winHeight = $(window).height();
+		$h = $winHeight - popHeight;
+		$h = $h / 2 - 40 + YOffset;
+
+		//获得窗口宽度和对象宽度，除以2居中
+		var $winWidth = $(window).width();
+		$w = $winWidth - popWidth;
+		$w = $w / 2 + XOffset;
+		
+		$scrHeight = $scrHeight + YOffset;
+		
+		//-----结构
+		$(".ui-mask").height($scrHeight).show();
+
+		this.animate({
+			"top": $h + "px",
+			"left": $w + "px"
+		}, {
+		complete: function() {$(window).scrollTop(YOffset);}
+		}).fadeIn(300);
+
+		//关闭
+		this.find(".close").click(function() {
+			$(".ui-mask").hide();
+			$(this).parents(".ui-popup").fadeOut(300);
+		});
+	};
+})(jQuery);
+
+// variable to hold request
+var request;
+// bind to the submit event of our form
+function ajaxSend(form_id, url, successCB, failCB) {
+    // abort any pending request
+    if (request) {
+        request.abort();
+    }
+
+    if (form_id) {
+        // setup some local variables
+        var $form = $("#"+form_id);
+        // let's select and cache all the fields
+        var $inputs = $form.find("input, select, button, textarea");
+        // serialize the data in the form
+        var serializedData = $form.serialize();
+        // let's disable the inputs for the duration of the ajax request
+        $inputs.prop("disabled", true);
+    } else {
+        var serializedData = false;
+    }
+
+
+    // fire off the request to /form.php
+    var request = $.ajax({
+        url: "/yixue/"+url,
+        type: "post",
+        data: serializedData
+    });
+
+    // callback handler that will be called on success
+    request.done(function (response, textStatus, jqXHR){
+	successCB(response, textStatus, jqXHR);
+    });
+
+    // callback handler that will be called on failure
+    request.fail(function (jqXHR, textStatus, errorThrown){
+	failCB(jqXHR, textStatus, errorThrown);
+    });
+
+    // callback handler that will be called regardless
+    // if the request failed or succeeded
+    request.always(function () {
+	if (form_id) {
+            // reenable the inputs
+            $inputs.prop("disabled", false);
+	}
+    });
+}
+
+
+var w,h,className;
+
+function getSrceenWH(){
+	w = $(window).width();
+	h = $(window).height();
+	$('.ui-mask').width(w).height(h);
+}
+var DEFAULT_VERSION = "8.0";
+var ua = navigator.userAgent.toLowerCase();
+var isIE = ua.indexOf("msie")>-1;
+var safariVersion;
+
+/* window.onresize = function(){  
+	getSrceenWH();
+}  */
+
+function bounceIn(){
+	if(isIE){
+		safariVersion =  ua.match(/msie ([\d.]+)/)[1];
+		if(safariVersion <= DEFAULT_VERSION ){
+			window.location.href="/m/user/login.php";
+		}
+	}
+	className = 'ui-popup popup-login';
+	$('.ui-mask').fadeIn(300);
+	$('.popup-login').removeAttr('class').addClass('animated '+className+'').fadeIn();
+}
+
+function popupFnMsg(o,pw,ph){
+	$(".tankuang").width(pw).height(ph);
+	//获得窗口高度和对象高度，除以2居中，40微调
+	var wh = $(window).height();
+	t = wh - ph;
+	th = t * 0.5;
+
+	//获得窗口宽度和对象宽度，除以2居中
+	var ww = $(window).width();
+	w = ww - pw;
+	lw = w * 0.5;
+	
+	$('.' + o).css({left:lw,top:th});
+	
+	if(isIE){
+		safariVersion =  ua.match(/msie ([\d.]+)/)[1];
+		if(safariVersion <= DEFAULT_VERSION ){
+			window.location.href="/m/user/login.php";
+		}
+	}
+	className = 'ui-popup ' + o;
+	$('.ui-mask').fadeIn(300);
+	$('.' + o).removeAttr('class').addClass('animated '+className+'').fadeIn();
+}
+
+function closebnt(){
+	$('.ui-mask').fadeOut(300,function(){
+		$('.ui-popup').addClass('bounceOutUp').fadeOut();
+	});
+}
+
+/* $(function(){
+	$(".close").click(function(){
+		closebnt();	
+	});
+}); */
+
+</script> 
+  <style type="text/css">
+.ui-popup {
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 999;
+	display: none;
+	padding:0px;
+	margin:0px;
+}
+.ui-mask {
+	background-color: #000;
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	_position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 998;
+	display: none;
+}
+/*.ui-popup {
+	position:fixed;
+	/ *width:340px;
+	height:200px;
+	left: 50%;
+	top: 50%;
+	margin:-110px 0 0 -170px; * /
+	z-index: 999;
+	display: none;
+	padding:0px;
+	
+}
+.ui-mask {
+	background-color: #000;
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	_position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 998;
+	display: none;
+}
+*/
+
+/*动画类*/
+.animated{
+	-webkit-animation-duration:1.4s;
+	animation-duration:1.4s;
+	-webkit-animation-fill-mode:both;
+	animation-fill-mode:both
+}
+
+@-webkit-keyframes bounceIn{
+	0%{
+	opacity:0;
+	-webkit-transform:scale(.3);
+	transform:scale(.3)
+}
+50%{
+	opacity:1;
+	-webkit-transform:scale(1.05);
+	transform:scale(1.05)
+}
+70%{
+	-webkit-transform:scale(.9);
+	transform:scale(.9)
+}
+100%{
+	opacity:1;
+	-webkit-transform:scale(1);
+	transform:scale(1)
+}
+
+}
+@keyframes bounceIn{
+	0%{
+	opacity:0;
+	-webkit-transform:scale(.3);
+	-ms-transform:scale(.3);
+	transform:scale(.3)
+}
+50%{
+	opacity:1;
+	-webkit-transform:scale(1.05);
+	-ms-transform:scale(1.05);
+	transform:scale(1.05)
+}
+70%{
+	-webkit-transform:scale(.9);
+	-ms-transform:scale(.9);
+	transform:scale(.9)
+}
+100%{
+	opacity:1;
+	-webkit-transform:scale(1);
+	-ms-transform:scale(1);
+	transform:scale(1)
+}
+
+}
+.bounceIn{
+	-webkit-animation-name:bounceIn;
+	animation-name:bounceIn
+}
+
+@-webkit-keyframes bounceInDown {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateY(-2000px);
+    transform: translateY(-2000px);
+  }
+
+  60% {
+    opacity: 1;
+    -webkit-transform: translateY(30px);
+    transform: translateY(30px);
+  }
+
+  80% {
+    -webkit-transform: translateY(-10px);
+    transform: translateY(-10px);
+  }
+
+  100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceInDown {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateY(-2000px);
+    -ms-transform: translateY(-2000px);
+    transform: translateY(-2000px);
+  }
+
+  60% {
+    opacity: 1;
+    -webkit-transform: translateY(30px);
+    -ms-transform: translateY(30px);
+    transform: translateY(30px);
+  }
+
+  80% {
+    -webkit-transform: translateY(-10px);
+    -ms-transform: translateY(-10px);
+    transform: translateY(-10px);
+  }
+
+  100% {
+    -webkit-transform: translateY(0);
+    -ms-transform: translateY(0);
+    transform: translateY(0);
+  }
+}
+
+.bounceInDown {
+  -webkit-animation-name: bounceInDown;
+  animation-name: bounceInDown;
+}
+
+@-webkit-keyframes bounceOutUp {
+  0% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+  }
+
+  20% {
+    opacity: 1;
+    -webkit-transform: translateY(20px);
+    transform: translateY(20px);
+  }
+
+  100% {
+    opacity: 0;
+    -webkit-transform: translateY(-2000px);
+    transform: translateY(-2000px);
+  }
+}
+
+@keyframes bounceOutUp {
+  0% {
+    -webkit-transform: translateY(0);
+    -ms-transform: translateY(0);
+    transform: translateY(0);
+  }
+
+  20% {
+    opacity: 1;
+    -webkit-transform: translateY(20px);
+    -ms-transform: translateY(20px);
+    transform: translateY(20px);
+  }
+
+  100% {
+    opacity: 0;
+    -webkit-transform: translateY(-2000px);
+    -ms-transform: translateY(-2000px);
+    transform: translateY(-2000px);
+  }
+}
+
+.bounceOutUp {
+  -webkit-animation-name: bounceOutUp;
+  animation-name: bounceOutUp;
+}
+
+@-webkit-keyframes rollIn {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateX(-100%) rotate(-120deg);
+    transform: translateX(-100%) rotate(-120deg);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: translateX(0px) rotate(0deg);
+    transform: translateX(0px) rotate(0deg);
+  }
+}
+
+@keyframes rollIn {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateX(-100%) rotate(-120deg);
+    -ms-transform: translateX(-100%) rotate(-120deg);
+    transform: translateX(-100%) rotate(-120deg);
+  }
+
+  100% {
+    opacity: 1;
+    -webkit-transform: translateX(0px) rotate(0deg);
+    -ms-transform: translateX(0px) rotate(0deg);
+    transform: translateX(0px) rotate(0deg);
+  }
+}
+
+.rollIn {
+  -webkit-animation-name: rollIn;
+  animation-name: rollIn;
+}
+
+
+@-webkit-keyframes flipInX {
+  0% {
+    -webkit-transform: perspective(400px) rotateX(90deg);
+    transform: perspective(400px) rotateX(90deg);
+    opacity: 0;
+  }
+
+  40% {
+    -webkit-transform: perspective(400px) rotateX(-10deg);
+    transform: perspective(400px) rotateX(-10deg);
+  }
+
+  70% {
+    -webkit-transform: perspective(400px) rotateX(10deg);
+    transform: perspective(400px) rotateX(10deg);
+  }
+
+  100% {
+    -webkit-transform: perspective(400px) rotateX(0deg);
+    transform: perspective(400px) rotateX(0deg);
+    opacity: 1;
+  }
+}
+
+@keyframes flipInX {
+  0% {
+    -webkit-transform: perspective(400px) rotateX(90deg);
+    -ms-transform: perspective(400px) rotateX(90deg);
+    transform: perspective(400px) rotateX(90deg);
+    opacity: 0;
+  }
+
+  40% {
+    -webkit-transform: perspective(400px) rotateX(-10deg);
+    -ms-transform: perspective(400px) rotateX(-10deg);
+    transform: perspective(400px) rotateX(-10deg);
+  }
+
+  70% {
+    -webkit-transform: perspective(400px) rotateX(10deg);
+    -ms-transform: perspective(400px) rotateX(10deg);
+    transform: perspective(400px) rotateX(10deg);
+  }
+
+  100% {
+    -webkit-transform: perspective(400px) rotateX(0deg);
+    -ms-transform: perspective(400px) rotateX(0deg);
+    transform: perspective(400px) rotateX(0deg);
+    opacity: 1;
+  }
+}
+
+.flipInX {
+  -webkit-backface-visibility: visible !important;
+  -ms-backface-visibility: visible !important;
+  backface-visibility: visible !important;
+  -webkit-animation-name: flipInX;
+  animation-name: flipInX;
+}
+
+/*end*/
+.tankuang{ margin:0px ; background-color:#ffffff;}
+.tankuang .div01{ height:42px; text-align:right; background:url(/yixue/images/css/tankuang_nav_bg.jpg) repeat-x;}
+.tankuang .div01 .l{ display:inline; line-height:42px; font-size:14px; font-weight:800; color:white; margin-left:20px; }
+.tankuang .div01 .r{ display:inline; width:42px; height:42px;}
+.tankuang .div01 .r a{ display:block; height:42px; width:42px; background:url(/yixue/images/css/close_bt.jpg) no-repeat center center;}
+.tankuang .div01 a{ display:inline-block; width:25px; height:25px; line-height:25px;}
+.tankuang .div02{ padding:20px; padding-bottom:35px; }
+.tankuang .div02 .box01{  overflow-y:auto; font-size:12px; color:#666; line-height:200%;}
+.tankuang .div02 table tr td{ padding:7px 0px; line-height:32px;}
+.tankuang .div02 table tr td a{ color:#236aba;}
+.tankuang .div02 table tr td span{ color:#236aba;}
+.tankuang .div03{ margin:30px 20px 60px;}
+.tankuang .div03 p{ line-height:36px; font-size:14px; text-align:center;}
+.tankuang .div04{ margin:20px 30px;}
+.tankuang .div04 p{ line-height:28px; font-size:14px; color:#ea0101;}
+.tankuang .btn,.tankuang .btn2{ display: inline-block; height: 30px; line-height: 30px; padding: 0px 18px; font-size: 14px; color: #fff; background: url(/yixue/images/css/enter_bg01.jpg) repeat-x; font-weight: 800;}
+.tankuang .btn2{ background: url(/yixue/images/css/enter_bg02.jpg) repeat-x;}
+</style>   ﻿
+  <div class="top_nav"> 
+   <div class="l">
+    <a href="/" target="_blank">&gt;&gt;&gt;回善若吉命理网首页&lt;&lt;&lt;</a> | 网上真人算命一条街，找算命大师就来善若吉命理网 &nbsp;&nbsp;&nbsp;&nbsp;| 
+    <a href="/tlist.php?tid=1" target="_blank">易学杂谈</a> | 
+    <a href="/tlist.php?tid=2" target="_blank">八字随笔</a> | 
+    <a href="/tlist.php?tid=3" target="_blank">实战案例</a> |
+   </div> 
+   <div class="r" style="margin-top:0px">
+    <span style="color:#FFFF00; font-size:13px;font-weight:bold; position:relative; top:1px;">在线客服</span> 
+    <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=420000633&amp;site=qq&amp;menu=yes" target="_blank"> <img src="http://wpa.qq.com/pa?p=2:2280552676:41" alt="点击这里给我发消息" border="0" align="absmiddle" style="margin-top:-1px" title="点击这里给我发消息" /></a> 
+   </div> 
+   <div class="clear"></div> 
+  </div>
+  <div class="ui-popup popup-error"> 
+   <div class="tankuang"> 
+    <div class="div01"> 
+     <div class="l">
+      用户登录
+     </div> 
+     <div class="r">
+      <a href="#" class="close">&nbsp;</a>
+     </div> 
+     <div class="clear"></div> 
+    </div> 
+    <div class="div04"> 
+     <p id="msg-error" style="margin-left:30px;">错误讯息</p> 
+     <p style="margin-top:20px; text-align:center;"><a href="#" class="close"><img alt="“算命" 关闭”="" src="/yixue/images/close_bt.jpg" width="70" height="30" /></a></p> 
+    </div> 
+   </div> 
+  </div> 
+  <div class="ui-popup popup-login"> 
+   <div class="tankuang"> 
+    <div class="div01"> 
+     <div class="l">
+      善若吉命理网★用户注册登录
+     </div> 
+     <div class="r">
+      <a href="#" class="close">&nbsp;</a>
+     </div> 
+     <div class="clear"></div> 
+    </div> 
+    <div class="div03"> 
+     <p>请先登录或注册以使用此功能</p> 
+     <p style="margin-top:20px; text-align:center; margin-bottom:20px;"><a href="/yixue/login"><img src="/yixue/images/login_bt.jpg" width="91" height="37" alt="Login" /></a> <a style="margin-left:0px;" href="javascript:doLogin2('用QQ号登录', 'qq');"><img src="/yixue/images/QQ.jpg" width="91" height="37" alt="QQLogin" /></a> <a href="http://www.shanruoji.com/parter/weixin/index.php" target="_blank"><img src="/yixue/images/login_weixin.jpg" alt="Login" /></a> <a style="margin-left:0px;" href="/yixue/login/register"><img src="/yixue/images/register_bt.jpg" width="91" height="37" alt="Register" /></a></p> 
+    </div> 
+   </div> 
+  </div> 
+  <div class="ui-popup popup-login2"> 
+   <div class="tankuang"> 
+    <div class="div01"> 
+     <div id="title-login2" class="l">
+      用户登录
+     </div> 
+     <div class="r">
+      <a href="#" class="close">&nbsp;</a>
+     </div> 
+     <div class="clear"></div> 
+    </div> 
+    <div class="div03"> 
+     <p id="msg-login2"></p> 
+    </div> 
+   </div> 
+  </div> 
+  <div class="ui-mask"></div> 
+  <script type="text/javascript">
+
+/* $(function(){
+	getSrceenWH();
+	$(".showbox-login").click(function(){
+		//bounceIn();
+		//popupFnMsg("popup-login",360, 180);
+	});
+	
+}); */
+
+
+$(function(){
+	
+	$(".showbox-login").click(function(){
+		$(".popup-login").popupFn(450, 185);
+	});
+})
+function doLogin2(site, url) {
+	$("#title-login2").html(site);
+	$("#msg-login2").html('接入 <b>'+site+'</b> 中，请稍候 ...');
+	$(".popup-login2").popupFn(360, 140);
+	window.setTimeout(function(){window.location.assign('/parter/' + url+'/index.php');}, 1500);
+}
+</script> 
+  <div id="contain"> 
+   <!--主窗--> 
+   <div class="contain"> 
+    <!--main--> 
+    <center> 
+     <div class="main"> 
+      <div class="main_left"> 
+       <!--top--> 
+       <div class="top"> 
+        <div class="top_left">
+         <a href="/"><img src="/yixue/images/logo.jpg" width="200" height="101" border="0" alt="善若吉命理网" /></a>
+        </div> 
+        <div class="top_right"> 
+         <div class="l"> 
+          <div id="pc_0">
+           <img src="/yixue/images/guwen.jpg" width="468" height="101" alt="算命大师算命" /> 
+          </div> 
+          <div id="pc_1" style="display:none">
+           <img src="/yixue/images/service_process.jpg" width="468" height="101" alt="真人在线算命" /> 
+          </div> 
+          <div id="pc_2" style="display:none">
+           <img src="/yixue/images/baozheng.jpg" width="468" height="101" alt="真人算命" /> 
+          </div> 
+         </div> 
+         <div class="r"> 
+          <ul> 
+           <li class="act" id="a0" onmouseover="clearAuto();" onclick="Mea(0);" onmouseout="setAuto();"><a href="#">算命最准的网站</a></li> 
+           <li class="nor" id="a1" onmouseover="clearAuto();" onclick="Mea(1);" onmouseout="setAuto();"><a href="#">算命一条街</a></li> 
+           <li class="nor" id="a2" onmouseover="clearAuto();" onclick="Mea(2);" onmouseout="setAuto();"><a href="#">算命大师在线算命</a></li> 
+          </ul> 
+         </div> 
+         <div class="clear"></div> 
+        </div> 
+        <div class="clear"></div> 
+       </div> 
+       <!--display area--> 
+       <div class="inner_main"> 
+        <!--当前位置--> 
+        <div class="site"> 
+         <div class="l">
+          <span class="span_landing">用户登录</span>
+         </div> 
+         <div class="r">
+          您当前的位置：
+          <a href="/yixue/">首页</a> &gt; 用户登录
+         </div> 
+         <div class="clear"></div> 
+        </div> 
+        <div class="landing2"> 
+         <div class="landing_left"> 
+          <div class="div01"> 
+           <table width="90%" border="0">
+            <form id="form-login2" method="POST"></form> 
+            <tbody>
+             <tr> 
+              <td width="22%" style="color:#787878; text-align:right; font-size:14px; vertical-align:middle; height:50px; "> <span>用户名：&nbsp;</span></td> 
+              <td colspan="2"><input type="text" name="username" value="" onfocus="this.style.borderColor='#239fe3'" onblur="this.style.borderColor='#c8c8c8'" style="height:32px; line-height:30px; border:1px solid #c8c8c8; width:320px; padding:0px 5px;" /> &nbsp;</td> 
+              <td width="25%" style="color:#787878; text-align:left; font-size:12px; vertical-align:middle;"> <span> &nbsp;</span></td> 
+             </tr> 
+             <tr> 
+              <td width="22%" style="color:#787878; text-align:right; font-size:14px; vertical-align:middle; height:50px;"> <span>密码：&nbsp;</span></td> 
+              <td colspan="2"><input type="password" name="password" onfocus="this.style.borderColor='#239fe3'" onblur="this.style.borderColor='#c8c8c8'" style="height:32px; line-height:30px; border:1px solid #c8c8c8; width:320px; padding:0px 5px;" /> &nbsp;</td> 
+              <td width="25%" style="color:#787878; text-align:left; font-size:12px; vertical-align:middle;"> <span></span></td> 
+             </tr> 
+             <tr> 
+              <td width="22%" style="color:#787878; text-align:right;"></td> 
+              <td width="20%" style="padding:15px 0px;"><input type="image" src="/yixue/images/landing_bt01.jpg" width="100" height="33" alt="Login" /></td> 
+              <td width="33%" style="color:#787878; text-align:left; font-size:12px; vertical-align:middle;"> &nbsp;<a href="/yixue/login/password">忘记密码？</a> | <a href="/yixue/login/register"> 免费注册</a></td> 
+              <td width="25%" style="color:#787878; text-align:right; font-size:14px; vertical-align:middle;"> <span>&nbsp;</span></td> 
+             </tr> 
+            </tbody>
+           </table> 
+          </div> 
+         </div> 
+         <div class="landing_right"> 
+          <div class="div01"> 
+           <p><b>其他方式登录</b></p> 
+           <p>如果您有以下合作网站账号，无需注册，可以直接登录我们的网站！</p> 
+          </div> 
+          <div class="div02"> 
+           <a href="javascript:doLogin2('用QQ号登录', 'qq');"><img src="/yixue/images/qq_login.png" width="155" height="34" alt="QQ" title="用QQ号登录" /></a> 
+           <a href="javascript:doLogin2('用微博账号登录', 'weibo');"><img src="/yixue/images/weibo_login.png" width="155" height="34" alt="Weibo" title="用新浪微博账号登录" /></a> 
+           <a href="javascript:doLogin2('用微信二维码登录', 'weixin');"><img src="/images/weixin_login.jpg" width="120" height="24" alt="Weibo" title="用weixin账号登录" /></a> 
+          </div> 
+         </div> 
+         <div class="clear"></div> 
+        </div> 
+       </div> 
+      </div> 
+      <div class="main_right"> 
+       <div class="landing">
+        <form id="form-login" action="/yixue/login/index.php" method="POST"> 
+         <div class="landing_nav">
+          <img src="/yixue/images/landing_nav.jpg" width="199" height="49" alt="用户登录" />
+         </div> 
+         <div class="landing_nr"> 
+          <div class="div01">
+           用户名：
+          </div> 
+          <div class="div02">
+           <input type="text" name="username" value="" onfocus="this.style.borderColor='#239fe3'" onblur="this.style.borderColor='#c8c8c8'" style="height:28px; line-height:28px; border:1px solid #c8c8c8; width:160px; padding:0px 5px;" />
+          </div> 
+          <div class="div01">
+           密码：
+          </div> 
+          <div class="div03">
+           <input type="password" name="password" onfocus="this.style.borderColor='#239fe3'" onblur="this.style.borderColor='#c8c8c8'" style="height:28px; line-height:28px; border:1px solid #c8c8c8; width:160px; padding:0px 5px;" />
+          </div> 
+          <div class="div04">
+           <input type="image" src="/yixue/images/landing_bt.jpg" width="173" height="38" alt="Login" /> 
+           <input type="hidden" name="uri" value="" /> 
+          </div> 
+          <div style="margin-top:9px;" class="div07"> 
+           <a href="javascript:doLogin2('用QQ号登录', 'qq');" class="a02">用QQ登录</a> &nbsp; 
+           <a href="javascript:doLogin2('新浪微博登录', 'weibo');" class="a04" title="用新浪微博账号登录">微博登录</a> 
+          </div> 
+          <div class="div05">
+           <a href="/yixue/login/password">忘记密码</a> | 
+           <a href="/yixue/login/register">用户注册</a>
+          </div> 
+         </div>
+        </form> 
+       </div> 
+       <!--申请成为预测师--> 
+       <div class="application">
+        <a class="showbox-login" href="#">申请成为预测师</a>
+       </div> 
+       <!--最新评价--> 
+       <div class="current_trad" style="padding-bottom:15px;"> 
+        <p style="height:45px; line-height:48px;">最新评价</p> 
+        <div id="logobox"> 
+         <ul id="logocontent"> 
+          <li>预测师[盲派神宗]完成了对客户go***(陪客户聊天)的咨询</li> 
+          <li>预测师[合婚催财]完成了对客户姚海***(六爻一事一占)的咨询</li> 
+          <li>预测师[易圣居士]完成了对客户周易***(同德放生抽签)的咨询</li> 
+          <li>预测师[张天师]完成了对客户王譩***(道仙问事)的咨询</li> 
+          <li>预测师[易圣居士]完成了对客户朱***(同德放生抽签)的咨询</li> 
+          <li>预测师[奇门风水]完成了对客户爱自***(一卦一问)的咨询</li> 
+         </ul> 
+        </div> 
+        <script language="JavaScript" type="text/javascript">
+new Marquee(
+{
+	MSClass	  : ["logobox","logocontent"],
+	Direction : 0,
+	Step	  : 2,
+	Width	  : 168,
+	Height	  : 220,
+	Timer	  : 200,
+	DelayTime : 0,
+	WaitTime  : 0,
+	ScrollStep: 0,
+	SwitchType: 0,
+	HiddenID  : ["logobox"],
+	AutoStart : true
+});
+</script> 
+       </div> 
+       <!--<div class="new_teacher" style="padding-bottom:15px;">
+		
+		<a href="/" target="_blank">
+		<img border="0" title="善若吉命理官方微信" src="/images/srj.png" style="width:180px;height:250px">
+		</a>
+		<div style="width:140px;text-align: center;color:#ffd289;margin-top:10px">
+	
+		</div>
+		</div>--> 
+       <!--新注册的老师--> 
+       <div class="new_teacher"> 
+        <div style="height:48px; line-height:48px;" class="new_teacher_nav">
+         推荐的老师
+        </div> 
+        <ul> 
+         <li> <a href="/yixue/psychic/info/828"><img src="http://www.shanruoji.com/up/photo/2/828_head.jpg" width="44" height="44" alt="南极仙翁" /></a> <span>南极仙翁</span></li> 
+         <li> <a href="/yixue/psychic/info/830"><img src="http://www.shanruoji.com/up/photo/2/830_head.jpg" width="44" height="44" alt="易卦先生" /></a> <span>易卦先生</span></li> 
+         <li> <a href="/yixue/psychic/info/7500"><img src="http://www.shanruoji.com/up/photo/9/7500_head.jpg" width="44" height="44" alt="九微" /></a> <span>九微</span></li> 
+         <li> <a href="/yixue/psychic/info/48473"><img src="http://www.shanruoji.com/up/photo/49/48473_head.png" width="44" height="44" alt="隐居深山" /></a> <span>隐居深山</span></li> 
+         <li> <a href="/yixue/psychic/info/867"><img src="http://www.shanruoji.com/up/photo/2/867_head.jpg" width="44" height="44" alt="易水狂人" /></a> <span>易水狂人</span></li> 
+         <li> <a href="/yixue/psychic/info/21347"><img src="http://www.shanruoji.com/up/photo/22/21347_head.png" width="44" height="44" alt="太极先生" /></a> <span>太极先生</span></li> 
+         <li> <a href="/yixue/psychic/info/29814"><img src="http://www.shanruoji.com/up/photo/31/29814_head.png" width="44" height="44" alt="诸葛神断" /></a> <span>诸葛神断</span></li> 
+         <li> <a href="/yixue/psychic/info/3453"><img src="http://www.shanruoji.com/up/photo/4/3453_head.jpg" width="44" height="44" alt="玄机妙算" /></a> <span>玄机妙算</span></li> 
+         <li> <a href="/yixue/psychic/info/24964"><img src="http://www.shanruoji.com/up/photo/26/24964_head.png" width="44" height="44" alt="天阳阁佛店" /></a> <span>天阳阁佛</span></li> 
+         <li> <a href="/yixue/psychic/info/38280"><img src="http://www.shanruoji.com/up/photo/39/38280_head.png" width="44" height="44" alt="莲花周易" /></a> <span>莲花周易</span></li> 
+         <li> <a href="/yixue/psychic/info/1161"><img src="http://www.shanruoji.com/up/photo/2/1161_head.jpg" width="44" height="44" alt="皇极神算" /></a> <span>皇极神算</span></li> 
+         <li> <a href="/yixue/psychic/info/35472"><img src="http://www.shanruoji.com/up/photo/36/35472_head.jpg" width="44" height="44" alt="周公命馆" /></a> <span>周公命馆</span></li> 
+         <li> <a href="/yixue/psychic/info/13728"><img src="http://www.shanruoji.com/up/photo/15/13728_head.jpg" width="44" height="44" alt="道之心" /></a> <span>道之心</span></li> 
+         <li> <a href="/yixue/psychic/info/37550"><img src="http://www.shanruoji.com/up/photo/39/37550_head.jpg" width="44" height="44" alt="易摇天成" /></a> <span>易摇天成</span></li> 
+         <li> <a href="/yixue/psychic/info/1745"><img src="http://www.shanruoji.com/up/photo/3/1745_head.gif" width="44" height="44" alt="黄半仙" /></a> <span>黄半仙</span></li> 
+         <li> <a href="/yixue/psychic/info/78547"><img src="http://www.shanruoji.com/up/photo/80/78547_head.jpg" width="44" height="44" alt="静慈大师" /></a> <span>静慈大师</span></li> 
+         <li> <a href="/yixue/psychic/info/9685"><img src="/yixue/images/default_user.jpg" width="44" height="44" alt="双赢" /></a> <span>双赢</span></li> 
+         <li> <a href="/yixue/psychic/info/29654"><img src="http://www.shanruoji.com/up/photo/31/29654_head.jpg" width="44" height="44" alt="易境观止" /></a> <span>易境观止</span></li> 
+         <li> <a href="/yixue/psychic/info/1758"><img src="http://www.shanruoji.com/up/photo/3/1758_head.jpg" width="44" height="44" alt="天机纵横" /></a> <span>天机纵横</span></li> 
+         <li> <a href="/yixue/psychic/info/6880"><img src="http://www.shanruoji.com/up/photo/8/6880_head.jpg" width="44" height="44" alt="悟天龙" /></a> <span>悟天龙</span></li> 
+         <li> <a href="/yixue/psychic/info/3822"><img src="http://www.shanruoji.com/up/photo/5/3822_head.jpg" width="44" height="44" alt="嵩阳居士" /></a> <span>嵩阳居士</span></li> 
+        </ul> 
+       </div> 
+       <div class="new_teacher"> 
+        <div style="font-size:12px;color:#fff1d0;" class=""> 
+         <p style="text-indent : 2em;">善若吉<a href="http://www.shanruoji.com">算命一条街</a>：被网友评为最专业的真人网上算命网站，<b>最准的算命网站</b>，网站的预测师经过严格的考核,具有高超的预测力.</p> 
+         <p style="text-indent : 2em;">为网友提供批八字，周易算命，算命财运，合八字，算命婚姻，算命事业，合婚，起名，看风水等服务.本站提供独特的评价服务，为您的工作生活保驾护航。</p> 
+        </div> 
+       </div> 
+      </div> 
+      <div class="clear"></div> 
+     </div> 
+    </center> 
+    <!--main_footer--> 
+    <div class="main_footer"> 
+    </div> ﻿ 
+    <!--footer
+ <div id="secAppQR" class="fix_qr" style="right: 18px;">
+<i class="close" onclick="document.getElementById('secAppQR').style.display='none';"></i>
+<a></a>
+</div>--> 
+    <div class="footer">
+      深圳网世网络科技有限公司 粤ICP备16059902号-14
+     <a style="margin-left:30px;" href="/yixue/service/us">关于我们</a> |
+     <a style="margin-left:30px;" href="/yixue/service/contact">联系我们</a> | 
+     <a href="/yixue/service">服务条款</a> | 
+     <a href="/yixue/service/rule">预测师协议</a> 
+     <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?e6b3981aa26e819631f61756025fdb98";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+    </div> 
+   </div> 
+   <script charset="utf-8" type="text/javascript" src="http://kefu.mdjuu.com/kmqq/Q5v40W6aqr1JS6bW5/wpaa.php?type=13&amp;kfuin=0&amp;ws=www.abc.com&amp;title=点击会话&amp;cot1=时间：9:30-22:30&amp;btn1=QQ交谈&amp;fsty=0&amp;fposX=2&amp;fposY=1&amp;tx=1&amp;aty=0&amp;a="></script> 
+  </div>    
+ </body>
+</html>

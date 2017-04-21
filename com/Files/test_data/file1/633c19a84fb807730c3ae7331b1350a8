@@ -1,0 +1,600 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=gb2312" /> 
+  <title>iOS开发有鬼 XcodeGhost黑了至少一亿台iPhone_自考项目管理网</title> 
+  <meta name="keywords" content="恶意代码,病毒,XcodeGhost" /> 
+  <meta name="description" content="用户在使用了被植入 XcodeGhost 恶意代码的苹果 APP 后，APP 会自动向病毒制造者的服务器上传诸如手机型号、系统版本、应用名称、应用使用时间、系统语言等(包含" /> 
+  <link href="/templets/default/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" /> 
+  <script language="javascript" type="text/javascript" src="/include/dedeajax2.js"></script> 
+  <script language="javascript" type="text/javascript">
+<!--
+function CheckLogin(){
+	  var taget_obj = document.getElementById('_ajax_feedback');
+	  myajax = new DedeAjax(taget_obj,false,false,'','','');
+	  myajax.SendGet2("/member/ajax_feedback.php");
+	  DedeXHTTP = null;
+}
+function postBadGood(ftype,fid)
+{
+	var taget_obj = document.getElementById(ftype+fid);
+	var saveid = GetCookie('badgoodid');
+	if(saveid != null)
+	{
+		var saveids = saveid.split(',');
+		var hasid = false;
+		saveid = '';
+		j = 1;
+		for(i=saveids.length-1;i>=0;i--)
+		{
+			if(saveids[i]==fid && hasid) continue;
+			else {
+				if(saveids[i]==fid && !hasid) hasid = true;
+				saveid += (saveid=='' ? saveids[i] : ','+saveids[i]);
+				j++;
+				if(j==10 && hasid) break;
+				if(j==9 && !hasid) break;
+			}
+		}
+		if(hasid) { alert('您刚才已表决过了喔！'); return false;}
+		else saveid += ','+fid;
+		SetCookie('badgoodid',saveid,1);
+	}
+	else
+	{
+		SetCookie('badgoodid',fid,1);
+	}
+	myajax = new DedeAjax(taget_obj,false,false,'','','');
+	myajax.SendGet2("/plus/feedback.php?aid="+fid+"&action="+ftype+"&fid="+fid);
+}
+function postDigg(ftype,aid)
+{
+	var taget_obj = document.getElementById('newdigg');
+	var saveid = GetCookie('diggid');
+	if(saveid != null)
+	{
+		var saveids = saveid.split(',');
+		var hasid = false;
+		saveid = '';
+		j = 1;
+		for(i=saveids.length-1;i>=0;i--)
+		{
+			if(saveids[i]==aid && hasid) continue;
+			else {
+				if(saveids[i]==aid && !hasid) hasid = true;
+				saveid += (saveid=='' ? saveids[i] : ','+saveids[i]);
+				j++;
+				if(j==20 && hasid) break;
+				if(j==19 && !hasid) break;
+			}
+		}
+		if(hasid) { alert("您已经顶过该帖，请不要重复顶帖 ！"); return; }
+		else saveid += ','+aid;
+		SetCookie('diggid',saveid,1);
+	}
+	else
+	{
+		SetCookie('diggid',aid,1);
+	}
+	myajax = new DedeAjax(taget_obj,false,false,'','','');
+	var url = "/plus/digg_ajax.php?action="+ftype+"&id="+aid;
+	myajax.SendGet2(url);
+}
+function getDigg(aid)
+{
+	var taget_obj = document.getElementById('newdigg');
+	myajax = new DedeAjax(taget_obj,false,false,'','','');
+	myajax.SendGet2("/plus/digg_ajax.php?id="+aid);
+	DedeXHTTP = null;
+}
+-->
+</script> 
+ </head> 
+ <body class="articleview"> 
+  <div class="header_top"> 
+   <div class="w960 center"> 
+    <span id="time" class="time">自考项目管理专业，中央财经大学主考，是做项目的同学，首选专业，1年3次考试，010-68017975！</span> 
+   </div> 
+  </div> 
+  <div class="header"> 
+   <div> 
+    <a href="/index.html"><img src="/images201305/top.gif" border="0" /></a> 
+   </div> 
+   <!-- //top --> 
+   <!-- //菜单 --> 
+   <div class="module blue mT10 wrapper w963"> 
+    <div class="top"> 
+     <!-- //如果不使用currentstyle，可以在channel标签加入 cacheid='channeltoplist' 属性提升性能 --> 
+     <div id="navMenu"> 
+      <ul> 
+       <li><a href="/"><span>主页</span></a></li> 
+       <li><a href="/a/shijianguanli/"><span>时间管理</span></a></li> 
+       <li><a href="/a/ruanjishu/"><span>软技术</span></a></li> 
+       <li><a href="/a/caigouguanli/"><span>采购管理</span></a></li> 
+       <li><a href="/a/qiyexiangmuguanli/"><span>企业项目管理</span></a></li> 
+       <li><a href="/a/xitonggongcheng/"><span>系统工程</span></a></li> 
+       <li><a href="/a/fanweiguanli/"><span>范围管理</span></a></li> 
+       <li><a href="/a/fengxianguanli/"><span>风险管理</span></a></li> 
+       <li><a href="/a/xiangmuguanlixue/"><span>项目管理学</span></a></li> 
+       <li><a href="/a/zhiliangguanli/"><span>质量管理</span></a></li> 
+       <li><a href="/a/xiangmuanlifenxi/"><span>项目案例分析</span></a></li> 
+      </ul> 
+     </div> 
+     <div class="search"> 
+      <form name="formsearch" action="/plus/search.php"> 
+       <div class="form"> 
+        <h4>搜索</h4> 
+        <input type="hidden" name="kwtype" value="0" /> 
+        <input name="q" type="text" class="search-keyword" id="search-keyword" value="在这里搜索..." onfocus="if(this.value=='在这里搜索...'){this.value='';}" onblur="if(this.value==''){this.value='在这里搜索...';}" /> 
+        <select name="searchtype" class="search-option" id="search-option"> <option value="title" selected="1">检索标题</option> <option value="titlekeyword">智能模糊</option> </select> 
+        <button type="submit" class="search-submit">搜索</button> 
+       </div> 
+      </form> 
+      <div class="tags"> 
+       <h4>热门标签:</h4> 
+       <ul> 
+        <li><a href="/tags.php?/%CF%EE%C4%BF/"></a></li> 
+        <li><a href="/tags.php?/%CF%EE%C4%BF%B9%DC%C0%ED/"></a></li> 
+        <li><a href="/tags.php?/%BF%BC%CA%D4/"></a></li> 
+        <li><a href="/tags.php?/%B9%DC%C0%ED/"></a></li> 
+        <li><a href="/tags.php?/%C6%F3%D2%B5/"></a></li> 
+        <li><a href="/tags.php?/%B2%C9%B9%BA/"></a></li> 
+        <li><a href="/tags.php?/%C8%CB%C1%A6%D7%CA%D4%B4/"></a></li> 
+        <li><a href="/tags.php?/%D7%A8%C9%FD%B1%BE/"></a></li> 
+        <li><a href="/tags.php?/%B7%E7%CF%D5%B9%DC%C0%ED/"></a></li> 
+        <li><a href="/tags.php?/%C7%BF%BB%AF/"></a></li> 
+       </ul> 
+      </div> 
+     </div>
+     <!-- //search --> 
+    </div> 
+   </div> 
+  </div>
+  <!-- //header --> 
+  <!-- /header --> 
+  <div class="w960 center clear mt1"> 
+   <div class="pleft"> 
+    <div class="place"> 
+     <strong>当前位置:</strong> 
+     <a href="http://www.ipma.org.cn/">自考项目管理专业本科是中央财经大学主考</a> &gt; 
+     <a href="/ipma/xmnews/">项目新闻</a> &gt; 
+    </div> 
+    <!-- /place --> 
+    <div class="viewbox"> 
+     <div class="title"> 
+      <h2>iOS开发有鬼 XcodeGhost黑了至少一亿台iPhone</h2> 
+     </div> 
+     <!-- /title --> 
+     <div class="info"> 
+      <small>时间:</small>2015-09-20 17:43
+      <small>来源:</small>网络整理 
+      <small>作者:</small>pmp 
+      <small>点击:</small> 
+      <script src="/plus/count.php?view=yes&amp;aid=40444&amp;mid=1" type="text/javascript" language="javascript"></script> 次
+     </div> 
+     <!-- /info --> 
+     <div class="intro">
+      用户在使用了被植入 XcodeGhost 恶意代码的苹果 APP 后，APP 会自动向病毒制造者的服务器上传诸如手机型号、系统版本、应用名称、应用使用时间、系统语言等(包含
+     </div> 
+     <div class="content"> 
+      <table width="100%"> 
+       <tbody>
+        <tr> 
+         <td> <p> </p><p></p><p>黑客!大家似乎都觉得离自己很远，或者是他们做的事情离自己很远。</p> <p>“我又不是什么名人“、”我也没有钱“、”没有被他们黑的价值“、”别人看不上我的这点小钱、这些没有价值的帐号的”。。。。。。这些是我听到周围朋友说的最多。</p> <p>好了不闲扯，上正题：</p> <p>用户在使用了被植入 XcodeGhost 恶意代码的苹果 APP 后，APP 会自动向病毒制造者的服务器上传诸如手机型号、系统版本、应用名称、应用使用时间、系统语言等(包含且不限于个人帐号信息)隐私信息。而根据一些知名开发者逆向分析的结果看，XcodeGhost 还有伪造 iCloud 密码输入框进行钓鱼的恶意代码存在。</p> <p></p><p align="center"><img onmousewheel="javascript:return big(this)" src="http://s3.51cto.com/wyfs02/M01/73/71/wKioL1X-dt2iV0X6AADEK6BVe2I773.png" alt="iOS开发有鬼 XcodeGhost黑了至少一亿台iPhone" /></p><p></p> <p>事情是这样发生的：</p> <p>苹果 iOS 开发都是通过苹果官方的 Xcode 集成开发工具来完成的，但 Xcode 体积有几个GB，国内开发者如果不番羽土啬直接从苹果 (国外服务器) 下载的话速度实在坑爹 (因为有防火长城GFW，俗称中国防火墙)。XcodeGhost 木马的作者很简单的利用了这一点，将「加了后门木马的 Xcode 工具」上传到国内网盘(例如百度网盘)，然后在各种 iOS 开发论坛发帖、回复进行散播。</p> <p align="center"><img onmousewheel="javascript:return big(this)" alt="" src="http://s1.51cto.com/wyfs02/M00/73/71/wKioL1X-duLz18EjAADeP2VivuA384.jpg" /></p> <p>木马作者提供的 Xcode 版本齐全，国内网盘下载速度飞快，各大公司程序员想要下载 Xcode 时只要轻轻地 “百度一下” 就这么上钩了。</p> <p>这个“加了料”的 Xcode 会在程序员「编译」APP 的时候偷偷自动地把 XcodeGhost 的恶意代码也一并编译进去了，而这时勤劳的程序猿还完全毫不知情(你们要理解程序猿，他们只想快点赶进度开发完，而且他们也不懂那么多互联网安全)，然后被加了料的 APP 也愉快地被发布出来了。</p> <p>再几个通俗点的，要来点跟大家相关的，才提得起你们的兴趣。</p> <p>”网易云音乐”，没错就是丁磊的那个网易，该app应用在AppStore上的最新版本2.8.3已经确认被感染。并且该应用的Xcode编译版本为6.4(6E35b)，也就是XcodeGhost病毒所感染的那个版本。网易云音乐在AppStore上目前的状态：</p> <p align="center"><img onmousewheel="javascript:return big(this)" alt="" src="http://s2.51cto.com/wyfs02/M02/73/71/wKioL1X-duODle2TAACyYFiqDY0735.jpg" /></p> <p align="center"><img onmousewheel="javascript:return big(this)" alt="" src="http://s6.51cto.com/wyfs02/M00/73/73/wKiom1X-dKfCZg8kAADPwXfpPXI212.jpg" /></p> <p align="center"><img onmousewheel="javascript:return big(this)" alt="" src="http://s6.51cto.com/wyfs02/M02/73/73/wKiom1X-dKijlQjTAAGhsbyxjUc573.jpg" /></p> <p>受感染的&quot;网易云音乐&quot;app会把手机隐私信息发送到病毒作者的服务器”init.icloud-analysis.com”上面</p> <p>这个网址有什么名堂呢?</p> <p align="center"><img onmousewheel="javascript:return big(this)" alt="" src="http://s3.51cto.com/wyfs02/M01/73/71/wKioL1X-duSioescAACWuAWrt0k174.jpg" /></p> <p>这个域名是今年2月刚注册的，域名所有者把所有注册信息屏蔽</p> <p>我们继续看，还有很多人不玩网易云音乐的，像本人就不用它的客户端</p> <p>中信银行信用卡的应用”动卡空间”中也发现了被插入的XcodeGhost恶意代码，受感染的版本为3.4.4</p> <p align="center"><img onmousewheel="javascript:return big(this)" alt="" src="http://s7.51cto.com/wyfs02/M00/73/71/wKioL1X-duWhPfVRAAE1rPliWlA191.jpg" /></p> <p align="center"><img onmousewheel="javascript:return big(this)" alt="" src="http://s6.51cto.com/wyfs02/M01/73/73/wKiom1X-dKmBmNP7AADy8ycJqwg298.jpg" /></p> <p>受感染的app还拥有接收黑客在云端的命令并按照黑客的指令发送URLScheme的能力。</p> <p>目前受感染的app中，官方正式回应的有腾讯微信团队、网易云音乐，豌豆荚的开眼</p> <p align="center"><img onmousewheel="javascript:return big(this)" alt="" src="http://s8.51cto.com/wyfs02/M00/73/73/wKiom1X-dKnQ7cCqAACd3pGDwkQ014.jpg" /></p> <p align="center"><img onmousewheel="javascript:return big(this)" alt="" src="http://s7.51cto.com/wyfs02/M02/73/71/wKioL1X-duagX5MkAABOUVgfLe8510.jpg" /></p> <p align="center"><img onmousewheel="javascript:return big(this)" alt="" src="http://s3.51cto.com/wyfs02/M01/73/71/wKioL1X-duaRpQgwAACYlfD3wWU231.jpg" /></p> <p>网易云音乐官方出的公告。</p> <p align="center"><img onmousewheel="javascript:return big(this)" alt="" src="http://s2.51cto.com/wyfs02/M02/73/73/wKiom1X-dKrhrWf9AAAxFUYECpg113.jpg" /></p> <p>这里的今晨6点就是2015年9月19日早上6点</p> <p align="center"><img onmousewheel="javascript:return big(this)" alt="" src="http://s6.51cto.com/wyfs02/M01/73/73/wKiom1X-dKqTFX1YAAC8kJnc_-I768.jpg" /></p> <p>这是“乌云知识库”17号下午发的一篇XCodeGhost分析简报，只截取了部分。</p> <p>如果你是技术党，可以去乌云官网查看详细介绍。</p> <p>注：乌云wooyun是国内知名的互联网安全平台</p> <p>-----------------------------问题分割线----------------------------</p> <p>事情都发生了，要想的，要做的第一件事应该就是：“我是iPhone用户啊，我该怎么办?我的微信钱包会不会被盗?还有支付宝，信用卡，好几家银行的。。。”这些都不重要，只要你没有艳照在里面就好。</p> <p>开玩笑啊，不是因为小编没用ios，只是让大家冷静面对，安静看完文章。</p> <p>普通用户面对XcodeGhost事件，应该怎么做?</p> <p>1、首选肯定是要知道自己有没有使用中招的app。</p> <p>目前已发现的340多款 App 感染了 XcodeGhost 木马，其中有百度音乐，微信，高德， 滴滴，花椒，58同城，网易云音乐，12306，同花顺，南方航空，工行融e联，重庆银行等用户量极大的 App，涉及了互联网、金融、铁路航空、游戏等领域。</p> <p>感染有后门的 iOS APP 详细列表(不知道这平台允不允许放网址)seo.yeah2.com/it-news/3322/</p> <p>2、暂停使用这些受感染的 APP，并在设置里关闭其“后台刷新”;</p> <p>3、开启 AppleID 的二步验证，如果你之前有遇到过 APP 弹出输入 AppleID 密码的窗口，那么建议你尽快修改密码;</p> <p>4、如果你还不放心，最好连应用的账号密码也一并修改;</p> <p>5、银行、金融、理财类的应用请尽量使用独立的密码，与一般的密码区分开来以免受牵连;</p> <p>6、其实有线索表明 XcodeGhost 与某某助手有一定的联系，建议大家不要为小便宜给自己埋下安全隐患。</p> (责任编辑：admin)</td> 
+        </tr> 
+       </tbody>
+      </table> 
+     </div> 
+     <!-- /content --> 
+     <div class="dede_pages"> 
+      <ul class="pagelist"> 
+       <li><a>共2页: </a></li>
+       <li><a href="#">上一页</a></li>
+       <li class="thisclass"><a href="#">1</a></li>
+       <li><a href="40444_2.html">2</a></li>
+       <li><a href="40444_2.html">下一页</a></li> 
+      </ul> 
+     </div> 
+     <!-- /pages --> 
+     <!-- //顶踩 --> 
+     <div class="newdigg" id="newdigg"> 
+      <div class="diggbox digg_good" onmousemove="this.style.backgroundPosition='left bottom';" onmouseout="this.style.backgroundPosition='left top';" onclick="javascript:postDigg('good',40444)"> 
+       <div class="digg_act">
+        顶一下
+       </div> 
+       <div class="digg_num">
+        (0)
+       </div> 
+       <div class="digg_percent"> 
+        <div class="digg_percent_bar">
+         <span style="width:0%"></span>
+        </div> 
+        <div class="digg_percent_num">
+         0%
+        </div> 
+       </div> 
+      </div> 
+      <div class="diggbox digg_bad" onmousemove="this.style.backgroundPosition='right bottom';" onmouseout="this.style.backgroundPosition='right top';" onclick="javascript:postDigg('bad',40444)"> 
+       <div class="digg_act">
+        踩一下
+       </div> 
+       <div class="digg_num">
+        (0)
+       </div> 
+       <div class="digg_percent"> 
+        <div class="digg_percent_bar">
+         <span style="width:0%"></span>
+        </div> 
+        <div class="digg_percent_num">
+         0%
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+     <script language="javascript" type="text/javascript">getDigg(40444);</script> 
+     <!-- //顶踩部份的源码结束 --> 
+     <!-- //分享代码开始 --> 
+     <!-- //分享代码结束 --> 
+     <div class="boxoff"> 
+      <strong>------分隔线----------------------------</strong> 
+     </div> 
+     <div class="handle"> 
+      <div class="context"> 
+       <ul> 
+        <li>上一篇：<a href="/ipma/xmnews/2015/0920/40443.html">上海某医院捐精送iphone6s 说好的节操呢</a> </li> 
+        <li>下一篇：<a href="/ipma/xmnews/2015/0920/40445.html">苹果遭病毒感染：iOS依然比Android安全</a> </li> 
+       </ul> 
+      </div> 
+      <!-- /context --> 
+      <div class="actbox"> 
+       <ul> 
+        <li id="act-fav"><a href="/plus/stow.php?aid=40444" target="_blank">收藏</a></li> 
+        <li id="act-err"><a href="/plus/erraddsave.php?aid=40444&amp;title=iOS开发有鬼 XcodeGhost黑了至少一亿台iPhone" target="_blank">挑错</a></li> 
+        <li id="act-pus"><a href="/plus/recommend.php?aid=40444" target="_blank">推荐</a></li> 
+        <li id="act-pnt"><a href="#" onclick="window.print();">打印</a></li> 
+       </ul> 
+      </div> 
+      <!-- /actbox --> 
+     </div> 
+     <!-- /handle --> 
+    </div> 
+    <!-- /viewbox --> 
+    <!-- //AJAX评论区 --> 
+    <!-- //主模板必须要引入/include/dedeajax2.js --> 
+    <a name="postform"></a> 
+    <div class="mt1"> 
+     <dl class="tbox"> 
+      <dt> 
+       <strong>发表评论</strong> 
+       <span class="more"></span> 
+      </dt> 
+      <dd> 
+       <div class="dede_comment_post"> 
+        <form action="#" method="post" name="feedback" onsubmit="return false;"> 
+         <input type="hidden" name="dopost" value="send" /> 
+         <input type="hidden" name="comtype" value="comments" /> 
+         <input type="hidden" name="aid" value="40444" /> 
+         <input type="hidden" name="fid" id="feedbackfid" value="0" /> 
+         <div class="dcmp-title"> 
+          <small>请自觉遵守互联网相关的政策法规，严禁发布色情、暴力、反动的言论。</small> 
+         </div> 
+         <!-- /dcmp-title --> 
+         <div class="dcmp-stand"> 
+          <strong>评价:</strong> 
+          <input type="radio" name="feedbacktype" checked="1" value="feedback" id="dcmp-stand-neu" /> 
+          <label for="dcmp-stand-neu"><img src="/templets/default/images/cmt-neu.gif" />中立</label> 
+          <input type="radio" name="feedbacktype" value="good" id="dcmp-stand-good" /> 
+          <label for="dcmp-stand-good"><img src="/templets/default/images/cmt-good.gif" />好评</label> 
+          <input type="radio" name="feedbacktype" value="bad" id="dcmp-stand-bad" /> 
+          <label for="dcmp-stand-bad"><img src="/templets/default/images/cmt-bad.gif" />差评</label> 
+         </div> 
+         <!-- /dcmp-stand --> 
+         <div class="clr"></div> 
+         <div class="dcmp-content"> 
+          <script type="text/javascript">
+					//<![CDATA[
+					window.CKEDITOR_BASEPATH='/include/ckeditor/';
+					//]]>
+                    </script> 
+          <script type="text/javascript" src="/include/ckeditor/ckeditor.js?t=B8DJ5M3"></script> 
+         </div> 
+         <!-- /dcmp-content --> 
+         <div class="dcmp-post"> 
+          <!--未登陆--> 
+          <div class="dcmp-userinfo" id="_ajax_feedback"> 
+           <input type="checkbox" name="notuser" id="dcmp-submit-guest" /> 
+           <label for="dcmp-submit-guest"></label> 匿名?  
+          </div> 
+          <div class="dcmp-submit"> 
+           <button type="button" onclick="PostComment()">发表评论</button> 
+          </div> 
+         </div> 
+        </form> 
+       </div> 
+      </dd> 
+     </dl> 
+    </div> 
+    <!-- //评论表单区结束 --> 
+    <!-- //评论内容区 --> 
+    <a name="commettop"></a> 
+    <div class="mt1"> 
+     <dl class="tbox"> 
+      <dt> 
+       <strong>最新评论</strong> 
+       <span class="more"><a href="/feedback.php?aid=">进入详细评论页&gt;&gt;</a></span> 
+      </dt> 
+      <!-- //这两个ID的区块必须存在，否则JS会出错 --> 
+      <dd id="commetcontentNew"></dd> 
+      <dd id="commetcontent"></dd> 
+     </dl> 
+    </div> 
+    <!--
+//由于评论载入时使用异步传输，因此必须在最后一步加载（DIGG和评论框须放在评论内容前面）
+//如果一定需要提前的把myajax.SendGet改为myajax.SendGet2，但可能会引起页面阻滞
+--> 
+    <script language="javascript">
+function LoadCommets(page)
+{
+		var taget_obj = document.getElementById('commetcontent');
+		var waithtml = "<div style='line-height:50px'><img src='/images/loadinglit.gif' />评论加载中...</div>";
+		var myajax = new DedeAjax(taget_obj, true, true, '', 'x', waithtml);
+		myajax.SendGet2("/plus/feedback_ajax.php?dopost=getlist&aid=&page="+page);
+		DedeXHTTP = null;
+}
+function PostComment()
+{
+		var f = document.feedback;
+		var msg = CKEDITOR.instances.msg.getData();
+		var nface = '6';
+		var nfeedbacktype = 'feedback';
+		var nvalidate = '';
+		var nnotuser = '';
+		var nusername = '';
+		var npwd = '';
+		var taget_obj = $DE('commetcontentNew');
+		var waithtml = "<div style='line-height:30px'><img src='/images/loadinglit.gif' />正在发送中...</div>";
+		if(msg=='')
+		{
+			alert("评论内容不能为空！");
+			return;
+		}
+		if(f.validate)
+		{
+			if(f.validate.value=='') {
+				alert("请填写验证码！");
+				return;
+			}
+			else {
+				nvalidate = f.validate.value;
+			}
+		}
+		if(msg.length > 500)
+		{
+			alert("你的评论是不是太长了？请填写500字以内的评论。");
+			return;
+		}
+		if(f.feedbacktype) {
+			for(var i=0; i < f.feedbacktype.length; i++)
+				if(f.feedbacktype[i].checked) nfeedbacktype = f.feedbacktype[i].value;
+		}
+		/*
+		if(f.face) {
+			for(var j=0; j < f.face.length; j++)
+				if(f.face[j].checked) nface = f.face[j].value;
+		}
+		*/
+		if(f.notuser.checked) nnotuser = '1';
+		if(f.username) nusername = f.username.value;
+		if(f.pwd) npwd = f.pwd.value;
+		
+		var myajax = new DedeAjax(taget_obj, false, true, '', '', waithtml);
+		myajax.sendlang = 'gb2312';
+		myajax.AddKeyN('dopost', 'send');
+		myajax.AddKeyN('aid', '');
+		myajax.AddKeyN('fid', f.fid.value);
+		myajax.AddKeyN('face', nface);
+		myajax.AddKeyN('feedbacktype', nfeedbacktype);
+		myajax.AddKeyN('validate', nvalidate);
+		myajax.AddKeyN('notuser', nnotuser);
+		myajax.AddKeyN('username', nusername);
+		myajax.AddKeyN('pwd', npwd);
+		myajax.AddKeyN('msg', msg);
+		myajax.SendPost2('/plus/feedback_ajax.php');
+		//msg = '';
+		CKEDITOR.instances.msg.setData('');
+		//taget_obj.removeAttribute('id');
+		f.fid.value = 0;
+		if(f.validate)
+		{
+			if($DE('validateimg')) $DE('validateimg').src = "/include/vdimgck.php?"+f.validate.value;
+			f.validate.value = '';
+		}
+		
+}
+function quoteCommet(fid)
+{
+	    document.feedback.fid.value = fid;
+}
+  
+function ajaxFeedback(aid, fid, type)
+{
+	
+	var taget_obj = $DE('ajaxfeedback_'+fid);
+	if(taget_obj.innerHTML == '')
+	{
+		var myajax = new DedeAjax(taget_obj, true, true, '', 'x');
+		myajax.SendGet2("/plus/feedback.php?aid="+aid+"&fid="+fid+"&action=quote&type=ajax");
+		eval('var result = typeof CKEDITOR.instances.msg_'+fid);
+		if(result != 'undefined')
+		{
+			// 删除实例
+			eval('var edit = CKEDITOR.instances.msg_'+fid);
+			CKEDITOR.remove(edit);
+		}
+		CKEDITOR.replace(document.getElementById('msg_'+fid) , CKEDITOR.instances.msg.config);
+		scroll(0, taget_obj.offsetTop - 120);
+		var formname = 'f = document.ajaxfeedback_'+fid;
+		eval(formname);
+		if(f.validate)
+		{
+			if($DE('vdimg_'+fid)) $DE('vdimg_'+fid).src = "/include/vdimgck.php?"+f.validate.value;
+			f.validate.value = '';
+		}
+		
+		DedeXHTTP = null;
+	}
+}
+
+
+
+function ajaxQuotePost(fid)
+{
+	var formname = 'f = document.ajaxfeedback_'+fid;
+	eval(formname);
+	//var f = document.formname;
+	//var f = f[0];
+	var nvalidate = '';
+	var nnotuser = '';
+	var nusername = '';
+	var npwd = '';
+	var taget_obj = $DE('commetcontentNew');
+	var waithtml = "<div style='line-height:30px'><img src='/images/loadinglit.gif' />正在发送中...</div>";
+	eval('var msg = CKEDITOR.instances.msg_'+fid+'.getData()');
+
+	if(f.validate)
+	{
+		if(f.validate.value=='') {
+			alert("请填写验证码！");
+			return;
+		}
+		else {
+			nvalidate = f.validate.value;
+		}
+	}
+	var myajax = new DedeAjax(taget_obj, false, true, '', '', waithtml);
+	
+	if(f.notuser.checked) nnotuser = '1';
+	if(f.username) nusername = f.username.value;
+	if(f.pwd) npwd = f.pwd.value;
+	
+	myajax.sendlang = 'gb2312';
+	myajax.AddKeyN('dopost', 'send');
+	myajax.AddKeyN('aid', '');
+	myajax.AddKeyN('fid', f.fid.value);
+	myajax.AddKeyN('type', 'ajax');
+	myajax.AddKeyN('comtype', f.comtype.value);
+	myajax.AddKeyN('isconfirm','yes');
+	
+	myajax.AddKeyN('typeid', f.typeid.value);
+	myajax.AddKeyN('quotemsg', f.quotemsg.value);
+	myajax.AddKeyN('validate', nvalidate);
+	myajax.AddKeyN('notuser', nnotuser);
+	myajax.AddKeyN('username', nusername);
+	myajax.AddKeyN('pwd', npwd);
+	myajax.AddKeyN('msg', msg);
+	myajax.SendPost2('/plus/feedback_ajax.php');
+	//alert(f.quotemsg.value);
+	if($DE('ajaxfeedback_'+fid).innerHTML != null)
+	{
+		$DE('ajaxfeedback_'+fid).innerHTML = '';
+	}
+	scroll(0, taget_obj.offsetTop);
+}
+LoadCommets(1);
+</script> 
+    <!-- //评论内容区结束 --> 
+   </div> 
+   <!-- //左边内容结束 --> 
+   <!-- //右边内容开始 --> 
+   <div class="pright"> 
+    <div class="pright"> 
+     <div> 
+      <dl class="tbox"> 
+       <dt>
+        <strong>栏目列表</strong>
+       </dt> 
+       <dd> 
+        <ul class="d6"> 
+        </ul> 
+       </dd> 
+      </dl> 
+     </div> 
+     <div class="commend mt1"> 
+      <dl class="tbox light"> 
+       <dt class="light">
+        <strong>推荐内容</strong>
+       </dt> 
+       <dd class="light"> 
+        <ul class="d4"> 
+         <li><a href="/ipma/xmnews/2015/0920/40368.html">2841人参加司法考试</a> <p>本报讯（记者 江海苹）2015年国家司法考试于9月19日、20日在全国统一举行。市委常委、...</p> </li> 
+         <li><a href="/ipma/xmnews/2015/0920/40364.html">2015国家司法考试开考 报名参考者年龄最大67</a> <p>福建之窗实时更新福建新闻，福州新闻，厦门新闻等九地市新闻，网站获省内三十多家媒体...</p> </li> 
+         <li><a href="/ipma/xmnews/2015/0920/40352.html">银行卡年费等收费项目已取消</a> <p>深圳本地宝资讯频道提供银行卡年费等收费项目已取消 有关的信息，导语：银行卡年费等...</p> </li> 
+         <li><a href="/ipma/xmnews/2015/0920/40311.html">市局召开2015年国家司法考试嘉兴考区培训暨动</a> <p>市局召开2015年国家司法考试嘉兴考区培训暨动员工作会议 嘉兴在线新闻网2015年09月17...</p> </li> 
+         <li><a href="/ipma/xmnews/2015/0919/40216.html">iPhone 6s发布疯狂吐槽来袭 中国愈发为苹果倚</a> <p>【iPhone 6s发布疯狂吐槽来袭中国愈发为苹果倚重】友商们在熬夜看完苹果的新品秀后，...</p> </li> 
+         <li><a href="/ipma/xmnews/2015/0919/40210.html">今后陕成人学士学位外语水平考试由高校自行组</a> <p>原标题：今年起陕西成人学士学位外语水平考试由高校自行组织西部网讯（记者 彭芬）近...</p> </li> 
+        </ul> 
+       </dd> 
+      </dl> 
+     </div> 
+     <!-- /commend --> 
+     <div class="hot mt1"> 
+      <dl class="tbox light"> 
+       <dt class="light">
+        <strong>热点内容</strong>
+       </dt> 
+       <dd class="light"> 
+        <ul class="c1 ico2"> 
+         <li><a href="/ipma/xmnews/2014/0425/2698.html">首先是教育部等四部门印发《关于</a></li> 
+         <li><a href="/ipma/xmnews/2013/0703/421.html"><strong>自考项目管理专业招生简章</strong></a></li> 
+         <li><a href="/ipma/xmnews/2014/0421/2093.html">中光通信科技(湖南)有限公司(以</a></li> 
+         <li><a href="/ipma/xmnews/2013/0703/420.html">2013年自考项目管理专业毕业论文</a></li> 
+         <li><a href="/ipma/xmnews/2013/1008/949.html">根据全国考委《关于2014年高等教</a></li> 
+         <li><a href="/ipma/xmnews/2013/1125/1338.html">下列人员不得报名参加考试：具有</a></li> 
+         <li><a href="/ipma/xmnews/2014/0429/3130.html"> 【自考】10月18日至19日举行201</a></li> 
+         <li><a href="/ipma/xmnews/2015/0723/17221.html">博傲教育预测发布2015护士考试分</a></li> 
+         <li><a href="/ipma/xmnews/2014/0423/2430.html">新疆中能万源化工有限公司总经理</a></li> 
+         <li><a href="/ipma/xmnews/2013/0914/828.html"><strong>中央财经大学自考项目管理学生自</strong></a></li> 
+        </ul> 
+       </dd> 
+      </dl> 
+     </div> 
+    </div> 
+    <!-- /pright --> 
+   </div> 
+   <div class="flink w960 center clear"> 
+    <a href="/index.html"><img src="/images201305/banner20130514.jpg" border="0" /></a> 
+   </div> 
+   <!-- //底部模板 --> 
+   <div class="footer w960 center mt1 clear"> 
+    <div class="c1 ico2 bottom20130514"> 
+     <li>报名咨询电话：010-6801 7975 E-mail：xueliedu@xueliedu.com</li> 
+     <li><b>朝阳校区</b></li> 
+     <li>地址： 京市朝阳区芍药居37号楼101中煤信息大厦院内时代畅想商务楼</li> 
+     <li>乘车路线：119, 125, 409, 422, 专22到芍药居下;地铁13号线到芍药居A出，地铁10号线绕到13号线A口出，往北走，在公共卫生间后面的院里，走约7分钟即到</li> 
+     <li><b>西直门校区</b></li> 
+     <li>地址：北京市西直门南大安胡同6号 中宏集团 2层</li> 
+     <li>乘车路线：(地铁2号线C口，公交西直门南）21, 44内, 44外, 80, 84, 387, 392, 490, 562, 604, 618, 691, 693, 694, 800内, 800外, 939</li> 
+     <li> 路到西直门南下车路东200米，地铁2/4号线到西直门下车，c口出，国二招南侧 中宏集团 2层，步行5分钟即到</li> 
+     <li><b>丰台校区</b></li> 
+     <li>地址：北京丰台东铁营苇子坑138号嘉城商务中心A座1033室（地铁5号线宋家庄C口出东300米）</li> 
+     <li>乘车路线：地铁宋家庄（5号线、10号线、亦庄线）</li> 
+    </div> 
+    <div class="footer_body"> 
+     <p class="powered"> Powered by <a href="http://www.ipma.org.cn" title="自考项目管理本科是中央财经大学主考的。" target="_blank"><b>自考项目管理本科是中央财经大学主考的</b></a> &copy; 2008-2013 <a href="http://www.ipma.org.cn" target="_blank">项目管理专业</a> Inc.<br /></p>
+     <div class="copyright">
+      北京赢在路上学校 版权所有 
+     </div>
+     <p></p> 
+     <!-- /powered --> 
+    </div> 
+    <div class="footer_right"></div> 
+   </div> 
+   <script type="text/javascript" charset="utf-8" src="http://gate.looyu.com/44351/94954.js"></script> 
+   <script type="text/javascript" src="http://js.tongji.linezing.com/3200941/tongji.js"></script>
+   <noscript>
+    <a href="http://www.linezing.com"><img src="http://img.tongji.linezing.com/3200941/tongji.gif" /></a>
+   </noscript> 
+   <!-- /footer -->   
+  </div>
+ </body>
+</html>

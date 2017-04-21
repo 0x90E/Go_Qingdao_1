@@ -1,0 +1,221 @@
+<!DOCTYPE html><html><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>萤石直播</title>
+    
+
+
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8;">
+
+<script src="//hm.baidu.com/hm.js?2ea96f5214514cb0cf3b685a352bde25"></script><script type="text/javascript">
+    var yundomain = 'i.ys7.com';
+    var basePath = '';
+    var staticPath = '//statics.ys7.com/square/asset';
+    var assetsVersion = "?20150717";
+    var production = true;
+    var hasLogin = false;
+    var yundomain = 'i.ys7.com';
+</script>
+
+    <style>*{}</style>
+    <link rel="stylesheet" href="//statics.ys7.com/square/asset/base/css/public.css?20150717">
+    <link rel="stylesheet" href="/square/mobile/components/swiper/swiper.css?20150717">
+    <link rel="stylesheet" href="//statics.ys7.com/square/asset/page/mobileApp/index.css?20150717">
+    <script src="//statics.ys7.com/appjs/ysapp-bridge.js"></script>
+  <script charset="utf-8" async="" src="http://statics.ys7.com/square/asset/widget/underscore/1.6.0/underscore.js?20150717"></script></head>
+
+  <body>
+    <div id="main">
+      
+      <!--搜索框-->
+      <div id="search">
+        <div class="input">
+          <div class="des">
+            <img src="//statics.ys7.com/square/asset/base/imgs/mobile/1_3_16_search.png">
+            <span>搜一搜</span>
+          </div>
+        </div>
+      </div>
+      
+      <!--banner-->
+      <div id="banner">
+        <div id="bannerDiv" class="swiper-wrapper"></div>
+      </div>
+      <div id="bannerIndex">
+        <div class="swiper-pagination">
+          <span></span>
+        </div>
+      </div>
+      
+      <!--商城、新闻-->
+      <div id="mallNews">
+        <div id="btnMall" class="btn">
+          <img src="//statics.ys7.com/square/asset/base/imgs/mobile/1_3_16_mall.png">
+        </div>
+        <div id="btnNews" class="btn">
+          <img src="//statics.ys7.com/square/asset/base/imgs/mobile/1_3_16_news.png">
+        </div>
+      </div>
+      
+      <!--视频列表-->
+      <div id="list">
+        <div id="specialList"></div>
+        <div id="boxList"></div>
+        <div id="loading">
+          <span class="s0"></span>
+          <span class="s1"></span>
+          <span class="s2"></span>
+          <span class="s3"></span>
+        </div>
+      </div>
+    </div>
+        
+    <!--分享属性-->
+    <script>
+      var getParam = function(name,url) {
+        var r = new RegExp("(\\?|#|&)"+name+"=(.*?)(#|&|$)");
+        var m = (url || location.href).match(r);
+        return decodeURIComponent(m ? m[2] : '');
+      };
+    
+      var shareObj = {
+        title: document.title != '' ? document.title : '萤石直播',
+        desc: '来自萤石直播分享',
+        imgUrl: 'http://weixin.ys7.com/src/img/logo.png',
+        link: 'http://' + window.location.host + '/square/mobile/index.jsp'
+      };
+    </script>
+    
+    <!--微信分享-->
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script>
+      !(function() {
+        var ua = navigator.userAgent.toLowerCase();
+        if(ua.match(/MicroMessenger/i) == "micromessenger") {
+          var wxReady = function() {
+            wx.showOptionMenu();            
+            wx.onMenuShareTimeline(shareObj);
+            wx.onMenuShareAppMessage(shareObj);
+            wx.onMenuShareQQ(shareObj);
+            wx.onMenuShareWeibo(shareObj);
+          };
+          
+          window.weixinVerifyCallback = function(res) {
+            if(res.result && res.result.code == 200) {
+              wx.config({
+                appId: res.result.data.appId,
+                timestamp: Number( res.result.data.timestamp ),
+                nonceStr: res.result.data.noncestr,
+                signature: res.result.data.signature,
+                jsApiList: ['showOptionMenu',
+                            'onMenuShareTimeline',
+                            'onMenuShareAppMessage',
+                            'onMenuShareQQ',
+                            'onMenuShareWeibo']
+              });
+              
+              wx.ready(wxReady);
+            }
+          }
+          
+          var script = document.createElement('script');
+          var pageUrl = window.location.href.split('#')[0].replace(/&/g, "%26");
+          
+          script.src = "http://weixin.ys7.com/api/js/getJsonpSignature?jsoncallback=weixinVerifyCallback&pageUrl=" + pageUrl;
+          document.body.appendChild(script);
+        }
+      }());
+    </script>
+    
+    <!--APP分享按钮-->
+    <script>
+      if(window.YsAppBridge) {
+        YsAppBridge.init = function(){
+
+          //session失效处理
+          if(window.YsAppBridge && window.YsAppBridge.version >= 3000000){
+              var url = window.location.href;
+              if(url.indexOf("errorcode=")>-1){
+                  var errorcode = window.location.href.substr(window.location.href.indexOf("errorcode=")+10);
+                  if(errorcode == "9000"){
+                      YsAppBridge.relogin();
+                  }
+              }
+          }
+
+
+          var obj =　{
+            menu: [{
+              type: 'shareTo1',
+              icon: '',
+              text: '发送给朋友',
+              bind: function()　{
+                YsAppBridge.shareTo({
+                  type: 'url',
+                  target: 'weixin',
+                  title: shareObj.title,
+                  desc: shareObj.desc,
+                  content: shareObj.link,
+                  img: shareObj.imgUrl
+                });
+              }
+            },
+            {
+              type: 'shareTo2',
+              icon: '',
+              text: '分享到朋友圈',
+              bind: function() {
+                YsAppBridge.shareTo({
+                  type: 'url',
+                  target: 'weixin_c',
+                  title: shareObj.title,
+                  desc: shareObj.desc,
+                  content: shareObj.link,
+                  img: shareObj.imgUrl
+                });
+              }
+            }]
+          };
+          YsAppBridge.setPageView(obj);
+        }
+      }
+    </script>
+        
+    
+
+
+
+<script src="//statics.ys7.com/square/asset/??widget/seajs/2.2.1/sea-debug.js,widget/zepto/1.0.0/zepto-debug.js,widget/zepto/1.0.0/zepto.touch-debug.js,widget/zepto/1.0.0/zepto.fx-debug.js,widget/zepto/1.0.0/zepto.cookie.min-debug.js,widget/util/0.0.2/util-debug.js?20150717"></script>
+
+<script>
+    seajs.config({
+        base: staticPath,
+        map: [
+            [ /^(.*\.(?:css|js))(?:.*)$/i, '$1' + (window.assetsVersion || ("?" + Math.random()) ) ]
+        ],
+        alias: {"page/mobileApp/praize-list":"page/mobileApp/praize-list-de79f24.js","page/mobileApp/city-wide-debug":"page/mobileApp/city-wide-debug-1bfe8de.js","page/tv_liveList/tv_liveList-debug":"page/tv_liveList/tv_liveList-debug-55b2470.js","page/mobileApp/classPage":"page/mobileApp/classPage-455bf23.js","eventproxy":"widget/eventproxy/0.3.1/eventproxy.js","page/mobileApp/animalList-debug":"page/mobileApp/animalList-debug-25f1923.js","page/mobileApp/vod":"page/mobileApp/vod-74c58bc.js","messenger":"widget/messenger/0.0.1/messenger.js","jquery":"widget/jquery/1.9.1/jquery.js","page/mobileApp/animalWorld-debug":"page/mobileApp/animalWorld-debug-b901178.js","page/mobileApp/state-machine":"page/mobileApp/state-machine-eea4cf3.js","page/mobileApp/videos-map":"page/mobileApp/videos-map-a3b4088.js","toTop":"widget/toTop/0.0.4/toTop.js","page/mobileApp/s1Util":"page/mobileApp/s1Util-2a57a2a.js","page/mobileApp/shareLiveList":"page/mobileApp/shareLiveList-7141c4a.js","page/tv_liveList/tv_liveList":"page/tv_liveList/tv_liveList-5f4c9f5.js","underscore":"widget/underscore/1.6.0/underscore.js","page/mobileApp/animalWorld":"page/mobileApp/animalWorld-4c12d33.js","ckplayer":"widget/ckplay/0.0.4/ckplayer.js","page/mobileThirdparty/animal/index_1-debug":"page/mobileThirdparty/animal/index_1-debug-c6dc927.js","page/mobileApp/s1Util-debug":"page/mobileApp/s1Util-debug-8b34bed.js","es5_safe":"widget/es5-safe/0.9.2/es5-safe.js","page/mobileApp/play_sportapp_dibble-debug":"page/mobileApp/play_sportapp_dibble-debug-e004607.js","page/mobileApp/collect-debug":"page/mobileApp/collect-debug-c90717a.js","page/mobileThirdparty/huawei/search-debug":"page/mobileThirdparty/huawei/search-debug-674f364.js","page/mobileApp/city-wide":"page/mobileApp/city-wide-b2e0440.js","page/mobileApp/subject-debug":"page/mobileApp/subject-debug-a3d9bda.js","page/mobileApp/search-debug":"page/mobileApp/search-debug-65cc97c.js","zepto_touch":"widget/zepto/1.0.0/zepto.touch.js","page/mobileApp/gc":"page/mobileApp/gc-b30e443.js","jquery_bxslider":"widget/bxSlider/0.0.1/jquery.bxslider.js","page/squareMap/squareMapLatest-debug":"page/squareMap/squareMapLatest-debug-6931e75.js","page/mobileApp/searchResult-debug":"page/mobileApp/searchResult-debug-cd5c45c.js","page/mobileApp/index":"page/mobileApp/index-8704315.js","loadingBox":"widget/loadingBox/0.0.1/loadingBox.js","page/mobileApp/play_sportapp_live-debug":"page/mobileApp/play_sportapp_live-debug-f11965f.js","jquery_affix":"widget/affix/0.0.1/jquery-affix.js","jquery_cookie":"widget/cookie/0.0.1/jquery.cookie.js","zepto_cookie_min":"widget/zepto/1.0.0/zepto.cookie.min.js","page/mobileApp/play-debug":"page/mobileApp/play-debug-75a4a8f.js","page/mobileApp/animalList":"page/mobileApp/animalList-67faed6.js","page/mobileApp/collect":"page/mobileApp/collect-c9deace.js","jquery_emotionFace":"widget/emotionFace/0.0.2/jquery.emotionFace.js","page/mobileApp/s1Shared":"page/mobileApp/s1Shared-805c4e5.js","uuid":"widget/uuid/0.0.2/uuid.js","page/mobileApp/index-debug":"page/mobileApp/index-debug-732cb96.js","util":"widget/util/0.0.2/util.js","zepto":"widget/zepto/1.0.0/zepto.js","page/mobileApp/vod-debug":"page/mobileApp/vod-debug-e5947a4.js","page/mobileApp/search":"page/mobileApp/search-ccb611f.js","page/mobileApp/subject":"page/mobileApp/subject-6d73130.js","page/mobileApp/searchResult":"page/mobileApp/searchResult-e8bfd36.js","page/mobileThirdparty/super_animal/index_1-debug":"page/mobileThirdparty/super_animal/index_1-debug-048f9d0.js","jquery_ba_hashchange":"widget/jquery-hashchange/0.0.1/jquery.ba-hashchange.js","page/mobileApp/play_sportapp_live":"page/mobileApp/play_sportapp_live-805fb1a.js","json":"widget/json/1.0.3/json.js","page/mobileApp/shareLiveList-debug":"page/mobileApp/shareLiveList-debug-e6d35e9.js","jquery_cityselect":"widget/cityselect/0.0.1/jquery.cityselect.js","page/mobileThirdparty/animal/index_1":"page/mobileThirdparty/animal/index_1-9b2a37b.js","carousel":"widget/carousel/0.0.1/carousel.js","page/mobileApp/play":"page/mobileApp/play-07aaeb9.js","page/mobileApp/praize-list-debug":"page/mobileApp/praize-list-debug-ace5ceb.js","page/mobileApp/classPage-debug":"page/mobileApp/classPage-debug-b91411d.js","dialog":"widget/dialog/0.0.2/dialog.js","zepto_fx":"widget/zepto/1.0.0/zepto.fx.js","page/mobileApp/s1Live-debug":"page/mobileApp/s1Live-debug-a24b6de.js","page/tv_play/play":"page/tv_play/play-e472642.js","page/mobileApp/s1Live":"page/mobileApp/s1Live-8cda0dc.js","page/mobileApp/s1Shared-debug":"page/mobileApp/s1Shared-debug-21ff290.js","page/squareMap/squareMapLatest":"page/squareMap/squareMapLatest-bc81ba7.js","sea":"widget/seajs/2.2.1/sea.js","hint":"widget/hint/0.0.2/hint.js","page/mobileThirdparty/huawei/search":"page/mobileThirdparty/huawei/search-06ee22e.js","page/mobileApp/gc-debug":"page/mobileApp/gc-debug-c298464.js","iscroll":"widget/iscroll/0.0.1/iscroll.js","base64":"widget/base64/0.0.1/base64.js","page/mobileApp/videos-map-debug":"page/mobileApp/videos-map-debug-3d17e92.js","toTopO":"widget/toTop/0.0.4/toTopO.js","page/mobileApp/play_sportapp_dibble":"page/mobileApp/play_sportapp_dibble-fd0108a.js","md5":"widget/md5/0.0.1/md5.js","socket_io":"widget/socketio/0.0.1/socket.io.js","jquery_autosize":"widget/autosize/0.0.1/jquery.autosize.js","page/mobileApp/state-machine-debug":"page/mobileApp/state-machine-debug-ac7ee3d.js","page/tv_play/play-debug":"page/tv_play/play-debug-e057331.js","page/mobileApp/s1":"page/mobileApp/s1-a5581bb.js","page/mobileApp/s1-debug":"page/mobileApp/s1-debug-0b9643d.js","pagination":"widget/pagination/0.0.1/pagination.js","page/mobileThirdparty/super_animal/index_1":"page/mobileThirdparty/super_animal/index_1-35b8290.js","storage":"widget/cache/0.0.1/storage.js"}
+    });
+    var _use = seajs.use;
+    seajs.use = function (ids, callback) {
+        ids = ids + '';
+        _use(ids, function (exports) {
+            callback && callback.apply(this, exports);
+        });
+        _use(staticPath + '/base/less/less-1.7.4.js');
+    };
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?2ea96f5214514cb0cf3b685a352bde25";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+    <script src="/square/mobile/components/swiper/swiper.js"></script>
+    <script>
+      seajs.use('page/mobileApp/index');
+    </script>
+  
+</body></html>

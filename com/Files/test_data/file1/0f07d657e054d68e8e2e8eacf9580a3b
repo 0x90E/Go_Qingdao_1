@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+    <meta name="keywords" content="苏宁易购">
+    <meta name="description" content="苏宁易购是国内领先的综合购物商城">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>售后作业执行平台</title>
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Expires" content="0">
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="shortcut icon" href="http://www.suning.com/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" type="text/css" href="/ases-web/static/css/common.css">
+	<link rel="stylesheet" type="text/css" href="/ases-web/static/css/shouhou.css">
+	<script type="text/javascript" src="/ases-web/static/js/jquery.js"></script>
+	<script type="text/javascript" src="/ases-web/static/js/DatePicker/WdatePicker.js"></script><link href="/ases-web/static/js/DatePicker/skin/WdatePicker.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="/ases-web/static/js/ajaxResultJudge.js"></script>
+	<script type="text/javascript" src="/ases-web/static/js/ajaxfileupload.js"></script>
+	<script type="text/javascript" src="/ases-web/static/js/HiUi.js"></script>
+	<script type="text/javascript" src="/ases-web/static/js/shouhou.js"></script>
+	<script type="text/javascript" src="/ases-web/static/js/moreValue.js"></script>
+	<script type="text/javascript" src="/ases-web/static/js/js.cookie.js"></script>
+	<script type="text/javascript" src="/ases-web/static/js/common.js"></script>
+	<script type="text/javascript" src="/ases-web/static/js/alertMsg.js"></script>
+	<script type="text/javascript">
+	var g_ctx = {};
+	g_ctx = {
+		contextPath:'/ases-web',
+		staticPath:'/ases-web/static'
+	};
+	var g_user= {};
+	g_user = {
+		login:false,
+		userType:'0'
+	};
+	
+	var maxImportFileSize = 10240;// 10M
+	
+	// loading start
+	function ajaxLoading(){ 
+	    $("<div class=\"datagrid-mask\"></div>").css({display:"block",width:"100%",height:$(window).height()}).appendTo("body"); 
+	    $("<div class=\"datagrid-mask-msg\"></div>").html("正在处理，请稍候......").appendTo("body").css({display:"block",left:($(document.body).outerWidth(true) - 190) / 2,top:($(window).height() - 45) / 2}); 
+	}
+	
+	// loading end
+	function ajaxLoadEnd(){ 
+	     $(".datagrid-mask").remove(); 
+	     $(".datagrid-mask-msg").remove();             
+	}
+	</script>
+    <link rel="stylesheet" type="text/css" href="/ases-web/static/css/common.css">
+	<link rel="stylesheet" type="text/css" href="/ases-web/static/css/shouhou.css">
+</head>
+<body style="background:#f6f6f6;">
+<img src="/ases-web/static/images/loginleftlogo.png" class="loginleftlogo">
+<div class="login-area">
+	<!--  logo  -->
+	<a class="login-logo" href="#"></a>
+	<!--  登录表单  -->
+	<div class="login-form">
+	  	<div class="login-error-area login-error-area-on" style="visibility:hidden;">
+			<span class="msg-wrong"><i></i><em></em></span>
+		</div>
+		<div class="login-name lanse">
+			<i></i><input type="text" name="userName" value="" placeholder="请输入工号" tabindex="1" maxlength="20">
+		</div>
+		<div class="login-password">
+			<i></i><input type="password" name="pwd" placeholder="请输入登录密码" tabindex="2">
+	  </div>
+		<a class="login-btn" href="javascript:void(0);" onclick="return submit();" tabindex="4">
+			立即登录
+		</a>
+	  <label for="remember-password" class="remember-password"><input id="remember-password" type="checkbox" tabindex="3">记住账号</label>
+		<div class="clear"></div>
+	</div>
+</div>
+<form id="loginForm" action="/ases-web/login/login.action" method="post">
+	<input type="hidden" name="u" id="u">
+	<input type="hidden" name="p" id="p">
+	<input type="hidden" name="X-CSRF-TOKEN" id="X-CSRF-TOKEN" value="">
+</form>
+<!-- 外联js需要放在页面底部，body结束标签前 -->
+<script type="text/javascript" src="/ases-web/static/js/shouhou.js"></script>
+<script type="text/javascript">
+	var rememberUserNameKey = "rememberUserNameF";
+	var rememberUserNameMarkKey = "rememberUserMarkNameF";
+	//聚焦效果 边框边成蓝色
+	//工号
+	$(".login-name").focusin(function(){
+		$(this).addClass("lanse");
+	}).focusout(function(){
+		$(this).removeClass("lanse");
+	});
+	//密码
+	$(".login-password").focusin(function(){
+		$(this).addClass("lanse");
+	}).focusout(function(){
+		$(this).removeClass("lanse");
+	});
+	
+	// 登录
+	function submit() {
+		var u = $.trim($("input[name='userName']").val());
+		var p = $.trim($("input[name='pwd']").val());
+		var ru = $("#remember-password").attr("checked");
+		
+		if(u == '') {
+			showErrorMsg("工号不能是空！");
+			return false;
+		}
+		
+		if(u.length > 20) {
+			showErrorMsg("工号长度不能超过20位！");
+			return false;
+		}
+		
+		if(p == '') {
+			showErrorMsg("密码不能是空！");
+			return false;
+		}
+		
+		if(ru) {
+			setCookie(rememberUserNameKey, u);
+			setCookie(rememberUserNameMarkKey, ru);
+		} else {
+			delCookie(rememberUserNameKey);
+			delCookie(rememberUserNameMarkKey);
+		}
+		
+		$("#u").val(u);
+		$("#p").val(p);
+		
+		var csrftoken = castleId();
+		Cookies.set('CSRF-TOKEN', csrftoken, { expires: 7 });
+		$("#X-CSRF-TOKEN").val(csrftoken);
+		
+		$("#loginForm").submit();
+		return true;
+	}
+	
+	// 显示异常信息
+	function showErrorMsg(msg) {
+		$(".login-error-area").css("visibility", "").find("em").text(msg);
+	}
+	
+	$(window).keydown(function(e){
+		e = e||event;
+		if(e.keyCode == 13){	//回车判断事件
+			e.preventDefault();
+		    setTimeout(function(){
+	           submit();
+	        },0);
+		}
+	});
+	
+	$(function() {
+		var ru = getCookie(rememberUserNameMarkKey);
+		var $userName = $("input[name='userName']");
+		var $pwd = $("input[name='pwd']");
+		var u = $.trim($userName.val()) || getCookie(rememberUserNameKey);
+		
+		$("#remember-password").attr("checked", ru);
+		$userName.val(u);
+		if(u) {
+			$pwd.focus();
+		} else {
+			$userName.focus();
+		}
+	});
+</script>
+<a class="full-screen" href="javascript:;"><em></em></a>
+</body></html>

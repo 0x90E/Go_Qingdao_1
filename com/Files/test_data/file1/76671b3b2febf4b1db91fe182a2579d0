@@ -1,0 +1,133 @@
+<!DOCTYPE html><html lang="en" style="font-size: 0px; "><head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">  
+    <link rel="shortcut icon" href="images/send.png" type="/image/x-icon">  
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">  
+    <title>小当家</title>
+
+    <link rel="stylesheet" href="css/minichat.css">
+    <link rel="stylesheet" href="skin/dang/css/app.css">
+    <script src="js/minichat.js"></script><style>.upFileCtn{width:70%;background:#3d3f40;padding:10px;border-radius:5px;margin:10px auto;position:relative;text-align:center}.upFileItem{display:inline-block;padding:0 5px}.upFileImg{border:0;max-height:50px}.upFileName{color:#fff;font-size:12px;text-align:center;margin-bottom:5px}.upFileAbort{position:absolute;right:0;top:-10px;background:#3d3f40;color:#fff;border-radius:100px;font-size:12px;padding:4px;cursor:pointer}.upFileOuter{height:5px;background:#1a1a1a;position:relative;border-radius:5px;overflow:hidden}.upFileInner{display:inline-block;height:100%;background:#5e90d6;position:absolute;top:0;left:0}</style>
+    <script src="skin/dang/js/app.js"></script>
+<style>.SC_outer {overflow: hidden;}.SC_inner {position: absolute;top: 0;left: 0;}.SC_backCtn {height: 100%;position: absolute;top: 0;right: 2px;}.SC_backClass {/*可配置*/background: #000;background: rgba(0, 0, 0, 0.4);width: 2px;border-radius: 20px;}.SC_frontCtn {position: absolute;top: 0;cursor: pointer;}.SC_frontClass {/*可配置*/background: #fff;background: rgba(255, 255, 255, 0.75);width: 4px;height: 30px;border-radius: 5px;}.SC_frontClass:hover {/*可配置*/background: rgba(255, 255, 255, 1);</style></head>  
+<body>  
+    <div class="view">
+        <!-- 常见问题开始 -->
+        <div class="commonQueLayer" id="commonQueLayer"></div>
+        <!-- 常见问题结束 -->
+
+        <!-- 意见反馈开始 -->
+        <div class="feedbackLayer">
+            <form id="feedbackForm">
+                <label class="MN_marginCtn MN_marginCtnRadio">
+                <input type="radio" name="level" value="1" checked=""> 满意</label>
+                <label class="MN_marginCtn MN_marginCtnRadio">
+                <input type="radio" name="level" value="0"> 不满意</label>
+                <div class="noSatiCtn">
+                    <p class="MN_marginCtn">您不满意的原因?</p>
+                    <label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="默认" checked=""> 默认</label>
+                    <label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="回答不准确"> 回答不准确</label>
+                    <label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="答非所问"> 答非所问</label>
+                    <label class="MN_marginCtnCheckbox"><input type="checkbox" name="reason[]" value="机器人骂人"> 机器人骂人</label>
+                </div>
+                <div class="MN_commentTipCtn">
+                    <textarea class="MN_commentCtn" id="commentCtn" name="content"></textarea>
+                </div>
+                <div class="MN_commentBtn" id="commentBtn">提交</div>
+            </form>
+        </div>
+        <!-- 意见反馈结束 -->
+
+        <!-- 留言开始 -->
+        <div class="leaveMsgLayer">
+            <form class="leaveMsgForm" id="leaveMsgForm">
+                <textarea class="MN_commentCtn" id="leaveMsgCtn" name="content"></textarea>
+                <input type="text" name="name" placeholder="姓名">
+                <input type="text" name="telNum" placeholder="手机号码">
+                <input type="text" name="qq" placeholder="QQ">
+                <input type="text" name="webSite" placeholder="网址">
+                <div class="leaveMsgBtn MN_commentBtn" id="leaveMsgBtn">提交</div>
+            </form>
+        </div>
+        <!-- 留言结束 -->
+
+        <div class="back">
+            <img class="logo" id="logo">
+            <p>网页由云问前端开发人员提供</p>
+        </div>
+        <div class="front">
+            <div class="chatScroll" style="height: 0px; ">
+                <div class="chatCtn" id="chatCtn">
+                    
+                </div>
+            </div>
+            <div class="editCtn">
+                <div class="editShow">
+                    <div class="cosInput cosSome">
+                        <div class="textareaCtn">
+                            <textarea class="textarea" id="textarea" readonly="readonly"></textarea>
+                            <div class="faceBtn"></div>
+                        </div>
+                        <div class="inputBtn">按住 说话</div>
+                    </div>
+                    <div class="cosBtn cosSome">
+                        <div class="addbtn"></div>
+                        <div class="sendBtn" id="sendBtn">发送</div>
+                    </div>
+                <div class="AU_outerCtn" style="left: 0px; bottom: 0px; box-sizing: border-box; display: none; "></div></div>
+                <div class="editHide">
+                    <div class="takePhotoCtn editCtn_com" style="width: 33.333333333333336%; ">
+                        <span class="takePhoto"></span>
+                        <p>拍照发送</p>
+                    </div>
+                    <div class="sendPicCtn editCtn_com" style="width: 33.333333333333336%; ">
+                        <span id="sendPic" class="sendPic"></span>
+                        <p>发送图片</p>
+                    </div>
+                    <div class="speakJokeCtn editCtn_com" style="width: 33.333333333333336%; ">
+                        <span class="speakJoke"></span>
+                        <p>讲个笑话</p>
+                    </div>
+                    <div class="checkCloudCtn editCtn_com" style="width: 33.333333333333336%; ">
+                        <span id="checkCloud" class="checkCloud"></span>
+                        <p>查天气</p>
+                    </div>
+                    <div class="checkOrderCtn editCtn_com" style="width: 33.333333333333336%; ">
+                        <a href="http://home.m.dangdang.com/order.php?action=list_type_order" target="_blank">
+                            <span class="checkOrder"></span>
+                            <p>查订单</p>
+                        </a>
+                    </div>
+                    <div class="ticketCtn editCtn_com" style="width: 33.333333333333336%; ">
+                        <a href="http://h5.m.dangdang.com/mdd/invoice.php" target="_blank">
+                            <span class="ticket"></span>
+                            <p>补开发票</p>
+                        </a>
+                    </div>
+                    <div class="commonQueCtn editCtn_com" style="width: 33.333333333333336%; ">
+                        <span class="commonQue"></span>
+                        <p>常见问题</p>
+                    </div>
+                    <div class="feedbackCtn editCtn_com" style="width: 33.333333333333336%; ">
+                        <span class="feedback"></span>
+                        <p>满意度</p>
+                    </div>
+                    <div class="exchangeCtn editCtn_com" style="width: 33.333333333333336%; ">
+                        <a href="" target="_blank">
+                            <span class="exchange"></span>
+                            <p>自助退换货</p>
+                        </a>
+                    </div>
+                    <div class="leaveMsgCtn editCtn_com" style="width: 33.333333333333336%; ">
+                        <span class="leaveMsg"></span>
+                        <p>留言</p>
+                    </div>
+                <div class="FA_backCtn" style="display: none; padding: 0px; left: 0px; bottom: 0px; "><div class="FA_advCtn" style="display: none; "><div class="FA_closeAdvCtn" title="不再显示">×</div></div><div class="FA_ScrollCtn SC_outer" style="width: 0px; height: 0px; "><div class="FA_faceCtn SC_inner"><div class="FA_moodCtn" title="[微笑]" mark="[微笑]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/0.png"></div></div><div class="FA_moodCtn" title="[撇嘴]" mark="[撇嘴]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/1.png"></div></div><div class="FA_moodCtn" title="[色]" mark="[色]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/2.png"></div></div><div class="FA_moodCtn" title="[发呆]" mark="[发呆]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/3.png"></div></div><div class="FA_moodCtn" title="[得意]" mark="[得意]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/4.png"></div></div><div class="FA_moodCtn" title="[流泪]" mark="[流泪]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/5.png"></div></div><div class="FA_moodCtn" title="[害羞]" mark="[害羞]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/6.png"></div></div><div class="FA_moodCtn" title="[调皮]" mark="[调皮]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/7.png"></div></div><div class="FA_moodCtn" title="[呲牙]" mark="[呲牙]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/8.png"></div></div><div class="FA_moodCtn" title="[惊讶]" mark="[惊讶]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/9.png"></div></div><div class="FA_moodCtn" title="[难过]" mark="[难过]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/10.png"></div></div><div class="FA_moodCtn" title="[酷]" mark="[酷]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/11.png"></div></div><div class="FA_moodCtn" title="[偷笑]" mark="[偷笑]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/12.png"></div></div><div class="FA_moodCtn" title="[流汗]" mark="[流汗]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/13.png"></div></div><div class="FA_moodCtn" title="[憨笑]" mark="[憨笑]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/14.png"></div></div><div class="FA_moodCtn" title="[奋斗]" mark="[奋斗]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/15.png"></div></div><div class="FA_moodCtn" title="[疑问]" mark="[疑问]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/16.png"></div></div><div class="FA_moodCtn" title="[嘘]" mark="[嘘]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/17.png"></div></div><div class="FA_moodCtn" title="[晕]" mark="[晕]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/18.png"></div></div><div class="FA_moodCtn" title="[再见]" mark="[再见]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/19.png"></div></div><div class="FA_moodCtn" title="[坏笑]" mark="[坏笑]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/20.png"></div></div><div class="FA_moodCtn" title="[委屈]" mark="[委屈]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/21.png"></div></div><div class="FA_moodCtn" title="[亲亲]" mark="[亲亲]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/22.png"></div></div><div class="FA_moodCtn" title="[鼓掌]" mark="[鼓掌]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/23.png"></div></div><div class="FA_moodCtn" title="[冷汗]" mark="[冷汗]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/24.png"></div></div><div class="FA_moodCtn" title="[大笑]" mark="[大笑]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/25.png"></div></div><div class="FA_moodCtn" title="[睡觉]" mark="[睡觉]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/26.png"></div></div><div class="FA_moodCtn" title="[抓狂]" mark="[抓狂]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/27.png"></div></div><div class="FA_moodCtn" title="[左哼哼]" mark="[左哼哼]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/28.png"></div></div><div class="FA_moodCtn" title="[右哼哼]" mark="[右哼哼]" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"><img fa-src="src/dang/29.png"></div></div><div class="FA_moodCtn" title="" mark="" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"></div></div><div class="FA_moodCtn" title="" mark="" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"></div></div><div class="FA_moodCtn" title="" mark="" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"></div></div><div class="FA_moodCtn" title="" mark="" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"></div></div><div class="FA_moodCtn" title="" mark="" group="当当表情"><div class="FA_srcCtn" style="width: 0px; height: 0px"></div></div></div><div class="SC_backCtn SC_backClass" style="display: none; "><div class="SC_frontCtn SC_frontClass" style="left: -1px; "></div></div></div></div></div>
+            </div>
+        </div>
+    </div>
+    
+  
+
+  
+<div class="FA_tipScrollCtn" style="width: 50px; height: 0px; display: none; "><div class="FA_tipMoodCtn"></div></div><div class="FA_countLenCtn" style="width: 0px; height: 0px; left: 15px; bottom: -15px; padding: 0px; border: 0px solid blue; opacity: 0; z-index: -999; display: none; "><span class="FA_markPos"></span></div></body></html>

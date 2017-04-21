@@ -1,0 +1,568 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head>
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8;">
+<meta http-equiv="X-UA-Compatible" content="IE=10">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+<meta http-equiv="keywords" content="翼支付企业账户， 企业账户， 翼支付，天翼电子商务有限公司，中国电信">
+<meta http-equiv="description" content="翼支付企业账户">
+
+<script type="text/javascript" src="/static/js/jquery/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="/static/js/utlis/utils.js" charset="GBK"></script>
+<script type="text/javascript">
+	var path = '';
+	var cmpfpath = '';
+</script>
+<link href="/static/css/common/common.css" rel="stylesheet" charset="GBK">
+<link href="/static/css/common/header.css" rel="stylesheet" charset="GBK">
+<link href="/static/css/newStyle.css?v=2015100802" rel="stylesheet">
+
+
+<title>翼支付企业客户自服务门户</title>
+<link href="/static/css/login/login.css?uuid=e9bbf1437992461eb759df66eed4ae96" rel="stylesheet" charset="GBK">
+<link href="/cmpf/css/new/pwd-PassGuardCtrl.css?uuid=e9bbf1437992461eb759df66eed4ae96" rel="stylesheet" charset="GBK">
+<script type="text/javascript" src="/js/pwd/pwd-PassGuardCtrl.js?uuid=e9bbf1437992461eb759df66eed4ae96" charset="UTF-8"></script><script type="text/javascript" src="/cmpf/js/pwd/crypto-js.js?v=1780741" charset="GBK"></script><script type="text/javascript" src="/cmpf/js/pwd/microdone-crypto.js?v=1780741" charset="GBK"></script><script type="text/javascript" src="/cmpf/js/pwd/PassGuardCtrl.js?v=1780741" charset="GBK"></script><script type="text/javascript" src="/cmpf/js/pwd/Base64.js?v=1780741" charset="GBK"></script>
+<!-- <script type="text/javascript"
+	src="./static/js/business/ca/ca2.js" charset="utf-8"></script> -->
+
+<script type="text/javaScript">
+
+$(document).ready(function(){
+	/*var path="https://b.bestpay.com.cn";
+	var path2=$('.ocx_style').find('a').attr('href');
+	$('.ocx_style').find('a').attr('href',path+path2);
+	checkBrowser();*/
+});
+
+var casLoginUrl="/login";
+if (window.top != window.self) {
+	window.top.location.href = casLoginUrl + "?service="
+			+ window.top.location.href;
+}
+	String.prototype.trim = function() {
+		// 用正则表达式将前后空格  
+		// 用空字符串替代。  
+		return this.replace(/(^\s*)|(\s*$)/g, "");
+	}
+
+	$(function() {
+		if ('') {
+			showErrorInfo('');
+		} else {
+			if ('-1' == -1) {
+				showErrorInfo("请先登录后再操作");
+			}
+		}
+	});
+
+	function check() {
+		$("#errorMsg").html("");
+		var mNo = document.getElementById("username").value;
+		if (mNo == null || mNo.trim() == "") {
+			showErrorInfo("请输入您的账号");
+			return false;
+		}
+		setPwdVal("pwd-login");
+	}
+
+	function checkCert() {
+		$("#signature").val("");
+		$("#certSN").val("");
+		//判断控件是否正常
+		if (!ready()) {
+			return false;
+		}
+		//检查是否已安装证书
+		var staffId = $("#username").val();
+		var CA_NOW = "";
+		var CA_DATA = "";
+		var CA_NAME = "";
+		var staffCode = $("#username").val();
+		var password = '';
+		if(pgeCtrl.osBrowser == 10 || pgeCtrl.osBrowser == 11) {
+			password = $("#loginpwd-self").val();
+		}else{
+			password = $("#loginpwd").val();
+		}
+		CA_DATA += "user_" + staffCode + "_password_" + password;
+		var cert = getCertInIE(CA_NAME, "QM_" + staffId);
+		if (cert == null || ("" + cert).length < 20) {
+			return false;
+		}
+		//判断证书有效期
+		if (str2date(getCertNotAfter(cert)) < new Date(CA_NOW)) {
+			DeleteCertInIEWithSN(CA_NAME, getCertSN(cert));
+			return false;
+		}
+		//取证书序列及数字签名
+		var _signature = signatureWithCertInIE(CA_NAME, "QM_" + staffId,
+				CA_DATA);
+		var _certSN = getCertSN(cert);
+		$("#signature").val(_signature.replace(/\+/g, " "));
+		$("#certSN").val(_certSN);
+	}
+
+	function showErrorInfo(text) {
+		$("#login_error").html(text);
+		$("#welcome_Img").hide();
+		$("#login_error").show();
+		setTimeout('$("#login_error").fadeOut();$("#welcome_Img").fadeIn();',
+				5000);
+	}
+	
+	function checkBrowser(){
+		if($.browser.chrome){
+			var ver = $.browser.version;
+			var index = ver.indexOf('.');
+			var temp = ver.substr(0,index);
+			if(parseInt(temp) > 41){
+				showWarn();
+			}
+		}else if($.browser.msie && parseInt($.browser.version) < 8){
+			showWarn();
+		}
+	}
+	
+	function showWarn(){
+		$('body').prepend('<div class="browser-warn"></div>');
+		$('.browser-warn').text("您的浏览器暂不支持，请使用IE8或以上版本的IE浏览器");
+		$('.browser-warn').slideDown('slow');
+		$('.header-line').eq(0).css('top','66px');
+		$('.header-line').eq(1).css('top','146px');
+	}
+</script>
+</head>
+<body>
+	
+<link href="/static/css/common/header.css" rel="stylesheet" charset="GBK">
+
+		<div class="header-line"></div>
+		<div id="header_top">
+			<div id="header">
+				<div id="header_shortcut">
+					<div id="intro">
+						<ul>
+							<li><img src="/static/img/common/dot.png">&nbsp;<a href="https://www.bestpay.com.cn/companyindex" target="_blank">公司介绍</a></li>
+							<li><img src="/static/img/common/dot.png">&nbsp;<a href="https://b.bestpay.com.cn/introduce/product.do">产品介绍</a></li>
+						</ul>
+					</div>
+					<div id="header_download">
+						<ul>
+							<li><img src="/static/img/common/dot.png">&nbsp;<a href="https://b.bestpay.com.cn/bppf/receipt.do?method=selfhelpIndex">电子回单验证</a></li>
+							<li><img src="/static/img/common/dot.png">&nbsp;<a id="login_a" href="">登录</a></li>
+							<li><img src="/static/img/common/dot.png">&nbsp;<a href="https://b.bestpay.com.cn/bppf/onlineregistraction/cashsweep.do?method=index">注册</a></li>
+						</ul>
+					</div>
+				</div>
+				<div id="header_logo_menu">
+					<div id="header_logo" onclick="document.location.href='/login?service=http://b.bestpay.com.cn/ipos/mobilerecharge.do?method'">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="header-line" style="top: 115px;"></div>
+
+
+
+<script type="text/javascript">
+	function changePwd() {
+		var username = document.getElementById("username").value;
+		var lastUrl = document.location.href;
+		document.location.href = "/pwdReset.jsp?username="
+		+ username +"&lastUrl=" + lastUrl;
+	}
+</script>
+
+	<div style="min-width: 980px;">
+		<div style="position: relative; width: 980px; left: 50%; right: 50%; margin: 0px -490px 0px -490px; padding: 0px; width: 980px; z-index: 4; height: 1px;">
+			<form action="/login?service=http://b.bestpay.com.cn/ipos/mobilerecharge.do?method" method="post" id="loginForm">
+				<input type="hidden" name="method" value="login"> 
+						<input type="hidden" name="lt" value="LT-474878-bBtkthKvZcKkcsn9ABgy1tfc7nxCUz"> 
+						<input type="hidden" name="execution" value="e1s1"> 
+						<input type="hidden" name="_eventId" value="submit">
+						<input type="hidden" id="macAddress" name="macAddress" value=""> 
+				<div id="login_window">
+					<input type="hidden" id="signature" name="signature"> <input type="hidden" id="certSN" name="certSN"> <input type="hidden" id="toURL" name="toURL" value="">
+					<input name="TOURL_MENUID" value="" type="hidden">
+					<input type="hidden" value="BPPF" name="sysLoginType">
+					<div id="login_loading" style="display: none;">
+						<img src="/static/img/login/login_loading.gif" alt="loading">
+					</div>
+					<div id="login_ready">
+					
+						<div class="longin_widget" style="position: relative;">
+							<div id="login_error" style="display: none; ">请先登录后再操作</div>
+							<img alt="欢迎登录翼支付" src="/static/img/login/welcome.png" style="padding-top: 10px; display: inline; " id="welcome_Img">
+						</div>
+						<div style="background-image: url('/static/img/login/acct_bg.png');" class="longin_widget">
+							<span class="login-span" style=""> 
+								<input class="login-input" type="text" value="" name="username" id="username" tabindex="1">
+							</span>
+						</div>
+						<div style="background-image: url('/static/img/login/pwd_bg.png');" class="longin_widget">
+							<span class="lg-span"> <script type="text/javascript">var PassGuardCtrlloginpwd = new $.pge({pgeClass:"old-pwd pwd-login",pgeId: "loginpwd-self"});jQuery(function(){PassGuardCtrlloginpwd.pwdSetSk("70272061337044158244383560272191");PassGuardCtrlloginpwd.pgInitialize();});PassGuardCtrlloginpwd.generate();</script><span id="loginpwd-self_down" class="ocx_style" style="text-align:center;"><a href="/cmpf/js/pwd/ocx/PassGuardSetupFF.exe">请点此安装控件</a></span><input type="hidden" name="password" id="loginpwd" class="old-pwd pwd-login" objid="loginpwd-self"><input type="hidden" name="login-rd" value="70272061337044158244383560272191">
+							</span>
+						</div>
+						<input type="hidden" name="method" value="login">
+						<input type="hidden" id="pwdNameNew" value="06532529541724881958152184985092">
+						<div class="longin_widget">
+							<div id="valid_Code">
+								<span><input class="login-input ms-clear" style="width: 105px; margin-left: 55px;" type="text" value="" name="verifyCode" id="verifyCode" maxlength="4" tabindex="3" tip="verifyCodeInput" validflag="false"> </span>
+							</div>
+							<div style="float: left; position: relative; top: 2px; left: 10px;">
+								<img name="img" id="vCode" src="/vimage.do" onclick="changeVCode();">
+							</div>
+						</div>
+						<div class="longin_widget">
+							<input type="button" id="login_button" class="button-default" value="" onclick="check();">
+						</div>
+						<div class="longin_widget" style="text-align: right; margin-top: 25px;">
+							<a href="https://b.bestpay.com.cn/bppf/onlineregistraction/cashsweep.do?method=index">开户注册</a><img alt="分隔" src="/static/img/login/split.png" style="margin: 0px 8px 0px 8px;"><a href="#" onclick="javascript:changePwd();return false;">忘记密码?</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						</div>
+						<div id="accSelecte">
+							<div id="defaultAcc" value="DEFAULT">账号登录</div>
+							<div id="innerSecondAcc" value="INNER_SECOND">二级商户号</div>
+						</div>
+					</div>
+				</div>
+				<input type="hidden" name="merchType" value="DEFAULT">
+			</form>
+		</div>
+		<div id="body_div">
+			<div class="slide" id="slide">
+				<ul>
+					<li style="z-index: 1; opacity: 1; ">
+						<div style="background-image: url('/static/img/login/slide_1.jpg');" class="slide_bg"></div>
+					</li>
+					<li style="z-index: 0; opacity: 1; "><div style="background-image: url('/static/img/login/slide_2.jpg');" class="slide_bg"></div></li>
+					<li style="z-index: 0; opacity: 1; ">
+						<div style="background-image: url('/static/img/login/slide_3.jpg');" class="slide_bg"></div>
+					</li>
+					<li style="z-index: 0; opacity: 1; "><div style="background-image: url('/static/img/login/slide_4.jpg');" class="slide_bg"></div></li>
+				</ul>
+				<!--此处的img是用来占位的，在实际使用中，可以另外制作一张全空的图片-->
+				<img style="visibility: hidden;" src="/static/img/login/slide_1.jpg" width="100%"> <cite> <span class="cur">1</span> <span class="">2</span>
+					<span class="">3</span> <span class="">4</span>
+				</cite>
+				<div class="clear"></div>
+			</div>
+		</div>
+	</div>
+	<select name="select_ca" id="select_ca" style="display: none"></select>
+	<script type="text/javascript">
+		function changeVCode() {
+			$("#verifyCode").css('background', "#ffffff");
+			$("#verifyCode").val('');
+			document.getElementById("vCode").src = "/vimage.do?"
+					+ Math.random();
+		}
+
+		var vcodeOpenFlag = "";
+
+		// 查是否使用验证码登录方式
+		function chenkVcodeOpenFlag() {
+			$
+					.ajax({
+						url : "/login.do?method=chenkVcodeOpenFlag",
+						type : "post",
+						async : false,
+						success : function(data) {
+							vcodeOpenFlag = data;
+						}
+					});
+		}
+
+		var time = 60;
+		var timeObj = null;
+		var isSmsLogin = "N";
+
+		// 初始化页面是否用短信验证
+		function initSmsLogin() {
+			$.ajax({
+				url : "/login.do?method=initSmsLogin",
+				type : "post",
+				async : false,
+				success : function(data) {
+					isSmsLogin = data;
+				}
+			});
+		}
+
+		// 发送短信验证码
+		function sendSmsLogin() {
+			var restulCode = "";
+			var resultMsg = "";
+			var staffCode = document.getElementById("username").value;
+			if (staffCode == "") {
+				$("#msg").html("请填写用户名");
+				return;
+			}
+			$
+					.ajax({
+						url : "/login.do?method=sendSmsLogin&staffCode="
+								+ staffCode,
+						type : "post",
+						async : false,
+						success : function(data) {
+							restulCode = data.split(";")[0];
+							if (restulCode == "SENDMSG_SUCESS") {
+								//点击发送校验码按钮，则该按钮限时失效
+								$("#sendSmsBtn").val("短信已发送");
+								$("#sendSmsBtn").attr("disabled", "true");
+								$("#errorMsg").html("");
+								//开始倒计时
+								timeObj = setInterval("count()", 1000);
+							} else if (restulCode = "SENDMSG_ERROR") {
+								$("#sendSmsBtn").val("再次发送短信");
+								$("#sendSmsBtn").removeAttr("disabled")
+										.removeClass("disabledBtn");
+								$("#errorMsg").html("发送短信失败，请重新点击发送");
+								clearTimeout(timeObj);
+								time = 60;
+								resultMsg = data.split(";")[1];
+							}
+						}
+					});
+			if (resultMsg != "")
+				alert(resultMsg);
+			return restulCode;
+		}
+		function count() {
+			if (time > 0) {
+				$("#errorMsg").html("距离下次重发验证码还有" + time + "秒");
+				time--;
+			} else {
+				clearTimeout(timeObj);
+				time = 60;
+				$("#sendSmsBtn").val("再次发送短信");
+				$("#sendSmsBtn").removeAttr("disabled").removeClass(
+						"disabledBtn");
+				$("#errorMsg").html("");
+			}
+		}
+		function checkSmsLogin() {
+			var isCheck = false;
+			var validCode = $("#smsValidCode").val();
+			if (validCode == "") {
+				$("#msg").html("请填写短信验证码");
+				return isCheck;
+			}
+			$
+					.ajax({
+						url : "/login.do?method=checkSmsLogin&validCode="
+								+ validCode,
+						type : "post",
+						async : false,
+						success : function(data) {
+							if (data == "CHECK_SUCESS") {
+								$("#msg").html("");
+								isCheck = true;
+							} else {
+								if (data == "CHECK_OVERTIME") {
+									$("#msg").html("验证码已失效,请重新发送验证短信");
+								} else if (data = "CHECK_ERROR") {
+									$("#msg").html("校验验证码失败,请重新发送验证短信");
+								}
+								$("#sendSmsBtn").val("再次发送短信");
+								$("#sendSmsBtn").removeAttr("disabled")
+										.removeClass("disabledBtn");
+								isCheck = false;
+							}
+						}
+					});
+			clearTimeout(timeObj);
+			time = 60;
+			return isCheck;
+		}
+
+		(function() {
+			if (!Function.prototype.bind) {
+				Function.prototype.bind = function(obj) {
+					var owner = this, args = Array.prototype.slice
+							.call(arguments), callobj = Array.prototype.shift
+							.call(args);
+					return function(e) {
+						e = e || top.window.event || window.event;
+						owner.apply(callobj, args.concat([ e ]));
+					};
+				};
+			}
+		})();
+		var slide = function(id) {
+			this.ctn = document.getElementById(id);
+			this.adLis = null;
+			this.btns = null;
+			this.animStep = 0.1;//动画速度0.1～0.9
+			this.switchSpeed = 5;//自动播放间隔(s)
+			this.defOpacity = 1;
+			this.tmpOpacity = 1;
+			this.crtIndex = 0;
+			this.crtLi = null;
+			this.adLength = 0;
+			this.timerAnim = null;
+			this.timerSwitch = null;
+			this.init();
+		};
+		slide.prototype = {
+			fnAnim : function(toIndex) {
+				if (this.timerAnim) {
+					window.clearTimeout(this.timerAnim);
+				}
+				if (this.tmpOpacity <= 0) {
+					this.crtLi.style.opacity = this.tmpOpacity = this.defOpacity;
+					this.crtLi.style.filter = 'Alpha(Opacity='
+							+ this.defOpacity * 100 + ')';
+					this.crtLi.style.zIndex = 0;
+					this.crtIndex = toIndex;
+					return;
+				}
+				this.crtLi.style.opacity = this.tmpOpacity = this.tmpOpacity
+						- this.animStep;
+				this.crtLi.style.filter = 'Alpha(Opacity=' + this.tmpOpacity
+						* 100 + ')';
+				this.timerAnim = window.setTimeout(this.fnAnim.bind(this,
+						toIndex), 50);
+			},
+			fnNextIndex : function() {
+				return (this.crtIndex >= this.adLength - 1) ? 0
+						: this.crtIndex + 1;
+			},
+			fnSwitch : function(toIndex) {
+				if (this.crtIndex == toIndex) {
+					return;
+				}
+				this.crtLi = this.adLis[this.crtIndex];
+				for ( var i = 0; i < this.adLength; i++) {
+					this.adLis[i].style.zIndex = 0;
+				}
+				this.crtLi.style.zIndex = 2;
+				this.adLis[toIndex].style.zIndex = 1;
+				for ( var i = 0; i < this.adLength; i++) {
+					this.btns[i].className = '';
+				}
+				this.btns[toIndex].className = 'cur'
+				this.fnAnim(toIndex);
+			},
+			fnAutoPlay : function() {
+				this.fnSwitch(this.fnNextIndex());
+			},
+			fnPlay : function() {
+				this.timerSwitch = window.setInterval(this.fnAutoPlay
+						.bind(this), this.switchSpeed * 1000);
+			},
+			fnStopPlay : function() {
+				window.clearTimeout(this.timerSwitch);
+			},
+			init : function() {
+				this.adLis = this.ctn.getElementsByTagName('li');
+				this.btns = this.ctn.getElementsByTagName('cite')[0]
+						.getElementsByTagName('span');
+				this.adLength = this.adLis.length;
+				for ( var i = 0, l = this.btns.length; i < l; i++) {
+					with ({
+						i : i
+					}) {
+						this.btns[i].index = i;
+						this.btns[i].onclick = this.fnSwitch.bind(this, i);
+						this.btns[i].onclick = this.fnSwitch.bind(this, i);
+					}
+				}
+				this.adLis[this.crtIndex].style.zIndex = 2;
+				this.fnPlay();
+				this.ctn.onmouseover = this.fnStopPlay.bind(this);
+				this.ctn.onmouseout = this.fnPlay.bind(this);
+			}
+		};
+		var player1 = new slide('slide');
+
+		$(window).keypress(function(e) {
+			if (e.which == 13) {
+				check();
+			}
+		});
+		$(".slide_bg").click(function (){
+			document.location.href='https://b.bestpay.com.cn/introduce/product.do';
+		});
+		
+		$("#defaultAcc,#innerSecondAcc").click(function(){
+			$(this).parent().find("div").css({backgroundColor: "#3385ff",color: "#fff"});
+			$(this).css({backgroundColor: "#fff",color: "#000"});
+			$("input[name=merchType]").val($(this).attr("value"));
+		});
+	</script>
+	
+<link href="/static/css/common/footer.css" rel="stylesheet" charset="GBK">
+<!-- footer  -->
+<div class="footer">
+	<div class="inner cf">
+		<div class="widget partner">
+			<h4 class="widgetName">
+				<img src="/static/img/common/footer_rd_bg.png"><span>&nbsp;合作银行</span>
+			</h4>
+			<div class="widgetContent">
+				<img src="/static/img/common/partner.png">
+			</div>
+		</div>
+		<div class="widget appdl">
+			<h4 class="widgetName">
+				<img src="/static/img/common/footer_rd_bg.png"><span>&nbsp;客户端</span>
+			</h4>
+			<div class="appClient widgetContent">
+				<a href="https://b.bestpay.com.cn/bppf/appdownload.do?method=toAppDown&amp;flag=1&amp;type=jfy" class="hotArea01"></a>
+				<a href="https://b.bestpay.com.cn/bppf/appdownload.do?method=toAppDown&amp;flag=1&amp;type=syt" class="hotArea02"></a>
+				<a class="down01" href="https://b.bestpay.com.cn/bppf/appdownload.do?method=toAppDown&amp;flag=1&amp;type=jfy"></a>
+				<a class="down02" href="https://b.bestpay.com.cn/bppf/appdownload.do?method=toAppDown&amp;flag=1&amp;type=syt"></a>
+			</div>
+		</div>
+		<div class="widget link">
+			<h4 class="widgetName">
+				<img src="/static/img/common/footer_rd_bg.png">&nbsp;在线客服
+			</h4>
+				<ul class="widgetContent" id="kf-ul">
+					<li id="kfBg" class="kf-li-float"></li>
+					<li class="widgetRows kf-li-float" style="margin-top: 30px;margin-left: 15px;">
+						即时解答商家咨询<br>服务时间：<br>周一至周日9：00-22：00
+					</li>
+				</ul>
+			<form id="kfForm" action="http://im.189.cn/WebIM/?cityId=1058" method="post" target="_blank">
+					<input type="hidden" id="Jid" name="Jid">
+					<input type="hidden" id="appid" name="appid" value="2">
+					<input type="hidden" id="token" name="token" value="0cd028d2fe88bc3c5d45d67bfe18c185">
+					<input type="hidden" id="UFLG" name="UFLG" value="1">
+					<input type="hidden" id="userName" name="userName">
+				</form>
+		</div>
+	</div>
+	<div class="copyrightInfo">
+		<div class="copyright">
+			<img class="footerLogo" src="./static/img/common/footerLogo.png">
+			<p class="copyrightText">版权所有（C）天翼电子商务有限公司&nbsp;&nbsp;京ICP备13016344号</p>
+	    </div>
+	</div>
+</div>
+<!-- footer end -->
+<script type="text/javascript">
+		$("#kf-ul").bind("mouseenter", function() {
+			$("#kfBg").css('backgroundImage','url("/static/img/common/footer/kf_bg_hover.png")');
+		}).bind("mouseleave ", function() {
+			$("#kfBg").css('backgroundImage','url("/static/img/common/footer/kf_bg_default.png")');
+		}).bind("click",function(){
+			$("#kfForm").submit();
+// 			window.open('http://58.213.99.7:8088/ocsfront/ocsfront/customer/webChat.jsp?Jid=&appid=2&token=0cd028d2fe88bc3c5d45d67bfe18c185&UFLG=1&userName=');
+		});
+	</script>
+
+
+<style>
+	.browser-warn{
+		height:30px;
+		text-align:center;
+		line-height:30px;
+		display:none;
+		border-bottom:solid 1px silver;
+		background-color:#FFCE10;
+	}
+</style>
+
+</body></html>

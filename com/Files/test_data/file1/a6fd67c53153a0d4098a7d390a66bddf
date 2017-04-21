@@ -1,0 +1,752 @@
+<!DOCTYPE html><html><head>
+		<meta charset="utf-8">
+		<title>五百丁社区- 中国领先的求职互动问题平台</title>
+		<meta name="keywords" content="五百丁、话题区，求职问答">
+		<meta name="description" content="紧急通知：今天0:20-9:20在五百丁网站付款过的用户看过...">
+		<link rel="stylesheet" type="text/css" href="/resources/bbs/dist/css/wangEditor.min.css">
+		<link rel="stylesheet" href="/resources/bbs/css/style.css">
+		<link href="/resources/admin/css/common.css" rel="stylesheet" type="text/css">
+		<script src="//hm.baidu.com/hm.js?88fc84a83bf41e657c806df319a938e9"></script><script src="//hm.baidu.com/hm.js?417d199cd55754213556ca613d1eeb96"></script><script async="" src="https://www.google-analytics.com/analytics.js"></script><script src="https://hm.baidu.com/hm.js?642271f5f923fe1f11402386128e6a47"></script><script src="/resources/bbs/js/jquery-1.8.0.js" type="text/javascript"></script>
+		<script type="text/javascript" src="http://static.help.500d.me/resources/bbs/js/common.js"></script>
+	</head>
+	<body style="">
+<header class="jl-header_">
+			<div class="jl-logo">
+				<h1><a href="#"><img src="/resources/images/logo_.png" width="137" height="46"></a></h1>
+			</div>
+			<div class="jl-nav_">
+				<ul>
+					<li class="nav-li"><a href="http://www.500d.me/">首页</a></li>
+					<li class="nav-li"><a class="rippler rippler-default" href="http://www.500d.me/template/">模板商城</a>
+						<div class="jl-ej-nav_">
+							<ul>
+								<li><a href="http://www.500d.me/template/">WORD模板</a></li>
+								<li><a href="http://www.500d.me/ppt/">PPT模板</a></li>
+							</ul>
+						</div>
+					</li>
+					<li class="nav-li"><a class="rippler rippler-default" href="http://www.500d.me/editresume/">在线制作</a></li>
+					<li class="nav-li"><a class="rippler rippler-default" href="http://www.500d.me/article/">求职那些事<span></span></a>
+						<div class="jl-ej-nav_">
+							<ul>
+								<li><a href="http://www.500d.me/article/fanwen/">简历范文</a></li>
+								<li><a href="http://www.500d.me/article/qiuzhi/">求职指南</a></li>
+								<li><a href="http://www.500d.me/article/jiaocheng/">简历教程</a></li>
+								<li><a href="http://www.500d.me/article/jiqiao/">面试有戏</a></li>
+								<li><a href="http://www.500d.me/article/gonglue/">职场攻略</a></li>
+								<li><a href="http://www.500d.me/article/zhuanti/">深度专题</a></li>
+							</ul>
+						</div>
+					</li>
+					<li class="nav-li"><a class="rippler rippler-default" href="http://www.500d.me/customize/" rel="nofollow">简历代写</a></li>
+					<li class="nav-li"><a href="http://www.500d.me/print/" rel="nofollow">简历打印</a></li>
+					<li class="nav-li current"><a href="http://help.500d.me" rel="nofollow">讨论区</a></li>
+				</ul>
+				<!--<div class="jl-nav-curBg"></div>-->
+			</div>
+		<div class="jl-touxiang" id="userHead" style="display: none; ">
+		<a class="jl-tx-img" id="user_center" href="http://www.500d.me/member/">
+			<img src="http://www.500d.me/resources/500d/images/default.jpg" width="48" height="48" alt="">
+			<span>个人中心</span>
+		</a>
+		<div class="jl-user-info">
+			<span class="triangle-up"></span>
+			<div class="user-bd">
+				<ul class="user-ul-l">
+							<li class="hy first"><a href="javascript:;">VIP会员</a></li>
+							<li class="sz"><a href="http://www.500d.me/member/">账户概览</a></li>				
+							<li class="jl"><a href="http://www.500d.me/member/myresume">我的简历</a></li>
+							<li class="dd"><a href="http://www.500d.me/member/order/">我的订单</a></li>
+							<li class="sc"><a href="http://www.500d.me/member/order/hr_order/">专家服务</a></li>					
+							<li class="tc"><a href="#" id="user_logout" style="">安全退出</a></li>
+				</ul>							
+			</div>
+		</div>
+	</div>		
+	<a href="http://www.500d.me/member/message_notification/" id="message" class="right message no message_notification" style="display: none; "></a>			
+	<div class="jl-login">
+		<a style="" id="login" href="/login/" class="jl-login-a">登录</a>
+	</div>
+	</header>
+<script>
+$(function(){
+	$("#user_logout").show().click(function(){ // 登出按钮事件
+		loginOut();
+	});
+	/**
+	 * 注销登录
+	 */
+	var logoutrefresh = true; // 是否刷新页面
+	function loginOut() {
+		$.getScript("http://www.500d.me/kayu/logout/",function(response,status){
+			if(logout_data.type=="success"){
+				$("#userHead").hide(); // 头像隐藏
+				$("#userName").hide(); // 用户名隐藏
+				$("#myResume").hide();	//隐藏“我的简历” 
+				$(".ul_top_user").hide(); // 用户操作菜单隐藏
+				$(".m-top_user").hide(); // 用户操作菜单隐藏
+				$(".message_notification").hide();
+				$("#login").show(); // 显示登录按钮
+				$("#register").show(); // 显示注册按钮
+				$("#login-register").show(); // 显示注册和登录间隔符
+				var synarr = $(logout_data.content); // 同步登出论坛
+				$.getScript("http://help.500d.me/api/sso/logout/", function(){});
+				synarr.each(function(index, ele) {
+				    setTimeout(function(){
+						$.getScript(ele.src, function(){});
+					},1);
+				});
+				if(logoutrefresh){
+					location.reload();
+				}
+			}else{
+				alert(logout_data.content)
+			
+			}
+		});
+	}
+});
+
+</script>	  <div class="bbs-index-bd">
+		<div class="g-w1240 clearfix">
+			<div class="bbs-detail-l clearfix">
+				<div class="bbs-crumbs"><a href="http://www.500d.me">首页</a> &gt;<a href="/">帮助中心</a> &gt;<a>详情</a></div>
+				<div class="bbs-detail-article">
+					
+					
+					<a class="bbs-tag sszq" href="#"></a><!--dgz点个赞   tgc吐个槽   wtzx问题咨询  ghfx干货分享   sszq蜀黍专区-->
+					<div class="hd clearfix">
+						<div class="img-head"><img src="http://static.help.500d.me/resources/bbs/images/discussion_moderator.jpg" width="70" height="70"></div>
+						<div class="text">
+							<h2>紧急通知：今天0:20-9:20在五百丁网站付款过的用户看过来</h2>
+							<div class="info clearfix">
+								<div class="email">渐离蜀黍<i class="hy cj"></i><i class="time">3天前发布</i></div>
+								<div class="number"><span class="ll">297</span><a href="#pl" class="pl">9</a></div>
+							</div>
+						</div>
+					</div>
+					<div class="cd">
+						<p>
+							</p><p>由于操作失误，我们在今天凌晨00:20分更新后的网站程序出了个问题，表现为商品展示的价格跟实际支付金额不一致，具体示例如下：</p><p><br></p><p><strong>商品展示价格</strong></p><p><img src="http://help.500d.me/upload/image/201703/c34ee4ba-92c2-4abc-a7f6-ffb5867d40d6.png" alt="粘贴图片(1)" style="max-width: 100%; width: 601.2px; height: 307.8px;" class=""><br><strong>实际支付价格</strong></p><p><img src="http://help.500d.me/upload/image/201703/858ab9d2-811b-4039-aa58-46c436279e06.png" alt="sp170329_094235" style="max-width:100%;"></p><p><br><strong>请2017/3/29日00:20-09:22在我们网站支付了订单的用户联系客服进行退款，我们会将您多付的那部分以支付宝/微信的方式返还给您，在线客服可以从个人中心-我的订单处找到入口，提供您的订单编号给我们核实即可。</strong><br></p><p><strong><br></strong></p><p>发生这种事，真是感到万分羞愧，不敢大言不惭从此不犯任何错误，但绝对会以此为鉴，举一反三，为大家提供优质的服务。目前该问题已经修复，对于期间已经付款的用户我们深感抱歉，诚挚的恳请大家给予更多的理解、继续支持我们，我们没有想过一定要做一个天大的企业，但做一个能帮助别人的产品却是我们始终不变的初心！</p><p><br></p>					
+						<p></p>
+					</div>
+					<div class="bd clearfix">
+						<span class="left">上一篇：<a href="/view/432/">怎么把PDF转换成文档，不可以直接下载文档格式吗？</a></span>
+						<span class="right">下一篇：<a href="/view/429/">为什么我下载pdf文件，照片就变成空白了？？？？</a></span>
+						
+					</div>
+				</div>
+				<a name="pl"></a>
+				<div class="bbs-detail-comment">				
+					<h2>评论（9）</h2>
+					<div class="comment">
+						<dl class="clearfix">
+							<dt><div class="img-head"><img src="http://static.500d.me/resources/500d/images/default.jpg" width="50" height="50"></div></dt>
+							<dd>
+								<div class="info clearfix"><span class="email">9100*****@qq.com</span><i class="hy cj"></i>
+									<span class="time">3天前发布 </span>
+									<span class="floor right">沙发</span>
+								</div>													
+								<div class="hf-text"><p>								</p><p><i>订单号：20170328980526</i></p><p><br></p><p></p></div>
+								<div class="reply-content">
+									<span class="reply-content-email">渐离蜀黍 :</span>
+									<span class="reply-content-text">亲~请加一下QQ我帮您完成退款2488536101</span>
+									<span class="reply-content-time">3天前</span>
+								</div>
+								<div class="hf_textarea_content clearfix">
+									<form class="help-form" action="/saveReply/" method="post">
+									<div class="inner">
+										<span>回复   9100*****@qq.com</span>
+										<div contenteditable="true" id="replyContent" class="replyContent"></div>
+									</div>
+									<div class="hf_button"><a replyid="714" class="submit">回复</a><a class="cancel">取消</a></div>
+									</form>
+								</div>						
+							</dd>
+						</dl>
+						<dl class="clearfix">
+							<dt><div class="img-head"><img src="http://wx.qlogo.cn/mmopen/BqyydzFV7XBCuXqvGhjl3szCUwq2HFxQZgwkHAEERv1QkVdcrtqvblZUK5jHqZlR4iaOCqNlgpAAlj0saJnA4I3lfKmJbico43/0" width="50" height="50"></div></dt>
+							<dd>
+								<div class="info clearfix"><span class="email">9965*****@qq.com</span><i class="hy cj"></i>
+									<span class="time">3天前发布 </span>
+									<span class="floor right">板凳</span>
+								</div>													
+								<div class="hf-text"><p>								</p><p><i>订单号：20170329981653</i></p><p><br></p><p></p></div>
+								<div class="reply-content">
+									<span class="reply-content-email">渐离蜀黍 :</span>
+									<span class="reply-content-text">亲~请加一下QQ我帮您完成退款2488536101</span>
+									<span class="reply-content-time">3天前</span>
+								</div>
+								<div class="hf_textarea_content clearfix">
+									<form class="help-form" action="/saveReply/" method="post">
+									<div class="inner">
+										<span>回复   9965*****@qq.com</span>
+										<div contenteditable="true" id="replyContent" class="replyContent"></div>
+									</div>
+									<div class="hf_button"><a replyid="715" class="submit">回复</a><a class="cancel">取消</a></div>
+									</form>
+								</div>						
+							</dd>
+						</dl>
+						<dl class="clearfix">
+							<dt><div class="img-head"><img src="http://static.500d.me/resources/500d/images/default.jpg" width="50" height="50"></div></dt>
+							<dd>
+								<div class="info clearfix"><span class="email">4074*****@qq.com</span><i class="hy cj"></i>
+									<span class="time">3天前发布 </span>
+									<span class="floor right">凉席</span>
+								</div>													
+								<div class="hf-text"><p>								</p><p><i>订单号20170329981790</i></p><p><br></p><p></p></div>
+								<div class="reply-content">
+									<span class="reply-content-email">渐离蜀黍 :</span>
+									<span class="reply-content-text">亲~请加一下QQ我帮您完成退款2488536101</span>
+									<span class="reply-content-time">3天前</span>
+								</div>
+								<div class="hf_textarea_content clearfix">
+									<form class="help-form" action="/saveReply/" method="post">
+									<div class="inner">
+										<span>回复   4074*****@qq.com</span>
+										<div contenteditable="true" id="replyContent" class="replyContent"></div>
+									</div>
+									<div class="hf_button"><a replyid="718" class="submit">回复</a><a class="cancel">取消</a></div>
+									</form>
+								</div>						
+							</dd>
+						</dl>
+						<dl class="clearfix">
+							<dt><div class="img-head"><img src="http://static.500d.me/resources/500d/images/default.jpg" width="50" height="50"></div></dt>
+							<dd>
+								<div class="info clearfix"><span class="email">1014*****@qq.com</span><i class="hy cj"></i>
+									<span class="time">3天前发布 </span>
+									<span class="floor right">地板</span>
+								</div>													
+								<div class="hf-text"><p>								</p><p><i>订单编号：20170329981154</i></p><p><br></p><p></p></div>
+								<div class="reply-content">
+									<span class="reply-content-email">渐离蜀黍 :</span>
+									<span class="reply-content-text">亲~请加一下QQ我帮您完成退款2488536101</span>
+									<span class="reply-content-time">3天前</span>
+								</div>
+								<div class="hf_textarea_content clearfix">
+									<form class="help-form" action="/saveReply/" method="post">
+									<div class="inner">
+										<span>回复   1014*****@qq.com</span>
+										<div contenteditable="true" id="replyContent" class="replyContent"></div>
+									</div>
+									<div class="hf_button"><a replyid="720" class="submit">回复</a><a class="cancel">取消</a></div>
+									</form>
+								</div>						
+							</dd>
+						</dl>
+						<dl class="clearfix">
+							<dt><div class="img-head"><img src="http://static.500d.me/resources/500d/images/default.jpg" width="50" height="50"></div></dt>
+							<dd>
+								<div class="info clearfix"><span class="email">9588*****@qq.com</span><i class="hy cj"></i>
+									<span class="time">3天前发布 </span>
+									<span class="floor right">5楼</span>
+								</div>													
+								<div class="hf-text"><p>								</p><p><i>订单号20170228870147</i></p><p><br></p><p></p></div>
+								<div class="reply-content">
+									<span class="reply-content-email">渐离蜀黍 :</span>
+									<span class="reply-content-text">亲~请加一下QQ我帮您完成退款2488536101</span>
+									<span class="reply-content-time">3天前</span>
+								</div>
+								<div class="hf_textarea_content clearfix">
+									<form class="help-form" action="/saveReply/" method="post">
+									<div class="inner">
+										<span>回复   9588*****@qq.com</span>
+										<div contenteditable="true" id="replyContent" class="replyContent"></div>
+									</div>
+									<div class="hf_button"><a replyid="721" class="submit">回复</a><a class="cancel">取消</a></div>
+									</form>
+								</div>						
+							</dd>
+						</dl>
+						<dl class="clearfix">
+							<dt><div class="img-head"><img src="http://wx.qlogo.cn/mmopen/fmLBBgtBIrKZApYeGZrVsQ5zPvWhGFJ2YiaPibmWMNG9ibtpKFL2Femo9juewnBMmGZNbOUsRzvHPpVgYxiak9b49S5PVaXaUiayo/0" width="50" height="50"></div></dt>
+							<dd>
+								<div class="info clearfix"><span class="email">9564*****@qq.com</span><i class="hy cj"></i>
+									<span class="time">3天前发布 </span>
+									<span class="floor right">6楼</span>
+								</div>													
+								<div class="hf-text"><p>								</p><p><i>订单编号：20170329982132</i></p><p><i>订单编号：20170329982115</i></p><p><br></p><p></p></div>
+								<div class="reply-content">
+									<span class="reply-content-email">渐离蜀黍 :</span>
+									<span class="reply-content-text">亲~请加一下QQ我帮您完成退款2488536101</span>
+									<span class="reply-content-time">3天前</span>
+								</div>
+								<div class="hf_textarea_content clearfix">
+									<form class="help-form" action="/saveReply/" method="post">
+									<div class="inner">
+										<span>回复   9564*****@qq.com</span>
+										<div contenteditable="true" id="replyContent" class="replyContent"></div>
+									</div>
+									<div class="hf_button"><a replyid="722" class="submit">回复</a><a class="cancel">取消</a></div>
+									</form>
+								</div>						
+							</dd>
+						</dl>
+						<dl class="clearfix">
+							<dt><div class="img-head"><img src="http://static.500d.me/upload/uimage/201703/27/53847751-f818-43b3-af01-8a1ce35d44e3.jpg" width="50" height="50"></div></dt>
+							<dd>
+								<div class="info clearfix"><span class="email">deos*****@163.com</span><i class="hy cj"></i>
+									<span class="time">3天前发布 </span>
+									<span class="floor right">7楼</span>
+								</div>													
+								<div class="hf-text"><p>								</p><p>请大家提供给在线客服啊，不要在这里留言，我们要记录你们的退款账号~</p><p></p></div>
+								<div class="reply-content">
+									<span class="reply-content-email">www.*****@qq.com :</span>
+									<span class="reply-content-text"></span>
+									<span class="reply-content-time">3天前</span>
+								</div>
+								<div class="reply-content">
+									<span class="reply-content-email">www.*****@qq.com :</span>
+									<span class="reply-content-text">在线客服在哪里呢</span>
+									<span class="reply-content-time">3天前</span>
+								</div>
+								<div class="reply-content">
+									<span class="reply-content-email">9965*****@qq.com :</span>
+									<span class="reply-content-text">找不到在线客服啊</span>
+									<span class="reply-content-time">3天前</span>
+								</div>
+								<div class="hf_textarea_content clearfix">
+									<form class="help-form" action="/saveReply/" method="post">
+									<div class="inner">
+										<span>回复   deos*****@163.com</span>
+										<div contenteditable="true" id="replyContent" class="replyContent"></div>
+									</div>
+									<div class="hf_button"><a replyid="725" class="submit">回复</a><a class="cancel">取消</a></div>
+									</form>
+								</div>						
+							</dd>
+						</dl>
+						<dl class="clearfix">
+							<dt><div class="img-head"><img src="http://static.500d.me/upload/uimage/201703/29/9647bbd4-7d37-4ed0-9ed6-a9b8c1a45447.JPG" width="50" height="50"></div></dt>
+							<dd>
+								<div class="info clearfix"><span class="email">www.*****@qq.com</span><i class="hy cj"></i>
+									<span class="time">3天前发布 </span>
+									<span class="floor right">8楼</span>
+								</div>													
+								<div class="hf-text"><p>								</p><p>在线客服在哪里你？</p><p><br></p><p></p></div>
+								<div class="reply-content">
+									<span class="reply-content-email">渐离蜀黍 :</span>
+									<span class="reply-content-text">亲~请加一下QQ我帮您完成退款2488536101</span>
+									<span class="reply-content-time">3天前</span>
+								</div>
+								<div class="hf_textarea_content clearfix">
+									<form class="help-form" action="/saveReply/" method="post">
+									<div class="inner">
+										<span>回复   www.*****@qq.com</span>
+										<div contenteditable="true" id="replyContent" class="replyContent"></div>
+									</div>
+									<div class="hf_button"><a replyid="726" class="submit">回复</a><a class="cancel">取消</a></div>
+									</form>
+								</div>						
+							</dd>
+						</dl>
+						<dl class="clearfix">
+							<dt><div class="img-head"><img src="http://wx.qlogo.cn/mmopen/ajNVdqHZLLBsV5moRV8c76TNRt88Cu6WI5wKicNcO5zq87k8C6fLBA8GzMV5f2VbSEVYmLpJbsdxjoKibX7MJaDQ/0" width="50" height="50"></div></dt>
+							<dd>
+								<div class="info clearfix"><span class="email">8353*****@QQ.com</span><i class="hy cj"></i>
+									<span class="time">2天前发布 </span>
+									<span class="floor right">9楼</span>
+								</div>													
+								<div class="hf-text"><p>								</p><p><i>订单编号：20170329981349</i></p><p><br></p><p></p></div>
+								<div class="hf_textarea_content clearfix">
+									<form class="help-form" action="/saveReply/" method="post">
+									<div class="inner">
+										<span>回复   8353*****@QQ.com</span>
+										<div contenteditable="true" id="replyContent" class="replyContent"></div>
+									</div>
+									<div class="hf_button"><a replyid="748" class="submit">回复</a><a class="cancel">取消</a></div>
+									</form>
+								</div>						
+							</dd>
+						</dl>
+			
+						
+					</div>
+					<div class="bbs-detail-editor clearfix">
+						<div class="bbs-detail-nologin">
+							您需要登录后才能回复 &nbsp;&nbsp;<a href="/login/">登录</a><a href="/login/">立刻注册</a>
+						</div>
+					</div>				
+				</div>
+				
+				<div class="bbs-detail-topic">
+					<h2><a href="#">相关话题</a></h2>
+					<div class="list clearfix">
+						<a href="/view/463/"><i>●</i>下完怎么是HTML的格式和Java的格式，这怎么用啊，求解</a>
+						<a href="/view/462/"><i>●</i>在线制作简历下载后怎么打开？</a>
+						<a href="/view/474/"><i>●</i>如何购买模板</a>
+						<a href="/view/473/"><i>●</i>亲，这到底是什么情况？</a>
+						<a href="/view/472/"><i>●</i>下载好的模板，五百丁的字样还在吗？</a>
+						<a href="/view/471/"><i>●</i>在线制作为什么添加项和前面字体大小不一样，还没法改</a>
+						<a href="/view/470/"><i>●</i>其实可以更好</a>
+						<a href="/view/469/"><i>●</i>打开方式是什么，我怎么打开是乱码啊？</a>
+						<a href="/view/468/"><i>●</i>为什么下载后的文件无法使用？请看这里。</a>
+						<a href="/view/467/"><i>●</i>购买的Word模板怎么打开，求救</a>
+					</div>
+				</div>
+			</div>
+			
+			<div class="bbs-index-r clearfix">
+				<div class="bbs-help">
+					<h2>帮助中心（问题分类解答）</h2>
+					<ul class="clearfix">
+						<li><a href="/help/81.html">①常见问题</a></li>
+						<li><a href="/help/87.html">②在线制作</a></li>
+						<li class="white"><a href="/help/8.html">③word编辑</a></li>
+						<li class="white"><a href="/help/74.html">④简历定制</a></li>
+						<li><a href="/help/85.html">⑤帐号管理</a></li>
+						<li><a href="/help/30.html">⑥其它问题</a></li>
+					</ul>
+				</div>
+				<div class="bbs-kf r-box">
+					<p>你也可以扫右侧二维码在微<br>信跟客服聊聊。<br><br></p>
+					<p>周一至周五<i> 09：00—18：00</i><br>节假日不上班，有问题请在上班<br>时段咨询</p>
+				</div>
+				<div class="bbs-ysgz r-box">
+					<h3>议事规则</h3>
+					<p>
+					1.不许谩骂人身攻击，对象包括「五百丁」<br>
+					2.不许发广告，也别联系我们商谈，不靠这个赚钱<br>
+					3.不许发违反法律法规的言论，你们懂的<br>
+					4.没有意义的发言我们会手动删除<br>
+					<br>
+					欢迎大家以正当形式发布话题，你有权对五百丁吐槽<br>
+					建议，我们会努力解决你所遇到的问题；<br>
+					来了就是自己人，希望五百丁能给你带来帮助。<br><br>
+					</p>
+					<p class="boss">——渐离蜀黍</p>
+				</div>
+				<div class="bbs-rddt">
+					<h2>热点动态</h2>
+					<ul>
+						<li><img src="http://static.help.500d.me/resources/bbs/images/jldy.jpg" width="134" height="98">
+							<div class="text"><h4>精品简历打印</h4><p>打印效果逼真，展现简历原图色彩，不一样的视觉与质感</p><a href="http://www.500d.me/print/">去看看</a></div>
+						</li>
+						<!--
+						<li><img src="../resources/bbs/images/rczp.jpg" width="134" height="98"/>
+							<div class="text"><h4>五百丁人才公社</h4><p>加入人才公社，让找工作更加<br/>轻松、便捷</p><a>去看看</a></div>
+						</li>
+						-->
+					</ul>
+				</div>
+				<div class="bbs-rddt_">
+					<h2>热门话题</h2>
+					<a href="/view/431/"><i>●</i>紧急通知：今天0:20-9:20在五百丁网站付款过的用户看过...</a>
+					<a href="/view/164/"><i>●</i>在线制作并打印的简历收到了，真的很方便</a>
+					<a href="/view/144/"><i>●</i>请问进阶会员跟超级会员具体有什么区别？</a>
+					<a href="/view/142/"><i>●</i>非常感谢童老师的帮助！有了这次一定能找到好工作的感受！非常感...</a>
+					<a href="/view/474/"><i>●</i>如何购买模板</a>
+				</div>
+				<div class="bbs-adv"><a href="http://www.500d.me/customize/"><img src="http://static.help.500d.me/resources/bbs/images/zx_adv.png"></a></div>
+			</div>
+		</div>
+	</div>
+	 
+		
+		 <script type="text/javascript" src="http://static.help.500d.me/resources/bbs/dist/js/lib/jquery-1.10.2.min.js"></script>
+		 <script type="text/javascript" src="http://static.help.500d.me/resources/bbs/dist/js/wangEditor.min.js"></script>
+		 <script type="text/javascript">
+			var editor = new wangEditor('discussion-editor');
+	        // 上传图片
+	        editor.config.uploadImgUrl = '/500d/file/upload/';
+	        editor.config.uploadImgFileName = 'file';
+	        // 自定义上传事件
+	        editor.config.uploadImgFns.onload = function (resultText, xhr) {
+	            // resultText 服务器端返回的text
+	            // xhr 是 xmlHttpRequest 对象，IE8、9中不支持
+	            // 上传图片时，已经将图片的名字存在 editor.uploadImgOriginalName
+	            var originalName = editor.uploadImgOriginalName || '';  
+	            // 如果 resultText 是图片的url地址，可以这样插入图片：
+				var html='<img src=' + resultText + ' alt="' + originalName + '"  style="max-width:100%;"/>';
+	            editor.command(null, 'insertHtml', html);
+	            // 如果不想要 img 的 max-width 样式，也可以这样插入：
+	            // editor.command(null, 'InsertImage', resultText);
+	        };
+	        editor.config.uploadHeaders = {
+	            // 'Accept' : 'text/x-json'
+	        }
+	        editor.config.menus = [
+		        'bold',
+		        'forecolor',
+		        '|',
+		        'quote',
+		        'fontfamily',
+		        'fontsize',
+		        'unorderlist',
+		        'orderlist',
+		        'alignleft',
+		        'aligncenter',
+		        'alignright',
+		        '|',
+		        'link',
+		        'unlink',
+		        'emotion',
+		        'img',
+	     	];
+	        editor.create();
+   		</script>			
+		<script>
+		    	var topicId = 431;
+				var LIKE_NAME = "topicLikes";
+		    	$("#like").click(function(){
+			    	if(!likeTopic(topicId)) {
+						$.post("/like/",{id:$(this).attr("topicId")}, function(likes){
+					    	$("#like").find("p").text(likes);
+					    	addTopics(topicId);
+						 });
+					}
+					 $("#like").children(".like").addClass("active");
+				});
+			
+			
+			
+				
+				// 判断是否点击过喜欢
+			function likeTopic(id) {
+				if(localStorage) {
+					var ids = localStorage.getItem(LIKE_NAME);
+					if(ids && ids.indexOf("," + id + ",") >= 0)
+						return true;
+					return false;
+				}
+				return false;
+			}
+			function addTopics(id) {
+				if(localStorage) {
+					var ids = localStorage.getItem(LIKE_NAME);
+					if(ids)
+						ids = ids + id + ",";
+					else
+						ids = "," + id + ",";
+					localStorage.setItem(LIKE_NAME, ids);
+				}
+			}
+			
+			$(".discussion_button").click(function(){
+				$("#replyForm").submit();
+			})
+			
+			$(".submit").click(function(){
+				 var replyId = $(this).attr("replyId");
+				 var replyReplyContent = $(this).parent(".hf_button").siblings(".inner").children(".replyContent").text();
+				 $("#replyReplyContent").val(replyReplyContent);
+				 $("#replyId").val(replyId);
+				 $("#replyForm").submit();
+			})
+			
+			$(".reply-link").click(function(){
+				var $this = $(this).siblings(".hf_textarea_content");
+				$this.stop().show();
+				$(".cancel").click(function(){
+					$this.stop().hide();
+				});
+			});
+			
+			$(".discussion_reply_nologin >a").click(function(){
+				
+				return;
+				window.location="http://www.500d.me/login/?service=";
+			});
+			
+			$(".hf_textarea_content div[contenteditable]").blur(function(){
+				$(".hf_textarea_content .inner").css('border','1px solid #f5f5f5');
+			});
+			$(".hf_textarea_content div[contenteditable]").focus(function(){
+				$(".hf_textarea_content .inner").css('border','1px solid #00C091');
+			});					
+			$("#discussion-editor").blur(function(){
+				$(".wangEditor-container").css('border','1px solid #ccc');
+			});
+			$("#discussion-editor").focus(function(){
+				$(".wangEditor-container").css('border','1px solid #00C091');
+			});
+			
+			window.onload=function(){
+				if(likeTopic(topicId)) {
+					$("#like").children(".like").addClass("active");
+				}
+			}
+			
+			var _hmt = _hmt || [];
+			(function() {
+			  var hm = document.createElement("script");
+			  hm.src = "https://hm.baidu.com/hm.js?642271f5f923fe1f11402386128e6a47";
+			  var s = document.getElementsByTagName("script")[0]; 
+			  s.parentNode.insertBefore(hm, s);
+			})();
+		</script>
+<!--右边导航条显示在线客服，帮助中心，返回顶部这三个按钮-->
+<!--在线客服因为是百度自动生成的，所以在style.css样式写好了-->
+<!--帮助中心-->
+<a title="有事找我" class="service1" rel="nofollow" target="_blank" href="http://help.500d.me"></a>
+<!--回到顶部-->
+<script>
+$(document).ready(function() {	
+	gotop();
+	/** 回到顶部 **/
+	function gotop(){
+    var gotop = '<div class="gotop"></div>';
+    $("body").append(gotop);
+    $(".gotop").click(function(){$('html, body').animate({scrollTop:0}, 700);});
+    var min_height = 200;
+    $(window).scroll(function(){
+        var s = $(window).scrollTop();
+        if(s > min_height){
+            $(".gotop").fadeIn(100);
+        }else{
+            $(".gotop").fadeOut(100);
+        };
+    });
+};
+});
+</script>
+
+<div class="bbs-footer">
+		<div class="div_index_Attention clearfix">
+				<div class="g-w1240">
+					<div class="div_index_bottom">
+			        	<div class="div_Attention_box Attention_left">
+			                <dl>
+			                	<dt><a><img src="http://static.500d.me/resources/500d/images/ad_Attention_taobao.jpg"></a></dt>
+			                    <dd>
+			                    	<h3>五百丁淘宝</h3>
+			                    	<h3><a target="_blank" rel="nofollow" href="http://500d.taobao.com">五百丁简历大师</a></h3>
+			                        <a class="foot_url" rel="nofollow" href="http://500d.taobao.com" target="_blank"><span>500d.taobao.com</span></a>
+			                        <a class="a_index_btn btn_Grade">五颗星</a>
+			                    </dd>
+			                </dl>
+			            </div>
+			            <div class="div_Attention_box Attention_cen">
+			                <dl>
+			                	<dt><a><img src="http://static.500d.me/resources/500d/images/ad_Attention_weibo.jpg"></a></dt>
+			                    <dd>
+			                    	<h3>五百丁微博</h3>
+			                    	<h3><a target="_blank" rel="nofollow" href="http://weibo.com/wbd500">五百丁简历大师</a></h3>
+			                        <wb:follow-button style="overflow:visible;" uid="3902012549" type="red_1" width="67" height="24"><iframe src="http://widget.weibo.com/relationship/followbutton.php?btn=red&amp;style=1&amp;uid=3902012549&amp;width=67&amp;height=24&amp;language=zh_cn" width="67" height="24" frameborder="0" scrolling="no" marginheight="0"></iframe></wb:follow-button>
+			                    </dd>
+			                </dl>
+			            </div>
+			            <div class="div_Attention_box Attention_right">
+			                <dl>
+			                	<dt><a><img width="100" src="http://static.500d.me/resources/500d/images/ad_Attention_weixin_ewm.jpg"></a></dt>
+			                    <dd>
+			                    	<h3>五百丁微信</h3>
+			                    	<h3 style="font-weight:normal;">五百丁微信账号</h3>
+			                        <span><img style="margin-top: 8px" src="http://static.500d.me/resources/500d/images/ad_Attention_weixin1.png"></span>
+			                    </dd>
+			                </dl>
+			            </div>
+			        </div>
+			    </div>
+			</div>	
+		<div class="friend_link">
+		    <div class="g-w1240">
+		        <p>友情链接</p><span class="friend_link_x"></span>
+		        <ul class="text">
+		        	<li><a href="http://www.huibo.com/xiaoyuan/" target="_blank">校园招聘</a></li>
+		        	<li><a href="http://www.21ks.net/lunwen/" target="_blank">论文范文</a></li>
+		        	<li><a href="http://www.huodongjia.com" target="_blank">会议</a></li>
+		        	<li><a href="http://www.597rcw.com/" target="_blank">龙岩人才网</a></li>
+		        	<li><a href="http://jiaoyu.huangye88.com/" target="_blank">中国教育网</a></li>
+		        	<li><a href="http://www.huatu.com/a/gwy/" target="_blank">省公务员考试</a></li>
+		        	<li><a href="http://career-english.yjbys.com/" target="_blank">职称英语考试</a></li>
+		        	<li><a href="http://www.examw.com/hr/" target="_blank">人力资源考试</a></li>
+		        	<li><a href="http://mianshi.cnrencai.com/" target="_blank">面试自我介绍</a></li>
+		        	<li><a href="http://toefl.koolearn.com/" target="_blank">托福培训</a></li>
+		        	<li><a href="http://www.lampbrother.net" target="_blank">兄弟连IT教育</a></li>
+		        	<li><a href="http://www.coolsc.net" target="_blank">酷素材</a></li>
+		        	<li><a href="http://www.jupai8.com/" target="_blank">上海人才网</a></li>
+		        	<li><a href="http://yy.zxxk.com/" target="_blank">英语学科网</a></li>
+		        	<li><a href="http://www.znhr.com/" target="_blank">深圳人才网</a></li>
+		        	<li><a href="http://www.daijun.com" target="_blank">待君网</a></li>
+		        	<li><a href="http://www.cnrencai.com/jianlimoban/" target="_blank">简历模板</a></li>
+		        	<li><a href="http://www.eistudy.com/" target="_blank">意腾留学</a></li>
+		        	<li><a href="http://heibanbao.yjbys.com/" target="_blank">黑板报</a></li>
+		        	<li><a href="http://www.chinapp.com/paihang" target="_blank">十大品牌</a></li>
+		        	<li><a href="http://www.bzrw.net" target="_blank">班主任</a></li>
+		        	<li><a href="http://www.kanzhun.com/job/" target="_blank">找工作</a></li>
+		        	<li><a href="http://www.cepin.com" target="_blank">招聘网</a></li>
+		        	<li><a href="http://baogao.cnrencai.com/" target="_blank">报告范文</a></li>
+		        	<li><a href="http://www.ssjzw.com/" target="_blank">兼职网</a></li>
+		        	<li><a href="http://www.ahnxs.com/" target="_blank">安徽农商行考试</a></li>
+		        	<li><a href="http://www.78gk.com/" target="_blank">二级建造师挂靠</a></li>
+		        	<li><a href="http://www.114zpw.com/" target="_blank">溧水人才网</a></li>
+		        	<li><a href="http://www.maiziedu.com" target="_blank">产品经理培训</a></li>
+		        	<li><a href="http://www.qcr.cc" target="_blank">汽车人招聘网</a></li>
+		        	<li><a href="http://www.youlu.net" target="_blank">二手教材</a></li>
+		        	<li><a href="http://www.7360.cc" target="_blank">晒工资</a></li>
+		        	<li><a href="http://www.25xt.com/" target="_blank">app设计</a></li>
+		        	<li><a href="http://www.yixue99.com/" target="_blank">中国卫生人才网</a></li>
+		        	<li><a href="http://www.133229.com/" target="_blank">论文投稿</a></li>
+		        	<li><a href="http://www.wanfangqikan.com" target="_blank">论文发表</a></li>
+		        	<li><a href="http://www.docer.com/" target="_blank">PPT模板</a></li>
+		        	<li><a href="http://www.dazhihui008.cn" target="_blank">大智慧教育网</a></li>
+		        </ul>
+		        <div style="float:left;display:block;width:100%;color:#92959a;">友情链接交换、业务合作等请加QQ：3011545838</div>
+	        </div>
+		</div>		
+		<div class="jl-index_bottom clearfix">
+			<div class="g-w1240">
+				<div class="banquan">
+					<h3>版权信息</h3>
+					<p>
+						五百丁网站所发布展示的“简历模板”版权归五百丁所有，
+						任何商业用途均须联系作者。如未经授权用作他处，五百丁
+						将保留追究侵权者法律责任的权利。
+					</p>
+				</div>
+				<div class="ban" style="text-align: right;">
+					<p class="p_copy">广州五百丁信息科技有限公司</p>
+			    	<p class="p_foot_bar">
+			    		<a target="_blank" href="http://www.500d.me/member/" rel="nofollow">个人中心</a> -
+			    		<a target="_blank" href="http://www.500d.me/common/about/" rel="nofollow">关于我们</a> - 
+			    		<a href="http://www.500d.me/sitemap.html">网站地图</a> - 
+			    		<a target="_blank" href="http://www.miitbeian.gov.cn">粤ICP备14072413号</a>
+			    	</p>			
+			    	<p class="p_copy">Copyright © 2014-2015 500d.me. All Rights Reserved.</p>
+		
+			    </div>
+			</div>
+		</div>	
+		<div class="index_bottom_div">
+			<div class="g-w1240">
+				<a>热门栏目</a>
+				<a href="http://www.500d.me/editresume/content/">简历在线制作</a><a href="http://www.500d.me/article/fanwen/">简历范文</a>
+				<a href="http://www.500d.me/template/find-ywjl/">英文简历</a>
+				<a href="http://www.500d.me/article/qiuzhi/">求职指南</a><a href="http://www.500d.me/article/jiaocheng/">简历教程</a>
+				<a href="http://www.500d.me/article/jiqiao/">面试技巧</a><a href="http://www.500d.me/article/gonglue/">职场攻略</a>
+				<a href="http://www.500d.me/article/jiaocheng/jlnr/">简历怎么写</a><a href="http://www.500d.me/article/jiqiao/msjy/">面试经验</a>
+			</div>
+		</div>	
+	</div>
+	
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-79741486-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?417d199cd55754213556ca613d1eeb96";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?88fc84a83bf41e657c806df319a938e9";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>	
+<div class="gotop"></div></body></html>

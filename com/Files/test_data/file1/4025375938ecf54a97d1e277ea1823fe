@@ -1,0 +1,744 @@
+<!DOCTYPE html><html><head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8;">
+<meta http-equiv="keywords" content="云南建设培训,培训中心,城市培训中心,工程培训,建筑培训,建设信息网,工程信息网,农民工培训网,农民工学习网">
+<meta http-equiv="description" content="云南省城市建设培训中心:主要针对建筑业从业人员进行专业知识培训和指导！">
+<title>住房和城乡建设行业教育培训平台-用户注册</title>
+<script src="/html/plugin/js/jquery.js"></script>
+<script src="/html/plugin/js/kendo.js"></script>
+<script src="/html/plugin/js/kendo.zh.js"></script>
+<link href="/html/plugin/styles/kendo.common.css" rel="stylesheet">
+<link href="/html/plugin/styles/kendo.default.css" rel="stylesheet">
+<link href="/html/article/index.css" type="text/css" rel="stylesheet">
+<script src="/html/js/tooltip/jquery.poshytip.js"></script>
+<link href="/html/js/tooltip/tip-darkgray/tip-darkgray.css" rel="stylesheet">
+<script src="/html/js/Dialog.alters.js"></script>
+<script src="/html/js/IDCards.js"></script>
+<script src="/html/js/PasswordUtil.js"></script>
+<script src="/html/js/Modal.js"></script>
+<script src="/html/js/Tool.js"></script>
+<script src="/html/js/utils.js"></script>
+ <link href="/html/css/msie.css" type="text/css" rel="stylesheet">
+<!--[if IE 6]>
+<script type="text/javascript" src="/html/js/DD_belatedPNG_0.0.8a-min.js"></script>
+<script type="text/javascript"> 
+DD_belatedPNG.fix('img');
+</script> 
+<![endif]-->
+<style type="text/css">
+html body {
+	margin: 0px;
+	padding: 0px;
+	background: #FFFFFF;
+	overflow: visible;
+}
+
+.banner {
+	background-image: url('../images/users/banner.png');
+	background-repeat:no-repeat;
+	width: 100%;
+	height: 133px;
+	margin: 0px;
+	padding: 0px;
+}
+
+.nav_center{
+	background-image:url('../images/users/regcenter.png') ;
+	height: 51px;
+	margin: 0px;
+	padding: 0px;
+}
+
+.k-textbox {
+	font-size: 12px;
+	color: #000033;
+	font-family: 微软雅黑;
+	width: 97.5%;
+}
+
+ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+li {
+	text-align: left;
+	font-size:12px;
+	font-family:微软雅黑;
+}
+
+button {
+	font-family: 微软雅黑;
+	font-size: 12px;
+	width: 60px;
+	margin-top: 3px;
+}
+</style>
+<script type="text/javascript">
+	$(document).ready(function() {
+		kendo.culture('zh-CHS');
+		$('input[id=certificateType]').getCode();
+		$.getDownList();
+		$('input[id=birthday]').getTime();
+		
+		$('input[Msg]').bind({
+			mousedown : function() {
+				$(this).tooltip();
+			}
+		});
+		
+		$('button[id=new]').bind({
+			click : function() {
+				$('input[Msg]').register();
+			}
+		});
+		
+		$('input[id=certificateCode]').bind({
+			blur:function(){
+				$(this).getId();
+			}
+		});
+		
+		$('input[id=sex]').kendoComboBox({
+			dataTextField : 'text',
+			dataValueField : 'value',
+			dataSource : [{text:'',value:''},{text:'男',value:'1'},{text:'女',value:'2'}],
+			change : function() {
+				var item = $('#sex').data('kendoComboBox');
+				var query = item.dataItem();
+				if (query == null) {
+					item.value('');
+				}
+			}
+		});
+	
+	//$('input[id=enterpriseName]').getEnterprise();
+	$.getDownTooptip();
+});
+
+	$.fn.extend({
+		tooltip : function() {
+			$(this).each(function() {
+				if ($.trim($(this).val())) {
+					$(this).poshytip('destroy');
+				} else {
+					$(this).attr('title', $(this).attr('Msg'));
+					$(this).poshytip({
+						className : 'tip-darkgray',
+						showOn : 'focus',
+						alignTo : 'target',
+						alignX : 'right',
+						alignY : 'center',
+						offsetX : 5
+					});
+				}
+			});
+		},
+		getCode : function() {
+			var el = this;
+			$.ajax({
+				url : '/SystemCodeService/6?typeId=114',
+				type : 'post',
+				dataType : 'json',
+				async : false,
+				success : function(data) {
+					if (data.success) {
+						$(el).kendoComboBox({
+							dataTextField : 'FCodeText',
+							dataValueField : 'FId',
+							dataSource : data.root,
+							change : function() {
+								var item = $(el).data('kendoComboBox');
+								var query = item.dataItem();
+								if (query == null) {
+									item.value('');
+								}else{
+									$('input[id=sex]').data('kendoComboBox').value('');
+									$('input[id=certificateCode]').val('');
+									$('input[id=birthday]').val('');
+									$('input[id=age]').val('');
+								}
+							}
+						});
+						
+						$(el).data('kendoComboBox').value(115);
+					}
+				}
+			});
+		},
+		register : function() {
+			var $Msg = '';
+			$(this).each(function() {
+				if ($.trim($(this).val())) {
+					var getKey=$(this).attr('id');
+					var getValue=$(this).attr('value');
+					switch(getKey){
+					case 'age':
+						$Msg+=regex.age(getValue);
+						break;
+					case 'phone':
+						$Msg+=regex.phone(getValue);
+						break;
+					case 'certificateCode':
+						var item=$('input[id=certificateType]').data('kendoComboBox').value();
+						if(item==115){
+							var $Id=isCardID(getValue);
+							if($Id!='true'){
+								$Msg+=$Id ;
+							}			
+						}		
+						break;
+					}
+				}else{
+					$Msg += $(this).attr('Msg');
+				}
+			});
+			if ($.trim($Msg)) {
+				Msg.Alert($Msg, 500, 100, null, true);
+			} else {
+				$.post('/users/reg/', {
+					FName : $.trim($('input[id=name]').val()),
+					FCertificatecode : $('input[id=certificateCode]').val(),
+					FCertificatetype:$('input[id=certificateType]').data('kendoComboBox').value(),
+					FSex :$('input[id=sex]').data('kendoComboBox').text(),
+					FAge : $('input[id=age]').val(),
+					FBirthday : $('input[id=birthday]').val(),
+					FPhone : $('input[id=phone]').val(),
+					FEthnic:$('input[id=ethnic]').data('kendoComboBox').value(),
+					FRemark:$('input[id=qq]').val(),
+					FMail : $('input[id=mail]').val(),
+					FDegree : $('input[id=degree]').data('kendoComboBox').value(),
+					FProfessional : $('input[id=Professional]').val(),
+					FTechnical : $('input[id=technical]').data('kendoComboBox').value(),
+					FPosition : $('input[id=position]').val(),
+					FPostcode : $('input[id=postcode]').val(),
+					//fkEnterpriseId:$('input[id=enterpriseName]').data('kendoComboBox').value(),
+					//FEnterpriseId:$('input[id=enterpriseName]').data('kendoComboBox').value(),
+					//FEnterprisename : $('input[id=enterpriseName]').data('kendoComboBox').text(),
+					//FKind : $('input[id=kind]').data('kendoComboBox').value(),
+					//FType : $('input[id=type]').data('kendoComboBox').value(),
+					//FTel : $('input[id=tel]').val(),
+					FAddress:$('input[id=address]').val(),
+					FVeteran:$('input[id=veteran]').data('kendoComboBox').value()
+				}, function(data) {
+					if (data.success) {
+						location.href='/html/trainees/registerMsg.html?regname='+Base64.encode(data.root.FName)+'&regCode='+Base64.encode(data.root.FCertificatecode)+'&regNo='+escape(data.root.FNo);
+					} else {
+						Msg.Alert('证件号码："'+$('input[id=certificateCode]').val()+'"已注册，请勿重复注册，请点击“返回”按钮，进入登录界面找回密码！',500,100,null,true);
+					}
+				}, 'json');
+			}
+		},
+		getId:function(){
+			var code= $(this).attr('value');
+			var getValue=	$('input[id=certificateType]').data('kendoComboBox').value();
+			switch(getValue){
+			case '115':
+				var $Msg= isCardID(code);
+				if($Msg=='true'){
+					$('input[id=sex]').data('kendoComboBox').value(getSex(code));
+					$('input[id=birthday]').val(getBirthday(code));
+					$('input[id=age]').val(getAge(code));
+				}else{
+					$(this).poshytip({
+						className : 'tip-darkgray',
+						content: $Msg,
+						showOn: 'none',
+						alignTo : 'target',
+						alignX : 'right',
+						alignY : 'center',
+						offsetX : 5
+					});
+					$(this).poshytip('show');
+				}
+				break;
+				default:break;
+			}
+		},
+		getTime:function(){
+			$(this).kendoDatePicker({format : 'yyyy-MM-dd'});
+		},
+		Kendo:function(dataSource){
+			var dom=this;
+			$(this).kendoComboBox({
+				dataTextField : 'FCodeText',
+				dataValueField : 'FId',
+				dataSource : dataSource,
+				change : function() {
+					var item = $(dom).data('kendoComboBox');
+					var query = item.dataItem();
+					if (query == null) {
+						item.value('');
+					}
+				}
+			});
+		},downTip:function(_ParMsg){
+			var $attr= $(this).attr('value');
+			if($.trim($attr)){
+				$(this).poshytip('destroy');
+			}else{
+				$(this).poshytip({
+					className : 'tip-darkgray',
+					showOn : 'focus',
+					alignTo : 'target',
+					alignX : 'right',
+					offsetX : 30,
+					offsetY : -30,
+					content:_ParMsg
+				});
+			}
+		},getDownMsg:function(){
+			return $(this).attr('DownMsg');
+		},getEnterprise:function(){
+			$.ajax({
+				type : 'post',
+				url:'/user/enterprise/',
+				dataType : 'json',
+				async : false,
+				success:function(data){
+					if (data.success) {
+						$('#enterpriseName').kendoComboBox({
+							dataSource : data.root,
+							dataTextField : 'FEnterprisename',
+							dataValueField : 'FId',
+							filter : 'contains'
+						});
+					}
+				}
+			});
+		}	
+	});
+	
+	$.extend({
+		getDownList:function(){
+			$.ajax({
+				type : 'post',
+				url:'/SystemCodeService/5',
+				dataType : 'json',
+				async : false,
+				success:function(data){
+					var P117=new Array();
+					var P109=new Array();
+					var P103=new Array();
+					var P94=new Array();
+					var P93=new Array();
+					var P374=new Array();
+					$.each(data.root, function(i, n) {
+						switch(n.fkCodeTypeId){
+						case 117:
+							P117.push(n);
+							break;
+						case 109:
+							P109.push(n);
+							break;
+						case 103:
+							P103.push(n);
+							break;
+						case 94:
+							P94.push(n);
+							break;
+						case 93:
+							P93.push(n);
+							break;	
+						case 374:
+							P374.push(n);
+							break;
+						}
+					});
+					
+					$('#ethnic').Kendo(P109);
+					$('#degree').Kendo(P103);
+					//$('#type').Kendo(P94);
+					//$('#kind').Kendo(P93);
+					$('#technical').Kendo(P117);
+					$('#veteran').Kendo(P374);
+				}
+			});
+		},
+		getDownTooptip:function(){
+			$('div[DownMsg]').each(function(i,n){
+				var $_MsgId=$(this).attr('id');
+				var query='div[id='+$_MsgId+']>SPAN>SPAN>INPUT';
+				$(query).css('font-family','微软雅黑');
+				var Msg=$('div[id='+$_MsgId+']').getDownMsg();
+				$(query).bind({
+					mousedown:function(){
+						$(this).downTip(Msg); 
+					}					
+				});
+			});	
+		}			
+	});
+</script>
+</head>
+
+<body>
+	<table style="width:100%;margin-left:auto;margin-right:auto" cellpadding="0" cellspacing="0" border="0">
+		<tbody><tr>
+			<td>
+			<div id="head" style="margin-left:auto;margin-right:auto"><table style="width:100%;height:120px;border: 1px solid #dcdcdc;
+		Border-radius: 4px; margin-left:auto;margin-right:auto;background-image: url('/html/article/images/head_back.jpg');background-repeat:repeat-x" cellpadding="0" cellspacing="0" border="0">
+	<tbody><tr>
+		<td style="width:auto;padding-left:10px;"><img src="/html/article/images/logo.png"></td>
+		<td style="width:560px;">
+			<table style="width:97%;height:100%;margin:0px;padding:0px;margin-right:10px" border="0" cellspacing="0" cellpadding="0">
+				<tbody><tr>
+					<td colspan="15">
+						<table style="width:100%;margin:0px;padding:0px;" border="0" cellspacing="0" cellpadding="0">
+							<tbody><tr>
+								<td style="text-align:right;width:auto">
+								</td>
+								<td style="width:200px;height:38px;" rowspan="2"><span style="margin-right:6px;font-size:14px;color:red">咨询热线：0871-64109371</span></td>
+								<!--<td style="width:200px;height:38px;"  rowspan="2"><span
+									style="margin-right:6px;font-size:14px;color:red">技术问题：0871-64138551</span></td>-->
+									<td style="width:200px;height:38px;" rowspan="3"><span style="margin-right:6px;font-size:14px;color:red">技术问题：0871-65619966</span></td>
+							</tr>
+						</tbody></table>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<table style="width:100%;height:100%;margin:0px;padding:0px;background-image:url(/html/article/images/index_7.png);min-height:44px;height:44px;background-repeat:repeat-x;" border="0" cellspacing="0" cellpadding="0">
+							<tbody><tr>
+								<td style="width:6px;background-image:url(/html/article/images/index_5.png); "></td>
+								<td width="70" align="center"><a class="link_black_12_blod" href="/index.html">首&nbsp;&nbsp;&nbsp;&nbsp;页</a></td>
+								<td style="width:2px;background-image:url(/html/article/images/index_8.png); "></td>
+								<td width="76" align="center"><a class="link_black_12_blod" href="/html/article/industry.html?nav_type=1" target="_blank">
+										行业资讯</a></td>
+								<td style="width:2px;background-image:url(/html/article/images/index_8.png); "></td>
+								<td width="76" align="center"><a class="link_black_12_blod" href="/html/article/articleList.html?nav_type=2&amp;isHotArticle=1&amp;articleType=90" target="_blank"> 热门培训</a></td>
+								<td style="width:2px;background-image:url(/html/article/images/index_8.png); "></td>
+								<td width="76" align="center"><a class="link_black_12_blod" href="/html/article/article.html?nav_type=3" target="_blank">
+										培训专题</a></td>
+								<td style="width:2px;background-image:url(/html/article/images/index_8.png); "></td>
+								<td width="86" align="center"><a class="link_black_12_blod" href="/html/CommonQuery.html" target="_blank">学员档案查询</a></td>
+								<td style="width:2px;background-image:url(/html/article/images/index_8.png); "></td>
+								<td width="76" align="center"><a class="link_black_12_blod" href="/html/article/center.html?key=254" target="_blank">
+										中心简介</a></td>
+								<td style="width:2px;background-image:url(/html/article/images/index_8.png); "></td>
+								<td width="70" align="center"><a class="link_black_12_blod" target="_blank" href="/maps.html">监&nbsp;&nbsp;&nbsp;&nbsp;督</a>
+								</td>
+								<td style="width:2px;background-image:url(/html/article/images/index_8.png); "></td>
+								<td width="70" align="center"><a class="link_black_12_blod" target="_blank" href="/questions.html">问卷调查</a>
+								</td>								
+								<td align="right" style="width:7px;background-image:url(/html/article/images/index_6.png); ">
+								</td>
+							</tr>
+						</tbody></table>
+					</td>
+				</tr>
+			</tbody></table></td>
+	</tr>
+	<tr>
+		<td colspan="2"></td>
+	</tr>
+</tbody></table></div>
+			<script type="text/javascript">
+			$('div[id=head]').load('/header.html');
+			</script></td>
+		</tr>
+		<tr>
+			<td>
+			<table style="width:100%" cellpadding="0" cellspacing="0" border="0">
+					<tbody><tr>
+					<td class="nav_center">
+					<div style="color:blue;font-size:14px;font-family:微软雅黑;padding-left:25px">用户注册</div>
+					</td>
+					</tr>
+					</tbody></table>
+			</td>
+		</tr>
+		<tr>
+			<td style="width:100%;border-left:1px solid #cccccc;border-right:1px solid #cccccc;border-bottom:1px solid #cccccc;margin-left:auto;margin-right:auto">
+				<table cellpadding="0" cellspacing="0" border="0" style="margin-top:10px;margin-left:auto;margin-right:auto">
+					<tbody><tr>
+						<td style="width:100%">
+							<table cellpadding="0" cellspacing="0" border="0" style="font-size:12px; font-family:微软雅黑;width:590px;line-height:30px">
+								<tbody><tr>
+									<td colspan="3" style="text-align:left;line-height:22px">
+										注册须知：<br> <span style="color:gray;padding-left:25px">用户注册时，必须填写真实有效的个人资料（姓名、证件号码），如填写不正确，请到培训中心办理；
+
+											注册成功，系统将生成用户登录信息（姓名、证件号码、学号），请牢记账户信息！</span></td>
+								</tr>
+								<tr>
+									<td colspan="3" style="text-align:left">
+										<hr size="1" style="background-color: gray"></td>
+								</tr><tr>
+									<td></td>
+									<td colspan="2" style="color:gray;text-align:left;paading-left:15px">请填写真实姓名，由2-6个汉字组成</td>
+								</tr>
+								<tr>
+									<td style="width:100px;text-align:right">姓<span style="padding-left:22px"></span>名：</td>
+									<td style="width:480px;text-align:left"><input type="text" id="name" name="name" class="k-textbox" maxlength="6" msg="姓名：请填写姓名！&lt;br/&gt;"></td>
+									<td style="text-align:left;width:10px"><span style="color:red">*</span></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td colspan="2" style="color:gray;text-align:left;paading-left:15px">请选择证件类型</td>
+								</tr>
+								<tr>
+									<td style="text-align:right">证件类型：</td>
+									<td style="text-align:left">
+										<div id="D1" downmsg="证件类型：请选择证件类型！">
+										<span style="width: 99%; " class="k-widget k-combobox k-header"><span unselectable="on" class="k-dropdown-wrap k-state-default"><input class="k-input" type="text" autocomplete="off" style="width: 100%; height: auto; font-family: 微软雅黑; "><span unselectable="on" class="k-select"><span unselectable="on" class="k-icon k-arrow-down">select</span></span></span><input type="text" id="certificateType" name="certificateType" style="width: 99%; display: none; " msg="证件类型：请选择证件类型！&lt;br/&gt;" data-role="combobox"></span>
+									</div>
+									</td>
+									<td style="text-align:left"><span style="color:red">*</span></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td colspan="2" style="color:gray;text-align:left;paading-left:15px">根据证件类型，请填写对应的证件号码
+
+									</td>
+								</tr>
+								<tr>
+									<td style="text-align:right">证件号码：</td>
+									<td style="text-align:left"><input type="text" id="certificateCode" name="certificateCode" class="k-textbox" maxlength="18" msg="证件号码：请填写证件号码！&lt;br/&gt;"></td>
+										<td style="text-align:left"><span style="color:red">*</span></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td colspan="2" style="color:gray;text-align:left;paading-left:15px">选择身份证，系统自动提取性别，选择军官证，需自行填写性别</td>
+								</tr>
+								<tr>
+									<td style="text-align:right">性<span style="padding-left:22px"></span>别：</td>
+									<td style="text-align:left">
+										<div id="D2" downmsg="性别：请选择性别！">
+											<span style="width: 99%; " class="k-widget k-combobox k-header"><span unselectable="on" class="k-dropdown-wrap k-state-default"><input class="k-input" type="text" autocomplete="off" style="width: 100%; height: auto; font-family: 微软雅黑; "><span unselectable="on" class="k-select"><span unselectable="on" class="k-icon k-arrow-down">select</span></span></span><input type="text" id="sex" name="sex" style="width: 99%; display: none; " msg="性别：请选择性别！&lt;br/&gt;" data-role="combobox"></span></div>
+										</td>
+										<td style="text-align:left"><span style="color:red">*</span></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td colspan="2" style="color:gray;text-align:left;paading-left:15px">选择身份证，系统自动提取年龄，选择军官证，需自行填写年龄</td>
+								</tr>
+								<tr>
+									<td style="text-align:right">年<span style="padding-left:22px"></span>龄：</td>
+									<td style="text-align:left"><input type="text" id="age" name="age" class="k-textbox" maxlength="2" msg="年龄：请填写年龄！&lt;br/&gt;"></td>
+									<td style="text-align:left"><span style="color:red">*</span></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td colspan="2" style="color:gray;text-align:left;paading-left:15px">选择身份证，系统自动提取出生年月，选择军官证，需自行填写出生年月（格式：1900-01-01）</td>
+								</tr>
+								<tr>
+									<td style="text-align:right">出生年月：</td>
+									<td style="text-align:left"><span style="width: 98%; " class="k-widget k-datepicker k-header"><span class="k-picker-wrap k-state-default"><input type="text" id="birthday" name="birthday" class="k-textbox k-input" maxlength="10" msg="出生年月：请选择出生年月！&lt;br/&gt;" style="width: 100%; height: auto; " readonly="readonly" data-role="datepicker"><span unselectable="on" class="k-select"><span unselectable="on" class="k-icon k-icon-calendar">select</span></span></span></span></td>
+									<td style="text-align:left"><span style="color:red">*</span></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td colspan="2" style="color:gray;text-align:left;paading-left:15px">填写有效的手机号码，由11位数字组成</td>
+								</tr>
+								<tr>
+									<td style="text-align:right">手机号码：</td>
+									<td style="text-align:left"><input type="text" id="phone" name="phone" class="k-textbox" maxlength="11" msg="手机号码：请填写手机号码！&lt;br/&gt;">
+									</td>
+									<td style="text-align:left"><span style="color:red">*</span></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td colspan="2" style="color:gray;text-align:left;paading-left:15px">请选择服兵役情况</td>
+								</tr>
+								<tr>
+								<td style="text-align:right">服兵役情况：</td>
+									<td style="text-align:left">
+									<div id="D3" downmsg="服役情况：请选择服兵役情况！">
+										<span style="width: 99%; font-family: 微软雅黑; " class="k-widget k-combobox k-header"><span unselectable="on" class="k-dropdown-wrap k-state-default"><input class="k-input k-textbox" type="text" autocomplete="off" style="width: 100%; font-family: 微软雅黑; height: auto; "><span unselectable="on" class="k-select"><span unselectable="on" class="k-icon k-arrow-down">select</span></span></span><input id="veteran" name="veteran" class="k-textbox" style="width: 99%; font-family: 微软雅黑; display: none; " msg="服役情况：请选择服兵役情况！&lt;br/&gt;" data-role="combobox"></span>
+										</div>
+									</td>
+									<td style="text-align:left"><span style="color:red">*</span></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td colspan="2" style="color:gray;text-align:left;paading-left:15px">请选择民族</td>
+								</tr>
+								<tr>
+								<td style="text-align:right">民<span style="padding-left:22px"></span>族：</td>
+									<td style="text-align:left">
+									<div id="D3" downmsg="民族：请选择民族！">
+										<span style="width: 99%; font-family: 微软雅黑; " class="k-widget k-combobox k-header"><span unselectable="on" class="k-dropdown-wrap k-state-default"><input class="k-input k-textbox" type="text" autocomplete="off" style="width: 100%; font-family: 微软雅黑; height: auto; "><span unselectable="on" class="k-select"><span unselectable="on" class="k-icon k-arrow-down">select</span></span></span><input id="ethnic" name="ethnic" class="k-textbox" style="width: 99%; font-family: 微软雅黑; display: none; " data-role="combobox"></span>
+										</div>
+									</td>
+									<td style="text-align:left"></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td colspan="2" style="color:gray;text-align:left;paading-left:15px">请填写QQ号码</td>
+								</tr>
+								<tr>
+								<td style="text-align:right">QQ号码：</td>
+									<td style="text-align:left">
+										<input type="text" id="qq" name="qq" class="k-textbox" maxlength="30">
+									</td>
+									<td style="text-align:left"></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td colspan="2" style="color:gray;text-align:left;paading-left:15px">请填写电子邮箱，建议使用QQ邮箱</td>
+								</tr>
+								<tr>
+									<td style="text-align:right">电子邮箱：</td>
+									<td style="text-align:left">
+										<input type="text" id="mail" name="mail" class="k-textbox" maxlength="100">
+									</td>
+									<td style="text-align:left"></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td colspan="2" style="color:gray;text-align:left;paading-left:15px">请选择学历</td>
+								</tr>
+								<tr>
+									<td style="text-align:right">最高学历：</td>
+									<td style="text-align:left">
+										<div id="D4" downmsg="学历：请选择学历！">
+										<span style="width: 99%; font-family: 微软雅黑; " class="k-widget k-combobox k-header"><span unselectable="on" class="k-dropdown-wrap k-state-default"><input class="k-input" type="text" autocomplete="off" style="width: 100%; font-family: 微软雅黑; height: auto; "><span unselectable="on" class="k-select"><span unselectable="on" class="k-icon k-arrow-down">select</span></span></span><input id="degree" name="degree" style="width: 99%; font-family: 微软雅黑; display: none; " data-role="combobox"></span>
+									</div>
+									</td>
+									<td style="text-align:left"></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td colspan="2" style="color:gray;text-align:left;paading-left:15px">请填写从事专业</td>
+								</tr>
+								<tr>
+									<td style="text-align:right">从事专业：</td>
+									<td style="text-align:left">
+										<input id="Professional" name="Professional" class="k-textbox" maxlength="100">
+									</td>
+									<td style="text-align:left"></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td colspan="2" style="color:gray;text-align:left;paading-left:15px">请选择职称</td>
+								</tr>
+								<tr>
+									<td style="text-align:right">职<span style="padding-left:22px"></span>称：</td>
+									<td style="text-align:left">
+									<div id="D5" downmsg="职称：请选择职称！">
+										<span style="width: 99%; font-family: 微软雅黑; " class="k-widget k-combobox k-header"><span unselectable="on" class="k-dropdown-wrap k-state-default"><input class="k-input k-textbox" type="text" autocomplete="off" style="width: 100%; font-family: 微软雅黑; height: auto; "><span unselectable="on" class="k-select"><span unselectable="on" class="k-icon k-arrow-down">select</span></span></span><input type="text" id="technical" name="technical" class="k-textbox" maxlength="100" style="width: 99%; font-family: 微软雅黑; display: none; " msg="职称：请选择职称！&lt;br/&gt;" data-role="combobox"></span>
+									</div>
+									</td>
+									<td style="text-align:left"><span style="color:red">*</span></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td colspan="2" style="color:gray;text-align:left;paading-left:15px">请填写职务</td>
+								</tr>
+								<tr>
+									<td style="text-align:right">职<span style="padding-left:22px"></span>务：</td>
+									<td style="text-align:left">
+										<input type="text" id="position" name="position" class="k-textbox" maxlength="100">
+									</td>
+									<td style="text-align:left"></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td colspan="2" style="color:gray;text-align:left;paading-left:15px">请填写邮政编码</td>
+								</tr>
+								<tr>
+									<td style="text-align:right">邮政编码：</td>
+									<td style="text-align:left">
+										<input type="text" id="postcode" name="postcode" class="k-textbox" maxlength="10">
+									</td>
+									<td style="text-align:left"></td>
+								</tr>
+								<!--  <tr>
+									<td></td>
+									<td colspan="2" style="color:gray;text-align:left;paading-left:15px">请输入工作单位，系统自动检测工作单位，如果存在，请选择工作单位，否则，请填写工作单位</td>
+								</tr>
+								<tr>
+									<td style="text-align:right">工作单位：</td>
+									<td style="text-align:left">
+									<div id="D6"  DownMsg="工作单位：请填写或输入工作单位！">
+										<input type="text" id="enterpriseName" name="enterpriseName" style="width:99%; font-family:微软雅黑;"
+											 maxlength="200"  Msg="工作单位：请填写工作单位！<br/>"  />
+									</div>
+									</td>
+									<td style="text-align:left"><span style="color:red">*</span></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td colspan="2" style="color:gray;text-align:left;paading-left:15px">请选择单位性质</td>
+								</tr>
+									<tr>
+									<td style="text-align:right">单位性质：</td>
+									<td style="text-align:left">
+									<div id="D7"  DownMsg="单位性质：请选择单位性质！">
+										<input type="text" id="kind" name="kind"
+										style="width:99%; font-family:微软雅黑;"  />
+										</div>
+									</td>
+									<td style="text-align:left"></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td colspan="2" style="color:gray;text-align:left;paading-left:15px">请选择单位类型</td>
+								</tr>
+									<tr>
+									<td style="text-align:right">单位类型：</td>
+									<td style="text-align:left">
+										<div id="D8"  DownMsg="单位类型：请选择单位类型！">
+										<input type="text" id="type" name="type"
+										style="width:99%; font-family:微软雅黑" />
+									</div>
+									</td>
+									<td style="text-align:left"></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td colspan="2" style="color:gray;text-align:left;paading-left:15px">请填写单位电话</td>
+								</tr>
+									<tr>
+									<td style="text-align:right">单位电话：</td>
+									<td style="text-align:left">
+									<input type="text" id="tel" name="tel" class="k-textbox"
+									maxlength="20" Msg="单位电话：请填写单位电话！<br/>"/>
+									</td>
+									<td style="text-align:left"><span style="color:red">*</span></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td colspan="2" style="color:gray;text-align:left;paading-left:15px">请填写通信地址</td>
+								</tr>
+								<tr>
+									<td style="text-align:right">通信地址：</td>
+									<td style="text-align:left">
+									<input type="text" id="address" name="address" class="k-textbox"
+									maxlength="200" />
+									</td>
+									<td style="text-align:left"></td>
+								</tr>-->
+								<tr>
+									<td style="text-align:center" colspan="3">
+										<button type="button" id="new">下一步</button>
+										<button type="button" id="go" onclick="location.href='/action.html'">返回</button>
+									</td>
+								</tr>
+								<tr>
+								<td style="height:10px" colspan="3">
+								</td>
+								</tr>
+							</tbody></table>
+						</td>
+					</tr>
+				</tbody></table>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" style="height:2px">
+			</td>
+			</tr>
+		<tr>
+			<td colspan="2">
+					<div id="bottom" style="bottom:0px;position:relative;border:0px;margin:0px;padding:0px">
+			<span style="padding-top:10px">版权所有：云南省城市建设培训中心 地址：昆明市红塔东路3号云南省住房和城乡建设厅附楼 <br>联系电话：0871-4122847
+			ICP备案号：滇ICP备12000504号</span>
+		</div>
+		</td>
+		</tr>
+	</tbody></table>
+
+
+
+<div class="k-list-container k-popup k-group k-reset" id="certificateType-list" data-role="popup" style="position: absolute; overflow: hidden; font-family: 微软雅黑; width: 469px; height: auto; display: none; "><div class="km-scroll-container"><ul class="k-list k-reset" style="overflow: auto; "><li class="k-item">请选择证件类型</li><li class="k-item k-state-focused k-state-selected">身份证</li><li class="k-item">军官证</li></ul></div><div class="km-touch-scrollbar km-horizontal-scrollbar"></div><div class="km-touch-scrollbar km-vertical-scrollbar"></div></div><div class="k-list-container k-popup k-group k-reset" id="ethnic-list" data-role="popup" style="position: absolute; overflow: hidden; font-family: 微软雅黑; width: 469px; height: 200px; display: none; "><div class="km-scroll-container"><ul class="k-list k-reset" style="overflow: auto; "><li class="k-item k-state-focused">请选择民族</li><li class="k-item">汉族</li><li class="k-item">彝族</li><li class="k-item">纳西族</li><li class="k-item">回族</li><li class="k-item">白族</li><li class="k-item">阿昌族</li><li class="k-item">鄂温克族</li><li class="k-item">傈僳族</li><li class="k-item">水族</li><li class="k-item">高山族</li><li class="k-item">珞巴族</li><li class="k-item">塔吉克族</li><li class="k-item">保安族</li><li class="k-item">仡佬族</li><li class="k-item">满族</li><li class="k-item">塔塔尔族</li><li class="k-item">布朗族</li><li class="k-item">哈尼族</li><li class="k-item">毛南族</li><li class="k-item">土家族</li><li class="k-item">布依族</li><li class="k-item">哈萨克族</li><li class="k-item">门巴族</li><li class="k-item">土族</li><li class="k-item">朝鲜族</li><li class="k-item">蒙古族</li><li class="k-item">佤族</li><li class="k-item">达斡尔族</li><li class="k-item">赫哲族</li><li class="k-item">苗族</li><li class="k-item">维吾尔族</li><li class="k-item">傣族</li><li class="k-item">仫佬族</li><li class="k-item">乌孜别克族</li><li class="k-item">德昂族</li><li class="k-item">基诺族</li><li class="k-item">锡伯族</li><li class="k-item">东乡族</li><li class="k-item">京族</li><li class="k-item">怒族</li><li class="k-item">瑶族</li><li class="k-item">侗族</li><li class="k-item">景颇族</li><li class="k-item">普米族</li><li class="k-item">独龙族</li><li class="k-item">柯尔克孜族</li><li class="k-item">羌族</li><li class="k-item">裕固族</li><li class="k-item">俄罗斯族</li><li class="k-item">拉祜族</li><li class="k-item">撒拉族</li><li class="k-item">藏族</li><li class="k-item">鄂伦春族</li><li class="k-item">黎族</li><li class="k-item">畲族</li><li class="k-item">壮族</li></ul></div><div class="km-touch-scrollbar km-horizontal-scrollbar"></div><div class="km-touch-scrollbar km-vertical-scrollbar"></div></div><div class="k-list-container k-popup k-group k-reset" id="degree-list" data-role="popup" style="position: absolute; overflow: hidden; font-family: 微软雅黑; width: 469px; height: auto; display: none; "><div class="km-scroll-container"><ul class="k-list k-reset" style="overflow: auto; "><li class="k-item k-state-focused">请选择学历</li><li class="k-item">初中及以下</li><li class="k-item">中专</li><li class="k-item">技校</li><li class="k-item">高中</li><li class="k-item">大专</li><li class="k-item">本科</li><li class="k-item">硕士及以上</li></ul></div><div class="km-touch-scrollbar km-horizontal-scrollbar"></div><div class="km-touch-scrollbar km-vertical-scrollbar"></div></div><div class="k-list-container k-popup k-group k-reset" id="technical-list" data-role="popup" style="position: absolute; overflow: hidden; font-family: 微软雅黑; width: 469px; height: auto; display: none; "><div class="km-scroll-container"><ul class="k-list k-reset" style="overflow: auto; "><li class="k-item k-state-focused">请选择职称</li><li class="k-item">初级</li><li class="k-item">中级</li><li class="k-item">副高</li><li class="k-item">正高</li><li class="k-item">无职称</li></ul></div><div class="km-touch-scrollbar km-horizontal-scrollbar"></div><div class="km-touch-scrollbar km-vertical-scrollbar"></div></div><div class="k-list-container k-popup k-group k-reset" id="veteran-list" data-role="popup" style="position: absolute; overflow: hidden; font-family: 微软雅黑; width: 469px; height: auto; display: none; "><div class="km-scroll-container"><ul class="k-list k-reset" style="overflow: auto; "><li class="k-item k-state-focused">转业军人</li><li class="k-item">退伍军人</li><li class="k-item">现役军人</li><li class="k-item">无</li></ul></div><div class="km-touch-scrollbar km-horizontal-scrollbar"></div><div class="km-touch-scrollbar km-vertical-scrollbar"></div></div><div style="display: none; " data-role="calendar" class="k-widget k-calendar"><div class="k-header"><a href="#" class="k-link k-nav-prev"><span class="k-icon k-arrow-prev"></span></a><a href="#" class="k-link k-nav-fast">四月 2017</a><a href="#" class="k-link k-nav-next"><span class="k-icon k-arrow-next"></span></a></div><table class="k-content" cellspacing="0"><thead><tr><th abbr="周日" scope="col" title="星期日">日</th><th abbr="周一" scope="col" title="星期一">一</th><th abbr="周二" scope="col" title="星期二">二</th><th abbr="周三" scope="col" title="星期三">三</th><th abbr="周四" scope="col" title="星期四">四</th><th abbr="周五" scope="col" title="星期五">五</th><th abbr="周六" scope="col" title="星期六">六</th></tr></thead><tbody><tr><td class="k-other-month k-weekend"><a class="k-link" href="#" data-value="2017/2/26" title="2017年3月26日">26</a></td><td class="k-other-month"><a class="k-link" href="#" data-value="2017/2/27" title="2017年3月27日">27</a></td><td class="k-other-month"><a class="k-link" href="#" data-value="2017/2/28" title="2017年3月28日">28</a></td><td class="k-other-month"><a class="k-link" href="#" data-value="2017/2/29" title="2017年3月29日">29</a></td><td class="k-other-month"><a class="k-link" href="#" data-value="2017/2/30" title="2017年3月30日">30</a></td><td class="k-other-month"><a class="k-link" href="#" data-value="2017/2/31" title="2017年3月31日">31</a></td><td class="k-today k-weekend"><a class="k-link" href="#" data-value="2017/3/1" title="2017年4月1日">1</a></td></tr><tr><td class="k-weekend"><a class="k-link" href="#" data-value="2017/3/2" title="2017年4月2日">2</a></td><td><a class="k-link" href="#" data-value="2017/3/3" title="2017年4月3日">3</a></td><td><a class="k-link" href="#" data-value="2017/3/4" title="2017年4月4日">4</a></td><td><a class="k-link" href="#" data-value="2017/3/5" title="2017年4月5日">5</a></td><td><a class="k-link" href="#" data-value="2017/3/6" title="2017年4月6日">6</a></td><td><a class="k-link" href="#" data-value="2017/3/7" title="2017年4月7日">7</a></td><td class="k-weekend"><a class="k-link" href="#" data-value="2017/3/8" title="2017年4月8日">8</a></td></tr><tr><td class="k-weekend"><a class="k-link" href="#" data-value="2017/3/9" title="2017年4月9日">9</a></td><td><a class="k-link" href="#" data-value="2017/3/10" title="2017年4月10日">10</a></td><td><a class="k-link" href="#" data-value="2017/3/11" title="2017年4月11日">11</a></td><td><a class="k-link" href="#" data-value="2017/3/12" title="2017年4月12日">12</a></td><td><a class="k-link" href="#" data-value="2017/3/13" title="2017年4月13日">13</a></td><td><a class="k-link" href="#" data-value="2017/3/14" title="2017年4月14日">14</a></td><td class="k-weekend"><a class="k-link" href="#" data-value="2017/3/15" title="2017年4月15日">15</a></td></tr><tr><td class="k-weekend"><a class="k-link" href="#" data-value="2017/3/16" title="2017年4月16日">16</a></td><td><a class="k-link" href="#" data-value="2017/3/17" title="2017年4月17日">17</a></td><td><a class="k-link" href="#" data-value="2017/3/18" title="2017年4月18日">18</a></td><td><a class="k-link" href="#" data-value="2017/3/19" title="2017年4月19日">19</a></td><td><a class="k-link" href="#" data-value="2017/3/20" title="2017年4月20日">20</a></td><td><a class="k-link" href="#" data-value="2017/3/21" title="2017年4月21日">21</a></td><td class="k-weekend"><a class="k-link" href="#" data-value="2017/3/22" title="2017年4月22日">22</a></td></tr><tr><td class="k-weekend"><a class="k-link" href="#" data-value="2017/3/23" title="2017年4月23日">23</a></td><td><a class="k-link" href="#" data-value="2017/3/24" title="2017年4月24日">24</a></td><td><a class="k-link" href="#" data-value="2017/3/25" title="2017年4月25日">25</a></td><td><a class="k-link" href="#" data-value="2017/3/26" title="2017年4月26日">26</a></td><td><a class="k-link" href="#" data-value="2017/3/27" title="2017年4月27日">27</a></td><td><a class="k-link" href="#" data-value="2017/3/28" title="2017年4月28日">28</a></td><td class="k-weekend"><a class="k-link" href="#" data-value="2017/3/29" title="2017年4月29日">29</a></td></tr><tr><td class="k-weekend"><a class="k-link" href="#" data-value="2017/3/30" title="2017年4月30日">30</a></td><td class="k-other-month"><a class="k-link" href="#" data-value="2017/4/1" title="2017年5月1日">1</a></td><td class="k-other-month"><a class="k-link" href="#" data-value="2017/4/2" title="2017年5月2日">2</a></td><td class="k-other-month"><a class="k-link" href="#" data-value="2017/4/3" title="2017年5月3日">3</a></td><td class="k-other-month"><a class="k-link" href="#" data-value="2017/4/4" title="2017年5月4日">4</a></td><td class="k-other-month"><a class="k-link" href="#" data-value="2017/4/5" title="2017年5月5日">5</a></td><td class="k-other-month k-weekend"><a class="k-link" href="#" data-value="2017/4/6" title="2017年5月6日">6</a></td></tr></tbody></table><div class="k-footer" style=""><a href="#" class="k-link k-nav-today" title="2017年4月1日">2017年4月1日</a></div></div><div class="k-calendar-container k-popup k-group k-reset" data-role="datepicker" style="display: none; position: absolute; overflow: hidden; "><div class="km-scroll-container"></div><div class="km-touch-scrollbar km-horizontal-scrollbar"></div><div class="km-touch-scrollbar km-vertical-scrollbar"></div></div><div class="k-list-container k-popup k-group k-reset" id="sex-list" data-role="popup" style="position: absolute; overflow: hidden; font-family: 微软雅黑; width: 469px; height: auto; display: none; "><div class="km-scroll-container"><ul class="k-list k-reset" style="overflow: auto; "><li class="k-item k-state-focused"></li><li class="k-item">男</li><li class="k-item">女</li></ul></div><div class="km-touch-scrollbar km-horizontal-scrollbar"></div><div class="km-touch-scrollbar km-vertical-scrollbar"></div></div></body></html>

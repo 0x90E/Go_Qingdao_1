@@ -1,0 +1,552 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head>
+<meta charset="utf-8">
+<title>登录</title>
+
+<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+
+<link rel="stylesheet" href="/css/login.css">
+
+<style type="text/css">
+.repwd { font-size: 14px; color: #a0a0a0;}
+.midd { vertical-align: middle;}
+.hide {display: none;}
+.form-repwdinfo {margin:11px 0 0 40px; padding-top:0px; border: 1px solid #E5E5E5; width:340px; height:230px;}
+.form-repwdinfo p {padding-left: 10px; margin-top: 5px; margin-bottom: 0px; font-size: 15px;}
+.form-repwdinfo hr {border:dotted 1px; color: #E5E5E5;}
+.form-repwdinfo ul {padding:10px 0 0 30px;}
+.form-repwdinfo ul label {width: 100px; text-align: right; display: inline-block;}
+.form-repwdinfo li {position: relative; margin-bottom: 6px;}
+.form-repwd {margin: 30px 0 0 40px; padding-top:0px; border: 1px solid #E5E5E5; width:330px; height:190px;}
+.form-repwd p {padding-left: 10px; margin-top: 5px; margin-bottom: 0px; font-size: 15px;}
+.form-repwd hr {border:dotted 1px; color: #E5E5E5;}
+.form-repwd ul {padding:10px 0 0 30px;}
+.form-repwd ul label {width: 90px; text-align: right; display: inline-block;}
+.form-repwd li {position: relative;}
+.text_center {text-align: center;}
+.n_btn {border-radius:3px; cursor:pointer; width:60px; height:25px; border:none; vertical-align:middle; background-color: #ff1e1e; color: #ffffff; font-size: 13px; font-weight: bold;}
+.errorInfo {box-shadow: 0px 0px 6px #000; padding: 4px 10px; border-radius: 6px; text-align: center; border: 2px solid #DDD; font-size: 11px; width: 120px; color: #FFF;
+    background: #EE1414 none repeat scroll 0% 0%; z-index: 991;opacity: 0.8; position: absolute; top: -23px; left: 219px; cursor: pointer;}
+.errorInfoTop {text-align: left; box-shadow: 0px 0px 0px #fff; padding: 2px 10px; border-radius: 6px; border: 2px solid #DDD; font-size: 12px; width: 150px; color: #FFF;
+    background: #EE1414 none repeat scroll 0% 0%; z-index: 991; opacity: 0.8; position: absolute; top: 50px; left: 472px; margin-top: -35px; cursor: pointer;}
+.errorPwdTop {text-align: center; box-shadow: 0px 0px 0px #fff; padding: 2px 10px; border-radius: 6px; border: 2px solid #DDD; font-size: 12px; width: 90px; color: #FFF;
+    background: #EE1414 none repeat scroll 0% 0%; z-index: 991; opacity: 0.8; position: absolute; top: 68px; left: 490px; margin-top: -35px; cursor: pointer;}
+.sliver {
+    background: #d2d2d2;
+    background: -webkit-gradient(linear, left top, left bottom, from(#f0f0f0), to(#d2d2d2) );
+    background: -moz-linear-gradient(-90deg, #f0f0f0, #d2d2d2);
+    filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#f0f0f0', EndColorStr='#d2d2d2');
+}
+</style>
+
+<script type="text/javascript" src="/js/auditor/jquery.js"></script>
+<script>
+jQuery(function()
+{
+    var inputArr = jQuery(".login .ipt");
+	inputArr.focus(function()
+	{
+        jQuery(".login .border").removeClass("focus");
+        jQuery(this).parents(".border").addClass("focus");
+	});
+	inputArr.blur(function()
+	{
+        jQuery(".login .border").removeClass("focus");
+	});
+});
+
+document.onkeydown = function (e) {
+    var event = document.all ? window.event : e;
+//    event = getEvent(event);
+    if (event.keyCode == 13) {
+        do_login();
+    }
+}
+
+function do_login() {
+    var securityMark = document.getElementById('securityMark').value;
+    if(securityMark == 'true') {
+        /* 将密码安全控件内容提交 Add by liu.ou 2015-08-27 start */
+        try{
+            var userpasswd = GetActiveX();
+            var pass = userpasswd.GetValue();
+            var len = userpasswd.GetLength();
+            document.getElementById("password").value = pass;
+        }catch(err){
+            alert("请输入密码！");
+        }
+        /* 将密码安全控件内容提交 Add by liu.ou 2015-08-27 end */
+    }
+
+    //window.location.href = "index.html";
+    document.form1.submit();
+}
+
+function init() {
+    if (top.location.href != this.location.href) {
+        top.location.href = this.location.href;
+    }
+
+    /* 新增密码安全控件 Add by liu.ou 2015-08-27 start */
+    var securityMark = document.getElementById('securityMark').value;
+    if(securityMark == 'true') {
+        var sUserAgent = navigator.userAgent;
+        //根据操作系统类型，显示相应的插件
+        if ("Mac" == detectOS()) {
+            document.getElementById("myTip").style.display="none";
+            document.getElementById("myObj").style.display="none";
+            document.getElementById("mac").style.display="block";
+            document.getElementById("notSecurity").style.display="none";
+            setTimeout(initMacPwd,1000);  //初始化mac插件，初始化时设置了延时，否则可能也现页面插件还没加载完初始化失败
+        } else {
+            var userpasswd = GetActiveX();
+            //判断插件是否已经安装，如果已安装，则显示插件，未安装则显示下载链接提示
+            if (userpasswd != null && userpasswd.Working==true) {
+                document.getElementById("myTip").style.display="none";
+                document.getElementById("notSecurity").style.display="none";
+                document.getElementById("myObj").style.display="block";
+                document.getElementById("mac").style.display="none";
+            } else {
+                document.getElementById("myTip").style.display="block";
+                document.getElementById("myObj").style.display="none";
+                document.getElementById("mac").style.display="none";
+                document.getElementById("notSecurity").style.display="none";
+            }
+        }
+    } else {
+        document.getElementById("myTip").style.display="none";
+        document.getElementById("myObj").style.display="none";
+        document.getElementById("mac").style.display="none";
+    }
+    /* 新增密码安全控件 Add by liu.ou 2015-08-27 end */
+}
+function myReload() {
+    document.getElementById("validateCodeServlet").src = document.getElementById("validateCodeServlet").src + "?nocache=" + new Date().getTime();
+}
+
+/* 商户密码找回 Add by liu.ou 2015-07-01 start */
+function myReload2() {
+    document.getElementById("validateCodeServlet2").src = document.getElementById("validateCodeServlet2").src + "?nocache=" + new Date().getTime();
+}
+function myReload3() {
+    document.getElementById("validateCodeServlet3").src = document.getElementById("validateCodeServlet3").src + "?nocache=" + new Date().getTime();
+}
+
+function retrieve() {
+    myReload2();
+    jQuery("#normal").hide();
+    jQuery("#retrieve").show();
+}
+function normal() {
+    myReload();
+    jQuery("#retrieve").hide();
+    jQuery("#normal").show();
+}
+function modifyPwd() {
+    myReload3();
+    jQuery("#retrieve").hide();
+    jQuery("#modifyPwd").show();
+}
+function modify2retrieve() {
+    myReload2();
+    jQuery("#modifyPwd").hide();
+    jQuery("#normal").hide();
+    jQuery("#retrieve").show();
+}
+
+function closeMyself(id) {
+    jQuery('#msg_' + id).hide();
+}
+function remind(id) {
+    jQuery('#msg_' + id).html('请注意字母大小写').show();
+    setTimeout(function(){
+        jQuery('#msg_' + id).fadeOut();
+    }, 3000);
+}
+function validateInfo() {
+    if(document.getElementById('merchantNo').value.trim() == "") {
+        jQuery('#msg_merchantNo').html('商户编号不能为空').show();
+        return false;
+    }
+    if(document.getElementById('legalPersonName').value.trim() == "") {
+        jQuery('#msg_legalPersonName').html('法人姓名不能为空').show();
+        return false;
+    }
+    if(document.getElementById('legalPersonIdNo').value.trim() == "") {
+        jQuery('#msg_legalPersonIdNo').html('法人身份证号不能为空').show();
+        return false;
+    }
+    if(document.getElementById('businessLicenseCode').value.trim() == "") {
+        jQuery('#msg_businessLicenseCode').html('营业执照号不能为空').show();
+        return false;
+    }
+    if(document.getElementById('validateCode2').value.trim() == "") {
+        jQuery('#msg_merchantInfo').html('请输入验证码').show();
+        setTimeout(function(){
+            jQuery('#msg_merchantInfo').fadeOut();
+        }, 3000);
+        return false;
+    }
+    return true;
+}
+
+function submitInfo() {
+    if(validateInfo()) {
+        var merchantNo = document.getElementById('merchantNo').value.trim();
+        var legalPersonName = document.getElementById('legalPersonName').value.trim();
+        var legalPersonIdNo = document.getElementById('legalPersonIdNo').value.trim();
+        var businessLicenseCode = document.getElementById('businessLicenseCode').value.trim();
+        var validateCode2 = document.getElementById('validateCode2').value.trim();
+        jQuery.ajax({type:"post",url:"/login/merchantModifyPwd", dataType:"json",
+            data:{"merchantNo" : merchantNo, "legalPersonName" : legalPersonName, "legalPersonIdNo" : legalPersonIdNo,
+                "businessLicenseCode" : businessLicenseCode, "validateCode2" : validateCode2},
+            success:function(data) {
+                if(jQuery.isEmptyObject(data)) {
+                    modifyPwd();
+                }else {
+                    myReload2();
+                    jQuery.each(data,function(i,item) {
+                        jQuery('#msg_' + i).html(item).show();
+                        setTimeout(function(){
+                            jQuery('#msg_' + i).fadeOut();
+                        },6000);
+                    });
+                }
+            }
+        });
+    }
+}
+
+function do_submit() {
+    if(validatePwd()){
+        var merchantNo = document.getElementById('merchantNo').value.trim();
+        var validateCode3 = document.getElementById('validateCode3').value;
+        var pwd = document.getElementById('pwd').value;
+        var pwd2 = document.getElementById('pwd2').value;
+        jQuery.ajax({type:"post",url:"/login/merchantChangePwd", dataType:"json",
+            data:{"merchantNo" : merchantNo, "validateCode3" : validateCode3, "pwd" : pwd,
+                "pwd2" : pwd2},
+            success:function(data) {
+                if(jQuery.isEmptyObject(data)) {
+                    document.getElementById('succ').innerHTML = "\<div class='form-area'\>" +
+                    "\<div class='form-repwd sliver' style='height:160px;margin-top:50px;'\>" +
+                        "\<span\>" +
+                        "\<p\>" +
+                        "\<b\>操作成功\</b\>" +
+                        "\<hr style='color: #ffffff;' /\>" +
+                        "\</p\>" +
+                        "\</span\>" +
+                        "\<ul class='text_center' style='padding-left:5px;font-size:21px;font-family:\"隶书\";'\>" +
+                            "\<li\>修改密码成功！\</li\>" +
+                            "\<li\>3秒后将自动跳转到登录页面，\</li\>" +
+                            "\<li\>如果未跳转,请尝试刷新页面。\<li\>" +
+                        "\</ul\>" +
+                    "\</div\>\</div\>";
+                    succ();
+                }else {
+                    myReload3();
+                    jQuery.each(data,function(i,item) {
+                        jQuery('#msg_' + i).html(item).show();
+                        setTimeout(function(){
+                            jQuery('#msg_' + i).fadeOut();
+                        },6000);
+                    });
+                }
+            }
+        });
+    }
+}
+
+function succ() {
+    jQuery('#modifyPwd').hide();
+    jQuery('#succ').slideDown();
+    myReload();
+    var merchantNo = document.getElementById('merchantNo').value.trim();
+    document.getElementById('login').value = merchantNo;
+    clearInput();
+    setTimeout(function(){
+        jQuery('#succ').hide();
+        jQuery('#normal').fadeIn();
+    }, 3000);
+}
+
+function clearInput() {
+    document.getElementById('merchantNo').value = "";
+    document.getElementById('legalPersonName').value = "";
+    document.getElementById('legalPersonIdNo').value = "";
+    document.getElementById('businessLicenseCode').value = "";
+    document.getElementById('validateCode2').value = "";
+    document.getElementById('validateCode3').value = "";
+    document.getElementById('pwd').value = "";
+    document.getElementById('pwd2').value = "";
+}
+
+function validatePwd() {
+    var pwd = document.getElementById('pwd').value;
+    var pwd2 = document.getElementById('pwd2').value;
+
+    if(pwd == "") {
+        jQuery('#msg_pwd').html('请输入密码！').show();
+        return false;
+    }
+    if(pwd2 == "") {
+        jQuery('#msg_pwd2').html('请输入密码！').show();
+        return false;
+    }
+    var re = /(?=^.{8,20}$)(?=(?:.*?\d){1})(?=.*[a-zA-Z])(?=(?:.*?[!@#$%*()_+^&}{:;?.]){1})(?!.*\s)[0-9a-zA-Z!@#$%*()_+^&]*$/;
+    if(!re.test(pwd)) {
+        jQuery('#msg_pwd').html('密码由8-20位数字、字母和特殊字符组成！').show();
+        return false;
+    }
+    if(pwd != pwd2) {
+        jQuery('#msg_pwd2').html('两次密码输入不一致！').show();
+        return false;
+    }
+    if(document.getElementById('validateCode3').value.trim() == "") {
+        jQuery('#msg_pwdInfo').html('请输入验证码').show();
+        setTimeout(function(){
+            jQuery('#msg_pwdInfo').fadeOut();
+        }, 3000);
+        return false;
+    }
+    return true;
+}
+// 新密码和重复新密码最大长度提示
+function checkLength(id) {
+    if(jQuery('#' + id).val().length == 20) {
+        jQuery('#msg_' + id).html('密码已达到最大长度！').show();
+        setTimeout(function() {
+            jQuery('#msg_' + id).fadeOut();
+        }, 1000);
+    }
+}
+
+/* 新增密码安全控件 Add by liu.ou 2015-08-27 start */
+function GetActiveX() {
+    var userpasswd;
+    var isMac = (navigator.platform == "Mac68K") || (navigator.platform == "MacPPC") || (navigator.platform == "Macintosh") || (navigator.platform == "MacIntel");
+    //判断是否为Mac OS，确定调用windows插件或Mac插件
+    if (isMac) {
+        return document.getElementById("macPasswd");    //返回mac插件对象
+    }else {
+        //判断是否IE内核浏览器，调用相应的控件模块，embed标签对应的ID支持非IE内核浏览器
+        userpasswd = document.getElementById("userpasswd");  //获取IE插件对象
+        try {
+            if (typeof userpasswd.GetValue == "undefined") {
+                userpasswd = document.getElementById("userpasswdNP"); //获取非IE内核插件对象
+            }
+        } catch(err) {
+            return null;
+        }
+    }
+    return userpasswd;
+}
+
+//检查操作系统类型
+function detectOS() {
+    var sUserAgent = navigator.userAgent;
+    var isWin = (navigator.platform == "Win32") || (navigator.platform == "Windows");
+    var isMac = (navigator.platform == "Mac68K") || (navigator.platform == "MacPPC") || (navigator.platform == "Macintosh") || (navigator.platform == "MacIntel");
+    if (isMac) return "Mac";
+    var isUnix = (navigator.platform == "X11") && !isWin && !isMac;
+    if (isUnix) return "Unix";
+    var isLinux = (String(navigator.platform).indexOf("Linux") > -1);
+    if (isLinux) return "Linux";
+    if (isWin) {
+        var isWin2K = sUserAgent.indexOf("Windows NT 5.0") > -1 || sUserAgent.indexOf("Windows 2000") > -1;
+        if (isWin2K) return "Win2000";
+        var isWinXP = sUserAgent.indexOf("Windows NT 5.1") > -1 || sUserAgent.indexOf("Windows XP") > -1;
+        if (isWinXP) return "WinXP";
+        var isWin2003 = sUserAgent.indexOf("Windows NT 5.2") > -1 || sUserAgent.indexOf("Windows 2003") > -1;
+        if (isWin2003) return "Win2003";
+        var isWinVista= sUserAgent.indexOf("Windows NT 6.0") > -1 || sUserAgent.indexOf("Windows Vista") > -1;
+        if (isWinVista) return "WinVista";
+        var isWin7 = sUserAgent.indexOf("Windows NT 6.1") > -1 || sUserAgent.indexOf("Windows 7") > -1;
+        if (isWin7) return "Win7";
+    }
+    return "other";
+}
+
+//初始化mac插件
+function initMacPwd(){
+    var myDate = new Date();
+    myDate.setMinutes(myDate.getMinutes()+myDate.getTimezoneOffset()-1500);
+    var time;
+    time = myDate.getFullYear().toString();
+    if((myDate.getMonth()+1).toString().length==1){ time += "0" + (myDate.getMonth()+1).toString(); }else{ time += (myDate.getMonth()+1).toString(); }
+    if((myDate.getDate()+1).toString().length==1){ time += "0" + (myDate.getDate()+1).toString(); }else{ time += (myDate.getDate()+1).toString(); }
+    if((myDate.getHours()+1).toString().length==1){ time += "0" + (myDate.getHours()+1).toString(); }else{ time += (myDate.getHours()+1).toString(); }
+    if((myDate.getMinutes()+1).toString().length==1){ time += "0" + (myDate.getMinutes()+1).toString(); }else{ time += (myDate.getMinutes()+1).toString(); }
+    if((myDate.getSeconds()+1).toString().length==1){ time += "0" + (myDate.getSeconds()+1).toString(); }else{ time += (myDate.getSeconds()+1).toString(); }
+    try{
+        //alert(time);
+        document.getElementById("macPasswd").initEtx(time);//初始化mac插件
+    }catch(err){
+        //若初始化mac插件失败，说明mac插件未安装，显示下载链接提示
+        document.getElementById("myTip").style.display="block";
+        document.getElementById("myObj").style.display="none";
+        document.getElementById("mac").style.display="none";
+        document.getElementById("notSecurity").style.display="none";
+    }
+}
+/* 新增密码安全控件 Add by liu.ou 2015-08-27 end */
+
+// 解决IE7、IE8不支持trim方法
+String.prototype.trim = function () {
+    return this .replace(/^\s\s*/, '' ).replace(/\s\s*$/, '' );
+}
+/* 商户密码找回 Add by liu.ou 2015-07-01 end */
+
+</script>
+</head>
+
+<body onload="init()">
+
+<div class="login">
+  <div class="logo-area">
+      
+          <h1>中汇支付cnepay.com</h1>
+      
+  </div>
+  <div class="form-area" id="normal">
+      <input type="hidden" id="securityMark" name="securityMark" value="true">
+    <form action="/login/authenticate" method="post" name="form1" style="display:block;height:100%;" id="form1">
+    <ul>
+      <li class="title">统一业务受理平台BUSINESS OPERATION PLATFORM</li>
+      <li> <span class="border">
+        <label for="login"><img src="/images/user_icon.png" width="15" height="14" alt="用户名"></label>
+        <input class="ipt" id="login" name="login" type="text" tabindex="1">
+        </span> </li>
+      <li> <span class="border">
+        <label for="password"><img src="/images/pw_icon.png" width="16" height="14" alt="密码"></label>
+          <div id="myTip" style="display: block; ">
+              <a href="/download/cnepay_security.exe">点此下载控件</a>
+          </div>
+          <div id="myObj" style="display: none; ">
+              <object id="userpasswd" classid="CLSID:EA3B7EE3-6CDF-48ee-A285-1AC7C096FC91" tabindex="2" width="180px" height="25px" codebase="download/cnepay_security.cab#Version=10,0,0,42">
+                  <param name="width" value="180">
+                  <param name="height" value="25">
+                  <param name="textsize" value="22">
+                  <param name="color" value="#FFFFFF">
+                  <param name="bgcolor" value="#FFFFFF">
+                  <param name="bordercolor" value="#FFFFFF">
+                  <param name="MyTime" value="20170401205032">
+
+                  <embed id="userpasswdNP" type="application/EA3B7EE3-6CDF-48ee-A285-1AC7C096FC91" mytime="20170401205032" color="#FFFFFF" bgcolor="#FFFFFF" bordercolor="#FFFFFF" width="180px" height="25px" textsize="22px" tabindex="2">
+              </object>
+              <input id="safePwd" name="safePwd" type="hidden">
+          </div>
+          <div id="mac" style="display: none; ">
+              <embed id="macPasswd" width="180" height="26" type="application/EA3B7EE3-6CDF-48ee-A285-1AC7C096FC91" textsize="22px" tabindex="2">
+              <input id="isMac" name="isMac" type="hidden">
+          </div>
+          <div id="notSecurity" style="display: none; ">
+              <input class="ipt" name="password" id="password" type="password" tabindex="2">
+          </div>
+        </span>
+        
+        
+            
+      
+        
+      </li>
+        <li> <span class="border">
+            <label for="password"><img src="/images/icon_edit.gif" width="16" height="14" alt="验证码"></label>
+            <input name="validateCode" style="width:115px" tabindex="2">
+            <img src="/validateCodeServlet" id="validateCodeServlet" style="cursor:pointer" alt="看不清,换一张." align="middle" onclick="myReload()">
+
+        </span>
+            <input class="btn" type="button" onclick="do_login(); return false;">
+        </li>
+        
+    </ul>
+    </form>
+  </div>
+
+  
+  <div class="form-area hide" id="retrieve">
+    <div class="form-repwdinfo midd">
+        <span>
+            <p>
+                <b>商户密码找回</b>
+                </p><hr>
+            <p></p>
+            <div class="errorInfoTop hide" id="msg_merchantInfo"></div>
+        </span>
+        <ul>
+            <li>
+                <div class="errorInfo hide" id="msg_merchantNo"></div>
+                <label for="merchantNo"><b style="color: red;">* </b>商户编号：</label>
+                <input name="merchantNo" id="merchantNo" type="text" maxlength="20" autocomplete="off" onfocus="remind(this.id);" onblur="closeMyself(this.id);">
+            </li>
+            <li>
+                <div class="errorInfo hide" id="msg_legalPersonName"></div>
+                <label for="legalPersonName"><b style="color: red;">* </b>法人姓名：</label>
+                <input name="legalPersonName" id="legalPersonName" maxlength="80" autocomplete="off" type="text" onfocus="closeMyself(this.id);">
+            </li>
+            <li>
+                <div class="errorInfo hide" id="msg_legalPersonIdNo"></div>
+                <label for="legalPersonIdNo"><b style="color: red;">* </b>法人身份证号：</label>
+                <input name="legalPersonIdNo" id="legalPersonIdNo" type="text" maxlength="18" autocomplete="off" onfocus="remind(this.id);" onblur="closeMyself(this.id);">
+            </li>
+            <li>
+                <div class="errorInfo hide" id="msg_businessLicenseCode"></div>
+                <label for="businessLicenseCode"><b style="color: red;">* </b>营业执照号：</label>
+                <input name="businessLicenseCode" id="businessLicenseCode" type="text" maxlength="20" autocomplete="off" onfocus="remind(this.id);" onblur="closeMyself(this.id);">
+            </li>
+            <li>
+                <label><b style="color: red;">* </b>验证码：</label>
+                <span>
+                    <input name="validateCode2" id="validateCode2" maxlength="6" autocomplete="off" style="width: 79px;">
+                    <img src="/validateCodeServlet" id="validateCodeServlet2" style="cursor:pointer;vertical-align: middle;" alt="看不清,换一张." align="middle" onclick="myReload2()">
+                </span>
+            </li>
+            <li class="text_center">
+                <input type="button" onclick="submitInfo();" class="n_btn" value="确&nbsp;认">
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <input type="button" class="n_btn" value="返&nbsp;回" onclick="normal();">
+            </li>
+        </ul>
+    </div>
+  </div>
+
+  <div class="form-area hide" id="modifyPwd">
+    <div class="form-repwd">
+        <span>
+            <p>
+                <b>商户密码设置</b>
+                </p><hr>
+            <p></p>
+            <div class="errorPwdTop hide" id="msg_pwdInfo"></div>
+        </span>
+        <ul>
+            <li>
+                <div class="errorInfo hide" id="msg_pwd"></div>
+                <label for="pwd"><b style="color: red;">* </b>新密码：</label>
+                <input type="password" name="pwd" id="pwd" value="" maxlength="20" onfocus="closeMyself(this.id);" onpaste="return false;" onkeydown="checkLength(this.id);">
+            </li>
+            <li>
+                <div class="errorInfo hide" id="msg_pwd2"></div>
+                <label for="pwd2"><b style="color: red;">* </b>确认新密码：</label>
+                <input type="password" name="pwd2" id="pwd2" value="" maxlength="20" onfocus="closeMyself(this.id);" onpaste="return false;" onkeydown="checkLength(this.id);">
+            </li>
+            <li>
+                <label><b style="color: red;">* </b>验证码：</label>
+                <span>
+                    <input name="validateCode3" id="validateCode3" maxlength="6" autocomplete="off" style="width: 79px;">
+                    <img src="/validateCodeServlet" id="validateCodeServlet3" style="cursor:pointer;vertical-align: middle;" alt="看不清,换一张." align="middle" onclick="myReload3()">
+                </span>
+            </li>
+            <li class="text_center">
+                <input type="button" onclick="do_submit();" class="n_btn" value="保&nbsp;存">
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <input type="button" class="n_btn" value="返&nbsp;回" onclick="modify2retrieve();">
+            </li>
+        </ul>
+    </div>
+  </div>
+  <div class="hide" id="succ"></div>
+  
+</div>
+<!-- new in end -->
+
+</body></html>

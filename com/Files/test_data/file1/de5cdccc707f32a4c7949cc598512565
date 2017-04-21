@@ -1,0 +1,67 @@
+<html><head></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">/**
+	 * postMessage类，用于跨域传输消息
+	 */
+	function Message() {
+		var self = this;
+
+		this.callbackList = [];
+
+		/**
+		 * 发送消息到指定的window或者contentWindow
+		 * @param target [DOM] 发送的目标
+		 * @param data [String] 消息正文（不超过2M）
+		 */
+		this.send = function(target,data){
+			//如果target没有那么属性说明不是window或者iframe contentWindow，此处简单判断，可以加强
+			//if(!target.name) return;
+
+			if (window.postMessage) {
+			   if(target.postMessage)
+			    target.postMessage(data, '*');
+			   else
+			    target.contentWindow.postMessage(data,'*');				
+			}else{
+			   if(target.contentWindow!=null)
+				target.contentWindow.name = data;
+				else
+				 target.name = data;
+			}
+		};
+		/**
+		 * 绑定事件监听，到接收到消息后触发回调函数
+		 * @param callback [Function] 参数为data
+		 */
+		this.on = function(callback){
+			if(typeof callback !== 'function') return;
+			this.callbackList.push(callback);
+		};
+		this._trigger = function(data){
+			for(var i = 0; i &lt; this.callbackList.length; i++){
+				this.callbackList[i].call(window,data);
+			}
+		};
+
+		if (window.postMessage) {
+			if (window.addEventListener) {
+				window.addEventListener("message", function(e) {
+						self._trigger(e.data);
+					}, false);
+			} else if (window.attachEvent) {
+				window.attachEvent("onmessage", function(e) {
+						self._trigger(e.data);
+					});
+			}
+		} else {
+			var hash = window.name = '';
+
+			setInterval(function() {
+				if (window.name !== hash) {
+					hash = window.name;
+					var tmp = hash;
+					hash = window.name = '';
+					self._trigger(tmp);
+				}
+			},
+			50);
+		}
+	}</pre></body></html>

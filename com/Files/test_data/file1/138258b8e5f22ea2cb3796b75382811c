@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" slick-uniqueid="1"><head>
+	<title>格瓦拉电影商户系统</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8;"> 
+	<link rel="stylesheet" type="text/css" href="http://static5.gewara.com/css/gptbs/ticket.css?v=2013051609">
+	<script type="text/javascript" src="http://static5.gewara.com/scripts/mootools.js"></script>
+	<script type="text/javascript" src="http://static5.gewara.com/scripts/gewara-util.js"></script>
+	<script type="text/javascript" src="http://static5.gewara.com/dpicker/WdatePicker.js"></script><link href="http://static5.gewara.com/dpicker/skin/WdatePicker.css" rel="stylesheet" type="text/css">
+	<style type="text/css">
+	.siteHome {background:url(http://static5.gewara.com/css/gptbs/images/siteHomeBg_001.jpg) repeat-x center 150px;}
+	.siteHome .top {width:407px;}
+	.siteHome .top a.logo {left:129px;}
+	.siteHome .top a.logo img{background:url(http://static5.gewara.com/css/gptbs/images/logoMovie.gif) no-repeat 0 -6px;}
+	.siteHome .top span {background:url(http://static5.gewara.com/css/gptbs/images/cus001.png) no-repeat;width:405px;}
+	.siteHome .bar {background:url(http://static5.gewara.com/css/gptbs/images/iteHome001.jpg) no-repeat center top;}
+	.login {width:560px; margin:85px auto 0 auto;}
+	.login li{float:left;width:272px;}
+	.login li p {position:relative;width:270px;height:40px; background: url(http://static5.gewara.com/css/global/textbg.png) no-repeat;border-color: #777777 #BBBBBB #BBBBBB;border-style:solid;border-width:1px;}
+	.login li .texta{position:absolute;top:10px;left:87px;width:170px;border:0 none;color:#666666;font-size:18px;outline:medium none;  }
+	.login li em {position:absolute;font-size:18px;color:#666;border-right:2px solid #ddd;line-height:25px; top:8px;left:10px;}
+	.login li.cap {text-align:right;background:none;border:none}
+	.login li.cap .button {width:142px; height:52px;padding:0;line-height:300px; overflow:hidden;}
+	.login li.cap .largeBt { background-position:-248px -136px;}
+	.login li.cap .largeBt:hover { background-position:-248px -189px;}
+	.login li.cap .whiterBt { background-position:-248px -242px !important;}
+	.login li.cap .whiterBt:hover { background-position:-248px -295px !important;}
+	.login li .selectz{height:19px;overflow:hidden;width:170px;position:absolute;top:12px;left:95px}
+	.selectz div {height:17px;overflow:hidden;}
+	.selectz div select{*margin:-2px 0px 0px -2px;display:block;border:0 none;color:#666666;font-size:12px;outline:medium none;}
+	</style>
+</head>
+<body>
+<div class="siteHome">
+	<div class="top">
+		<a class="logo" title="格瓦拉生活网"><img width="148" height="67" alt="格瓦拉生活网" src="http://static5.gewara.com/css/images/blank.gif"></a>
+		<span></span>
+	</div>
+	<div class="bar">
+		<div class="homeNav">
+			<div class="login">
+				<form method="post" id="loginForm" action="/cinemapro/cas/check_user.xhtml">
+					<input type="hidden" name="ptn" value="merchant">
+					<input type="hidden" name="TARGETURL" value="/cinemapro/cus/index.xhtml">
+					<ul class="clear">
+						<li class="mr15"><p><em>账号：</em><input type="text" name="j_username" id="j_username" value="" class="texta"></p></li>
+						<li><p><em>密码：</em><input type="password" name="j_password" id="j_password" value="" class="texta"></p></li>
+						<li class="mr15 mt20">
+							<p class="left" style="width:165px;">
+								<em>验证码：</em>
+								<input type="hidden" id="myLoginCaptcha" name="captchaId">
+								<input type="text" style="width:70px" onfocus="refreshCaptcha('myLoginCaptcha');" autocomplete="off" alt="点击获取" name="captcha" id="myLoginCaptchaInput" class="texta">
+							</p>
+							<img id="myLoginCaptchaImg" class="left mt5 ml10" title="看不清楚，请点击换一张图片" src="http://static5.gewara.com/css/images/blank.gif" onclick="refreshCaptcha('myLoginCaptcha')">
+						</li>
+						<li class="cap mt20">
+							<a class="button largeBt right" href="javascript:submitForm();">登陆</a>
+						</li>
+					</ul>
+				</form>
+			</div>
+			<div class="loginerror" style="text-align:center;font-color: red;color: red;">												
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+function keypress(e) { 
+	var currKey=0,e=e||event; 
+	if(e.keyCode==13)submitForm(); 
+}
+// document.onkeypress=keypress;
+$("myLoginCaptchaInput").onkeydown=keypress;
+$("j_username").focus();
+
+function submitForm(){
+	noticeLogin();
+   vForm = $("loginForm");
+   var isValid = validateForm(vForm);
+   if(isValid) $("loginForm").submit();
+}
+function noticeLogin(){
+	if(typeof(window.external.login)=='undefined'){
+		return;
+	}
+	window.external.login(0);
+}
+function validateForm(form) {                                                         
+    if($('j_username').value==''){
+    	gewaUtil.alert("用户名不能为空！");
+    	$("j_username").focus();
+    	return false;
+    }
+    if($("j_password").value==''){
+    	gewaUtil.alert("密码不能为空！");
+    	$("j_password").focus();
+    	return false;
+    }
+    return true;
+}
+function exitWindow(obj){
+	window.external.exitWindow();
+	obj.className="select";
+}
+function refreshCaptcha(captchaIdField){
+	if($(captchaIdField+"Img"))$(captchaIdField+"Img").setStyle('background','url('+gewara.util.cdnPath+'css/images/loading2.gif) center center no-repeat');
+	if($(captchaIdField).value==""){//无ID，则产生一个ID
+		gewara.util.sendRequest("/cinemapro/getCaptchaId.xhtml", {"r":gewara.util.rtime()}, function(result){
+			if(result.success) {
+				$(captchaIdField).value = result.retval;
+				$(captchaIdField+"Img").src = "https://img.gewara.com/captcha/cinemapro/captcha.xhtml?captchaId=" + result.retval + "&r=" + gewara.util.rtime();
+			}else{
+				alter("获取验证码出错，请重新获取！");
+			}
+		}, 'get');
+	}else{
+		$(captchaIdField+"Img").src = "https://img.gewara.com/captcha/cinemapro/captcha.xhtml?captchaId=" + $(captchaIdField).value + "&r=" + gewara.util.rtime();
+	}
+	$(captchaIdField + "Input").value="";
+	if($(captchaIdField + "Input").retrieve('label')){
+		$(captchaIdField + "Input").retrieve('label').text.innerHTML = "输入验证码";
+	}
+	$(captchaIdField + "Input").onfocus = null;
+};
+</script>
+
+</body></html>

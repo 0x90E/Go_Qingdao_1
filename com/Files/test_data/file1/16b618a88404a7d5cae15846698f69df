@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+    <title>Welcome to Webmail Login</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <link href="/PortalBIZ/CSS/Login.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="/PortalBIZ/CSS/jquery.alerts.css">
+    <script type="text/javascript" src="/PortalBIZ/JS/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="/PortalBIZ/JS/jquery-ui-1.8.2.custom.min.js"></script>
+    <script type="text/javascript" src="/PortalBIZ/JS/jquery.alerts.js"></script>
+    <script type="text/javascript" src="/PortalBIZ/JS/jquery.documentsize.js"></script>
+    <script type="text/javascript" src="/PortalBIZ/JS/Cookie.js"></script>
+    <script type="text/javascript" src="/PortalBIZ/JS/util.js"></script>
+    <script type="text/javascript">
+        // alert, confirm, prompt的按鈕語系
+        $.fn.LNG_Confirm = '确定';
+        $.fn.LNG_Cancel = '取消';
+        window.history.forward(1);
+        //確認登入欄位
+        function chkForm() {
+            if (!chkTxtFormValue(document.frmLogin.name, 'txtPassword', "密码不能输入空值")) {
+                return false;
+            }
+            else if (!chkTxtFormValue(document.frmLogin.name, 'txtAccount', "帐号不能输入空值")) {
+                return false;
+            }
+            else if (!chkTxtFormValue(document.frmLogin.name, 'txtCheckCode', "机码不能输入空值")) {
+                return false;
+            }
+            else if (!validTxtFields(document.frmLogin.name, 'txtAccount', "帐号请不要输入‘ -- , / , \\ , \' ’等符号")) {
+                return false;
+            }
+            else if (!validTxtFields(document.frmLogin.name, 'txtPassword', "密码请不要输入‘ -- , / , \\ , \' ’等符号")) {
+                return false;
+            }
+            else if (!validTxtFields(document.frmLogin.name, 'txtCheckCode', "机码,请不要输入‘ -- , / , \\ , \' ’等符号")) {
+                return false;
+            } else {
+                var account = document.frmLogin.txtAccount.value.replace(" ", "");
+                var idxOfAcc = account.indexOf("-");
+                if (idxOfAcc < 0 || !chkTextEngNum(account.substring(0, idxOfAcc)) || !chkTextEngNum(account.substring(idxOfAcc + 1))) {  
+                    jAlert("帐号,格式错误");
+                    return false;
+                }
+
+                if (isNaN(document.frmLogin.txtCheckCode.value)) {  
+                    jAlert("机码,格式错误");
+                    return false;
+                }
+                return true;
+            }
+        }
+
+        //如果是ie6,alert 您使用的瀏覽器為IE6,建議使用最新版本，已確保有較好的使用體驗
+        function checkIEVersion() {
+            var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
+            reIE.test(navigator.userAgent);
+            var fIEVersion = parseFloat(RegExp["$1"]);
+            if (fIEVersion == 6.0 || fIEVersion == 7.0) {
+                document.getElementById('dIEVersion').style.display = 'block';
+            }
+        }
+
+        function filterField(obj, e) {
+            var _value = obj.value;
+            var _key = (e == null) ? e.which : e.keyCode;
+            if (_key == 0x0d && _value) {
+                document.frmLogin.butLogin.click();
+            }
+        }
+    </script>
+</head>
+<body onload="checkIEVersion();">
+<div id="dIEVersion" style="display:none">
+    建议使用Internet Explorer 8 以提升浏览速度拥有更佳的使用体验。<br>
+    <a target="_blank" href="http://windows.microsoft.com/zh-CN/internet-explorer/downloads/ie-8/">
+        &lt;点选下载&gt;
+    </a>
+</div>
+<div id="topcontent">
+    <div id="select_container">
+        <ul>
+            <li onmouseover="this.className=&quot;hover&quot;" onmouseout="this.className=&quot;&quot;">
+                <span><a href="#" onclick="return false;">简体
+                </a>▼</span>
+                <ul class="menu_in">
+                    <li><a href="index.jsp?txtDevice=DESKTOP&amp;language=zh_TW">
+                        繁體
+                    </a></li>
+                </ul>
+            </li><li>
+        </li></ul>
+        <span id="lanuage">Language</span>
+    </div>
+</div>
+<div id="main">
+    <div id="login">
+        <div id="login_contentRight">
+            <form action="/PortalBIZ/EPCB2001009.jsp" name="frmLogin" method="POST" onsubmit="return chkForm();">
+                <input type="hidden" name="txtDevice" value="DESKTOP">
+                <input class="Idfocus" name="txtAccount" type="text" maxlength="14" onblur="if(this.value!='') this.className='Idnofocus'; else if(this.value=='') this.className='Id';" onfocus="this.className='Idfocus';" onkeyup="filterField(this,event);">
+                <input class="Pw" name="txtPassword" type="password" onblur="if(this.value!='') this.className='Pwnofocus'; else if(this.value=='') this.className='Pw';" onfocus="this.className='Pwfocus';" onkeyup="filterField(this,event);">
+                <input class="Pc" name="txtCheckCode" type="text" maxlength="4" onblur="if(this.value!='') this.className='Pcnofocus'; else if(this.value=='') this.className='Pc';" onfocus="this.className='Pcfocus';" onkeyup="filterField(this,event);">
+                <img border="0" src="/PortalBIZ/rnd.jpg" style="vertical-align:bottom;">
+                <input name="butLogin" type="button" class="Login" onclick="if(chkForm()) document.frmLogin.submit();" alt="log me in!">
+            </form>
+        </div>
+        <!-- end of login_contentRight-->
+        <div id="login_contentleft">
+            <a class="download" href="http://help.bolyfun.com/FRService/CA/root.cer"><span class="word">证书下载</span></a>
+            <a class="help" href="#" onclick="window.open('http://help.bolyfun.com/FRService/FR900008.do','CAGuide','height=768,width=1010,top=0,left=0,toolbar=no,menubar=no,scrollbars=yes,resizable=no,location=no,status=no'); return false;"><span class="word">安装教学</span></a>
+        </div>
+        <!-- end of login_contentleft-->
+            <span id="sErrorMsg">
+                
+            </span>
+    </div>
+    <!-- end of login-->
+    <div id="mobileLink"><a href="/PortalBIZ/index.jsp?txtDevice=MOBILE"><span class="mobileL"><br></span>进入手机版<span class="mobileR"><br></span></a></div>
+</div>
+<!-- end of main-->
+<script type="text/javascript">
+    //focus在第一個input
+    $("input[type='text']:first", document.forms[0]).focus();
+
+    
+    eraseCookie("cookietest");
+    createCookie("cookietest", "on", 1);
+    if (null == readCookie("cookietest")) {
+        document.getElementById("dCookiecontent").innerHTML = "<span class=\"sCookie\"><img src=\"/PortalBIZ/images/stop.png\">请打开Cookie功能!!</span>";
+        document.getElementById("dCookiecontent").style.display = "";
+    }
+    eraseCookie("cookietest");
+    cleanCookie();
+</script>
+
+
+</body></html>

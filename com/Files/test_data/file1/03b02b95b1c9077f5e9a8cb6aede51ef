@@ -1,0 +1,448 @@
+<!DOCTYPE html><html><head>
+        <meta charset="UTF-8">
+        <title>QQ收藏</title>
+        <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1,minimum-scale=1, maximum-scale=1, user-scalable=no">
+        <meta itemprop="name" content="微云分享">
+        <meta itemprop="description" content="分享了一篇文章">
+	    <meta itemprop="image" content="https://img.weiyun.com/vipstyle/nr/box/img/logo/96x96.png">
+        <script>var IS_TEST_ENV = false; window.APPID = 30111;window.g_serv_taken = 208;window.g_start_time = +new Date();document.domain='weiyun.com';</script>
+        <link id="wy_base_css" data-name="text" rel="stylesheet" href="//img.weiyun.com/c/=/vipstyle/nr/box/css-ver/base.r150609.css,/vipstyle/nr/box/css-ver/p-web.r161017.css,/vipstyle/nr/box/css-ver/base-delay.r161202.css,/vipstyle/nr/box/css-ver/p-web-delay.r150915.css,/vipstyle/nr/box/css-ver/share.r151105.css?max_age=31104000">
+		<link id="wy_new_css" data-name="text" rel="stylesheet" href="//qzonestyle.gtimg.cn/c/=/qz-proj/wy-web/share.css?max_age=31104000">
+        <script>window.g_css_time = +new Date();document.domain='weiyun.com';</script>
+        <link rel="shortcut icon" href="https://img.weiyun.com/vipstyle/nr/box/img/favicon.ico?max_age=31536000" type="image/x-icon">    <script>
+    //js报错监控
+    (function() {
+        var collector = [],
+            collectorTime = 2000,//2000ms时间间隔内的请求合并上报
+            collectorTimer;
+
+        window.reportHaboGlobal = function (code, appid, command) {
+            var ua = navigator.userAgent || '';
+            var weiyunArray = /Weiyun\/(\S+)/.exec(ua);
+            var uinArray = /uin=o0*(\S+);/.exec(document.cookie || '');
+
+            var qua = weiyunArray && weiyunArray[1];
+            var uin = uinArray && uinArray[1];
+
+            var pageType;
+            switch (window && window.location && window.location.hostname) {
+                case 'h5.weiyun.com':
+                    pageType = 'h5';
+                    break;
+                case 'share.weiyun.com':
+                    pageType = 'share';
+                    break;
+                case 'www.weiyun.com':
+                    pageType = 'pcweb';
+                    break;
+                default:
+                    pageType = 'pcweb';
+            }
+
+            command = pageType + '/web';
+
+            var data = {
+                releaseversion: qua, // 微云版本号
+                touin: uin,
+                tmcost: 0,
+                frequency: 1,
+                key: 'appid,commandid,resultcode' //标记分组上报的key顺序
+            };
+
+            collector.push([appid || '1000417', command, code]);
+
+            var url = window.location &&
+            window.location.protocol === 'https:' ? 'https://h5.qzone.qq.com/wspeed.qq.com/w.cgi' : 'http://wspeed.qq.com/w.cgi';
+
+            //重置上报timer
+            collectorTimer && clearTimeout(collectorTimer);
+            collectorTimer = setTimeout(report, collectorTime);
+
+            function report() {
+                var params = [];
+                for (var key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        params.push(key + '=' + encodeURIComponent(data[key]));
+                    }
+                }
+                //遍历合并上报的数组
+                if (collector && collector.length) {
+                    var i = 0;
+                    while (collector.length) {
+                        //太长就下次上报
+                        if (params.join('&').length > 1000) {
+                            break;
+                        }
+                        var c = collector.shift();
+                        //appid,commandid,resultcode
+                        params.push([i + 1, 1].join('_') + '=' + c[0]);
+                        params.push([i + 1, 2].join('_') + '=' + c[1]);
+                        params.push([i + 1, 3].join('_') + '=' + c[2]);
+                        i++;
+                    }
+                }
+                params.push('rv=' + Math.random());
+                params = params.join('&');
+                url = url + '?' + params;
+                new Image().src = url;
+
+                if (i > 0) {
+                    collector.length && setTimeout(report, 1000);//队列太长未上报完的1秒后再上报
+                }
+            }
+        };
+    })();
+</script>            <script>
+    (function() {
+        var reportNum = 0;
+        var beforeLoad = 1;
+
+        window.addEventListener('error', function(event) {
+            if(reportNum == 0) {
+                reportNum = 1;
+                var pathName = location && location.pathname;
+                var pageType;
+                switch (location && location.hostname) {
+                    case 'h5.weiyun.com':
+                        pageType = 'h5';
+                        break;
+                    case 'share.weiyun.com':
+                        pageType = 'share';
+                        break;
+                    case 'www.weiyun.com':
+                        pageType = 'pcweb';
+                        break;
+                    default:
+                        pageType = 'pcweb';
+                }
+                var command = pageType + '/mobile';
+
+                // 堆栈信息
+                var errorObj = event.error || {};
+                var stack = errorObj.stack || '';
+
+                var xhr = new XMLHttpRequest();
+                xhr.withCredentials = true;
+                var url = '//www.weiyun.com/log/post/error/' + command;
+                xhr.open('post', url, true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                var errMsg = event.message + ";url:" + location.href + "\n stack: " + stack + ";";
+                errMsg += "scriptURI:" + event.filename + ";";
+                errMsg += "lineNumber:" + event.lineno + ";";
+                errMsg += "columnNumber:" + event.colno + ";";
+                errMsg += "beforeLoad:" + beforeLoad + ";";
+                xhr.send(errMsg);
+            }
+        });
+        window.listenError = true;
+        window.addEventListener('load', function() {
+            beforeLoad = 0;
+            // reportNum为0（即成功）才上报，失败上报会在上报错误时在Node端过滤后上报
+            !reportNum && window.reportHaboGlobal && reportHaboGlobal(reportNum);
+        });
+    }());
+</script>    <link charset="utf-8" rel="stylesheet" href="https://img.weiyun.com/c/=/vipstyle/nr/box/css-ver/dimensional-code.r140603.css,/vipstyle/nr/box/css-ver/link.r140811.css?max_age=57600"></head>
+    <body class="web-app">
+    <div class="layout module-disk module-share-new">
+        <div id="top">                <div class="lay-header clear" id="outlink_header">
+        <a class="logo" href="javascript:void(0)" target="_blank"></a>
+        <p id="outlink_title" class="title"></p>
+        <a id="outlink_login" class="login" href="javascript:void(0)" style="">登录</a>
+    </div>                                <div class="lay-main-toolbar" id="outlink_toolbar">
+        <!-- 分享个人信息 -->
+        <div class="user-share-info">
+	        <a href="//www.weiyun.com/vip/weiyun_vip.html?from=share" target="_blank">
+	            <span class="avatar share-vip" data-vip="0">
+	                <img src="//q.qlogo.cn/openurl/2715224047/2715224047/100?rf=groupphoto&amp;c=Z3JvdXBwaG90b0AyNzE1MjI0MDQ3">	            </span>
+		    </a>
+            <div class="info">分享了一篇文章</div>
+        </div>
+        <div class="toolbar-btn clear photo-toolbar">
+            <div class="btn-message">                                <a data-action="qrcode" class="g-btn g-btn-gray" id="ui-btn-qr" href="javascript:void(0);">
+                    <span class="btn-inner download-by-qr">
+                        <i class="ico ico-qr"></i>
+                        <span class="text">二维码</span>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </div>                                            </div>        <div class="share-file-list files-view files-view-rich">
+        <div class="header">
+            <h1 class="headline"></h1>
+            <div class="time" data-id="outlink_share_time">2017-03-28 19:24:56</div>
+        </div>
+        <div class="content ui-selected">http://a.sm.cn/v2/details/info?q=%E5%88%B7q%E5%B8%81&amp;ch=smweb&amp;ua=android&amp;vid=13&amp;pkg=com.shuazhuanaile.cn&amp;uc_param_str=dn</div>
+    </div>
+    
+        </div>
+    <script type="text/javascript">
+        setTimeout(function() {
+            window.g_dom_ready_time = +new Date();
+        }, 0);
+    </script><script>/*! Sea.js 2.1.1 | seajs.org/LICENSE.md
+*/(function(t,u){function v(b){return function(c){return Object.prototype.toString.call(c)==="[object "+b+"]"}}function Q(){return w++}function I(b,c){var a;a=b.charAt(0);if(R.test(b))a=b;else if("."===a){a=(c?c.match(E)[0]:h.cwd)+b;for(a=a.replace(S,"/");a.match(J);)a=a.replace(J,"/")}else a="/"===a?(a=h.cwd.match(T))?a[0]+b.substring(1):b:h.base+b;return a}function K(b,c){if(!b)return"";var a=b,d=h.alias,a=b=d&&F(d[a])?d[a]:a,d=h.paths,g;if(d&&(g=a.match(U))&&F(d[g[1]]))a=d[g[1]]+g[2];g=a;var e=h.vars;
+e&&-1<g.indexOf("{")&&(g=g.replace(V,function(a,b){return F(e[b])?e[b]:a}));a=g.length-1;d=g.charAt(a);b="#"===d?g.substring(0,a):".js"===g.substring(a-2)||0<g.indexOf("?")||".css"===g.substring(a-3)||"/"===d?g:g+".js";g=I(b,c);var a=h.map,l=g;if(a)for(var d=0,f=a.length;d<f&&!(l=a[d],l=x(l)?l(g)||g:g.replace(l[0],l[1]),l!==g);d++);return l}function L(b,c){var a=b.sheet,d;if(M)a&&(d=!0);else if(a)try{a.cssRules&&(d=!0)}catch(g){"NS_ERROR_DOM_SECURITY_ERR"===g.name&&(d=!0)}setTimeout(function(){d?
+c():L(b,c)},20)}function W(){if(y)return y;if(z&&"interactive"===z.readyState)return z;for(var b=s.getElementsByTagName("script"),c=b.length-1;0<=c;c--){var a=b[c];if("interactive"===a.readyState)return z=a}}function e(b,c){this.uri=b;this.dependencies=c||[];this.exports=null;this.status=0;this._waitings={};this._remain=0}if(!t.seajs){var f=t.seajs={version:"2.1.1"},h=f.data={},X=v("Object"),F=v("String"),A=Array.isArray||v("Array"),x=v("Function"),w=0,p=h.events={};f.on=function(b,c){(p[b]||(p[b]=
+[])).push(c);return f};f.off=function(b,c){if(!b&&!c)return p=h.events={},f;var a=p[b];if(a)if(c)for(var d=a.length-1;0<=d;d--)a[d]===c&&a.splice(d,1);else delete p[b];return f};var m=f.emit=function(b,c){var a=p[b],d;if(a)for(a=a.slice();d=a.shift();)d(c);return f},E=new RegExp('[^?#]*\\/'),S=new RegExp('\\/\\.\\/', 'g'),J=new RegExp('\\/[^/]+\\/\\.\\.\\/'),U=new RegExp('^([^/:]+)(\\/.+)$'),V=new RegExp('{([^{]+)}', 'g'),R=new RegExp('^\\/\\/.|:\\/'),T=new RegExp('^.*?\\/\\/.*?\\/'),n=document,q=location,B=q.href.match(E)[0],k=n.getElementsByTagName("script"),k=n.getElementById("seajsnode")||k[k.length-
+1],k=((k.hasAttribute?k.src:k.getAttribute("src",4))||B).match(E)[0],s=n.getElementsByTagName("head")[0]||n.documentElement,N=s.getElementsByTagName("base")[0],O=/\.css(?:\?|$)/i,Y=/^(?:loaded|complete|undefined)$/,y,z,M=536>1*navigator.userAgent.replace(/.*AppleWebKit\/(\d+)\..*/,"$1"),Z=/"(?:\\"|[^"])*"|'(?:\\'|[^'])*'|\/\*[\S\s]*?\*\/|\/(?:\\\/|[^\/\r\n])+\/(?=[^\/])|\/\/.*|\.\s*require|(?:^|[^$])\brequire\s*\(\s*(["'])(.+?)\1\s*\)/g,$=/\\\\/g,r=f.cache={},C,G={},H={},D={},j=e.STATUS={FETCHING:1,
+SAVED:2,LOADING:3,LOADED:4,EXECUTING:5,EXECUTED:6};e.prototype.resolve=function(){for(var b=this.dependencies,c=[],a=0,d=b.length;a<d;a++)c[a]=e.resolve(b[a],this.uri);return c};e.prototype.load=function(){if(!(this.status>=j.LOADING)){this.status=j.LOADING;var b=this.resolve();m("load",b);for(var c=this._remain=b.length,a,d=0;d<c;d++)a=e.get(b[d]),a.status<j.LOADED?a._waitings[this.uri]=(a._waitings[this.uri]||0)+1:this._remain--;if(0===this._remain)this.onload();else{for(var g={},d=0;d<c;d++)a=
+r[b[d]],a.status<j.FETCHING?a.fetch(g):a.status===j.SAVED&&a.load();for(var h in g)if(g.hasOwnProperty(h))g[h]()}}};e.prototype.onload=function(){this.status=j.LOADED;this.callback&&this.callback();var b=this._waitings,c,a;for(c in b)if(b.hasOwnProperty(c)&&(a=r[c],a._remain-=b[c],0===a._remain))a.onload();delete this._waitings;delete this._remain};e.prototype.fetch=function(b){function c(){var a=g.requestUri,b=g.onRequest,c=g.charset,d=O.test(a),e=n.createElement(d?"link":"script");if(c&&(c=x(c)?
+c(a):c))e.charset=c;var f=e;d&&(M||!("onload"in f))?setTimeout(function(){L(f,b)},1):f.onload=f.onerror=f.onreadystatechange=function(){Y.test(f.readyState)&&(f.onload=f.onerror=f.onreadystatechange=null,!d&&!h.debug&&s.removeChild(f),f=null,b())};d?(e.rel="stylesheet",e.href=a):(e.async=!0,e.src=a);y=e;N?s.insertBefore(e,N):s.appendChild(e);y=null}function a(){delete G[f];H[f]=!0;C&&(e.save(d,C),C=null);var a,b=D[f];for(delete D[f];a=b.shift();)a.load()}var d=this.uri;this.status=j.FETCHING;var g=
+{uri:d};m("fetch",g);var f=g.requestUri||d;!f||H[f]?this.load():G[f]?D[f].push(this):(G[f]=!0,D[f]=[this],m("request",g={uri:d,requestUri:f,onRequest:a,charset:h.charset}),g.requested||(b?b[g.requestUri]=c:c()))};e.prototype.exec=function(){function b(a){return e.get(b.resolve(a)).exec()}if(this.status>=j.EXECUTING)return this.exports;this.status=j.EXECUTING;var c=this.uri;b.resolve=function(a){return e.resolve(a,c)};b.async=function(a,g){e.use(a,g,c+"_async_"+w++);return b};var a=this.factory,a=
+x(a)?a(b,this.exports={},this):a;a===u&&(a=this.exports);null===a&&!O.test(c)&&m("error",this);delete this.factory;this.exports=a;this.status=j.EXECUTED;m("exec",this);return a};e.resolve=function(b,c){var a={id:b,refUri:c};m("resolve",a);return a.uri||K(a.id,c)};e.define=function(b,c,a){var d=arguments.length;1===d?(a=b,b=u):2===d&&(a=c,A(b)?(c=b,b=u):c=u);if(!A(c)&&x(a)){var g=[];a.toString().replace($,"").replace(Z,function(a,b,c){c&&g.push(c)});c=g}d={id:b,uri:e.resolve(b),deps:c,factory:a};if(!d.uri&&
+n.attachEvent){var f=W();f&&(d.uri=f.src)}m("define",d);d.uri?e.save(d.uri,d):C=d};e.save=function(b,c){var a=e.get(b);a.status<j.SAVED&&(a.id=c.id||b,a.dependencies=c.deps||[],a.factory=c.factory,a.status=j.SAVED)};e.get=function(b,c){return r[b]||(r[b]=new e(b,c))};e.use=function(b,c,a){var d=e.get(a,A(b)?b:[b]);d.callback=function(){for(var a=[],b=d.resolve(),e=0,f=b.length;e<f;e++)a[e]=r[b[e]].exec();c&&c.apply(t,a);delete d.callback};d.load()};e.preload=function(b){var c=h.preload,a=c.length;
+a?e.use(c,function(){c.splice(0,a);e.preload(b)},h.cwd+"_preload_"+w++):b()};f.use=function(b,c){e.preload(function(){e.use(b,c,h.cwd+"_use_"+w++)});return f};e.define.cmd={};t.define=e.define;f.Module=e;h.fetchedList=H;h.cid=Q;f.resolve=K;f.require=function(b){return(r[e.resolve(b)]||{}).exports};h.base=(k.match(/^(.+?\/)(\?\?)?(seajs\/)+/)||["",k])[1];h.dir=k;h.cwd=B;h.charset="utf-8";var B=h,P=[],q=q.search.replace(/(seajs-\w+)(&|$)/g,"$1=1$2"),q=q+(" "+n.cookie);q.replace(/(seajs-\w+)=1/g,function(b,
+c){P.push(c)});B.preload=P;f.config=function(b){for(var c in b){var a=b[c],d=h[c];if(d&&X(d))for(var e in a)d[e]=a[e];else A(d)?a=d.concat(a):"base"===c&&("/"===a.slice(-1)||(a+="/"),a=I(a)),h[c]=a}m("config",b);return f}}})(this);
+
+//seajs combo
+(function(n){function r(c,d){for(var f=c+p[0]+d.join(p[1]),b=0,e=d.length;b<e;b++)q[c+d[b]]=f}var t=n.Module,w=t.STATUS.FETCHING,h=n.data,q=h.comboHash={},p=["??",","],u=2E3,k,v=/(^https?:\/\/[^\/]+)([^\?]+)/;n.on("load",function(c){var d=c.length;if(!(2>d)){h.comboSyntax&&(p=h.comboSyntax);h.comboMaxLength&&(u=h.comboMaxLength);k=h.comboExcludes;for(var f=[],b=0;b<d;b++){var e=c[b];if(!q[e]){var a;if(a=t.get(e).status<w)a=e,a=k?k.test?k.test(a):k(a):void 0,a=!a;if(a){a=e;var l=h.comboSyntax||["??",
+    ","],g=l[0],l=l[1];a=!(g&&0<a.indexOf(g)||l&&0<a.indexOf(l))}a&&f.push(e)}}if(1<f.length){g=v.exec(f[0]);c=g[1];e=c.length+2;d=[];b=0;for(a=f.length;b<a;b++)g=v.exec(f[b]),g=g[2],e+g.length+1>u?(r(c,d),d=[],e=c.length+2):(d.push(g),e+=g.length+1);if(0!=d.length){f={};b=0;for(e=d.length;b<e;b++){a=d[b].match(/.*\.(\w+)[^\?&]?/);var m;a&&(m=a[1])&&(f[m]||(f[m]=[])).push(d[b])}for(m in f)r(c,f[m])}}}});n.on("fetch",function(c){c.requestUri=q[c.uri]||c.uri});define({})})(seajs);</script><script>(function (win, seajs) {
+    var
+        is_debug = win.IS_DEBUG = /\s*debug=on\b/.test(document.cookie) || location.search.indexOf('__debug__') > -1,
+        //res_host = win.location.protocol + '//img.weiyun.com',
+        res_host = win.IS_TEST_ENV ? win.location.protocol + '//' + win.location.hostname : win.location.protocol + '//img.weiyun.com',
+	    cdn_host = win.location.protocol + '//qzonestyle.gtimg.cn',
+        js_base = res_host + '/club/weiyun/js-dist/web',
+        publics = '/club/weiyun/js/publics',
+
+        paths = {
+            publics: res_host + publics,
+            js_base: js_base,
+            module: js_base + '/module',
+	        module_v2: js_base + '/module_v2',
+            box: res_host + '/vipstyle/nr/box',
+	        new_css: cdn_host + '/qz-proj/wy-platform'
+        },
+
+        file_list = {
+            '@lib@': 'lib.r150415.js',
+            '@common@': 'common.r160822.js',
+            '@main@': 'main.r160121.js',
+            '@disk@': 'disk.r151223.js',
+            '@recycle@': 'recycle.r0113.js',
+            '@recycle_v2@': 'recycle.r150915.js',
+            '@photo_bridge@': 'photo_bridge.r1118.js',
+            '@photo@': 'photo.r151223.js',
+            '@recent@': 'recent.r151015.js',
+            '@categories@': 'categories.r151223.js',
+            '@share@': 'share.r150609.js',
+            '@share_enter@': 'share_enter.r151225.js',
+            '@search@': 'search.r151015.js',
+            '@indep_setting@': 'indep_setting.r140722.js',
+            '@indep_login@': 'indep_login.r141016.js',
+            '@qq_login@': 'qq_login.r160222.js',
+            '@image_preview@': 'image_preview.r151013.js',
+	        '@image_preview_v2@': 'image_preview.r160810.js',
+            '@third_party_iframe@': 'third_party_iframe.r0903.js',
+            '@compress_file_iframe@': 'compress_file_iframe.r141016.js',
+            '@compress_file_preview@': 'compress_file_preview.r150407.js',
+            '@photo_tag@':'photo_tag.r150609.js',
+            '@client_download@': 'client_download.r0903.js',
+            '@doc_preview@': 'doc_preview.r140710.js',
+            '@previewer@': 'previewer.r141016.js',
+            '@full_screen_preview@': 'full_screen_preview.r150720.js',
+            '@upload@': 'upload.r1607282.js',
+            '@add_wy_appbox@': 'add_wy_appbox.r140217.js',
+            '@install_upload_plugin@': 'install_upload_plugin.r160104.js',
+            '@downloader@': 'downloader.r160119.js',
+            '@download_route@': 'download_route.r150408.js',
+            '@outlink@': 'outlink.r150603.js',
+            '@outlink_v2@': 'outlink_v2.r160222.js',
+            '@photo_guide@': 'photo_guide.r140313.js',
+            '@file_qrcode@':'file_qrcode.r150609.js',
+            '@clipboard@': 'clipboard.r140826.js',
+            '@office_preview@': 'office_preview.r160107.js',
+            '@ftn_preview@': 'ftn_preview.r151020.js',
+            '@ftn_dns_detect@': 'ftn_dns_detect.r141016.js',
+            '@note@': 'note.r160106.js',
+            '@noteview@': 'noteview.r160106.js',
+            '@station@': 'station.r151223.js',
+            '@notification@': 'notification.r160121.js',
+            '@jump_path@': 'jump_path.r151106.js',
+            '@qboss@': 'qboss.r151229.js'
+        },
+
+        css_list = {
+            '@base_css@': 'base.r150609.css',
+            '@base_delay_css@': 'base-delay.r161202.css',
+            '@to_singin_css@': 'to-signin-2.0.r140603.css',
+	        '@upbox_css@': 'upbox.r160623.css',
+	        '@appbox_upbox_css@': 'appbox-upbox.r160715.css',
+            '@weixin_css@': 'weixin-web.css',
+            '@upload_install_css@': 'plugin.r140603.css',
+            '@p_web_css@': 'p-web.r161017.css',
+            '@p_web_delay_css@': 'p-web-delay.r150915.css',
+            '@p_appbox_css@': 'p-appbox.r161017.css',
+            '@p_appbox_delay_css@': 'p-appbox-delay.r150720.css',
+            '@photo_guide_css@': 'photo-guide.css',
+            '@offline_guide_css@': 'offline-guide.css',
+            '@web_clipboard_css@': 'p-web-clipboard.r140708.css',
+            '@app_download_css@': 'app-download.r150810.css',
+            '@office_css@': 'office.r140520.css',
+            '@dimensional_code_css@': 'dimensional-code.r140603.css',
+            '@note_css@': 'note.r160114.css',
+            '@link_css@': 'link.r140811.css',
+            '@qzonelogin_css@': 'qzonelogin.css'
+        },
+
+	    new_css_list = {
+		    '@new_qzonelogin_css@': 'qzonelogin.css'
+	    },
+
+        // 微云JS模块配置
+        alias = win.WY_SEAJS_ALIAS = {
+
+            // 第三方库
+            $: is_debug ? 'publics/jquery/jquery-1.8.3' : 'publics/jquery/jquery-1.8.3.min',
+            jquery_ui: 'publics/jquery-plugins/jquery-ui-1.9.2-112901',
+            jquery_history: 'publics/jquery-plugins/jquery.history',
+            jquery_jplayer: 'publics/jquery-plugins/jquery.jplayer',
+            zclip: 'publics/jquery-plugins/jquery.zclip.1.1.1',
+            wy_zclip: 'publics/plugins/ZeroClipboard/ZeroClipboard-1.1.7.js?v140423',
+
+            // 微云基础库（业务无关）
+            lib: 'js_base/lib/' + file_list['@lib@'],
+            // 微云基础库（业务相关）
+            common: 'js_base/common/' + file_list['@common@'],
+
+            //一些广告及客户端下载地址配置
+            ad_config: is_debug ? 'club/qqdisk/web/data/ad_config.js' : 'qzone/qzactStatics/configSystem/data/65/config1.js',
+
+            // 微云业务模块(按需加载；由JSC打包生成)
+            main: 'module/main/' + file_list['@main@'],
+            disk: 'module/disk/' + file_list['@disk@'], // 网盘
+            recycle: 'module/recycle/' + file_list['@recycle_v2@'], // 回收站v2
+            photo: 'module/photo_bridge/' + file_list['@photo_bridge@'], // 相册
+            album: 'module/photo/' + file_list['@photo@'], // 真·相册
+            recent: 'module/recent/' + file_list['@recent@'], //最近更新文件
+            doc: 'module/categories/' + file_list['@categories@'], //文档
+            video: 'module/categories/' + file_list['@categories@'], //视频
+            audio: 'module/categories/' + file_list['@categories@'], //音频
+            share: 'module/share/' + file_list['@share@'], //外链管理
+            share_enter: 'module/share_enter/' + file_list['@share_enter@'], //分享入口
+            search: 'module/search/' + file_list['@search@'], //搜索
+            clipboard: 'module/clipboard/' + file_list['@clipboard@'], //剪贴板
+            indep_setting: 'module/indep_setting/' + file_list['@indep_setting@'],  // 独立密码设置框
+            indep_login: 'module/indep_login/' + file_list['@indep_login@'], // 独立密码验证框
+            qq_login: 'module/qq_login/' + file_list['@qq_login@'],  // QQ登录框
+            qd_migration: 'module/qd_migration/' + file_list['@qd_migration@'],  // QQ网盘迁移用户提示
+            net_fav_migration: 'module/net_fav_migration/' + file_list['@net_fav_migration@'], // 网络收藏夹迁移用户提示
+            image_preview: 'module/image_preview/' + file_list['@image_preview@'], // 图片预览
+	        image_preview_v2: 'module_v2/image_preview/' + file_list['@image_preview_v2@'], // 图片预览
+            third_party_iframe: 'module/third_party_iframe/' + file_list['@third_party_iframe@'], // 第三方页面iframe
+            compress_file_iframe: 'module/compress_file_iframe/' + file_list['@compress_file_iframe@'], // 压缩包预览
+            compress_file_preview: 'module/compress_file_preview/' + file_list['@compress_file_preview@'], // 压缩包预览（运行在iframe中）
+            photo_tag : 'module/photo_tag/' + file_list['@photo_tag@'],
+            client_download: 'module/client_download/' + file_list['@client_download@'], // 下载各种客户端（appbox）
+            doc_preview: 'module/doc_preview/' + file_list['@doc_preview@'], // 文档预览
+            previewer : 'module/previewer/' + file_list['@previewer@'], // 文档预览公共模块
+            office_preview: 'module/office_preview/' + file_list['@office_preview@'],//office预览
+            ftn_preview: 'module/ftn_preview/' + file_list['@ftn_preview@'],//ftn文件预览
+            full_screen_preview: 'module/full_screen_preview/' + file_list['@full_screen_preview@'], //全屏预览
+            upload: 'module/upload/' + file_list['@upload@'], //新增的上传模块
+            add_wy_appbox: 'module/add_wy_appbox/' + file_list['@add_wy_appbox@'], //appbox添加微云到主面板
+            install_upload_plugin: 'module/install_upload_plugin/' + file_list['@install_upload_plugin@'], //新增上传控件安装模块
+            downloader: 'module/downloader/' + file_list['@downloader@'], // 下载模块
+            download_route: 'module/download_route/' + file_list['@download_route@'],
+            outlink: 'module/outlink/' + file_list['@outlink@'],
+            outlink_v2: 'module/outlink_v2/' + file_list['@outlink_v2@'],
+            photo_guide: 'module/photo_guide/' + file_list['@photo_guide@'], //旧相册引导
+            file_qrcode: 'module/file_qrcode/' + file_list['@file_qrcode@'], //二维码
+            note: 'module/note/' + file_list['@note@'], //笔记
+            noteview: 'module/noteview/' + file_list['@noteview@'], //笔记编辑器
+            station: 'module/station/' + file_list['@station@'], //文件中转站
+            special_log: res_host + '/club/weiyun/js/common/special_log.js',
+            XS: res_host + '/club/weiyun/js/common/XS.js',
+            ftn_dns_detect: 'module/ftn_dns_detect/' + file_list['@ftn_dns_detect@'], //ftn域名截持检测
+            notification: 'module/notification/' + file_list['@notification@'], //通知中心
+            jump_path: 'module/jump_path/' + file_list['@jump_path@'], //跳转到具体路径
+            qboss: 'module/qboss/' + file_list['@qboss@'],  //接入qboss广告
+
+            // CSS  css_url('/css/disk', true, ['v130807', 'v130828']),
+            base_css: 'box/css-ver/' + css_list['@base_css@'],
+            base_delay_css: 'box/css-ver/' + css_list['@base_delay_css@'],
+            to_singin_css: 'box/css-ver/' + css_list['@to_singin_css@'],
+            upbox_css: 'box/css-ver/' + css_list['@upbox_css@'],
+            appbox_upbox_css: 'box/css-ver/' + css_list['@appbox_upbox_css@'],
+            weixin_css: 'box/web/css/' + css_list['@weixin_css@'],
+            upload_install_css: 'box/css-ver/' + css_list['@upload_install_css@'],
+            p_web_appbox_css: 'box/css-ver/' + css_list['@p_web_css@'],
+            p_web_appbox_delay_css: 'box/css-ver/' + css_list['@p_web_delay_css@'],
+            photo_guide_css: 'box/css/' + css_list['@photo_guide_css@'],
+            offline_guide_css: 'box/css/' + css_list['@offline_guide_css@'],
+            clipboard_css: 'box/css-ver/' + css_list['@web_clipboard_css@'],
+            app_download_css: 'box/css-ver/' + css_list['@app_download_css@'],
+            office_css: 'box/css-ver/' + css_list['@office_css@'],
+            dimensional_code_css: 'box/css-ver/' + css_list['@dimensional_code_css@'],
+            note_css: 'box/css-ver/' + css_list['@note_css@'],
+            link_css: 'box/css-ver/' + css_list['@link_css@'],
+            qzonelogin_css: 'box/css-ver/' + css_list['@qzonelogin_css@'],
+	        new_qzonelogin_css: 'new_css/' + new_css_list['@new_qzonelogin_css@']
+        },
+
+        re_cdn_request_uri = /\w+\.r\d+\.(?:js|css)/,// 匹配 xxx.r201309131924.js
+
+        undefined;
+
+
+    seajs.config(win.WY_SEAJS_CONFIG = {
+        charset: 'utf-8',
+        debug: 0,
+        base: res_host,
+        paths: paths,
+        alias: alias,
+        comboSyntax: ['/c/=', ','] // for seajs-combo
+    });
+
+
+    seajs.on('fetch', function (req) {
+        var uri = req.requestUri || req.uri;
+        if (uri) {
+            if (uri.indexOf(publics) !== -1 || re_cdn_request_uri.test(uri)) {
+                uri += (req.uri.indexOf('?') === -1 ? '?' : '&') + 'max_age=57600';
+            }
+            req.requestUri = uri;
+        }
+    });
+
+    is_debug || (win.onerror = function (msg, file, line) {
+        win.g_err = {
+            msg: msg || '',
+            file: file || '',
+            line: line || ''
+        };
+        return true;
+    });
+
+})(window, seajs);</script>    <script type="text/javascript">
+        seajs.use([ '$', 'lib', 'common', 'outlink_v2'], function ($, lib, common, outlink) {
+            window.g_js_time = +new Date();
+            var outlink_mod = outlink.get('./outlink');
+            outlink_mod.render({"pdir_key":"77656979756e5f636f6c6c6563746f72","pwd":"","down_cnt":0,"share_uin":2715224047,"share_nick_name":"","store_appid":0,"view_cnt":6,"short_url":"http://url.cn/46nvrY","store_cnt":0,"thumb_url":"","res_type":0,"create_time":1490959466,"share_name":"","html_content":"http://a.sm.cn/v2/details/info?q=%E5%88%B7q%E5%B8%81&amp;ch=smweb&amp;ua=android&amp;vid=13&amp;pkg=com.shuazhuanaile.cn&amp;uc_param_str=dn","group_code":0,"share_key":"438c24f5a2df37443604b97abd3b1656","share_flag":5,"collection":{"cid":"1-1-22711cca-4010-4587-bc73-11d177ebf679","summary":{"rich_media_summary":{"content_type":1,"brief":"http://a.sm.cn/v2/details/info?q=%E5%88%B7q%E5%B8%81&ch=smweb&ua=android&vid=13&pkg=com.shuazhuanaile.cn&uc_param_str=dn"}},"modify_time":1490700296911,"author":{"group_id":0,"type":1,"num_id":3067304286,"str_id":"小可耐😘","group_name":""},"src_app_ver":"6.7.3095","type":8,"status":1,"bid":1,"src_app_id":30244,"collect_time":1490700296911,"create_time":1490699840000,"category":1,"sequence":1490700296860},"remain_time":523035,"resource_type":0,"share_head_image_url":"http://q.qlogo.cn/openurl/2715224047/2715224047/100?rf=groupphoto&c=Z3JvdXBwaG90b0AyNzE1MjI0MDQ3","share_type":5,"weiyun_vip_flag":0,"temporary":false,"group":false,"isQQ":false});
+        });
+    </script>
+    <script type="text/javascript" src="//ui.ptlogin2.qq.com/js/ptloginout.js"></script><div data-id="url_parser" style="display:none;"></div><iframe data-id="cdr_proxy" src="https://user.weiyun.com/cdr_proxy.html" style="display:none;"></iframe>
+    <script type="text/javascript" src="//img.weiyun.com/club/weiyun/js/publics/tcss/tcss.ping.js"></script>
+    <script type="text/javascript" src="//qzonestyle.gtimg.cn/qzone/hybrid/common/security/aq.js" charset="UTF-8"></script>
+
+        <script>
+        var pvClickSend = function (tag) {
+            if (typeof(pgvSendClick) == "function") {
+                pgvSendClick({
+                    hottag: tag,
+                    virtualDomain: 'share.weiyun.com'
+                });
+            }
+        };
+        (function() {
+            if (typeof pgvMain == 'function') {
+                pgvMain("", {
+                    tagParamName: 'WYTAG',
+                    virtualURL: '/web/share.html',
+                    virtualDomain: "share.weiyun.com"
+                });
+            }
+        })();
+    </script>
+    
+    </body></html>

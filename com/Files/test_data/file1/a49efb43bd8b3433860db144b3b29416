@@ -1,0 +1,178 @@
+<!DOCTYPE html><html><head>
+	<meta charset="utf-8">
+	<title>中国铁塔统一业务平台</title>
+	<link href="/common/css/style/index20160309.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="/common/js/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="/common/js/jquery.SuperSlide.2.1.js"></script>
+	<script type="text/javascript" src="/common/js/MogFocus.js"></script>
+	<script type="text/javascript" src="/common/js/index.js"></script>
+	<script type="text/javascript">
+		
+		$(document).ready(function(){
+			var APP_PATH = '';
+			var wrong_num = $("#wrong_id").val();
+			var wrong_code = $("#wrong_code").val();
+			
+			if(wrong_code=="fail"){
+				$("#in_wrong").css('display','none');
+				$("#write_id").text("验证码错误");
+				$("#in_write").css('display','block');
+			}
+			
+			if(wrong_num>2){
+				$("#li_id").show();
+				$("#img_id").arrt("src",APP_PATH+'/login/captchaImage');
+			}
+			
+		});
+		
+	
+		if (window != top){
+			top.location.href = location.href;
+		}
+		document.onkeydown=function(event){
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+             if(e && e.keyCode==13){ // enter 键
+                 doSubmmit();
+            }
+        };
+        // 提交方法
+		function doSubmmit(){
+		
+			var name = $.trim($("#j_username").val());
+			var pwd = $.trim($("#j_password").val());
+			var code = $.trim($("#code").val());
+			var wrong_num = $("#wrong_id").val();
+			
+			if($.trim(name)==""||$.trim(pwd)==""){
+				$("#in_write").css('display','block');
+				$("#in_wrong").css('display','none');
+				return false;
+			}
+			if(null!=wrong_num&&""!=wrong_num){
+				if(parseInt(wrong_num)>2){
+					if(null==code||""==code){
+						$("#in_wrong").css('display','none');
+						$("#write_id").text("请填写验证码");
+						$("#in_write").css('display','block');
+						return false;
+					}
+				}
+			}
+			
+			document.forms[0].submit();
+		}
+		
+		function changeCode(obj){
+			var APP_PATH = '';
+			$(obj).attr('src', APP_PATH+'/login/captchaImage?' + Math.floor(Math.random()*100) )
+		}
+	</script>
+	
+	<script type="text/javascript" language="javascript">
+ 
+    //加入收藏
+ 
+        function AddFavorite(sURL, sTitle) {
+ 
+            sURL = encodeURI(sURL); 
+        try{   
+ 
+            window.external.addFavorite(sURL, sTitle);   
+ 
+        }catch(e) {   
+ 
+            try{   
+ 
+                window.sidebar.addPanel(sTitle, sURL, "");   
+ 
+            }catch (e) {   
+ 
+                alert("加入收藏失败，请使用Ctrl+D进行添加,或手动在浏览器里进行设置.");
+ 
+            }   
+ 
+        }
+ 
+    }
+ 
+    //设为首页
+ 
+    function SetHome(url){
+ 
+        if (document.all) {
+ 
+            document.body.style.behavior='url(#default#homepage)';
+ 
+               document.body.setHomePage(url);
+ 
+        }else{
+ 
+            alert("您好,您的浏览器不支持自动设置页面为首页功能,请您手动在浏览器里设置该页面为首页!");
+ 
+        }
+ 
+    }
+ 
+</script>
+</head>
+
+<body>
+
+<div id="esc-login-head">
+	<div class="esc-head">
+    	<div class="esc-login-logo"><img src="/common/images/log-head.png" alt=""></div>
+        <h1>客服电话：010-88192636
+        <span style="margin-left: 20px;"> 
+<!--             <a onclick="SetHome(window.location)" href="javascript:void(0)">设为首页</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+             <a onclick="AddFavorite(window.location,document.title)" href="javascript:void(0)">加入收藏</a></span></h1>
+        <form action="/security" method="post">
+	        <div class="esc-login">
+	        	<span></span>
+	        	<h2>欢迎登陆</h2>
+	            <ul>
+	            	<li id="in_wrong" style=""><h3 class="tis">您的账号名或密码错误，请重新输入</h3></li>
+	            	<li id="in_write" style="display: none;"><h3 class="tis" id="write_id">请输入用户名或密码</h3></li>
+	            	<li><input type="text" name="j_username" id="j_username" class="esc-name" placeholder="用户名/手机/邮箱"></li>
+	                <li><input type="password" name="j_password" id="j_password" class="esc-pass" placeholder="登录密码"></li>
+	                <li id="li_id" style="display:none">
+	                	<input type="text" id="code" name="code" class="esc-codes" placeholder="验证码" style="width:59px;">
+	                	<img id="img_id" src="/login/captchaImage" width="111" height="40" alt="" onclick="changeCode(this);">
+	                </li>
+	                <li><a href="javascript:void();"><img src="/common/images/log-an.png" width="237" height="41" onclick="doSubmmit();" alt=""></a></li>
+	            </ul>
+	        </div>
+	        <input type="hidden" id="wrong_id" name="wrong_id" value="1">
+        </form>
+    </div>
+</div>
+ <input type="hidden" id="wrong_code" name="wrong_code" value="">
+
+<div id="warpper">
+	<div id="focus" style="width: 100%; top: 249px; height: 0px; display: block; ">
+		<div class="focusWarp" style="width: 100%; "><a href="#" class="prev" style="margin-left: 0px; opacity: 0; "></a>
+			<ul class="imgList" style="width: 0px; ">
+				<li style="background-image: url(http://iservice.chinatowercom.cn/common/images/ad01.jpg); position: absolute; width: 0px; "></li>
+				<li style="background-image: url(http://iservice.chinatowercom.cn/common/images/ad02.jpg); position: absolute; display: none; width: 0px; "></li>
+				<li style="background-image: url(http://iservice.chinatowercom.cn/common/images/ad03.jpg); position: absolute; display: none; width: 0px; "></li>
+			</ul>
+            <!--
+		  	<ul class="imgList_two">
+				<li><a href="#" target="_blank"></a></li>
+				<li><a href="#" target="_blank"></a></li>
+				<li><a href="#" target="_blank"></a></li>
+				<li><a href="#" target="_blank"></a></li>
+		  	</ul>
+            -->
+	  <a href="#" class="next" style="margin-right: 0px; opacity: 0; "></a></div>
+	<ul class="imgBtn" style="right: 50%; margin-right: -390px; display: none; "><li class="hover"></li><li></li><li></li></ul></div>
+</div>
+
+<div id="esc-log-bott">
+	Copyright ©2016 中国铁塔股份有限公司 版权所有
+</div>
+
+
+
+
+</body></html>

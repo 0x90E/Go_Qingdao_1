@@ -1,0 +1,1050 @@
+<!DOCTYPE html><html><head>
+  <meta charset="UTF-8">
+  <title>团干部直接联系青年</title>
+  <link rel="stylesheet" type="text/css" href="/resources/youth/css/reset.css">
+  <link rel="stylesheet" type="text/css" href="/resources/youth/css/index.css">
+  <link rel="stylesheet" type="text/css" href="/resources/youth/css/lunbo.css">
+  <link rel="stylesheet" type="text/css" href="/resources/youth/css/ad.css">
+  <script type="text/javascript" src="http://s.learning.youth.cn/resources/zuji/js/jquery-1.11.2.js"></script>
+
+
+  <style>
+    .caroufredsel_wrapper{
+      width: 100% !important;
+      height: 206px !important;
+    }
+    .arrow_1{
+      transition:transform 0.3s;
+      -webkit-transition:transform 0.3s;
+    }
+    .hover{
+      transform:rotate(-180deg);
+      -webkit-transform:rotate(-180deg);
+    }
+    .show{
+      display: block !important;
+    }
+
+  </style>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      $("#index").addClass("active");
+      // js效果
+
+      $(document).ready(function(){
+        // 变色
+        var color="#def1f8"
+        $(".uls li:even").css("background-color",color);  //改变偶数行背景色
+        $(".you_uls li:even").css("background-color",color);
+        $(".you_uls li:odd").css("background-color","#fff");
+
+
+        //切换
+        var onOff = true;
+//        $('.paiming').click(function(){
+//          if(onOff){
+//            $('.left_con_list').hide();
+//            $('.left_con1').show();
+//            document.getElementById("paimingContext").innerHTML='返回';
+////            this.value="返回";
+//            onOff = false;
+//          }else{
+//            $('.left_con_list').show();
+//            $('.left_con1').hide();
+//            document.getElementById("paimingContext").innerHTML='排名详情';
+//            onOff = true;
+//          }
+//
+//        })
+        $('.honor').click(function(){
+          window.location.href="/youth/front/scores.do?type=honor";
+        })
+        $('.jiayou').click(function(){
+          window.location.href="/youth/front/scores.do?type=jiayou";
+        })
+      })
+    });
+    function check(){
+      var name=$("#name").val();
+      var mobile=$("#mobile").val();
+      if(name==""){
+        alert("团干部姓名不能为空");
+        return false;
+      }else if(mobile==""){
+        alert("团干部手机不能为空");
+        return false;
+      }else{
+        $.ajax({
+          type: "post",
+          url: "/youth/json/check.do?t=" + new Date().getTime(),
+          data: $("#formAdd").serialize(),
+          success: function (datalogs) {
+            var json = $.parseJSON(datalogs);
+            if (json.success) {
+              $("#formAdd").submit();
+            } else {
+              alert("查不到对应团干部，请检查您的输入信息！");
+            }
+          },
+          error: function (message) {
+          }
+        })
+      }
+    }
+    function checkYouth(){
+      var name=$("#name1").val();
+      var mobile=$("#mobile1").val();
+      var phone=$("#phone").val();
+      if(name==""){
+        alert("团干部姓名不能为空");
+        return false;
+      }else if(mobile==""){
+        alert("团干部手机不能为空");
+        return false;
+      }else if(phone==""){
+        alert("我的手机不能为空");
+        return false;
+      }else{
+        $.ajax({
+          type: "post",
+          url: "/youth/json/checkYouth.do?t=" + new Date().getTime(),
+          data: $("#youth").serialize(),
+          success: function (datalogs) {
+            var json = $.parseJSON(datalogs);
+            if (json.success) {
+              $("#youth").submit();
+            } else {
+              alert("查不到对应团干部，请检查您的输入信息！");
+            }
+          },
+          error: function (message) {
+          }
+        })
+      }
+    }
+  </script>
+
+
+<script data-require-id="echarts/chart/map" src="http://s.learning.youth.cn/resources/front/echarts/dist/chart/map.js" async=""></script></head>
+<body>
+<div class="warp">
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+  .warp .head .head_logo div .third_party_logins{
+    width: 154px;
+    height: 34px;
+    margin: 0;
+  }
+  .warp .head .head_logo div .third_party_logins a{
+    margin-left:16px;
+  }
+</style>
+<script>
+  Date.prototype.Format = function (fmt) { //author: meizz
+    var o = {
+      "M+": this.getMonth() + 1, //月份
+      "d+": this.getDate(), //日
+      "h+": this.getHours(), //小时
+      "m+": this.getMinutes(), //分
+      "s+": this.getSeconds(), //秒
+      "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+      "S": this.getMilliseconds() //毫秒
+    };
+    if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+      if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    return fmt;
+  }
+</script>
+<div class="head">
+  <div class="head_top clearfix">
+    <span class="l">欢迎来到团干部直接联系青年！</span>
+      <span class="r" id="time">2017-04-02 04:56:38 星期日</span>
+  </div>
+  <div class="head_logo_w">
+    <div class="head_logo clearfix">
+      <h1 class="l">
+        
+        
+        <img src="/resources/youth/img/lg_12.png">
+      </h1>
+      <div class="con_r r">
+        
+        
+          
+            <form class="l" id="index-page-login-form" method="post" action="/j_spring_security_check" target="_self">
+              <input type="text" placeholder="账号" class="int" name="j_username">
+              <input type="password" name="j_password" placeholder="密码" class="int">
+              <input type="hidden" name="type" value="2">
+              
+              <input type="submit" value="登录" class="btn">
+            </form>
+          
+          
+            
+          
+        
+        
+          <div class="third_party_logins l">
+            <a href="https://api.weibo.com/oauth2/authorize?client_id=1937151564&amp;redirect_uri=http://learning.youth.cn/otherLogin/weiboLogin.do&amp;response_type=code" target="_blank" class="r" title="微博登录"><img src="/resources/front/styles/images/weibo.png" alt=""></a>
+              <a href="https://open.weixin.qq.com/connect/qrconnect?appid=wx1f292b018416d68d&amp;redirect_uri=http://learning.youth.cn/otherLogin/weixinLogin.do&amp;response_type=code&amp;scope=snsapi_login&amp;state=3d6be0a4035d839573b04816624a415e#wechat_redirect" class="r" title="微信登录"><img src="/resources/front/styles/images/wx.png" alt=""></a>
+            <a href="https://graph.qq.com/oauth/show?which=ConfirmPage&amp;display=pc&amp;client_id=101353042&amp;response_type=token&amp;scope=all&amp;redirect_uri=http://learning.youth.cn/otherLogin/qqLogin.do" target="_blank" class="r" title="QQ登录"><img src="/resources/front/styles/images/qq.png" alt=""></a>
+          </div>
+
+          
+          
+          
+          
+
+        
+      </div>
+      
+        
+          
+          
+        
+        
+      
+    </div>
+  </div>
+  <div class="head_nav">
+    <ul class="clearfix">
+      <li id="index" class="l active"><a href="/youth/front/index.do" class="xiaofang"><img src="/resources/youth/img/shouye.png" alt="" class="l">首页</a></li>
+      <li id="tzgg" class="l"><a href="/youth/front/youthNotice.do">通知公告</a></li>
+      <li id="jchzf" class="l"><a href="/youth/front/jchzf.do">基层好做法</a></li>
+      <li id="tgjyz" class="l"><a href="/youth/front/youthJyz.do" style="font-size: 15px;">联系青年加油站</a></li>
+      <li id="jcsk" class="l"><a href="/youth/front/youthJcsk.do">精彩时刻</a></li>
+      <li class="kuai r show">
+        <p>快捷访问<img src="/resources/youth/img/arrow_10.png" class="arrow_1"></p>
+        <div class="box_01">
+          <div class="addpc"><a href="http://s.learning-youth-cn.zqgbzx.cn//upload/LXQN.url" target="_blank">右键存储快捷方式到桌面</a></div>
+          <div class="Code"><img src="/resources/youth/img/IOS_code.jpg"><p>IOS快捷方式</p></div>
+          <div class="Code"><img src="/resources/youth/img/Android_code.png"><p>Android快捷方式</p></div>
+        </div>
+
+      </li>
+    </ul>
+  </div>
+</div>
+    <div class="section" style="position: relative;">
+
+      <div class="sec_01 clearfix">
+        
+        <div class="sec_left l">
+          <div class="left_01">
+            <div class="left_top clearfix">
+              <h4 class="l">通知公告</h4>
+              <a href="/youth/front/youthNotice.do" class="r" target="_blank">more &gt;</a>
+            </div>
+            <div class="left_con" style="height: 177px;">
+              <ul>
+                
+                  
+                  
+                    <li><span></span><a href="/youth/front/watch.do?articleId=3367" target="_blank">
+                      
+                      
+                        2017年团干部直接联系青年积分规则
+                      
+                    </a>
+                      <div style="float: right;font-size: 12px;color: #6d6d6d;">2017-04-01</div>
+                    </li>
+                  
+                
+                  
+                  
+                    <li><span></span><a href="/youth/front/watch.do?articleId=2340" target="_blank">
+                      
+                        关于进一步做好“1+100”团干部...
+                      
+                      
+                    </a>
+                      <div style="float: right;font-size: 12px;color: #6d6d6d;">2017-03-16</div>
+                    </li>
+                  
+                
+                  
+                  
+                    <li><span></span><a href="/youth/front/watch.do?articleId=2083" target="_blank">
+                      
+                      
+                        关于补充“我的伙伴”相关信息的说明
+                      
+                    </a>
+                      <div style="float: right;font-size: 12px;color: #6d6d6d;">2016-12-21</div>
+                    </li>
+                  
+                
+                  
+                  
+                    <li><span></span><a href="/youth/front/watch.do?articleId=1940" target="_blank">
+                      
+                        关于团干部直接联系青年工作进展情况...
+                      
+                      
+                    </a>
+                      <div style="float: right;font-size: 12px;color: #6d6d6d;">2016-09-23</div>
+                    </li>
+                  
+                
+              </ul>
+            </div>
+          </div>
+          <div class="left_02">
+            <div class="left_top clearfix">
+              <h4 class="l">基层好做法</h4>
+              <a href="/youth/front/jchzf.do" class="r" target="_blank">more &gt;</a>
+            </div>
+            <div class="left_con" style="height: 177px;">
+              <ul>
+                
+                  
+                  <li><span></span><a style="width: 320px;" class="ell" href="/youth/front/watchJCHZF.do?articleId=32" target="_blank">
+                    
+                      2016年广西团干部基层组织建设 ...
+                    
+                    
+                  </a>
+                    <div style="float: right;font-size: 12px;color: #6d6d6d;">2016-12-05</div>
+                  </li>
+                  
+                  
+                
+                  
+                  <li><span></span><a style="width: 320px;" class="ell" href="/youth/front/watchJCHZF.do?articleId=30" target="_blank">
+                    
+                      共青团江西省委各县区团干部齐聚信州...
+                    
+                    
+                  </a>
+                    <div style="float: right;font-size: 12px;color: #6d6d6d;">2016-11-22</div>
+                  </li>
+                  
+                  
+                
+                  
+                  
+                    <li><span></span><a href="http://mp.weixin.qq.com/s/oCCCmIlmbM4SsNf_ubrEAA" target="_blank">
+                      
+                        【最美青春故事】山东-“1+100...
+                      
+                      
+                    </a>
+                      <div style="float: right;font-size: 12px;color: #6d6d6d;">2016-11-21</div>
+                    </li>
+                  
+                
+                  
+                  
+                    <li><span></span><a href="http://mp.weixin.qq.com/s/Zdgi7-A0vNHr7twc87LzBA" target="_blank">
+                      
+                        【最美青春故事】湖北-啥？“1+1...
+                      
+                      
+                    </a>
+                      <div style="float: right;font-size: 12px;color: #6d6d6d;">2016-11-21</div>
+                    </li>
+                  
+                
+              </ul>
+            </div>
+          </div>
+          <div class="left_04">
+            <div class="left_top clearfix">
+              <h4 class="l">联系青年加油站</h4>
+              <a href="/youth/front/youthJyz.do" class="r" target="_blank">more &gt;</a>
+            </div>
+            <div class="left_con" style="height: 176px;">
+              <ul>
+                
+                  
+                    <li><span></span><a href="http://mp.weixin.qq.com/s/beeKNL6OsGI0Rs4F5M44ug" target="_blank">
+                      
+                        青听 | 你羡慕朋友圈里别人的生活...
+                      
+                      
+                    </a>
+                      <div style="float: right;font-size: 12px;color: #6d6d6d;">2017-02-20</div>
+                    </li>
+                  
+                  
+                
+                  
+                    <li><span></span><a href="http://mp.weixin.qq.com/s/Bs_MlqQtPQ62X-yiZfJIbQ" target="_blank">
+                      
+                        你为梦想做过最大的努力是什么？ 每...
+                      
+                      
+                    </a>
+                      <div style="float: right;font-size: 12px;color: #6d6d6d;">2017-02-20</div>
+                    </li>
+                  
+                  
+                
+                  
+                    <li><span></span><a href="https://mp.weixin.qq.com/s/vEQulj7ZzGVXlOGzLa6RLA" target="_blank">
+                      
+                        国家强大和我有什么关系？ | 青年...
+                      
+                      
+                    </a>
+                      <div style="float: right;font-size: 12px;color: #6d6d6d;">2017-02-20</div>
+                    </li>
+                  
+                  
+                
+                  
+                    <li><span></span><a href="http://mp.weixin.qq.com/s/KmRIe-mFq1LxKmptPBkV4Q" target="_blank">
+                      
+                      
+                        如果战争爆发，你会上战场吗？
+                      
+                    </a>
+                      <div style="float: right;font-size: 12px;color: #6d6d6d;">2017-02-20</div>
+                    </li>
+                  
+                  
+                
+              </ul>
+            </div>
+          </div>
+          <div class="paihangs clearfix">
+            <div class="ul_1 l">
+              <h4><span class="l">光荣榜</span><a href="javascript:;" class="paiming_1 honor r"><img src="http://s.learning.youth.cn//resources/youth/img/img/arrow_1.png" alt=""></a></h4>
+              <div>
+                <p><span class="pm">排名</span><span class="cs">城市</span></p>
+                <ul>
+                  
+                    <li class="">
+                      <span class="nums nums_1">1</span>
+                      <span class="csm ">江西</span>
+                    </li>
+                  
+                    <li class="">
+                      <span class="nums nums_2">2</span>
+                      <span class="csm ">甘肃</span>
+                    </li>
+                  
+                    <li class="">
+                      <span class="nums nums_3">3</span>
+                      <span class="csm ">陕西</span>
+                    </li>
+                  
+                    <li class="">
+                      <span class="nums nums_4">4</span>
+                      <span class="csm ">贵州</span>
+                    </li>
+                  
+                  
+                    <li class="">
+                      <span class="nums nums_4">5</span>
+                      <span class="csm ">河南</span>
+                    </li>
+                  
+                </ul>
+              </div>
+            </div>
+            <div class="ul_2 r">
+              <h4><span class="l">加油榜</span><a href="javascript:;" class="paiming_1 jiayou r"><img src="http://s.learning.youth.cn//resources/youth/img/img/arrow_2.png" alt=""></a></h4>
+              <div>
+                <p><span class="pm">排名</span><span class="cs">城市</span></p>
+                <ul>
+                  
+                    <li class="">
+                      <span class="nums ">32</span>
+                      <span class="csm ">西藏</span>
+                    </li>
+                  
+                    <li class="">
+                      <span class="nums ">31</span>
+                      <span class="csm ">青海</span>
+                    </li>
+                  
+                    <li class="">
+                      <span class="nums ">30</span>
+                      <span class="csm ">浙江</span>
+                    </li>
+                  
+                    <li class="">
+                      <span class="nums ">29</span>
+                      <span class="csm ">北京</span>
+                    </li>
+                  
+                    <li class="">
+                      <span class="nums ">28</span>
+                      <span class="csm ">新疆</span>
+                    </li>
+                  
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sec_right r">
+          <div class="left_top clearfix">
+            <h4 class="l">各省工作热度排行榜</h4>
+            <a href="/youth/front/scores.do?type=honor" class="paiming r" id="paimingContext">排名详情</a>
+          </div>
+          <div class="left_con left_con_list">
+            
+              <div id="main" style="width: 800px; height: 550px; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; background-color: rgba(0, 0, 0, 0); " _echarts_instance_="1491080198354"><div style="position: relative; overflow: hidden; width: 800px; height: 550px; "><div style="position: absolute; left: 0px; top: 0px; width: 800px; height: 550px; -webkit-user-select: none; " data-zr-dom-id="bg"></div><canvas style="position: absolute; left: 0px; top: 0px; width: 800px; height: 550px; -webkit-user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); " width="800" height="550" data-zr-dom-id="0"></canvas><canvas style="position: absolute; left: 0px; top: 0px; width: 800px; height: 550px; -webkit-user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); " width="800" height="550" data-zr-dom-id="1"></canvas><canvas style="position: absolute; left: 0px; top: 0px; width: 800px; height: 550px; -webkit-user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); " width="800" height="550" data-zr-dom-id="_zrender_hover_"></canvas></div></div>
+              <script type="text/javascript" src="http://s.learning.youth.cn/resources/front/echarts/dist/echarts.js"></script>
+              <!--中间地图开始-->
+              <script type="text/javascript">
+                function randomData() {
+                  return Math.round(Math.random()*100);
+                }
+                require.config({
+                  paths: {
+                    'echarts': 'http://s.learning.youth.cn/resources/front/echarts/dist'
+                  }
+                });
+                require(
+                        [
+                          'echarts',
+                          'echarts/chart/map'// 按需加载
+                        ], function (ec) {
+                          // 基于准备好的dom，初始化echarts图表
+                          var myChart = ec.init(document.getElementById('main'));
+                          data1=[{name: '北京',value:0.46},{name: '天津',value:1.35},{name: '河北',value:1.38},{name: '山西',value:2.68},{name: '内蒙古',value:1.98},{name: '辽宁',value:2.05},{name: '吉林',value:0.7},{name: '黑龙江',value:1.93},{name: '上海',value:4.49},{name: '江苏',value:0.99},{name: '浙江',value:0.39},{name: '安徽',value:1.3},{name: '福建',value:1.85},{name: '江西',value:10.93},{name: '山东',value:2.97},{name: '河南',value:4.66},{name: '湖北',value:3.79},{name: '湖南',value:3.61},{name: '广东',value:2.31},{name: '海南',value:2.28},{name: '广西',value:3.88},{name: '甘肃',value:9.62},{name: '陕西',value:9.31},{name: '新疆',value:0.66},{name: '青海',value:0.26},{name: '宁夏',value:1.24},{name: '重庆',value:1.96},{name: '四川',value:1.79},{name: '贵州',value:6.81},{name: '云南',value:1.33},{name: '西藏',value:0.0},{name: '兵团',value:1.37},];
+                          option = {
+                            tooltip : {
+                              trigger: 'item',
+                              formatter : function (params) {
+                                var res = params.seriesName + '<br/>' + params.name + ' : ';
+                                for (var i = 0; i < data1.length; i++) {
+                                  if(params.name == data1[i].name){
+                                    res += data1[i].value;
+                                  }
+                                }
+                                return res;
+                              }
+                            },
+                            dataRange: {
+                              min: 0,
+                              max: 100,
+                              text:['高','低'],
+                              splitNumber: 4,
+                              splitList: [
+                                {start: 75, end: 100},
+                                {start: 50, end: 75},
+                                {start: 25, end: 50},
+                                {end: 0, end: 25}
+                              ],
+                              color: ['#ff4e50', '#EE7600', '#FFFF00', '#FFE7BA']
+                            },
+                            series : [
+                              {
+                                name: '热度指数',
+                                type: 'map',
+                                mapType: 'china',
+                                selectedMode : 'single',
+                                itemStyle:{
+                                  normal:{label:{show:true}
+                                  },
+                                  emphasis:{
+                                    color: '#08c',
+                                    label:{show:true},
+                                  }
+                                },
+                                data:[{name: '北京',value:25},{name: '天津',value:50},{name: '河北',value:50},{name: '山西',value:75},{name: '内蒙古',value:75},{name: '辽宁',value:75},{name: '吉林',value:50},{name: '黑龙江',value:50},{name: '上海',value:75},{name: '江苏',value:50},{name: '浙江',value:25},{name: '安徽',value:50},{name: '福建',value:50},{name: '江西',value:100},{name: '山东',value:75},{name: '河南',value:100},{name: '湖北',value:75},{name: '湖南',value:75},{name: '广东',value:75},{name: '海南',value:75},{name: '广西',value:75},{name: '甘肃',value:100},{name: '陕西',value:100},{name: '新疆',value:25},{name: '青海',value:25},{name: '宁夏',value:50},{name: '重庆',value:50},{name: '四川',value:50},{name: '贵州',value:100},{name: '云南',value:50},{name: '西藏',value:25},{name: '兵团',value:50},]
+                              }
+                            ]};
+                          // 为echarts对象加载数据
+                          myChart.setOption(option);
+                          myChart.on('click', function (params) {
+                            window.open('/youth/front/ranking.do?province=' + encodeURIComponent(params.name));
+                          });
+                        }
+                );
+              </script>
+            <p class="map_zi3 clearfix" style="top: 560px;"><i class="zhu fl">注：</i><i class="zhushi fl">1、各省热度指数由本省团干部活跃指数平均产生，包括开展活动次数，青年互动情况等。2、点击地图中的省可进入该省的各市联系青年工作热度指数排行榜。<br>3、输入团干部姓名和手机号可以查看该省团干部的联系青年情况。</i></p>
+            <div class="liebiao_02" style="top: 560px;">
+              <form class="form-horizontal" role="form" method="post" id="formAdd" action="/youth/other/index.do">
+                <div class="int_1" id="one">
+                  <div class="line_1 clearfix">
+                    <span class="l">姓名:</span>
+                    <input type="text" id="name" name="name" value="" placeholder="团干部姓名" class="l">
+                  </div>
+                  <div class="line_2 clearfix">
+                    <span class="l">手机:</span>
+                    <input type="text" class="l" name="mobile" id="mobile" value="" placeholder="团干部手机">
+                  </div>
+                  <button type="button" id="btnSave" class="btn btn-primary r" value="查询" onclick="check()">查询</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="left_con1">
+            <div class="uls_box clearfix">
+              <div class="uls l">
+                <p><span class="pm">排名</span><span class="sf">省份</span><span class="fs">分数</span></p>
+                <ul>
+                  
+                    <li class="" style="background-color: rgb(222, 241, 248); ">
+                      <span class="nums">1</span>
+                      <span class="csm">江西</span>
+                      <span class="fss">64.81</span>
+                    </li>
+                  
+                    <li class="">
+                      <span class="nums">2</span>
+                      <span class="csm">甘肃</span>
+                      <span class="fss">67.04</span>
+                    </li>
+                  
+                    <li class="" style="background-color: rgb(222, 241, 248); ">
+                      <span class="nums">3</span>
+                      <span class="csm">陕西</span>
+                      <span class="fss">61.86</span>
+                    </li>
+                  
+                    <li class="">
+                      <span class="nums">4</span>
+                      <span class="csm">贵州</span>
+                      <span class="fss">68.49</span>
+                    </li>
+                  
+                    <li class="" style="background-color: rgb(222, 241, 248); ">
+                      <span class="nums">5</span>
+                      <span class="csm">河南</span>
+                      <span class="fss">53.91</span>
+                    </li>
+                  
+                    <li class="">
+                      <span class="nums">6</span>
+                      <span class="csm">上海</span>
+                      <span class="fss">53.86</span>
+                    </li>
+                  
+                    <li class="" style="background-color: rgb(222, 241, 248); ">
+                      <span class="nums">7</span>
+                      <span class="csm">广西</span>
+                      <span class="fss">71.16</span>
+                    </li>
+                  
+                    <li class="">
+                      <span class="nums">8</span>
+                      <span class="csm">湖北</span>
+                      <span class="fss">71.14</span>
+                    </li>
+                  
+                    <li class="" style="background-color: rgb(222, 241, 248); ">
+                      <span class="nums">9</span>
+                      <span class="csm">湖南</span>
+                      <span class="fss">62.13</span>
+                    </li>
+                  
+                    <li class="">
+                      <span class="nums">10</span>
+                      <span class="csm">山东</span>
+                      <span class="fss">70.89</span>
+                    </li>
+                  
+                    <li class="" style="background-color: rgb(222, 241, 248); ">
+                      <span class="nums">11</span>
+                      <span class="csm">山西</span>
+                      <span class="fss">70.76</span>
+                    </li>
+                  
+                </ul>
+              </div>
+              <div class="uls l you_uls">
+                <p><span class="pm">排名</span><span class="sf">省份</span><span class="fs">分数</span></p>
+                <ul>
+                  
+                    <li class="" style="background-color: rgb(222, 241, 248); ">
+                      <span class="nums">12</span>
+                      <span class="csm">广东</span>
+                      <span class="fss">69.46</span>
+                    </li>
+                  
+                    <li class="" style="background-color: rgb(255, 255, 255); ">
+                      <span class="nums">13</span>
+                      <span class="csm">海南</span>
+                      <span class="fss">70.68</span>
+                    </li>
+                  
+                    <li class="" style="background-color: rgb(222, 241, 248); ">
+                      <span class="nums">14</span>
+                      <span class="csm">辽宁</span>
+                      <span class="fss">66.31</span>
+                    </li>
+                  
+                    <li class="" style="background-color: rgb(255, 255, 255); ">
+                      <span class="nums">15</span>
+                      <span class="csm">内蒙古</span>
+                      <span class="fss">70.6</span>
+                    </li>
+                  
+                    <li class="" style="background-color: rgb(222, 241, 248); ">
+                      <span class="nums">16</span>
+                      <span class="csm">重庆</span>
+                      <span class="fss">59.84</span>
+                    </li>
+                  
+                    <li class="" style="background-color: rgb(255, 255, 255); ">
+                      <span class="nums">17</span>
+                      <span class="csm">黑龙江</span>
+                      <span class="fss">56.25</span>
+                    </li>
+                  
+                    <li class="" style="background-color: rgb(222, 241, 248); ">
+                      <span class="nums">18</span>
+                      <span class="csm">福建</span>
+                      <span class="fss">70.56</span>
+                    </li>
+                  
+                    <li class="" style="background-color: rgb(255, 255, 255); ">
+                      <span class="nums">19</span>
+                      <span class="csm">四川</span>
+                      <span class="fss">70.54</span>
+                    </li>
+                  
+                    <li class="" style="background-color: rgb(222, 241, 248); ">
+                      <span class="nums">20</span>
+                      <span class="csm">河北</span>
+                      <span class="fss">55.24</span>
+                    </li>
+                  
+                    <li class="" style="background-color: rgb(255, 255, 255); ">
+                      <span class="nums">21</span>
+                      <span class="csm">兵团</span>
+                      <span class="fss">70.41</span>
+                    </li>
+                  
+                    <li class="" style="background-color: rgb(222, 241, 248); ">
+                      <span class="nums">22</span>
+                      <span class="csm">天津</span>
+                      <span class="fss">65.43</span>
+                    </li>
+                  
+                </ul>
+              </div>
+              <div class="uls r">
+                <p><span class="pm">排名</span><span class="sf">省份</span><span class="fs">分数</span></p>
+                <ul>
+                  
+                    <li class="" style="background-color: rgb(222, 241, 248); ">
+                      <span class="nums">23</span>
+                      <span class="csm">云南</span>
+                      <span class="fss">61.69</span>
+                    </li>
+                  
+                    <li class="">
+                      <span class="nums">24</span>
+                      <span class="csm">安徽</span>
+                      <span class="fss">70.39</span>
+                    </li>
+                  
+                    <li class="" style="background-color: rgb(222, 241, 248); ">
+                      <span class="nums">25</span>
+                      <span class="csm">宁夏</span>
+                      <span class="fss">54.06</span>
+                    </li>
+                  
+                    <li class="">
+                      <span class="nums">26</span>
+                      <span class="csm">江苏</span>
+                      <span class="fss">70.3</span>
+                    </li>
+                  
+                    <li class="" style="background-color: rgb(222, 241, 248); ">
+                      <span class="nums">27</span>
+                      <span class="csm">吉林</span>
+                      <span class="fss">70.21</span>
+                    </li>
+                  
+                    <li class="">
+                      <span class="nums">28</span>
+                      <span class="csm">新疆</span>
+                      <span class="fss">50.07</span>
+                    </li>
+                  
+                    <li class="" style="background-color: rgb(222, 241, 248); ">
+                      <span class="nums">29</span>
+                      <span class="csm">北京</span>
+                      <span class="fss">70.14</span>
+                    </li>
+                  
+                    <li class="">
+                      <span class="nums">30</span>
+                      <span class="csm">浙江</span>
+                      <span class="fss">70.12</span>
+                    </li>
+                  
+                    <li class="" style="background-color: rgb(222, 241, 248); ">
+                      <span class="nums">31</span>
+                      <span class="csm">青海</span>
+                      <span class="fss">70.08</span>
+                    </li>
+                  
+                    <li class="">
+                      <span class="nums">32</span>
+                      <span class="csm">西藏</span>
+                      <span class="fss">8.37</span>
+                    </li>
+                  
+                </ul>
+              </div>
+            </div>
+            <div class="zhushi_1 clearfix">
+              <p class="l">注：</p>
+              <ul class="l">
+                <li>1、各省热度指数由本省团干部活跃指数平均产生，包括开展活动次数，青年互动情况等。</li>
+                <li>2、点击列表中右上角的“返回”可回退到地图热度页面。</li>
+              </ul>
+            </div>
+        </div>
+      </div>
+      <div class="sec_02">
+        <div class="righr_01" style="margin-top: 13px;background-color: #fff; height: 280px;">
+          <div class="right_top clearfix" style="width: 796px;float: right">
+            <h4 class="l">精彩时刻</h4>
+            <a href="/youth/front/youthJcsk.do" class="r" target="_blank">more &gt;</a>
+          </div>
+          <div class="right_con box" style="width: 796px;float: right;  height: 229px;">
+            <div id="carousel">
+              <div class="caroufredsel_wrapper" style="display: block; text-align: -webkit-auto; float: none; position: relative; top: auto; right: auto; bottom: auto; left: auto; z-index: auto; width: 795px; height: 206px; margin: 0px 2px; overflow: hidden; "><ul class="clearfix" style="padding-top: 20px; height: 206px; text-align: left; float: none; position: absolute; top: 0px; right: auto; bottom: auto; left: 0px; margin: 0px; width: 6095px; ">
+                
+                  
+                  
+                    <li style="margin: 0 0px;text-align: center;width: 265px;"><a href="/youth/front/watch.do?articleId=1879&amp;type=jcsk" target="_blank"><img src="http://s.learning-youth-cn.zqgbzx.cn//upload/contactyouth/20160819/20160819112001_931.png" style="width:250px;height: 152px;">
+                      <i style="left: 7px;height: 175px;">团贵州省委第二季机关开放日“面对面”座谈会</i></a><p style="text-align: center;width: 230px;">团贵州省委第二季机关开放日“面对面”座谈会</p></li>
+                  
+                
+                  
+                  
+                    <li style="margin: 0 0px;text-align: center;width: 265px;"><a href="/youth/front/watch.do?articleId=1861&amp;type=jcsk" target="_blank"><img src="http://s.learning-youth-cn.zqgbzx.cn//upload/contactyouth/20160621/20160621100515_352.jpg" style="width:250px;height: 152px;">
+                      <i style="left: 7px;height: 175px;">团河北省委各地举办专题开放日</i></a><p style="text-align: center;width: 230px;">团河北省委各地举办专题开放日</p></li>
+                  
+                
+                  
+                  
+                    <li style="margin: 0 0px;text-align: center;width: 265px;"><a href="/youth/front/watch.do?articleId=1860&amp;type=jcsk" target="_blank"><img src="http://s.learning-youth-cn.zqgbzx.cn//upload/contactyouth/20160620/20160620151412_183.jpg" style="width:250px;height: 152px;">
+                      <i style="left: 7px;height: 175px;">中直机关团工委举办专题开放日及相关活动</i></a><p style="text-align: center;width: 230px;">中直机关团工委举办专题开放日及相关活动</p></li>
+                  
+                
+                  
+                  
+                    <li style="margin: 0 0px;text-align: center;width: 265px;"><a href="/youth/front/watch.do?articleId=1859&amp;type=jcsk" target="_blank"><img src="http://s.learning-youth-cn.zqgbzx.cn//upload/contactyouth/20160620/20160620150923_417.jpg" style="width:250px;height: 152px;">
+                      <i style="left: 7px;height: 175px;">重庆团市委机关开放日活动</i></a><p style="text-align: center;width: 230px;">重庆团市委机关开放日活动</p></li>
+                  
+                
+                  
+                  
+                    <li style="margin: 0 0px;text-align: center;width: 265px;"><a href="/youth/front/watch.do?articleId=1858&amp;type=jcsk" target="_blank"><img src="http://s.learning-youth-cn.zqgbzx.cn//upload/contactyouth/20160620/20160620150512_303.jpg" style="width:250px;height: 152px;">
+                      <i style="left: 7px;height: 175px;">团黑龙江省委开放日</i></a><p style="text-align: center;width: 230px;">团黑龙江省委开放日</p></li>
+                  
+                
+                  
+                  
+                    <li style="margin: 0 0px;text-align: center;width: 265px;"><a href="/youth/front/watch.do?articleId=1857&amp;type=jcsk" target="_blank"><img src="http://s.learning-youth-cn.zqgbzx.cn//upload/contactyouth/20160620/20160620150304_659.jpg" style="width:250px;height: 152px;">
+                      <i style="left: 7px;height: 175px;">共青团湖南省委机关专题开放日活动</i></a><p style="text-align: center;width: 230px;">共青团湖南省委机关专题开放日活动</p></li>
+                  
+                
+                  
+                  
+                    <li style="margin: 0 0px;text-align: center;width: 265px;"><a href="/youth/front/watch.do?articleId=1856&amp;type=jcsk" target="_blank"><img src="http://s.learning-youth-cn.zqgbzx.cn//upload/contactyouth/20160617/20160617100529_78.jpg" style="width:250px;height: 152px;">
+                      <i style="left: 7px;height: 175px;">四川团省委机关开放日活动</i></a><p style="text-align: center;width: 230px;">四川团省委机关开放日活动</p></li>
+                  
+                
+                  
+                  
+                    <li style="margin: 0 0px;text-align: center;width: 265px;"><a href="/youth/front/watch.do?articleId=1853&amp;type=jcsk" target="_blank"><img src="http://s.learning-youth-cn.zqgbzx.cn//upload/contactyouth/20160613/20160613154857_428.jpg" style="width:250px;height: 152px;">
+                      <i style="left: 7px;height: 175px;">团中央机关部署团干部直接联系青年工作</i></a><p style="text-align: center;width: 230px;">团中央机关部署团干部直接联系青年工作</p></li>
+                  
+                
+                  
+                  
+                    <li style="margin: 0 0px;text-align: center;width: 265px;"><a href="/youth/front/watch.do?articleId=1852&amp;type=jcsk" target="_blank"><img src="http://s.learning-youth-cn.zqgbzx.cn//upload/contactyouth/20160613/20160613154832_952.jpg" style="width:250px;height: 152px;">
+                      <i style="left: 7px;height: 175px;">基层组织建设部筹备组党支部启动直接联系青年工作2</i></a><p style="text-align: center;width: 230px;">基层组织建设部筹备组党支部启动直接联系青年工作2</p></li>
+                  
+                
+                  
+                  
+                    <li style="margin: 0 0px;text-align: center;width: 265px;"><a href="/youth/front/watch.do?articleId=1847&amp;type=jcsk" target="_blank"><img src="http://s.learning-youth-cn.zqgbzx.cn//upload/contactyouth/20160613/20160613143528_37.jpg" style="width:250px;height: 152px;">
+                      <i style="left: 7px;height: 175px;">基层组织建设部筹备组党支部启动直接联系青年工作</i></a><p style="text-align: center;width: 230px;">基层组织建设部筹备组党支部启动直接联系青年工作</p></li>
+                  
+                
+              </ul></div>
+              <div class="clearfix"></div>
+              
+              <a id="next" class="next arr_r" href="" style="display: block; "><img src="/resources/youth/img/arrow_03.png"></a>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="foot" style="margin-top: 370px;">
+  <div>
+    <p>主办单位：团中央基层组织建设部 中国青年政治学院</p>
+    <p>京ICP备11020872号-17</p>
+  </div>
+</div>
+
+
+  </div>
+
+<script src="http://libs.baidu.com/jquery/1.8.3/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="/resources/youth/js_1/jquery.carouFredSel-6.0.4-packed.js" type="text/javascript"></script>
+<script type="text/javascript">
+  $(function() {
+    //滚动图
+    $('#carousel ul').carouFredSel({
+      prev: '#prev',
+      next: '#next',
+      pagination: "#pager",
+      scroll: 1000
+    });
+    //鼠标移入出字
+    $('#carousel a').hover(
+            (function () {
+              $(this).find('i').css('display', 'inline-block');
+              $(this).find('i').css({height: '152px'});
+            }),
+            (function () {
+              $(this).find('i').css({height: '0px'}, function () {
+                $(this).find('i').css("display", "none");
+              });
+            })
+    );
+    //快捷方式
+    $('.kuai').hover(
+            function(){
+              
+              $(this).find('.arrow_1').addClass("hover");
+              $('.box_01').fadeToggle(100);
+            },
+            function(){
+              
+              $(this).find('.arrow_1').removeClass("hover");
+              $('.box_01').fadeToggle(100);
+            }
+    )
+  })
+</script>
+
+
+<script type="text/javascript" src="/resources/youth/js/floatingAd.js"></script>
+<script type="text/javascript">
+  $(function() {
+    $.floatingAd({
+      delay: 10,
+      isLinkClosed: true,
+      ad:	[{
+        headFilter: 0.3,
+        'img': '/resources/youth/img/youthNotice.png',
+        'linkUrl': '/youth/front/watch.do?articleId=2083',
+        'z-index': 100,
+
+      }],
+      //关闭事件
+      onClose: function(elem){}
+    });
+
+  });
+</script>
+
+</div><div id="floatingAd" class="floatingAd"><div class="ad" style="z-index: 100; left: 0px; top: -42px; display: block; "><div class="close" style=""><div class="opacity" style="opacity: 0.3;filter: alpha(opacity = 30);"></div><div class="text"><div class="title"></div><div class="button" style=""></div></div></div><div><a href="/youth/front/watch.do?articleId=2083" target="_blank" title=""><img src="/resources/youth/img/youthNotice.png" style=""></a></div></div></div></body></html>

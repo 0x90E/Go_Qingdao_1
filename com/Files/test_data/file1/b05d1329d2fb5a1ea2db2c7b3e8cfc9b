@@ -1,0 +1,437 @@
+<!DOCTYPE html><html><head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>预约挂号|网上挂号平台|预约挂号网|三甲医院挂号|天津预约挂号-医指通官方网站</title>
+
+
+
+<!-- jar -->
+
+<meta name="keywords" content="预约挂号,网上挂号平台,预约挂号网,三甲医院挂号,天津预约挂号,预约专家号">
+<meta name="description" content=" 医指通社区同步挂号服务平台，将传统的医院挂号窗口前移至百姓家门口，实现预约挂号,网上挂号,三甲医院挂号,预约专家号等服务，建城市统一的“医疗挂号服务平台”和“数字化社区公共信息平台”。">
+<link href="favicon.ico" rel="shortcut icon">
+<link href="/website/Public/Css/main.css?t=20150303" rel="stylesheet" type="text/css">
+<link href="/website/Public/Css/jbk_tool2014.css" rel="stylesheet" type="text/css">
+<script language="javascript" src="/website/Public/Js/jquery.min.js"></script>
+<script language="javascript" src="/website/Public/Js/index.js"></script>
+<script language="javascript" src="/website/Public/Js/index/cityswitch.js?t=201502052"></script>
+<script language="javascript" src="/website/Public/Js/layer/layer.min.js"></script><link type="text/css" rel="stylesheet" href="http://np.eztcn.com/website/Public/Js/layer/skin/layer.css" id="skinlayercss">
+<script language="javascript" src="/website/Public/Js/common.js"></script>
+<script language="javascript" src="/website/Public/Js/jbk_tool_2014.js"></script>
+<script language="javascript" src="/website/Public/Js/regnav.js"></script>
+
+
+<link type="text/css" href="/website/Public/Js/styles/jquery.ui.all.css" rel="stylesheet">
+<link type="text/css" href="/website/Public/Js/styles/demos.css" rel="stylesheet">
+<script type="text/javascript" src="/website/Public/Js/scripts/jquery-1.4.2.js"></script>
+<script type="text/javascript" src="/website/Public/Js/scripts/jquery.ui.core.js"></script>
+<script type="text/javascript" src="/website/Public/Js/scripts/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="/website/Public/Js/scripts/jquery.ui.mouse.js"></script>
+<script type="text/javascript" src="/website/Public/Js/scripts/jquery.ui.button.js"></script>
+<script type="text/javascript" src="/website/Public/Js/scripts/jquery.ui.draggable.js"></script>
+<script type="text/javascript" src="/website/Public/Js/scripts/jquery.ui.position.js"></script>
+<script type="text/javascript" src="/website/Public/Js/scripts/jquery.ui.dialog.js"></script>
+
+<script language="javascript" src="/website/View/User/getuserstatus.html"></script>
+
+<script>
+var ROOT="__ROOT__";
+
+$(function() {
+	
+	 $("#ImgDialog").dialog(
+	 		    {
+			    	buttons: { 
+			    		"确定": 
+			    			function() { 
+			    			//	var kk=$('#mobile').val();
+			    				var mm=$('#imageCode').val();
+			    				if(null==mm||mm==''){
+			    					noticeBox({info:"验证码不能为空",isback:2,logo:5,title:"提示信息"});
+			    					return false;
+			    				}else{useryzphone(mm);}//发送验证码
+					    	
+			                    } ,
+			             "关闭": function()
+			                    { 
+			            		 $('#imageCode').val("");
+			            	 		$(this).dialog("close");
+			                    }
+			               },
+	 		       autoOpen: false,
+	 		       modal:true,
+	 		       height: 200,
+	 		       closeOnEscape:true,
+	 		       hide:'shake'
+
+	 		     
+	 		    });
+	 		   
+     if (! 
+     /*@cc_on!@*/
+     0) return;
+     var e = "abbr, article, aside, audio, canvas, datalist, details, dialog, eventsource, figure, footer, header, hgroup, mark, menu, meter, nav, output, progress, section, time, video".split(', ');
+     var i= e.length;
+     while (i--){
+         document.createElement(e[i])
+     } 
+});
+
+
+/*******
+* 搜索
+*****/
+function ezsoSearch(){
+	var sinfo=$("#searchinfo").val();
+	if($.trim(sinfo) == ""){
+		noticeBox({info:"请输入您要查询的医院名称/医生名称/科室名称",isback:2,logo:5,title:"提示信息"});
+		return false;
+	}
+	if(sinfo == "请输入医院名称/医生名称/科室名称"){
+		noticeBox({info:"请输入您要查询的医院名称/医生名称/科室名称",isback:2,logo:5,title:"提示信息"});
+		return false;
+	}
+	$("button").click(function(){
+		  $("li").each(function(){
+			alert($(this).text())
+		  });
+	});
+	$("#ezsoform").submit();
+}
+function refreshImg(){
+	var phone=$('#mobile').val();
+	$("#imgCaptcha").attr("src","/website/api/v2/captcha/small.do?phone="+phone+"&time="+ (new Date()).valueOf());
+}
+
+/**
+*	用户退出
+**/
+function loginOut(){
+	location.href='__ROOT__/Home/User/userLoginOut.html';
+}
+
+/**按医院找**/
+function goFindHos(){
+	window.location.href="__ROOT__/Home/Find/findHos.html";
+}
+
+/**按科室找**/
+function goDep(){
+	window.location.href="__ROOT__/Home/Find/findDep.html";
+}
+
+function getUrlParam(name){
+	var url=window.location.href;
+	if(url.indexOf("cityid") != -1){
+		var urlarr=url.split("cityid/");
+		var cityidarr=urlarr[1].split(".");
+		return cityidarr[0];
+	}
+	return null;
+}
+
+
+
+</script>
+<!--[if lte IE 9]><script src="/website/Public/Js/html5shiv.min.js"></script><![endif] -->
+<!--[if lte IE 6]><script src="/website/Public/Js/html5shiv.min.js"></script><![endif]-->
+<!--[if lte IE 7]><script src="/website/Public/Js/html5shiv.min.js"></script><![endif]-->
+
+</head>
+
+<body>
+	<!-- <include file="Public/header" /> -->
+
+	<article>
+		<link href="/website/Public/Css/user.css" rel="stylesheet" type="text/css">
+		<div class="map">
+			<a href="http://www.eztcn.com" target="_self">首页</a> &gt; 找回密码
+		</div>
+		<div class="forgetpw">
+			<div class="flow">
+				<img src="/website/Public/Images/fgpw_pic2.jpg">
+			</div>
+			<!--    <div class="title">请选择您找回密码的方式</div> -->
+			<div class="area1">
+				<form method="post" name="form1">
+					<div class="aside bol">
+						<div class="list"></div>
+						<div class="list">
+							<div class="word">手机号：</div>
+							<div class="input_k" style="width: 312px">
+								<input type="text" name="mobile" id="mobile" onblur="userlenphone(this.id);" onkeyup="userlenphone(this.id);" style="margin-left: 30px;">
+								<span id="mobilehint" style="float: left; width: 112px; height: 26px"></span>
+							</div>
+						</div>
+						
+						<div class="list">
+							<div class="word">短信验证码：</div>
+							<div class="input_k">
+								<input type="text" name="mobilecode" id="mobilecode">
+								<div class="change">
+									<a onclick="checkImgDialog();event.stopPropagation();" href="javascript:void(0)" id="onyz">[发送验证码]</a>
+								</div>
+							</div>
+						</div>
+						<div class="button_k">
+							<input type="button" class="button1" id="checkcode" style="border-width: 1px; width: 105px;" value="通过手机找回">
+							<!-- <input type="button" class="button2"  style="border-width: 1px; width: 105px;" value="已更换手机号" onClick="location.href='__ROOT__/Home/User/phoneback.html'" /> -->
+						</div>
+
+						<div class="exp2" style="color: #666">
+							提示：密码将发送到您注册时使用的手机号。<br>
+							<br> <span>已更换注册时所用手机号怎么办？</span><br>
+							点击“已更换手机号”验证身份后，快速修改密码。<br> 修改密码后请尽快更新现用手机号，方便以后接受预约短信！
+						</div>
+
+					</div>
+				</form>
+
+
+		
+				<script>
+                $('#mobile').attr('value','');
+                $('#email').attr('value','');
+                var ontime=$('#onyz');
+                function userlenphone(phonename,yzphurl,hint){
+                    var yzphone=$("#"+phonename+"");
+                    if(hint){
+                        var phonehint=$("#"+hint+"");
+                    }else{
+                        var phonehint=false;
+                    };
+                    if(yzphone.val().length=='11' && yzphone.val() !=''){
+                        if(IsCellPhone(yzphone.val())){
+                            if(yzphurl){
+                                var data={mobile:yzphone.val()};
+                                $.post(yzphurl,data,function(josn){
+                                    if(josn=='1'){
+                                        yzphone.css('border','1px solid green').attr('sta','2');
+                                        if(phonehint){
+                                            phonehint.html('提示：点击发送短信验证码并输入验证码完成更换！').css('color','green');
+                                        };
+                                    }else{
+                                        yzphone.css('border','1px solid red').attr('sta','1');
+                                        if(phonehint){
+                                            phonehint.html('提示：您输入的手机号码已被使用！').css('color','red');
+                                        };
+                                    };
+                                });
+                            }else{
+                                yzphone.css('border','1px solid green').attr('sta','2');
+                                if(phonehint){
+                                    phonehint.html('提示：点击发送短信验证码并输入验证码完成更换！').css('color','green');
+                                };
+                            };
+                        }else{
+                            yzphone.css('border','1px solid red').attr('sta','0');
+                            if(phonehint){
+                                phonehint.html('提示：您输入的手机号码格式有误！').css('color','red');
+                            };
+                        };
+                    }else if(yzphone.val() !=''){
+                        yzphone.css('border','1px solid red').attr('sta','');
+                    }else{ 
+                        yzphone.css('border','').attr('sta','');
+                    };
+                };
+                //发送验证码
+                function useryzphone(mm){
+                    if(IsCellPhone($('#mobile').val())){
+                        ontime.attr('onclick',"");
+                        var kk=60;
+                        function time(){
+                          if(kk>0){
+                            //定时减秒
+                            kk--;
+                            ontime.css({'background':'none','color':'#282828','padding-left':'0px'}).html("<span><img src='/website/Public/Images/loading51.gif' style='width: 20px; height: 20px;float:left;margin-top: 3px;color:#6e6e6e' />"+kk+" 已发送</span>");
+                            return kk;
+                          }else{
+                            //取消定时 还原属性
+                            clearInterval(clock);
+                            ontime.html("<span style='color:#6e6e6e'>[重新发送]</span>");
+                            ontime.attr('onClick',"checkImgDialog()");
+                          };
+                        };
+                        //开启定时
+                        clock=setInterval(time,1000);
+                        //发送申请验证码接口-发送成功返回1 失败0
+                        var data={mobile:$(':input[name="mobile"]').val(),code:mm};
+                        $.post("/website/pc/recover/recoverSpendMessage.do",data,function(json){
+                        	
+                            if(json.flag=='1'){
+                            	$("#ImgDialog").dialog("close");
+                            	 $('#imageCode').val("");
+                                noticeBox({info:"短信验证码已发送、请查收！",isback:2,logo:1,title:"提示信息"});
+                            }else{
+                                noticeBox({info:""+json.message+"",isback:2,logo:5,title:"提示信息"});
+                            }
+                        });
+                    }else{
+                        noticeBox({info:"您输入的手机号码格式有误、请您检查！",isback:2,logo:5,title:"提示信息"});
+                    };
+                };
+           
+                
+              //弹出图片验证码层
+            	function checkImgDialog(){
+            		var mobile=$('#mobile').val();
+            		if(IsCellPhone(mobile)){
+            			refreshImg();//手机验证码赋值
+            				$("#ImgDialog").dialog('open');
+            			
+            		}else{
+            			noticeBox({info:"手机输入错误",isback:2,logo:5,title:"提示信息"});
+            		}
+            	}
+            	
+                
+              
+                		
+                	$("#checkcode").click(     function () {
+                             var mobiles=$("#mobile").val();
+                             var mobilecodes=$("#mobilecode").val();
+                            if(mobiles == "" || mobiles == null || !IsCellPhone(mobiles)){
+                                 noticeBox({info:"手机号输入错误",isback:2,logo:5,title:"提示信息"});
+                                 return false;
+                             }
+                             if(mobilecodes == "" || mobilecodes == null){
+                                 noticeBox({info:"手机验证码输入错误",isback:2,logo:5,title:"提示信息"});
+                                 return false;
+                             }
+                             
+                             var data={mobile:mobiles,mobilecode:mobilecodes};
+                             $.post("/website/pc/recover/checkMobileCode.do",data,function(json){
+                             	
+                            	 var j= new Array(); //定义一数组 
+
+                            	 j=json.split(",");
+                            
+                                 if(j[0]=='codeError'){
+                                     noticeBox({info:"手机验证码输入错误",isback:2,logo:5,title:"提示信息"});
+                                     return false;
+                                 }if(j[0]=='success'){
+                                	 location.href = "/website/pc/recover/getTocken.do?tocken="+j[1];
+                                 }else{
+                                     noticeBox({info:"手机号验证码不匹配",isback:2,logo:5,title:"提示信息"});
+                                     return false;
+                                 }
+                             },"text");
+                         });
+           
+            </script>
+				<div class="aside">
+
+
+					<div class="clear"></div>
+				</div>
+			</div>
+			<div class="clear"></div>
+	</div></article>
+
+
+
+<footer>
+  <div class="footer_main_k">
+    <div class="footer_main">
+      <div class="area">
+        <div class="tr">
+          <div class="td1">支持单位</div>
+          <div class="td"><img src="/website/Public/Images/cooperation2.jpg" width="150" height="40"></div>
+          <div class="td"><img src="/website/Public/Images/cooperation1.jpg" width="150" height="40"></div>
+          <div class="td"><img src="/website/Public/Images/cooperation3.jpg" width="150" height="40"></div>
+          <div class="td"><img src="/website/Public/Images/cooperation4.jpg" width="150" height="40"></div>
+          <div class="td"><img src="/website/Public/Images/cooperation12.jpg" width="150" height="40"></div>
+          <div class="td"><img src="/website/Public/Images/cooperation5.jpg" width="150" height="40"></div>
+        </div>
+        <div class="tr">
+          <div class="td1">合作媒体</div>
+          <div class="td"><img src="/website/Public/Images/cooperation9.jpg" width="150" height="40"></div>
+          <div class="td"><img src="/website/Public/Images/cooperation10.jpg" width="150" height="40"></div>
+          <div class="td"><img src="/website/Public/Images/cooperation6.jpg" width="150" height="40"></div>
+          <div class="td"><img src="/website/Public/Images/cooperation7.jpg" width="150" height="40"></div>
+          <div class="td"><img src="/website/Public/Images/cooperation8.jpg" width="150" height="40"></div>
+          <div class="td"><img src="/website/Public/Images/cooperation11.jpg" width="150" height="40"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer_link_k">
+    <div class="footer_link">
+      <div class="ewm">
+        <div class="pic"><img src="/website/Public/Images/wx1.png" width="110" height="110"></div>
+        <div class="word">微信订阅号</div>
+      </div>
+      <div class="ewm">
+        <div class="pic"><img src="/website/Public/Images/fwh.jpg" width="110" height="110"></div>
+        <div class="word">微信服务号</div>
+      </div>
+      <div class="con">
+      <div class="title">关于医指通</div>
+        <div class="link"> <a href="http://www.eztcn.com/Home/Footer/aboutus.html" target="_blank">关于我们</a><span>|</span> <a href="http://www.eztcn.com/Home/Service/index.html" target="_blank">客服服务</a><span>|</span> <a href="http://www.eztcn.com/Home/Usermember/opinion.html" target="_blank">意见反馈</a><span>|</span> <a href="http://www.eztcn.com/Home/Footer/mianze.html" target="_blank">免责声明</a> <a href="http://www.eztcn.com/Home/Footer/contactus.html" target="_blank">联系我们</a><span>|</span> <a href="http://www.eztcn.com/Home/Footer/hosjoin.html" target="_blank">医院入驻</a><span>|</span> 
+          <!--<a href="__ROOT__/Home/Index/sethome.html" >设为主页</a>--> 
+         <!-- <a href="javascript:void(0);"  onclick="SetHome('预约挂号|网上挂号平台|预约挂号网|三甲医院挂号|天津预约挂号-医指通官方网站','http://www.eztcn.com')" >设为主页</a><span>|</span> --><a href="http://weibo.com/307893467" target="_blank">官方微博</a> </div>
+        <div class="msg"><span>承办单位: 时代华纳集团</span><span>运营服务: 医指通云平台</span>津ICP备: 13000427</div>
+        <div class="msg">互联网医疗保健信息服务许可证：津卫(中医)网审(2014)第0008号</div>
+      </div>
+      <div class="footerlogo"><img src="/website/Public/Images/footerlogo.jpg"></div>
+    </div>
+  </div>
+  <div class="clear"></div>
+</footer>
+
+
+
+<script>
+
+
+/**收藏**/
+function SetHome(obj,url){
+	try{
+		obj.style.behavior='url(#default#homepage)';
+		obj.setHomePage(url);
+	}catch(e){
+		if(window.netscape){
+			try{
+				pe.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+			}catch(e){
+				noticeBox({info:"抱歉，此操作被浏览器拒绝！请在浏览器地址栏输入“about:config”并回车然后将[signed.applets.codebase_principal_support]设置为'true'",isback:2,logo:5,title:"提示信息"});
+			}
+		}else{
+			noticeBox({info:"抱歉，您所使用的浏览器无法完成此操作。您需要手动将【"+url+"】设置为首页。",isback:2,logo:5,title:"提示信息"});
+		}
+	}
+}
+
+// 下拉框选择医院
+function listjahosp(a,name){
+	var data={hospitalid:a};
+	$.post("__ROOT__/Home/Index/hospital.html",data, function(json){
+		$('#listja1').html(json[0]);
+		if(json[1]){
+			$('#listja2').html(json[1]);
+		}else{
+			$('#listja2').html("<li style='color:#666'>暂无信息</li>");
+		}
+	});
+	 $('.new').css('display','none');
+	 $(".set").html(name).attr('rel',a);
+	//还原下级选项
+	$(".set1").html('请选择').attr('rel','');
+	$(".set2").html('请选择').attr('rel','');
+}
+
+</script> 
+
+
+
+
+<div style="display: none; z-index: 1000; outline: 0px; " class="ui-dialog ui-widget ui-widget-content ui-corner-all  ui-draggable" tabindex="-1" role="dialog" aria-labelledby="ui-dialog-title-ImgDialog"><div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix" unselectable="on"><span class="ui-dialog-title" id="ui-dialog-title-ImgDialog" unselectable="on">&nbsp;</span><a href="#" class="ui-dialog-titlebar-close ui-corner-all" role="button" unselectable="on"><span class="ui-icon ui-icon-closethick" unselectable="on">close</span></a></div><div id="ImgDialog" style="" class="ui-dialog-content ui-widget-content">
+							<div class="list">
+								<div class="word">图片验证码：</div>
+								<div class="input_k">
+									<input type="text" name="imageCode" id="imageCode"> <img id="imgCaptcha" class="change" src="" onclick="refreshImg()">
+								</div>
+							</div>
+						</div><div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix"><div class="ui-dialog-buttonset"><button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text">确定</span></button><button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button" aria-disabled="false"><span class="ui-button-text">关闭</span></button></div></div></div></body></html>

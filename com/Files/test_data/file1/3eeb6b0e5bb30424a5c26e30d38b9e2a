@@ -1,0 +1,337 @@
+<!DOCTYPE html><html class="ui-mobile ui-nosvg"><head><script type="text/javascript" src="http://ctweb.omniture.cn:9000/wcode/live/ctwap.js?v=20151104"></script><script type="text/javascript" src="http://ctweb.omniture.cn:9000/wcode/live/v.js?t=1491040375450"></script><base href="http://cservice.client.189.cn:9092/upgradePath/upgradePath_verification.html">
+	<meta charset="utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
+    <meta http-equiv="Cache-Control" content="no-cache,must-revalidate">
+    <meta name="format-detection" content="telephone=no">
+    <title>3升4办理</title>
+    <link rel="stylesheet" href="http://image1.chinatelecom-ec.com/client/wap/common/css/jquery.mobile-1.4.2.min.css">
+    <link rel="stylesheet" href="http://image1.chinatelecom-ec.com/client/wap/common/css/common.css">
+    <script src="http://image1.chinatelecom-ec.com/client/wap/common/js/jquery-1.9.1.js"></script>
+    <script src="http://image1.chinatelecom-ec.com/client/wap/common/js/jquery.mobile-1.4.2.min.js"></script>
+    <script src="http://image1.chinatelecom-ec.com/client/wap/common/js/tool.js"></script>
+    <script src="http://image1.chinatelecom-ec.com/client/wap/upgradePath/js/upgradePath.js"></script>
+    <link rel="stylesheet" href="http://image1.chinatelecom-ec.com/client/wap/common/css/dropkick.css">
+	<script src="http://image1.chinatelecom-ec.com/client/wap/common/js/jquery.dropkick.js"></script>
+</head>
+<body style="background:#fff;" class="ui-mobile-viewport ui-overlay-a"> 
+    <div data-role="page" id="upgradePath_verification" style="background:#fff;" data-url="upgradePath_verification" tabindex="0" class="ui-page ui-page-theme-a">
+        <style>
+        	 /* 去掉input的蓝色边框 */
+        	 .verification_from input{outline:none;-webkit-outline:none;-webkit-tap-highlight-color:rgba(255,0,0,0);}
+        	 /* 头部的12345 */
+        	.identity_verification_top{width:90%;margin:3% auto;display:none;}
+        	.identity_verification_top p{display:none;color:#f9a658;font-size: 0.9rem;line-height: 1.5rem;margin-bottom:1rem;text-align: left;}
+        	.identity_verification{width:90%;margin:10% auto;}
+        	.verification_phone{width:100%;height:38px;}
+        	.verification_phone>span:first-child{width:10%;height:10%;display:inline-block;float:left;}
+        	.verification_phone>span>strong{font-size: 1.1rem;text-align:left;}
+        	/* 清除浮动 */
+        	.verification_phone:after{content:".";height:0;visibility:hidden;display:block;clear:both;} 
+			/* 表单   */
+			.verification_input_one,.verification_input,.verification_input_two,.verification_input_three{width:100%;background:#f8f8f8;}
+        	.verification_from{width:100%;margin-top:6%;}
+        	/* 表单的所有第一个span */
+        	.verification_input>span:first-child,.verification_input_two>span:first-child,.verification_input_three>span:first-child,.verification_input_one>span:first-child{width:10%;height:10%;margin-right:1%;}
+        	/* 表单的所有第一个span的img */
+        	.verification_input>span:first-child>img,.verification_input_two>span:first-child>img,.verification_input_three>span:first-child>img,.verification_input_one>span:first-child>img{margin-left:1rem;}
+        	.verification_input>input,.verification_input_two>input{width:83%;border:none;background:none;font-size: 0.9rem;padding:0.4rem 0;height:1.8rem;display: inline-block;margin:0;}
+        	.verification_input_two>input{width:83%;}
+        	.verification_input_one>input{width:87%;border:none;background:none;font-size: 1.2rem;color:#e3e3e3;font-weight:bold;}
+        	.verification_input_two,.verification_input_three{margin-top:7%;}
+        	.verification_input_three>input{width:50%;border:none;background:none;font-size: 0.9rem;padding:0.72rem 0;display: inline-block;margin:0;}
+        	.verification_input_one{margin-bottom:7%;padding: 0.28rem 0;}
+        	.verification_input_one>span:first-child{margin-right:5%;}
+        	.verification_input_one>span:nth-child(2){font-weight: bold;}
+        	/* 获取验证码 */
+        	.verification_input_three div,.verification_input_three div{-webkit-border-radius: 0;cursor: pointer;margin:0.5em auto;float: right;width: 30%;padding: 0.79rem 0;margin-top: 0.0rem;font-size:0.8em;color:#fff;letter-spacing: 0.08rem;display: inline-block;}
+        	.verification_input_one>span{line-height:2rem;}
+        	.verification_txt{margin-left: 2%;width: 83.6%;}
+        	/*下一步，填写收货地址  */
+        	.verification_sub{width:100%;margin-top:6%;}
+        	.verification_sub>p:nth-child(2){width:100%;margin-top:10%;padding:0.85rem 0;}
+        	/* 提示信息 */
+        	.verification_sub>p:nth-child(1){color:#ff0214;text-align:center;font-size: 0.9rem;visibility: hidden;line-height: 1.3rem;min-height:1.3rem;}/*给提示信息标签加最小高度  修改时间：2016-06-23  修改人：lxc*/
+        	/* 公共的橘黄色按钮 */
+        	.verification_sub .commonButton_yellow{-webkit-border-radius: 5px;cursor: pointer;}
+        	/* 返回上一步  */
+        	.gobackButtom{position:fixed;left:1.5rem;bottom:5rem;z-index:6;}
+        	
+        	
+        	.up_bot {margin-bottom: 20px;}
+        	.introduce_tipbox{margin:0.5rem auto 0;width:100%;}
+				.introduce_tipbox_content{overflow-y:auto;width:96%;margin:0 auto;}
+				.introduce_tipbox_content>p{font-size:0.9rem;line-height:1.5rem;}
+        </style>
+        <script type="text/javascript">
+	        $('#upgradePath_verification').on('pageshow', function(){
+	        	/* 获取数据 */
+	        	identifyPage.init();
+	        	hideLoginWaitCurr();
+	    	});
+       		/* 页面对象 */
+        	var identifyPage = {
+       			salesid: '',			//salesProdId
+       			/* 数据对象 */
+       			upgradedata:{},
+       			init: function(){
+       				if(isNull(sessionStorage.getItem('upgradePath'))){
+						changePage('../upgradePath/upgradePath_error.html?errorcode='+errTip.e003.code);
+					}else{
+						identifyPage.upgradedata = JSON.parse(sessionStorage.getItem('upgradePath'));
+					}
+					/* 判断步骤进入页面 */
+					
+					/* 4.1.1.3变更套餐省4G-STEP3 身份验证  */
+					if(identifyPage.upgradedata.showPageIdentity == '4.1.1.3'){
+						$('.identity_verification_top img')[0].src = 'http://image2.chinatelecom-ec.com/client/wap/upgradePath/images/up_step53.png';
+						identifyPage.upgradedata.showPageAddress = '4.1.1.4';
+					/* 4.1.2.2变更套餐省4G-STEP2 身份验证 */
+					}else if(identifyPage.upgradedata.showPageIdentity == '4.1.2.2'){                   
+						$('.identity_verification_top img')[0].src = 'http://image2.chinatelecom-ec.com/client/wap/upgradePath/images/up_step42.png';
+						identifyPage.upgradedata.showPageAddress = '4.1.2.3';
+					/* 4.2.2   不换卡升4G-step2身份验证 */
+					}else if(identifyPage.upgradedata.showPageIdentity == '4.2.2'){
+						$('.identity_verification_top img')[0].src = 'http://image2.chinatelecom-ec.com/client/wap/upgradePath/images/up_other_step32.png';
+						identifyPage.upgradedata.showPageOrder = '4.2.3';
+						$(".identity_verification_top p").show();
+						$("#verification_nextBtn").html("下一步，提交订单");
+					//路径5 修改办理进度图片 添加收货地址页面标识 zzw 2016-9-12
+					}else if(identifyPage.upgradedata.showPageIdentity == 'path5'){
+						$('.identity_verification_top img')[0].src = 'http://image2.chinatelecom-ec.com/client/wap/upgradePath/images/up_step5_42.png';
+						identifyPage.upgradedata.showPageAddress = 'path5';
+					}
+					$('.identity_verification_top img')[0].onload = function(){
+						$('.identity_verification_top').show();
+					}
+					//判断情况获取销售品ID
+					
+					//comboId:畅聊包ID
+					//comid  :套餐ID
+					
+					/* 换套餐换卡 */
+					if(!isNull(identifyPage.upgradedata.orderInfo.comid)){
+						identifyPage.salesid = identifyPage.upgradedata.path.updatePathSalesId[1];
+					/* 加装畅聊包 */
+					}else if(!isNull(identifyPage.upgradedata.orderInfo.comboId)){
+						identifyPage.salesid = identifyPage.upgradedata.path.updatePathSalesId[2];
+					/* 路径5添加销售品 zzw 2016-9-12 */
+					}else if(identifyPage.upgradedata.showPageIdentity == 'path5'){
+						identifyPage.salesid = identifyPage.upgradedata.path.updatePathSalesId[4];
+					/* 套餐直升 */
+					}else{
+						identifyPage.salesid = identifyPage.upgradedata.path.updatePathSalesId[3];
+					}
+					//显示手机号
+       				$('.verification_input_one span:last').html(identifyPage.splitPhoneNum(identifyPage.upgradedata.phoneNumber));
+	        		//$("#codeBtn").addEventFun(identifyPage.getCode);
+	        		$("#verification_nextBtn").addEventFun(identifyPage.verification);
+	        		var param ={
+						serviceType: '3',
+						type:'6'
+   					};
+	        		/* 获取验证码 */
+   					var s = {
+   							target:$('#ranodmCode'),				//jQuery 对象(错误目标)
+   							loadHtml:'#random#',		   			//倒计时hmtl 
+   							funCode:'selectRandomCode', 		//请求functionCode
+   							param:param,					   		//请求入参
+   							callBack:function(data){
+   								loadError(data);
+   								if(data.headerInfo.code=="W_0000"){
+   	        						if(data.responseContent.serviceCode == '0'){
+   	            						$('.verification_remind').html('随机码已发送到您的手机，请注意查收。').css({"visibility":"visible"});
+   	        						}else{
+   	            						$('.verification_remind').html(data.responseContent.serviceMessage).css({"visibility":"visible"});
+   	            					}
+   	        					}else{
+   	        						$('.verification_remind').html(data.headerInfo.message).css({"visibility":"visible"});
+   	        					}
+   							}
+	    			};
+	    			var rb = new randomBtn(s);
+   					/* 返回上一页 */
+   					var set = {
+  	       				cla:'gobackButtom',url:'http://image2.chinatelecom-ec.com/client/wap/common/images/icon_back1.png'
+  	       			};
+  	       			goBack(set);
+        			},
+        			//格式化 手机号
+        			splitPhoneNum:function(pnum){
+        				return pnum.substring(0,3)+' '+pnum.substring(3,7)+' '+pnum.substring(7);
+        			},
+        			/* 获取验证码判断是否正确  */
+        			getCode : function(){                                                                                                     
+    					
+        			},
+        			/* 返回参数  */
+        			chaeckParam : function(){
+        				var param ={
+            					id: identifyPage.upgradedata.phoneNumber,
+            					type: '6',
+            					serviceType: '3',
+            					salesProdId: identifyPage.salesid,
+            					randomcode: $("#verification_code").val(),
+            					userName: $("#verification_txt").val(),
+            					idCard: $("#verification_ID").val(),
+            					chatPackageId: isNull(identifyPage.upgradedata.orderInfo.comboId)? '' : identifyPage.upgradedata.orderInfo.comboId,			//畅聊包id
+            					uimCode:  isNull(identifyPage.upgradedata.orderInfo.cardId)? '' : identifyPage.upgradedata.orderInfo.cardId,			//手机卡id
+            					comboId:  isNull(identifyPage.upgradedata.orderInfo.comid)? '' : identifyPage.upgradedata.orderInfo.comid			//畅聊包id
+            				};
+        				/* 表单验证  */
+           				var errorText = '';
+           				if(isNull(param.userName)){
+           					errorText = '机主名字不能为空';
+           					return errorText;
+           				};
+           				if(isNull(param.idCard)){
+           					errorText = '身份证号不能为空';
+           					return errorText;
+           				};
+           				if('string' == typeof(isIDCardNum(param.idCard))){
+           					errorText = '身份证号不正确';
+           					return errorText;
+           				}
+           				if(isNull(param.randomcode)){
+           					errorText = '短信验证码不能为空';
+           					return errorText;
+           				};
+           				if(isNull(param.uimCode)){
+           					errorText = '请选择号卡类型';
+           					return errorText;
+           				}
+           				return param;
+        			},
+        			/* 验证并创建订单 */
+        			verification : function(){
+        				var errorText = identifyPage.chaeckParam();
+        				if(!isNull(errorText) && 'string' == typeof(errorText)){
+	        				/* $('.verification_remind').html(errorText).show(); */
+	        				$('.verification_remind').html(errorText).css({"visibility":"visible"});
+	        				return '';
+        				}
+						identifyPage.submitData = errorText;
+						/* 添加判断   路径2、3、4路径2、3、4情况的订单填写 下面均没有这个提示文字 */
+						if(isNull(identifyPage.upgradedata.orderInfo.comid)){
+							identifyPage.toUp4();
+						}else{
+							//弹窗提示文案  修改安卓机器不隐藏手机键盘情况下弹窗高度计算有误。延迟350毫秒弹窗。修改时间：2016-06-23  修改人：lxc
+							setTimeout(function(){
+	        					identifyPage.showTipBox();
+	        				},350);
+							
+						}
+        				
+        				/* 清空提示文字信息 */
+        				$('.verification_remind').html(' ').css({"visibility":"hidden"});
+        			},
+        			showTipBox:function(){
+						var html = '<div id="introduce_tips" class="introduce_tipbox">\
+										<div class="introduce_tipbox_content">\
+											<p>1、若您与中国电信有靓号协议或合约协议未到期，当您选择了低于月承诺消费金额的套餐档位，如消费金额未超过月承诺消费金额，\
+											将按月承诺消费金额收取。（例：月承诺消费额金额89元，选择59元的4G套餐，总消费金额未超过89元，将以原月承诺消费金额89元收取。）</p>\
+											<Br><p>2、升级为4G套餐后，原3G套餐内赠送的增值业务可选包将收取月功能费，如您不需要可以拨打10000号进行退订哦！</p>\
+										</div>\
+										<div class = "commonButton_yellow" onclick="identifyPage.toUp4();" style="border-radius:0;margin-bottom:0;">确定</div>\
+									</div>';
+						var set = {
+							version:2,
+							content:html,
+							id:'introduce_tip',
+							conStyle:'padding:0;overflow:hidden;'
+						}
+						identifyPage.box = new Popup(set);
+						identifyPage.box.show(function(){
+							var tH = $('#popup div[data-type=title]').height();
+							var bH = $('#introduce_tip div:last').height();
+							var wH = $(window).height()*0.7;
+							var MH =  wH*0.66 - tH*2 - bH;
+							$('#introduce_tips div:first').css({'max-height':MH,'overflow-y':'auto'});
+						});
+					},
+					toUp4:function(){
+						if(identifyPage.box){
+							identifyPage.box.hide();
+						}
+						
+						/* 获取存储表单信息 */
+        				doAjax('createOrderUni3',identifyPage.submitData,function(data){
+        					if(data.headerInfo.code=="W_0000"){
+        						if(data.responseContent.serviceCode == '0'){
+        							identifyPage.upgradedata.orderInfo.userName = identifyPage.submitData.userName;				//存储机主名字
+        							identifyPage.upgradedata.orderInfo.idCard = identifyPage.submitData.idCard;					//存储机主身份证
+        							identifyPage.upgradedata.orderInfo.orderId = data.responseContent.orderId;		//存储订单id
+        							identifyPage.upgradedata.orderInfo.cancelInfo = data.responseContent.cancelInfo;//退订信息
+        							sessionStorage.setItem('upgradePath', JSON.stringify(identifyPage.upgradedata));
+        							if(identifyPage.upgradedata.showPageIdentity == '4.2.2'){
+        								//跳转订单详情页面
+        								changePage('../upgradePath/upgradePath_order.html');
+        							}else{
+        								//跳转订单填写页面
+	        							changePage('../upgradePath/upgradePath_address.html');
+        							}
+        						}else{
+            						$('.verification_remind').html(data.responseContent.serviceMessage).css({"visibility":"visible"});
+            					}
+        					}else{
+        						$('.verification_remind').html(data.headerInfo.message).css({"visibility":"visible"});
+        					}
+        				},function(data){
+    						$('.verification_remind').html(data.message).css({"visibility":"visible"});
+        				},function(data){
+    						$('.verification_remind').html(data.message).css({"visibility":"visible"});
+        				},true,true,loadError);
+					}
+        	}
+        </script>
+        <div data-role="content" style="padding:0;margin:0;background:#fff;" class="ui-content" role="main">
+        	<!-- 头部的12345 -->
+            <div class="identity_verification_top">
+            	<p>此办理只为升级4G套餐，若想使用4G速度还需要更换4G卡!</p>
+            	<img width="100%" src="">
+            </div>
+            <!--表单  -->
+            <div class="identity_verification">
+            	<div class="verification_from">
+	            	<form action="">
+	            	<!-- 手机号  -->
+	            		<div class="verification_input_one">
+	            			<span style="width:2rem;margin-right:0.9rem;display: inline-block;"><img width="19rem" src="http://image2.chinatelecom-ec.com/client/wap/common/images/up_other_phone.png"></span>
+	            		    <!-- 手机号码 -->
+	            		    <span onclick="return false;" style="width:80%;display: inline-block;margin:0;"></span>
+	            		</div>
+	            		<!-- 请填写机主姓名 -->
+	            		<div class="verification_input">
+	            			<span style="width:2rem;margin-right:0.5rem;display: inline-block;"><img width="19rem" src="http://image2.chinatelecom-ec.com/client/wap/common/images/up_other_name.png"></span>
+	            		    <input data-role="none" class="verification_txt" id="verification_txt" type="text" placeholder=" 请填写机主姓名">
+	            		</div>
+	            		<!-- 请填写机主18位身份证号码 -->
+	            		<div class="verification_input_two">
+	            			<span style="width:2rem;margin-right:0.5rem;display: inline-block;"><img width="23rem" src="http://image2.chinatelecom-ec.com/client/wap/common/images/up_other_id.png"></span>
+	            		    <input data-role="none" class="verification_ID" id="verification_ID" maxlength="18" type="text" placeholder=" 请填写机主18位身份证号码">
+	            		</div>
+	            		<!-- 请输入短信验证码     获取验证码 -->
+	            		<div class="verification_input_three">
+	            			<span style="width:2rem;margin-right:0.5rem;display: inline-block;"><img width="23rem" src="http://image2.chinatelecom-ec.com/client/wap/common/images/up_other_code.png"></span>
+	            		    <input data-role="none" class="verification_code" id="verification_code" maxlength="6" onkeyup="value=value.replace(/[^\d.]/g,'') " type="tel" placeholder=" 请输入短信验证码">
+	            		    <!--获取验证码橘黄色  -->
+	            		    <div class="ranodmCode" id="ranodmCode">获取验证码</div>
+	            		</div>
+	            		<!-- 提示信息   下一步，填写收货地址-->
+	            		<div class="verification_sub">
+	            			<p class="verification_remind"> </p>
+	            			<!--按钮橘黄色  -->
+	            			<p class="commonButton_yellow" id="verification_nextBtn">下一步，填写收货地址</p>
+	            		</div>
+	            	</form>
+            	</div>
+            </div>	
+            <!--/表单  -->
+        </div>
+    </div>
+    <script type="text/javascript" src="http://image1.chinatelecom-ec.com/client/wap/common/js/s_code.js"></script>
+
+</body></html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html><html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1,user-scalable=no">
+<title></title>
+</head>
+<body>
+ <script> 
+     (function(){
+    var url = document.URL;
+    var clientId = '';
+    var cookieUtil = {
+          set: function(name, value, expires, path, domain, secure){
+                var cookieText=encodeURIComponent(name)+'='+
+                          encodeURIComponent(value);
+                if(expires instanceof Date){
+                  cookieText+=';expires='+expires.toGMTString();
+                }
+                if(path){
+                  cookieText+=';path='+path;
+                }
+                if(domain){
+                  cookieText+=';domain='+domain;
+                }
+                if(secure){
+                  cookieText+=';secure';
+                }
+             document.cookie=cookieText;        
+          }
+      };
+      function setCookieDate(day){
+           var date = null;
+           if(typeof day == 'number' && day > 0){
+               date = new Date();
+               date.setDate(date.getDate() + day);
+           }else{
+              throw new Error('!!')         
+           }
+           return date;
+       }
+       if(top !== window){
+            clientId = url.slice(url.indexOf('?') + 1).split('&')[0].replace(/\w+=/g,'');
+            cookieUtil.set('clientac', clientId, setCookieDate(3650), '/', '.xywy.com');
+       }
+      
+})();
+   
+    </script> 
+
+</body></html>

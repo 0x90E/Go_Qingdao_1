@@ -1,0 +1,753 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<meta http-equiv="X-UA-Compatible" content="IE=7">
+<meta name="WT.cg_ygbx" content="积分商城/花阳光币">
+<title>阳光保险官方网站_网上保险公司首选</title>
+<meta name="keywords" content="阳光保险,保险,阳光保险集团官方网站,保险公司,保险公司排名,人寿保险,财产保险,养老保险,医疗保险,车险,健康保险,儿童保险,意外保险,旅游保险,重大疾病保险,理财保险,个人保险,团体保险">
+<meta name="description" content="阳光保险集团股份有限公司是中国500强企业、中国服务业100强企业,提供人寿保险,财产保险,养老保险,医疗保险,车险,健康保险,儿童保险,意外保险,旅游保险,重大疾病保险,理财保险等保险业务。阳光保险集团在国内保险公司排名中长期处于领先位置,个人保险和团体保险并重,不断在人寿保险,财产保险的基础上开发养老保险,医疗保险,重大疾病保险和健康保险等符合用户需求的各类保险产品。">
+<meta name="WT.cg_n" content="购物车页面">
+<meta name="WT.cg_s" content="购物车页面">
+<meta name="WT.tm_id" content="">
+<link rel="stylesheet" type="text/css" href="/css/css.css" media="screen">
+<link rel="stylesheet" type="text/css" href="/css/cl.css" media="screen">
+<link rel="stylesheet" type="text/css" href="/css/pc.css" media="screen">
+<link rel="stylesheet" type="text/css" href="/css/pic.css" media="screen">
+<script language="javascript" src="/js/jquery-1.4.2.min.js" type="text/javascript"></script>
+<script language="javascript" src="/js/swfobject.js" type="text/javascript"></script>
+<script language="javascript" src="/js/js.js" type="text/javascript"></script>
+<script language="javascript" src="/js/prototype.lite.js" type="text/javascript"></script>
+<script language="javascript" src="http://club.sinosig.com/js/common.js" type="text/javascript"></script>
+<script type="text/javascript" src="http://club.sinosig.com/static/js/util.js"></script>
+<script type="text/javascript" src="http://auth.sinosig.com/auth/js/loginFrame.js"></script>
+<script type="text/javascript" src="/js/dcs_tag.js"></script><script src="http://sdc.sinosig.com/dcsspufpe10000k3wy5tvybo1_7k8w/wtid.js"></script>
+<script type="text/javascript" src="http://www.sinosig.com/common/index/js/registUtil.js"></script>
+
+<script type="text/javascript">
+	var isBpoint;
+	var sourceUrl;
+	jQuery(document).ready(function(){
+	    var isBpoint=jQuery("#isBpoint").val();		
+	    var shopCartProductNum = jQuery("#shopCartProductNum").val();
+	    var isbzs = jQuery("#isbzs").val();	    
+		if(jQuery(".hejiShow").length >0){
+			jQuery("#hejiText").text("阳光币");
+		}
+		else if(isBpoint=="B" && isbzs!="0"){
+			jQuery("#hejiText").text("阳光贝");
+		}
+		//获取来源分类url
+	   jQuery.ajax({
+	   type: "post",
+       url: "/appController/getSourceUrl",
+       success: function(data){
+       		//alert(data);
+       		if(data != null && data != "" && data != undefined){
+    			//$("#contChange").attr("href",data);
+    			sourceUrl = data;
+    		}
+      	}
+      	});
+	}); 
+
+	var productNum;
+	function onDelete(a, pid){
+		//商品种类
+		var shopCartProductNum = jQuery("#shopCartProductNum");
+		
+		if("all" == pid){//清空购物车
+			jQuery("tr[name='productTr']").remove();
+			shopCartProductNum.val(0);
+			jQuery("strong[name='cartCnt']").text("0");
+		}else{//删除一项
+			jQuery(a).parent().parent().remove();
+			shopCartProductNum.val(shopCartProductNum.val() - 1);
+			jQuery("strong[name='cartCnt']").text(parseInt(jQuery("strong[name='cartCnt']:eq(0)").text())-1);
+		}
+		
+		
+		//判断是否有活动类商品
+		if(jQuery(".hejiShow").length >0){
+			jQuery("#hejiText").text("阳光币");
+		}
+		else if(isBpoint=='B' && shopCartProductNum=="1"){
+			jQuery("#hejiText").text("阳光贝");
+		}
+		else{
+			jQuery("#hejiText").text("阳光币/阳光贝");
+		}
+		
+		jQuery.ajax({
+			//提交的类型
+			type: "post", 
+			//提交地址
+	        url: "/appController/deleteShopCart",
+			//dataType:"json",
+			//参数
+	        data: "pid=" + pid,
+	        //回调方法
+	        success: function(json){
+	        	if (json != "false") {
+		            //更新总价
+		            if(json=='0'){
+		            	jQuery("#nowPrice").text(json);
+		            	jQuery("#aPoint").text(json);
+		            	jQuery("#bPoint").text(json);
+		            	jQuery("#cPoint").text(json);
+		            	jQuery("#dPoint").text(json);
+		            	jQuery("#ePoint").text(json);
+		            	jQuery("#hj").hide();
+		            	jQuery("#jf").show();
+		            }else{
+		            var result = json.split(";");
+		            	if(result[0]=='A'){
+		            		if(parseInt(result[1])==0){
+		            			jQuery("#aPointDesc").hide();
+		            			jQuery("#mh1").hide();
+		            			jQuery("#aPoint").hide();
+		            		}else{
+		            			jQuery("#aPoint").text(result[1]);
+		            		}	
+		            	}
+		            	if(result[0]=='B'){
+		            		if(parseInt(result[1])==0){
+		            			jQuery("#bPointDesc").hide();
+		            			jQuery("#mh2").hide();
+		            			jQuery("#bPoint").hide();
+		            		}else{
+		            			jQuery("#bPoint").text(result[1]);
+		            		}	
+		            	}
+		            	if(result[0]=='C'){
+		            		if(parseInt(result[1])==0){
+		            			jQuery("#cPointDesc").hide();
+		            			jQuery("#mh3").hide();
+		            			jQuery("#cPoint").hide();
+		            		}else{
+		            			jQuery("#cPoint").text(result[1]);
+		            		}	
+		            	}
+		            	if(result[0]=='D'){
+		            		if(parseInt(result[1])==0){
+		            			jQuery("#dPointDesc").hide();
+		            			jQuery("#mh4").hide();
+		            			jQuery("#dPoint").hide();
+		            		}else{
+		            			jQuery("#dPoint").text(result[1]);
+		            		}	
+		            	}
+		            	if(result[0]=='E'){
+		            		if(parseInt(result[1])==0){
+		            			jQuery("#ePointDesc").hide();
+		            			jQuery("#mh5").hide();
+		            			jQuery("#ePoint").hide();
+		            		}else{
+		            			jQuery("#ePoint").text(result[1]);
+		            		}
+		            	}
+		            	if(result[0]=='S'){
+		            		if(parseInt(result[1])==0){
+		            			jQuery("#hejiText").hide();
+		            			jQuery("#mh6").hide();
+		            			jQuery("#nowPrice").hide();
+		            		}else{
+		            			jQuery("#nowPrice").text(result[1]);
+		            		}
+		            	}
+		            	if(result[0]=='SB'){
+		            		if(parseInt(result[1])==0){
+		            			jQuery("#sbPointDesc").hide();
+		            			jQuery("#mh7").hide();
+		            			jQuery("#sbPoint").hide();
+		            		}else{
+		            			jQuery("#sbPoint").text(result[1]);
+		            		}
+		            	}
+		            }
+	        	} else {// session无效时刷新购物车
+	        		window.location.href = "/product/shopping_cart.html";
+	        	}
+			}
+		});
+	}
+function updateAccount(num,pid,text){
+	var reg = /^(((13[0-9]{1})|(14[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1}))+\d{8})$/;//手机
+	if(num==1){
+	 	var reg1 =  /^\d{19}$/g;
+		var oilAcc= jQuery(text).val();
+		if(oilAcc==""){
+			alert("油卡卡号为必填项！");
+			return false;
+		}else if(!reg1.test(oilAcc)){
+			alert("加油卡格式错误，应该为19位数字！");
+			return false;
+		}
+		jQuery.ajax({
+			//提交的类型
+			type: "post", 
+			//提交地址
+	        url: "/appController/updateDepositCart",
+			//参数
+	        data: "pid=" + pid + "&oilAcc=" + oilAcc,
+	        //回调方法
+	        success: function(data){
+	        	if (data == "false") {// 登录成功或无需登录
+	        		window.location.href = "/product/shopping_cart.html";
+	        	}
+			}
+		});
+	}else if(num==2){
+		var oilTelAcc= jQuery(text).val();
+		if(oilTelAcc==""){
+			alert("电话号码为必填项！");
+			return false;
+		}else if(!reg.test(oilTelAcc)){
+			alert("请输入正确的电话号码");
+			return false;
+		}
+		jQuery.ajax({
+			//提交的类型
+			type: "post", 
+			//提交地址
+	        url: "/appController/updateDepositCart",
+			//参数
+	        data: "pid=" + pid + "&oilTelAcc=" + oilTelAcc,
+	        //回调方法
+	        success: function(data){
+	        	if (data == "false") {// 登录成功或无需登录
+	        		window.location.href = "/product/shopping_cart.html";
+	        	}
+			}
+		});
+	}else if(num==3){
+		var telAcc= jQuery(text).val();
+		if(telAcc==""){
+			alert("电话号码为必填项！");
+			return false;
+		}else if(!reg.test(telAcc)){
+			alert("请输入正确的电话号码");
+			return false;
+		}
+		jQuery.ajax({
+			//提交的类型
+			type: "post", 
+			//提交地址
+	        url: "/appController/updateDepositCart",
+			//参数
+	        data: "pid=" + pid + "&telAcc=" + telAcc,
+	        //回调方法
+	        success: function(data){
+	        	if (data == "false") {// 登录成功或无需登录
+	        		window.location.href = "/product/shopping_cart.html";
+	        	}
+			}
+		});
+	}
+	
+}
+	function onUpdate(priceNum, pid,priceName){
+		//得到商品数量
+		var num = parseInt(jQuery(priceNum).val());
+		var reg = /^[1-9]\d*$/;
+		var storage = parseInt(jQuery(priceNum).parent().find("input[id^='storage_']").val());
+		var proTypeCode = jQuery(priceNum).parent().find("input[id^='proTypeCode_']").val();
+		if(!reg.test(num)){
+			alert("请输入正确的商品数量");
+			jQuery(priceNum).val(productNum);
+			return false;
+		}
+		if(proTypeCode!="jd"&&proTypeCode!="zc"&&proTypeCode!="oil"){
+			if(num > storage){
+				alert(priceName+"购买数量超出库存数量!");
+				jQuery(priceNum).val(productNum);
+				return false;
+			}
+		}
+		if(num>10){
+			alert("您兑换的商品"+priceName+"数量已达上限（一个商品最多兑换10个），请确认。");
+			jQuery(priceNum).val("1");
+			return false;
+		}
+		jQuery.ajax({
+			//提交的类型
+			type: "post", 
+			//提交地址
+	        url: "/appController/updateShopCart",
+			//参数
+	        data: "pid=" + pid + "&num=" + num,
+	        //回调方法
+	        success: function(data){
+	        	if (data != "false") {// 登录成功或无需登录
+			        var result = data.split(";");
+		            //更新总价
+		            jQuery("#allPrice").text(result[0]);
+		            if(result[2]=="A"){
+		            	jQuery("#aPoint").text(result[3]);
+		            }
+		            if(result[2]=="B"){
+		            	jQuery("#bPoint").text(result[3]);
+		            }
+		            if(result[2]=="C"){
+		            	jQuery("#cPoint").text(result[3]);
+		            }
+		            if(result[2]=="D"){
+		            	jQuery("#dPoint").text(result[3]);
+		            }
+		            if(result[2]=="E"){
+		            	jQuery("#ePoint").text(result[3]);
+		            }
+		            if(result[2]=="S"){
+		            	jQuery("#nowPrice").text(result[3]);
+		            }
+		            if(result[2]=="SB"){
+		            	jQuery("#sbPoint").text(result[3]);
+		            }
+		            //更新商品总价
+		        	jQuery(priceNum).parent().parent().find("span[name='productPrice']").text(result[1]);
+	        	} else {
+	        		window.location.href = "/product/shopping_cart.html";
+	        	}
+			}
+		});
+	}
+ 	
+ 	function showMore(){
+ 		jQuery("#moreArea").hide();
+ 		jQuery("#otherArea").show();
+ 	}
+    
+	function showOrder(){
+		var shopCartProductNum = jQuery("#shopCartProductNum").val();
+		if(shopCartProductNum <= 0){
+			alert("你还没选择要兑换的礼品");
+			return false;
+		}else {
+			jQuery.ajax({
+			//提交的类型
+			type: "post", 
+			//提交地址
+	        url: "/appController/isLogin",
+			//同步执行
+			async: false,
+	        //回调方法
+	        success: function(data){
+	        	var nextPage = "/product/check_order.html";
+		        if(data == "true"){
+			        //校验库存
+					var productTr = jQuery("tr[name='productTr']");
+					if(productTr){
+						for(var i = 0; i < productTr.length; i++){
+							var numTd = productTr.eq(i).find("td[name='numTd']");
+							var num = numTd.find("input[name='productNum']").val();
+							//产品类型code add by xingsumin
+						    var proTypeCode = numTd.find("input[id^='proTypeCode_']").val();
+						    var activeType = numTd.find("input[id^='activeType_']").val();
+							var storage = numTd.find("input[id^='storage_']").val();
+						    var proSource = numTd.find("input[id^='proSource_']").val();
+						    var reg = /^(((13[0-9]{1})|(14[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1}))+\d{8})$/;//手机
+		       				var reg1 =  /^\d{19}$/g;
+						    var oilAccount= productTr.eq(i).find("input[name='oilAccount']").val();
+							var oilTelAccount= productTr.eq(i).find("input[name='oilTelAccount']").val();
+							var telAccount= productTr.eq(i).find("input[name='telAccount']").val();
+						    
+							if(parseInt(num) <= 0){
+								alert("商品\"" + productTr.eq(i).find("dt[name='nameDt']").text().replace(/(^\s*)|(\s*$)/g, "") + "\"的购买数量至少1个");
+								return false;
+							}
+							if(proTypeCode!="jd"&&proTypeCode!="zc"&&proTypeCode!="oil"&parseInt(num) > parseInt(storage)){
+								alert("商品\"" + productTr.eq(i).find("dt[name='nameDt']").text().replace(/(^\s*)|(\s*$)/g, "") + "\"库存为" + storage + "个请修改商品数量");
+								return false;
+							}
+							if(activeType == "1"){
+								if(parseInt(num) > 1){
+									alert("亲~1人限购1个闪购礼品，您超限啦！");
+									return false;
+								}
+							}
+							if(oilAccount!=undefined){
+								 if(oilAccount==""){
+								 	 productTr.eq(i).find("input[name='oilAccount']").focus();
+									 alert("油卡和电话号码为必填项！");
+									 return false;
+								 }else if(oilTelAccount==""){
+									 productTr.eq(i).find("input[name='oilTelAccount']").focus();
+									 alert("油卡和电话号码为必填项！");
+									 return false;
+								 }else if(!reg1.test(oilAccount)){
+								 	 productTr.eq(i).find("input[name='oilAccount']").val("");
+								  	 productTr.eq(i).find("input[name='oilAccount']").focus();
+									 alert("加油卡格式错误，应该为19位数字！");
+									 return false;
+								 }else if(!reg.test(oilTelAccount)){
+									productTr.eq(i).find("input[name='oilTelAccount']").val("");
+									productTr.eq(i).find("input[name='oilTelAccount']").focus();
+									alert("请输入正确的电话号码");
+									return false;
+								}
+							 }
+							if(telAccount!=undefined){
+								 if(telAccount==""){
+									 productTr.eq(i).find("input[name='telAccount']").focus();
+									 alert("电话号码必填！");
+									 return false;
+								 } else if(!reg.test(telAccount)){
+									productTr.eq(i).find("input[name='telAccount']").val("");
+									productTr.eq(i).find("input[name='telAccount']").focus();
+									alert("请输入正确的电话号码");
+									return false;
+								}
+							}		
+						}
+					}
+	
+					//提交前校验闪够是否超限，是否超出配送范围，是否超出最大礼品类型，积分是否充足
+					jQuery.ajax({
+						//提交类型
+						type: "post",
+						//同步执行
+						async: false,
+						//提交地址
+						url: "/appController/checkShopCartInfo",
+						//回调方法
+						success: function(data){
+							if(data=="Y1"){
+								alert("您兑换的商品种类已达上限（种类最多为10个），请确认。");
+								return false;
+							}else if(data=="Y2"){
+								alert("亲~1人限购1个闪购礼品，您超限啦！");
+								return false;
+							}else if(data=="Y3"){
+								alert("亲~您购物车里的车主专享礼品不能与数贝专属礼品一起混合支付。");
+								return false;
+							}else if(data.substr(0,2)=="Y4"){
+								alert("您兑换的商品" +data.substr(3)+ "数量已达上限（一个商品最多兑换10个），请确认。");
+								return false;
+							}else if(data=="Y5"){
+								alert("您选择的礼品配送范围有冲突，请您在购物车处理。");
+								return false;
+							}else if(data=="Y6"){
+								alert("抱歉，临时登录不支持使用阳光币/阳光贝兑换商品哦，请使用其他币种兑换。");
+								return false;
+							}else if(data=="false"){
+								alert("对不起!您当前余额不足");
+								return false;
+							}else if(data=="N1"){
+								alert("对不起!您有已下架的礼品,请重新选择礼品进行兑换。");
+								return false;
+							}else if(data=="N2"){
+								alert("对不起!您当前没有可用积分");
+								return false;
+							}else if(data=="S"){
+								alert("对不起!您当前可用阳光币不足");
+								return false;
+							}else if(data=="A"){
+								alert("对不起!您当前可用的阳光尊享币不足");
+								return false;
+							}else if(data=="B"){
+								alert("对不起!您当前可用的阳光礼品币不足");
+								return false;
+							}else if(data=="C"){
+								alert("对不起!您当前可用的阳光服务币不足");
+								return false;
+							}else if(data=="D"){
+								alert("对不起!您当前可用的阳光小钢镚不足");
+								return false;
+							}else if(data=="E"){
+								alert("对不起!您当前可用的阳光专属币不足");
+								return false;
+							}else{
+								window.location.href = nextPage;
+							}
+						}
+					});
+				}else{
+					loginToNext(window.location.href);
+				}
+			}
+			});
+		}
+	}
+	
+function continueBuy(){
+	//alert("购物车跳转页面："+sourceUrl);
+	delSource();
+	if(sourceUrl != null && sourceUrl != 'null' &&  sourceUrl != undefined && sourceUrl != ''){
+	 if(sourceUrl == 'carvip'){
+	 window.location.href="/carvip/carvip.html";
+	 }else{
+	 window.location.href="/carvip/all_list"+sourceUrl+".html";
+	 }
+	}else{
+	 window.location.href="/catalog/all_catalog.html";
+	}
+}
+//删除来源分类url
+function delSource(){
+	jQuery.ajax({
+	   type: "post",
+       url: "/appController/delSourceUrl",
+       success: function(data){
+      	}
+      	});
+}	
+
+</script>
+</head>
+<body>
+<!--加载头部-->
+<script type="text/javascript">getJSONP("http://club.sinosig.com/head.html")</script>
+
+
+<link rel="Shortcut Icon" href="http://club.sinosig.com/favicon.ico">
+<link rel="Bookmark" href="http://club.sinosig.com/favicon.ico">
+
+
+
+<form name="loginform" method="post" action="/member/login.html">
+	<input type="hidden" name="backurl" value="/head.html?htmlcallback=jsonp1491021057126&amp;_=1491021057251">
+</form>
+<div id="headtop" style="height:40px;">
+
+
+
+
+   
+
+
+<div id="headTop">
+<div class="bar" id="heddss" style="">
+   <div class="bar_con">
+      <span><a href="javascript:void(0);" onclick="javascript:openLoginFrame();">登录</a><a href="http://auth.sinosig.com/regist.html?redirectUrl=http%3A%2F%2Fclub.sinosig.com&amp;sso=2B066E83ADA6DD809D106E5E5A6D892ADC23F62328BF47730AA7251F455610F8C7CC635B797B853E&amp;sso_params=sso_need_status%3Dtrue">注册</a><a href="javascript:void(0);" onclick="goMemberCenter();">我的账户</a><a href="/product/shopping_cart.html"><img src="/images/top_ico.jpg" align="absmiddle"> 购物车（<strong name="cartCnt">0</strong>）</a><a href="/static/help.shtml">帮助中心</a><a href="http://www.sinosig.com">阳光官网</a></span>游客，您好，欢迎光临阳光保险积分商城
+   </div>
+</div>
+<div class="bar" id="showss" style="display: none">
+   <div class="bar_con">
+   <span><a href="/logout?redirectUrl=http://club.sinosig.com">退出</a><a href="javascript:void(0);" onclick="goMemberCenter();">我的账户</a><a href="/product/shopping_cart.html"><img src="/images/top_ico.jpg" align="absmiddle"> 购物车（<strong name="cartCnt">0</strong>）</a><a href="/static/help.shtml">帮助中心</a><a href="http://www.sinosig.com">阳光官网</a></span>
+  <div id="logname" align="left">
+   </div>
+   </div>
+</div>
+</div>
+
+</div>
+<div class="header">
+<div class="top">
+   <div class="logo"><a href="#"><img src="/./upl_imags/././1410350648204.jpg" border="0" usemap="#Map" alt="阳光保险积分商城"> 
+       <map name="Map" id="Map">
+         <area shape="rect" coords="3,4,246,53" href="http://www.sinosig.com/" target="_blank" onfocus="this.blur()" alt="阳光保险集团">
+         <area shape="rect" coords="253,3,372,55" href="/index.html" target="_blank" onfocus="this.blur()" alt="阳光保险积分商城">
+       </map>
+   </a></div>
+   <div class="search">
+      <form method="post" action="/search.html" name="catalogSearchForm" id="catalogSearchForm">
+	  		<input type="hidden" name="searchPageNo" id="searchPageNo">
+	  		<input type="hidden" name="order" id="order"> 
+	  		<input type="hidden" name="reverse" id="reverse"> 
+	  		<input type="hidden" name="cid" id="cid" value="$cid"> 
+	  		<input type="hidden" name="isCarvip" id="isCarvip"> 
+	  		<input type="hidden" name="agencyCode" id="agencyCode"> 
+				 				 				 				 <input name="inputPrdName" type="text" id="inputPrdName" maxlength="20" class="search_ipt" value="想找什么？输入关键字试试" onfocus="if(this.value=='想找什么？输入关键字试试')this.value='';" onblur="if(this.value=='')this.value='想找什么？输入关键字试试';" onclick="changeStyle(this)"> 
+				<a href="#" class="search_btn" onclick="inputSearch();"></a>
+			</form>
+   </div>
+</div>
+<div class="clear"></div>
+<div id="loginFrameDiv"></div>
+<div class="nav" style="position:relative;z-index:89;">
+  <ul>
+     <li class=""><a href="http://club.sinosig.com">首 页</a></li>
+     <li id="nav_integral1" onmouseover="hov(1)" onmouseout="out(1)" class=""><em><a href="/catalog/all_catalog.html">花阳光币</a></em>
+     <span onmouseover="hov(1)" onmouseout="out(1)" id="integral1" style="display:none">
+     <a href="/catalog/all_catalog.html">阳光币换礼</a>
+     <!--阳光币抽奖影藏  <a href="javascript:void(0);" onclick="pointRaffle();">阳光币抽奖</a> 阳光币抽奖影藏-->
+     <!--  积分商城阳光币换服务模块优化<a href="/changeservice/service_list.html">阳光币换服务</a>-->
+     </span>
+     </li>
+     <!-- 关于积分商城“赚阳光币”功能关闭的需求 <li  class="" ><a href="/earnpoints/earnpoints.html" >赚阳光币</a></li>-->
+     <!-- 阳光币互通功能关闭需求<li  class="" ><a href="javascript:void(0);" onclick="alipayExchange();" >阳光币互通</a></li> -->
+     <li class=""><a href="/carvip/carvip.html">车主专享</a></li>
+     <li class=""><a href="/static/help.shtml">帮助中心</a></li>
+  </ul>
+</div>
+</div>
+
+
+
+
+
+
+
+<div class="content">
+   <div class="second_tit"><a href="http://club.sinosig.com">首页</a> &gt;&gt; 我的购物车</div>
+   <div class="shop_tit">
+      <span><img src="/images/shop_1ico.jpg"> 我的购物车</span>
+     
+     <input type="hidden" name="pid" id="pid">
+	 <input type="hidden" id="shopCartProductNum" value="$shopCartProductNum">
+	 <input type="hidden" id="accountPoint" value="">
+	 <input type="hidden" name="backurl" value="/product/shopping_cart.html">
+     <table width="451" border="0" align="right" cellpadding="0" cellspacing="0">
+        <tbody><tr>
+          <td colspan="3"><img src="/images/tbl/shop_success01.png"></td>
+        </tr>
+        <tr>
+          <td align="left" style="padding-left: 55px;">1.我的购物车</td>
+          <td align="left">2.填写核对订单信息</td>
+          <td align="left">3.成功提交订单</td>
+        </tr>
+     </tbody></table>
+   </div>
+   <div class="clear"></div>
+   <div class="bor_solid"></div>
+   <div class="qkfwc"><span>
+       <span><a href="javascript:void(0);" onclick="onDelete(this, 'all')"><img src="/images/tbl/qkgwc.jpg"></a></span>
+   </span></div>
+   <div class="shop_con">
+     <div class="shop_con_tit">您已选择的礼品</div>
+      <div class="shop_ctnt">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+           <tbody><tr>
+             <td width="25%" align="center"><strong>礼品名称</strong></td>
+             <td width="20%" align="center"><strong>配送区域</strong></td>
+			 <td width="15%" align="center"><strong>单价</strong></td>
+             <td width="10%" align="center"><strong>数量</strong></td>
+             <td width="15%" align="center"><strong>小计</strong></td>
+             <td width="20%" align="center"><strong>操作</strong></td>
+           </tr>
+                   </tbody></table>
+      </div>      
+   </div>
+        <p class="shop_jf"></p>
+         <p class="shop_jf" id="jf" style="display:none"></p>
+   <div class="shop_ico">
+      <a href="javascript:continueBuy();"><img src="/images/tbl/jxdh.png"></a>
+      <a href="javascript:void(0);" onclick="showOrder()"><img src="/images/tbl/dhlp.png"></a>
+   </div>
+</div>
+<!--加载底部-->
+<script type="text/javascript">getJSONP("http://club.sinosig.com/static/foot.html")</script>
+
+
+
+
+
+
+
+<div class="bottom">
+
+	<div class="bot_con">
+
+		
+
+		<ul style="width:185px;">
+
+			<h3>新手上路</h3>
+
+			
+
+			
+
+			<li><a href="/static/help130268.shtml" rel="nofollow">如何兑换礼品</a></li>
+
+			
+
+			<li><a href="/static/help130267.shtml" rel="nofollow">如何查询我的阳光币</a></li>
+
+			
+
+			
+
+		</ul>
+
+		
+
+		<ul style="width:185px;">
+
+			<h3>配送说明</h3>
+
+			
+
+			
+
+			<li><a href="/static/help130270.shtml" rel="nofollow">物流配送</a></li>
+
+			
+
+			
+
+		</ul>
+
+		
+
+		<ul style="width:185px;">
+
+			<h3>阳光币计划</h3>
+
+			
+
+			
+
+			<li><a href="/static/help130271.shtml" rel="nofollow">关于阳光币</a></li>
+
+			
+
+			<li><a href="/static/help130272.shtml" rel="nofollow">常见问题</a></li>
+
+			
+
+			
+
+		</ul>
+
+		
+
+		<ul style="width:185px;">
+
+			<h3>商城服务</h3>
+
+			
+
+			
+
+			<li><a href="http://club.sinosig.com/static/help144346.shtml" rel="nofollow">商品退换政策</a></li>
+
+			
+
+			<li><a href="http://club.sinosig.com/static/help144347.shtml" rel="nofollow">其他问题</a></li>
+
+			
+
+			
+
+			
+
+		</ul>
+
+		
+
+		<ul>
+
+			<h3>客户咨询</h3>
+
+			<li>热线咨询：95510</li>
+
+			<a href="http://www.sinosig.com/common/zxkfRedirect.jsp" rel="nofollow" target="_blank">
+
+			<img src="/images/tel.jpg">
+
+			</a>
+
+		</ul>
+
+	</div>
+
+</div>
+
+
+<div class="footer"> <a href="http://www.sinosig.com" target="_blank" style="font-size:12px;">阳光保险集团股份有限公司</a>版权所有 粤ICP备09150084号 <br>
+
+	<span style="font-family:Arial, Helvetica, sans-serif;">©&nbsp;&nbsp;</span>2017 Sunshine Insurance Group Inc. All Rights Reserved. </div>
+
+<script src=" http://hm.baidu.com/h.js?fdf735f5eff98f9eedb2dba885d61898" type="text/javascript"></script>
+
+
+</body></html>

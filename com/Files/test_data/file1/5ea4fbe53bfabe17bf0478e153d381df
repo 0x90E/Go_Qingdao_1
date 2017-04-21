@@ -1,0 +1,2104 @@
+<!DOCTYPE html><html><head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<meta name="viewport" content="width=640,minimum-scale=0,maximum-scale=5,user-scalable=no">
+<title>畅游快速注册</title>
+<link rel="stylesheet" type="text/css" href="http://www1.changyou.com/styles/reset.css">
+<link rel="stylesheet" type="text/css" href="css/fast-reg-s-m.css">
+<script>
+    if(navigator.appVersion.indexOf('Android') != -1){
+        document.addEventListener("DOMContentLoaded",function(e){
+            document.getElementsByTagName('body')[0].style.zoom = e.target.activeElement.clientWidth/640;
+        });
+    };
+</script>
+<script type="text/javascript" src="http://www1.changyou.com/scripts/jquery.min.js"></script> 
+<script type="text/javascript" src="http://mon.changyou.com/jquery-a.js"></script>
+<script type="text/javascript" src="http://www1.changyou.com/js/fast-reg.js"></script> 
+<script type="text/javascript">
+var gameType = '';
+var verifycode = '';
+var phoneIsUsed = false;
+var token = true;
+gameType = $('#gametype').val();
+function tosubmmit(){
+	    token = true;
+        var obj = $('#read').attr('checked');
+        if(!obj){
+            alert('您还没有阅读《畅游用户协议》');
+            return false;
+        }else if(!CheckCn_extra('cn','cn_info')){//验证账户
+            return false;
+        }else if (!CheckCn_IsUsed()) {
+	    	var returnArray = [true,'该通行证已经被注册','系统繁忙,请稍后再试！'];
+	        var value = $('#cn').val();
+	    	transformInterface(value,'common',gameType,0,returnArray[1]);
+	        unShowRegNote();
+	        showInputWrong('cn');
+	        showWrong('cn_info',returnArray[1]);
+	    	return false;
+    	}else if(!validatePasswordForReg('passwd','cn')) {//密码
+            return false;
+        }else if(!checkSnNullb('sn','sn_info')){
+            return false;
+        }else if(!checkIdcardNotNulb('certNumber','certNumber_info')){
+            return false;
+        }else if(!fast_checkvalidateCode('personvalidateCode' , 'fast-error')){
+            return false;
+        }else{
+	        var errorInfo = $('#fast-error').html();
+			if (errorInfo != '') {
+				return false;
+			}
+       			var personflag = "";
+				var cookies = document.cookie.split(';'); 
+				for (var i = 0; i < cookies.length; i++) { 
+					var cookie = $.trim(cookies[i]); 
+					if (cookie.substring(0, 7) == 'tongji=') { 
+                		personflag = 1;
+                		$("#personTongji").val("normal," + cookie.substring(7, cookie.length));
+                	} 
+				} 
+				if(1 != personflag){
+						$("#personTongji").val("normal,");
+				}
+				//添加表单到cookie，以便验证码填错返回后能显示在表单中
+		        addCookie("cookiePersonCn",$("#cn").val(),5);  //手机号码
+		        addCookie("cookiePersonSn",$("#sn").val(),5);  //真实姓名
+		        addCookie("cookiePersonCertNumber",$("#certNumber").val(),5);  //身份证号码
+		        asyncPersonSubmit($("#cn").val());
+				return true;
+        }
+}
+function CheckCn_IsUsed(){
+		var errorInput = $('#cn').hasClass('input error-input');//存在
+		if (errorInput) {
+			return false;
+		} else {
+			return true;
+		}
+}
+$(document).ready(function(){
+    //获取url中gametype的值
+    $.extend({
+      getUrlVars: function(){
+        var vars = [], hash;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for(var i = 0; i < hashes.length; i++)
+        {
+          hash = hashes[i].split('=');
+          if('gametype' == hash[0] ){
+            $('#phoneRegGameType').val(hash[1]);
+            $('#emailRegGameType').val(hash[1]);
+            $('#gametype').val(hash[1]);
+          }
+          if('cnType' == hash[0]) {
+            $('#cnType').val(hash[1]);
+          }
+          if('regType' == hash[0]) {
+              $('#regType').val(hash[1]);
+              addCookie("regType",hash[1],5); 
+            }
+          if('validatecodeError' == hash[0]) {
+              $('#validatecodeError').val(hash[1]);
+          }
+          if('registerFiled' == hash[0]) {
+              $('#registerFiled').val(hash[1]);
+          } 
+          vars.push(hash[0]);
+          vars[hash[0]] = hash[1];
+        }
+        return vars;
+      },
+      getUrlVar: function(name){
+        return $.getUrlVars()[name];
+      }
+    });
+    var allVars = $.getUrlVars();
+    //初始化页面样式
+    initPage();
+    //设置gametype
+    setGametype();
+});
+function GetQueryString(name){ 
+    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)"); 
+    var r = window.location.search.substr(1).match(reg); 
+    if (r!=null) return unescape(r[2]); return null; 
+}
+function showMsg(megId,msg,css){
+    $('#'+megId).empty();
+    $('#'+megId).removeClass();
+    $('#'+megId).html(msg);
+    $('#'+megId).addClass(css).show();
+}
+function changePerson(id){
+    $('#'+id).css({'display':'none'});
+    if($('#'+id).attr('type')=="text")  { 
+        document.getElementById('passwd').style.display = "block";
+        document.getElementById('passwd').focus();//
+    }else{
+        document.getElementById('passwd2').style.display = "block";
+    }
+ }
+function changeEmail(id){
+    $('#'+id).css({'display':'none'});
+    if($('#'+id).attr('type')=="text")  { 
+        document.getElementById('emailPassword').style.display = "block";
+        document.getElementById('emailPassword').focus();//
+    }else{
+        document.getElementById('emailPassword2').style.display = "block";
+    }
+ }
+function changePhone(id){
+    $('#'+id).css({'display':'none'});
+    if($('#'+id).attr('type')=="text")  { 
+        document.getElementById('phonePassword').style.display = "block";
+        document.getElementById('phonePassword').focus();//
+    }else{
+        document.getElementById('phonePassword2').style.display = "block";
+    }
+ }
+ function unShowRegNote(){
+    $('#fast-error').empty();
+    $('#fast-error').removeClass();
+}
+function showInputWrong(id){
+        $('#'+id+'').removeClass();
+        $('#'+id+'').addClass('input error-input').show();
+}
+/**
+ * input正确样式
+ */
+function showInputRight(id){
+    $('#'+id+'').empty();
+    $('#'+id+'').removeClass();
+    $('#'+id+'').addClass('input').show();
+}
+function showNote(id,meg){
+    $('#'+id+'').empty();
+    $('#'+id+'').removeClass();
+    $('#'+id+'').addClass('note').show();
+    var spannew = $('<span>'+meg+'</span>');
+    spannew.appendTo($('#'+id+''));
+}
+/**
+ * 显示错误信息
+ * @param id
+ * @param msg
+ * @return
+ */
+function showWrong(id,msg){
+        $('#fast-error').empty();
+        $('#fast-error').removeClass();
+        $('#fast-error').html(msg);
+        $('#fast-error').addClass('error').show();
+    }
+/**
+ * 验证NULL 后 回填信息
+ * @param id 验证ID
+ * @param messId  回填ID
+ * @param meg 回填信息
+ * @return 是返回false
+ */
+function CheckIsNull(id,messId,meg){
+    var flag = false;
+    var str = $('#'+id+'').val();
+    str = $.trim(str);//去掉空格
+    if (str == "") {
+        unShowRegNote();
+        showInputWrong(id);
+        showWrong(messId,meg);
+        flag = true;
+    }else{
+        unShowRegNote();
+        showInputRight(id);
+        //showRight(messId);
+    }
+    return flag;
+}
+function CheckIsNull_sub(id,messId,meg){
+    var flag = false;
+    var str = $('#'+id+'').val();
+    str = $.trim(str);//去掉空格
+    if (str == "") {
+        unShowRegNote();
+        showInputWrong(id);
+        showWrong(messId,meg);
+        flag = true;
+    }else{
+        unShowRegNote();
+        //showInputRight(id);
+        //showRight(messId);
+    }
+    return flag;
+}
+/**
+ * 验证个性账号是否被占用
+ * @param msgId 错误信息ID
+ * @param cn 手机号码
+ * @return
+ */
+ function AjaxCn(id,msgId,cn){  
+	    var returnArray = [true,'该通行证已经被注册','系统繁忙,请稍后再试！','注册受限，请稍后！','页面已失效，请刷新!'];
+	    var value = $('#'+id+'').val();
+	    var postData = {cn:cn};
+	    var returnVlaue = '';
+	    var tt = (new Date()).valueOf();
+	    $(document).ready(function() {
+	    $.ajaxSettings.async = false;
+       			$.getJSON('http://zhuce.changyou.com/baseReg/checkMQCnIsUsed.act?cn=' + cn + '&verifycode='+verifycode+'&tt='+tt+'&t=' + new Date() + '&callback=?',
+                         function(json) {
+       				if(json.result == 'ok'){// 可以注册
+       					returnVlaue = true;
+       				} else if(json.result == 'limit'){ //注册受限
+       					transformInterface(value,'common',gameType,0,returnArray[3]);
+   						unShowRegNote();
+    					showInputWrong(id);
+    					showWrong(msgId,returnArray[3]);
+    					returnVlaue = false;
+       		        } else if(json.result == 'timeout'){ 
+       		        	transformInterface(value,'common',gameType,0,returnArray[4]);
+   						unShowRegNote();
+    					showInputWrong(id);
+    					showWrong(msgId,returnArray[4]);
+    					returnVlaue = false;
+       		        } else if(json.result == 'unknown'){ //refer错误
+       		        	transformInterface(value,'common',gameType,0,returnArray[4]);
+   						unShowRegNote();
+    					showInputWrong(id);
+    					showWrong(msgId,returnArray[4]);
+    					returnVlaue = false;
+       		        } else if(json.result == 'used'){// 已被注册，不能使用
+       		        	transformInterface(value,'common',gameType,0,returnArray[1]);
+   						unShowRegNote();
+    					showInputWrong(id);
+    					showWrong(msgId,returnArray[1]);
+    					returnVlaue = false;
+       				} else {
+       					transformInterface(value,'common',gameType,0,returnArray[2]);
+    					unShowRegNote();
+    					showInputWrong(id);
+    					showWrong(msgId,returnArray[2]);
+    					returnVlaue = false;			
+       				}	
+       				return returnVlaue;		
+                 });
+      	 });
+	    
+	}
+function CheckCn(id,megid){
+    var errorArray = ['请输入畅游通行证',
+                      '通行证长度不符，需5-16位',
+                      '通行证必须使用数字或字母开头',
+                      '通行证只能用数字、字母和_组成',
+                      '该通行证已经被注册',
+                      '密码不能与通行证相同',
+                      '呦！您输入的通行证不正确,只能由5-16位字母、数字及_组成, 首字符不能是_哦',
+                      '哟！ 个性账号不可以是手机号类型'];
+    var value = $('#'+id+'').val();
+    var testStr = /^[a-zA-Z0-9]{1}([a-zA-Z0-9]|[_]){4,15}$/;
+    var htestStr = /^[a-zA-Z0-9]{1}$/;
+    var testPhoneRegx = /^1\d{10}$/;
+    value = $.trim(value);
+    var passwd = $('#passwd').val();
+    passwd = $.trim(passwd);
+    var  hvalue = '';
+    if(value.length>1){
+        hvalue = value.substring(0,1);
+    }
+    if(CheckIsNull(id,megid,errorArray[0]) || '数字或字母开头' == value){
+        transformInterface(value,'common',gameType,0,errorArray[0]);
+        unShowRegNote();
+        showInputWrong(id);
+        showWrong(megid,errorArray[0]);
+        return false;
+    }else if (value.length<5 || value.length>16){
+        transformInterface(value,'common',gameType,0,errorArray[1]);
+        unShowRegNote();
+        showInputWrong(id);
+        showWrong(megid,errorArray[1]);
+        return false;
+    }else if (!htestStr.test(hvalue)){
+        transformInterface(value,'common',gameType,0,errorArray[2]);
+        unShowRegNote();
+        showInputWrong(id);
+        showWrong(megid,errorArray[2]);
+        return false;
+    }else if (!testStr.test(value)){
+        transformInterface(value,'common',gameType,0,errorArray[2]);
+        unShowRegNote();
+        showInputWrong(id);
+        showWrong(megid,errorArray[3]);
+        return false;
+    }else if (testPhoneRegx.test(value)){
+        transformInterface(value,'common',gameType,0,errorArray[7]);
+        unShowRegNote();
+        showInputWrong(id);
+        showWrong(megid,errorArray[7]);
+        return false;
+    }else if (!AjaxCn(id,megid,value)){ // 调用ajax验证是否被注册
+        //transformInterface(value,'common',gameType,0,errorArray[4]);
+        //unShowRegNote();
+        //showInputWrong(id);
+        //showWrong(megid,errorArray[4]);
+        return false;
+    }else if(passwd==value){
+            showInputRight(id);
+            showWrong(megid,errorArray[5]);
+            showInputWrong("passwd");
+            return false;
+    }else {
+        if('' == passwd) {
+            $('#passwd2').show();
+            $('#passwd').hide();
+        }
+        transformInterface(value,'common',gameType,1,'成功');
+        unShowRegNote();
+        showNote(megid,'@changyou.com');
+        return true;
+    }
+}
+function CheckCn_extra(id,megid){
+    var errorArray = ['请输入畅游通行证',
+                      '通行证长度不符，需5-16位',
+                      '通行证必须使用数字或字母开头','通行证只能用数字、字母和_组成', '该通行证已经被注册','密码不能与通行证相同',
+                      '呦！您输入的通行证不正确,只能由5-16位字母、数字及_组成, 首字符不能是_哦'];
+    var value = $('#'+id+'').val();
+    var testStr = /^[a-zA-Z0-9]{1}([a-zA-Z0-9]|[_]){4,15}$/;
+    var htestStr = /^[a-zA-Z0-9]{1}$/;
+    value = $.trim(value);
+    var passwd = $('#passwd').val();
+    passwd = $.trim(passwd);
+    var  hvalue = '';
+    if(value.length>1){
+        hvalue = value.substring(0,1);
+    }
+    if(CheckIsNull_sub(id,megid,errorArray[0]) || '数字或字母开头' == value){
+        transformInterface(value,'common',gameType,0,errorArray[0]);
+        unShowRegNote();
+        showInputWrong(id);
+        showWrong(megid,errorArray[0]);
+        return false;
+    }else if (value.length<5 || value.length>16){
+        transformInterface(value,'common',gameType,0,errorArray[1]);
+        unShowRegNote();
+        showInputWrong(id);
+        showWrong(megid,errorArray[1]);
+        return false;
+    }else if (!htestStr.test(hvalue)){
+        transformInterface(value,'common',gameType,0,errorArray[2]);
+        unShowRegNote();
+        showInputWrong(id);
+        showWrong(megid,errorArray[2]);
+        return false;
+    }else if (!testStr.test(value)){
+        transformInterface(value,'common',gameType,0,errorArray[2]);
+        unShowRegNote();
+        showInputWrong(id);
+        showWrong(megid,errorArray[3]);
+        return false;
+    }else if(passwd==value){
+            showInputRight(id);
+            showWrong(megid,errorArray[5]);
+            showInputWrong("passwd");
+            return false;
+    }else {
+        if('' == passwd) {
+            $('#passwd2').show();
+            $('#passwd').hide();
+        }
+        transformInterface(value,'common',gameType,1,'成功');
+        unShowRegNote();
+        showNote(megid,'@changyou.com');
+        return true;
+    }
+}
+/**
+ *  验证只能是中文(非必填验证)
+ *  @param id
+ *  @param infoid
+ *  return 
+ */
+function checkSnNullb(id,infoid){
+    var sn = $('#'+id+'').val();
+    var sn=$.trim(sn);
+    //在JavaScript中,正则表达式只能使用"/"开头和结束,不能使用双引号
+    var Expression=/[^\u4E00-\u9FA5]/; 
+    var objExp=new RegExp(Expression);
+        if(sn=='' || '通行证归属凭证' == sn){
+            showInputWrong(id);
+            showWrong(infoid,'请输入真实姓名');
+            return false;
+        }
+        if(objExp.test(sn)==true){
+            showInputWrong(id);
+            showWrong(infoid,'请输入您的中文姓名');
+            return false;
+        }else if(sn.length<2 || sn.length>8){
+            showInputWrong(id);
+            showWrong(infoid,'真实姓名长度不正确');
+            return false;
+        }
+        return true;
+}
+/**
+ * 显示正确信息 (不带文字描述)
+ * @param id
+ * @return
+ */
+function showRight(id){
+    $('#'+id+'').empty();
+    $('#'+id+'').removeClass();
+}
+/**
+ *  验证身份证(必填验证)
+ *  @param idcard
+ *  @param infoid
+ *  return 
+ */
+function checkIdcardNotNulb(idcard,infoid){
+    var Errors=new Array(
+            "ture",
+            "身份证号码位数不对",
+            "请输入真实的身份证号码",
+            "请输入身份证号码",
+            "请输入真实的身份证号码"
+            );
+    var area={11:"北京",12:"天津",13:"河北",14:"山西",15:"内蒙古",21:"辽宁",22:"吉林",23:"黑龙江",31:"上海",32:"江苏",33:"浙江",34:"安徽",35:"福建",36:"江西",37:"山东",41:"河南",42:"湖北",43:"湖南",44:"广东",45:"广西",46:"海南",50:"重庆",51:"四川",52:"贵州",53:"云南",54:"西藏",61:"陕西",62:"甘肃",63:"青海",64:"宁夏",65:"新疆",71:"台湾",81:"香港",82:"澳门",91:"国外"}
+    var Y,JYM;
+    var S,M;
+    var thisid = idcard;
+    var idcard_array = new Array();
+    
+    //取值
+    idcard = $('#'+idcard+'').val();
+    var idcard=$.trim(idcard);
+    
+    //验证空
+    if(idcard == ''){
+        showInputWrong(thisid);
+        showWrong(infoid,Errors[3]);
+        return false;
+    }
+    
+    idcard_array = idcard.split("");
+    //地区检验
+    if(area[parseInt(idcard.substr(0,2))]==null) {
+        showInputWrong(thisid);
+        showWrong(infoid,Errors[2]);
+        return false;
+    }
+  var err = 0;
+  if (idcard.substr(0,6) == "000000" || idcard.substr(0,6) == "111111" || idcard.substr(0,6) == "222222" || idcard.substr(0,6) == "333333" || idcard.substr(0,6) == "444444" || idcard.substr(0,6) == "555555" || idcard.substr(0,6) == "666666" || idcard.substr(0,6) == "777777" || idcard.substr(0,6) == "888888" || idcard.substr(0,6) == "999999")  err = 1;
+  if (idcard.substr(0,6) == "123456" || idcard.substr(0,6) == "234567" || idcard.substr(0,6) == "345678" || idcard.substr(0,6) == "456789" || idcard.substr(0,6) == "567890" || idcard.substr(0,6) == "012345" || idcard.substr(0,6) == "543210" || idcard.substr(0,6) == "432109" || idcard.substr(0,6) == "321098" || idcard.substr(0,6) == "210987" || idcard.substr(0,6) == "109876" || idcard.substr(0,6) == "098765" || idcard.substr(0,6) == "987654" || idcard.substr(0,6) == "876543" || idcard.substr(0,6) == "765432")  err = 1;
+  if (idcard.substr(0,6) == "121212" || idcard.substr(0,6) == "131313" || idcard.substr(0,6) == "141414" || idcard.substr(0,6) == "151515" || idcard.substr(0,6) == "161616" || idcard.substr(0,6) == "171717" || idcard.substr(0,6) == "181818" || idcard.substr(0,6) == "191919" || idcard.substr(0,6) == "101010")  err = 1;
+  if (idcard.substr(0,6) == "212121" || idcard.substr(0,6) == "232323" || idcard.substr(0,6) == "242424" || idcard.substr(0,6) == "252525" || idcard.substr(0,6) == "262626" || idcard.substr(0,6) == "272727" || idcard.substr(0,6) == "282828" || idcard.substr(0,6) == "292929" || idcard.substr(0,6) == "202020")  err = 1;
+  if (idcard.substr(0,6) == "313131" || idcard.substr(0,6) == "323232" || idcard.substr(0,6) == "343434" || idcard.substr(0,6) == "353535" || idcard.substr(0,6) == "363636" || idcard.substr(0,6) == "373737" || idcard.substr(0,6) == "383838" || idcard.substr(0,6) == "393939" || idcard.substr(0,6) == "303030")  err = 1;
+  if (idcard.substr(0,6) == "414141" || idcard.substr(0,6) == "424242" || idcard.substr(0,6) == "434343" || idcard.substr(0,6) == "454545" || idcard.substr(0,6) == "464646" || idcard.substr(0,6) == "474747" || idcard.substr(0,6) == "484848" || idcard.substr(0,6) == "494949" || idcard.substr(0,6) == "404040")  err = 1;
+  if (idcard.substr(0,6) == "515151" || idcard.substr(0,6) == "525252" || idcard.substr(0,6) == "535353" || idcard.substr(0,6) == "545454" || idcard.substr(0,6) == "565656" || idcard.substr(0,6) == "575757" || idcard.substr(0,6) == "585858" || idcard.substr(0,6) == "595959" || idcard.substr(0,6) == "505050")  err = 1;
+  if (idcard.substr(0,6) == "616161" || idcard.substr(0,6) == "626262" || idcard.substr(0,6) == "636363" || idcard.substr(0,6) == "646464" || idcard.substr(0,6) == "656565" || idcard.substr(0,6) == "676767" || idcard.substr(0,6) == "686868" || idcard.substr(0,6) == "696969" || idcard.substr(0,6) == "606060")  err = 1;
+  if (idcard.substr(0,6) == "717171" || idcard.substr(0,6) == "727272" || idcard.substr(0,6) == "737373" || idcard.substr(0,6) == "747474" || idcard.substr(0,6) == "757575" || idcard.substr(0,6) == "767676" || idcard.substr(0,6) == "787878" || idcard.substr(0,6) == "797979" || idcard.substr(0,6) == "707070")  err = 1;
+  if (idcard.substr(0,6) == "818181" || idcard.substr(0,6) == "828282" || idcard.substr(0,6) == "838383" || idcard.substr(0,6) == "848484" || idcard.substr(0,6) == "858585" || idcard.substr(0,6) == "868686" || idcard.substr(0,6) == "878787" || idcard.substr(0,6) == "898989" || idcard.substr(0,6) == "808080")  err = 1;
+  if (idcard.substr(0,6) == "919191" || idcard.substr(0,6) == "929292" || idcard.substr(0,6) == "939393" || idcard.substr(0,6) == "949494" || idcard.substr(0,6) == "959595" || idcard.substr(0,6) == "969696" || idcard.substr(0,6) == "979797" || idcard.substr(0,6) == "989898" || idcard.substr(0,6) == "909090")  err = 1;
+    
+    if(err == 1) {
+        showInputWrong(thisid);
+        showWrong(infoid,Errors[4]);
+        return false;
+    }
+    
+    //身份号码位数及格式检验
+    switch(idcard.length){
+    case 15:
+    if ( (parseInt(idcard.substr(6,2))+1900) % 4 == 0 || ((parseInt(idcard.substr(6,2))+1900) % 100 == 0 && (parseInt(idcard.substr(6,2))+1900) % 4 == 0 )){
+        ereg=/^[1-9][0-9]{5}[0-9]{2}((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|[1-2][0-9]))[0-9]{3}$/;//测试出生日期的合法性
+    } else {
+        ereg=/^[1-9][0-9]{5}[0-9]{2}((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|1[0-9]|2[0-8]))[0-9]{3}$/;//测试出生日期的合法性
+    }
+    if(ereg.test(idcard)) {
+        showRight(infoid);
+        return true;
+    } else {
+        showInputWrong(thisid);
+        showWrong(infoid,Errors[2]);
+        return false;
+    }
+    break;
+    case 18:
+    //18位身份号码检测
+    //出生日期的合法性检查
+    //闰年月日:((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|[1-2][0-9]))
+    //平年月日:((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|1[0-9]|2[0-8]))
+    if ( parseInt(idcard.substr(6,4)) % 4 == 0 || (parseInt(idcard.substr(6,4)) % 100 == 0 && parseInt(idcard.substr(6,4))%4 == 0 )){
+        ereg=/^[1-9][0-9]{5}(19|20)[0-9]{2}((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|[1-2][0-9]))[0-9]{3}[0-9Xx]$/;//闰年出生日期的合法性正则表达式
+    } else {
+        ereg=/^[1-9][0-9]{5}(19|20)[0-9]{2}((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|1[0-9]|2[0-8]))[0-9]{3}[0-9Xx]$/;//平年出生日期的合法性正则表达式
+    }
+    if(ereg.test(idcard)){//测试出生日期的合法性
+    //计算校验位
+        S =   (parseInt(idcard_array[0]) + parseInt(idcard_array[10])) * 7
+            + (parseInt(idcard_array[1]) + parseInt(idcard_array[11])) * 9
+            + (parseInt(idcard_array[2]) + parseInt(idcard_array[12])) * 10
+            + (parseInt(idcard_array[3]) + parseInt(idcard_array[13])) * 5
+            + (parseInt(idcard_array[4]) + parseInt(idcard_array[14])) * 8
+            + (parseInt(idcard_array[5]) + parseInt(idcard_array[15])) * 4
+            + (parseInt(idcard_array[6]) + parseInt(idcard_array[16])) * 2
+            + parseInt(idcard_array[7]) * 1
+            + parseInt(idcard_array[8]) * 6
+            + parseInt(idcard_array[9]) * 3 ;
+        Y = S % 11;
+        M = "F";
+        JYM = "10X98765432";
+        M = JYM.substr(Y,1);//判断校验位
+        if(M == idcard_array[17] || (M == 'X' && idcard_array[17] == 'x')) { //检测ID的校验位
+            unShowRegNote();
+            showInputRight(thisid);
+            showRight(infoid);
+            return true;
+        }else {
+            showInputWrong(thisid);
+            showWrong(infoid,Errors[2]);
+            return false;
+        }
+    }else {
+        showInputWrong(thisid);
+        showWrong(infoid,Errors[2]);
+        return false;
+    }
+    break;
+    default:
+    showInputWrong(thisid);
+    showWrong(infoid,Errors[1]);
+    return false;
+    break;
+    }
+    return false;
+}
+/**
+ * 检查密码是不是简单密码
+ * @param password 
+ * @return 是返回false
+ */
+function checkPasswordSimple(password){
+    var simpleFlagSame = true; //是否是单一字符
+    var simpleFlagToBig = true; // 是否是顺序的
+    var simpleFlagToSmall = true;// 是否是逆序的
+    var passwordLength =password.length;
+    for(var i =0;i<passwordLength-1;i++){
+        if(password.charAt(i)!=password.charAt(i+1)){
+            simpleFlagSame = false;
+            break;
+        }
+    }
+    for(var i =0;i<passwordLength-1;i++){
+        if(parseInt(password.charAt(i))+1!=parseInt(password.charAt(i+1))){
+            simpleFlagToBig = false;
+            break;
+        }
+    }
+    for(var i =0;i<passwordLength-1;i++){
+        if(parseInt(password.charAt(i))-1!=parseInt(password.charAt(i+1))){
+            simpleFlagToSmall = false;
+            break;
+        }
+    }
+    if(simpleFlagSame||simpleFlagToBig||simpleFlagToSmall){
+        return false;
+    }
+    return true;
+}
+/**
+ * 检查密码是不是简单密码
+ * @param password 
+ * @return 是返回false
+ */
+function checkSimplePassword(password){
+    var simpleFlagSame = true; // 是否是单一字符
+    var simpleFlagToBig = true; // 是否是顺序的
+    var simpleFlagToSmall = true;// 是否是逆序的
+    var passwordLength =password.length;
+    for(var i =0;i<passwordLength-1;i++){
+        if(password.charCodeAt(i)!=password.charCodeAt(i+1)){
+            simpleFlagSame = false;
+            break;
+        }
+    }
+    for(var i =0;i<passwordLength-1;i++){
+        if(password.charCodeAt(i)+1!=password.charCodeAt(i+1)){
+            simpleFlagToBig = false;
+            break;
+        }
+    }
+    for(var i =0;i<passwordLength-1;i++){
+        if(password.charCodeAt(i)-1!=password.charCodeAt(i+1)){
+            simpleFlagToSmall = false;
+            break;
+        }
+    }
+    if(simpleFlagSame||simpleFlagToBig||simpleFlagToSmall){
+        return false;
+    }
+    return true;
+}
+function validatePasswordForReg(thisId,cnId) {
+    var returnArray = ['true','请输入通行证密码','密码长度为4-16个字符','密码只能使用数字和字符','密码不能与通行证相同','你的密码过于简单'];
+    var password = $('#'+thisId+'').val();
+    var cn = $.trim($('#'+cnId+'').val()).toLowerCase();
+    var passwordPattern = /^[^, '"]+$/;
+    if($.trim(password)=='' || '4-16位与账号不同' == $.trim(password)){
+        showInputWrong(thisId);
+        $('#passwd2').show();
+        $('#passwd').hide();
+        showInputWrong('passwd2');
+        showWrong('pass_info',returnArray[1]);
+        return false;
+    }
+    if(password.length<4||password.length>16){
+        $('#passwd2').hide();
+        $('#passwd').show();
+        showInputWrong(thisId);
+        showWrong('pass_info',returnArray[2]);
+        return false;
+    }
+    if(!passwordPattern.test(password)){
+        $('#passwd2').hide();
+        $('#passwd').show();
+        showInputWrong(thisId);
+        showWrong('pass_info',returnArray[3]);
+        return false;
+    }
+    if(password==cn){
+        $('#passwd2').hide();
+        $('#passwd').show();
+        showInputWrong(thisId);
+        showWrong('pass_info',returnArray[4]);
+        return false;
+    }
+    if(!checkSimplePassword(password)){
+        $('#passwd2').hide();
+        $('#passwd').show();
+        showInputWrong(thisId);
+        showWrong('pass_info',returnArray[5]);
+        return false;
+    }
+    unShowRegNote();
+    showInputRight(thisId);
+    return true;
+}
+function fast_checkPhone(o , megId, gameType){
+    var errMsg = ['请填写手机号码','手机号格式不正确','该手机号码已经被注册','系统繁忙，请稍候再试','注册频繁，请稍后','页面已失效，请刷新'];      
+    var errorClear = isClearError(megId , errMsg);
+    clearObj(o ,'input');
+    
+    var val = $.trim($('#'+o).val());
+    var type = $('#'+gameType).val();
+    
+    //手机号是否为空
+    if(val == '' || val == '真实有效手机号码'){
+        transformInterface(val,'phone',type,0,megId,errMsg[0]);
+        showMsg(megId,errMsg[0],'error');
+        textCss(o , 'input error-input');
+        return false;
+    }
+    //手机格式
+    if(!f_check_mobile(val)){
+        transformInterface(val,'phone',type,0,megId,errMsg[1]);
+        showMsg(megId,errMsg[1],'error');
+        textCss(o , 'input error-input');
+        return false;
+    }
+    var tt = (new Date()).valueOf();
+    //手机是否被占用
+     $(document).ready(function() {
+       			$.getJSON('http://zhuce.changyou.com/baseReg/checkMQCnIsUsed.act?cn=' + val + '&verifycode='+verifycode+'&tt='+tt+'&t=' + new Date() + '&callback=?',
+                         function(json) {
+       				if(json.result == 'ok'){// 可以注册
+       					if(errorClear){
+					        clearError(megId);
+					    }
+					    transformInterface(val,'phone',type,1,'成功');
+					    phoneIsUsed = false;
+					    return true;			
+       				} else if(json.result == 'limit'){ //注册受限
+       					transformInterface(val,'phone',type,0,megId,errMsg[4]);
+						showMsg(megId,errMsg[4],'error');
+						textCss(o , 'input error-input');
+						phoneIsUsed = true;
+						return false;
+       		        } else if(json.result == 'timeout'){ 
+       		        	transformInterface(val,'phone',type,0,megId,errMsg[5]);
+						showMsg(megId,errMsg[5],'error');
+						textCss(o , 'input error-input');
+						phoneIsUsed = true;
+						return false;
+       		        } else if(json.result == 'unknown'){ //refer错误
+       		        	transformInterface(val,'phone',type,0,megId,errMsg[5]);
+						showMsg(megId,errMsg[5],'error');
+						textCss(o , 'input error-input');
+						phoneIsUsed = true;
+						return false;
+       		        } else if(json.result == 'used'){// 已被注册，不能使用
+       		        	transformInterface(val,'phone',type,0,megId,errMsg[2]);
+						showMsg(megId,errMsg[2],'error');
+						textCss(o , 'input error-input');
+						phoneIsUsed = true;
+						return false;	
+       				} else {
+       					transformInterface(val,'phone',type,0,megId,errMsg[3]);
+						showMsg(megId,errMsg[3],'error');
+						textCss(o , 'input error-input');
+						return false;				
+       				}	
+            	});
+   });
+    
+}
+function fast_checkPhone_sub(o , megId, gameType){
+    var errMsg = ['请填写手机号码','手机号格式不正确','该手机号码已经被注册','系统繁忙，请稍候再试'];      
+    var errorClear = isClearError(megId , errMsg);
+    
+    
+    var val = $.trim($('#'+o).val());
+    var type = $('#'+gameType).val();
+    
+    //手机号是否为空
+    if(val == '' || val == '真实有效手机号码'){
+        transformInterface(val,'phone',type,0,megId,errMsg[0]);
+        showMsg(megId,errMsg[0],'error');
+        textCss(o , 'input error-input');
+        return false;
+    }
+    //手机格式
+    if(!f_check_mobile(val)){
+        transformInterface(val,'phone',type,0,megId,errMsg[1]);
+        showMsg(megId,errMsg[1],'error');
+        textCss(o , 'input error-input');
+        return false;
+    }
+    if(errorClear){
+		//clearError(megId);
+		//clearObj(o ,'input');
+	}
+	transformInterface(val,'phone',type,1,'成功');
+	return true;
+    
+}
+
+
+
+function fast_checkAuthCode(o , megId){
+    var errMsg = ['请填写手机收到的短信验证码','短信验证码不正确','请填写手机号码','手机号格式不正确'];      
+    var errorClear = isClearError(megId , errMsg);
+
+    clearObj(o ,'input');
+    var val = $('#'+o).val();
+    if(val == ''){
+        showMsg(megId,errMsg[0],'error');
+        textCss(o , 'input error-input');
+        return false;
+    } else {
+        var phone = $("#securityPhone").val();
+        var authCode = $("#authCode").val();
+        //手机号是否为空
+        if(phone == '' || phone == '真实有效手机号码'){
+            showMsg(megId,errMsg[2],'error');
+            textCss(o , 'input error-input');
+            return false;
+        }
+        //手机格式
+        if(!f_check_mobile(phone)){
+            showMsg(megId,errMsg[3],'error');
+            textCss(o , 'input error-input');
+            return false;
+        }
+        
+        var flag = false;
+        $(document).ready(function() {
+       			$.getJSON('http://member.changyou.com/register/isAnnexOk.do?securityPhone='+phone+'&authCode='+authCode+'&t=' + new Date() + '&callback=?',
+                         function(json) {
+                				if(json.msg == 'ok'){
+                    					flag = true;
+                    					if(errorClear){
+        									clearError(megId);
+    									}
+    									return true;
+                				}else{
+                    					showMsg(megId,errMsg[1],'error');
+                    					textCss(o , 'input error-input');
+                    					flag =  false;
+                    					return false;
+                				}
+                         });
+      	 });
+       
+    }
+    
+}
+function fast_checkAuthCode_sub(o , megId){
+    var errMsg = ['请填写手机收到的短信验证码','短信验证码不正确'];      
+    var errorClear = isClearError(megId , errMsg);
+
+    
+    var val = $('#'+o).val();
+    if(val == ''){
+        showMsg(megId,errMsg[0],'error');
+        textCss(o , 'input error-input');
+        return false;
+    } 
+    if(errorClear){
+        //clearError(megId);
+        //clearObj(o ,'input');
+    }
+    return true;
+    
+}
+function fast_checkEmail(o , megId, gameType){
+    var errMsg = ['请输入常用邮箱','请输入真实有效的常用邮箱','该邮箱已经被人注册','系统繁忙，请稍候再试','雅虎将停止邮件服务，请使用其他邮箱','页面已失效，请刷新','注册受限，请稍后'];
+    var removeEmail = ["yahoo.com.cn","yahoo.cn","yahoo.com"];
+    var errorClear = isClearError(megId , errMsg);
+    
+    clearObj(o ,'input');
+    var val = $.trim($('#'+o).val());
+    var type = $('#'+gameType).val();
+    
+    //邮箱是否为空
+    if(val == '' || val == '真实有效邮箱地址'){
+        transformInterface(val,'email', type,0, megId,errMsg[0]);
+        showMsg(megId,errMsg[0],'error');
+        textCss(o , 'input error-input');
+        return false;
+    }
+    //邮箱是否符合规则
+    if(!f_check_email(val)){
+        transformInterface(val,'email', type,0, megId,errMsg[1]);
+        showMsg(megId,errMsg[1],'error');
+        textCss(o , 'input error-input');
+        return false;
+    }
+  //去掉雅虎邮箱
+    var startIndex = val.indexOf('@');  //获取@所在的位置
+    var subString = val.substring(startIndex+1,val.length);  //获取@后面的字符串
+    var removeFlag = false;  //标志
+    for (var i=0;i<removeEmail.length;i++) {  //看看@后面的字符串是否和要删除的一致，设置标志
+        if(removeEmail[i] == subString) {
+            removeFlag = true;
+            break;
+        }
+    }
+    if (removeFlag) {
+    	transformInterface(val,'email', type,0, megId,errMsg[4]);
+        showMsg(megId,errMsg[4],'error');
+        textCss(o , 'input error-input');
+        return false;
+    }
+    var tt = (new Date()).valueOf();
+    //邮箱是否已存在
+    $(document).ready(function() {
+       			$.getJSON('http://zhuce.changyou.com/baseReg/checkMQCnIsUsed.act?cn=' + val + '&verifycode='+verifycode+'&tt='+tt+'&t=' + new Date() + '&callback=?',
+                         function(json) {
+       				if(json.result == 'ok'){// 可以注册
+        				if(errorClear){
+					        clearError(megId);
+					    }
+					    transformInterface(val,'email', type,1, '成功');
+					    return true;		
+       				} else if(json.result == 'limit'){ //注册受限
+       					transformInterface(val,'email', type,0, megId,errMsg[6]);
+						showMsg(megId,errMsg[6],'error');
+						textCss(o , 'input error-input');
+						return false;
+       		        } else if(json.result == 'timeout'){ 
+       		        	transformInterface(val,'email', type,0, megId,errMsg[5]);
+						showMsg(megId,errMsg[5],'error');
+						textCss(o , 'input error-input');
+						return false;
+       		        } else if(json.result == 'unknown'){ //refer错误
+       		        	transformInterface(val,'email', type,0, megId,errMsg[5]);
+						showMsg(megId,errMsg[5],'error');
+						textCss(o , 'input error-input');
+						return false;
+       		        } else if(json.result == 'used'){// 已被注册，不能使用
+       		        	transformInterface(val,'email', type,0, megId,errMsg[2]);
+						showMsg(megId,errMsg[2],'error');
+						textCss(o , 'input error-input');
+						return false;
+       				} else {
+       					transformInterface(val,'email', type,0, megId,errMsg[3]);
+						showMsg(megId,errMsg[3],'error');
+						textCss(o , 'input error-input');
+						return false;				
+       				}		
+            	});
+   });
+    
+}
+
+function fast_checkEmail_sub(o , megId, gameType){
+    var errMsg = ['请输入常用邮箱','请输入真实有效的常用邮箱','该邮箱已经被人注册','系统繁忙，请稍候再试','雅虎将停止邮件服务，请使用其他邮箱'];
+    var removeEmail = ["yahoo.com.cn","yahoo.cn","yahoo.com"];
+    var errorClear = isClearError(megId , errMsg);
+    
+    var val = $.trim($('#'+o).val());
+    var type = $('#'+gameType).val();
+    
+    //邮箱是否为空
+    if(val == '' || val == '真实有效邮箱地址'){
+        transformInterface(val,'email', type,0, megId,errMsg[0]);
+        showMsg(megId,errMsg[0],'error');
+
+        textCss(o , 'input error-input');
+        return false;
+    }
+    //邮箱是否符合规则
+    if(!f_check_email(val)){
+        transformInterface(val,'email', type,0, megId,errMsg[1]);
+        showMsg(megId,errMsg[1],'error');
+        textCss(o , 'input error-input');
+        return false;
+    }
+    //去掉雅虎邮箱
+    var startIndex = val.indexOf('@');  //获取@所在的位置
+    var subString = val.substring(startIndex+1,val.length);  //获取@后面的字符串
+    var removeFlag = false;  //标志
+    for (var i=0;i<removeEmail.length;i++) {  //看看@后面的字符串是否和要删除的一致，设置标志
+        if(removeEmail[i] == subString) {
+            removeFlag = true;
+            break;
+        }
+    }
+    if (removeFlag) {
+        transformInterface(val,'email', type,0, megId,errMsg[4]);
+        showMsg(megId,errMsg[4],'error');
+        textCss(o , 'input error-input');
+        return false;
+    }
+    transformInterface(val,'email', type,1, '成功');
+    return true;
+    
+}
+function fast_checkPassword(o , megId , p){
+    var errMsg = ['请您输入密码','密码长度为4-16个字符','密码只能使用数字和字符','您的密码过于简单','密码不能与通行证相同'];       
+    var errorClear = isClearError(megId , errMsg);
+    
+    clearObj(o ,'input');
+    var val = $.trim($('#'+o).val());
+    
+    if(val == '' || val == '4-16位与账号不同'){
+        showMsg(megId,errMsg[0],'error');
+        if('email' == p) {
+            $('#emailPassword').hide();
+            $('#emailPassword2').show();
+            textCss('emailPassword2' , 'input error-input');
+        } else {
+            $('#phonePassword').hide();
+            $('#phonePassword2').show();
+            textCss('phonePassword2' , 'input error-input');
+        }
+        return false;
+    }
+    //密码长度
+    if(!f_check_password_length(val)){
+        showMsg(megId,errMsg[1],'error');
+        textCss(o , 'input error-input');
+        if('email' == p) {
+            $('#emailPassword').show();
+            $('#emailPassword2').hide();
+        } else {
+            $('#phonePassword').show();
+            $('#phonePassword2').hide();
+        }
+        return false;
+    }
+    //密码格式
+    if(!f_check_password(val)){
+        showMsg(megId,errMsg[2],'error');
+        textCss(o , 'input error-input');
+        if('email' == p) {
+            $('#emailPassword').show();
+            $('#emailPassword2').hide();
+        } else {
+            $('#phonePassword').show();
+            $('#phonePassword2').hide();
+        }
+        return false;
+    }
+    //密码简单
+    if(!checkSimplePassword(val)){
+        showMsg(megId,errMsg[3],'error');
+        textCss(o , 'input error-input');
+        if('email' == p) {
+            $('#emailPassword').show();
+            $('#emailPassword2').hide();
+        } else {
+            $('#phonePassword').show();
+            $('#phonePassword2').hide();
+        }
+        return false;
+    }
+    //通行证密码相同
+    if($('#'+p).val() == val){
+        showMsg(megId,errMsg[4],'error');
+        textCss(o , 'input error-input');
+        if('email' == p) {
+            $('#emailPassword').show();
+            $('#emailPassword2').hide();
+        } else {
+            $('#phonePassword').show();
+            $('#phonePassword2').hide();
+        }
+        return false;
+    }
+    if(errorClear){
+        clearError(megId);
+    }
+    return true;
+}
+
+/**
+*校验验证码
+*/
+function fast_checkvalidateCode(o , megId){
+    var errMsg = ['请输入验证码','验证码长度不正确'];    
+    var errorClear = isClearError(megId , errMsg);
+    
+    clearObj(o ,'input');
+    var val = $.trim($('#'+o).val());
+    //验证码是否为空
+    if(val == null || val == "" ||val == ''){
+        showMsg(megId,errMsg[0],'error');
+        textCss(o , 'input error-input');
+        return false;
+    }
+    //验证码长度不正确  
+    if(val.length != 4 && val.length != 5){
+        showMsg(megId,errMsg[1],'error');
+        textCss(o , 'input error-input');
+        return false;
+    }
+    if(errorClear){
+        clearError(megId);
+    }
+    return true;
+}
+
+function isClearError(megId , errMsg){
+    if($.inArray($('#'+megId).text() , errMsg) == -1){
+        return false;
+    }
+
+    return true;
+}
+function clearError(megId){
+    $('#'+megId).empty();
+    $('#'+megId).removeClass();
+}
+function fast_checkSN(o , megId){
+    var errMsg = ['还没有输入姓名','姓名输入格式不对'];    
+    var errorClear = isClearError(megId , errMsg);
+    
+    clearObj(o ,'input');
+    var val = $.trim($('#'+o).val());
+    //姓名是否为空
+    if(val == '' || val == '通行证归属凭证'){
+        showMsg(megId,errMsg[0],'error');
+        textCss(o , 'input error-input');
+        return false;
+    }
+        
+    if(!isSn(val)){
+        showMsg(megId,errMsg[1],'error');
+        textCss(o , 'input error-input');
+        return false;
+    }
+    if(errorClear){
+        clearError(megId);
+    }
+    return true;
+}
+function fast_checkidCode(o , megId){
+    var errMsg = ['请输入身份证号码','身份证号码位数不对','请输入真实的身份证号码'];    
+    var errorClear = isClearError(megId , errMsg);
+
+    clearObj(o ,'input');
+    var val = $.trim($('#'+o).val());
+    
+    if(val == '' || val == '通行证归属凭证'){
+        showMsg(megId,errMsg[0],'error');
+        textCss(o , 'input error-input');
+        return false;
+    }
+    
+    if(!f_check_IDno_length(val)){
+        showMsg(megId,errMsg[1],'error');
+        textCss(o , 'input error-input');
+        return false;
+    }
+    if(!f_check_IDno(val)){
+        showMsg(megId,errMsg[2],'error');
+        textCss(o , 'input error-input');
+        return false;
+    }
+    
+    if(errorClear){
+        clearError(megId);
+    }
+    
+    return true;
+}
+function clearObj(o ,ocss){
+    $('#'+o).removeClass();
+    $('#'+o).addClass(ocss).show();
+}
+//初始化页面样式
+function initPage(){
+    var s = $('#cnType').val();
+    var regType = $('#regType').val();
+    var validatecodeError = $('#validatecodeError').val();
+    var registerFiled = $('#registerFiled').val();
+    if (isnull(regType)) {
+    	regType = getCookie("regType");
+    }
+	
+  	 if(regType.indexOf("1")==0) {//个性快注
+         if(regType.indexOf("2")==1) {
+         	$('#tabs').prepend($('.phone'));
+         	$('.container').prepend($('#phonediv'));
+         }
+         if(regType.indexOf("3")==1) {
+         	$('#tabs').prepend($('.mail'));
+         	$('.container').prepend($('#maildiv'));
+         }
+		 
+     	$('#tabs').prepend($('.person'));
+     	$('.container').prepend($('#persondiv'));
+     	if(isnull(s)) {
+            $('#persontitle').addClass('current').show();
+            $('#persondiv').show();
+     	}
+
+
+     }
+     if(regType.indexOf("2")==0){//手机快注
+         if(regType.indexOf("1")==1) {
+         	$('#tabs').prepend($('.person'));
+         	$('.container').prepend($('#persondiv'));
+         }
+         if(regType.indexOf("3")==1) {
+         	$('#tabs').prepend($('.mail'));
+         	$('.container').prepend($('#maildiv'));
+         }
+
+     	$('#tabs').prepend($('.phone'));
+     	$('.container').prepend($('#phonediv'));
+     	if(isnull(s)) {
+            $('#phonetitle').addClass('current').show();
+            $('#phonediv').show();
+     	}
+
+
+     }
+     if(regType.indexOf("3")==0){//邮箱快注
+         if(regType.indexOf("1")==1) {
+         	$('#tabs').prepend($('.person'));
+         	$('.container').prepend($('#persondiv'));
+         }
+         if(regType.indexOf("2")==1) {
+         	$('#tabs').prepend($('.phone'));
+         	$('.container').prepend($('#phonediv'));
+         }
+     	$('#tabs').prepend($('.mail'));
+     	$('.container').prepend($('#maildiv'));
+     	if(isnull(s)) {
+            $('#mailtitle').addClass('current').show();
+            $('#maildiv').show();
+     	}
+
+
+     }
+     
+    if(isnull(s)){
+
+        if(isnull(regType)) {
+            //默认状态
+            $('#persontitle').addClass('current').show();
+            $('#persondiv').show();
+        } else {
+
+        }   
+          
+    }else{
+    	showCnType();
+    }
+    if (!isnull(regType)) {
+        if (regType.indexOf("1")==-1) {
+        	$('.person').hide();
+        }
+        if (regType.indexOf("2")==-1) {
+        	$('.phone').hide();
+        }
+        if (regType.indexOf("3")==-1) {
+        	$('.mail').hide();
+        }
+    }
+
+  //个性gametyp错误
+    if(validatecodeError == "gametypeErrorPer"){
+        showMsg('fast-error','gametype值错误','error');
+    }
+  //手机gametyp错误
+    if(validatecodeError == "gametypeErrorPho"){
+        showMsg('error','gametype值错误','error');
+    }
+  //邮箱gametyp错误
+    if(validatecodeError == "gametypeErrorEml"){
+        showMsg('email_error','gametype值错误','error');
+    }
+  //邮箱注册验证码错误
+    if(validatecodeError == 3){
+        showMsg('email_error','验证码输入错误','error');
+    }
+    //个性注册验证码错误
+    if(validatecodeError == 1){
+        showMsg('fast-error','验证码输入错误','error');
+    }
+    //手机注册验证码错误
+    if(validatecodeError == 7){
+        showMsg('error','验证码输入错误','error');
+    }
+    //个性
+    if(validatecodeError == 4){
+        showMsg('fast-error','注册超过IP限制,请稍后再试','error');
+    }
+    if(validatecodeError == 10){
+        showMsg('fast-error','个性账号不能是手机号','error');
+    }
+    if(validatecodeError == 11){
+        showMsg('fast-error','系统异常','error');
+    }
+    //邮件
+    if(validatecodeError == 5){
+        showMsg('email_error','注册超过IP限制,请稍后再试','error');
+    }
+     //手机
+    if(validatecodeError == 6){
+        showMsg('error','注册超过IP限制,请稍后再试','error');
+    }
+  //注册失败
+    if(registerFiled == 'registerField'){
+        showMsg('email_error','系统繁忙，请稍后再试','error');
+    }
+  
+    //注册失败
+    if(registerFiled == 'gt_1_per_min_with_email'||registerFiled == 'gt_1_per_min_with_session'||registerFiled == 'gt_10_per_min_with_ip'
+      ||registerFiled == 'gt_20_per_day_with_email'||registerFiled == 'gt_20_per_day_with_session'||registerFiled == 'gt_100_per_day_with_ip'
+      ||registerFiled == "ip_limit"){
+   		showMsg('email_error','超过发送限制，请稍后！','error');
+   	}
+   	
+    if(registerFiled == 'gt_1_per_min_with_email'){
+        showMsg('email_error','同一邮箱一分钟限一次，请稍后再试！','error');
+    }else if(registerFiled == 'gt_1_per_min_with_session'){
+       showMsg('email_error','同一会话一分钟限一次，请稍后再试！','error');
+   	}else if(registerFiled == 'gt_10_per_min_with_ip'){
+       showMsg('email_error','同一IP一分钟限十次，请稍后再试！','error');
+   	}else if(registerFiled == 'gt_20_per_day_with_email'){
+       showMsg('email_error','同一邮箱24小时内限20次！','error');
+   	}else if(registerFiled == 'gt_20_per_day_with_session'){
+       showMsg('email_error','同一会话24小时内限20次！','error');
+   	}else if(registerFiled == 'gt_100_per_day_with_ip'){
+       showMsg('email_error','同一IP24小时内限100次 ！','error');
+   	}else if(registerFiled == "ip_limit"){
+   		showMsg('email_error','您已经注册的太多了，请稍后再试！','error');
+   	}
+   	else if(registerFiled == "regiestField"){
+       showMsg('email_error','系统繁忙，请稍后再试！','error');
+   	}
+        
+    //设置默认text内容
+    //手机表单（没有验证码，且短信验证码ajax校验，不会有问题）
+    setDefaultText('securityPhone','真实有效手机号码');
+    setDefaultText('authCode','获取短信验证码');
+    setDefaultText('phoneSn','通行证归属凭证');
+    setDefaultText('phoneCertNumber','通行证归属凭证');
+    setDefaultText('phonePassword','4-16位与账号不同');
+
+  //邮箱表单（有验证码，需要设置）
+  //读取cookie
+    var cookieEmailCn = getCookie("cookieEmailCn");
+    var cookieEmailSn = getCookie("cookieEmailSn");
+    var cookieEmailCertNumber = getCookie("cookieEmailCertNumber");
+  //设置表单
+    if(cookieEmailCn) {
+        $("#email").val(cookieEmailCn);
+    } else {
+        setDefaultText('email','真实有效邮箱地址');
+    }
+    if(cookieEmailSn) {
+        $("#emailSn").val(unescape(cookieEmailSn));
+    } else {
+        setDefaultText('emailSn','通行证归属凭证');
+    }
+    if(cookieEmailCertNumber) {
+        $("#emailCertNumber").val(cookieEmailCertNumber);
+    } else {
+        setDefaultText('emailCertNumber','通行证归属凭证');
+    }
+    setDefaultText('emailPassword','4-16位与账号不同');
+  //删除cookie，放置下次继续显示
+    delCookie("cookieEmailCn");
+    delCookie("cookieEmailSn");
+    delCookie("cookieEmailCertNumber");
+
+  //个性表单（有验证码，需要设置）
+  //读取cookie
+    var cookiePersonCn = getCookie("cookiePersonCn");
+    var cookiePersonSn = getCookie("cookiePersonSn");
+    var cookiePersonCertNumber = getCookie("cookiePersonCertNumber");
+  //设置表单
+    if(cookiePersonCn) {
+        $("#cn").val(cookiePersonCn);
+    } else {
+    	setDefaultText('cn','数字或字母开头');
+    }
+    if(cookiePersonSn) {
+        $("#sn").val(unescape(cookiePersonSn));
+    } else {
+    	setDefaultText('sn','通行证归属凭证');
+    }
+    if(cookiePersonCertNumber) {
+        $("#certNumber").val(cookiePersonCertNumber);
+    } else {
+    	setDefaultText('certNumber','通行证归属凭证');
+    }
+    setDefaultText('passwd','4-16位与账号不同');
+  //删除cookie，放置下次继续显示
+    delCookie("cookiePersonCn");
+    delCookie("cookiePersonSn");
+    delCookie("cookiePersonCertNumber");
+    //手机表单（有验证码，需要设置）
+    //读取cookie
+      var cookiePhone = getCookie("cookiePhone");
+      var cookiePhoneSn = getCookie("cookiePhoneSn");
+      var cookiePhoneCertNumber = getCookie("cookiePhoneCertNumber");
+      //设置表单
+      if(cookiePhone) {
+          $("#securityPhone").val(cookiePhone);
+      } else {
+      	setDefaultText('cn','数字或字母开头');
+      }
+      if(cookiePhoneSn) {
+          $("#phoneSn").val(unescape(cookiePhoneSn));
+      } else {
+      	setDefaultText('sn','通行证归属凭证');
+      }
+      if(cookiePhoneCertNumber) {
+          $("#phoneCertNumber").val(cookiePhoneCertNumber);
+      } else {
+      	setDefaultText('certNumber','通行证归属凭证');
+      }
+      //删除cookie，放置下次继续显示
+      delCookie("cookiePhone");
+      delCookie("cookiePhoneSn");
+      delCookie("cookiePhoneCertNumber");
+    
+    $('#passwd').hide();
+    $('#emailPassword').hide();
+    $('#phonePassword').hide();
+}
+function showCnType() {
+	var s = $('#cnType').val();
+    if(s == 1) {//个性快注
+    	//$('#tabs').prepend($('.person'));
+    	//$('.container').prepend($('#persondiv'));
+        $('#persontitle').addClass('current').show();
+        $('#persondiv').show();
+    }
+    if(s == 2){//手机快注
+    	//$('#tabs').prepend($('.phone'));
+    	//$('.container').prepend($('#phonediv'));
+        $('#phonetitle').addClass('current').show();
+        $('#phonediv').show();
+    } 
+    if(s == 3){//邮箱快注
+    	//$('#tabs').prepend($('.mail'));
+    	//$('.container').prepend($('#maildiv'));
+        $('#mailtitle').addClass('current').show();
+        $('#maildiv').show();
+    }
+}
+function setDefaultText(id , msg){
+    $('#'+id).focus(function (){
+        if($('#'+id).val()==msg){
+            $(this).val('');
+        }
+    });
+    $('#'+id).blur(function (){
+        if($('#'+id).val()==''){
+            $(this).val(msg);
+        }
+    });
+}
+//设置gametype
+function setGametype(){
+    var gametype = GetQueryString('gametype');
+    if(gametype!=null){
+        $('#phoneRegGameType').val(gametype);
+        $('#emailRegGameType').val(gametype);
+    }
+}
+//手机确认修改
+function phoneToSubmit(){
+	token = true;
+    if(phoneCheck()){
+	    //var errorInfo = $('#fast-error').html();
+		//if (errorInfo != '') {
+		//	return false;
+		//}
+        var phoneflag = "";
+        var cookies = document.cookie.split(';'); 
+            for (var i = 0; i < cookies.length; i++) { 
+            var cookie = $.trim(cookies[i]); 
+            if (cookie.substring(0, 7) == 'tongji=') { 
+                phoneflag = 1;
+                $("#phoneTongji").val("normal," + cookie.substring(7, cookie.length));
+            }
+        } 
+        if(1 != phoneflag){
+            $("#phoneTongji").val("normal,");
+        }
+        //添加表单到cookie，以便验证码填错返回后能显示在表单中
+        addCookie("cookiePhone",$("#securityPhone").val(),5);  //手机号码
+        addCookie("cookiePhoneSn",$("#phoneSn").val(),5);  //真实姓名
+        addCookie("cookiePhoneCertNumber",$("#phoneCertNumber").val(),5);  //身份证号码
+        asyncPhoneSubmit($("#securityPhone").val());
+        document.cForm.submit();    
+    }
+}
+//手机提交检查
+function phoneCheck(){
+    //手机
+    var f1 = fast_checkPhone_sub('securityPhone' , 'error');
+    if(f1 == false){
+        return false;
+    }
+     var errorInput = $('#securityPhone').hasClass('input error-input');//存在
+    if (errorInput) {
+    var errMsg = ['请填写手机号码','手机号格式不正确','该手机号码已经被注册','系统繁忙，请稍候再试'];      
+    var errorClear = isClearError('error' , errMsg);
+    var val = $.trim($('#securityPhone').val());
+    var type = $('#phoneRegGameType').val();
+    		transformInterface(val,'phone',type,0,'error',errMsg[2]);
+        	showMsg('error',errMsg[2],'error');
+        	textCss('securityPhone' , 'input error-input');
+        	return false;
+    }
+    //验证码
+    var f2 = fast_checkAuthCode_sub('authCode' , 'error');
+    if(f2 == false){
+        return false;
+    }
+    var errorInfo = $('#authCode').hasClass('input error-input');//存在
+    if (errorInfo) {
+    	var errMsg = ['请填写手机收到的短信验证码','短信验证码不正确'];      
+    	var val = $('#authCode').val();
+    	var flag = false;
+		showMsg('error',errMsg[1],'error');
+        textCss('authCode' , 'input error-input');
+        return false;
+    }
+    //密码
+    var f3 = fast_checkPassword('phonePassword' , 'error' , 'securityPhone');
+    if(f3 == false){
+        return false;
+    }
+    //姓名
+    var f4 = fast_checkSN('phoneSn' , 'error');
+    if(f4 == false){
+        return false;
+    }
+    //身份证号
+    var f5 = fast_checkidCode('phoneCertNumber' , 'error');
+    if(f5 == false){
+        return false;
+    }
+    //协议
+    var f6 = fast_checkAgreement('phoneAgreement' , 'error');
+    if(f6 == false){
+        return false;
+    }
+    var rs = f1 && f2 && f3 && f4 && f5 && f6;
+    if(rs){
+        $('#error').empty();
+        $('#error').removeClass();
+    }
+    return rs;
+}
+function emailToSubmit(){
+	token = true;
+    if(emailCheck()){
+	    var errorInfo = $('#email_error').html();
+		if (errorInfo != '') {
+			return false;
+		}
+			
+        var emailflag = "";
+        var cookies = document.cookie.split(';'); 
+            for (var i = 0; i < cookies.length; i++) { 
+            var cookie = $.trim(cookies[i]); 
+            if (cookie.substring(0, 7) == 'tongji=') { 
+                emailflag = 1;
+                $("#emailTongji").val("normal," + cookie.substring(7, cookie.length));
+            } 
+        } 
+        if(1 != emailflag){
+            $("#emailTongji").val("normal,");
+        }
+
+      //添加表单到cookie，以便验证码填错返回后能显示在表单中
+        addCookie("cookieEmailCn",$("#email").val(),5);  //手机号码
+        addCookie("cookieEmailSn",$("#emailSn").val(),5);  //真实姓名
+        addCookie("cookieEmailCertNumber",$("#emailCertNumber").val(),5);  //身份证号码
+        asyncEmailSubmit($("#email").val());
+        document.dForm.submit();    
+    }
+}
+function emailCheck(){
+    //邮箱
+    var f1 = fast_checkEmail_sub('email' , 'email_error','emailRegGameType');
+    if(f1 == false){
+        return false;
+    } 
+    var errorInput = $('#email').hasClass('input error-input');//存在
+    	if (errorInput) {
+    	var errMsg = ['请输入常用邮箱','请输入真实有效的常用邮箱','该邮箱已经被人注册','系统繁忙，请稍候再试'];       
+    	var errorClear = isClearError('email_error' , errMsg);
+	    var val = $.trim($('#email').val());
+    	var type = $('#emailRegGameType').val();
+    		transformInterface(val,'email', type,0, 'email_error',errMsg[2]);
+        	showMsg('email_error',errMsg[2],'error');
+        	textCss('email' , 'input error-input');
+        	return false;	
+    	}
+    //密码
+    var f2 = fast_checkPassword('emailPassword' , 'email_error' , 'email');
+    if(f2 == false){
+        return false;
+    }
+    //姓名
+    var f3 = fast_checkSN('emailSn' , 'email_error');
+    if(f3 == false){
+        return false;
+    }
+    //身份证号
+    var f4 = fast_checkidCode('emailCertNumber' , 'email_error');
+    if(f4 == false){
+        return false;
+    }
+    //协议
+    var f5 = fast_checkAgreement('emailAgreement' , 'email_error');
+    if(f5 == false){
+        return false;
+    }
+    //验证码
+    var f6 = fast_checkvalidateCode('emailvalidateCode' , 'email_error');
+    if(f6 == false){
+        return false;
+    }
+    
+    var rs = f1 && f2 && f3 && f4 && f5 && f6;
+    if(rs){
+        $('#email_error').empty();
+        $('#email_error').removeClass();
+    }
+    return rs;
+}
+function f_check_IDno(obj)   
+{
+    var aCity={11:"北京",12:"天津",13:"河北",14:"山西",15:"内蒙古",21:"辽宁",22:"吉林",23:"黑龙江",31:"上海",32:"江苏",33:"浙江",34:"安徽",35:"福建",36:"江西",37:"山东",41:"河南",42:"湖北",43:"湖南",44:"广东",45:"广西",46:"海南",50:"重庆",51:"四川",52:"贵州",53:"云南",54:"西藏",61:"陕西",62:"甘肃",63:"青海",64:"宁夏",65:"新疆",71:"台湾",81:"香港",82:"澳门",91:"国外"};   
+    
+    var iSum = 0;   
+    var info = "";   
+    var strIDno = obj;   
+    var idCardLength = strIDno.length;  
+    var err = 0;
+    if (strIDno.substr(0,6) == "000000" || strIDno.substr(0,6) == "111111" || strIDno.substr(0,6) == "222222" || strIDno.substr(0,6) == "333333" || strIDno.substr(0,6) == "444444" || strIDno.substr(0,6) == "555555" || strIDno.substr(0,6) == "666666" || strIDno.substr(0,6) == "777777" || strIDno.substr(0,6) == "888888" || strIDno.substr(0,6) == "999999") err = 1;
+    if (strIDno.substr(0,6) == "123456" || strIDno.substr(0,6) == "234567" || strIDno.substr(0,6) == "345678" || strIDno.substr(0,6) == "456789" || strIDno.substr(0,6) == "567890" || strIDno.substr(0,6) == "012345" || strIDno.substr(0,6) == "543210" || strIDno.substr(0,6) == "432109" || strIDno.substr(0,6) == "321098" || strIDno.substr(0,6) == "210987" || strIDno.substr(0,6) == "109876" || strIDno.substr(0,6) == "098765" || strIDno.substr(0,6) == "987654" || strIDno.substr(0,6) == "876543" || strIDno.substr(0,6) == "765432") err = 1;
+    if (strIDno.substr(0,6) == "121212" || strIDno.substr(0,6) == "131313" || strIDno.substr(0,6) == "141414" || strIDno.substr(0,6) == "151515" || strIDno.substr(0,6) == "161616" || strIDno.substr(0,6) == "171717" || strIDno.substr(0,6) == "181818" || strIDno.substr(0,6) == "191919" || strIDno.substr(0,6) == "101010") err = 1;
+    if (strIDno.substr(0,6) == "212121" || strIDno.substr(0,6) == "232323" || strIDno.substr(0,6) == "242424" || strIDno.substr(0,6) == "252525" || strIDno.substr(0,6) == "262626" || strIDno.substr(0,6) == "272727" || strIDno.substr(0,6) == "282828" || strIDno.substr(0,6) == "292929" || strIDno.substr(0,6) == "202020") err = 1;
+    if (strIDno.substr(0,6) == "313131" || strIDno.substr(0,6) == "323232" || strIDno.substr(0,6) == "343434" || strIDno.substr(0,6) == "353535" || strIDno.substr(0,6) == "363636" || strIDno.substr(0,6) == "373737" || strIDno.substr(0,6) == "383838" || strIDno.substr(0,6) == "393939" || strIDno.substr(0,6) == "303030") err = 1;
+    if (strIDno.substr(0,6) == "414141" || strIDno.substr(0,6) == "424242" || strIDno.substr(0,6) == "434343" || strIDno.substr(0,6) == "454545" || strIDno.substr(0,6) == "464646" || strIDno.substr(0,6) == "474747" || strIDno.substr(0,6) == "484848" || strIDno.substr(0,6) == "494949" || strIDno.substr(0,6) == "404040") err = 1;
+    if (strIDno.substr(0,6) == "515151" || strIDno.substr(0,6) == "525252" || strIDno.substr(0,6) == "535353" || strIDno.substr(0,6) == "545454" || strIDno.substr(0,6) == "565656" || strIDno.substr(0,6) == "575757" || strIDno.substr(0,6) == "585858" || strIDno.substr(0,6) == "595959" || strIDno.substr(0,6) == "505050") err = 1;
+    if (strIDno.substr(0,6) == "616161" || strIDno.substr(0,6) == "626262" || strIDno.substr(0,6) == "636363" || strIDno.substr(0,6) == "646464" || strIDno.substr(0,6) == "656565" || strIDno.substr(0,6) == "676767" || strIDno.substr(0,6) == "686868" || strIDno.substr(0,6) == "696969" || strIDno.substr(0,6) == "606060") err = 1;
+    if (strIDno.substr(0,6) == "717171" || strIDno.substr(0,6) == "727272" || strIDno.substr(0,6) == "737373" || strIDno.substr(0,6) == "747474" || strIDno.substr(0,6) == "757575" || strIDno.substr(0,6) == "767676" || strIDno.substr(0,6) == "787878" || strIDno.substr(0,6) == "797979" || strIDno.substr(0,6) == "707070") err = 1;
+    if (strIDno.substr(0,6) == "818181" || strIDno.substr(0,6) == "828282" || strIDno.substr(0,6) == "838383" || strIDno.substr(0,6) == "848484" || strIDno.substr(0,6) == "858585" || strIDno.substr(0,6) == "868686" || strIDno.substr(0,6) == "878787" || strIDno.substr(0,6) == "898989" || strIDno.substr(0,6) == "808080") err = 1;
+    if (strIDno.substr(0,6) == "919191" || strIDno.substr(0,6) == "929292" || strIDno.substr(0,6) == "939393" || strIDno.substr(0,6) == "949494" || strIDno.substr(0,6) == "959595" || strIDno.substr(0,6) == "969696" || strIDno.substr(0,6) == "979797" || strIDno.substr(0,6) == "989898" || strIDno.substr(0,6) == "909090") err = 1;
+    if(err == 1) {
+        return false;
+    }    
+    if(!/^\d{17}(\d|x)$/i.test(strIDno)&&!/^\d{15}$/i.test(strIDno))    
+    {   
+        return false;   
+    }   
+    
+    //在后面的运算中x相当于数字10,所以转换成a   
+    strIDno = strIDno.replace(/x$/i,"a");   
+  
+    if(aCity[parseInt(strIDno.substr(0,2))]==null)   
+    {   
+        return false;   
+    }   
+       
+    if (idCardLength==18)   
+    {   
+        sBirthday=strIDno.substr(6,4)+"-"+Number(strIDno.substr(10,2))+"-"+Number(strIDno.substr(12,2));   
+        var d = new Date(sBirthday.replace(/-/g,"/"))   
+        if(sBirthday!=(d.getFullYear()+"-"+ (d.getMonth()+1) + "-" + d.getDate()))   
+        {          
+            return false;   
+        }   
+  
+        for(var i = 17;i>=0;i --)   
+            iSum += (Math.pow(2,i) % 11) * parseInt(strIDno.charAt(17 - i),11);   
+  
+        if(iSum%11!=1)   
+        {   
+            return false;   
+        }   
+    }   
+    else if (idCardLength==15)   
+    {   
+        sBirthday = "19" + strIDno.substr(6,2) + "-" + Number(strIDno.substr(8,2)) + "-" + Number(strIDno.substr(10,2));   
+        var d = new Date(sBirthday.replace(/-/g,"/"))   
+        var dd = d.getFullYear().toString() + "-" + (d.getMonth()+1) + "-" + d.getDate();      
+        if(sBirthday != dd)   
+        {   
+            return false;   
+        }   
+    }   
+    return true;    
+} 
+function f_check_IDno_length(obj){
+    if(obj.length==15 || obj.length==18){
+        return true;
+    }
+    return false;
+}
+function isHanzi(obj){
+    var Expression=/[^\u4E00-\u9FA5]/; 
+    var objExp=new RegExp(Expression);
+    return !objExp.test(obj)
+}
+function isSn(obj){
+    if(isHanzi(obj)){
+        if(obj.length>1 && obj.length<9){
+            return true;
+        }
+        return false;
+    }
+     return false;
+}
+function f_check_email(obj){
+    var myReg = /^([-_A-Za-z0-9\.]+)@([-_A-Za-z0-9]+\.)+[A-Za-z0-9]{2,3}$/;    
+    if(myReg.test( obj )) return true;      
+    return false;    
+}
+function f_check_mobile(obj){
+    return (/^1\d{10}$/.test(obj)); 
+    //return (/^1(3|4|5|8)\d{9}$/.test(obj)); 
+    //return (/^(?:13\d|14[1357]|15[0123456789]|18[02356789])-?\d{5}(\d{3}|\*{3})$/.test(obj));       
+}
+function f_check_password(obj){
+    if(obj.length <4 || obj.length>16){
+        return false;
+    }
+    var regu =/^[^, '"]+$/
+    var re = new RegExp(regu);   
+    if (re.test( obj )) {
+      return true;   
+    }   
+    return false;       
+}
+function f_check_password_length(obj){
+    if(obj.length <4 || obj.length>16){
+        return false;
+    }
+     
+    return true;        
+}
+function isnull(str)   
+{
+    if(str == undefined){
+        return true;
+    }
+    var i;   
+    if(str.length == 0)  { 
+        return true;   
+    }
+    for (i=0;i<str.length;i++)   
+    {   
+        if (str.charAt(i)!=' ')    
+            return false;   
+    }   
+    return true;   
+}
+var warnMsg = ['请输入您手机收到的短信验证码,短信验证码为6位数字',
+                '除空格,逗号,单双引号以外的任意字符,长度为4—16位',
+                '姓名问题，请填写1-19个中文或2-38个英文，生日问题，请填写8位日期，如：20090514',
+                '短信验证码已发送至您填写的手机，请耐心等待。收到验证码后，请在十分钟内填写。',
+                '必须与您的身份证上的姓名完全一致，否则不能通过认证',    
+                '身份证号码一经提交公安部认证则不能修改'];
+                
+var errorMsg = ['呦！怎么还不输入短信验证码？','呦！短信验证码只能是6位数字哦','呦！短信验证码没有填对啊',
+                '呦！还没有输入密码呢','呦！密码格式不对哦','呦！密码太简单啦',
+                '哟！还得再输一次密码呀','哟！两次输入的密码不一致哦',
+                '呦！还没有填写密码提示问题答案呢','呦！填写的答案不符合规则',  
+                '请填写您的联系手机','呦！您填写的手机号码不正确呀',
+                '短信验证码超过限制，请稍后再试','系统繁忙，请稍后获取！',
+                '哟！还没有输入超级密码哦','哟！超级密码格式不对哦',   
+                '呦！还没有输入身份证号呀','呦！身份证号位数不对哦','呦！这个身份证号是假的吧',             
+                '呦！还没输入畅游通行证呢','呦！您输入的通行证格式不对呀',
+                '呦！输入图片上的文字嘛',
+                '呦！还没有输入姓名哦','呦！姓名输入格式不对哦'];
+function textCss(o , css){
+    $('#'+o).removeClass();
+    $('#'+o).addClass(css).show();
+    //个性注册
+    //if( o == 'cn' && $('#'+o).val() == '通行证长度不符，需5-16位') {
+    //  document.getElementById(o).innerHTML = "";
+    //} else if( o == 'passwd' && $('#'+o).val() == '4-16位，与通行证不同') {{
+    //  changePerson('passwd2');
+    //}
+}
+function fast_sendMessage(){
+    var phoneNum = $("#securityPhone").val();
+    phoneNum = jQuery.trim(phoneNum);
+   $('#error').empty();
+    $('#error').removeClass();
+    if(phoneNum==''){
+        //验证手机是否填写
+        showMsg('error','请填写手机号码','error');
+        textCss('securityPhone' , 'input error-input');
+        return;
+    }else if(!f_check_mobile(phoneNum)){
+        //验证手机
+        showMsg('error','手机号格式不正确','error');
+        textCss('securityPhone' , 'input error-input');
+        return;
+    }else if(phoneIsUsed){
+        //验证手机
+        showMsg('error','该手机号码已经被注册','error');
+        textCss('securityPhone' , 'input error-input');
+        return;
+    }else{
+        var functionName = 'function_phone13';
+        var postData = {securityPhone:phoneNum,sendAuthCodeType:functionName};
+		$(document).ready(function() {
+       			$.getJSON('http://member.changyou.com/register/sendPhoneCode.do?securityPhone='+phoneNum+'&sendAuthCodeType='+functionName+'&t=' + new Date() + '&callback=?',
+                         function(json) {
+                				if(json.msg == 'ok'){
+                					
+                				}else if(json.msg == 'error'){
+                    				showMsg('error','短信验证码超过限制，请稍后再试','error');
+                				}else if(json.msg == 'invalid'){
+                					showMsg('error','因短信服务暂停，请使用其他注册','error');
+                				}else{
+                   					 showMsg('error','系统繁忙，请稍后获取！','error');
+                				}
+                				countDown(60);
+                         });
+      	 });
+     }
+    //60秒倒计时
+    function countDown(num){
+        var n = num;
+        document.getElementById("theHref").onclick = function (){return false;};
+        function btnShow(){
+            n--;
+            if(n<=0){
+                document.getElementById("theHref").innerHTML = "获取短信验证码";
+                window.clearInterval(timer1);
+                document.getElementById("theHref").onclick = fast_sendMessage;
+            }else{
+                document.getElementById("theHref").innerHTML = "获取短信验证码("+n+"s)";
+            }
+        }
+        var timer1 = window.setInterval(btnShow,1000);
+    }
+}
+function fast_checkAgreement(id, msgId){
+    var rs = $('#'+id).attr('checked');
+    if(rs == false){
+        showMsg(msgId,'您还没有阅读《畅游用户协议》','error');
+    }
+    return rs;
+}
+
+//刷新验证码
+function reloadCheckCode(checkid){
+    var cC=document.getElementById(checkid);
+    var value = parseInt(Math.random()*10000);
+    cC.src="http://auth.changyou.com/servlet/ImageCode?random_mark="+value;
+}
+
+//添加cookie，放置验证码出错后表单内容被清空
+function addCookie(name,value,expiresMinute){
+	var cookieString=name+"="+escape(value);
+	//设置过期时间
+	//var date=new Date();
+	//date.setTime(date.getTime+expiresMinute*60*1000);
+	//cookieString=cookieString+"; expires="+date.toGMTString();
+	
+	document.cookie=cookieString;
+} 
+
+//获取cookie
+function getCookie(name){
+	var strCookie=document.cookie;
+	var arrCookie=strCookie.split("; ");
+	for(var i=0;i<arrCookie.length;i++){
+	    var arr=arrCookie[i].split("=");
+	    if(arr[0]==name)return arr[1];
+	}
+	return "";
+} 
+
+//删除cookie
+function delCookie(name){//为了删除指定名称的cookie，可以将其过期时间设定为一个过去的时间
+    var date = new Date();
+    date.setTime(date.getTime() - 10000);
+    document.cookie = name + "=a; expires=" + date.toGMTString();
+}
+
+function getVerifyCode(){
+	if(false == token){
+		return;
+	}
+    $.getJSON('http://zhuce.changyou.com/baseReg/getVerifyCode.act?t=' + new Date() + '&callback=?',
+            function(json) {
+   				if(json.msg != 'error'){ //生成token成功
+   					verifycode  = json.msg;
+   					token = false;
+   				}
+   });
+}
+</script>
+</head>
+
+<body>
+<input type="hidden" id="cnType" name="cnType" value="">
+<input type="hidden" id="regType" name="regType" value="">
+<input type="hidden" id="validatecodeError" name="validatecodeError" value="">
+<input type="hidden" id="registerFiled" name="registerFiled" value="">
+<div id="page">
+    <ul id="tabs" class="clearfix">
+        <li class="person ml"><a href="javascript:void(0)" id="persontitle" onclick="reloadCheckCode('checkcodeId-person')" class="current" style="">个性</a></li>
+        <li class="phone"><a href="javascript:void(0)" id="phonetitle" onclick="reloadCheckCode('checkcodeId-phone')">手机</a></li>
+        <li class="mail"><a href="javascript:void(0)" id="mailtitle" onclick="reloadCheckCode('checkcodeId-email')">邮箱</a></li> 
+    </ul>
+    <div class="container">
+     <div class="content" id="persondiv" style="">
+                    <form id="qFom" name="qForm" action="http://zhuce.changyou.com/regTLDeepMQPerson.act" method="post" onsubmit="return tosubmmit(this)">
+                        <input type="hidden" id="personTongji" name="personTongji" value="">
+                       <input id="result" name="result" type="hidden" value="http://m.tl.changyou.com/qr/fast_new_deep_step2.html">
+                        <input type="hidden" id="gametype" name="gameType" value="">
+                        <ul class="list clearfix" id="qdiv">
+                            <li class="center">
+                                <p id="fast-error" class=""></p>
+                            </li>
+                            <li class="margin-short">
+                                <label>
+                                    通行证：
+                                </label>
+                                <div class="wrap">
+                                    <input type="text" id="cn" name="cn" autocomplete="off" onfocus="textCss(this.id , 'input input-now');getVerifyCode();" onblur="CheckCn('cn','fast-error');" value="数字或字母开头" class="input" style="text-transform:lowercase" maxlength="16" placeholder="数字或字母开头" onkeydown="if(event.keyCode==32) return false">
+                                </div>
+                            </li>
+                            <li>
+                                <p class="margin" id="margin">
+                                    @changyou.com
+                                </p>
+                            </li>
+                            <li>
+                                <label>
+                                    设置密码：
+                                </label>
+                                <div class="wrap">
+                                    <input id="passwd2" name="personPassword2" type="text" autocomplete="off" onpaste="return false" onfocus="changePerson('passwd2');" value="请设置4-16位密码，于账号不同" class="input" placeholder="请设置4-16位密码，于账号不同">
+                                    <input type="password" id="passwd" name="password" onpaste="return false" onfocus="textCss(this.id , 'input input-now');" onblur="validatePasswordForReg('passwd','cn');" value="" class="input" onkeydown="if(event.keyCode==32) return false" style="display: none; ">
+                                </div>
+                            </li>
+                             
+                            <li>
+                                <label>
+                                    真实姓名：
+                                </label>
+                                <div class="wrap">
+                                        <input type="text" id="sn" name="sn" autocomplete="off" style="text-transform: lowercase" value="通行证归属凭证" onkeydown="if(event.keyCode==32) return false" onfocus="textCss(this.id , 'input input-now');" onblur="checkSnNullb('sn','sn_info');" class="input" maxlength="8" placeholder="通行证归属凭证">
+                                </div>
+                            </li>
+                            <li>
+                                <label>
+                                    身份证号：
+                                </label>
+                                <div class="wrap">
+                                        <input type="text" id="certNumber" name="certNum" autocomplete="off" onkeydown="if(event.keyCode==32) return false" onfocus="textCss(this.id , 'input input-now');;" onblur="checkIdcardNotNulb('certNumber','certNumber_info');" value="通行证归属凭证" class="input" maxlength="18" placeholder="通行证归属凭证">
+                                </div>
+                            </li>
+                           <li>
+                              <label>
+                              验证码：
+                              </label>
+                              <div class="wrap">
+                                <input type="text" class="input" name="imgCode" id="personvalidateCode" maxlength="5" onblur="fast_checkvalidateCode(this.id,'fast-error')" onfocus="textCss(this.id , 'input input-now');" onkeydown="if(event.keyCode==32) return false">
+                              </div>
+                            </li>
+                              <li class="checkimg"> 
+                                <img src="http://auth.changyou.com/servlet/ImageCode" width="91" height="31" class="code" id="checkcodeId-person" onclick="reloadCheckCode('checkcodeId-person');">
+                                <a href="javascript:reloadCheckCode('checkcodeId-person');" class="other">换一张</a> 
+                             </li>
+                           <li>
+                                <p class="center">
+                                    <input type="checkbox" id="read" name="read" value="" class="checkbox" checked="checked">
+                                    我已阅读并同意 &nbsp;
+                                    <a href="http://zhuce.changyou.com/inc/useragreement.html" target="_blank">畅游用户协议</a>
+                                </p>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)" class="submit">
+                                	<input type="submit" name="personSubmit" value="">
+                                </a>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+                
+                
+        <div class="content" id="phonediv" style="display:none">
+            <form id="cForm" action="http://zhuce.changyou.com/regQDeepPhone.act" method="POST" name="cForm">
+            <input type="hidden" id="phoneTongji" name="phoneTongji" value="">
+            <input id="result" name="result" type="hidden" value="http://m.tl.changyou.com/qr/fast_new_deep_step2.html">
+            <ul class="list clearfix">
+                <li class="center"><p id="error"></p></li>
+                <li>
+                    <label>手机号码：</label>
+                                <div class="wrap">
+                                    <input type="text" name="cn" autocomplete="off" id="securityPhone" maxlength="11" class="input" value="真实有效手机号码" tabindex="1" onkeydown="if(event.keyCode==32) return false" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" onfocus="textCss(this.id , 'input input-now');getVerifyCode();" onblur="fast_checkPhone(this.id,'error','phoneRegGameType')" placeholder="真实有效手机号码">
+                                </div>
+                            </li>
+
+                <li>
+                    <label>设置密码：</label>
+                                <div class="wrap">
+                                    <input id="phonePassword2" name="phonePassword2" autocomplete="off" type="text" tabindex="2" onpaste="return false" onfocus="changePhone('phonePassword2');" value="请设置4-16位密码，于账号不同" class="input" placeholder="请设置4-16位密码，于账号不同">
+                                    <input type="password" id="phonePassword" name="password" tabindex="3" class="input" onpaste="return false" value="" onkeydown="if(event.keyCode==32) return false" onfocus="textCss(this.id , 'input input-now')" onblur="fast_checkPassword(this.id,'error','securityPhone')" placeholder="请设置4-16位密码，于账号不同" style="display: none; ">
+                                </div>
+                </li>
+                 <li>
+                    <label>真实姓名：</label>
+                                <div class="wrap">
+                                    <input type="text" id="phoneSn" name="sn" autocomplete="off" value="通行证归属凭证" class="input" maxlength="8" tabindex="4" onkeydown="if(event.keyCode==32) return false" onfocus="textCss(this.id , 'input input-now')" onblur="fast_checkSN(this.id,'error')" placeholder="通行证归属凭证">
+                                </div>
+                            </li>
+                <li>
+                    <label>身份证号：</label>
+                                <div class="wrap">
+                                    <input type="text" id="phoneCertNumber" name="certNum" autocomplete="off" value="通行证归属凭证" class="input" maxlength="18" onkeydown="if(event.keyCode==32) return false" tabindex="5" onfocus="textCss(this.id , 'input input-now')" onblur="fast_checkidCode(this.id,'error')" placeholder="通行证归属凭证">
+                                </div>
+                            </li>
+               <li>
+                              <label>
+                              验证码：
+                              </label>
+                              <div class="wrap">
+                                <input type="text" class="input" name="imgCode" id="phonevalidateCode" maxlength="5" onblur="fast_checkvalidateCode(this.id,'error')" onfocus="textCss(this.id , 'input input-now');" tabindex="6">
+                              </div>
+                            </li>
+                            <li class="checkimg"> 
+                                <img src="http://auth.changyou.com/servlet/ImageCode" width="91" height="31" class="code" id="checkcodeId-phone" onclick="reloadCheckCode('checkcodeId-phone');">
+                                <a href="javascript:reloadCheckCode('checkcodeId-phone');" class="other">换一张</a> 
+                             </li>
+                             
+                <li>
+                  <p class="center">
+                                    <input type="checkbox" id="phoneAgreement" name="" value="" class="checkbox" checked="">
+                                    我已阅读并同意 &nbsp;<a href="http://zhuce.changyou.com/inc/useragreement.html" target="_blank">畅游用户协议</a>
+                  </p>
+              </li>
+              <li>
+                   <a href="#" class="submit"><input type="button" name="" value="" onclick="phoneToSubmit()" tabindex="7/"></a>
+              </li>
+            </ul>
+           <input type="hidden" id="phoneRegGameType" name="gameType" value="">
+        </form>
+        </div><!-- content end -->
+        <div class="content" id="maildiv" style="display:none">
+            <form id="dForm" action="http://zhuce.changyou.com/regMQTLGMail.act" method="post" name="dForm">
+            <input type="hidden" id="emailTongji" name="emailTongji" value="">
+            <input id="result" name="result" type="hidden" value="http://m.tl.changyou.com/qr/fast_new_register_deep_success.html">
+            <ul class="list clearfix">
+                <li class="center"><p id="email_error"></p></li>
+                <li>
+                    <label>常用邮箱：</label>
+                                <div class="wrap">
+                                    <input type="text" name="cn" id="email" autocomplete="off" value="真实有效邮箱地址" class="input" maxlength="49" onfocus="textCss(this.id , 'input input-now');getVerifyCode();" onblur="fast_checkEmail(this.id,'email_error' ,'emailRegGameType')" onkeydown="if(event.keyCode==32) return false" style="text-transform:lowercase" placeholder="真实有效邮箱地址">
+                                </div>
+                            </li>
+                            <li>
+                                <label>
+                                    设置密码：
+                                </label>
+                                <div class="wrap">
+                                    <input id="emailPassword2" name="emailPassword2" type="text" onpaste="return false" autocomplete="off" onfocus="changeEmail('emailPassword2');" value="请设置4-16位密码，于账号不同" class="input" placeholder="请设置4-16位密码，于账号不同">
+                                    <input type="password" id="emailPassword" name="password" class="input" onpaste="return false" onkeydown="if(event.keyCode==32) return false" onfocus="textCss(this.id , 'input input-now')" onblur="fast_checkPassword(this.id,'email_error','email')" placeholder="请设置4-16位密码，于账号不同" style="display: none; ">
+                                </div>
+                            </li>
+                            <li>
+                                <label>
+                                    真实姓名：
+                                </label>
+                                <div class="wrap">
+                                    <input type="text" id="emailSn" name="sn" value="通行证归属凭证" class="input" maxlength="8" autocomplete="off" onkeydown="if(event.keyCode==32) return false" onfocus="textCss(this.id , 'input input-now')" onblur="fast_checkSN(this.id,'email_error')" placeholder="通行证归属凭证">
+                                </div>
+                            </li>
+                            <li>
+                                <label>
+                                    身份证号：
+                                </label>
+                                <div class="wrap">
+                                    <input type="text" id="emailCertNumber" name="certNum" value="通行证归属凭证" class="input" maxlength="18" autocomplete="off" onkeydown="if(event.keyCode==32) return false" onfocus="textCss(this.id , 'input input-now')" onblur="fast_checkidCode(this.id,'email_error')" placeholder="通行证归属凭证">
+                                </div>
+                            </li>
+                            
+                 <li>                 
+                    <label>验证码：</label>
+                    
+                    <div class="wrap">
+                        <input type="text" class="input" name="imgCode" id="emailvalidateCode" maxlength="5" onblur="fast_checkvalidateCode(this.id,'email_error')" onfocus="textCss(this.id , 'input input-now');" onkeydown="if(event.keyCode==32) return false">
+                    </div>
+                </li> 
+                <li class="checkimg">      
+                    <img src="http://auth.changyou.com/servlet/ImageCode" width="91" height="31" class="code" id="checkcodeId-email" onclick="reloadCheckCode('checkcodeId-email');">
+                    <a href="javascript:reloadCheckCode('checkcodeId-email');" class="other">换一张</a>          
+                </li>
+                            
+                            <li>
+                  <p class="center">
+                      <input type="checkbox" id="emailAgreement" name="" value="" class="checkbox" checked="">
+                      我已阅读并同意 &nbsp;<a href="http://zhuce.changyou.com/inc/useragreement.html" target="_blank">畅游用户协议</a>
+                  </p>
+              </li>
+              <li>
+                   <a href="javascript:void(0)" class="submit sp">
+                   	<input type="button" name="" value="" onclick="emailToSubmit()">
+                   </a>
+              </li>
+            </ul>
+             <input type="hidden" id="emailRegGameType" name="gameType" value="">
+            </form> 
+        </div><!-- content end -->
+               
+            </div>
+</div>
+
+<script type="text/javascript" src="http://zhuce.changyou.com/js/fast_register.js"></script>
+
+</body></html>

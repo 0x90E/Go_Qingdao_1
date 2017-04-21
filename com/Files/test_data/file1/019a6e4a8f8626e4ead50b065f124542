@@ -1,0 +1,1643 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+ <head>
+  <title>001论坛系统</title> 
+  <meta content="text/html; charset=gb_2312-80" http-equiv="Content-Type" /> 
+  <style type="text/css">BODY {
+	FONT-FAMILY: "宋体"; FONT-SIZE: 14px
+}
+A {
+	FONT-FAMILY: "宋体"; FONT-SIZE: 14px
+}
+TD {
+	FONT-FAMILY: "宋体"; FONT-SIZE: 14px
+}
+A {
+	TEXT-DECORATION: none; TEXT-TRANSFORM: none
+}
+A:hover {
+	COLOR: red; TEXT-DECORATION: underline
+}
+</style> 
+  <script language="javascript">
+function getCheckedValue(radioObj) {
+	if(!radioObj)
+		return "";
+	var radioLength = radioObj.length;
+	if(radioLength == undefined)
+		if(radioObj.checked)
+			return radioObj.value;
+		else
+			return "";
+	for(var i = 0; i < radioLength; i++) {
+		if(radioObj[i].checked) {
+			return radioObj[i].value;
+		}
+	}
+	return "";
+}
+
+function setCheckedValue(radioObj, newValue) {
+	if(!radioObj)
+		return;
+	var radioLength = radioObj.length;
+	if(radioLength == undefined) {
+		radioObj.checked = (radioObj.value == newValue.toString());
+		return;
+	}
+	for(var i = 0; i < radioLength; i++) {
+		radioObj[i].checked = false;
+		if(radioObj[i].value == newValue.toString()) {
+			radioObj[i].checked = true;
+		}
+	}
+}
+
+function setCookie(name,value,domain)
+{
+	document.cookie = "[" + name + "]=" + escape(value) +";path=/"+ ((domain)?";domain="+domain:"")
+}
+
+function getCookie(name)
+{
+	var search =  name + "="
+	if (document.cookie.length > 0)
+	{
+		offset = document.cookie.indexOf(search);
+		if (offset != -1)
+		{
+			offset += search.length;
+			end = document.cookie.indexOf(";", offset);
+			if (end == -1) 
+				end = document.cookie.length
+			return unescape(document.cookie.substring(offset, end))
+		} 
+	}
+
+	return "";
+}
+
+function init()
+{
+	var defaulttype = getCookie('DEFAULTTYPE');
+	if (defaulttype != "")
+		setCheckedValue(document.theForm.type, defaulttype);
+}
+</script> 
+  <meta content="Microsoft FrontPage 4.0" name="GENERATOR" />
+ </head> 
+ <body leftmargin="0" link="#110077" topmargin="0" vlink="#800080" bgcolor="#E8FFE8" text="#110077" onload="init();">
+  <!-- 以下为论坛的最上面的连接条 --> 
+  <!-- 新帖子提醒 --> 
+  <div id="checknew" align="left" style="display:none;width:100%;position:absolute;z-index:200;top:0px;leftt:0px;background-color:#FFFDDD; BORDER-BOTTOM: #F8F3D6 1px solid; BORDER-LEFT: #F8F3D6 1px solid; PADDING-BOTTOM: 2px; MARGIN: 0px; PADDING-LEFT: 5px; PADDING-RIGHT: 5px; BORDER-TOP: #F8F3D6 1px solid; BORDER-RIGHT: #F8F3D6 1px solid; PADDING-TOP: 2px;"> 
+   <table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tbody>
+     <tr> 
+      <td align="center"><a href="index.html" style="color:#BB861C"><font color="red">有<span id="newcount"></span>新帖子，点击查看</font></a></td> 
+      <td width="16" title="查看"><img id="foldicon" src="/bbsimg/plus16.gif" alt="查看" onclick="mouseClick();" /></td> 
+      <td width="16" title="关闭"><img id="closeicon" src="/bbsimg/close16.gif" alt="关闭" onclick="hideMenu();" onmouseover="mouseOver();" onmouseout="mouseOut();" /></td> 
+      <td width="8"></td> 
+     </tr> 
+     <tr>
+      <td colspan="4"><span id="top10" style="display:none;"></span></td>
+     </tr> 
+    </tbody>
+   </table> 
+  </div> 
+  <script language="javascript" src="/bbsimg/ajax.js"></script> 
+  <script language="javascript">
+var menuTopMargin = 0;
+var menuSpeed= 10;
+var heightLimit = 0;
+var closed = 0;
+var folded = 1;
+
+function mouseClick() {
+	var obj = document.getElementById('top10');
+	if (folded == 0) {
+		document.getElementById('foldicon').src ="/bbsimg/plus16.gif";
+		obj.style.display = 'none';
+		obj.innerHTML ='';
+		folded = 1;
+	} else {
+		document.getElementById('foldicon').src ="/bbsimg/minus16.gif";
+		obj.style.display = 'block';
+		obj.innerHTML ='<iframe width="100%" height="150" frameborder="0" src="top.html"></iframe>';
+		folded = 0;
+	}
+}
+
+function mouseOver() {
+	document.getElementById('closeicon').src ="/bbsimg/close161.gif";
+}
+
+function mouseOut() {
+	document.getElementById('closeicon').src ="/bbsimg/close16.gif";
+}
+function notifyNewPost(count) {
+	if (count > 0) {
+		top.document.title='('+count+') 婚姻类移民美国互助论坛之签证区';
+		if (closed == 0) {
+			document.getElementById('newcount').innerHTML=count+'个';
+			document.getElementById('checknew').style.display='block';
+		}
+	} else {
+		top.document.title='婚姻类移民美国互助论坛之签证区';
+	}
+}
+
+function ajaxFunc() {
+	getXMLHTTP("checknew.html?id=1024795");
+	window.setTimeout(ajaxFunc, 15000);
+}
+
+function hideMenu() {
+	document.getElementById('checknew').style.display = 'none';
+	closed = 1;
+}
+
+function checkMenu() {
+	var reTimer = 200;
+	var obj = document.getElementById('checknew');
+	if(document.body.offsetHeight > heightLimit) {
+		var startPoint = parseInt(obj.style.top, 10);
+		var endPoint;
+		if (window.innerHeight) {
+			endPoint = window.pageYOffset
+		} else if (document.documentElement && document.documentElement.scrollTop) {
+			endPoint = document.documentElement.scrollTop
+		} else if (document.body) {
+			endPoint = document.body.scrollTop;
+		}
+		endPoint = (menuTopMargin <= endPoint ) ? endPoint - menuTopMargin : 0;
+		if(startPoint != endPoint) {
+			moveAmount = Math.ceil(Math.abs(endPoint - startPoint) / 15);
+			obj.style.top = parseInt(obj.style.top, 10) + ((endPoint<startPoint) ? -moveAmount : moveAmount)+"px";
+			reTimer = menuSpeed;
+		}
+	} else {
+		obj.style.top = 0;
+	}
+	setTimeout(checkMenu, reTimer);
+}
+if (document.documentElement.clientHeight > heightLimit) {
+	document.getElementById('checknew').style.top = document.body.scrollTop;
+}
+//checkMenu();
+//ajaxFunc();
+</script> 
+  <!-- 新帖子提醒 --> 
+  <!-- 以下为论坛主体内容 --> 
+  <table border="1" cellspacing="0" width="100%" bgcolor="#E8FFE8">
+   <tbody>
+    <tr> 
+     <td width="50%" bgcolor="#ffffdd" align="center"> <p align="left"> <font size="1"><b><a href="http://www.001.com.cn" target="_blank"><font color="#FF0000">001全球互助网</font></a><font color="#FF0000">&nbsp; </font></b><font color="#FFFFFF"><b><a href="http://usa.bbs.net/admin/index.html" target="_blank" style="color:blue">论坛管理Webmaster</a>&nbsp; <a href="http://usa.bbs.net/bbs/01/index.html?mode=4&amp;sort=&amp;master=1" target="_blank" style="color:blue"> 版主专区Moderators</a>
+          <bgcolor="#ffffdd">
+           &nbsp; 
+           <font size="2"><font color="ff00ff">在线人数：全论坛136人；本论坛76人；现在时间2017-03-28 04:20:14</font></font>
+          </bgcolor="#ffffdd"></b></font></font></p><font size="1"><font color="#FFFFFF"><b><font size="2"> </font></b></font></font></td> 
+    </tr> 
+    <tr> 
+     <td width="100%" bgcolor="#ffffdd" align="left" colspan="2"> <p style="margin-top: 0; margin-bottom: 0" align="left"><b><font color="ff00c0" size="2">版主:001客服（临时）</font></b></p><font color="ff00c0" size="2"> </font></td> 
+    </tr> 
+   </tbody>
+  </table> 
+  <h2>
+   <center>
+    <font face="楷体_GB2312" color="#FF0000" size="6">移民美国互助论坛</font>
+   </center></h2> 
+  <p align="center"><font color="#000080"><a href="userreg.html" target="_blank">新来的客人发言之前请先注册Register Here</a></font></p> 
+  <blockquote> 
+   <hr /> 
+   <p align="left"></p>
+   <center> 
+    <div style="width=50%" align="center"> 
+     <table border="0" width="760" cellspacing="0" cellpadding="0" height="48"> 
+      <tbody>
+       <tr> 
+        <td width="468" height="60"> <object classid="clsid:D27CDB6E-AE6D-11CF-96B8-444553540000" id="ShockwaveFlash2" width="385" height="52"> <param name="Movie" value=" http://www.001.com.cn/ban1.swf"></param> <param name="Src" value=" http://www.001.com.cn/ban1.swf"></param> </object> </td>
+        <td width="395" height="60"> <a href="http://www.tickets-for-u.com" target="_blank"><img src="http://www.001.com.cn/images/tianyiAD.gif" border="0" /></a> </td>
+       </tr> 
+      </tbody>
+     </table> 
+    </div> 
+   </center>
+   <!-- google_ad_section_start -->
+   <script type="text/javascript">
+function popup(url, w, h) {
+if (!window.open(url, 'mb', ['toolbar=0,status=0,resizable=1,width=',w,',height=',h,',left=',(screen.width-w)/2,',top=',(screen.height-h)/2-40].join('')))document.location.href=url;}
+</script> 
+   <a name="#TOP"></a>
+   <b>原有信息: </b>[
+   <a href="/bbs/01/index.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">返回</a>] [
+   <a href="/bbs/01/bookmark.html?action=add&amp;id=914906&amp;mode=4&amp;sort=&amp;master=1&amp;nf=1" target="hidden">收藏</a>] 
+   <g:plusone size="small"></g:plusone>
+   <iframe name="hidden" src="about:blank" width="0" height="0" frameborder="0" marginheight="0" marginwidth="0" scrolling="no"></iframe>
+   <br /> 序　　号: 914906
+   <br /> 标　　题: [无标题] (60字)
+   <br /> 发 信 人: 哓哓001&nbsp;&nbsp;[
+   <a href="sms?action=send&amp;rname=%DF%D8%DF%D8001" target="_blank">发短消息</a>]
+   <br /> 时　　间: 2011-02-13 02:07:59
+   <br /> 阅读次数: 13794
+   <br /> 详细信息: [
+   <a href=";only">只看帖主</a>]
+   <br />
+   <blockquote>
+     因为楼板上的K1签证信息已经有所变化，所以新整理一份供大家参考 
+   </blockquote> 
+   <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> 
+   <!-- 论坛页首自适应广告 --> 
+   <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0256526785998738" data-ad-slot="8000588936" data-ad-format="auto"></ins> 
+   <script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+   <br /> 
+   <hr />
+   <b>相关信息: </b>[
+   <a href="/bbs/01/index.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">返回</a>] [
+   <a href="/bbs/01/bookmark.html?action=add&amp;id=914558&amp;mode=4&amp;sort=&amp;master=1&amp;nf=1" target="hidden">收藏</a>] 
+   <g:plusone size="small"></g:plusone>
+   <br /> 
+   <ul> 
+    <li><input type="CHECKBOX" name="infoid" value="914558" onclick="GetChecked();" /><img src="/bbsimg/topmost.gif" alt="顶置" /><img src="/bbsimg/locked.gif" alt="锁帖" /><img src="/bbsimg/folded.gif" alt="折叠" /><img src="/bbsimg/prime.gif" alt="精华" /><a href="914558.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">【置顶帖】《未婚夫/妻类签证-K1/K2签证办理指南》 (12千字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-2-10 11:04</small> 阅读 28511)</li> 
+    <blockquote>
+     原帖由前任版主整理，由现任版主根据官网最新信息删减添加及修改，特此说明。 
+     <br /> 
+     <br /> K1/K2签证概要说明 
+     <br /> 
+     <br /> 一.K类签证定义： 
+     <br /> K1：美国公民的未婚夫或妻。K签证也适用于同性的未婚夫/妻。 
+     <br /> K2: 美国公民的未婚夫或妻21岁以下的未婚子女。 
+     <br /> 
+     <br /> 二.K1签证入境美国后的要求： 
+     <br /> (1)中国受益人持K1签证入境美国后，必须在90天内和美方未婚夫/妻结婚，否则必须在第90天前离开美国。即如果K1签证持有人没有在90天内与美方申请人结婚，持有K2签证的子女也必须和K1一起立即离境，否则k1和k2在美国的身份就属于非法居留。 
+     <br /> (2)K1签证不能转换其它类型签证，如转为学生签证，工作签证等。如果不与申请K1签证的美国公民在90天内结婚，即使找到其它美国公民结婚，也不能转身份，必须回中国，重新开始申请CR1。 
+     <br /> (3)K1签证只允许签证持有人进入美国一次。如果持有K1签证的人在递交转身份申请之前离开美国的话，就不能够再使用同一签证入境。如果必须离开美国的话，可在递交转身份申请的同时申请回美证AP advance parole，持AP再次合法入境美国。 
+     <br /> (4)K1结婚后，可由美国公民配偶为中国受益人/及其孩子申请转身份（绿卡）。 
+     <br /> 在2年条件绿卡有效期满两年前的90天内必须由美国公民配偶为中国受益人/及其孩子递交申请解除条件绿卡，转10年绿卡。 
+     <br /> (4)美国公民配偶必须在中国申请人入境1年内，为中国受益人/及其孩子申请转身份，超过1年则婚姻失效，中方必须回中国。(如有正当理由比如家暴除外) 
+     <br /> 
+     <br /> 
+     <br /> 三.申请K1/K2签证的条件： 
+     <br /> 1.美国公民的未婚夫/妻申请K1签证的条件﹕ 
+     <br /> (1) 中国受益人的未婚夫/妻必须是美国公民；绿卡居民不能为中国未婚夫/妻申请K1签证。 
+     <br /> (2)双方必须在递交申请以前两年内曾经见过面。 
+     <br /> 除非能证明,所信仰的宗教或来自一个禁止夫妇在婚姻之前见面的某文化,或可以证明双方见面,将会造成对任何一方的极端艰难,也可以免除这个限制。 
+     <br /> (3) 双方必须在法律上能够结婚。 
+     <br /> 前次婚姻正在离婚或废除进行中,或不满足美国公民所在州的结婚法定年龄者将不具备申请条件。 
+     <br /> (4)美国公民愿意为中国受益人做经济担保，向美国政府保证负担中国受益人在美的生活，不给美国政府增加负担。 
+     <br /> (5)K1签证必須向美国公民居住地所属美国各地移民局处理中心提出申請.具体请查看I-129F申请指南上面的邮寄地址说明. 
+     <br /> 
+     <br /> 2. 中国受益人的未成年子女申請K2签证的条件﹕ 
+     <br /> (1)中国受益人亲生的21周岁以下未婚子女。 
+     <br /> (2)中国受益人合法收养的子女。收养关系需在养子女16岁前成立，并且中国受益人在拥有法定监护权的情况下与养子女生活两年以上,养子女必须21周岁以下未婚。 
+     <br /> (3)如果中国受益人有子女，可在K1申请表I-129f里填写子女的信息，则表示为同时为子女申请了K2签证，即K1自带K2；如果没有填写子女的信息，则表示暂不申请子女。 
+     <br /> 申请K2时不需要另外交纳申请费用。 
+     <br /> 如果申请的时候，没有填写k2的信息，但是后来又想申请k2的话，可以在P3阶段，在线填写并递交k2的ds-160表格，将k2的p3文件包和K1的P3文件包一起寄回美领。 
+     <br /> (4)K1和K2可以一起面谈； 
+     <br /> 如k1获得签证先行赴美，K2也可以在K1签证签发日期1年内，至少要提前3个月由k1联系广州美领要求启动k2。 
+     <br /> 
+     <br /> 四.K1/K2签证申请过程： 
+     <br /> p1-&gt;p2-&gt;p2.5-&gt;p3-&gt;p4 
+     <br /> p1--收到通知。递交申请给uscis后，uscis会发给美方申请人notice of action i-797“收到通知”- receive notice。 
+     <br /> p1上有三个字母+10个数字的案件号码-case number,可用此号码在
+     <a href="https://egov.uscis.gov/casestatus/landing.do" target="_blank" rel="nofollow">https://egov.uscis.gov/casestatus/landing.do</a>上自行跟进案子处理状况。 
+     <br /> p2--批准通知。申请被uscis批准后，uscis会发给美方申请人notice of action i-797“批准通知”- approval notice。 
+     <br /> p2上有外籍人士登记号码即“A号码”=alien registration number及批准日期。请妥善保存，以后申请绿卡填表时要用到。 
+     <br /> 申请批准后档案会转到国家签证中心NVC做进一步审理。nvc审理完成后会分配一个guz+10个数字的新的案件号码，然后将档案转到美国驻广州领事馆。 
+     <br /> p2.5--俗称的发广通知。发广是同期的档案一批发广，不需特别理会，可以在官网
+     <a href="https://ceac.state.gov/ceac/" target="_blank" rel="nofollow">https://ceac.state.gov/ceac/</a>跟进签证申请状态。 
+     <br /> p3--面谈前的签证申请说明通知。档案在美领广州做面谈前审核，审核完成后，发给中方受益人p3文件包。 
+     <br /> p4--面谈通知。 
+     <br /> 
+     <br /> 
+     <br /> 五.K1/K2签证申请清单： 
+     <br /> 所有的签证表格和申请费用请在美国移民局USCIS官网下载和按美国领事馆指定的cgi官方网站上的说明提交。 
+     <br /> k1签证申请指南： 
+     <br /> 
+     <a href="http://www.uscis.gov/family/family-us-citizens/fiancee-visa/fiancee-visas" target="_blank" rel="nofollow">http://www.uscis.gov/family/family-us-citizens/fiancee-visa/fiancee-visas</a> 
+     <br /> 
+     <br /> 注意： 
+     <br /> *申请资料清单Cover letter。 
+     <br /> 将所提交的资料列一清单，附在所有资料的最前面，便于移民局工作人员检查。 
+     <br /> *递交申请时，除表格需要签名原件外，其他证明材料和公证书可以交复印件，除非收到uscis的通知让你交原件。 
+     <br /> *公证书正本与副本相同，随便交一份就行了。不过交之前最好先核查正副本是否一样。 
+     <br /> 
+     <br /> 1.美方申请人需要递交的材料： 
+     <br /> (1)美国公民身份证明文件。 
+     <br /> 美国护照US passport（至少5年有效期）；或归化入籍证明naturalization certificate；或美国公民出生证明birth certificate；或美国公民海外出生证明FS-240表。 
+     <br /> (2)美方申请人填写i-129F表格。 
+     <br /> 
+     <a href="http://www.uscis.gov/i-129f" target="_blank" rel="nofollow">http://www.uscis.gov/i-129f</a> 
+     <br /> (3)美方申请人填写g-325a表格。 
+     <br /> 
+     <a href="http://www.uscis.gov/g-325a" target="_blank" rel="nofollow">http://www.uscis.gov/g-325a</a> 
+     <br /> (4)美方申请人填写g-1145表格。 
+     <br /> 
+     <a href="http://www.uscis.gov/g-1145" target="_blank" rel="nofollow">http://www.uscis.gov/g-1145</a> 
+     <br /> 同时递交g-1145表的好处是uscis收到申请材料后会即text/email通知申请人。 
+     <br /> (5)美方申请人单身证明文件。 
+     <br /> 历次离婚文件 divorce decree(s)；或与前未婚妻关系结束证明的annulment certificate；或前配偶死亡证明death certificate。 
+     <br /> (6)结婚意向声明书： 
+     <br /> 美方申请人亲笔写并签名的简述两人相识、关系发展的经历并保证在中方受益人获得签证来美后的90天内与其结婚的声明书。 
+     <br /> (7)美方申请人和中方受益人在申请前2年内见过面的证明材料（合照，来往信件，机票等）。 
+     <br /> (8)美方申请人在申请前30天内拍的护照规格照片1张。 
+     <br /> (9)申请费用：$535.00（单独申请k1签证或申请k1+k2签证都是此费用，因为k1受益人的21周岁以下未婚孩子可受益于k1的I-129F申请并被签发k2签证进入美国。 
+     <br /> 
+     <br /> 2.中方受益人需要递交的材料： 
+     <br /> (1)中方受益人填写g-325a表格。 
+     <br /> 
+     <a href="http://www.uscis.gov/g-325a" target="_blank" rel="nofollow">http://www.uscis.gov/g-325a</a> 
+     <br /> (2)出生公证或出生医学证明公证（96年以后生人）。 
+     <br /> (3)结婚资格文件： 
+     <br /> *未婚声明公证-适用于未有婚史者。 
+     <br /> 注意：可以前往当地有涉外资质的公证处，在公证员面前做未婚声明，并对此声明做公证。 
+     <br /> 如公证处已无此项业务则不需要办理此声明。 
+     <br /> *离婚后未再婚声明公证-适用于有婚史者。 
+     <br /> 注意：可以前往当地有涉外资质的公证处，在公证员面前做离婚后未再婚声明，并对此声明做公证。 
+     <br /> 如公证处已无此项业务则不需要办理此声明。 
+     <br /> 未婚声明公证和离婚未再婚声明公证自出具日起1年有效。 
+     <br /> (4)历次离婚公证或前配偶死亡证明公证。 
+     <br /> (5)结婚意向声明书： 
+     <br /> 中方受益人亲笔写并签名的简述两人相识、关系发展的经历并保证在获得签证赴美后的90天内与美方申请人结婚的声明书。 
+     <br /> (6)中方受益人人在申请前30天内拍的护照规格照片1张。 
+     <br /> 
+     <br /> 3.k2需要递交的材料： 
+     <br /> **同时申请k2: 
+     <br /> (1)美方申请人需在i-129f表上填写k2的新息。 
+     <br /> (2)k2的出生公证或出生医学证明公证（96年以后生人）。 
+     <br /> (3)未婚声明公证。（20周岁以上k2需提供） 
+     <br /> 注意：可以前往当地有涉外资质的公证处，在公证员面前做未婚声明，并对此声明做公证。 
+     <br /> 未婚声明公证自出具日起1年有效。 
+     <br /> (4)18岁以下k2需提供生父或生母同意其跟随k1移民美国的声明信（需公证）。如果k1的离婚公证书上写明有k2的监护权，则可免此声明信。 
+     <br /> 注意：k2的生父和生母可以一起前往当地有涉外资质的公证处，在公证员面前做同意k2随对方移民美国的声明，并对此声明信做公证。 
+     <br /> 
+     <br /> **后来才申请k2: 
+     <br /> (1)如果申请k1的时候，没有填写k2信息，但是后来又想申请k2的话，可以在P3阶段，在线填写并递交k2的ds-160表格，将k2的p3文件包和K1的P3文件包一起寄回美领。 
+     <br /> (2)如k1获得签证先行赴美，K2也可以在K1签证签发日期1年内，至少要提前3个月由k1联系广州美领要求启动k2。 
+     <br /> 
+     <br /> 六.p2阶段 
+     <br /> i-129f从批准后的有效期为4个月(在p2上有注明expired date),移民局会根据档案的处理情况做相应的延期，不需要担心过期。 
+     <br /> 1.如收到approval notice，此阶段什么也不需要做，继续在
+     <a href="https://ceac.state.gov/ceac/" target="_blank" rel="nofollow">https://ceac.state.gov/ceac/</a>上查询档案处理状况。 
+     <br /> 2.如需要补交材料，会收到uscis寄给美方申请人的REF通知，请在通知上注明的截止日期前补交齐移民局所需材料；如超过截止日期未能补交，则档案自动撤销。 
+     <br /> 等重新收集好申请材料后，可以重新付费重新递交I-129f表申请k1签证。 
+     <br /> 七.p2.5阶段 
+     <br /> 发广。档案由美国国家签证中心送达美国驻广州总领事馆通常需花费三个月的时间。此阶段什么也不需要做，继续在
+     <a href="https://ceac.state.gov/ceac/" target="_blank" rel="nofollow">https://ceac.state.gov/ceac/</a>上查询档案处理状况。 
+     <br /> 
+     <br /> 八.p3阶段 
+     <br /> 档案在美领审核后，广州美领会发给中方受益人p3文件包。 
+     <br /> 收到p3文件包后，请按通知要求将p3文件包整理好后寄回美领或交中信银行，由中信代交美领。 
+     <br /> 交回美领的p3文件包内容： 
+     <br /> (1)填写好移民签证面谈前材料提交信IV Pre-interview documents submission cover letter。 
+     <br /> (2)护照信息页复印件。 
+     <br /> (3)2张最近6个月内的签证相片。 
+     <br /> 注意： 
+     <br /> *如k1和k2一起申请时，请将k1和k2的p3文件包分别放在文件袋里，然后再一起放入一个大文件袋中，袋上注明p3文件包，文件袋不封口。 
+     <br /> *收到p3通知后即可在线填写ds-160表。填写ds-160表里的每一个问题，完成后点击submit并将ds-160 conformation page打印出来，面谈当天要带上有条形码barcode的ds-160确认页。 
+     <br /> k1和k2需单独填写各自的ds-160表并打印出各自的ds-160确认页。 
+     <br /> *如ds-160表上填写有误，可以进入保存的原表，更正无误后再次点击submit并将新的ds-160 confirmation page打印出来，面谈当天带去。（可以同时将旧的ds-160确认表带去） 
+     <br /> *寄回p3文件包后，继续在
+     <a href="https://ceac.state.gov/ceac/" target="_blank" rel="nofollow">https://ceac.state.gov/ceac/</a>上查询档案处理状况。 
+     <br /> 
+     <br /> 九.p4面谈通知 
+     <br /> 美领审核完p3文件包里的材料后，会email面谈通知给中方受益人，请勤查收件箱和垃圾邮件。 
+     <br /> 面谈通知可以有2种形式： 
+     <br /> (1)美领指定了一个面谈日期。 
+     <br /> (2)美领通知可以登录
+     <a href="http://www.ustraveldocs.com" target="_blank" rel="nofollow">http://www.ustraveldocs.com</a>网站预约面谈日期。 
+     <br /> 注意： 
+     <br /> *收到(1)时，请将该email页打印出来，体检和面谈当天都要带去。 
+     <br /> *收到(2)时，请先注册然后登录cgi网站，按指引完成每一步骤，直到预约成功。约好后请将该面谈确认页打印出来，体检和面谈当天都要带去。 
+     <br /> *面谈前要交清$265签证费。 
+     <br /> *面谈前要登录cgi网站，选择好面谈后护照领取地点。 
+     <br /> *面谈前至少一周，要完成体检，拿到体检封包。2-15岁k2需做TST，领取结果会比k1慢几天。 
+     <br /> 
+     <br /> 
+     <br /> 十.面谈材料准备清单： 
+     <br /> 1.k1: 
+     <br /> (1)有k1信息和面谈日期的面谈信。 
+     <br /> (2)体检封包。 
+     <br /> (3)至少8个月有效期的护照。 
+     <br /> (4)2张最近6个月内的签证相片。 
+     <br /> (5)出生公证或出生医学证明公证（96年以后生人） 
+     <br /> (6)未婚声明公证或离婚未再婚声明公证。 
+     <br /> 未婚声明公证或离婚未再婚声明公证自出具日起1年有效。 
+     <br /> (7)未刑公证。曾居住外国超过1年者，需办理该国的police certificate. 
+     <br /> 未刑公证自出具日起1年有效。 
+     <br /> 外国police certificate长期有效。 
+     <br /> (8)法院及监狱记录。 
+     <br /> (9)服役记录。 
+     <br /> (10)经济担保材料及收入证明。 
+     <br /> 担保人要提供其签名的I-134表原件，最近1年的税单，w2,1099,雇主信，付讫的房产证，最近12个月的bank statement（证明收入过线即可，不需要每项都提供）。 
+     <br /> 如主担保人收入不够，则需要找一个收入过线的联保人。联保人要提供其签名的I-134表原件，最近1年的税单，w2,1099,雇主信，付讫的房产证，最近12个月的bank statement（证明收入过线即可，不需要每项都提供），和联保人写的解释与被担保人关系及愿意为被担保人做联合经济担保的声明信。 
+     <br /> (11)简历 
+     <br /> 详尽的个人简历（中英文-自己写）， 
+     <br /> 教育经历-从中学起写。 
+     <br /> 工作和经历-历任雇主及相应的职位详细和工作项目。 &#xf0b7; 
+     <br /> 曾经所撰写的任何出版物，标明出版物的题目简介和出版时间。 
+     <br /> 曾到过的国家的名单，写明签证类别时间与目的。 &#xf0b7; 
+     <br /> 到美后工作计划-暂无计划者可写家庭主妇。 
+     <br /> (12)曾经去过美国并且获准签证延期的申请人需提供签证延期申请和批准通知的复印件。 
+     <br /> (13)关系证明文件. 
+     <br /> 交往后各时间段的合照和与双方家人/朋友/亲属的合照，电话单,信件,email，qq，wechat,facetime等每月选1-2份即可。 
+     <br /> (14)签证交费收据。 
+     <br /> 
+     <br /> 2.k2: 
+     <br /> (1)有k12信息和面谈日期的面谈信。 
+     <br /> (2)k2的体检封包。 
+     <br /> (3)k2的至少8个月有效期的护照。 
+     <br /> (4)k2的2张最近6个月内的签证相片。 
+     <br /> (5)k2的出生公证或出生医学证明公证（96年以后生人）。 
+     <br /> (6)未婚声明公证。（20周岁以上k2需提供） 
+     <br /> 未婚声明公证自出具日起1年有效。 
+     <br /> (7)18岁以下k2需提供生父或生母同意其跟随k1移民美国的声明信。如果k1的离婚公证书上写明有k2的监护权，则可免此声明信。 
+     <br /> (8)未刑公证。曾居住外国超过1年者，需办理该国的police certificate. 
+     <br /> 未刑公证自出具日起1年有效。 
+     <br /> 外国police certificate长期有效。 
+     <br /> (9)法院及监狱记录。 
+     <br /> (10)服役记录。 
+     <br /> (11)经济担保材料及收入证明。 
+     <br /> 担保人要为k2单独提供一份其签名的I-134表原件，最近1年的税单，w2,1099,雇主信，付讫的房产证，最近12个月的bank statement（证明收入过线即可，不需要每项都提供）。 
+     <br /> 如主担保人收入不够，则需要找一个收入过线的联保人。联保人要为k2单独提供一份其签名的I-134表原件，最近1年的税单，w2,1099,雇主信，付讫的房产证，最近12个月的bank statement（证明收入过线即可，不需要每项都提供），和联保人写的解释与被担保人关系及愿意为被担保人做联合经济担保的声明信。 
+     <br /> (12)简历 
+     <br /> 详尽的个人简历（中英文-自己写）， 
+     <br /> 教育经历-从中学起写。 
+     <br /> 工作和经历-历任雇主及相应的职位详细和工作项目。 &#xf0b7; 
+     <br /> 曾到过的国家的名单，写明签证类别时间与目的。 &#xf0b7; 
+     <br /> 到美后工作计划-上小学/中学/社区学院/大学。 
+     <br /> (13)曾经去过美国并且获准签证延期的申请人需提供签证延期申请和批准通知的复印件。 
+     <br /> (14)关系证明文件. 
+     <br /> 交往后各时间段的k1+k2+美方申请人的合照和双方家人/朋友/亲属的合照。 
+     <br /> k2的出生公证或出生医学证明公证（k1是生父或生母） 
+     <br /> (15)k2的签证交费收据。 
+     <br /> 注意： 
+     <br /> *如果k1和k2一起面谈，但k1要先行赴美，k2计划在k1入境后6个月内赴美，请在面谈时向签证官说明，要求签证官将k1和k2的签证文件分为2个签证包发放。否则k2的文件和k1的会放在同一个签证包内，k2必须和k1一起赴美。 
+     <br /> *14岁以下k2可由一位成年人陪同面谈（对此成年人的条件有要求)。 
+     <br /> *如果申请期间美方申请人失业了，美方申请人还可提供自己的资产证明（如房产存款股票等的财产）以及其他财务信息（如401k)，用来说明自己完全具有负担中国方受益人来美国后生活的经济能力。 
+     <br /> 
+     <br /> 
+     <br /> 附： 
+     <br /> 美领指定的体检医院 
+     <br /> 1.广东国际旅行卫生保健中心 
+     <br /> 地址：广州市珠江新城华利路59号保利大厦东塔五楼 
+     <br /> 电话：（020）81219500/81219513 (周六需预约) 
+     <br /> 请登录此中心网址 www.gdwbzx.com 了解更多的体检信息并进行预约。 
+     <br /> 2.福建省立医院 (南院 ) 
+     <br /> 地址：福建省福州市仓山区金榕南路 516 号 
+     <br /> 电话：(0591) 88619601/88619602 
+     <br /> 请登录此中心网址 
+     <a href="http://cgtj.fjsl.com.cn/" target="_blank" rel="nofollow">http://cgtj.fjsl.com.cn/</a>了解更多的体检信息并进行预约 。 
+     <br /> 3.上海国际旅行卫生保健中心 
+     <br /> 地址：上海市长宁区金浜路 15号（3号楼 2楼） 
+     <br /> 电话：(021) 62699006/62697117 
+     <br /> 请登录此中心网址 
+     <a href="http://www.sithc.com" target="_blank" rel="nofollow">http://www.sithc.com</a>了解更多的体检信息并进行预约。 
+     <br /> 北京国际旅行卫生保健中心 
+     <br /> 地址：北京市海淀区马甸东路 17号金澳国际大厦 25层 
+     <br /> 电话：(010) 64274240/58648801 
+     <br /> 请登录此中心网址 
+     <a href="http://www.bjciq.gov.cn/" target="_blank" rel="nofollow">http://www.bjciq.gov.cn/</a>了解更多的体检信息并进行预约。
+    </blockquote> 
+    <ul>
+     <li><input type="CHECKBOX" name="infoid" value="914560" onclick="GetChecked();" /><a href="914560.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">拜读了，太好了，谢谢，哓哓！ (空)</a>(<b><a href="login?action=userstat&amp;name=%D0%A1Q%B9%FE">小Q哈</a></b>&nbsp;<small>2011-2-10 11:07</small> 阅读 13954)</li>
+     <li><input type="CHECKBOX" name="infoid" value="914906" onclick="GetChecked();" /><img src="/bbsimg/current.gif" alt="当前" /><a href="914906.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">[无标题] (60字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-2-13 2:07</small> 阅读 13794)</li> 
+     <ul>
+      <li><input type="CHECKBOX" name="infoid" value="914939" onclick="GetChecked();" /><a href="914939.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />晓晓辛苦了！ (60字)</a>(<b><a href="login?action=userstat&amp;name=%CE%F7%B9%CF">西瓜</a></b>&nbsp;<small>2011-2-13 15:18</small> 阅读 14164)</li> 
+      <blockquote>
+       真的很感谢你一直不辞辛劳为大家服务。祝你身体健康！家庭幸福！
+      </blockquote> 
+     </ul>
+     <li><input type="CHECKBOX" name="infoid" value="915663" onclick="GetChecked();" /><a href="915663.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">拜读了，真是很详细啊。感谢晓晓的辛勤付出，愿你一生平安 (111字)</a>(<b><a href="login?action=userstat&amp;name=lica">lica</a></b>&nbsp;<small>2011-2-19 18:14</small> 阅读 13833)</li> 
+     <blockquote>
+      真的是很详细，非常感谢晓晓的无私付出。 
+      <br /> 另有一问题：两人的旅游景点门票是复印一张门票，还是两张门票都复印呢？
+     </blockquote> 
+     <ul>
+      <li><input type="CHECKBOX" name="infoid" value="915685" onclick="GetChecked();" /><a href="915685.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">[无标题] (12字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-2-20 8:32</small> 阅读 13699)</li> 
+      <blockquote>
+       都复印下来吧
+      </blockquote> 
+      <ul>
+       <li><input type="CHECKBOX" name="infoid" value="915693" onclick="GetChecked();" /><a href="915693.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">恩，好的，感谢了 (空)</a>(<b><a href="login?action=userstat&amp;name=lica">lica</a></b>&nbsp;<small>2011-2-20 10:01</small> 阅读 13952)</li>
+      </ul>
+     </ul>
+     <li><input type="CHECKBOX" name="infoid" value="915729" onclick="GetChecked();" /><a href="915729.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/41.gif" border="0" alt="" />谢谢晓晓 (136字)</a>(<b><a href="login?action=userstat&amp;name=soya">soya</a></b>&nbsp;<small>2011-2-20 18:09</small> 阅读 13364)</li> 
+     <blockquote>
+      昨天还在和GG纠结缴费问题，因为他传给我的单据就是340美元，GG请了律师，我一直在强调404美元，还错怪了律师，感谢谢谢晓晓及时的发布最新消息。
+     </blockquote> 
+     <li><input type="CHECKBOX" name="infoid" value="916041" onclick="GetChecked();" /><a href="916041.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/12.gif" border="0" alt="" />今天收到k1的p3的OF－169表格跟上述链接的有不一样 (401字)</a>(<b><a href="login?action=userstat&amp;name=%D0%A1%C3%E6%CD%C5%B6%F9">小面团儿</a></b>&nbsp;<small>2011-2-22 20:47</small> 阅读 14591)</li> 
+     <blockquote>
+      1，照片要求6张，而不是之前表格上说的2张 
+      <br /> 2，k类签证费又变成131美元了！我知道以前是131美元，去年涨价了，可是现在新邮寄给我的表格上怎么又成131美元了。。。我这个事情是否应该跟美领打电话咨询确认一下？ 
+      <br /> 
+      <br /> 
+      <br /> 还有一个填表问题，我大学本科刚毕业不久，工作是一个外企的行政助理，现在已经辞职了，为了稳妥起见我会准备简历，可是我在填表时需不需要在简历一栏画“X”？ 
+      <br /> 
+      <br /> 希望有知道的姐妹能够看到并且指点指点，多谢了！
+     </blockquote> 
+     <ul>
+      <li><input type="CHECKBOX" name="infoid" value="916043" onclick="GetChecked();" /><a href="916043.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />面团团，我来回答你。 (133字)</a>(<b><a href="login?action=userstat&amp;name=%CE%F7%B9%CF">西瓜</a></b>&nbsp;<small>2011-2-22 21:17</small> 阅读 14128)</li> 
+      <blockquote>
+       1，相片是要求6张！你在哪里看到是2张？ 
+       <br /> 2，我没有看到OF-169表上说签证费？我就把改画X的地方搞定了就寄出去了。 
+       <br /> 另外的问题请姐妹们帮你！
+      </blockquote> 
+      <ul>
+       <li><input type="CHECKBOX" name="infoid" value="916046" onclick="GetChecked();" /><a href="916046.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">[无标题] (343字)</a>(<b><a href="login?action=userstat&amp;name=%D0%A1%C3%E6%CD%C5%B6%F9">小面团儿</a></b>&nbsp;<small>2011-2-22 21:25</small> 阅读 13401)</li> 
+       <blockquote>
+        谢谢西瓜的回应！亲！！ 
+        <br /> 1，我的上面也是要求6张照片，晓晓这个帖子里写的是2张，链接里也是2张，我只是跟她说一下表格有更新。。。 
+        <br /> 2，OF－169在比较靠后的部分（倒数第2页中间）写着“所有k类非移民签证申请人必须在签证问话之前缴纳131美元（或等值人民币）的签证手续费”，后面还说去任何一家中信银行缴费。。。你的p3里没有提到任何关于缴费的事么？ 
+        <br /> 
+        <br /> 着急啊！
+       </blockquote> 
+       <ul>
+        <li><input type="CHECKBOX" name="infoid" value="916050" onclick="GetChecked();" /><a href="916050.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">哦，签证费啊！ (116字)</a>(<b><a href="login?action=userstat&amp;name=%CE%F7%B9%CF">西瓜</a></b>&nbsp;<small>2011-2-22 21:52</small> 阅读 15518)</li> 
+        <blockquote>
+         等我去广州体检的时候交，现在不着急哈！你慢慢填好表寄出去。我先睡了，今天跑了一天公证处办未刑和离婚未再婚声明公证书。
+        </blockquote> 
+        <li><input type="CHECKBOX" name="infoid" value="916082" onclick="GetChecked();" /><a href="916082.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">[无标题] (55字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-2-23 1:11</small> 阅读 13448)</li> 
+        <blockquote>
+         签证费，现在是350美金，折合人民币2345元，不过经常调整的
+        </blockquote> 
+       </ul>
+      </ul>
+      <li><input type="CHECKBOX" name="infoid" value="916072" onclick="GetChecked();" /><a href="916072.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">[无标题] (282字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-2-23 0:42</small> 阅读 13088)</li> 
+      <blockquote>
+       ML 现在寄的说明部分内容也是过去的，照片部分是不是包括了体检照片，面签时只需签证照片2张，贴在DS-156表格上（以防不够或者不合格，多带几张），刚面谈完的JMS 再证实一下 
+       <br /> 签证费2345元（经常调整，多带点） 
+       <br /> 简历前不用画X ，写完带着，如果VO问，就给他 
+       <br /> 最新要求是将护照复印件连同P3 一起寄回ML
+      </blockquote> 
+      <ul>
+       <li><input type="CHECKBOX" name="infoid" value="916107" onclick="GetChecked();" /><a href="916107.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">[无标题] (58字)</a>(<b><a href="login?action=userstat&amp;name=%D0%A1%C3%E6%CD%C5%B6%F9">小面团儿</a></b>&nbsp;<small>2011-2-23 11:14</small> 阅读 13469)</li> 
+       <blockquote>
+        谢谢晓晓，明白了！哈哈，我准备等去广州面试之前再交签证费！
+       </blockquote> 
+       <li><input type="CHECKBOX" name="infoid" value="916543" onclick="GetChecked();" /><a href="916543.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">[无标题] (244字)</a>(<b><a href="login?action=userstat&amp;name=%DF%E4%DF%E41979">咪咪1979</a></b>&nbsp;<small>2011-2-25 19:17</small> 阅读 14179)</li> 
+       <blockquote>
+        签证费的问题你去中信银行交费的时候 工作人员会告诉你的费用是多少的 哓哓已经说的很清楚了 另外照片我们是一月份面的 只需要两张 不过多准备几张也可以 希望大家不要为一点不是重点的重点浪费我们的帖子 毕竟资源有限!哓哓不是我们二十四小时请来为我们服务的 !
+       </blockquote> 
+       <ul>
+        <li><input type="CHECKBOX" name="infoid" value="916560" onclick="GetChecked();" /><a href="916560.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">[无标题] (974字)</a>(<b><a href="login?action=userstat&amp;name=%D0%A1%C3%E6%CD%C5%B6%F9">小面团儿</a></b>&nbsp;<small>2011-2-25 21:49</small> 阅读 13550)</li> 
+        <blockquote>
+         首先谢谢咪咪节省资源的意识， 
+         <br /> 但是我跟这个帖子，要说几点： 
+         <br /> 1，我没有去重新开贴，只是跟帖，怎么构成随便浪费资源？晓晓这篇是很有用的帖子，我跟贴了就是把它顶起来了，大家就更能看到晓晓的帖子了，不好么？我只是跟了晓晓的帖子，但是我没有说必须让晓晓来回复我，我说的是“知道的姐妹”，我也知道晓晓没有义务给我们每天回复，所以就更需要我们广大的姐妹积攒经验帮新人解答问题，就比如说我还是个菜鸟，但是我也在积极回答别的姐妹我懂的问题。 
+         <br /> 2，我发这个帖是因为我2月22号才收到的p3，里面的内容跟这个最新更新过的帖子内容有不一样的地方，我还以为我的p3内容是美领最近又修改过的，我拿上来告诉大家一声有什么错？虽然被晓晓告知了，我收到的OF－169是陈旧版的，美领没有更新，但这也是一个普遍存在的问题，姐妹们或许在看了这个帖子之后就明白了为什么自己的内容不对，怎么就说我发的帖子是没用的浪费资源呢。 
+         <br /> 4，签证路上无小事，细节也很重要，什么叫”不是重点的重点”？，有时候就是细节没做到位所以准备不充分会出问题！ 
+         <br /> 3，我一颗愿意跟大家分享的心，如果都被你这样不经仔细思索就批评了的话，谁还愿意来分享、讨论？
+        </blockquote> 
+       </ul>
+      </ul>
+      <li><input type="CHECKBOX" name="infoid" value="916113" onclick="GetChecked();" /><a href="916113.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">K1 p3 (114字)</a>(<b><a href="login?action=userstat&amp;name=emmaqiu99443">emmaqiu99443</a></b>&nbsp;<small>2011-2-23 11:32</small> 阅读 13556)</li> 
+      <blockquote>
+       我上上周收到P3，也有同样疑问。 
+       <br /> 
+       <br /> 我的也是要求6张照片，131刀。 
+       <br /> 所以我想应该调整了吧，他们不至于重复犯这种错误。
+      </blockquote> 
+      <ul>
+       <li><input type="CHECKBOX" name="infoid" value="916119" onclick="GetChecked();" /><a href="916119.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">[无标题] (81字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-2-23 11:45</small> 阅读 13755)</li> 
+       <blockquote>
+        签证费已经涨价了，是350美金，折合人民币2345元 
+        <br /> 如果怕不够，签证照片多带几张就可以
+       </blockquote> 
+       <ul>
+        <li><input type="CHECKBOX" name="infoid" value="916163" onclick="GetChecked();" /><a href="916163.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">[无标题] (97字)</a>(<b><a href="login?action=userstat&amp;name=emmaqiu99443">emmaqiu99443</a></b>&nbsp;<small>2011-2-23 13:37</small> 阅读 13898)</li> 
+        <blockquote>
+         谢谢晓晓，不知疲惫的提醒， 
+         <br /> 一定带够钱去面签。 
+         <br /> 我正高兴便宜了呢， 
+         <br /> ML 太不负责，这个事还要弄错。
+        </blockquote> 
+       </ul>
+       <li><input type="CHECKBOX" name="infoid" value="941761" onclick="GetChecked();" /><a href="941761.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />K1，在等待 (207字)</a>(<b><a href="login?action=userstat&amp;name=%C8%E7%BA%CE%D4%C3%C8%BB">如何悦然</a></b>&nbsp;<small>2011-8-21 3:02</small> 阅读 12739)</li> 
+       <blockquote>
+        各位兄弟姐妹们好，我是新人。我办的是K1，8/1老公说收到了CASE，然后过了一周，我们没有收到任何消息，他18号又发邮件给GZ领事馆说已经发了包裹给我，请问大概多久能收到？我现在很糊涂，不知道怎么办，希望大家给我些指点
+       </blockquote> 
+       <ul>
+        <li><input type="CHECKBOX" name="infoid" value="941769" onclick="GetChecked();" /><a href="941769.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (61字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-8-21 9:16</small> 阅读 12892)</li> 
+        <blockquote>
+         现在你应该是等P3？如果ML 说已经发P3给你的话，10天左右就会收到
+        </blockquote> 
+       </ul>
+      </ul>
+      <li><input type="CHECKBOX" name="infoid" value="941799" onclick="GetChecked();" /><a href="941799.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (44字)</a>(<b><a href="login?action=userstat&amp;name=michelle12580">michelle12580</a></b>&nbsp;<small>2011-8-21 10:48</small> 阅读 13067)</li> 
+      <blockquote>
+       我星期五也收到了P3，上面也是说131刀，6张照片
+      </blockquote> 
+      <ul>
+       <li><input type="CHECKBOX" name="infoid" value="941804" onclick="GetChecked();" /><a href="941804.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (64字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-8-21 11:01</small> 阅读 12904)</li> 
+       <blockquote>
+        签证费131刀，是以前的价钱，现在已经涨价了，是350刀，人民币2435元
+       </blockquote> 
+      </ul>
+     </ul>
+     <li><input type="CHECKBOX" name="infoid" value="916097" onclick="GetChecked();" /><a href="916097.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">晓晓辛苦了！传统cr1与k1的 申请人和受益人提供的资料不同地方在那里？能告诉吗？谢谢！ (空)</a>(<b><a href="login?action=userstat&amp;name=%CB%B3%CB%B3%D3%F1">顺顺玉</a></b>&nbsp;<small>2011-2-23 10:44</small> 阅读 13446)</li> 
+     <ul>
+      <li><input type="CHECKBOX" name="infoid" value="916099" onclick="GetChecked();" /><a href="916099.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">[无标题] (56字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-2-23 10:45</small> 阅读 13357)</li> 
+      <blockquote>
+       准备的材料差并不多，你可以参考一下，尽量多的提供证据材料
+      </blockquote> 
+      <ul>
+       <li><input type="CHECKBOX" name="infoid" value="916301" onclick="GetChecked();" /><a href="916301.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">[无标题] (12字)</a>(<b><a href="login?action=userstat&amp;name=%D4%C6%D6%D0%F2%D4">云中蛟</a></b>&nbsp;<small>2011-2-24 7:48</small> 阅读 13699)</li> 
+       <blockquote>
+        辛苦晓晓了。
+       </blockquote> 
+      </ul>
+     </ul>
+     <li><input type="CHECKBOX" name="infoid" value="916541" onclick="GetChecked();" /><a href="916541.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">[无标题] (47字)</a>(<b><a href="login?action=userstat&amp;name=%D1%F4%D1%F4yangyang">阳阳yangyang</a></b>&nbsp;<small>2011-2-25 18:55</small> 阅读 13930)</li> 
+     <blockquote>
+      001的结婚意向书的样板在哪找呢，我在办K1，谢谢。
+     </blockquote> 
+     <ul>
+      <li><input type="CHECKBOX" name="infoid" value="916601" onclick="GetChecked();" /><a href="916601.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">[无标题] (58字)</a>(<b><a href="login?action=userstat&amp;name=%C5%B7%D1%F4%D3%C4%D1%C5">欧阳幽雅</a></b>&nbsp;<small>2011-2-26 3:27</small> 阅读 16798)</li> 
+      <blockquote>
+       回答阳阳，链接：
+       <a href="http://usa.bbs.net/bbs/01/821738.html?ni=1" target="_blank" rel="nofollow">http://usa.bbs.net/bbs/01/821738.html?ni=1</a>
+      </blockquote> 
+     </ul>
+     <li><input type="CHECKBOX" name="infoid" value="917780" onclick="GetChecked();" /><a href="917780.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">美国人申请妻子没有房子收入少可以申请吗 (空)</a>(<b><a href="login?action=userstat&amp;name=hongirl">hongirl</a></b>&nbsp;<small>2011-3-5 12:21</small> 阅读 13281)</li> 
+     <ul>
+      <li><input type="CHECKBOX" name="infoid" value="918090" onclick="GetChecked();" /><a href="918090.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">[无标题] (30字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-3-8 7:56</small> 阅读 13695)</li> 
+      <blockquote>
+       没有超过贫困线，就要找联合担保
+      </blockquote> 
+     </ul>
+     <li><input type="CHECKBOX" name="infoid" value="919802" onclick="GetChecked();" /><a href="919802.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">打算申请K1求帮助 (106字)</a>(<b><a href="login?action=userstat&amp;name=%C4%CD%D0%C4%B5%C8%B4%FD">耐心等待</a></b>&nbsp;<small>2011-3-20 21:18</small> 阅读 13509)</li> 
+     <blockquote>
+      GG是白人,和我一样,对K1申请的递交资料不是完全明白,请001的JM帮忙告知,我和GG都需要哪些资料递交,我表示万分感谢
+     </blockquote> 
+     <ul>
+      <li><input type="CHECKBOX" name="infoid" value="919814" onclick="GetChecked();" /><a href="919814.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">楼主的说明还不够清楚吗，您仔细阅读一下。 (空)</a>(<b><a href="login?action=userstat&amp;name=%CC%EC%C0%B6%C0%B6">天蓝蓝</a></b>&nbsp;<small>2011-3-20 23:04</small> 阅读 13452)</li>
+     </ul>
+     <li><input type="CHECKBOX" name="infoid" value="920733" onclick="GetChecked();" /><a href="920733.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">咨询 (42字)</a>(<b><a href="login?action=userstat&amp;name=Janette">Janette</a></b>&nbsp;<small>2011-3-28 17:15</small> 阅读 13745)</li> 
+     <blockquote>
+      新来的，想办理K1K2，一堆问题想咨询，谢谢！
+     </blockquote> 
+     <li><input type="CHECKBOX" name="infoid" value="920742" onclick="GetChecked();" /><a href="920742.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">咨询 (96字)</a>(<b><a href="login?action=userstat&amp;name=Janette">Janette</a></b>&nbsp;<small>2011-3-28 18:35</small> 阅读 13511)</li> 
+     <blockquote>
+      我的情况：我和我的美国男友准备结婚，均属于再婚，现在申请K1K2签证，我第一步准备做什么？谢啦亲们！
+     </blockquote> 
+     <li><input type="CHECKBOX" name="infoid" value="920743" onclick="GetChecked();" /><a href="920743.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/2.gif" border="0" alt="" />[无标题] (32字)</a>(<b><a href="login?action=userstat&amp;name=Janette">Janette</a></b>&nbsp;<small>2011-3-28 18:42</small> 阅读 13546)</li> 
+     <blockquote>
+      版主：对新来的关心一下呀，谢啦！
+     </blockquote> 
+     <ul>
+      <li><input type="CHECKBOX" name="infoid" value="922060" onclick="GetChecked();" /><a href="922060.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">先熟悉楼板和LZ的这个文件 (184字)</a>(<b><a href="login?action=userstat&amp;name=%CC%EC%C0%B6%C0%B6">天蓝蓝</a></b>&nbsp;<small>2011-4-9 20:46</small> 阅读 12804)</li> 
+      <blockquote>
+       <a href="http://usa.bbs.net/bbs/01/908616.html?soul=1&amp;ne=1&amp;ni=1" target="_blank" rel="nofollow">http://usa.bbs.net/bbs/01/908616.html?soul=1&amp;ne=1&amp;ni=1</a> 
+       <br /> 
+       <br /> 阅读一下，一步一步来。自己主要看楼板和LZ的这个文件，很详细，给GG看英文部分，参考这个链接，有他要看的网站，你们再分头组织文件。
+      </blockquote> 
+     </ul>
+     <li><input type="CHECKBOX" name="infoid" value="921276" onclick="GetChecked();" /><a href="921276.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">[无标题] (9字)</a>(<b><a href="login?action=userstat&amp;name=puyifi">puyifi</a></b>&nbsp;<small>2011-4-1 20:49</small> 阅读 13601)</li> 
+     <blockquote>
+      好，收藏~
+     </blockquote> 
+     <li><input type="CHECKBOX" name="infoid" value="921779" onclick="GetChecked();" /><a href="921779.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/73.gif" border="0" alt="" />有个问题请教大家，我应该什么时候开始申请呢？？ (309字)</a>(<b><a href="login?action=userstat&amp;name=%C1%F5%E8%AF%CF%A3">刘璇希</a></b>&nbsp;<small>2011-4-7 19:15</small> 阅读 13384)</li> 
+     <blockquote>
+      姐妹们，有个问题咨询下大家的意见。我和我男朋友只见过一面，今年春节的时候。 为了让关系证据证据更充足，他买了9月份的机票再来一次。但是我不想等到九月份再申请，太浪费时间了。我想问一下，我们这种只见过一面的，第一步申请的时候会不会被拒呢？你们在第一步申请的时候都写关于关系怎么发展的那个信了吗？谢谢给位美女啦！！~
+     </blockquote> 
+     <ul>
+      <li><input type="CHECKBOX" name="infoid" value="922059" onclick="GetChecked();" /><a href="922059.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">不用等，要求是至少见过一次面，可立刻提交。如确定来，可在GG的声明信中提及9月的来访。 (空)</a>(<b><a href="login?action=userstat&amp;name=%CC%EC%C0%B6%C0%B6">天蓝蓝</a></b>&nbsp;<small>2011-4-9 20:39</small> 阅读 13023)</li>
+     </ul>
+     <li><input type="CHECKBOX" name="infoid" value="921881" onclick="GetChecked();" /><a href="921881.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">姐妹们结婚意向要怎么写呢 (206字)</a>(<b><a href="login?action=userstat&amp;name=%C9%B5%C9%B5%B5%C4%C5%A3">傻傻的牛</a></b>&nbsp;<small>2011-4-8 16:47</small> 阅读 14027)</li> 
+     <blockquote>
+      我家gg是美国公民92年随爷爷到美国，他打算申请k1，可是我们都好多不懂的，我现在看了也不明白，p1是第一步不，那开始的时候要我的护照吗，我还没去办，结婚意向是gg写的吗，还是我们两都要写，我们需要怎么写呢，谢谢大家
+     </blockquote> 
+     <li><input type="CHECKBOX" name="infoid" value="922026" onclick="GetChecked();" /><a href="922026.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">K2咨询 (194字)</a>(<b><a href="login?action=userstat&amp;name=%BD%DC%C0%F6">杰丽</a></b>&nbsp;<small>2011-4-9 16:09</small> 阅读 13099)</li> 
+     <blockquote>
+      请问K1带K2，K2亲生子女21岁以下未婚子女，这个年龄按年份划分？还是根据实际出生年月日划分？（比如，子女出生日期为1990年10月，现在申请，按年份来算已满21周岁，按实际生日来算又未满），如何算？ 
+      <br /> 多谢！
+     </blockquote> 
+     <ul>
+      <li><input type="CHECKBOX" name="infoid" value="922031" onclick="GetChecked();" /><a href="922031.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">[无标题] (26字)</a>(<b><a href="login?action=userstat&amp;name=zgsccdr">zgsccdr</a></b>&nbsp;<small>2011-4-9 17:17</small> 阅读 13063)</li> 
+      <blockquote>
+       我的理解是按生日。你再确认
+      </blockquote> 
+     </ul>
+     <li><input type="CHECKBOX" name="infoid" value="923874" onclick="GetChecked();" /><a href="923874.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/61.gif" border="0" alt="" />申请材料时需要准备哪边材料？ (964字)</a>(<b><a href="login?action=userstat&amp;name=maggie850929">maggie850929</a></b>&nbsp;<small>2011-4-21 21:24</small> 阅读 13050)</li> 
+     <blockquote>
+      各位JM，大家好，第一次发帖，有点小紧张，呵呵。在论坛潜水已经有段时间了，但是还是始终搞不明白，所以还请大家都帮忙解答啊，我的问题可能对于大家有点白痴，但是我是真的不知道，所以请大家多多包涵哦，能教的尽量教我一下哦，先多谢大家啦 
+      <br /> 下面言归正传：我跟GG认识两年时间，之前有同居过1年，他之前在中国也呆了有5、6年了，以前我在别的城市工作因为他到了现在的城市，去年9月份，他因为工作问题，调回了BOSTON,11月回国出差顺便看我有半个多月，3月份就是上个月又回来了一趟，刚好在BOSTON买了新的房子，这次回来就准备让我办签证，但是还是有很多问题不是很明白呵呵，GG也是第一次办不是很懂，他让我把身份证复印件、护照复印件、及专门的照相馆拍的美国签证照片、还有G-325A、I-129F表格填好后快递给他，但是我看网站上面说要准备出生公证及单身公证，我想问一下我现在就必须要准备这些资料吗，还有我跟他的照片及书信往来等等在一起过的证明都需要现在就提供出来吗？希望看到的朋友能够帮我解答一下我现在的问题哦，多谢啦，真是有点棘手啊，GG都催了我半个月了，最近工作特别忙，希望有给我提供帮助的朋友，多谢多谢啊
+     </blockquote> 
+     <li><input type="CHECKBOX" name="infoid" value="925557" onclick="GetChecked();" /><a href="925557.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">刚寄出了P3，希望p4快点来！ (空)</a>(<b><a href="login?action=userstat&amp;name=mandyl">mandyl</a></b>&nbsp;<small>2011-5-5 20:27</small> 阅读 12704)</li>
+     <li><input type="CHECKBOX" name="infoid" value="926444" onclick="GetChecked();" /><a href="926444.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">昨天收到P2，不知道多久能收到P3？ (336字)</a>(<b><a href="login?action=userstat&amp;name=alicejie">alicejie</a></b>&nbsp;<small>2011-5-11 13:11</small> 阅读 13652)</li> 
+     <blockquote>
+      昨天GG极为兴奋地告诉我收到P2了，我们从去年9月份收到的P1，过去8个月了，才收到P2，虽然迟了点，还是开心。 
+      <br /> 我已经在开始准备一些公证材料了，但5月23号准备和GG去欧洲旅行，大概6月20号回国，不知道我何时能够收到P3？ 
+      <br /> 另外，我也怀孕四个月了，所以，也希望能尽快在7月份以前到美国，怀孕8个月后，据说是不好坐飞机了。我好担心呢。 
+      <br /> 姐妹们给我点指导！！
+     </blockquote> 
+     <li><input type="CHECKBOX" name="infoid" value="927648" onclick="GetChecked();" /><a href="927648.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (20字)</a>(<b><a href="login?action=userstat&amp;name=%D4%C6%D6%D0%F2%D4">云中蛟</a></b>&nbsp;<small>2011-5-20 7:25</small> 阅读 12870)</li> 
+     <blockquote>
+      P2到P3，大概一个月。
+     </blockquote> 
+     <li><input type="CHECKBOX" name="infoid" value="927883" onclick="GetChecked();" /><a href="927883.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">K1 (空)</a>(<b><a href="login?action=userstat&amp;name=gameprincess">gameprincess</a></b>&nbsp;<small>2011-5-21 10:26</small> 阅读 12943)</li>
+     <li><input type="CHECKBOX" name="infoid" value="928091" onclick="GetChecked();" /><a href="928091.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">JM请问最低担保是多少？ (24字)</a>(<b><a href="login?action=userstat&amp;name=califbj">califbj</a></b>&nbsp;<small>2011-5-22 17:59</small> 阅读 12335)</li> 
+     <blockquote>
+      经常看到过线，是多少呢？
+     </blockquote> 
+     <ul>
+      <li><input type="CHECKBOX" name="infoid" value="929388" onclick="GetChecked();" /><a href="929388.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">[无标题] (37字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-6-1 9:16</small> 阅读 12943)</li> 
+      <blockquote>
+       <a href="http://usa.bbs.net/bbs/01/314553.html" target="_blank" rel="nofollow">http://usa.bbs.net/bbs/01/314553.html</a>
+      </blockquote> 
+     </ul>
+     <li><input type="CHECKBOX" name="infoid" value="929385" onclick="GetChecked();" /><a href="929385.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />中国mm写结婚意向书需要用英文书写吗! (215字)</a>(<b><a href="login?action=userstat&amp;name=%B0%B2%F4%E1">安翎</a></b>&nbsp;<small>2011-6-1 9:03</small> 阅读 14503)</li> 
+     <blockquote>
+      在001慢慢知道了k1的部分程序. 我的白GG在几天前刚收到p2,说是资料开始从美国发往广州了.请问,我和他都需要各自准备一份结婚意向书吗? 一定要用英文写吗?我不是太懂英文. 中文写可以吗? 
+      <br /> 向大家求救了! 我会好好做作业的! 谢谢啦!
+     </blockquote> 
+     <ul>
+      <li><input type="CHECKBOX" name="infoid" value="929390" onclick="GetChecked();" /><a href="929390.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">[无标题] (126字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-6-1 9:18</small> 阅读 12515)</li> 
+      <blockquote>
+       面签前，要求带关系声明信，就是写你们从怎么认识的，什么时间认识的，并从相识到相爱的经过，并承诺拿到签证，入境美国后，90天内结婚
+      </blockquote> 
+     </ul>
+     <li><input type="CHECKBOX" name="infoid" value="929593" onclick="GetChecked();" /><a href="929593.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">[无标题] (45字)</a>(<b><a href="login?action=userstat&amp;name=annie27cn">annie27cn</a></b>&nbsp;<small>2011-6-2 11:49</small> 阅读 12753)</li> 
+     <blockquote>
+      我们在递交申请时已经交了2封关系信，原来交早了
+     </blockquote> 
+     <li><input type="CHECKBOX" name="infoid" value="930725" onclick="GetChecked();" /><a href="930725.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">[无标题] (97字)</a>(<b><a href="login?action=userstat&amp;name=%B0%B2%F4%E1">安翎</a></b>&nbsp;<small>2011-6-9 13:54</small> 阅读 13080)</li> 
+     <blockquote>
+      谢谢晓晓解答! 
+      <br /> 
+      <br /> 面试前,关系声明书是否需要翻译成英文,并公证? 
+      <br /> 那里有样板呢?我想参考一下格式.谢谢!
+     </blockquote> 
+     <ul>
+      <li><input type="CHECKBOX" name="infoid" value="934087" onclick="GetChecked();" /><a href="934087.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (42字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-7-1 5:37</small> 阅读 12653)</li> 
+      <blockquote>
+       面签时带着的关系声明信，用英文写，不用公证
+      </blockquote> 
+     </ul>
+     <li><input type="CHECKBOX" name="infoid" value="933436" onclick="GetChecked();" /><a href="933436.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />面签时，14岁以上小孩问的问题？ (106字)</a>(<b><a href="login?action=userstat&amp;name=gracefulray">gracefulray</a></b>&nbsp;<small>2011-6-26 9:01</small> 阅读 13110)</li> 
+     <blockquote>
+      我现在在申请K1，有一个小孩马上16周岁了，请问这个年令的小孩是否单独面签，如单独面签，签证官会问她什么问题？
+     </blockquote> 
+     <li><input type="CHECKBOX" name="infoid" value="933463" onclick="GetChecked();" /><a href="933463.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (133字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-6-26 11:55</small> 阅读 12765)</li> 
+     <blockquote>
+      K1+K2 ,面签是一起面签的,一般情况下不会问孩子问题的,不过也要让孩子了解你们的一些情况的,参考一下 
+      <br /> 
+      <a href="http://usa.bbs.net/bbs/01/811356.html" target="_blank" rel="nofollow">http://usa.bbs.net/bbs/01/811356.html</a>
+     </blockquote> 
+     <li><input type="CHECKBOX" name="infoid" value="933876" onclick="GetChecked();" /><a href="933876.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />新人想认识新朋友！ (87字)</a>(<b><a href="login?action=userstat&amp;name=gracefulray">gracefulray</a></b>&nbsp;<small>2011-6-29 9:21</small> 阅读 12746)</li> 
+     <blockquote>
+      我是刚刚进来的新人，正在准备K1+K2资料，希在这里认识一些新朋友，大家共同学习，互相鼓励！
+     </blockquote> 
+     <ul>
+      <li><input type="CHECKBOX" name="infoid" value="939877" onclick="GetChecked();" /><a href="939877.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (55字)</a>(<b><a href="login?action=userstat&amp;name=wesying">wesying</a></b>&nbsp;<small>2011-8-6 19:55</small> 阅读 12562)</li> 
+      <blockquote>
+       你们是上班时申请K1吗？ 我看准备工作这么多，能忙过来吗？
+      </blockquote> 
+      <li><input type="CHECKBOX" name="infoid" value="940673" onclick="GetChecked();" /><a href="940673.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />我的P3包到了 (50字)</a>(<b><a href="login?action=userstat&amp;name=%CB%AE%C1%F7%E4%B8%E4%B8">水流涓涓</a></b>&nbsp;<small>2011-8-13 17:04</small> 阅读 12798)</li> 
+      <blockquote>
+       我能通过吗？我努力准备材料，我现在开始紧张了。。。
+      </blockquote> 
+      <li><input type="CHECKBOX" name="infoid" value="940855" onclick="GetChecked();" /><a href="940855.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />新人报到 (289字)</a>(<b><a href="login?action=userstat&amp;name=oceanpd">oceanpd</a></b>&nbsp;<small>2011-8-15 11:59</small> 阅读 12863)</li> 
+      <blockquote>
+       辛苦了，各位姐妹，尤其是晓晓，非常感谢这么详尽的解释，对姐妹们非常有帮助！有个问题想请教一下，我的GG还需要付两个孩子的抚养费，如果他做担保人的话家庭人口是不是就要算成四口人呢，GG+我+kid1+kid2。如果按四口人算他的收入不过线的话，我能找我的亲戚的亲戚（是个美籍华人）做担保人吗？非常感谢赐教！
+      </blockquote> 
+      <ul>
+       <li><input type="CHECKBOX" name="infoid" value="940935" onclick="GetChecked();" /><a href="940935.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (54字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-8-16 0:44</small> 阅读 12854)</li> 
+       <blockquote>
+        是的，人口计算要全算在内，建议最好找GG那边的亲属或朋友
+       </blockquote> 
+      </ul>
+      <li><input type="CHECKBOX" name="infoid" value="941756" onclick="GetChecked();" /><a href="941756.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />求助关于International Marriage Broker Regulation Act (118字)</a>(<b><a href="login?action=userstat&amp;name=%B7%E7%D3%EA%D6%D0%B5%C4%BA%FB%B5%FB">风雨中的蝴蝶</a></b>&nbsp;<small>2011-8-21 0:42</small> 阅读 13169)</li> 
+      <blockquote>
+       求助！我和GG是在亚洲交友网认识的,现在正在准备k1资料中，我们没有请律师，GG说遇到问题，有谁知道IMBRA，我们应该如何进行？
+      </blockquote> 
+      <ul>
+       <li><input type="CHECKBOX" name="infoid" value="941770" onclick="GetChecked();" /><a href="941770.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (16字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-8-21 9:18</small> 阅读 13011)</li> 
+       <blockquote>
+        这是什么意思呢？
+       </blockquote> 
+       <li><input type="CHECKBOX" name="infoid" value="941818" onclick="GetChecked();" /><a href="941818.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (716字)</a>(<b><a href="login?action=userstat&amp;name=%B7%E7%D3%EA%D6%D0%B5%C4%BA%FB%B5%FB">风雨中的蝴蝶</a></b>&nbsp;<small>2011-8-21 12:58</small> 阅读 12872)</li> 
+       <blockquote>
+        是关于国际婚介管理法案，下面是我在网上看到的 
+        <br /> 该法案要求所有的国际婚姻介绍网站和公司/机构﹐不管是在美国境内还是境外的﹐只要服务于美国的会员﹐就必须强制性地遵照如下程序运作业务﹕ 
+        <br /> 第一步﹕要求美国男士填写一份个人背景自述 (包括婚姻历史和犯罪记录等详细信息) ﹔ 
+        <br /> 第二步﹕将美国男士的个人背景自述翻译成女士通晓的文字之后﹐呈交给女士﹐女士在上面书面签名﹐表示同意和男士交往﹔ 
+        <br /> 第三步﹕网站(或婚介机构) 才可以协助她/他们进行通信交往或将女士的联络信息提供给美国男士。 
+        <br /> 同时﹐进入美国的签证程序也将作相应重要的改变﹐新的程序有两个重要的事项要调查﹕(1) 介绍她/他们认识的网站/婚介机构有没有符合这个法律。 (2) 男士的个人背景(包括犯罪记录) 。 才考虑是否发放进入美国的签证。 
+        <br /> 哓哓你知道怎样进行吗？急！！！
+       </blockquote> 
+       <ul>
+        <li><input type="CHECKBOX" name="infoid" value="941819" onclick="GetChecked();" /><a href="941819.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (69字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-8-21 13:07</small> 阅读 12660)</li> 
+        <blockquote>
+         001上面的JMS大部分JMS都是通过交友网站认识的另一半的，也没有交过这个的
+        </blockquote> 
+       </ul>
+      </ul>
+      <li><input type="CHECKBOX" name="infoid" value="941875" onclick="GetChecked();" /><a href="941875.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (328字)</a>(<b><a href="login?action=userstat&amp;name=%B7%E7%D3%EA%D6%D0%B5%C4%BA%FB%B5%FB">风雨中的蝴蝶</a></b>&nbsp;<small>2011-8-21 22:10</small> 阅读 12827)</li> 
+      <blockquote>
+       谢谢晓晓，我和GG沟通很久才知道问题是GG不知道如何填写I-129F的19点 
+       <br /> 你通过国际婚姻中介的服务遇见你的未婚夫或配偶？ 
+       <br /> 如果您的回答是肯定的，请提供姓名和任何联系信息，你可能有国际婚姻经纪人和位于国际婚姻经纪人（包括网际网路或街道地址）。附加的文件，如果必要的额外的表。 
+       <br /> 我看到样版选择：No 
+       <br /> 但我们是在网站认识，我们应该怎么填？？？？
+      </blockquote> 
+      <li><input type="CHECKBOX" name="infoid" value="942020" onclick="GetChecked();" /><a href="942020.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />有关曾用名 (297字)</a>(<b><a href="login?action=userstat&amp;name=oceanpd">oceanpd</a></b>&nbsp;<small>2011-8-22 21:39</small> 阅读 13180)</li> 
+      <blockquote>
+       谢谢晓晓！还有个问题请教一下，我的户口本上有个曾用名，其实从来没有用过，是n年前派出所弄错了写上去的，大家也知道，派出所经常出差错，我想删掉，可是费了很大周折也没能删掉，这个曾用名是不是填表的时候必须要写进去啊（比如说G325a表格），因为户口本上有这个信息，这个曾用名会影响签证的顺利签发吗？谢谢！
+      </blockquote> 
+      <li><input type="CHECKBOX" name="infoid" value="942040" onclick="GetChecked();" /><a href="942040.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (176字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-8-23 0:24</small> 阅读 12648)</li> 
+      <blockquote>
+       如果曾用名没有出现在正式文件和证件上的话，不用做曾用名公证，公证的时候最好找公证处的认识人，让她们做出生公证上不要写上曾用名，其实你可以找公安局的熟人帮忙去掉曾用名的，很简单的
+      </blockquote> 
+      <ul>
+       <li><input type="CHECKBOX" name="infoid" value="942065" onclick="GetChecked();" /><a href="942065.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/73.gif" border="0" alt="" />[无标题] (308字)</a>(<b><a href="login?action=userstat&amp;name=oceanpd">oceanpd</a></b>&nbsp;<small>2011-8-23 9:45</small> 阅读 13020)</li> 
+       <blockquote>
+        谢谢晓晓！我已经做了出生公证，上面没有这个曾用名的。只是我填G-325A表格的时候是不是要写上这个曾用名啊？因为户口上有的，我怕vo到时看我的户口和表格对不起来会有疑问，对了，vo在面试时一般会要求申请人出示户口本吗。？另外，如果申请时没有填孩子的信息，入境美国超过一年后还能再为孩子申请签证吗？有点罗嗦，多谢费心啦！
+       </blockquote> 
+      </ul>
+      <li><input type="CHECKBOX" name="infoid" value="942170" onclick="GetChecked();" /><a href="942170.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (65字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-8-24 0:16</small> 阅读 12619)</li> 
+      <blockquote>
+       面签时一般不用出示户口本的，表格上不用填写曾用名 
+       <br /> 你是K1还是CR1？
+      </blockquote> 
+      <ul>
+       <li><input type="CHECKBOX" name="infoid" value="942195" onclick="GetChecked();" /><a href="942195.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (12字)</a>(<b><a href="login?action=userstat&amp;name=oceanpd">oceanpd</a></b>&nbsp;<small>2011-8-24 9:28</small> 阅读 12587)</li> 
+       <blockquote>
+        晓晓，我是K1
+       </blockquote> 
+      </ul>
+      <li><input type="CHECKBOX" name="infoid" value="942772" onclick="GetChecked();" /><a href="942772.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />敏感专业怎么办?城市园林设计!!!但是毕业后从事的是人事方面的工作,面签会有影响么??超担心!!! (空)</a>(<b><a href="login?action=userstat&amp;name=iriswu">iriswu</a></b>&nbsp;<small>2011-8-27 20:12</small> 阅读 12875)</li> 
+      <ul>
+       <li><input type="CHECKBOX" name="infoid" value="943905" onclick="GetChecked();" /><a href="943905.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (61字)</a>(<b><a href="login?action=userstat&amp;name=%C8%E7%BA%CE%D4%C3%C8%BB">如何悦然</a></b>&nbsp;<small>2011-9-5 1:45</small> 阅读 12798)</li> 
+       <blockquote>
+        嗯，谢谢。 我已经准备好了。今天早上寄，呵呵。希望大家都有好运
+       </blockquote> 
+      </ul>
+      <li><input type="CHECKBOX" name="infoid" value="942798" onclick="GetChecked();" /><a href="942798.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/24.gif" border="0" alt="" />K1被拒签了, 拿到了白单子, 下一步该怎么办啊 (42字)</a>(<b><a href="login?action=userstat&amp;name=%C6%E6%C3%EE">奇妙</a></b>&nbsp;<small>2011-8-27 22:34</small> 阅读 14178)</li> 
+      <blockquote>
+       K1被拒签了, 拿到了白单子, 下一步该怎么办啊
+      </blockquote> 
+      <ul>
+       <li><input type="CHECKBOX" name="infoid" value="943899" onclick="GetChecked();" /><a href="943899.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (51字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-9-5 1:18</small> 阅读 12706)</li> 
+       <blockquote>
+        可以上诉,也可以重新申请K1 或者CR1,最好结婚后申请CR1
+       </blockquote> 
+      </ul>
+      <li><input type="CHECKBOX" name="infoid" value="943882" onclick="GetChecked();" /><a href="943882.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />K1-P3 (431字)</a>(<b><a href="login?action=userstat&amp;name=%C8%E7%BA%CE%D4%C3%C8%BB">如何悦然</a></b>&nbsp;<small>2011-9-4 19:36</small> 阅读 12640)</li> 
+      <blockquote>
+       谢谢晓晓，是的。我在等P3，一直没有收到，LG发了邮件给广州，然后他们说我的包裹8悦16已经发了。可我还没有收到，可能是丢了，我很紧张啊，担心。广州那边建议我下载表格填好然后寄去，我已经下载好了，P3需要寄回去的资料 除了DS 230 I,OF-169中英文，护照复印件，还有其他的吗？我需要寄照片和出生公证，警察证明等等资料吗？麻烦你们了。我很困惑，不懂，害怕做错什么，就晚了。寄回P3后，什么时候缴费用呢？我知道是在中信银行，谢谢姐妹们，真是麻烦你们了。
+      </blockquote> 
+      <ul>
+       <li><input type="CHECKBOX" name="infoid" value="943900" onclick="GetChecked();" /><a href="943900.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (57字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-9-5 1:20</small> 阅读 12515)</li> 
+       <blockquote>
+        K1 ,P3 有OF-169,DS-230 ,护照复印件,EMS单,其他的面签时带着
+       </blockquote> 
+      </ul>
+      <li><input type="CHECKBOX" name="infoid" value="943909" onclick="GetChecked();" /><a href="943909.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (140字)</a>(<b><a href="login?action=userstat&amp;name=%C8%E7%BA%CE%D4%C3%C8%BB">如何悦然</a></b>&nbsp;<small>2011-9-5 2:52</small> 阅读 13010)</li> 
+      <blockquote>
+       姐妹们，寄P3去广州领事馆，地址是广州市沙面南街1号，收件人写谁呀？55我很笨，实在不知道。请大家帮帮我。谢谢，早上7点我来看你们消息。呵呵。谢谢
+      </blockquote> 
+      <li><input type="CHECKBOX" name="infoid" value="943944" onclick="GetChecked();" /><a href="943944.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (28字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-9-5 11:33</small> 阅读 12957)</li> 
+      <blockquote>
+       美国驻广州总领事馆移民签证部
+      </blockquote> 
+      <li><input type="CHECKBOX" name="infoid" value="944367" onclick="GetChecked();" /><a href="944367.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />我是新来的 (42字)</a>(<b><a href="login?action=userstat&amp;name=jl76454205">jl76454205</a></b>&nbsp;<small>2011-9-8 22:35</small> 阅读 12582)</li> 
+      <blockquote>
+       我是新来的。准备申请K1，很高兴认识各位姐妹
+      </blockquote> 
+      <li><input type="CHECKBOX" name="infoid" value="944599" onclick="GetChecked();" /><a href="944599.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (63字)</a>(<b><a href="login?action=userstat&amp;name=%D0%A1%CF%BA">小虾</a></b>&nbsp;<small>2011-9-11 12:10</small> 阅读 12940)</li> 
+      <blockquote>
+       请问一下，申请K1时第一步需要的照片是51*x51*的吗？两寸的对吗？
+      </blockquote> 
+      <ul>
+       <li><input type="CHECKBOX" name="infoid" value="944622" onclick="GetChecked();" /><a href="944622.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (74字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-9-11 22:10</small> 阅读 12542)</li> 
+       <blockquote>
+        签证照片。原先是50*50的，现在好像是51*51的。到正规的照相馆去照，他们都知道
+       </blockquote> 
+       <ul>
+        <li><input type="CHECKBOX" name="infoid" value="946984" onclick="GetChecked();" /><a href="946984.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (205字)</a>(<b><a href="login?action=userstat&amp;name=%C8%E7%BA%CE%D4%C3%C8%BB">如何悦然</a></b>&nbsp;<small>2011-9-29 23:02</small> 阅读 13168)</li> 
+        <blockquote>
+         P4里面照片说明是50*50，我的P4里面表格咋看咋少了啊，贴照片的表格有2份吗？我只有一份，叫材料的时候要公证书，我3份公证书只有原件，交材料可以交公证书的复印件吗？我害怕面试时候也要公证书，姐妹们麻烦你们告诉我吧
+        </blockquote> 
+        <ul>
+         <li><input type="CHECKBOX" name="infoid" value="946985" onclick="GetChecked();" /><a href="946985.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (178字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-9-29 23:16</small> 阅读 13131)</li> 
+         <blockquote>
+          面签时，公证书必须交原件，你可以复印一份留底备用 
+          <br /> 按照要求填写表格和份数，如果只有一份，就再复印一份表格填写 
+          <br /> 
+          <a href="http://guangzhou-ch.usembassy-china.org.cn/iv_packets_and_forms.html" target="_blank" rel="nofollow">http://guangzhou-ch.usembassy-china.org.cn/iv_packets_and_forms.html</a>
+         </blockquote> 
+        </ul>
+       </ul>
+      </ul>
+      <li><input type="CHECKBOX" name="infoid" value="944610" onclick="GetChecked();" /><a href="944610.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />K1申请者 (95字)</a>(<b><a href="login?action=userstat&amp;name=bingru1021">bingru1021</a></b>&nbsp;<small>2011-9-11 17:07</small> 阅读 13223)</li> 
+      <blockquote>
+       我是8月末申请的，我想提前准备哪些表格文件啊什么啊，听说有一个表格不能下载后再手写，是这样的吗？
+      </blockquote> 
+      <ul>
+       <li><input type="CHECKBOX" name="infoid" value="944623" onclick="GetChecked();" /><a href="944623.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (86字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-9-11 22:11</small> 阅读 13002)</li> 
+       <blockquote>
+        你刚刚递交申请，不用做什么，一般P1-P2要3-6个月的时间，只要等待就可以，表格都可以手填的
+       </blockquote> 
+      </ul>
+      <li><input type="CHECKBOX" name="infoid" value="944820" onclick="GetChecked();" /><a href="944820.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />准备申请K1 (112字)</a>(<b><a href="login?action=userstat&amp;name=wenwen6278">wenwen6278</a></b>&nbsp;<small>2011-9-13 21:03</small> 阅读 13083)</li> 
+      <blockquote>
+       我是新来的。BF八月底通过入籍考试，现在等宣誓，一拿到身份就马上申请K1，现在来取取经，学习学习，还望JM们多多指教。
+      </blockquote> 
+      <li><input type="CHECKBOX" name="infoid" value="944944" onclick="GetChecked();" /><a href="944944.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/117.gif" border="0" alt="" />学习学习 (90字)</a>(<b><a href="login?action=userstat&amp;name=qingke">qingke</a></b>&nbsp;<small>2011-9-14 10:02</small> 阅读 12850)</li> 
+      <blockquote>
+       请教大家了，K1网上信息，所在国家及大使馆，我人在北京，也要写广州大使馆吗？先谢谢各位姐妹。
+      </blockquote> 
+      <ul>
+       <li><input type="CHECKBOX" name="infoid" value="946987" onclick="GetChecked();" /><a href="946987.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (20字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-9-29 23:17</small> 阅读 13298)</li> 
+       <blockquote>
+        移民签证，都在广州签
+       </blockquote> 
+      </ul>
+      <li><input type="CHECKBOX" name="infoid" value="944953" onclick="GetChecked();" /><a href="944953.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />关于K1申请的疑问 (193字)</a>(<b><a href="login?action=userstat&amp;name=susie1212">susie1212</a></b>&nbsp;<small>2011-9-14 11:13</small> 阅读 12820)</li> 
+      <blockquote>
+       大家好,我未婚夫正在准备帮我在美国申请K1, 有以下问题请教: 
+       <br /> 1) 我未婚夫的家在加州的Alhambra,I-129F等申请资料寄到哪里? 
+       <br /> 2)I-134及两年的税单要和I-129F一起在刚开始申请的时候递交还是等到P3的时候才交?
+      </blockquote> 
+      <ul>
+       <li><input type="CHECKBOX" name="infoid" value="945476" onclick="GetChecked();" /><a href="945476.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (391字)</a>(<b><a href="login?action=userstat&amp;name=oceanpd">oceanpd</a></b>&nbsp;<small>2011-9-17 22:45</small> 阅读 13282)</li> 
+       <blockquote>
+        I-129F有个instruction，里面写着两个地址：一个是普通邮寄，一个是快递，我BF最近刚打电话问过USCIS了，就是这样的地址 
+        <br /> For U.S. Postal Service 
+        <br /> USCIS 
+        <br /> P.O. BOX 660151 
+        <br /> Dallas, TX 75266 
+        <br /> 
+        <br /> For Express mail and courier deliveries: 
+        <br /> USCIS 
+        <br /> Attn: I-129F 
+        <br /> 2501 South State Highway 121 Business 
+        <br /> Suite 400 
+        <br /> Lewisville, TX 75067 
+        <br /> 第二个问题呢，根据我在001上的学习，应该是在P3之后再准备。希望能帮到你！
+       </blockquote> 
+      </ul>
+      <li><input type="CHECKBOX" name="infoid" value="945543" onclick="GetChecked();" /><a href="945543.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />有关K1的若干问题 (170字)</a>(<b><a href="login?action=userstat&amp;name=%D0%A1%CF%BA">小虾</a></b>&nbsp;<small>2011-9-18 11:35</small> 阅读 12970)</li> 
+      <blockquote>
+       我是准备申请K1的，想请问一下： 
+       <br /> 1、我是乙肝病毒携带者，请问下，这个会影响我申请K1签证吗？ 
+       <br /> 2、K1是有专门的QQ群，是吗？想请问一下是多少呢？我想加一下，方便请教有经验的JMS.
+      </blockquote> 
+      <li><input type="CHECKBOX" name="infoid" value="946990" onclick="GetChecked();" /><a href="946990.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />忧虑大过开心 (198字)</a>(<b><a href="login?action=userstat&amp;name=%C0%AD%B6%FB%B7%F2%B5%C4%D0%A1%B9%C3%C4%EF">拉尔夫的小姑娘</a></b>&nbsp;<small>2011-9-29 23:21</small> 阅读 13379)</li> 
+      <blockquote>
+       我的GG已经向当地的移民局申请了表格，但是好像是一个月前了，我刚看到一个月如果没有收到表格需要去询问，万里长征第一步哦就让人焦虑，哪个姐们知道申请表格要多久哦？谁跟我的步伐差不多大家可以一起交流一下。
+      </blockquote> 
+      <li><input type="CHECKBOX" name="infoid" value="947273" onclick="GetChecked();" /><a href="947273.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />没见面是否可以申请K1？ (40字)</a>(<b><a href="login?action=userstat&amp;name=yi11">yi11</a></b>&nbsp;<small>2011-10-2 22:00</small> 阅读 12855)</li> 
+      <blockquote>
+       如果我们两个人还没有见面是否可以申请K1？
+      </blockquote> 
+      <ul>
+       <li><input type="CHECKBOX" name="infoid" value="947277" onclick="GetChecked();" /><a href="947277.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (70字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-10-2 23:05</small> 阅读 13019)</li> 
+       <blockquote>
+        不可以，除非有不能见面的原因说明(不可抗拒的风俗或身体等个人困难)及证据
+       </blockquote> 
+      </ul>
+      <li><input type="CHECKBOX" name="infoid" value="947484" onclick="GetChecked();" /><a href="947484.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (10字)</a>(<b><a href="login?action=userstat&amp;name=yi11">yi11</a></b>&nbsp;<small>2011-10-5 21:01</small> 阅读 12915)</li> 
+      <blockquote>
+       谢谢哓哓！
+      </blockquote> 
+      <li><input type="CHECKBOX" name="infoid" value="949913" onclick="GetChecked();" /><a href="949913.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />赴美旅游签证（B2）申请表上的计划在美停留时间填多久比较好，一个月以上是否会影响签证？谢谢 (181字)</a>(<b><a href="login?action=userstat&amp;name=luckymm">luckymm</a></b>&nbsp;<small>2011-10-25 0:12</small> 阅读 12927)</li> 
+      <blockquote>
+       请问，赴美旅游签证（B2）申请表上的“计划在美停留时间”填多久比较好，一个月以上是否会影响签证？ 如果填了呆两周，就必须在两周之内回来，还是可以按照海关入境卡上给的期限多呆一阵子？
+      </blockquote> 
+      <li><input type="CHECKBOX" name="infoid" value="952446" onclick="GetChecked();" /><a href="952446.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/77.gif" border="0" alt="" />弱弱地问下关于 G325a的 签名问题 (69字)</a>(<b><a href="login?action=userstat&amp;name=ninja">ninja</a></b>&nbsp;<small>2011-11-11 0:57</small> 阅读 12823)</li> 
+      <blockquote>
+       哪位好心的姐妹可以告诉我 怎么处理签名部分呢？因为是电子版。。。谢谢啦
+      </blockquote> 
+      <ul>
+       <li><input type="CHECKBOX" name="infoid" value="952453" onclick="GetChecked();" /><a href="952453.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (50字)</a>(<b><a href="login?action=userstat&amp;name=%CC%EC%C0%B6%C0%B6">天蓝蓝</a></b>&nbsp;<small>2011-11-11 5:19</small> 阅读 12520)</li> 
+       <blockquote>
+        先打印，签上名字，扫描，电子版传给对方，对方打印。
+       </blockquote> 
+      </ul>
+      <li><input type="CHECKBOX" name="infoid" value="952471" onclick="GetChecked();" /><a href="952471.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/2.gif" border="0" alt="" />[无标题] (136字)</a>(<b><a href="login?action=userstat&amp;name=%D7%D4%D3%C9%D0%D0">自由行</a></b>&nbsp;<small>2011-11-11 10:14</small> 阅读 12819)</li> 
+      <blockquote>
+       我在马来西亚留学4年，2008年回国，现在想办k1签证，我要跑到马来西亚办在那4年的未刑公证吗？ 
+       <br /> 在中国可以办吗？谁能知道告诉我？急！急！谢谢！
+      </blockquote> 
+      <li><input type="CHECKBOX" name="infoid" value="952481" onclick="GetChecked();" /><a href="952481.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />求助 (30字)</a>(<b><a href="login?action=userstat&amp;name=%D7%D4%D3%C9%D0%D0">自由行</a></b>&nbsp;<small>2011-11-11 11:11</small> 阅读 12631)</li> 
+      <blockquote>
+       我需要什么时候去体检呀，等待p1
+      </blockquote> 
+      <li><input type="CHECKBOX" name="infoid" value="953727" onclick="GetChecked();" /><a href="953727.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (6字)</a>(<b><a href="login?action=userstat&amp;name=%C5%E5%BC%CE">佩嘉</a></b>&nbsp;<small>2011-11-21 14:26</small> 阅读 12842)</li> 
+      <blockquote>
+       谢谢！
+      </blockquote> 
+      <li><input type="CHECKBOX" name="infoid" value="954587" onclick="GetChecked();" /><a href="954587.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />结婚资格书 (130字)</a>(<b><a href="login?action=userstat&amp;name=%D0%C4%CF%B2%BB%B6%C9%FA">心喜欢生</a></b>&nbsp;<small>2011-11-29 21:03</small> 阅读 16782)</li> 
+      <blockquote>
+       大家好,我是新来的,刚才我看晓晓写的K1/K2签证概要说明 有一个要准备的叫结婚资格书 
+       <br /> 
+       <br /> 我不知道是什么意思,请朋友们给我解释一下好吗?谢谢
+      </blockquote> 
+      <ul>
+       <li><input type="CHECKBOX" name="infoid" value="955313" onclick="GetChecked();" /><a href="955313.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/75.gif" border="0" alt="" />K1 急需解答`````` 谢谢！ (111字)</a>(<b><a href="login?action=userstat&amp;name=janice559">janice559</a></b>&nbsp;<small>2011-12-6 12:03</small> 阅读 12054)</li> 
+       <blockquote>
+        我现在收到P3，但是才发现前面交的G-325A middle name 填了我中文名字第二个字的拼音，这要怎么办？DS-230也这样写吗？
+       </blockquote> 
+       <li><input type="CHECKBOX" name="infoid" value="955314" onclick="GetChecked();" /><a href="955314.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/19.gif" border="0" alt="" />K1 急需解答`````` 谢谢！ (111字)</a>(<b><a href="login?action=userstat&amp;name=janice559">janice559</a></b>&nbsp;<small>2011-12-6 12:08</small> 阅读 12006)</li> 
+       <blockquote>
+        我现在收到P3，但是才发现前面交的G-325A middle name 填了我中文名字第二个字的拼音，这要怎么办？DS-230也这样写吗？
+       </blockquote> 
+       <ul>
+        <li><input type="CHECKBOX" name="infoid" value="955911" onclick="GetChecked();" /><a href="955911.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (142字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-12-11 23:47</small> 阅读 12208)</li> 
+        <blockquote>
+         不要写MIDDLE NAME，如果填了，以后的表格就按照正确的格式书写，在发出P3的时候，写解释信说明并要求更改G-325A表，然后重新填写G325A表和P3一起寄回ML
+        </blockquote> 
+       </ul>
+       <li><input type="CHECKBOX" name="infoid" value="955567" onclick="GetChecked();" /><a href="955567.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />我在塞尔维亚，GG在10月11日申请K1 (空)</a>(<b><a href="login?action=userstat&amp;name=jucayou">jucayou</a></b>&nbsp;<small>2011-12-8 6:04</small> 阅读 12058)</li>
+       <li><input type="CHECKBOX" name="infoid" value="955738" onclick="GetChecked();" /><a href="955738.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />结婚资格证书？ (160字)</a>(<b><a href="login?action=userstat&amp;name=%D0%C4%CF%B2%BB%B6%C9%FA">心喜欢生</a></b>&nbsp;<small>2011-12-9 17:00</small> 阅读 13441)</li> 
+       <blockquote>
+        请问晓晓妹妹，什么是结婚资格证书，我看你写的k1面试要带的资料里有结婚资格证书并在中方工作人员面前签字，请问一下是什么样式的，在哪里能拿到这个资格证书。谢谢帮助！
+       </blockquote> 
+       <ul>
+        <li><input type="CHECKBOX" name="infoid" value="955912" onclick="GetChecked();" /><a href="955912.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (65字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-12-11 23:49</small> 阅读 11389)</li> 
+        <blockquote>
+         <a href="http://usa.bbs.net/form/Cert_of_intent_to_marry.pdf" target="_blank" rel="nofollow">http://usa.bbs.net/form/Cert_of_intent_to_marry.pdf</a> 
+         <br /> 结婚资格证书
+        </blockquote> 
+       </ul>
+       <li><input type="CHECKBOX" name="infoid" value="955907" onclick="GetChecked();" /><a href="955907.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />重新问下风雨中的蝴蝶的问题 (456字)</a>(<b><a href="login?action=userstat&amp;name=LNCIQ">LNCIQ</a></b>&nbsp;<small>2011-12-11 22:13</small> 阅读 12450)</li> 
+       <blockquote>
+        我是新来的，要申请K1未婚妻签证，最近一直在读论坛给的信息。可是还是感觉稀里糊涂的。今天看到风雨中的蝴蝶的一个提问，也是我想知道的，但是我没看到答案呢，能否指点一下？？ 
+        <br /> 关于填写I-129F的19点 
+        <br /> 你通过国际婚姻中介的服务遇见你的未婚夫或配偶？ 
+        <br /> 如果您的回答是肯定的，请提供姓名和任何联系信息，你可能有国际婚姻经纪人和位于国际婚姻经纪人（包括网际网路或街道地址）。附加的文件，如果必要的额外的表。 
+        <br /> 我看到样版选择：No 
+        <br /> 但我们是在网站认识，我们应该怎么填？？？？
+       </blockquote> 
+       <ul>
+        <li><input type="CHECKBOX" name="infoid" value="956224" onclick="GetChecked();" /><a href="956224.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />K1签证问题啊 (60字)</a>(<b><a href="login?action=userstat&amp;name=%BD%AD%BB%AA">江华</a></b>&nbsp;<small>2011-12-15 10:25</small> 阅读 12444)</li> 
+        <blockquote>
+         我想问问一些问题哈，面签只能选择广州吗？公证要去哪里公证啊？
+        </blockquote> 
+        <li><input type="CHECKBOX" name="infoid" value="958083" onclick="GetChecked();" /><a href="958083.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />请教 (95字)</a>(<b><a href="login?action=userstat&amp;name=%BD%AD%BB%AA">江华</a></b>&nbsp;<small>2012-1-12 12:35</small> 阅读 11171)</li> 
+        <blockquote>
+         我想问下 我们在申请时我没有提供出生证明 现在已经收到P1 ，我想问一下会影响不？是不是要我们补交？
+        </blockquote> 
+       </ul>
+       <li><input type="CHECKBOX" name="infoid" value="956246" onclick="GetChecked();" /><a href="956246.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (100字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2011-12-15 13:24</small> 阅读 12089)</li> 
+       <blockquote>
+        婚姻移民签证都在美国驻广州总领事馆签，公证要在有涉外资格的公证处办理，而且有的公证要在户口所在地办理
+       </blockquote> 
+       <li><input type="CHECKBOX" name="infoid" value="956432" onclick="GetChecked();" /><a href="956432.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (58字)</a>(<b><a href="login?action=userstat&amp;name=%BD%AD%BB%AA">江华</a></b>&nbsp;<small>2011-12-17 20:48</small> 阅读 12404)</li> 
+       <blockquote>
+        多谢啦，那么K1签证的公证都可以在户口所在地的公证处办理吗？
+       </blockquote> 
+       <ul>
+        <li><input type="CHECKBOX" name="infoid" value="958589" onclick="GetChecked();" /><a href="958589.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (46字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2012-1-21 7:26</small> 阅读 12339)</li> 
+        <blockquote>
+         这个不论什么签证，出生公证都要在户口所在地办理
+        </blockquote> 
+       </ul>
+       <li><input type="CHECKBOX" name="infoid" value="956662" onclick="GetChecked();" /><a href="956662.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />我是新来的，希望得到版主和大家的帮助！！ (空)</a>(<b><a href="login?action=userstat&amp;name=wyh1967">wyh1967</a></b>&nbsp;<small>2011-12-21 16:29</small> 阅读 11340)</li>
+       <li><input type="CHECKBOX" name="infoid" value="956663" onclick="GetChecked();" /><a href="956663.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />想请教一个问题，很迫切的想得到大家的帮助！ (314字)</a>(<b><a href="login?action=userstat&amp;name=wyh1967">wyh1967</a></b>&nbsp;<small>2011-12-21 16:37</small> 阅读 11309)</li> 
+       <blockquote>
+        版主以及给位热心人，你们好！！我想请教你们。 
+        <br /> 1.我是一年前有过两次旅游签证拒签历史，一年后的现在，我想申请K1，不知影响会有多大？ 
+        <br /> 2.我的英语很差，可是我和我的未婚夫的确很相爱，他是美籍韩国人，我们的文化基本上没有差异，我的英语表达能力不好，但是他似乎能知道我想表达的什么。 
+        <br /> 我想知道这些是不是都是拒签的理由？谢了！
+       </blockquote> 
+       <ul>
+        <li><input type="CHECKBOX" name="infoid" value="958586" onclick="GetChecked();" /><a href="958586.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (409字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2012-1-21 7:20</small> 阅读 12227)</li> 
+        <blockquote>
+         1.我是一年前有过两次旅游签证拒签历史，一年后的现在，我想申请K1，不知影响会有多大？ 
+         <br /> 如果没有提供虚假信息或者不实信息的话，B2签证拒签，不影响K签证的 
+         <br /> 2.我的英语很差，可是我和我的未婚夫的确很相爱，他是美籍韩国人，我们的文化基本上没有差异，我的英语表达能力不好，但是他似乎能知道我想表达的什么。 
+         <br /> 面签的时候，可以选择用中文面签，不过，英语太差，VO难免会怀疑你们平时沟通会有障碍，还是平时没事的时候，多学习英语
+        </blockquote> 
+       </ul>
+       <li><input type="CHECKBOX" name="infoid" value="958155" onclick="GetChecked();" /><a href="958155.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />移民签证申请说明里面的警方证明，就是大家说的未刑公证吗？谢谢 (空)</a>(<b><a href="login?action=userstat&amp;name=%D2%BB%CC%EC%B5%BD%CD%ED%D3%CE%D3%BE%B5%C4%D3%E3">一天到晚游泳的鱼</a></b>&nbsp;<small>2012-1-13 18:32</small> 阅读 11473)</li> 
+       <ul>
+        <li><input type="CHECKBOX" name="infoid" value="958587" onclick="GetChecked();" /><a href="958587.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (10字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2012-1-21 7:21</small> 阅读 12197)</li> 
+        <blockquote>
+         是未刑公证
+        </blockquote> 
+       </ul>
+       <li><input type="CHECKBOX" name="infoid" value="958266" onclick="GetChecked();" /><a href="958266.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />急需姐妹们帮助 (910字)</a>(<b><a href="login?action=userstat&amp;name=%B7%EF%B7%C9%B7%C9">凤飞飞</a></b>&nbsp;<small>2012-1-15 23:14</small> 阅读 12421)</li> 
+       <blockquote>
+        晓晓和姐妹们你们好，我是新生，姐妹们介绍我001的，以前我申请的事情都是我老公办的，所以我什么都不懂，自从姐妹们让我加上001之后，我学到太多的知识了，真的谢谢大家，现在我就想知道的就是我儿子的事情，姐妹们，你们说我儿子的事情一点办法也没有了吗？ 
+        <br /> 我的情况是这样的，我和我儿子是2010年8月29号体检的，31号面试，体检的时候我儿子查出有结核性胸膜炎，我就自己去面试，结果我被拒签了，给了白单，说怀疑关系不真实，我和我儿子就回家治疗他的病，2010年12月份我未婚夫又一次递交我的未婚妻申请，这次是2011年8月25号面试，我这次面试成功了，我儿子又没有面试上，我儿子的病观察期还没满，根据规定，我儿子的病需要治疗好最后一次用药满一年为一年的观察期，他的观察期没到一年，就没有面试上，而切2011年11月1号我儿子的年龄到了21周岁，就是2月前满21周岁，我想问问，我儿子还有什么办法能继续申请或是怎么办，我非常焦急，你知道21岁就要是去这个机会了，不知道还能补救不？有什么可能不？ 我现在到美快4个月了，刚收到工卡和回美证。 
+        <br /> 非常感谢大家的支持！
+       </blockquote> 
+       <ul>
+        <li><input type="CHECKBOX" name="infoid" value="958588" onclick="GetChecked();" /><a href="958588.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (577字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2012-1-21 7:24</small> 阅读 12202)</li> 
+        <blockquote>
+         儿童身份保护法(CSPA) 
+         <br /> 不适用于K类非移民签证，K类入境的K3/K4 ，K1/K2 ，适用入境后申请I-485转身份 ，所以在面试时，你孩子的年龄必须要小于21周岁。 面试时如果子女已经超过21周岁的仍有可能获的签证，但将由VO根据Case的具体情况决定是否给孩子签证（一般，只要提出移民时未超龄的儿童，无论移民案件处理时间多长，在移民法上都不视为超龄，仍可享受与父母一起移民或随后来美的优惠。对于申请亲属移民、职业移民及抽签移民的子女，只要父母的移民排期到了那天仍未满21岁且未婚，即使面谈时满21岁，仍然可以跟随父母一起申请绿卡。 
+         <br /> 但对如面试时超过21岁的K2 K4申请，则无法获得签证，因此你只能为孩子申请F类签证
+        </blockquote> 
+       </ul>
+       <li><input type="CHECKBOX" name="infoid" value="959243" onclick="GetChecked();" /><a href="959243.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/42.gif" border="0" alt="" />GNI-2表 (245字)</a>(<b><a href="login?action=userstat&amp;name=%CE%E5%B2%CA%CA%AF">五彩石</a></b>&nbsp;<small>2012-2-2 22:11</small> 阅读 11830)</li> 
+       <blockquote>
+        各位JM，我正在填写 GNI-2表，可是找不到样板，有谁知道这个表格的样板链接，麻烦发个给我！ 
+        <br /> 里面的第6项，居住地是要填具体的地址，还是只要填城市就可以了？ 
+        <br /> 第7项，要列出16岁以后参加过所有的组织、政治团体、等等，如果是DY，TY，都要填吗？ 
+        <br /> 求教！！！
+       </blockquote> 
+       <li><input type="CHECKBOX" name="infoid" value="959257" onclick="GetChecked();" /><a href="959257.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (90字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2012-2-3 6:00</small> 阅读 12110)</li> 
+       <blockquote>
+        <a href="http://usa.bbs.net/bbs/01/551397.html" target="_blank" rel="nofollow">http://usa.bbs.net/bbs/01/551397.html</a> 
+        <br /> 
+        <a href="http://usa.bbs.net/form/GNI-2_Sample.jpg" target="_blank"><font color="#FF00FF">[图片]</font></a> 
+        <br /> 如实填写
+       </blockquote> 
+       <li><input type="CHECKBOX" name="infoid" value="959481" onclick="GetChecked();" /><a href="959481.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />经济担保问题。 (71字)</a>(<b><a href="login?action=userstat&amp;name=pink_liang">pink_liang</a></b>&nbsp;<small>2012-2-6 17:17</small> 阅读 12137)</li> 
+       <blockquote>
+        I-134 经济担保，3年税单，3年W-2，雇主信。 
+        <br /> 请问姐姐们。3年W-2，是什么？
+       </blockquote> 
+       <ul>
+        <li><input type="CHECKBOX" name="infoid" value="959483" onclick="GetChecked();" /><a href="959483.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />经济担保 (54字)</a>(<b><a href="login?action=userstat&amp;name=pink_liang">pink_liang</a></b>&nbsp;<small>2012-2-6 17:34</small> 阅读 12373)</li> 
+        <blockquote>
+         这些资料是面签的时候带去，还是和P3一起寄回广州？谢谢！
+        </blockquote> 
+       </ul>
+       <li><input type="CHECKBOX" name="infoid" value="961808" onclick="GetChecked();" /><a href="961808.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/28.gif" border="0" alt="" />感谢！ (92字)</a>(<b><a href="login?action=userstat&amp;name=%C3%B7%C0%BC%B7%BC%B7%C6">梅兰芳菲</a></b>&nbsp;<small>2012-3-2 18:23</small> 阅读 11747)</li> 
+       <blockquote>
+        晓晓，灰常感谢哦！ 
+        <br /> 我正处在递交申请的过程中，很多都不懂，看了你的介绍，清楚多了。再次感谢！
+       </blockquote> 
+       <li><input type="CHECKBOX" name="infoid" value="962216" onclick="GetChecked();" /><a href="962216.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (114字)</a>(<b><a href="login?action=userstat&amp;name=%BB%E1%B7%C9%B5%C4%C0%EE%C4%C8">会飞的李娜</a></b>&nbsp;<small>2012-3-7 20:32</small> 阅读 11760)</li> 
+       <blockquote>
+        如果我能拿出我和我的未婚夫一年来几乎每天的聊天记录，是不是会对我的K1签证有帮助？之前我有过一次美国旅游签证的拒签史
+       </blockquote> 
+       <ul>
+        <li><input type="CHECKBOX" name="infoid" value="977113" onclick="GetChecked();" /><a href="977113.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />请问党员身份会影响K1签证吗？ (60字)</a>(<b><a href="login?action=userstat&amp;name=%BD%AF%D1%C5%C4%DD">蒋雅妮</a></b>&nbsp;<small>2012-10-6 3:16</small> 阅读 8711)</li> 
+        <blockquote>
+         你好，请问党员能拿K1签证吗？需要做些什么证明吗？急。。。谢谢
+        </blockquote> 
+       </ul>
+       <li><input type="CHECKBOX" name="infoid" value="962567" onclick="GetChecked();" /><a href="962567.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (72字)</a>(<b><a href="login?action=userstat&amp;name=clmaggie">clmaggie</a></b>&nbsp;<small>2012-3-10 21:25</small> 阅读 12045)</li> 
+       <blockquote>
+        我在网上看了很多，我是去年9月开始申请的K1，有没有去年9月申请的K1的JM呢？
+       </blockquote> 
+       <ul>
+        <li><input type="CHECKBOX" name="infoid" value="962982" onclick="GetChecked();" /><a href="962982.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />去年10月申请K1，今年1月拿到P1，现P2等待中，煎熬啊 (119字)</a>(<b><a href="login?action=userstat&amp;name=sinny">sinny</a></b>&nbsp;<small>2012-3-14 23:20</small> 阅读 11050)</li> 
+        <blockquote>
+         去年10月申请K1，今年1月拿到P1，现P2等待中，煎熬啊 
+         <br /> 有木有姐妹也是这个时间的呢？认识一下吧，加个QQ相互鼓励一下，我在深圳
+        </blockquote> 
+       </ul>
+       <li><input type="CHECKBOX" name="infoid" value="962708" onclick="GetChecked();" /><a href="962708.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/11.gif" border="0" alt="" />[无标题] (121字)</a>(<b><a href="login?action=userstat&amp;name=clmaggie">clmaggie</a></b>&nbsp;<small>2012-3-12 11:55</small> 阅读 11908)</li> 
+       <blockquote>
+        如果在填表中需要填以前工作地址、联系电话和管理人名，可是以前的单位已经不存在了，这该怎么填呀！有没有JMS知道的，求助！！！
+       </blockquote> 
+       <li><input type="CHECKBOX" name="infoid" value="963016" onclick="GetChecked();" /><a href="963016.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (35字)</a>(<b><a href="login?action=userstat&amp;name=%B6%E4%B6%E43766">朵朵3766</a></b>&nbsp;<small>2012-3-15 11:43</small> 阅读 10910)</li> 
+       <blockquote>
+        p3拿到了之后寄出P3又需要交350刀吗？
+       </blockquote> 
+       <li><input type="CHECKBOX" name="infoid" value="963033" onclick="GetChecked();" /><a href="963033.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />出生公证 (203字)</a>(<b><a href="login?action=userstat&amp;name=chenjadelu">chenjadelu</a></b>&nbsp;<small>2012-3-15 13:54</small> 阅读 11031)</li> 
+       <blockquote>
+        我的出生证明找不到了，而且现在也补办不了了，由于我们家的特殊情况，公证处说我要弄很多资料什么的，反正就是出生公证不好办。我想请问下补办出生公证可以嘛？ 我听说可以公证下户口本和身份证就可以了。是这样的嘛？
+       </blockquote> 
+       <li><input type="CHECKBOX" name="infoid" value="963587" onclick="GetChecked();" /><a href="963587.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (452字)</a>(<b><a href="login?action=userstat&amp;name=babylucky">babylucky</a></b>&nbsp;<small>2012-3-22 16:09</small> 阅读 10836)</li> 
+       <blockquote>
+        我想请教下:因我申请Ｋ１签证时，名字栏将名字分开了，名字分别填在了名及中间名上了即最后一个名字放在中间名字上，听说中国人没中间名，不用填中间名的，所以Ｐ１及Ｐ２收到的信件上的我的名字都没打全，且两份信件上的名字不同程度的不全（如姓名为：张三四ＺＨＡＮＧ　ＳＨＡＮ　ＳＩ，P1上名打成:ZHAN SHAN , P2上的名字打成:ZHAN SHAN S. 但要求我们补材料时受益人的名字即我的名字打全了，请问这样会影响签证及以后办理其它证件吗？头都大了,不知如何好,谢给建议!!!!!!!!!!!!!!!
+       </blockquote> 
+       <li><input type="CHECKBOX" name="infoid" value="963732" onclick="GetChecked();" /><a href="963732.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />请问刚申请K1我和GG分别要填什么表格？有样板对照吗？ (68字)</a>(<b><a href="login?action=userstat&amp;name=%CE%AA%B0%AE%CF%F2%C7%B0%B3%E5">为爱向前冲</a></b>&nbsp;<small>2012-3-24 11:33</small> 阅读 10785)</li> 
+       <blockquote>
+        希望大家帮忙指点，刚申请K1要填写的表格和样本？有中英文对照吗？谢谢！
+       </blockquote> 
+       <li><input type="CHECKBOX" name="infoid" value="963750" onclick="GetChecked();" /><a href="963750.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />请大家帮帮忙 (292字)</a>(<b><a href="login?action=userstat&amp;name=angel-lan123">angel-lan123</a></b>&nbsp;<small>2012-3-24 15:14</small> 阅读 10976)</li> 
+       <blockquote>
+        我和GG准备申请K1签证，请问他在那边填写I129F和G325A表格后，要准备什么材料送去移民局？如果是照片要几张是赛出了的照片吗？还有就是聊天通话记录是打印到纸上和表格一起寄过去吗？（景点的门票都在我这里啊我要怎么把这些东东给他一起拿过去呢）谢谢了！刚刚申请真是一头雾水，很多东西都不懂，希望大家多多指教
+       </blockquote> 
+       <ul>
+        <li><input type="CHECKBOX" name="infoid" value="963751" onclick="GetChecked();" /><a href="963751.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (28字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2012-3-24 15:54</small> 阅读 11287)</li> 
+        <blockquote>
+         上面写的很清楚的，按照做就好
+        </blockquote> 
+       </ul>
+       <li><input type="CHECKBOX" name="infoid" value="963782" onclick="GetChecked();" /><a href="963782.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />JMS快进来给点意见啊 (300字)</a>(<b><a href="login?action=userstat&amp;name=%CE%AA%B0%AE%CF%F2%C7%B0%B3%E5">为爱向前冲</a></b>&nbsp;<small>2012-3-24 22:52</small> 阅读 10880)</li> 
+       <blockquote>
+        GG说等K1签证太久了，他想帮我申请旅游签证，可是我的经济证明不是很充足。（我可以要单位和父母的房产证明担保吗）但是他说他还有他父母可以帮我担保证明他们的经济条件可以让我过去，确保我回中国。我跟GG说可能被拒签，但是他还是执意的想试试。我该怎么办呢？又不想错过和延误申请K1的机会，大家快给点意见吧！谢谢了！
+       </blockquote> 
+       <ul>
+        <li><input type="CHECKBOX" name="infoid" value="978835" onclick="GetChecked();" /><a href="978835.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />英文连接 (87字)</a>(<b><a href="login?action=userstat&amp;name=freeihao">freeihao</a></b>&nbsp;<small>2012-11-10 19:24</small> 阅读 8747)</li> 
+        <blockquote>
+         姐妹们，请问有谁知道001论坛的英文连接的能不能发一个，想让GG学习一下，我们刚刚开始申请。
+        </blockquote> 
+       </ul>
+       <li><input type="CHECKBOX" name="infoid" value="964233" onclick="GetChecked();" /><a href="964233.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />我是新来的，未婚夫在美国申请未婚妻签证，我现在开始做的第一步是什么？请姐姐妹妹帮个忙 (空)</a>(<b><a href="login?action=userstat&amp;name=%C7%D9%C9%AA">琴瑟</a></b>&nbsp;<small>2012-3-31 20:23</small> 阅读 10886)</li>
+       <li><input type="CHECKBOX" name="infoid" value="965379" onclick="GetChecked();" /><a href="965379.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />关于担保 (256字)</a>(<b><a href="login?action=userstat&amp;name=ying3327">ying3327</a></b>&nbsp;<small>2012-4-16 18:02</small> 阅读 9544)</li> 
+       <blockquote> 
+        <br /> 两个问题： 
+        <br /> （一）。I-134 经济担保是什么时候递交，K1申请的时候就要递交吗？面试的时候递交？ 
+        <br /> （二）。还有那些双方见面的证椐（机票，住宿单椐，门票等），和电子邮件和聊天记录，申请的时候要递交，那么面试的时候也要递交？如何处理，一个是复印件一个是原件？ 
+        <br /> 谢谢
+       </blockquote> 
+       <li><input type="CHECKBOX" name="infoid" value="965864" onclick="GetChecked();" /><a href="965864.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/36.gif" border="0" alt="" />G-325A (234字)</a>(<b><a href="login?action=userstat&amp;name=daisyzlp">daisyzlp</a></b>&nbsp;<small>2012-4-23 21:41</small> 阅读 9867)</li> 
+       <blockquote>
+        正准备提交K1visa，在OO1上受益匪浅。现在有三个问题，麻烦知道的JMS告知下哦：1，G-325A必须要我签字的原件吗？邮寄过去美国？ 2. G-325A里面的内容可以都填好打印出来后签字，还是全部手写？ 3.出生公证和单身证明是在哪个时候准备好最好呢？不胜感激
+       </blockquote> 
+       <li><input type="CHECKBOX" name="infoid" value="966131" onclick="GetChecked();" /><a href="966131.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />上周才将我填好的个人的一些资料寄出给美国的哥哥，waiting (空)</a>(<b><a href="login?action=userstat&amp;name=%C7%D9%C9%AA">琴瑟</a></b>&nbsp;<small>2012-4-26 23:41</small> 阅读 9792)</li>
+       <li><input type="CHECKBOX" name="infoid" value="966267" onclick="GetChecked();" /><a href="966267.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />上周才将我填好的个人的一些资料寄出 (空)</a>(<b><a href="login?action=userstat&amp;name=%C7%D9%C9%AA">琴瑟</a></b>&nbsp;<small>2012-4-28 18:19</small> 阅读 9828)</li> 
+       <ul>
+        <li><input type="CHECKBOX" name="infoid" value="966376" onclick="GetChecked();" /><a href="966376.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />上周才将我填好的个人的一些资料寄出,继续等待 (空)</a>(<b><a href="login?action=userstat&amp;name=%C7%D9%C9%AA">琴瑟</a></b>&nbsp;<small>2012-4-30 20:14</small> 阅读 9946)</li>
+        <li><input type="CHECKBOX" name="infoid" value="966538" onclick="GetChecked();" /><a href="966538.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />我想请问是不是需要我在国外的GG给我寄送一些能够表示我们很相爱的东西和证据 (空)</a>(<b><a href="login?action=userstat&amp;name=%C7%D9%C9%AA">琴瑟</a></b>&nbsp;<small>2012-5-3 7:16</small> 阅读 9545)</li>
+        <li><input type="CHECKBOX" name="infoid" value="966580" onclick="GetChecked();" /><a href="966580.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/42.gif" border="0" alt="" />K1,求助！ (174字)</a>(<b><a href="login?action=userstat&amp;name=wenwen627">wenwen627</a></b>&nbsp;<small>2012-5-3 17:55</small> 阅读 9904)</li> 
+        <blockquote>
+         K1申请3月14号寄出，21号收到邮件和手机短信通知申请已收到，并告知有EAC打头的号码，但却一直没有收到P1的纸制收据，请问：是否都应该有纸制收据？21号的邮件和短信是否就算是收到P1了？
+        </blockquote> 
+        <li><input type="CHECKBOX" name="infoid" value="966706" onclick="GetChecked();" /><a href="966706.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />请GG提交K1申请到移民局的时候要交护照复印件还是出生纸复印件还是交两个？ (279字)</a>(<b><a href="login?action=userstat&amp;name=%CE%AA%B0%AE%CF%F2%C7%B0%B3%E5">为爱向前冲</a></b>&nbsp;<small>2012-5-6 13:16</small> 阅读 9856)</li> 
+        <blockquote>
+         JMS，我和GG准备K1的申请，他在129F表的说明上看到只是要求交护照复印件，我说我在论坛上看见说两个都要交，请问大家是交两个还是一个？ 
+         <br /> 还有就是我看了cover letter里面有个FORM FC-029是什么表格啊？ 
+         <br /> 我和GG的关系声明信都写一样的还是写差不多一样的呢？ 
+         <br /> 很多问题不懂，希望大家耐心解答？谢谢
+        </blockquote> 
+        <ul>
+         <li><input type="CHECKBOX" name="infoid" value="967715" onclick="GetChecked();" /><a href="967715.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (352字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2012-5-18 9:16</small> 阅读 9630)</li> 
+         <blockquote>
+          JMS，我和GG准备K1的申请，他在129F表的说明上看到只是要求交护照复印件，我说我在论坛上看见说两个都要交，请问大家是交两个还是一个？ 
+          <br /> 护照复印件就可以，也可以再交出生公证复印件 
+          <br /> 还有就是我看了cover letter里面有个FORM FC-029是什么表格啊？ 
+          <br /> 已经取消了 
+          <br /> 我和GG的关系声明信都写一样的还是写差不多一样的呢？ 
+          <br /> 差不多一样的就可以，主要是承诺你入境美国后90天内完婚
+         </blockquote> 
+        </ul>
+        <li><input type="CHECKBOX" name="infoid" value="966963" onclick="GetChecked();" /><a href="966963.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />G325A表格的出生日期填反了怎么办 (188字)</a>(<b><a href="login?action=userstat&amp;name=%CE%AA%B0%AE%CF%F2%C7%B0%B3%E5">为爱向前冲</a></b>&nbsp;<small>2012-5-10 11:02</small> 阅读 9681)</li> 
+        <blockquote>
+         JMS，我已经把G325A的表格邮寄给GG了，昨晚才发现我把出生的日期的日月填反了，31\12\1986.呜呜~ 
+         <br /> 应该是12\31\1986的。这样会不会有问题，是不是要重新填一份啊， 
+         <br /> 急死人了，请知道的JM快点回答！谢谢
+        </blockquote> 
+        <ul>
+         <li><input type="CHECKBOX" name="infoid" value="967719" onclick="GetChecked();" /><a href="967719.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (76字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2012-5-18 9:20</small> 阅读 9431)</li> 
+         <blockquote>
+          没事，你有护照和出生公证呢，所以如果没有让你补的话，以后的表格按照正确的填写
+         </blockquote> 
+        </ul>
+        <li><input type="CHECKBOX" name="infoid" value="967436" onclick="GetChecked();" /><a href="967436.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />我的美国GG已经收到，接下来是一个什么样的程序，我完全不清楚 (空)</a>(<b><a href="login?action=userstat&amp;name=%C7%D9%C9%AA">琴瑟</a></b>&nbsp;<small>2012-5-15 0:22</small> 阅读 9576)</li> 
+        <ul>
+         <li><input type="CHECKBOX" name="infoid" value="967721" onclick="GetChecked();" /><a href="967721.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (37字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2012-5-18 9:21</small> 阅读 9392)</li> 
+         <blockquote>
+          <a href="http://usa.bbs.net/bbs/01/807771.html" target="_blank" rel="nofollow">http://usa.bbs.net/bbs/01/807771.html</a>
+         </blockquote> 
+        </ul>
+        <li><input type="CHECKBOX" name="infoid" value="967713" onclick="GetChecked();" /><a href="967713.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (24字)</a>(<b><a href="login?action=userstat&amp;name=%D0%C4%CF%B2%BB%B6%C9%FA">心喜欢生</a></b>&nbsp;<small>2012-5-18 9:09</small> 阅读 9270)</li> 
+        <blockquote>
+         我要找晓晓妹妹紧急的事情
+        </blockquote> 
+        <ul>
+         <li><input type="CHECKBOX" name="infoid" value="967722" onclick="GetChecked();" /><a href="967722.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (103字)</a>(<b><a href="login?action=userstat&amp;name=%DF%D8%DF%D8001">哓哓001</a></b>&nbsp;<small>2012-5-18 9:22</small> 阅读 9843)</li> 
+         <blockquote>
+          请说吧，以后JMS要记得，有问题不要在以折叠的帖子里提问，要重新开帖子，不然JMS看不到 ，会耽误你们的问题的
+         </blockquote> 
+        </ul>
+        <li><input type="CHECKBOX" name="infoid" value="967838" onclick="GetChecked();" /><a href="967838.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />K1申请递交上去后只收到了手机短信和Email，其中有告知查询码，这样算不算是收到P1了呀？ (空)</a>(<b><a href="login?action=userstat&amp;name=wenwen627">wenwen627</a></b>&nbsp;<small>2012-5-19 16:21</small> 阅读 9498)</li>
+        <li><input type="CHECKBOX" name="infoid" value="968150" onclick="GetChecked();" /><a href="968150.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />P3, P4 和面签所需的时间 (198字)</a>(<b><a href="login?action=userstat&amp;name=tonytexas">tonytexas</a></b>&nbsp;<small>2012-5-22 13:09</small> 阅读 9342)</li> 
+        <blockquote>
+         各位正在申请的JM们，我得到通知P2今天才发出（P1是1/25/2012),不知道什么时候会来P3, P4, 和面签.你们能告诉我你们自己从P2到P3， 从P3到P4， 从P4到面签，都具体等了多少天吗？这对我订计划非常有帮助。多谢了！
+        </blockquote> 
+        <li><input type="CHECKBOX" name="infoid" value="968492" onclick="GetChecked();" /><a href="968492.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (449字)</a>(<b><a href="login?action=userstat&amp;name=%D0%C4%CF%B2%BB%B6%C9%FA">心喜欢生</a></b>&nbsp;<small>2012-5-25 15:22</small> 阅读 9673)</li> 
+        <blockquote>
+         晓晓妹妹有急事找你，我女儿在新加坡读书，我是k1/k2，我让她在新加坡开未刑证明，新加坡的警方不开这个证明，他们回答是：只针对新加坡的本地公民才开这个证明，他们不为外国人提供这个证明。 
+         <br /> 另外我女儿是2010年3月去读书的，但是9月份就回来住上差不多过40天在国内，因为学校放假的原因，所以2011年3月她也回来，然后2011年9月也回来，每次回来她都在国内住 上近40天，但是如果她再次回来是2012年的8月28号，总之这样显示在国外没有连续住上一年，是否可以不开新加坡的警方证明。
+        </blockquote> 
+        <li><input type="CHECKBOX" name="infoid" value="968561" onclick="GetChecked();" /><a href="968561.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />新人来报道，顺道问问如果没有出生证要怎么办？ (空)</a>(<b><a href="login?action=userstat&amp;name=%D0%A1%D0%A1%CE%C3%D7%D3">小小蚊子</a></b>&nbsp;<small>2012-5-26 16:43</small> 阅读 8877)</li>
+        <li><input type="CHECKBOX" name="infoid" value="968562" onclick="GetChecked();" /><a href="968562.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/23.gif" border="0" alt="" />没有出生证怎么办？ (81字)</a>(<b><a href="login?action=userstat&amp;name=%D0%A1%D0%A1%CE%C3%D7%D3">小小蚊子</a></b>&nbsp;<small>2012-5-26 16:46</small> 阅读 10256)</li> 
+        <blockquote>
+         新人来报道啦，总算找到组织了。 
+         <br /> 我想问一下各位JMS，如果没有出生证，那要怎么办啊？
+        </blockquote> 
+        <li><input type="CHECKBOX" name="infoid" value="968940" onclick="GetChecked();" /><a href="968940.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (103字)</a>(<b><a href="login?action=userstat&amp;name=%D0%C4%CF%B2%BB%B6%C9%FA">心喜欢生</a></b>&nbsp;<small>2012-5-31 22:12</small> 阅读 9261)</li> 
+        <blockquote>
+         感谢晓晓和所有关心我的妹妹们, 我在等 待了5个月之后得到了P2 !我也祝福所有的姐妹们能早日和她们的哥哥团聚!
+        </blockquote> 
+        <li><input type="CHECKBOX" name="infoid" value="969291" onclick="GetChecked();" /><a href="969291.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />大家好 (41字)</a>(<b><a href="login?action=userstat&amp;name=ying0816">ying0816</a></b>&nbsp;<small>2012-6-5 17:59</small> 阅读 9269)</li> 
+        <blockquote>
+         我非常喜欢这个网站，很高兴认识晓晓和大家.
+        </blockquote> 
+        <li><input type="CHECKBOX" name="infoid" value="970934" onclick="GetChecked();" /><a href="970934.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />K1签到了后申请绿卡是不是很困难呢 (666字)</a>(<b><a href="login?action=userstat&amp;name=Hana">Hana</a></b>&nbsp;<small>2012-6-25 15:43</small> 阅读 8860)</li> 
+        <blockquote>
+         潜水了一会 虽然看着花花绿绿的版面看不懂 
+         <br /> 但是多少看懂了一点 
+         <br /> 男朋友是ABC 明年六月回中国 
+         <br /> 目前最重要的问题 经济，他还在读书 不过有一个亲姐姐经济担保绝对足 
+         <br /> 曾经担保过他爸爸朋友的儿子移民 不过其中问题是他姐姐担保过了那还能不能再担保我 
+         <br /> 他的父母是建议我们签K1然后我就上论坛多少事前了解了一些 
+         <br /> 看到好多姐妹都是差不多八月或者十一月开始申请 然后次年六月签到 8到10个月 
+         <br /> 我觉得蛮快 只要资料准备充足一般没什么问题 我觉得唯一麻烦的就是过去之后再申请拿临时绿卡 这点上我不是很清楚 是不是过去后还要做一次经济担保 杂七杂八的资料准备很多？那到时候还是他姐姐做担保可以么 
+         <br /> 我会在CR1和K1之间徘徊也就是这个原因 CR1过去不用面试一两个月就能寄绿卡过来 
+         <br /> K1这点上是不是真的有那么麻烦？
+        </blockquote> 
+       </ul>
+      </ul>
+     </ul>
+     <li><input type="CHECKBOX" name="infoid" value="972074" onclick="GetChecked();" /><a href="972074.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/61.gif" border="0" alt="" />[无标题] (226字)</a>(<b><a href="login?action=userstat&amp;name=%D3%EA%BA%F3%D1%F4%B9%E2">雨后阳光</a></b>&nbsp;<small>2012-7-9 20:54</small> 阅读 8753)</li> 
+     <blockquote>
+      前辈们好： 
+      <br /> 我刚刚准备办理K1签证，一切好像一头雾水，不知从何做起？有朋友建议我找中介，说是这样更省心，有朋友说从这个论坛边学习边操作是完全可以自己完成的，我想尝试这个过程，但是又担心不懂走弯路，请大家给个好的建议？真诚的感谢！
+     </blockquote> 
+     <li><input type="CHECKBOX" name="infoid" value="972419" onclick="GetChecked();" /><a href="972419.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/42.gif" border="0" alt="" />[无标题] (173字)</a>(<b><a href="login?action=userstat&amp;name=yaya56523">yaya56523</a></b>&nbsp;<small>2012-7-14 16:27</small> 阅读 8739)</li> 
+     <blockquote>
+      JMS们，帮帮忙，移民局邮寄给我的P3里地址和我身份证户口本里的地址完全不一样、我是铜仁市石阡县，当时我未婚夫填写了铜仁市，所以我的地址弄错误了！会影响K1签证面签吗？我该怎么办？
+     </blockquote> 
+     <ul>
+      <li><input type="CHECKBOX" name="infoid" value="972425" onclick="GetChecked();" /><a href="972425.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />你好!希望能帮上你! (251字)</a>(<b><a href="login?action=userstat&amp;name=%D2%DD%CF%E3%B8%F3">逸香阁</a></b>&nbsp;<small>2012-7-14 19:30</small> 阅读 9058)</li> 
+      <blockquote>
+       <a href="http://guangzhou.usembassy-china.org.cn//immigrant-visa-unit-question.html" target="_blank" rel="nofollow">http://guangzhou.usembassy-china.org.cn//immigrant-visa-unit-question.html</a> 
+       <br /> 
+       <br /> 在这个页面填写你和GG的相关资料,并告诉他们你的地址是错的,希望更正新的地址.他们回很快回复你GG邮件的.记住一定要在页面填写.只有页面填写他们才会回复.我想你的问题很快会得到解决的!
+      </blockquote> 
+     </ul>
+     <li><input type="CHECKBOX" name="infoid" value="973480" onclick="GetChecked();" /><a href="973480.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />关于K1签证 (28字)</a>(<b><a href="login?action=userstat&amp;name=Rserena">Rserena</a></b>&nbsp;<small>2012-7-31 7:51</small> 阅读 8908)</li> 
+     <blockquote>
+      太详细了，太好了，谢谢你！！
+     </blockquote> 
+     <li><input type="CHECKBOX" name="infoid" value="973792" onclick="GetChecked();" /><a href="973792.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (116字)</a>(<b><a href="login?action=userstat&amp;name=sara_33">sara_33</a></b>&nbsp;<small>2012-8-5 11:44</small> 阅读 8626)</li> 
+     <blockquote>
+      哓哓，我的BF正在准备提交K1申请，看你上面写的是不是我的相关材料，跟GG的相关材料都跟&shy;I-129F 申请表同时提交上去呢？
+     </blockquote> 
+     <li><input type="CHECKBOX" name="infoid" value="974364" onclick="GetChecked();" /><a href="974364.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/2.gif" border="0" alt="" />出生证明公证时如父亲去世，要注明吗？ 因为看到后面的P3后的表格里有此项。谢谢各位啦！ (空)</a>(<b><a href="login?action=userstat&amp;name=Tigermom">Tigermom</a></b>&nbsp;<small>2012-8-15 13:51</small> 阅读 8696)</li>
+     <li><input type="CHECKBOX" name="infoid" value="974371" onclick="GetChecked();" /><a href="974371.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />我的美国哥哥要来中国看我，但是据说现在的中国使馆需要中国公民向美国公民发出邀请函，美国公民才能获得签... (143字)</a>(<b><a href="login?action=userstat&amp;name=%C7%D9%C9%AA">琴瑟</a></b>&nbsp;<small>2012-8-15 15:57</small> 阅读 9093)</li> 
+     <blockquote>
+      标题: 我的美国哥哥要来中国看我，但是据说现在的中国使馆需要中国公民向美国公民发出邀请函，美国公民才能获得签证，有这样的情况吗？ 请姊妹们帮助一下
+     </blockquote> 
+     <li><input type="CHECKBOX" name="infoid" value="975737" onclick="GetChecked();" /><a href="975737.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />无标题 (90字)</a>(<b><a href="login?action=userstat&amp;name=%BE%B2%C7%EF">静秋</a></b>&nbsp;<small>2012-9-6 22:46</small> 阅读 8743)</li> 
+     <blockquote>
+      刚刚游览，了解了很多，真太谢谢晓晓了！之前自己就是一空白，现在清楚了很多，谢谢你那么费心！
+     </blockquote> 
+     <li><input type="CHECKBOX" name="infoid" value="975937" onclick="GetChecked();" /><a href="975937.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />K1面谈收到蓝纸和白纸，补好材料后大概多久会有消息？ (152字)</a>(<b><a href="login?action=userstat&amp;name=lily212">lily212</a></b>&nbsp;<small>2012-9-10 23:35</small> 阅读 8824)</li> 
+     <blockquote>
+      因为我是党员，K1面谈的时候收到蓝纸和白纸，要求补提交工作/教育/出国经历，另外还有关于本人是党员的声明。请问一般提交补充材料后，大概多久会有消息？谢谢！！
+     </blockquote> 
+     <li><input type="CHECKBOX" name="infoid" value="976391" onclick="GetChecked();" /><a href="976391.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/28.gif" border="0" alt="" />在国内能否申请K1 (空)</a>(<b><a href="login?action=userstat&amp;name=QW441">QW441</a></b>&nbsp;<small>2012-9-19 16:16</small> 阅读 8454)</li>
+     <li><input type="CHECKBOX" name="infoid" value="976602" onclick="GetChecked();" /><a href="976602.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />谢谢晓晓的无私分享，详细而专业！ (空)</a>(<b><a href="login?action=userstat&amp;name=%C4%BE%C3%DE2012">木棉2012</a></b>&nbsp;<small>2012-9-24 14:55</small> 阅读 9304)</li>
+     <li><input type="CHECKBOX" name="infoid" value="976616" onclick="GetChecked();" /><a href="976616.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (252字)</a>(<b><a href="login?action=userstat&amp;name=candy7">candy7</a></b>&nbsp;<small>2012-9-24 22:21</small> 阅读 8910)</li> 
+     <blockquote>
+      我收到了P3 包裹，我是K1/K2 .包裹里有两张DS-230.请问这两张是填一样的内容吗？？　还是一张填我的，一张填我儿子的？需要贴照片吗？还有签名　是都签我的名字还是一张签我的　一张签我儿子的？？我儿子今年8岁！！ 请知道的姐妹帮我解答一下，万分感激！！！ 急！！！！
+     </blockquote> 
+     <li><input type="CHECKBOX" name="infoid" value="976649" onclick="GetChecked();" /><a href="976649.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />党员身份会影响K1签证的获得吗？ (34字)</a>(<b><a href="login?action=userstat&amp;name=smiler818">smiler818</a></b>&nbsp;<small>2012-9-25 11:34</small> 阅读 8823)</li> 
+     <blockquote>
+      请问党员身份会影响K1签证的获得吗？
+     </blockquote> 
+     <li><input type="CHECKBOX" name="infoid" value="976982" onclick="GetChecked();" /><a href="976982.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (30字)</a>(<b><a href="login?action=userstat&amp;name=swjtutrj">swjtutrj</a></b>&nbsp;<small>2012-10-2 16:08</small> 阅读 8509)</li> 
+     <blockquote>
+      我想请问下 有没有DS-230样本？
+     </blockquote> 
+     <li><input type="CHECKBOX" name="infoid" value="977115" onclick="GetChecked();" /><a href="977115.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />K1签证办理需要请律师吗？ (84字)</a>(<b><a href="login?action=userstat&amp;name=%BD%AF%D1%C5%C4%DD">蒋雅妮</a></b>&nbsp;<small>2012-10-6 3:23</small> 阅读 8779)</li> 
+     <blockquote>
+      你好，请问K1签证的办理一定要请律师吗？能自己办理吗？如果自己办理，速度是否会很慢呢？
+     </blockquote> 
+     <li><input type="CHECKBOX" name="infoid" value="978117" onclick="GetChecked();" /><a href="978117.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (103字)</a>(<b><a href="login?action=userstat&amp;name=jinjin9600">jinjin9600</a></b>&nbsp;<small>2012-10-25 13:16</small> 阅读 8483)</li> 
+     <blockquote>
+      大家好，我是新来的，有问题想请教，请给予指点，我准备申请k-1签证，请问I-129F表需要两个人都填写吗？谢谢！
+     </blockquote> 
+     <li><input type="CHECKBOX" name="infoid" value="978402" onclick="GetChecked();" /><a href="978402.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />新人 有QQ群可以加入吗？ (96字)</a>(<b><a href="login?action=userstat&amp;name=%C9%CB%B2%BB%C6%F02012">伤不起2012</a></b>&nbsp;<small>2012-10-31 23:09</small> 阅读 8556)</li> 
+     <blockquote>
+      大家好！我是新人，正在申请K1，在等P4的过程中，有很多问题想请教JM，请问有什么K1QQ群可以加入的吗？
+     </blockquote> 
+     <li><input type="CHECKBOX" name="infoid" value="978434" onclick="GetChecked();" /><a href="978434.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />现在K1签证需要多长时间 (215字)</a>(<b><a href="login?action=userstat&amp;name=%D0%A4%C2%E5%D0%F9">肖洛轩</a></b>&nbsp;<small>2012-11-1 17:10</small> 阅读 8671)</li> 
+     <blockquote>
+      各位好，我的案例是这样的：我的男朋友是今年的6月7号提交的申请，大概6月中就拿到了p1，请问现在什么时候才可以拿到p2.我们从高中到现在相恋了7年，双方都等的很辛苦，为了这段爱情付出了很多的牺牲，很希望我们能顺利的佳偶天成。
+     </blockquote> 
+     <li><input type="CHECKBOX" name="infoid" value="978945" onclick="GetChecked();" /><a href="978945.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />希望有好心人愿意告诉我怎样做才好 (542字)</a>(<b><a href="login?action=userstat&amp;name=%D1%EE%D0%A1%D3%EA">杨小雨</a></b>&nbsp;<small>2012-11-13 23:00</small> 阅读 9199)</li> 
+     <blockquote>
+      您好，我是长沙人，我的未婚夫是美国公民，他在长沙的一所学校做外教，是2009年夏来到中国的，今年是在中国的第四年了，我们认识了三年了，但我们是去年11月才正式成为男女朋友住在一起的，到现在已经一年了，也就是说住在一也一年了，我们准备明年六月一起去美国， 我申请的是K1， 已经拿到了P1， 我想问一下： 他在中国工作了3年多可是他好像没有往美国纳税，请问这个可以补交吗？ 我们需要他的父母做联合担保，他的父母也非常积极想要帮助我们（他爸爸是政府官员，妈妈是医生），请问一下，P2下来之后我们该具体要怎么操作呢？P2下来之后，我们这种联合担保需要什么材料和证明呢？
+     </blockquote> 
+     <li><input type="CHECKBOX" name="infoid" value="979102" onclick="GetChecked();" /><a href="979102.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />下一步该做什么 (79字)</a>(<b><a href="login?action=userstat&amp;name=chenweizhen">chenweizhen</a></b>&nbsp;<small>2012-11-17 14:24</small> 阅读 8903)</li> 
+     <blockquote>
+      您好！在等待了6个月20天后终于p2通过。请问下一步该做什么？盼望有经验的朋友指点。
+     </blockquote> 
+     <li><input type="CHECKBOX" name="infoid" value="979313" onclick="GetChecked();" /><a href="979313.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (70字)</a>(<b><a href="login?action=userstat&amp;name=swjtutrj">swjtutrj</a></b>&nbsp;<small>2012-11-22 23:01</small> 阅读 10435)</li> 
+     <blockquote>
+      ****各位姐妹 这个是P5群 蓝单的姐妹 请加这个群 大家一起走过蓝转红的阶段
+     </blockquote> 
+     <ul>
+      <li><input type="CHECKBOX" name="infoid" value="979674" onclick="GetChecked();" /><a href="979674.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/24.gif" border="0" alt="" />大家帮帮我吧。。 (315字)</a>(<b><a href="login?action=userstat&amp;name=%D0%A1%C0%D6%C0%D6%C0%D6">小乐乐乐</a></b>&nbsp;<small>2012-12-3 11:03</small> 阅读 8466)</li> 
+      <blockquote>
+       我GG希望我申请美国未婚妻签证。 他最近要来看我，希望我出示单身证明什么的 ，我的户口在南京，刚改过去的，但是我还没有换身份证和护照，我原来是辽宁的，身份证和护照都显示的辽宁。 我现在没办法过去，我在这边开单身证明什么的相关文件行吗？ 我担心以后递交材料大使馆审核会有问题 耽误时间。。我现在太矛盾了。。希望能够帮帮我。。
+      </blockquote> 
+      <ul>
+       <li><input type="CHECKBOX" name="infoid" value="979676" onclick="GetChecked();" /><a href="979676.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />[无标题] (111字)</a>(<b><a href="login?action=userstat&amp;name=yanzi19821111">yanzi19821111</a></b>&nbsp;<small>2012-12-3 12:02</small> 阅读 8900)</li> 
+       <blockquote>
+        乐乐，我也是申请K1，但是刚开始的时候不需要这个证明的呀，等P3之后，办个未婚公证就好了呀，多看看001，你就知道了呢
+       </blockquote> 
+      </ul>
+      <li><input type="CHECKBOX" name="infoid" value="979741" onclick="GetChecked();" /><a href="979741.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/9.gif" border="0" alt="" />[无标题] (190字)</a>(<b><a href="login?action=userstat&amp;name=%C3%B7%C0%BC%B7%BC%B7%C6">梅兰芳菲</a></b>&nbsp;<small>2012-12-4 16:56</small> 阅读 8597)</li> 
+      <blockquote>
+       大家好，我遇到一个问题想求助大家。 
+       <br /> 在回复P3时，昨天下午在邮局寄件广州美领时，因突发事件那个通讯地址详情单忘记填写自己的地址就寄走了，可不可以重新补寄一个去呢？还是说要表格联系美领后再补呢？
+      </blockquote> 
+      <li><input type="CHECKBOX" name="infoid" value="980005" onclick="GetChecked();" /><a href="980005.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/42.gif" border="0" alt="" />我的K1 怎么这么慢 (238字)</a>(<b><a href="login?action=userstat&amp;name=liz">liz</a></b>&nbsp;<small>2012-12-10 14:40</small> 阅读 8702)</li> 
+      <blockquote>
+       我的K1是GG今年4月23号寄出的，但是11月2号才收到一封GG在129f里少填了一个空的信，他弄好了11月7号寄出去了。但是我看了一些过往的10年MM们的，人家4月份申请的但是7月份就拿到P3了，8月相继拿到P4，二十几号就面签体检了。。。相比较下来我的怎么这么慢？
+      </blockquote> 
+      <li><input type="CHECKBOX" name="infoid" value="980381" onclick="GetChecked();" /><a href="980381.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />P3今天刚收到 (436字)</a>(<b><a href="login?action=userstat&amp;name=liz">liz</a></b>&nbsp;<small>2012-12-18 17:45</small> 阅读 8350)</li> 
+      <blockquote>
+       虽然看过001，但是收到后感觉还是很棘手，一头雾水。今天下午去当地派出所办了无违法犯罪证明，然后又到民政局办了未婚证明。出生证我有，但是公证处的电话一直打不通，不知道是否是公正和翻译在那都能办理。是不是以上所有的都需要翻译并公证?有没有其他的也需要翻译和公证的了？求JMS来指导啊~~~请给我指点指点步骤，一步一步该怎么办。哦，还有，我开的两个证明上面都写了，只证明在2012年12月18日之前未有记录，要不要紧啊？还有出身证上没写父亲的名字，要不要紧？
+      </blockquote> 
+      <li><input type="CHECKBOX" name="infoid" value="980382" onclick="GetChecked();" /><a href="980382.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />P3今天刚收到 (436字)</a>(<b><a href="login?action=userstat&amp;name=liz">liz</a></b>&nbsp;<small>2012-12-18 17:46</small> 阅读 8534)</li> 
+      <blockquote>
+       虽然看过001，但是收到后感觉还是很棘手，一头雾水。今天下午去当地派出所办了无违法犯罪证明，然后又到民政局办了未婚证明。出生证我有，但是公证处的电话一直打不通，不知道是否是公正和翻译在那都能办理。是不是以上所有的都需要翻译并公证?有没有其他的也需要翻译和公证的了？求JMS来指导啊~~~请给我指点指点步骤，一步一步该怎么办。哦，还有，我开的两个证明上面都写了，只证明在2012年12月18日之前未有记录，要不要紧啊？还有出身证上没写父亲的名字，要不要紧？
+      </blockquote> 
+      <li><input type="CHECKBOX" name="infoid" value="981271" onclick="GetChecked();" /><a href="981271.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/8.gif" border="0" alt="" />K1类疑问 (86字)</a>(<b><a href="login?action=userstat&amp;name=%C3%F4%C3%F4zhuusa">敏敏zhuusa</a></b>&nbsp;<small>2013-1-15 17:53</small> 阅读 8457)</li> 
+      <blockquote>
+       请问:2月之后,K1类获签证后要交那个新的费用165美元吗?听说了要网上交,要怎样交呢?谢谢解答!
+      </blockquote> 
+      <li><input type="CHECKBOX" name="infoid" value="981749" onclick="GetChecked();" /><a href="981749.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/28.gif" border="0" alt="" />好详细啊 (8字)</a>(<b><a href="login?action=userstat&amp;name=bingjingbuna">bingjingbuna</a></b>&nbsp;<small>2013-1-26 17:01</small> 阅读 8189)</li> 
+      <blockquote>
+       谢谢了！
+      </blockquote> 
+      <li><input type="CHECKBOX" name="infoid" value="981905" onclick="GetChecked();" /><a href="981905.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/28.gif" border="0" alt="" />[无标题] (275字)</a>(<b><a href="login?action=userstat&amp;name=%C6%DA%B4%FDing%B6%B9%B6%B9">期待ing豆豆</a></b>&nbsp;<small>2013-1-30 22:35</small> 阅读 8553)</li> 
+      <blockquote>
+       大家好，我申请的是K1，一直都是靠着001走过来的，谢谢你们给予我的帮助，现在事情也进行的好顺利，前几天刚收到P4，想着过几天去体检，现在有些小问题想请交一下各位，关于办出生公证的，我现在手上还剩下一份原件，还有必要办多几份留着以后转身份用吗？到了国外之后还有那些地方需要用的？谢谢
+      </blockquote> 
+      <li><input type="CHECKBOX" name="infoid" value="982306" onclick="GetChecked();" /><a href="982306.html?mode=4&amp;sort=&amp;master=1&amp;nf=1"><img src="/bbsimg/28.gif" border="0" alt="" />good! (空)</a>(<b><a href="login?action=userstat&amp;name=ssophiezh">ssophiezh</a></b>&nbsp;<small>2013-2-11 15:37</small> 阅读 8560)</li>
+     </ul>
+    </ul> 
+   </ul> 
+   <hr />
+   <b>发布响应: </b>[
+   <a href="/bbs/01/index.html?mode=4&amp;sort=&amp;master=1&amp;nf=1">返回</a>] 
+   <br /> 
+   <!-- google_ad_section_end -->
+   <center>
+    <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> 
+    <!-- 论坛页首自适应广告 --> 
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-0256526785998738" data-ad-slot="8000588936" data-ad-format="auto"></ins> 
+    <script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script> 
+   </center> 
+   <font color="#FF00FF">&nbsp;&nbsp;</font> 
+   <p></p> 
+   <p style="margin-top: 0; margin-bottom: 0"> <font color="#FF00FF">&nbsp;&nbsp;&nbsp; 严正声明：发表新信息前,请确认您发表的信息符合中华人民共和国法律法规，并符合本论坛的主题。本论坛严禁上贴任何政治敏感文章和带有色情成分及带有攻击性言辞的文章，禁止商业广告和招贴，否则将依据本坛规定视情节分别删除、封ID/IP，对于恶意上贴者本站将及时向公安部门汇报上贴者信息。<a href="http://usa.bbs.net/bbs/01/300593.html" target="_blank" style="color: red"><font size="4"><b>请点击这里阅读本论坛发贴详细规则<b></b></b></font></a><b><b> </b></b></font></p>
+   <form enctype="multipart/form-data" name="theForm" action="add?pid=914906&amp;pda=0&amp;etag=7bf150f2ad9284419173" method="POST">
+    <font color="#FF00FF"><b><b> 
+       <center> 
+        <table border="1" height="546" width="777"> 
+         <tbody> 
+          <tr> 
+           <td width="80" align="center">&nbsp;网 名<br />ID</td> 
+           <td><input maxlength="15" name="name" title="发布信息前必须确认用户名已经登记，并选择和合适的登录方式" size="20" value="" /> <a href="userreg.html" target="_blank">新用户登记Register</a></td> 
+           <td size="10">&nbsp;密 码Password</td> 
+           <td><input maxlength="16" name="pswd" size="16" title="请参见登记用户里面关于登录方式的说明" type="password" /></td> 
+          </tr> 
+          <tr> 
+           <td width="80" align="center">&nbsp;主 题<br />Subject</td> 
+           <td colspan="3"><input maxlength="200" name="title" size="60" title="为了他人便于阅读，请尽量将信息的主旨表达在标题中" /> <input type="submit" value=" 搞定OK" style="font-family: 宋体" /></td> 
+          </tr> 
+          <tr> 
+           <td width="80" align="center">主题图标<br />Smilies</td> 
+           <td colspan="3" title="主题图标可以用来表达您的语气和情绪"> 
+            <table> 
+             <tbody> 
+              <tr> 
+               <td width="72"><input type="RADIO" name="type" value="28" /><img src="/bbsimg/28.gif" alt="" width="15" height="15" />高兴</td> 
+               <td width="72"><input type="RADIO" name="type" value="23" /><img src="/bbsimg/23.gif" alt="" width="15" height="15" />挤眼 </td> 
+               <td width="72"><input type="RADIO" name="type" value="26" /><img src="/bbsimg/26.gif" alt="" width="15" height="15" />恐惧</td> 
+               <td width="72"><input type="RADIO" name="type" value="21" /><img src="/bbsimg/21.gif" alt="" width="15" height="15" />有趣</td> 
+               <td width="72"><input type="RADIO" name="type" value="24" /><img src="/bbsimg/24.gif" alt="" width="15" height="15" />伤心</td> 
+               <td width="72"><input type="RADIO" name="type" value="117" /><img src="/bbsimg/117.gif" alt="" width="15" height="15" />偷笑 </td> 
+               <td width="74"><input type="RADIO" name="type" value="76" /> <img src="/bbsimg/76.gif" alt="" width="15" height="15" />怪面</td> 
+               <td width="75"><input type="RADIO" name="type" value="74" /> <img src="/bbsimg/74.gif" alt="" width="15" height="15" />不快</td> 
+              </tr> 
+              <tr> 
+               <td><input type="RADIO" name="type" value="8" checked="" /><img src="/bbsimg/8.gif" alt="" width="15" height="15" />微笑</td> 
+               <td><input type="RADIO" name="type" value="14" /><img src="/bbsimg/14.gif" alt="" width="15" height="15" />大笑</td> 
+               <td><input type="RADIO" name="type" value="41" /><img src="/bbsimg/41.gif" alt="" width="15" height="15" />傻笑</td> 
+               <td><input type="RADIO" name="type" value="30" /><img src="/bbsimg/30.gif" alt="" width="15" height="15" />狞笑</td> 
+               <td><input type="RADIO" name="type" value="32" /><img src="/bbsimg/32.gif" alt="" width="15" height="15" />淫笑</td> 
+               <td><input type="RADIO" name="type" value="122" /><img src="/bbsimg/122.gif" alt="" width="15" height="15" />变鬼 </td> 
+               <td><input type="RADIO" name="type" value="66" /> <img src="/bbsimg/66.gif" alt="" width="15" height="15" />奇怪</td> 
+               <td><input type="RADIO" name="type" value="77" /> <img src="/bbsimg/77.gif" alt="" width="15" height="15" />害羞</td> 
+              </tr> 
+              <tr> 
+               <td><input type="RADIO" name="type" value="116" /><img src="/bbsimg/116.gif" alt="" width="15" height="15" />真逗</td> 
+               <td><input type="RADIO" name="type" value="42" /><img src="/bbsimg/42.gif" alt="" width="15" height="15" />发愁</td> 
+               <td><input type="RADIO" name="type" value="35" /><img src="/bbsimg/35.gif" alt="" width="15" height="15" />痛苦</td> 
+               <td><input type="RADIO" name="type" value="11" /><img src="/bbsimg/11.gif" alt="" width="15" height="15" />忧愁</td> 
+               <td><input type="RADIO" name="type" value="9" /><img src="/bbsimg/9.gif" alt="" width="15" height="15" />急死</td> 
+               <td><input type="RADIO" name="type" value="20" /><img src="/bbsimg/20.gif" alt="" width="15" height="15" />大哭 </td> 
+               <td><input type="RADIO" name="type" value="110" /> <img src="/bbsimg/110.gif" alt="" width="15" height="15" />链接</td> 
+               <td><input type="RADIO" name="type" value="73" /> <img src="/bbsimg/73.gif" alt="" width="15" height="15" />可爱</td> 
+              </tr> 
+              <tr> 
+               <td><input type="RADIO" name="type" value="19" /><img src="/bbsimg/19.gif" alt="" width="15" height="15" />晕倒</td> 
+               <td><input type="RADIO" name="type" value="34" /><img src="/bbsimg/34.gif" alt="" width="15" height="15" />恶魔</td> 
+               <td><input type="RADIO" name="type" value="31" /><img src="/bbsimg/31.gif" alt="" width="15" height="15" />弱智</td> 
+               <td><input type="RADIO" name="type" value="18" /><img src="/bbsimg/18.gif" alt="" width="15" height="15" />摆谱</td> 
+               <td><input type="RADIO" name="type" value="127" /><img src="/bbsimg/127.gif" alt="" width="15" height="15" />骂人</td> 
+               <td><input type="RADIO" name="type" value="125" /><img src="/bbsimg/125.gif" alt="" width="15" height="15" />咬牙 </td> 
+               <td><input type="RADIO" name="type" value="107" /> <img src="/bbsimg/107.gif" alt="" width="15" height="15" />揍你</td> 
+               <td><input type="RADIO" name="type" value="109" /> <img src="/bbsimg/109.gif" alt="" width="15" height="15" />美眉 </td> 
+              </tr> 
+              <tr> 
+               <td><input type="RADIO" name="type" value="13" /><img src="/bbsimg/13.gif" alt="" width="15" height="15" />好奇</td> 
+               <td><input type="RADIO" name="type" value="25" /><img src="/bbsimg/25.gif" alt="" width="15" height="15" />无聊</td> 
+               <td><input type="RADIO" name="type" value="22" /><img src="/bbsimg/22.gif" alt="" width="15" height="15" />疲倦</td> 
+               <td><input type="RADIO" name="type" value="103" /><img src="/bbsimg/103.gif" alt="" width="15" height="15" />挥手</td> 
+               <td><input type="RADIO" name="type" value="6" /><img src="/bbsimg/6.gif" alt="" width="15" height="15" />赞扬</td> 
+               <td><input type="RADIO" name="type" value="7" /><img src="/bbsimg/7.gif" alt="" width="15" height="15" />反对 </td> 
+               <td><input type="RADIO" name="type" value="111" /> <img src="/bbsimg/111.gif" alt="" width="15" height="15" />真衰</td> 
+               <td><input type="RADIO" name="type" value="108" /> <img src="/bbsimg/108.gif" alt="" width="15" height="15" />拍键</td> 
+              </tr> 
+              <tr> 
+               <td><input type="RADIO" name="type" value="121" /><img src="/bbsimg/121.gif" alt="" width="15" height="15" />喜欢</td> 
+               <td><input type="RADIO" name="type" value="2" /><img src="/bbsimg/2.gif" alt="" width="15" height="15" />问题</td> 
+               <td><input type="RADIO" name="type" value="12" /><img src="/bbsimg/12.gif" alt="" width="15" height="15" />注意</td> 
+               <td><input type="RADIO" name="type" value="4" /><img src="/bbsimg/4.gif" alt="" width="15" height="15" />主意</td> 
+               <td><input type="RADIO" name="type" value="5" /><img src="/bbsimg/5.gif" alt="" width="15" height="15" />你好</td> 
+               <td><input type="RADIO" name="type" value="27" /><img src="/bbsimg/27.gif" alt="" width="15" height="15" />爱心 </td> 
+               <td><input type="RADIO" name="type" value="105" /> <img src="/bbsimg/105.gif" alt="" width="15" height="15" />眼花 </td> 
+               <td><input type="RADIO" name="type" value="112" /> <img src="/bbsimg/112.gif" alt="" width="15" height="15" />亲吻</td> 
+              </tr> 
+              <tr> 
+               <td><input type="RADIO" name="type" value="1" /><img src="/bbsimg/1.gif" alt="" width="15" height="15" />文章</td> 
+               <td><input type="RADIO" name="type" value="71" /><img src="/bbsimg/71.gif" alt="" width="15" height="15" />大笑</td> 
+               <td><input type="RADIO" name="type" value="64" /><img src="/bbsimg/64.gif" alt="" width="15" height="15" />狞笑</td> 
+               <td><input type="RADIO" name="type" value="58" /><img src="/bbsimg/58.gif" alt="" width="15" height="15" />嚯嚯</td> 
+               <td><input type="RADIO" name="type" value="56" /><img src="/bbsimg/56.gif" alt="" width="15" height="15" />忧郁</td> 
+               <td><input type="RADIO" name="type" value="46" /><img src="/bbsimg/46.gif" alt="" width="15" height="15" />不爽 </td> 
+               <td><input type="RADIO" name="type" value="61" /> <img src="/bbsimg/61.gif" alt="" width="15" height="15" />焦急</td> 
+               <td><input type="RADIO" name="type" value="75" /> <img src="/bbsimg/75.gif" alt="" width="15" height="15" />苦恼 </td> 
+              </tr> 
+              <tr> 
+               <td><input type="RADIO" name="type" value="55" /><img src="/bbsimg/55.gif" alt="" width="15" height="15" />我拽</td> 
+               <td><input type="RADIO" name="type" value="120" /><img src="/bbsimg/120.gif" alt="" width="15" height="15" />Kiss</td> 
+               <td><input type="RADIO" name="type" value="44" /><img src="/bbsimg/44.gif" alt="" width="15" height="15" />调皮</td> 
+               <td><input type="RADIO" name="type" value="36" /><img src="/bbsimg/36.gif" alt="" width="15" height="15" />天使</td> 
+               <td><input type="RADIO" name="type" value="126" /><img src="/bbsimg/126.gif" alt="" width="15" height="15" />唠叨</td> 
+               <td><input type="RADIO" name="type" value="48" /><img src="/bbsimg/48.gif" alt="" width="15" height="15" />怒气 </td> 
+               <td><input type="RADIO" name="type" value="104" /> <img src="/bbsimg/104.gif" alt="" width="15" height="15" />苦命 </td> 
+               <td><input type="RADIO" name="type" value="62" /> <img src="/bbsimg/62.gif" alt="" width="15" height="15" />凝视</td> 
+              </tr> 
+              <tr> 
+               <td><input type="RADIO" name="type" value="43" /><img src="/bbsimg/43.gif" alt="" width="15" height="15" />呼叫</td> 
+               <td><input type="RADIO" name="type" value="79" /><img src="/bbsimg/79.gif" alt="" width="15" height="15" />转贴</td> 
+               <td><input type="RADIO" name="type" value="80" /><img src="/bbsimg/80.gif" alt="" width="15" height="15" />原创</td> 
+               <td><input type="RADIO" name="type" value="63" /><img src="/bbsimg/63.gif" alt="" width="15" height="15" />正经</td> 
+               <td><input type="RADIO" name="type" value="95" /><img src="/bbsimg/95.gif" alt="" width="15" height="15" />叼烟</td> 
+               <td><input type="RADIO" name="type" value="52" /><img src="/bbsimg/52.gif" alt="" width="15" height="15" />假笑 </td> 
+               <td><input type="RADIO" name="type" value="91" /> <img src="/bbsimg/91.gif" alt="" width="15" height="15" />害羞</td> 
+               <td><input type="RADIO" name="type" value="87" /> <img src="/bbsimg/87.gif" alt="" width="15" height="15" />我酷</td> 
+              </tr> 
+              <tr> 
+               <td><input type="RADIO" name="type" value="106" /><img src="/bbsimg/106.gif" alt="" width="15" height="15" />嘴谗 </td> 
+               <td><input type="RADIO" name="type" value="84" /><img src="/bbsimg/84.gif" alt="" width="15" height="15" />委屈</td> 
+               <td><input type="RADIO" name="type" value="59" /><img src="/bbsimg/59.gif" alt="" width="15" height="15" />害怕</td> 
+               <td><input type="RADIO" name="type" value="57" /><img src="/bbsimg/57.gif" alt="" width="15" height="15" />怪脸</td> 
+               <td><input type="RADIO" name="type" value="49" /><img src="/bbsimg/49.gif" alt="" width="15" height="15" />惊讶</td> 
+               <td><input type="RADIO" name="type" value="40" /><img src="/bbsimg/40.gif" alt="" width="15" height="15" />感叹 </td> 
+               <td>&nbsp;</td> 
+               <td>&nbsp;</td> 
+              </tr> 
+              <tr>
+               <td colspan="6"><input type="RADIO" name="type" value="0" />无表情图标&nbsp;&nbsp; <input type="CHECKBOX" value="1" name="default" />将当前表情设置为缺省表情</td>
+              </tr> 
+             </tbody> 
+            </table></td> 
+          </tr> 
+          <tr> 
+           <td width="80" align="center">详细内容<br />Text</td> 
+           <td colspan="3"><textarea cols="80" name="comments" rows="15" title="请确认您发表的信息符合中华人民共和国法律法规、本站规定，并符合本论坛的主题" wrap="virtual"></textarea></td> 
+          </tr> 
+          <input type="hidden" name="MAX_FILE_SIZE" value="16384000" /> 
+          <tr> 
+           <td width="80" align="center">上传图片<br />Upload</td> 
+           <td colspan="3"> <input name="userfile" type="file" size="52" /><br /> <input name="userfile" type="file" size="52" /><br /> <input name="userfile" type="file" size="52" /><br /> <input name="userfile" type="file" size="52" /><br /> <input name="userfile" type="file" size="52" /><br /> <input type="checkbox" name="watermark" value="0" />不在上传图片上加水印 </td> 
+          </tr> 
+          <tr> 
+           <td align="middle" colspan="4">&nbsp;&nbsp; <input title="写完了，用这个提交到论坛，便于他人访问" type="submit" value=" 搞定了OK" style="font-family: 宋体" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="reset" value=" 重新写Rewrite" style="font-family: 宋体" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td> 
+          </tr> 
+         </tbody>
+        </table>
+       </center> <p align="center">[<a href="http://usa.bbs.net/bbs/01/index.html" target="_self">返回Back</a>]</p> 
+       <hr /> </b></b></font>
+   </form>
+  </blockquote>
+  <font color="#FF00FF"><b><b> 
+     <table width="95%"> 
+      <tbody> 
+       <tr> 
+        <td> <p align="center" style="margin-top: 0; margin-bottom: 0"><font color="#FF00FF">欢迎您加入001全球互助行列，帮助别人，帮助自己</font></p> 
+         <hr /> <p align="center" style="margin-top: 0; margin-bottom: 0">001论坛软件版权所有:<a href="http://www.001.com.cn/" title="欢迎您访问001主页">001.com.cn和world001.com</a> 与本软件有关事项请与<a href="mailto:001@001.com.cn" title="001欢迎您的来信">001</a>联系</p> </td> 
+       </tr> 
+      </tbody>
+     </table> <script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-922494-2']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>  </b></b></font>
+ </body>
+</html>

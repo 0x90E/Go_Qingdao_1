@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<script language="javascript">
+window.onerror=function(){return true;}
+document.oncontextmenu  = new Function("return  false;");
+var referUrl2 = ""+document.referrer;
+var isFromMbox = false;
+if(referUrl2.indexOf("topmusic.kuwo.cn")>=0){
+	isFromMbox=true;
+}
+function getCookie(cookieName){
+    var arg = cookieName + "=";
+    var alen = arg.length;
+    var clen = document.cookie.length;
+    var i = 0;
+    while (i < clen) {
+        var j = i + alen;
+        if (document.cookie.substring(i, j) == arg) {
+            var endstr = document.cookie.indexOf(";", j);
+            if (endstr == -1) {
+                endstr = document.cookie.length;
+            }
+            var ret = unescape(document.cookie.substring(j, endstr));
+            if (ret != "") {
+                return ret;
+            }
+        }
+        i = document.cookie.indexOf(" ", i) + 1;
+        if (i == 0) 
+            break;
+    }
+    return "";
+}
+</script>
+<script language="javascript" src="http://js.kuwo.cn/yinyue/play.js?ver=201303292.js"></script>
+<script language="javascript" src="http://js.kuwo.cn/cookie.js"></script>
+<script language="javascript" src="http://js.kuwo.cn/yinyue/index2009.js?ver=20110928-4.js"></script>
+</head>
+<body>
+<iframe id="playFrame" style="display:none;" src=""></iframe>
+<iframe id="playFrame2" style="display:none;" src=""></iframe>
+<script language="javascript">
+var musicUrlFor2012inBox = "";
+function informOuterFrame() {
+	var par = window.parent;
+	if(par==null) {
+		return false;
+	}
+	if(par.playNextGroup==null) {
+		return false;
+	}
+	par.playNextGroup();
+}
+if(isFromMbox){
+	musicUrl = '';
+	musicUrlFor2012inBox = '';
+	if(isGt600()&&musicUrlFor2012inBox!=''){
+		window.external.callkwmusic(musicUrlFor2012inBox);
+	}else{
+		var img=new Image();
+		img.src=musicUrl; 
+	}
+} else {
+	document.domain="kuwo.cn";
+	musicUrl = '';
+	musicUrlFor2012inBox = '';
+	var isFromAlbum = false;
+	var isFromLihuimin = false;
+	var referUrl = ""+document.referrer;
+	if(referUrl.indexOf("album.kuwo.cn")>=0){
+		isFromAlbum = true;
+	}
+	//for fengxing coop
+	exeName = 'KwMusic_web3.exe';
+	if(referUrl.indexOf("/st/FengXing")>=0){
+		exeName = 'kwmusic_followwind.exe';
+	}
+	//不再判断是不是2.0以上版本，已经没有低版本的了
+	var mboxVer = getCookie('mbox');
+	if(mboxVer == null || mboxVer==''){
+		delCookie('mbox');
+		addCookie('mbox', 'MUSIC_2.0.2.2', 86400000000, '/', 'kuwo.cn');
+		kuwoUrl = musicUrl.replace(/mbox:\/\//, 'kuwo://');
+		document.getElementById("playFrame2").src=kuwoUrl;
+		document.getElementById("playFrame").src=musicUrl;
+		
+	}else{
+		var isDown = false;
+		if(musicUrl.indexOf('mbox://download')>=0){
+			isDown = true;
+		}
+		if(getCookie('mboxRun').indexOf('wangwang')>=0 && getCookie('mbox').lastIndexOf('_I0')>0) {
+			writeUpdateMbox(exeName, true,isDown);
+		} else {
+			//writeUpdateMbox(exeName, false,isDown);
+		}
+	
+		if("y"=="y"){
+			hideUpdateMbox();
+			alert("抱歉，该音乐不存在");
+		}else{
+			playIt(musicUrl);
+			//setTimeout(informOuterFrame, 3000);
+		}
+	}
+}
+
+</script>
+
+
+</body></html>

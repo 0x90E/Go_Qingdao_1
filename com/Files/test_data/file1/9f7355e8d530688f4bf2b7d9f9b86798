@@ -1,0 +1,526 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+  <title>好消息！合肥10汽车站可网购发车前15分钟车票_本地播报_易朝合肥网</title> 
+  <meta name="Keywords" /> 
+  <meta name="Description" /> 
+  <meta property="qc:admins" content="455334367765301776375" /> 
+  <meta property="wb:webmaster" content="d7997ac864b9815e" /> 
+  <meta name="baidu-site-verification" content="J4XFNpbpaM" /> 
+  <link type="text/css" href="http://static.echaoo.com/v2/css/public.min.css" rel="stylesheet" /> 
+  <link type="text/css" href="http://static.echaoo.com/v2/css/icon-fontfamily.css" rel="stylesheet" /> 
+  <link type="text/css" href="http://static.echaoo.com/v2/css/animation.css" rel="stylesheet" /> 
+  <link type="text/css" href="http://static.echaoo.com/v2/css/Alliancebusiness_NewsList.min.css" rel="stylesheet" /> 
+  <script src="http://libs.baidu.com/jquery/1.8.2/jquery.min.js"></script> 
+  <script src="http://static.echaoo.com/libs/jquery/jquery.lazyload.js"></script> 
+  <script type="text/javascript">
+        $(function () {
+            $(".sousuo .pick p").click(function () {
+                if (!$(this).next().is(":visible")) {
+                    $(this).next().show();
+                } else {
+                    $(this).next().hide();
+                }
+            });
+            $(".down-top li").click(function () {
+                var down = $(this).parents(".pick");
+                $(down).find("p").attr("data-code", $(this).attr("data-code")).find("span").text($(this).text());
+                $(down).find(".down").hide();
+            });
+            $("#search").click(function () {
+                if ($("#key").val().length > 0) {
+                    top.location.href = "/search?t=" + $(".sousuo .pick p").attr("data-code") + "&key=" + $("#key").val();
+                } else {
+                    $("#key").focus();
+                }
+            });
+        });
+    </script> 
+  <script type="text/javascript" src="http://static.echaoo.com/libs/custom/Mj.js"></script> 
+  <script type="text/javascript">
+        $(document).ready(function() {
+            $(".hot_rural li").hover(function () {
+                $(this).find(".pic p").slideToggle(100);
+            });
+            var html = "<textarea></textarea><div class=\"btn\"><p>（内容限5至500字）您还可以输入<span  class='green'>0</span>个字<input type=\"button\" value=\"发表评论\" /></p></div>";
+            $(".all_comment .all_comment_btn").each(function() {
+                $(this).children("span:eq(2)").click(function() {
+                    if ($(this).parent().next().is(":visible")) {
+                        $(this).parent().next().hide(500);
+                    } else {
+                        $(".reply_text").hide(500);
+                        $(this).parent().next().html(html).show(500);
+                    }
+                });
+            });
+            $("#loadMore").click(function() {
+                if (p > totalp) {
+                    $(this).text("没有更多了");
+                    return;
+                }
+                getData(p);
+            });
+            $(".newsdetail_comment textarea").live("keyup", function() {
+                var str = 0;
+                var abcnum = 0;
+                var maxNum = 1000;
+                var texts = 0;
+                //汉字的个数
+                str = $(this).val().length;
+                //非汉字的个数
+                abcnum = $(this).val().length - str;
+                if (str * 2 + abcnum < maxNum || str * 2 + abcnum == maxNum) {
+                    texts = Math.ceil((maxNum - (str * 2 + abcnum)) / 2);
+                    $(this).next().find("p span").css("color", "green").html(texts);
+                } else if (str * 2 + abcnum > maxNum) {
+                    texts = Math.ceil(((str * 2 + abcnum) - maxNum) / 2);
+                    $(this).next().find("p span").css("color", "red").html(texts);
+                }
+            });
+            $(".newsdetail_comment_text input:button").click(function() {
+                var obj = $(this);
+                var isAnonymous = $(this).parents(".btn").find("input:checkbox").is(":checked");
+                var content = $(this).parents(".newsdetail_comment_text").find("textarea").val();
+                if (content.length > 500) {
+                    alert("您输入的内容太长了");
+                    return;
+                }
+                if (content.length < 5) {
+                    alert("您输入的内容太短了");
+                    return;
+                }
+                $(this).attr("disabled", "disabled");
+                $(this).val("正在提交");
+                var newsId = 4636;
+                $.ajax({
+                    url: "/News/AddComment",
+                    type: "POST",
+                    dataType: "json",
+                    data: { IsAnony: isAnonymous, Content: content, NewsId: newsId },
+                    async: false,
+                    success: function(data) {
+                        if (data.code == 0) {
+                            var html = "";
+                            html += "<div class=\"all_comment_div\">";
+                            html += "<div class=\"all_comment_pic\">";
+                            if (data.data.IsAnonymous) {
+                                html += "<img src=\"http://static.echaoo.com/v2/images/all_comment_pic_bj.png\"/>";
+                            } else {
+                                if (data.data.Head != null) {
+                                    html += "<img src=\"" + data.data.Head + "\"/>";
+                                } else {
+                                    html += "<img src=\"http://static.echaoo.com/v2/images/all_comment_pic1.png\"/>";
+                                }
+                            }
+                            html += "</div>";
+                            html += "<div class=\"all_comment_word\">";
+                            html += "<div class=\"all_comment_name\"><a>";
+                            if (data.data.IsAnonymous) {
+                                html += "匿名";
+                            } else {
+                                html += data.data.UserName;
+                            }
+                            html += "</a><span>" + eval(" new " + eval(data.data.AddTime).source).fmt("yyyy-MM-dd hh:mm:ss") + "</span></div>";
+                            html += "<div class=\"all_comment_zi\">";
+                            html += data.data.Content;
+                            html += "</div>";
+                            html += "<div class=\"all_comment_btn\">";
+                            html += "<span data-id=" + data.data.Id + "><a href=\"javascript:void(0);\"><i class=\"icon\">&#xe823;</i>(" + data.data.Praise + ")</a></span>";
+                            //html += "<span><a href=\"javascript:void(0);\"><i class=\"icon\">&#xe8bd;</i>(" + list[i].Opposition + ")</a></span>";
+                            //html += "<span><a href=\"javascript:void(0);\"><i class=\"icon\">&#xe87e;</i>(" + list[i].ReplyCount + ")</a></span>";
+                            html += "</div>";
+                            html += "</div>";
+                            html += "</div>";
+                            $(".all_comment").html(html + $(".all_comment").html());
+                            $(obj).val("提交");
+                            $(obj).parents(".newsdetail_comment_text").find("textarea").val("");
+                            $(obj).removeAttr("disabled");
+                        } else {
+                            alert(data.message);
+                            $(obj).val("提交");
+                            $(obj).removeAttr("disabled");
+                        }
+                    }
+                });
+            });
+            var p = 1;
+            var totalp = 1;
+            getData(p);
+
+            function getData(page) {
+                $.ajax({
+                    url: "/News/GetComment",
+                    type: "Get",
+                    dataType: "json",
+                    data: { newsId: 4636, p: p },
+                    async: false,
+                    success: function(data) {
+                        if (data.code == 0) {
+                            totalp = data.data.TotalPageCount;
+                            $(".newsdetail_comment_top span").text("共" + totalp + "条");
+                            p += 1;
+                            var list = data.data.Entities;
+                            var html = "";
+                            for (var i = 0; i < list.length; i++) {
+                                html += "<div class=\"all_comment_div\">";
+                                html += "<div class=\"all_comment_pic\">";
+                                if (list[i].IsAnonymous) {
+                                    html += "<img src=\"http://static.echaoo.com/v2/images/all_comment_pic_bj.png\"/>";
+                                } else {
+                                    if (list[i].Head != null) {
+                                        html += "<img src=\"" + list[i].Head + "\"/>";
+                                    } else {
+                                        html += "<img src=\"http://static.echaoo.com/v2/images/all_comment_pic1.png\"/>";
+                                    }
+                                }
+                                html += "</div>";
+                                html += "<div class=\"all_comment_word\">";
+                                html += "<div class=\"all_comment_name\"><a>";
+                                if (list[i].IsAnonymous) {
+                                    html += "匿名";
+                                } else {
+                                    html += list[i].UserName;
+                                }
+                                html += "</a><span>" + eval(" new " + eval(list[i].AddTime).source).fmt("yyyy-MM-dd hh:mm:ss") + "</span></div>";
+                                html += "<div class=\"all_comment_zi\">";
+                                html += list[i].Content;
+                                html += "</div>";
+                                html += "<div class=\"all_comment_btn\">";
+                                html += "<span data-id=" + list[i].Id + "><a href=\"javascript:void(0);\"><i class=\"icon\">&#xe823;</i>(" + list[i].Praise + ")</a></span>";
+                                //html += "<span><a href=\"javascript:void(0);\"><i class=\"icon\">&#xe8bd;</i>(" + list[i].Opposition + ")</a></span>";
+                                //html += "<span><a href=\"javascript:void(0);\"><i class=\"icon\">&#xe87e;</i>(" + list[i].ReplyCount + ")</a></span>";
+                                html += "</div>";
+                                html += "</div>";
+                                html += "</div>";
+                            }
+                            $(".all_comment").append(html);
+                            $("#loadMore").show();
+                        } 
+                    }
+                });
+            }
+
+            $(".all_comment_btn span").live("click", function() {
+                var obj = $(this);
+                $.ajax({
+                    url: "/News/Praise",
+                    type: "POST",
+                    dataType: "json",
+                    data: { id: $(this).attr("data-id") },
+                    async: false,
+                    success: function(data) {
+                        $(obj).find("a").html("<i class=\"icon\">&#xe823;</i>(" + data + ")");
+                    }
+                });
+            });
+        });
+    </script> 
+ </head> 
+ <body> 
+  <!--顶部的灰色条 begin--> 
+  <div class="head"> 
+   <div class="headtop"> 
+    <div class="headtop-l"> 
+     <span>2017年03月27日</span>&nbsp;&nbsp;&nbsp;&nbsp; 
+     <span><a href="http://www.echaoo.com/ChangeCity/Jump">进入全国站</a></span> 
+    </div> 
+    <div class="headtop-r"> 
+     <ul> 
+      <li> <s style="border: none;"></s> <p class="red"> 您好，欢迎来到<a href="/">易潮生活城！</a> <a href="/Login">[登录]</a> <a href="/Reg">[免费注册]</a> </p> </li> 
+      <li> <p><a href="javascript:void(0);"><i class="icon"></i>我的收藏</a></p> </li> 
+      <li> <s></s><p><a href="/UserCenter"><i class="icon"></i>用户中心</a></p> </li> 
+     </ul> 
+    </div> 
+   </div> 
+  </div> 
+  <!--顶部的灰色条 end--> 
+  <div class="logo"> 
+   <div class="logoleft"> 
+    <a href="/"><img src="http://static.echaoo.com/v2/images/logo.png" title="易潮生活城" alt="易潮生活城" /></a> 
+   </div> 
+   <div class="logo_city"> 
+    <h1>福鼎市</h1> 
+    <a href="/ChangeCity">【切换】</a> 
+   </div> 
+   <div class="logoright"> 
+    <div class="sousuo"> 
+     <div class="search-box"> 
+      <div class="pick"> 
+       <p data-code="1"><span>合作商家</span><i class="icon"></i></p> 
+       <div class="down" style="display: none;height: 115px;max-height: 115px;"> 
+        <ul class="down-top" style="font-size: 16px;"> 
+         <li class="" data-code="1"><span>合作商家</span></li> 
+         <li class="" data-code="3"><span>供应信息</span></li> 
+         <li class="" data-code="4"><span>新闻资讯</span></li> 
+        </ul> 
+       </div> 
+      </div> 
+      <div class="search"> 
+       <input type="text" placeholder="请输入关键字" class="text" id="key" /> 
+       <span id="search">搜&nbsp;索</span> 
+      </div> 
+     </div> 
+     <p class="zi"> 热门搜索： <a href="/search?t=1&amp;key=哈喜">哈喜</a>&nbsp;&nbsp; <a href="/search?t=1&amp;key=养生">养生</a>&nbsp;&nbsp; <a href="/search?t=3&amp;key=会计">会计</a>&nbsp;&nbsp; <a href="/search?t=3&amp;key=客服">客服</a>&nbsp;&nbsp; <a href="/search?t=2&amp;key=创业">创业</a>&nbsp;&nbsp; <a href="/search?t=4&amp;key=IDC商圈">IDC商圈</a> </p> 
+    </div> 
+    <div class="pic"> 
+     <img src="http://static.echaoo.com/i1/83EA23261/130725291029824012.gif" title="" border="0" hspace="0" vspace="0" /> 
+    </div> 
+   </div> 
+  </div> 
+  <!--有logo的部分 begin--> 
+  <!--导航条 begin--> 
+  <div class="navBar"> 
+   <div class="navBar-ul"> 
+    <ul> 
+     <li class=""><a href="/">首页</a></li> 
+     <li class=""><a href="/Mall">本地商城</a></li> 
+     <li class=""><a href="/Union">联盟商圈</a></li> 
+     <li class=""><a href="/ServiceCenter">服务中心</a></li> 
+     <li class="current"><a href="/News">新闻资讯</a></li> 
+     <li class=""><a href="/Rural">走进新农村</a></li> 
+    </ul> 
+   </div> 
+  </div> 
+  <!--导航条 end--> 
+  <div class="bigAd">
+   <a href="javascript:void(0);"><img src="http://static.echaoo.com/v2/images/images/news2.jpg" /></a>
+  </div> 
+  <!--大广告图 begin--> 
+  <div class="newslist_centent"> 
+   <div class="newslist_left"> 
+    <!--按分类浏览 begin--> 
+    <div class="hot_rural"> 
+     <div class="list-top"> 
+      <h3>热门新农村</h3> 
+     </div> 
+     <ul> 
+      <li> <a href="http://cun.echaoo.com/340124103206" target="_blank"> 
+        <div class="pic"> 
+         <img alt="" src="http://static.echaoo.com/i1/F94FDA7B174/130744177012251549.jpg?w=132&amp;h=94" /> 
+         <p title="安徽合肥市庐江县汤池镇果树村">安徽合肥市庐江县汤池镇果树村</p> 
+        </div> </a> </li> 
+      <li> <a href="http://cun.echaoo.com/330110004004" target="_blank"> 
+        <div class="pic"> 
+         <img alt="" src="http://static.echaoo.com/i1/8F8A9B84142/130716442207174940.jpg?w=132&amp;h=94" /> 
+         <p title="浙江省杭州市余杭区星桥街道南星社区">浙江省杭州市余杭区星桥街道南星社区</p> 
+        </div> </a> </li> 
+      <li> <a href="http://cun.echaoo.com/330110109235" target="_blank"> 
+        <div class="pic"> 
+         <img alt="" src="http://static.echaoo.com/i1/E86C4C6A143/130716491450082237.jpg?w=132&amp;h=94" /> 
+         <p title="浙江省杭州市余杭区径山镇小古城村">浙江省杭州市余杭区径山镇小古城村</p> 
+        </div> </a> </li> 
+      <li> <a href="http://cun.echaoo.com/340181108204" target="_blank"> 
+        <div class="pic"> 
+         <img alt="" src="http://static.echaoo.com/i1/51535D38250/130796902900740784.jpg?w=132&amp;h=94" /> 
+         <p title="安徽省合肥市巢湖市黄麓镇跃进村">安徽省合肥市巢湖市黄麓镇跃进村</p> 
+        </div> </a> </li> 
+      <li> <a href="http://cun.echaoo.com/330109105207" target="_blank"> 
+        <div class="pic"> 
+         <img alt="" src="http://static.echaoo.com/i1/556DA7F9146/130718879978823939.jpg?w=132&amp;h=94" /> 
+         <p title="浙江省杭州市萧山区临浦镇通二村">浙江省杭州市萧山区临浦镇通二村</p> 
+        </div> </a> </li> 
+      <li> <a href="http://cun.echaoo.com/330104104209" target="_blank"> 
+        <div class="pic"> 
+         <img alt="" src="http://static.echaoo.com/i1/2F303BD7139/130714982026935360.jpg?w=132&amp;h=94" /> 
+         <p title="浙江省杭州市江干区丁桥镇皋城村">浙江省杭州市江干区丁桥镇皋城村</p> 
+        </div> </a> </li> 
+     </ul> 
+    </div> 
+    <!--按分类浏览 end--> 
+    <!--最新加入 begin--> 
+    <div class="left_ad"> 
+     <p><a style="white-space: normal;" href="javascript:void(0);"><img src="http://static.echaoo.com/i1/D3F42EC649/130721806675268157.jpg" alt="" /></a><a style="white-space: normal;" href="javascript:void(0);"><img src="http://static.echaoo.com/i1/D3F42EC649/130721803552345507.jpg" alt="" /></a></p> 
+    </div> 
+    <div class="hot_list"> 
+     <h3>热门资讯</h3> 
+     <ul> 
+      <li class="red"> <a target="_blank" title="易潮生活城加盟优势，成就电商实体新趋势B2S" href="/News/Detail/449"> <em>01</em> <p>易潮生活城加盟优势，成就电商实体新趋势B2S</p> </a> </li> 
+      <li class="red"> <a target="_blank" title="案例分享：换一种思维营销，业绩倍增不是问题" href="/News/Detail/861"> <em>02</em> <p>案例分享：换一种思维营销，业绩倍增不是问题</p> </a> </li> 
+      <li class="red"> <a target="_blank" title="易潮生活城全新改版功能更强大服务更到位-整合资源跨界共享-让生活更简单、更便捷、更优质" href="/News/Detail/364"> <em>03</em> <p>易潮生活城全新改版功能更强大服务更到位-整合资源跨界共享-让生活更简单、更便捷、更优质</p> </a> </li> 
+      <li class="hui"> <a target="_blank" title="国务院：9月3日全国放假1天 3日至5日调休放假3天" href="/News/Detail/2947"> <em>04</em> <p>国务院：9月3日全国放假1天 3日至5日调休放假3天</p> </a> </li> 
+      <li class="hui"> <a target="_blank" title="创业圈丨投资人为何钟爱同性恋“粉色经济”？" href="/News/Detail/406"> <em>05</em> <p>创业圈丨投资人为何钟爱同性恋“粉色经济”？</p> </a> </li> 
+      <li class="hui"> <a target="_blank" title="易分享：全渠道营销时代你准备好了吗？" href="/News/Detail/2352"> <em>06</em> <p>易分享：全渠道营销时代你准备好了吗？</p> </a> </li> 
+      <li class="hui"> <a target="_blank" title="打造农村互联网金融新模式" href="/News/Detail/1337"> <em>07</em> <p>打造农村互联网金融新模式</p> </a> </li> 
+      <li class="hui"> <a target="_blank" title="中国农民：在传统与现代之间" href="/News/Detail/1340"> <em>08</em> <p>中国农民：在传统与现代之间</p> </a> </li> 
+      <li class="hui"> <a target="_blank" title="杭州周边7个隐秘幽静的古村 这才是真正的江南" href="/News/Detail/7249"> <em>09</em> <p>杭州周边7个隐秘幽静的古村 这才是真正的江南</p> </a> </li> 
+      <li class="hui"> <a target="_blank" title="乡村校衰败如斯 如何引来优秀生" href="/News/Detail/1338"> <em>10</em> <p>乡村校衰败如斯 如何引来优秀生</p> </a> </li> 
+     </ul> 
+    </div> 
+    <div class="left_tuijian"> 
+     <div class="list-top"> 
+      <h3>推荐资讯</h3> 
+     </div> 
+     <ul> 
+      <li> <a target="_blank" title="初冬的清晨 去这些地方看浙江最美的日出" href="/News/Detail/7347"> 
+        <div class="tu">
+         <img alt="" src="http://static.echaoo.com/i1/1C77C77A127/130935196515292133.jpg?w=82&amp;h=52" />
+        </div> 
+        <div class="zi"> 
+         <p class="ti"> 初冬的清晨 去这些地方看浙江最美的日出 </p> 
+         <p>关注度：6109人次</p> 
+        </div> </a> </li> 
+      <li> <a target="_blank" title="冬季皮肤干燥 7大食物让爱美姑娘水嫩一冬" href="/News/Detail/7344"> 
+        <div class="tu">
+         <img alt="" src="http://static.echaoo.com/i1/22C6B650152/130935190560034163.jpg?w=82&amp;h=52" />
+        </div> 
+        <div class="zi"> 
+         <p class="ti"> 冬季皮肤干燥 7大食物让爱美姑娘水嫩一冬 </p> 
+         <p>关注度：4089人次</p> 
+        </div> </a> </li> 
+      <li> <a target="_blank" title="7天5名重点校领导落马 纪检组长称教育非净土" href="/News/Detail/7342"> 
+        <div class="tu">
+         <img alt="" src="http://static.echaoo.com/i1/3183BE5856/130935177311600230.jpg?w=82&amp;h=52" />
+        </div> 
+        <div class="zi"> 
+         <p class="ti"> 7天5名重点校领导落马 纪检组长称教育非净土 </p> 
+         <p>关注度：6193人次</p> 
+        </div> </a> </li> 
+      <li> <a target="_blank" title="哺乳的乳房撩拨了谁的尴尬" href="/News/Detail/7341"> 
+        <div class="tu">
+         <img alt="" src="http://static.echaoo.com/i1/3183BE5856/130935175246901808.jpg?w=82&amp;h=52" />
+        </div> 
+        <div class="zi"> 
+         <p class="ti"> 哺乳的乳房撩拨了谁的尴尬 </p> 
+         <p>关注度：4078人次</p> 
+        </div> </a> </li> 
+      <li> <a target="_blank" title="中国联通流量永久不清零 希望不只是雷声大" href="/News/Detail/7340"> 
+        <div class="tu">
+         <img alt="" src="http://static.echaoo.com/i1/3183BE5856/130935173624984060.jpg?w=82&amp;h=52" />
+        </div> 
+        <div class="zi"> 
+         <p class="ti"> 中国联通流量永久不清零 希望不只是雷声大 </p> 
+         <p>关注度：7389人次</p> 
+        </div> </a> </li> 
+      <li> <a target="_blank" title="收评：沪指涨2.33%收复3500 金融地产发力领涨" href="/News/Detail/7339"> 
+        <div class="tu">
+         <img alt="" src="http://static.echaoo.com/i1/1EF15CD8185/130935144442451953.png?w=82&amp;h=52" />
+        </div> 
+        <div class="zi"> 
+         <p class="ti"> 收评：沪指涨2.33%收复3500 金融地产发力领涨 </p> 
+         <p>关注度：6073人次</p> 
+        </div> </a> </li> 
+      <li> <a target="_blank" title="穿透视装的明星都是咋想的 &amp; 不嫌丢人吗" href="/News/Detail/7337"> 
+        <div class="tu">
+         <img alt="" src="http://static.echaoo.com/i1/E48F96A250/130935136961481101.png?w=82&amp;h=52" />
+        </div> 
+        <div class="zi"> 
+         <p class="ti"> 穿透视装的明星都是咋想的 &amp; 不嫌丢人吗 </p> 
+         <p>关注度：6313人次</p> 
+        </div> </a> </li> 
+     </ul> 
+    </div> 
+    <!--最新加入 end--> 
+    <!--最新加入下面的广告 begin--> 
+    <!--最新加入下面的广告 end--> 
+   </div> 
+   <div class="newslist_right"> 
+    <!--面包屑导航 begin--> 
+    <div class="newslist_right_bread"> 
+     <p> <a href="/News">裕佰资讯</a> &gt; <a href="/News/List?cid=35">本地播报</a> </p> 
+    </div> 
+    <!--面包屑导航 end--> 
+    <div class="newslist_box"> 
+     <!--资讯内容 begin--> 
+     <div class="newslist_newsdetail"> 
+      <div class="newslist_newsdetail_title"> 
+       <h1 style="margin-bottom: 15px;">好消息！合肥10汽车站可网购发车前15分钟车票</h1> 
+       <span>来源：易朝合肥网</span> &nbsp;&nbsp;&nbsp;&nbsp; 
+       <span>发布日期：2015-07-21</span> &nbsp;&nbsp;&nbsp;&nbsp; 
+       <span>关注度：3748</span> 
+      </div> 
+      <div class="newsdetail"> 
+       <p style="color: rgb(27, 27, 169); font-family: 宋体; font-size: 14px; line-height: 2em; white-space: normal; text-indent: 2em;"><span style="color: rgb(0, 0, 0); font-size: 14px;">今后买长途汽车票，在去车站的路上掏出手机就能把票买了，而且预售期从过去的两小时以前购票调整为十五分钟，江淮晨报、江淮网记者昨天从合肥汽车客运有限公司了解到，合肥市十座汽车站网购票已全面调整预售期，并支持微信购票。</span></p>
+       <p style="color: rgb(27, 27, 169); font-family: 宋体; font-size: 14px; line-height: 2em; white-space: normal;"><span style="color: rgb(0, 0, 0); font-size: 14px;">&nbsp;&nbsp;&nbsp;&nbsp;自去年7月起，包括明光路汽车站、客运总站和新亚汽车站在内的合肥10个汽车站将网络购买车票的预售期由以前的购买次日车票变成可购买发车前2小时之前的车票。如今，为方便大家随时购买车票，车票预售期进一步缩短至15分钟。</span></p>
+       <p style="color: rgb(27, 27, 169); font-family: 宋体; font-size: 14px; line-height: 2em; white-space: normal;"><span style="color: rgb(0, 0, 0); font-size: 14px;">&nbsp;&nbsp;&nbsp;&nbsp;举个例子，此前，想要购买上午10点的车票，你购票不得晚于当日上午8点，而现在，购票截止时间推迟到了9点45分。如今，你甚至不用去汽车站排长队，只需要动动拇指，就可以在电脑和微信上抢到发车前15分钟的任意车票。</span></p>
+       <p style="color: rgb(27, 27, 169); font-family: 宋体; font-size: 14px; line-height: 2em; white-space: normal;"><span style="color: rgb(0, 0, 0); font-size: 14px;">&nbsp;&nbsp;&nbsp;&nbsp;如果使用电脑购票，可以登录安徽省联网售票中心(www.ahlwsp.com)，使用真实身份证、手机号注册账号轻松购票。</span></p>
+       <p style="color: rgb(27, 27, 169); font-family: 宋体; font-size: 14px; line-height: 2em; white-space: normal;"><span style="color: rgb(0, 0, 0); font-size: 14px;">&nbsp;&nbsp;&nbsp;&nbsp;此外，还可以通过微信购票，只要添加账号“合肥汽车客运”，点击“车票订购”选项，即可进入“在线购票”。目前，可购票车站为合肥汽车站、合肥汽车站南区、合肥锦湖汽车站、合肥旅游汽车站、合肥汽车客运南站、合肥汽车客运西站、合肥市客运总站、合肥新亚汽车站、合肥市汽车东站和合肥市省客汽车站。</span></p>
+       <p><br /></p> 
+      </div> 
+     </div> 
+     <div class="bdsharebuttonbox">
+      <a href="#" class="bds_more" data-cmd="more"></a>
+      <a href="#" class="bds_qzone" data-cmd="qzone"></a>
+      <a href="#" class="bds_tsina" data-cmd="tsina"></a>
+      <a href="#" class="bds_tqq" data-cmd="tqq"></a>
+      <a href="#" class="bds_renren" data-cmd="renren"></a>
+      <a href="#" class="bds_weixin" data-cmd="weixin"></a>
+     </div> 
+     <script>
+                window._bd_share_config = {
+                    "common": {
+                        "bdSnsKey": {},
+                        "bdDesc":"",
+                        "bdText": "好消息！合肥10汽车站可网购发车前15分钟车票",
+                        "bdMini": "2",
+                        "bdPic": "",
+                        "bdStyle": "0",
+                        "bdSize": "16"
+                    },
+                    "share": {},
+                    "image": { "viewList": ["qzone", "tsina", "tqq", "renren", "weixin"], "viewText": "分享到：", "viewSize": "16" },
+                    "selectShare": { "bdContainerClass": null, "bdSelectMiniList": ["qzone", "tsina", "tqq", "renren", "weixin"] }
+                }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
+            </script> 
+     <!--资讯内容 end--> 
+     <!--上一篇，下一篇 begin--> 
+     <div class="newsdetail_next"> 
+      <div class="up_page"> 
+       <a href="/News/Detail/5393"> <p><span>上一篇：</span>福鼎一男子为泄愤纵火遭刑拘</p> </a> 
+      </div> 
+      <div class="next_page"> 
+      </div> 
+     </div> 
+     <!--上一篇，下一篇 end--> 
+     <!--相关推荐 begin--> 
+     <div class="newsdetail_about"> 
+      <h3>相关推荐：</h3> 
+      <ul> 
+       <li> <a target="_blank" title="【图文】神奇治疗仪，真能治病吗？" href="/News/Detail/7429"> 【图文】神奇治疗仪，真能治病吗？ </a> </li> 
+       <li> <a target="_blank" title="玉米地里“闹”丰收" href="/News/Detail/6886"> 玉米地里“闹”丰收 </a> </li> 
+       <li> <a target="_blank" title="周杰伦把苏州某微信公众号告了 因被骂汉奸" href="/News/Detail/7046"> 周杰伦把苏州某微信公众号告了 因被骂汉奸 </a> </li> 
+       <li> <a target="_blank" title="送政策进街区" href="/News/Detail/2198"> 送政策进街区 </a> </li> 
+       <li> <a target="_blank" title="我县部署今年征兵工作 " href="/News/Detail/5020"> 我县部署今年征兵工作 </a> </li> 
+       <li> <a target="_blank" title="传帮带 把手工竹编技艺传承下去" href="/News/Detail/6728"> 传帮带 把手工竹编技艺传承下去 </a> </li> 
+      </ul> 
+     </div> 
+     <!--相关推荐 end--> 
+     <!--带星号的一行字 begin--> 
+     <div class="newslist_box_bottom"> 
+      <p>* 如果发现本网站发布的资讯影响到您的版权，可以联系本站！同时欢迎来本站投稿！</p> 
+     </div> 
+     <!--带星号的一行字 end--> 
+    </div> 
+    <!--发表评论 begin--> 
+    <!--发表评论 end--> 
+   </div> 
+  </div> 
+  <div class="footer"> 
+   <div class="foot"> 
+    <div class="foot_left"> 
+     <a href="http://www.echaoo.com"><img src="http://static.echaoo.com/v2/images/logo.png" /></a> 
+     <p>客服电话：<span>400-0508-328</span></p> 
+     <p>（周一至周五9:00—18:00）</p> 
+    </div> 
+    <div class="foot_right"> 
+     <p> <span><a href="http://www.echaoo.com">网站首页</a></span><em>|</em> <span><a href="/Home/About">关于我们</a></span><em>|</em> <span><a href="/Home/Contact">联系方式</a></span><em>|</em> <span><a href="/Home/Agreement">使用协议</a></span><em>|</em> <span><a href="/Home/SiteMap">网站地图</a></span><em>|</em> <span><a href="/Home/Message">网站留言</a></span><em>|</em> <span><a href="/Home/AdvertService">广告服务</a></span><em>|</em> <span><a href="/Home/Links">友情链接</a></span> </p> 
+     <p> 关注我们：<a href="http://blog.sina.com.cn/u/5259998883" target="_blank"> <img src="http://static.echaoo.com/v2/images/weibo.gif" /> </a> <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://"); document.write(unescape("%3Cspan id='cnzz_stat_icon_1253493447'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/z_stat.php%3Fid%3D1253493447%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script>&nbsp;&nbsp;&nbsp;Copyright@2014-2015 www.echaoo.com All Rights Reserved. 浙ICP备14035576 </p> 
+     <div>
+      <img src="http://www.echaoo.com/images/ba.png" /> 
+      <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33011002011305" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="" style="float:left;" /><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">浙公网安备 33011002011305号</p></a>
+     </div> 
+     <ul> 
+      <li><a key="55482094efbfb06dd6db889d" logo_size="124x47" logo_type="realname" href="http://www.anquan.org"><script src="http://static.anquan.org/static/outer/js/aq_auth.js"></script></a></li> 
+     </ul> 
+    </div> 
+   </div> 
+  </div> 
+  <script type="text/javascript" src="http://static.echaoo.com/v2/js/topmenu.js"></script>  
+  <!--[if IE 6]>
+    <script src="http://static.echaoo.com/v2/js/DD_belatedPNG_0.0.8a.js"></script>
+    <script>
+        DD_belatedPNG.fix('*');
+    </script>
+<![endif]--> 
+ </body>
+</html>

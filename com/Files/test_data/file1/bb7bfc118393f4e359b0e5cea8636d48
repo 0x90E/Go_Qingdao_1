@@ -1,0 +1,808 @@
+<!DOCTYPE html><html lang="zh-cn"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <link href="../bootstrap-3.3.6/css/bootstrap.min.css?v=647f65302cff4c27a53d3600d8d58c2e" rel="stylesheet">
+    <link href="../bootstrap-table/bootstrap-table.min.css?v=43fe7881a40599f157a8fbadc3bf25ac" rel="stylesheet">
+    <link rel="stylesheet" href="../css/lib/bootstrap-select.min.css?v=b1cf3ca5bae3b112c292c2eac862f60c">
+    <link href="../css/ad-common.css?v=752fe90650f49ad2601c7010737cb2ce" rel="stylesheet">
+    <script src="https://hm.baidu.com/hm.js?1799ef029c2ba6fbd1906afba43407ed"></script><script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            switch (window.location.hostname) {
+                case 'ads-web.ksosoft.com':
+                    //线上广告主环境
+                    hm.src = "https://hm.baidu.com/hm.js?1799ef029c2ba6fbd1906afba43407ed";
+                    break;
+                case 'ads-op.ksosoft.com':
+                    //线上运营环境
+                    hm.src = "https://hm.baidu.com/hm.js?2515c8b2f23ae44c41620898e9082c3a";
+                    break;
+                default:
+                    //测试环境
+                    hm.src = "https://hm.baidu.com/hm.js?ddf930583b822d52d1ce8961ab364587";
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>广告列表</title>
+    <link rel="stylesheet" href="../css/lib/bootstrap-datetimepicker.min.css?v=615fb004782baadb2886f88e96d3a902">
+    <link rel="stylesheet" href="../css/lib/fileinput.min.css?v=f73c205bfb32535b4d6be2d11b9fc7eb">
+    <link type="text/css" href="../css/ad-html.css?v=9962b70b16f66a83e67dbafd96b69257" rel="stylesheet">
+    <link type="text/css" href="../css/ad-verify.css?v=03bf44ad2a660adb7bd70e0170e82392" rel="stylesheet">
+    <style>
+        #upload-ad + .form-error {
+            display: none;
+        }
+
+        #ad-modal .modal-body {
+            overflow: visible;
+        }
+
+        .user-amount-wrap {
+            padding: 5px;
+            margin-top: 10px;
+        }
+
+        .checkbox-inline {
+            margin-left: 10px;
+        }
+
+        .retry {
+            text-decoration: underline;
+            cursor: pointer;
+            color: #f96;
+        }
+    </style>
+</head>
+<body>
+<!--导航开始-->
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#ad-links" aria-expanded="false">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">
+                <img src="../img/ad-logo.png" class="nav-left-logo">
+                广告投放平台
+            </a>
+        </div>
+        <!--链接-->
+        <div class="collapse navbar-collapse" id="ad-links">
+            <ul class="nav navbar-nav" id="navbar-pages">
+                <!--insert from js-->
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown hidden" id="uf-only">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <span>相关文档</span>
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="/doc/用户特征接口.html">
+                                <span class="glyphicon glyphicon-link" aria-hidden="true"></span>用户特征接口
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/doc/用户组条件表达式.html">
+                                <span class="glyphicon glyphicon-link" aria-hidden="true"></span>用户组条件表达式
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/doc/用户画像平台说明.pdf">
+                                <span class="glyphicon glyphicon-file" aria-hidden="true"></span>用户画像平台说明
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <span id="user-name">用户名</span>
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li id="nav-user-delete">
+                            <a href="/user-html/user-manage.html" id="nav-info-page">
+                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>账户信息
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/user-html/help.html" target="_blank" id="nav-help-page">
+                                <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>帮助
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" id="logout-btn">
+                                <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>退出
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!--导航结束-->
+<!--main部分开始-->
+<div class="main">
+    <div class="main-right">
+        <div class="main-right-search">
+            <div class="clearfix">
+                <form class="form-inline" id="search-form">
+                    <!--搜索与重置按钮-->
+                    <div class="form-group pull-right">
+                        <div>
+                            <button type="submit" class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-search" id="search-loading"></span> 搜索
+                            </button>
+                            <button type="reset" class="btn btn-primary btn-sm" id="reset">
+                                <span class="glyphicon glyphicon-repeat"></span> 重置
+                            </button>
+                        </div>
+                    </div>
+                    <!--推广计划选择下拉框-->
+                    <div class="form-group pull-right">
+                        <div class="btn-group bootstrap-select" style=""><button type="button" class="btn dropdown-toggle bs-placeholder btn-default" data-toggle="dropdown" role="button" data-id="charge-wrap" title="全部推广计划"><span class="filter-option pull-left">全部推广计划</span>&nbsp;<span class="bs-caret"><span class="caret"></span></span></button><div class="dropdown-menu open" role="combobox" style=""><ul class="dropdown-menu inner" role="listbox" aria-expanded="false"><li data-original-index="0" class="selected"><a tabindex="0" class="grayColor" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="true"><span class="text">全部推广计划</span><span class="glyphicon glyphicon-ok check-mark"></span></a></li></ul></div><select class="selectpicker" name="charge_type" id="charge-wrap" tabindex="-98">
+                            <option value="" class="grayColor">全部推广计划</option>
+                            <!--insert js-->
+                        </select></div>
+                    </div>
+                    <!--广告类型选择下拉框-->
+                    <div class="form-group pull-right">
+                        <div class="btn-group bootstrap-select" style=""><button type="button" class="btn dropdown-toggle bs-placeholder btn-default" data-toggle="dropdown" role="button" data-id="ad-type-wrap" title="全部广告类型"><span class="filter-option pull-left">全部广告类型</span>&nbsp;<span class="bs-caret"><span class="caret"></span></span></button><div class="dropdown-menu open" role="combobox" style=""><ul class="dropdown-menu inner" role="listbox" aria-expanded="false"><li data-original-index="0" class="selected"><a tabindex="0" class="grayColor" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="true"><span class="text">全部广告类型</span><span class="glyphicon glyphicon-ok check-mark"></span></a></li></ul></div><select class="selectpicker" name="ad_type" id="ad-type-wrap" tabindex="-98">
+                            <option value="" class="grayColor">全部广告类型</option>
+                            <!--insert from js-->
+                        </select></div>
+                    </div>
+                    <!--状态选择下拉框-->
+                    <div class="form-group pull-right">
+                        <div class="btn-group bootstrap-select" style=""><button type="button" class="btn dropdown-toggle bs-placeholder btn-default" data-toggle="dropdown" role="button" data-id="status-wrap" title="全部状态"><span class="filter-option pull-left">全部状态</span>&nbsp;<span class="bs-caret"><span class="caret"></span></span></button><div class="dropdown-menu open" role="combobox" style=""><ul class="dropdown-menu inner" role="listbox" aria-expanded="false"><li data-original-index="0" class="selected"><a tabindex="0" class="grayColor" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="true"><span class="text">全部状态</span><span class="glyphicon glyphicon-ok check-mark"></span></a></li></ul></div><select class="selectpicker" name="status" id="status-wrap" tabindex="-98">
+                            <option value="" class="grayColor">全部状态</option>
+                            <!--insert js-->
+                        </select></div>
+                    </div>
+                    <!--投放媒体选择下拉框-->
+                    <div class="form-group pull-right">
+                        <div class="btn-group bootstrap-select" style=""><button type="button" class="btn dropdown-toggle bs-placeholder btn-default" data-toggle="dropdown" role="button" data-id="media-options-wrap" title="全部投放媒体"><span class="filter-option pull-left">全部投放媒体</span>&nbsp;<span class="bs-caret"><span class="caret"></span></span></button><div class="dropdown-menu open" role="combobox" style=""><ul class="dropdown-menu inner" role="listbox" aria-expanded="false"><li data-original-index="0" class="selected"><a tabindex="0" class="grayColor" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="true"><span class="text">全部投放媒体</span><span class="glyphicon glyphicon-ok check-mark"></span></a></li></ul></div><select class="selectpicker" name="cid" id="media-options-wrap" tabindex="-98">
+                            <option value="" class="grayColor">全部投放媒体</option>
+                            <!--insert from js-->
+                        </select></div>
+                    </div>
+                    <!--广告名称输入框-->
+                    <div class="form-group pull-right">
+                        <input type="text" class="form-control input-sm" name="name" maxlength="30" data-sanitize="trim" placeholder="广告名称">
+                    </div>
+                    <!--广告主名称搜索框-->
+                    <div class="form-group pull-right search-hidden">
+                        <div class="btn-group bootstrap-select ad-live-search" style=""><button type="button" class="btn dropdown-toggle bs-placeholder btn-default" data-toggle="dropdown" role="button" data-id="ad-name" title="全部广告主"><span class="filter-option pull-left">全部广告主</span>&nbsp;<span class="bs-caret"><span class="caret"></span></span></button><div class="dropdown-menu open" role="combobox" style=""><ul class="dropdown-menu inner" role="listbox" aria-expanded="false"><li data-original-index="0" class="selected"><a tabindex="0" class="" style="" data-tokens="null" role="option" aria-disabled="false" aria-selected="true"><span class="text">全部广告主</span><span class="glyphicon glyphicon-ok check-mark"></span></a></li></ul></div><select id="ad-name" name="advertiser_id" class="selectpicker ad-live-search" tabindex="-98">
+                            <option value="">全部广告主</option>
+                            <!--insert from js-->
+                        </select></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="toolbar-wrap">
+            <button class="mrt-right pull-left btn-hidden btn btn-primary btn-md" id="addAdBtn" data-toggle="modal" data-target="#ad-modal" data-backdrop="static"><span class="glyphicon glyphicon-plus"></span>新建广告
+            </button>
+        </div>
+        <!--右侧表格-->
+        <div class="main-right-table">
+            <!--表格超出水平滚动部分-->
+            <table class="table table-bordered" id="table-list">
+                <tbody id="ads-wrap" class="text-nowrap">
+                <!--需要重复的片段-->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--右侧内容结束-->
+</div>
+<!--main部分结束-->
+
+<div id="vue-wrap">
+    <!--新建/编辑广告弹框-->
+    <div class="modal fade" id="ad-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content" id="ad-form-wrap">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">{{ modalTitle }}</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal ad-html-form" method="post" id="edit-ad">
+                        <!--名称-->
+                        <div class="form-group row">
+                            <label for="ad_name" class="col-md-2 control-label">广告名称<span class="ad-emphasis">*</span></label>
+                            <div class="col-md-9">
+                                <input type="text" name="name" class="form-control" id="ad_name" :disabled="editing" v-model="adName" placeholder="请输入1-30个字符" required="" maxlength="30">
+                            </div>
+                        </div>
+                        <div class="row" @change="closeDirect">
+                            <div class="col-md-2 title">投放平台<span class="ad-emphasis">*</span></div>
+                            <div class="col-md-9" id="platform-wrap">
+                                <label class="radio-inline" v-for="platform in platforms">
+                                    <input name="platform" type="radio" :value="platform.id" :disabled="editing" v-model="checkedPlatform">{{ platform.name }}
+                                </label>
+                            </div>
+                        </div>
+                        <!--投放媒体-->
+                        <div class="form-group row" @change="closeDirect">
+                            <label class="col-md-2 control-label">选择投放媒体<span class="ad-emphasis">*</span></label>
+                            <div class="col-md-9" id="mediasWrap">
+                                <label class="radio-inline" v-for="media in allowedMediaList" v-if="cidName.indexOf(';') == -1">
+                                    <input name="cid" :value="media.id" type="radio" :disabled="editing" v-model="checkedMedia">{{ media.name }}
+                                </label>
+                                <!--<span  class="cidName" style="line-height: 36px">{{ cidName }}</span>-->
+                                <label class="radio-inline muti-media" v-for="media in allowedMediaList" v-if="cidName.indexOf(';') &gt; -1 &amp;&amp; cidName != ''">
+                                    <input name="cid" :value="media.id" type="checkbox" :disabled="editing" v-model="checkedMedia">{{ media.name }}
+                                </label>
+                            </div>
+                        </div>
+                        <!--广告类型-->
+                        <div class="row">
+                            <div class="col-md-2 title">广告类型<span class="ad-emphasis">*</span></div>
+                            <div class="col-md-10" id="ad_pos">
+                                <label class="radio-inline" v-for="adType in allowedAdTypes">
+                                    <input name="adType" type="radio" :value="adType.id" :disabled="editing" v-model="checkedAdType">{{ adType.name }}
+                                </label>
+                            </div>
+                        </div>
+                        <!--下载类-->
+                        <div class="row">
+                            <div class="col-md-2 title">是否为下载类<span class="ad-emphasis">*</span></div>
+                            <div class="col-md-9" id="ad_download">
+                                <label class="radio-inline"><input name="appDownload" type="radio" value="1" :disabled="editing" v-model="downloadType">是</label>
+                                <label class="radio-inline"><input name="appDownload" type="radio" value="0" :disabled="editing" v-model="downloadType">否</label>
+                            </div>
+                        </div>
+                        <!--行业-->
+                        <div class="row">
+                            <div class="col-md-2 title">素材所属行业<span class="ad-emphasis">*</span></div>
+                            <div class="col-md-3">
+                                <select class="form-control" name="categoryIdParent" required="" id="first_category" :disabled="editing" v-model="industryFirstCat">
+                                    <option value="">--请选择--</option>
+                                    <option v-for="item in industryFirstCatList" :value="item.id">{{ item.name }}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-control" name="categoryIdChild" required="" id="second_category" :disabled="editing" v-model="industrySecondCat">
+                                    <option value="">--请先选择左边的行业--</option>
+                                    <option v-for="item in industrySecondCatList" :value="item.id">{{ item.name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!--有效日期-->
+                        <div class="row" id="effectTime">
+                            <div class="col-md-2 title">投放日期<span class="ad-emphasis">*</span></div>
+                            <div class="col-md-3">
+                                <div class="form-group tao-margin-left">
+                                    <div class="input-group date">
+                                        <span class="input-group-addon">起始</span>
+                                        <input type="text" name="startDate" id="startTime" class="form-control" required="" autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <div class="input-group date">
+                                        <span class="input-group-addon">结束</span>
+                                        <input type="text" name="endDate" id="endTime" class="form-control" autocomplete="off" :readonly="longTime">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <label class="checkbox" style="cursor: pointer">
+                                            <!--todo 添加name-->
+                                            <input type="checkbox" v-model="longTime">
+                                            长期投放
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--有效时间-->
+                        <div class="row">
+                            <div class="col-md-2 title">投放时间<span class="ad-emphasis">*</span></div>
+                            <div class="col-md-10 ">
+                                <div class="checkbox col-md-10 no-padding">
+                                    <label class="no-padding">
+                                        <input type="radio" name="allTime" value="true" :checked="allTime" @click="allTime = true">
+                                        全部时段
+
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="allTime" value="false" :checked="!allTime" @click="allTime = false" @change="resetTimeRange">
+                                        特定时段
+                                    </label>
+                                    <div v-show="!allTime &amp;&amp; quick" style="display: inline-block">
+                                        <select @change="setTimeRangeQuick" id="startHour" class="form-control">
+                                            <option :value="startHoure - 1" v-for="startHoure in 24">{{startHoure - 1}}:00</option>
+                                        </select>
+                                        --
+                                        <select @change="setTimeRangeQuick" id="endHour" class="form-control">
+                                            <option :value="endHoure" v-for="endHoure in reverse24">{{endHoure}}:00</option>
+                                        </select>
+                                    </div>
+                                    <span @click="toggleQuick" v-text="quick ? '高级设置模式' : '快速设置模式'" v-show="!allTime" class="quick btn btn-default"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--选时-->
+                        <div class="col-md-10 col-md-offset-2" id="dateWrapper" v-show="!allTime &amp;&amp; !quick">
+                            <input type="button" class="btn btn-default btn-xs" id="clearRange" value="清除选区" @click="resetTimeRange">
+                            <div class="table-head">
+                                <span>星期/时间</span>
+                            </div>
+                            <div class="date-title">
+                                <p><span>上午</span><span>下午</span></p>
+                                <span class="date-hour" v-for="hour in 24">{{ hour - 1 }}</span>
+                            </div>
+                            <div class="date-side">
+                                <p v-for="week in 7"> {{weekList[week]}}</p>
+                            </div>
+                            <div class="tr-wrapper">
+                                <div class="tr" v-for="(weekst, index) in timeRange" :id="'t' + index">
+                                    <div v-for="(hourst, index1) in weekst" :id="'t' + index + '_' + index1" :class="hourst ? 'td selected' : 'td'" :value="hourst"></div>
+                                </div>
+                            </div>
+                            <div class="date-info" style="margin-top: 56px">
+                                <span class="rt tips">可拖动选取</span>
+                                <p class="status-info">
+                                    <span class="normal-status"><i></i>未选中</span>
+                                    <span class="selected-status"><i></i>已选中</span>
+                                </p>
+                                <p style="padding: 10px; width: 480px">已选时段:</p>
+                                <p v-for="(item, index) in hours" v-if="item.length != 0" class="picked">
+                                    {{ weekList[index + 1] }} : <span>{{item}}</span>
+                                </p>
+                            </div>
+                        </div>
+                        <!--地域投放功能-->
+                        <div v-show="checkedMedia === 5" @change="getUserCount">
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">定向</label>
+                                <div class="directionWrap col-md-9">
+                                    <div class="directionInner col-md-12">
+                                        <div class=" checkbox checkbox1">
+                                            <label class="text-warning">
+                                                <input type="checkbox" v-model="directionOpened">
+                                                开启定向
+                                            </label>
+                                        </div>
+                                        <!--各种特征配置-->
+                                        <template v-if="directionOpened">
+                                            <div class="col-md-12 ">
+                                                <label class="col-md-1 control-label direction-label">地域</label>
+                                                <div class="checkbox col-md-10">
+                                                    <label>
+                                                        <input type="radio" value="true" @click="allProvince = true" name="allProvince" :checked="allProvince">
+                                                        不限
+
+                                                    </label>
+                                                    <label>
+                                                        <input type="radio" value="false" @click="allProvince = false" name="allProvince" :checked="!allProvince">
+                                                        自定义
+                                                    </label>
+                                                    <!--详细内容-->
+                                                    <div v-show="!allProvince" class="info">
+                                                        <label class="checkbox-inline" v-for="pro in provinces">
+                                                            <input type="checkbox" :value="pro.city_name" name="specialProvinces[]" v-model="checkedProvinces">
+                                                            {{
+                                                            pro.city_name }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 ">
+                                                <label class="col-md-1 control-label direction-label">性别</label>
+                                                <div class="checkbox col-md-10">
+                                                    <label>
+                                                        <input type="radio" value="" @click="allGender = true " name="sex" :checked="allGender">
+                                                        不限
+
+                                                    </label>
+                                                    <label v-for="g in gender">
+                                                        <input type="radio" :value="g" v-model="checkedGender" name="sex" @click="allGender = false" :checked="checkedGender == g"> {{ g }}
+                                                    </label>
+                                                    <!--详细内容-->
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 ">
+                                                <label class="col-md-1 control-label direction-label">网络</label>
+                                                <div class="checkbox col-md-10">
+                                                    <label>
+                                                        <input type="radio" value="" @click="allNetwork = true" name="network" :checked="allNetwork">
+                                                        不限
+
+                                                    </label>
+                                                    <label v-for="n in network">
+                                                        <input type="radio" :value="n" v-model="checkedNetwork" name="network" @click="allNetwork = false" :checked="checkedNetwork == n"> {{ n }}
+                                                    </label>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 ">
+                                                <label class="col-md-1 control-label direction-label">机型</label>
+                                                <div class="checkbox col-md-10">
+                                                    <label>
+                                                        <input type="radio" value="true" @click="allPhoneType = true" name="allPhoneType" :checked="allPhoneType">
+                                                        不限
+
+                                                    </label>
+                                                    <label>
+                                                        <input type="radio" value="false" @click="allPhoneType = false" name="allPhoneType" :checked="!allPhoneType">
+                                                        自定义
+                                                    </label>
+                                                    <!--详细内容-->
+                                                    <div v-show="!allPhoneType" class="info">
+                                                        <label class="checkbox-inline" v-for="p in phoneType">
+                                                            <input type="checkbox" :value="p" v-model="checkedPhoneType" name="model[]"> {{ p }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 ">
+                                                <label class="col-md-1 control-label direction-label">兴趣</label>
+                                                <div class="checkbox col-md-10">
+
+                                                    <label>
+                                                        <input type="radio" value="true" @click="allHobby = true" name="allHobby" :checked="allHobby">
+                                                        不限
+
+                                                    </label>
+                                                    <label>
+                                                        <input type="radio" value="false" @click="allHobby = false" name="allHobby" :checked="!allHobby">
+                                                        自定义
+                                                    </label>
+                                                    <!--详细内容-->
+                                                    <div v-show="!allHobby" class="info">
+                                                        <label class="checkbox-inline" v-for="h in hobby">
+                                                            <input type="checkbox" :value="h" v-model="checkedHobby" name="interest[]"> {{ h }}
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class=" col-md-12  " style="padding-bottom: 8px;">
+                                                <p class="bg-warning user-amount-wrap text-primary" v-if="userAmount !== '' &amp;&amp; !getUserFail.failed ">
+                                                    预估用户规模&nbsp;<span>{{ userAmount }}</span>&nbsp;万人
+                                                </p>
+                                                <p class="bg-warning user-amount-wrap text-primary" v-if="getUserFail.failed">
+                                                    预估用户规模计算超时，
+                                                    请<span @click="getUserCount" class="retry">重试</span>
+                                                </p>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--出价-->
+                        <div class="row" id="charge_type">
+                            <div class="col-md-2 title">出价<span class="ad-emphasis">*</span></div>
+                            <div class="col-md-9" id="cpm">
+                                <div class="input-group">
+                              <span class="input-group-addon">
+                                <label><input name="chargeType" type="radio" value="1" id="charge_cpm" autocomplete="off" @click="chargeType = 1" :checked="chargeType == 1"> cpm</label>
+                                <label v-show="!isIndexAd"><input name="chargeType" type="radio" value="2" id="charge_cpc" autocomplete="off" :checked="chargeType == 2" @click="chargeType = 2"> cpc</label>
+                              </span>
+                                    <input type="number" class="form-control" name="unitPrice" id="offer" step="0.01" required="" maxlength="30" :placeholder="chargePlaceholder" :min="minOffer" v-model="offer">
+                                    <span class="input-group-addon">元</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!--投法数量-->
+                        <div class="form-group row">
+                            <label class="col-md-2 control-label">投放数量<span class="ad-emphasis">*</span></label>
+                            <div class="col-md-9">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="amount-title">{{ amountTip }}</span>
+                                    <input type="number" class="form-control" name="amount" min="1000" id="amount" required="" maxlength="30" v-model="amount">
+                                    <span class="input-group-addon">次</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--预算-->
+
+                        <div class="form-group row">
+                            <label class="col-md-2 control-label">投放预算<span class="ad-emphasis">*</span></label>
+                            <div class="col-md-9">
+                                <div class="input-group">
+                                    <span class="input-group-addon">总预算: 不超过</span>
+                                    <input type="number" class="form-control" name="totalBudget" min="100" id="total" placeholder="不低于100元" maxlength="30" required="" v-model="totalBudget">
+                                    <span class="input-group-addon">元</span>
+                                </div>
+                            </div>
+                            <div class="col-md-9 col-md-offset-2">
+                                <div class="input-group">
+                                <span class="input-group-addon">日预算: 不限
+                                    <input name="budgetType" type="checkbox" id="noday" :true-value="2" value="2" autocomplete="off" v-model="noDay">
+                                    <!--限制时value为1-->
+                                </span>
+                                    <input type="number" class="form-control" name="dayBudget" id="day" min="1" step="0.01" :max="totalBudget" placeholder="介于1和总预算之间" :disabled="limitDayBudget" maxlength="30" autocomplete="off" v-model="dayBudget1">
+                                    <span class="input-group-addon">元</span>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <!--广告标题-->
+                        <div class="form-group row">
+                            <label for="ad_title" class="col-md-2 control-label">广告标题<span class="ad-emphasis">*</span></label>
+                            <div class="col-md-9">
+                                <input type="text" name="title" value="" class="form-control" maxlength="30" id="ad_title" v-model="adTitle" data-sanitize="trim escape" required="" placeholder="请输入1-30个字符">
+                            </div>
+                        </div>
+                        <!--素材-->
+                        <div class="row form-group" id="ad-material">
+                            <label class="col-md-2 title control-label">广告素材<span class="ad-emphasis">*</span></label>
+                            <div class="col-md-9">
+                                <input id="upload-ad" type="file" name="adMaterials" class="form-control" data-validation="size mime" :required="!editing" :multiple="checkedAdType === 4" data-validation-max-size="10M" data-validation-allowing="gif, jpg, png, jpeg" accept="image/jpg,image/jpeg,image/png,image/gif">
+                            </div>
+
+                            <p class="help-block col-md-offset-2" id="adSize1">{{ adImgTip }}</p>
+                        </div>
+                        <!--下载图标-->
+                        <div class="row form-group" id="icon-material" v-show="isDownload">
+                            <label class="col-md-2 title control-label">图标素材<span class="ad-emphasis">*</span></label>
+                            <div class="col-md-9">
+                                <input id="upload-icon" type="file" name="iconFile" class="form-control" data-validation="size mime" :required="!editing &amp;&amp; isDownload" data-validation-max-size="10M" data-validation-allowing="gif, jpg, png, jpeg" accept="image/jpg,image/jpeg,image/png,image/gif">
+                            </div>
+
+                            <p class="help-block col-md-offset-2" id="iconSize">建议图片尺寸：150px×150px，只允许上传 gif, jpg, png,
+                                jpeg
+                                类型文件</p>
+                        </div>
+                        <!--下载包名-->
+                        <div class="form-group row" v-if="isDownload">
+                            <label for="down_url" class="col-md-2 control-label">下载包名<span class="ad-emphasis">*</span></label>
+                            <div class="col-md-9">
+                                <input type="text" name="pkg" class="form-control" id="down_url" required="" autocomplete="off" v-model="downloadUrl" data-sanitize="trim" maxlength="500" placeholder="请最多输入500个字符,不能输入汉字" data-validation="custom" data-validation-error-msg="请输入正确格式的包名" data-validation-regexp="^[^\u4e00-\u9fa5]+$">
+                            </div>
+                        </div>
+
+                        <!--广告描述-->
+                        <div class="form-group row">
+                            <label for="description" class="col-md-2 control-label">广告描述</label>
+                            <div class="col-md-9">
+                                <textarea name="description" id="description" class="form-control" maxlength="24" v-model="adDescription" placeholder="请尽量不超过24个字符" data-sanitize="trim escape"></textarea>
+                            </div>
+                        </div>
+                        <!--链接-->
+                        <div class="form-group row">
+                            <label for="url" class="col-md-2 control-label" id="lianjie">链接<span class="ad-emphasis">*</span></label>
+                            <div class="col-md-9">
+                                <input type="url" name="clickUrl" class="form-control" id="url" v-model="linkUrl" placeholder="http://example.wps.cn" maxlength="500" required="" data-sanitize="trim" data-validation-error-msg="请填写正确格式的链接">
+                            </div>
+                        </div>
+                        <!--第三方上报-->
+                        <div class="form-group row">
+                            <label for="monitor" class="col-md-2 control-label">第三方展示上报URL</label>
+                            <div class="col-md-9">
+                                <input type="url" name="imprTrackUrls" data-sanitize="trim" class="form-control" v-model="imprTrackUrl" maxlength="500" id="monitor" placeholder="http://example.wps.cn">
+                            </div>
+                        </div>
+                        <!--第三方点击上报-->
+                        <div class="form-group row">
+                            <label for="monitor2" class="col-md-2 control-label">第三方点击上报URL</label>
+                            <div class="col-md-9">
+                                <input type="url" name="clickTrackUrls" data-sanitize="trim" class="form-control" v-model="clickTrackUrl" maxlength="500" id="monitor2" placeholder="http://example.wps.cn">
+                            </div>
+                        </div>
+                        <!--第三方下载上报-->
+                        <div class="form-group row" v-if="isDownload">
+                            <label for="downloadTrackUrls" class="col-md-2 control-label">第三方下载上报URL</label>
+                            <div class="col-md-9">
+                                <input type="url" id="downloadTrackUrls" name="downloadTrackUrls" data-sanitize="trim" class="form-control" v-model="downloadTrackUrl" maxlength="500" placeholder="http://example.wps.cn">
+                            </div>
+                        </div>
+                        <!--第三方安装上报-->
+                        <div class="form-group row" v-if="isDownload">
+                            <label for="installTrackUrls" class="col-md-2 control-label">第三方安装上报URL</label>
+                            <div class="col-md-9">
+                                <input type="url" id="installTrackUrls" name="installTrackUrls" data-sanitize="trim" class="form-control" v-model="installTrackUrl" maxlength="500" placeholder="http://example.wps.cn">
+                            </div>
+                        </div>
+
+
+                        <div class="row" id="ad-update">
+                            <div class="col-md-offset-5 col-md-2">
+                                <button type="submit" class="btn btn-primary btn-lg" id="ad_info_submit">提交广告计划</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--查看详情弹框-->
+    <div class="modal fade" id="detail-modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="myModalLabel">广告详情</h4>
+                </div>
+                <div class="modal-body">
+                    <p class="col-md-3 text-info text-right">投放平台 :</p>
+                    <p class="col-md-9" v-text="adDetail.platform_name"></p>
+
+                    <p class="col-md-3 text-info text-right">广告类型 :</p>
+                    <p class="col-md-9" v-text="adDetail.ad_type_name"></p>
+
+                    <p class="col-md-3 text-info text-right">是否为下载类 :</p>
+                    <p class="col-md-9" v-text="adDetail.app_download ? '是' : '否'"></p>
+
+                    <p class="col-md-3 text-info text-right">素材所属行业 :</p>
+                    <p class="col-md-9" v-text="adDetail.category_id ? adDetail.category_id.name : ''">占位符</p>
+
+                    <p class="col-md-3 text-info text-right">广告名称 :</p>
+                    <p class="col-md-9" v-text="adDetail.name"></p>
+
+                    <p class="col-md-3 text-info text-right">投放日期 :</p>
+                    <p class="col-md-9" v-text=" adDetail.end_date? '从' + adDetail.start_date + '到' + adDetail.end_date : '从' + adDetail.start_date + '到' + '长期'"></p>
+
+                    <p class="col-md-3 text-info text-right" v-show="!allTime">投放时间 :</p>
+                    <div class="col-md-9" v-show="!allTime">
+                        <p v-for="(item, index) in hours" v-show="hours.length != 0">
+                            {{ weekList[index + 1] }} : <span>{{item}}</span>
+                        </p>
+                    </div>
+
+
+                    <p class="col-md-3 text-info text-right">出价 :</p>
+                    <p class="col-md-9" v-text="adDetail.charge_type_name + ':' + adDetail.unit_price + '元'"></p>
+
+                    <p class="col-md-3 text-info text-right">投放数量 :</p>
+                    <p class="col-md-9" v-text="adDetail.amount"></p>
+
+                    <p class="col-md-3 text-info text-right">投放预算 :</p>
+                    <p class="col-md-9">
+                    <span v-if="adDetail.budget_type === 1" v-text="'总预算不超过:' + adDetail.total_budget + '元, 日预算为: ' + adDetail.day_budget + '元'">
+                    </span>
+                        <span v-if="adDetail.budget_type !== 1" v-text="'总预算不超过:' + adDetail.total_budget + '元, 日预算不限'">
+                    </span>
+                    </p>
+
+                    <p class="col-md-3 text-info text-right">广告素材 :</p>
+                    <p class="col-md-9">
+                        <img v-for="(item, index) in adDetail.pic_urls_list" :src="item" class="img-thumbnail" alt="素材图片">
+                    </p>
+
+                    <div v-if="adDetail.app_download === 1" id="icon-wrap_text">
+                        <p class="col-md-3 text-info text-right">图标素材 :</p>
+                        <p class="col-md-9">
+                            <img :src="adDetail.icon_url" class="img-thumbnail" alt="素材图片">
+                        </p>
+                    </div>
+
+                    <div v-if="adDetail.app_download === 1" id="pkg-wrap_text">
+                        <p class="col-md-3 text-info text-right">下载包名 :</p>
+                        <p class="col-md-9" v-text="adDetail.pkg"></p>
+                    </div>
+
+                    <p class="col-md-3 text-info text-right">广告标题 :</p>
+                    <p class="col-md-9" v-text="adDetail.title"></p>
+                    <p class="col-md-3 text-info text-right">广告描述 :</p>
+                    <p class="col-md-9" v-text="adDetail.description == ''? '无' : adDetail.description "></p>
+                    <p class="col-md-3 text-info text-right">链接 :</p>
+                    <p class="col-md-9" v-text="adDetail.click_url"></p>
+                    <p class="col-md-3 text-info text-right">第三方展示上报URL :</p>
+                    <p class="col-md-9" v-text="adDetail.impr_track_urls == ''? '无' : adDetail.impr_track_urls"></p>
+                    <p class="col-md-3 text-info text-right">第三方点击上报URL :</p>
+                    <p class="col-md-9" v-text="adDetail.click_track_urls == ''? '无' : adDetail.click_track_urls"></p>
+
+                    <div v-if="adDetail.app_download === 1">
+                        <p class="col-md-3 text-info text-right">第三方下载上报URL :</p>
+                        <p class="col-md-9" v-text="adDetail.download_track_urls == ''? '无' : adDetail.download_track_urls"></p>
+                    </div>
+                    <div v-if="adDetail.app_download === 1">
+                        <p class="col-md-3 text-info text-right">第三方安装上报URL :</p>
+                        <p class="col-md-9" v-text="adDetail.install_track_urls == ''? '无' : adDetail.install_track_urls"></p>
+                    </div>
+
+                    <p class="col-md-3 text-info text-right">选择投放媒体 :</p>
+                    <p class="col-md-9" v-text="adDetail.cid_name"></p>
+
+
+                    <div v-if="adDetail.sexTarget">
+                        <p class="col-md-3 text-info text-right">性别定向 :</p>
+                        <p class="col-md-9" v-text="adDetail.sexTarget"></p>
+                    </div>
+
+                    <div v-if="adDetail.modelTarget">
+                        <p class="col-md-3 text-info text-right">机型定向 :</p>
+                        <p class="col-md-9" v-text="adDetail.modelTarget"></p>
+                    </div>
+                    <div v-if="adDetail.interestTarget">
+                        <p class="col-md-3 text-info text-right">兴趣定向 :</p>
+                        <p class="col-md-9" v-text="adDetail.interestTarget"></p>
+                    </div>
+                    <div v-if="adDetail.networkTarget">
+                        <p class="col-md-3 text-info text-right">网络定向 :</p>
+                        <p class="col-md-9" v-text="adDetail.networkTarget"></p>
+                    </div>
+                    <div v-if="adDetail.areaTarget">
+                        <p class="col-md-3 text-info text-right">地域定向 :</p>
+                        <p class="col-md-9" v-text="adDetail.areaTarget"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="daily-stat-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title">广告按天统计列表</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-bordered text-nowrap" id="daily-stat-table">
+                    <thead>
+                    <tr>
+                        <th>广告名称</th>
+                        <th>统计时间</th>
+                        <th>点击量</th>
+                        <th>展示量</th>
+                        <th>点击率</th>
+                        <th>消耗</th>
+                        <th>平均cpm</th>
+                    </tr>
+                    </thead>
+                    <tbody id="daily-stat-wrap">
+                    <!--需要重复的片段-->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--操作成功模态框-->
+<div class="modal fade" id="success-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <h5>操作成功！</h5>
+        </div>
+    </div>
+</div>
+<script src="../js/lib/common.js"></script>
+<script src="../js/lib/jquery.form-validator.min.js?v=044786cbf0f0bec7d12608100c7bf730"></script>
+<script src="../js/sys/login.js?v=db4e3cff9b8272680252064f3fb6aa4c"></script>
+<script src="../js/lib/date-lib.js"></script>
+<script src="../vue/vue.js?v=7d1dc50e6e67f9f3c37e526aa7741c0c?v=7d1dc50e6e67f9f3c37e526aa7741c0c"></script>
+<script src="../js/lib/fileinput.min.js?v=a945ce8646fd7f944b83c200b1983ce2"></script>
+<script src="../js/lib/zh.js?v=a3a7a73278d3a9e33071b61362f21f16"></script>
+<script src="../js/lib/chosen.jquery.min.js?v=63fec16cd0e784db67058f42d5637241"></script>
+<script src="../vue/vue.js"></script>
+<script src="../js/wps-ad.js?v=8552a88319837adaa5fe7b3fa3759044"></script>
+<script>
+    $(function(){
+        if (navigator.userAgent.indexOf('Mac') < 0) {
+            $('.tr-wrapper').css({left: -4})
+        }
+    })
+</script>
+
+</body></html>

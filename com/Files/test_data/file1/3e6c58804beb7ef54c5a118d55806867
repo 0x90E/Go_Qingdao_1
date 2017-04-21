@@ -1,0 +1,1967 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head> 
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" /> 
+  <title>问卷调查网站开发 - PP外包网</title> 
+  <meta name="description" content="PP外包网提供免费的外包服务,每日更新问卷调查网站开发外包,问卷调查网站建设外包,问卷测试网站开发需求,网站建设外包.专业网站开发,企业自助建站,找外包,找建站,首选PP外包网." /> 
+  <meta name="keywords" content="问卷调查网站,网站建设调查问卷" /> 
+  <script language="javascript" type="text/javascript" src="/uploadify/jquery.uploadify-3.1.js"></script> 
+  <script type="text/javascript" src="http://www.ppwaibao.com/image/newjs/jquery-1.7.2.min.js"></script> 
+  <link rel="stylesheet" type="text/css" href="http://www.ppwaibao.com/template/default/style.css" /> 
+  <link rel="stylesheet" type="text/css" href="/uploadify/uploadify.css" /> 
+  <link rel="stylesheet" type="text/css" href="/template/default/fzb.css" /> 
+  <link rel="shortcut icon" href="http://www.ppwaibao.com/image/favicon.ico" /> 
+  <script>
+var _hmt = _hmt || [];
+_hmt.push(['_setAccount', '3F3a16de819377fd2e4cede42d840ee4a5']);
+</script> 
+ </head> 
+ <body> 
+  <script type="text/javascript" src="http://www.ppwaibao.com/image/newjs/zgydialogdiv.js"></script> 
+  <div id="newlogindiv" class="newlogindiv"> 
+   <div class="newlogindiv_"> 
+    <div id="logintit" class="newlogindiv_1" style=" display: ;"> 
+     <span>快速登录</span> 
+     <img id="loginclose" src="http://www.ppwaibao.com/image/new/web_img15.jpg" width="18" height="18" alt="关闭" /> 
+    </div> 
+    <a href="javascript:;" id="loginclose" style="position:absolute; top:10px; right:12px; display:none;
+cursor: pointer;
+background: transparent;
+-webkit-appearance: none;
+font-size: 24px;
+font-weight: bold;
+line-height: 24px;
+color: black;
+text-shadow: 0 1px 0 white;
+opacity: 0.2;
+filter: alpha(opacity=20);
+margin-right: 3px;
+text-decoration: none;
+">&times;</a> 
+    <div class="newlogindiv_2" style=" float: left;"> 
+     <span style=" font-size: 20px;">已有<a href="/" style=" color: #FE6700;" target="_blank">PP</a>帐号,直接登陆</span>
+     <br /> 
+     <form accept-charset="utf-8" onsubmit="document.charset='utf-8';return newlogin();"> 
+      <div class="newlogindiv_21">
+        帐号&nbsp;&nbsp;
+       <input id="newlogin_name" type="text" /> 
+       <span id="newlogin_name2" style=" color: red;"></span> 
+      </div> 
+      <div class="newlogindiv_21">
+        密码&nbsp;&nbsp;
+       <input id="newlogin_pwd" type="password" /> 
+       <span id="newlogin_pwd2"></span> 
+      </div> 
+      <div class="newlogindiv_22"> 
+       <input id="cbxtime" type="checkbox" />&nbsp;一星期内自动登录&nbsp;&nbsp;
+       <a href="do.php?ac=fotgotpwd" title="忘记密码">忘记密码?</a> 
+      </div> 
+      <div class="newlogindiv_23"> 
+       <input id="cbxtime" type="hidden" value="0" /> 
+       <input type="submit" class="b1" value="" /> &nbsp;&nbsp; 
+       <input type="button" class="b2" value="" onclick="window.location.href='http://www.ppwaibao.com/do.php?ac=0ba647bf13e2e79dfbc112406bab4ea8'" /> 
+      </div> 
+     </form> 
+    </div> 
+    <div style=" width: 260px; height: 235px; padding:5px 0 0 70px; float: right; border-left: solid 1px #F0F0F0; margin: 45px auto 0; color: #636363;"> 
+     <span style=" font-size: 20px;">无需帐号,直接发布</span>
+     <br /> 
+     <form accept-charset="utf-8" onsubmit="document.charset='utf-8';return fbrenwu();"> 
+      <div class="newlogindiv_21">
+        手机&nbsp;&nbsp;
+       <input id="newlogin_phone" type="text" onkeyup="changephone()" /> 
+       <span style=" color: red;"></span>
+       <br /> 
+       <span style=" color: red; padding-left: 33px;" id="newlogin_tsphone"></span> 
+      </div> 
+      <div class="newlogindiv_23" style=" padding-top: 33px;"> 
+       <input type="submit" class="b3" value="" /> 
+      </div> 
+     </form> 
+     <a id="newlogindiv_a"></a> 
+     <script>
+function changephone()
+{
+var obj = document.getElementById("newlogin_phone");
+    if(!(/^1[3458]\d{9}$/.test(obj.value))){ 
+        
+    	$("#newlogin_tsphone").html("请输入正确的手机号码");
+    } 
+    else
+    	$("#newlogin_tsphone").html("");
+}
+function fbrenwu()
+{
+$("#newlogin_tsphone").html("");
+var obj = document.getElementById("newlogin_phone");
+    if(!(/^1[3458]\d{9}$/.test(obj.value))){ 
+        
+    	$("#newlogin_tsphone").html("请输入手机号码");
+    	//alert("请输入正确的手机号码!"); 
+        obj.focus();
+        return false; 
+    } 
+    var str="userno="+obj.value;
+    $.ajax({
+           type:"POST", //post提交方式默认是get
+           url:"/source/quicknum.php?",
+           data:str, 
+           //data:$("#userform").serialize(),   //序列化   
+           //dataTyp:"json",
+           error:function(request) {      // 设置表单提交出错                 
+               //$("#showMsg").html(request);  //登录错误提示信息
+           },
+           success:function(s) {
+if(s=="ok"){
+$("#newlogin_tsphone").html("");
+ 	alert("提交成功!");
+ 	obj.val("");
+ 	//location.reload();
+ 	return false;
+ }else if(s=="3"){
+ $("#newlogin_tsphone").html("请输入正确的手机号码");
+ 	obj.focus();return false;
+ }else if(s=="2"){
+ $("#newlogin_tsphone").html("同一IP地址一天只能请求2次");
+ 	obj.focus();return false;
+ }
+ else{
+ $("#newlogin_tsphone").html("对不起，提交失败，请稍候再尝试");
+ 	obj.focus();return false;
+ }
+        }            
+     });
+    return false;
+}
+</script> 
+    </div> 
+   </div> 
+  </div> 
+  <script type="text/javascript">
+$(function (){
+$("#newlogindiv_a").zgydialogdiv({					       
+divid : "newlogindiv",
+titleid : "logintit",
+closeid : "loginclose",
+isbg : 0
+});
+});
+    
+    function newlogin()
+    {
+    	if($("#newlogin_name").val()=='')
+   		{
+    		$("#newlogin_name2").html('请填写帐号');
+    		$("#newlogin_name").focus();
+    		return false;
+   		}
+    	else
+    		$("#newlogin_name2").html('');
+    	if($("#newlogin_pwd").val()=='')
+   		{
+    		$("#newlogin_pwd2").html('请填写密码');
+    		$("#newlogin_pwd").focus();
+    		return false;
+   		}
+    	else
+    		$("#newlogin_pwd2").html('');
+    	var cbx = 0;
+    	if($("#cbxtime").attr("checked")==true)
+    		cbx = 1;
+    	//alert(cbx);
+
+    	var str="&username="+$("#newlogin_name").val()+"&password="+$("#newlogin_pwd").val()+"&cbx"+cbx;
+    $.ajax({
+           type:"POST", //post提交方式默认是get
+                      url:"/ajaxcheck.php?op=newlogin",
+                      data:str, 
+           //data:$("#userform").serialize(),   //序列化   
+           //dataTyp:"json",
+           error:function(request) {      // 设置表单提交出错                 
+               //$("#showMsg").html(request);  //登录错误提示信息
+           },
+           success:function(data) {
+        	   //alert(data);return;
+        	   if(data=='-2')
+        		{
+        		   alert("密码错误");
+        		   return false;
+        		}
+        	   else if(data=='-1')
+        		{
+        		   alert("用户名错误");
+        		   return false;
+        		}
+        	   else if(data=='1')
+        		{
+        		   location.reload();
+        		}
+        		   
+        	   
+           }            
+     });
+    return false;
+    	
+    }
+</script> 
+  <!-- header start --> 
+  <div class="new_header"> 
+   <center> 
+    <div class="new_header1"> 
+     <div class="new_header1_"> 
+      <div class="new_header1_1"> 
+      </div> 
+      <div class="new_header1_2" style=" position: relative;"> 
+       <p class="new_red">客服热线：400-0039-930</p> 
+       <a href="javascript:void(0);" onclick="addFavorite(this.href, 'PP外包网');return false;" class="new_a_gray">加入收藏</a>&nbsp;&nbsp; 
+       <a href="http://www.ppwaibao.com/news/" class="new_a_gray">新闻中心</a> 
+       <div id="h_userdiv" style=" text-align:left; display:none; width:108px; height:120px; background:#f4f4f4; position: absolute; top:30px; right:120px; border: solid 1px #BFBFBF; border-top:dotted 1px #BFBFBF; z-index:9999999;"> 
+        <div class="new_userdiv1"> 
+         <a class="new_a_blue" href="http://www.ppwaibao.com/space.php?do=renwu">我发布的任务</a> 
+        </div> 
+        <div class="new_userdiv2"> 
+         <a class="new_a_blue" href="http://www.ppwaibao.com/space.php?do=bidlist&amp;view=alltask">我竞标的任务</a> 
+        </div> 
+        <div class="new_userdiv2"> 
+         <a class="new_a_blue" href="http://www.ppwaibao.com/space.php?do=fav_service">我的收藏</a> 
+        </div> 
+        <div class="new_userdiv2"> 
+         <a class="new_a_blue" href="http://www.ppwaibao.com/home.php">我的主页</a> 
+        </div> 
+       </div> 
+       <script>
+(function($){
+    $.fn.hoverDelay = function(options){
+        var defaults = {
+            hoverDuring: 200,
+            outDuring: 200,
+            hoverEvent: function(){
+                $.noop();
+            },
+            outEvent: function(){
+                $.noop();    
+            }
+        };
+        var sets = $.extend(defaults,options || {});
+        var hoverTimer, outTimer;
+        return $(this).each(function(){
+            $(this).hover(function(){
+                clearTimeout(outTimer);
+                hoverTimer = setTimeout(sets.hoverEvent, sets.hoverDuring);
+            },function(){
+                clearTimeout(hoverTimer);
+                outTimer = setTimeout(sets.outEvent, sets.outDuring);
+            });    
+        });
+    }      
+})(jQuery);
+
+$(function(){
+$.ajax({
+           type:"POST", //post提交方式默认是get
+           url:"/ajaxcheck.php?op=getuserlogin1",
+           data:"", 
+           timeout:8000,//设置8秒延时
+           error:function(request) {//设置表单提交出错             
+        	   //alert(123);
+           },
+           success:function(data) {
+                   $('.new_header1_1').html(data);
+           }
+     });
+
+});	
+var u = 0;
+$("#co_user").hoverDelay({
+    hoverEvent: function(){
+    	u = 1;
+    	$('#h_userdiv').show();
+    },
+    hoverDuring: 0,
+    outDuring: 300,
+    outEvent: function(){
+    	if(u == 1)
+    	{
+    		if($('#h_userdiv').is(":visible"))
+    		{
+    			$('#h_userdiv').hide();
+    		}
+    	}
+    }
+});
+$("#h_userdiv").hoverDelay({
+    hoverEvent: function(){
+    	u = 2;
+    },
+    hoverDuring: 0,
+    outDuring: 300,
+    outEvent: function(){
+    	if(u == 2)
+    	{
+    		$('#h_userdiv').hide();
+}
+    }
+});
+function addFavorite(url, title) {
+try {
+window.external.addFavorite(url, title);
+} catch (e){
+try {
+window.sidebar.addPanel(title, url, '');
+        	} catch (e) {
+        		alert("请按 Ctrl+D 键添加到收藏夹");
+}
+}
+}
+</script> 
+      </div> 
+     </div> 
+    </div> 
+    <div class="new_head1"> 
+     <div class="new_head1_"> 
+      <a href="http://www.ppwaibao.com/"><img src="http://www.ppwaibao.com/image/new/topq4.jpg" width="210" height="90" class="new_head1_logo" alt="PP外包网" /></a> 
+      <img src="http://www.ppwaibao.com/image/new/topq9.jpg" width="190" height="80" class="new_head1_logot" alt="外包如此简单" /> 
+      <div class="new_head1d"> 
+       <div class="new_head1d1"> 
+        <form accept-charset="utf-8" onsubmit="document.charset='utf-8';return header_search();"> 
+         <div class="new_head1d11"> 
+          <input id="header_xz2" type="button" style=" border: 0; width: 80px; height: 30px;background: url(http://www.ppwaibao.com/image/new/top_5.jpg) no-repeat 65px 10px; color: #8E8E8E; cursor: pointer;" value="项目&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" onclick="if(document.getElementById('header_xz').style.display=='none'){document.getElementById('header_xz').style.display='';}else{document.getElementById('header_xz').style.display='none';}" /> 
+          <div id="header_xz" style=" display:none; width: 86px; height: auto; border-bottom: solid 1px #BBBCBD; position: absolute; top:28px;left:1px; background: #fff;"> 
+           <div style=" width: 84px; height: 25px; border-left: solid 1px #BBBCBD; border-right: solid 1px #D4D4D4; border-top: solid 1px #D4D4D4;"> 
+            <input type="button" style=" z-index:10000; border: 0; width: 80px; height: 23px; background:#fff; color: #8E8E8E; cursor: pointer;" value="项目&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" onclick="document.getElementById('header_xz2').value='项目&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';document.getElementById('header_xz').style.display='none';document.getElementById('search_type').value='1';" /> 
+           </div> 
+           <div style=" width: 84px; height: 25px; border-left: solid 1px #BBBCBD; border-right: solid 1px #D4D4D4; border-top: solid 1px #D4D4D4;"> 
+            <input type="button" style="z-index:10000; border: 0; width: 80px; height: 23px; background:#fff; color: #8E8E8E; cursor: pointer;" value="服务商&nbsp;&nbsp;&nbsp;" onclick="document.getElementById('header_xz2').value='服务商&nbsp;&nbsp;&nbsp;';document.getElementById('header_xz').style.display='none';document.getElementById('search_type').value='2';" /> 
+           </div> 
+           <div style=" width: 84px; height: 25px; border-left: solid 1px #BBBCBD; border-right: solid 1px #D4D4D4; border-top: solid 1px #D4D4D4;"> 
+            <input type="button" style="  z-index:10000; border: 0; width: 80px; height: 23px; background:#fff; color: #8E8E8E; cursor: pointer;" value="案例&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" onclick="document.getElementById('header_xz2').value='案例&nbsp;&nbsp;&nbsp;';document.getElementById('header_xz').style.display='none';document.getElementById('search_type').value='3';" /> 
+           </div> 
+          </div> 
+          <input type="hidden" id="search_type" value="1" /> 
+         </div> 
+         <div class="new_head1d12"> 
+          <input id="search_txt" type="text" style=" width: 150px; height:18px; border: 0; color: #8E8E8E;outline:none" value="请输入您想要找的关键字" onblur="if(this.value==''){this.value='请输入您想要找的关键字'}" onclick="if(this.value=='请输入您想要找的关键字'){this.value=''}" /> 
+         </div> 
+         <div class="new_head1d13"> 
+          <input type="submit" style=" cursor:pointer; border:0; width: 74px; height: 30px; background: url(http://www.ppwaibao.com/image/new/top_6.jpg) no-repeat;" value="&nbsp;" /> 
+          <script>
+//头部搜索
+function header_search()
+{
+var txtobj = document.getElementById('search_txt');
+if(txtobj.value==""||txtobj.value=="请输入您想要找的关键字")
+{
+alert("请输入关键字!");return false;
+}
+var type = document.getElementById('search_type').value;
+
+if(type=="1")
+{
+location.href="http://www.ppwaibao.com/task/search.php?k="+encodeURIComponent(txtobj.value);return false;
+}
+else if(type=="2")
+{
+location.href="http://www.ppwaibao.com/supplier/search.php?k="+encodeURIComponent(txtobj.value);return false;
+}
+else if(type=="3")
+{
+location.href="http://www.ppwaibao.com/works/index.php?k="+encodeURIComponent(txtobj.value);return false;
+}
+}
+</script> 
+         </div> 
+        </form> 
+       </div> 
+       <div class="new_head1d2"> 
+        <a target="_blank" href="http://www.ppwaibao.com/task/webdev/">web开发外包</a>&nbsp; 
+        <a target="_blank" href="http://www.ppwaibao.com/supplier/iphone/">Iphone外包</a>&nbsp; 
+        <a target="_blank" href="http://www.ppwaibao.com/supplier/android/">android外包</a>&nbsp; 
+        <a target="_blank" href="http://www.ppwaibao.com/works/multimedia/">设计及多媒体外包</a> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div style=" width: 100%; height: auto; background: url(http://www.ppwaibao.com/image/new/topq6.jpg) repeat-x;background-color: #f4f4f4;"> 
+     <div id="newindexmenu" style=" width: 940px; height: 54px; padding-left: 30px; "> 
+      <div id="newlook0" class="n_header_n">
+       <a href="http://www.ppwaibao.com/">首页</a>
+      </div> 
+      <div id="newlook1" class="n_header_n">
+       <a href="http://www.ppwaibao.com/task/">找项目</a>
+      </div> 
+      <div id="newlook2" class="n_header_n">
+       <a href="http://www.ppwaibao.com/works/">案例库</a>
+      </div> 
+      <div id="newlook3" class="n_header_n">
+       <a href="http://www.ppwaibao.com/wangzhan/">自助建站</a>
+      </div> 
+      <div id="newlook5" class="n_header_n">
+       <a href="http://www.ppwaibao.com/supplier/">服务商</a>
+      </div> 
+      <div id="newlook4" class="n_header_n">
+       <a href="http://www.ppwaibao.com/security/">交易担保</a>
+      </div> 
+      <div style="width:128px; height:54px; line-height:50px; float:right; background:url(http://www.ppwaibao.com/image/new/topq8.jpg) no-repeat;"> 
+       <a href="http://jianzhan.ppwaibao.com/" style=" font-size:24px; font-family:雅黑; font-weight:700; color: #fff;">建站特搜</a> 
+      </div> 
+     </div> 
+    </div> 
+   </center> 
+  </div> 
+  <!-- header end --> 
+  <div class="newmain"> 
+   <!-- 浮动 --> 
+   <div id="newmainfd1" class="newmainfd"> 
+    <div class="d1"> 
+     <span>任务分类</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <!-- a onclick="_hmt.push(['_trackEvent', 'header_fzb', 'click', '任务分类_不限']);" href="http://www.ppwaibao.com/task/" title="不限">不限</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a onclick="_hmt.push(['_trackEvent', 'header_fzb', 'click', '任务分类_移动互联技术']);" href="http://www.ppwaibao.com/task/mobile/" title="移动互联技术">移动互联技术</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a onclick="_hmt.push(['_trackEvent', 'header_fzb', 'click', '任务分类_设计及多媒体']);" href="http://www.ppwaibao.com/task/multimedia/" title="设计及多媒体">设计及多媒体</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a onclick="_hmt.push(['_trackEvent', 'header_fzb', 'click', '任务分类_软件开发']);" href="http://www.ppwaibao.com/task/Software/" title="软件开发">软件开发</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a onclick="_hmt.push(['_trackEvent', 'header_fzb', 'click', '任务分类_Web开发']);" href="http://www.ppwaibao.com/task/webdev/" title="Web开发">Web开发</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a onclick="_hmt.push(['_trackEvent', 'header_fzb', 'click', '任务分类_其他']);" href="http://www.ppwaibao.com/task/other/" title="其他">其他</a--> 
+     <a href="http://www.ppwaibao.com/task/" title="不限">不限</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onmouseover="changeDiv(1)" href="http://www.ppwaibao.com/task/mobile/" title="移动互联技术">移动互联技术</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onmouseover="changeDiv(78)" href="http://www.ppwaibao.com/task/multimedia/" title="设计及多媒体">设计及多媒体</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onmouseover="changeDiv(3)" href="http://www.ppwaibao.com/task/Software/" title="软件开发">软件开发</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onmouseover="changeDiv(4)" href="http://www.ppwaibao.com/task/webdev/" title="Web开发">Web开发</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onmouseover="changeDiv(5)" href="http://www.ppwaibao.com/task/other/" title="其他">其他</a> 
+    </div> 
+    <div style=" width: 540px; height: auto; padding:10px; border: solid 1px #E0E0E0; background: #F8FCFE; float: left; position: relative; margin: 5px 0 0 115px; _margin: 5px 0 0 57px;"> 
+     <img width="16" id="tip1" height="9" alt="pp外包网" style=" position: absolute; top:-9px;left:93px;" src="/image/new/fzb_tip1.jpg" /> 
+     <div id="div1" style="display:none;" class="divdiv"> 
+      <div id="zdy1" style="float:left;padding: 0 10px 0 10px;height:25px;">
+       <a href="/task/android/" style=" text-decoration:none; color: #47A0CC;white-space: nowrap; line-height: 25px;">Android</a>
+      </div> 
+      <div id="zdy1" style="float:left;padding: 0 10px 0 10px;height:25px;">
+       <a href="/task/ios/" style=" text-decoration:none; color: #47A0CC;white-space: nowrap; line-height: 25px;">IOS</a>
+      </div> 
+      <div id="zdy1" style="float:left;padding: 0 10px 0 10px;height:25px;">
+       <a href="/task/symbian/" style=" text-decoration:none; color: #47A0CC;white-space: nowrap; line-height: 25px;">Symbian</a>
+      </div> 
+      <div id="zdy1" style="float:left;padding: 0 10px 0 10px;height:25px;">
+       <a href="/task/winmobile/" style=" text-decoration:none; color: #47A0CC;white-space: nowrap; line-height: 25px;">WindowsMobile</a>
+      </div> 
+      <div id="zdy1" style="float:left;padding: 0 10px 0 10px;height:25px;">
+       <a href="/task/j2me/" style=" text-decoration:none; color: #47A0CC;white-space: nowrap; line-height: 25px;">J2me</a>
+      </div> 
+      <div id="zdy1" style="float:left;padding: 0 10px 0 10px;height:25px;">
+       <a href="/task/mob_other/" style=" text-decoration:none; color: #47A0CC;white-space: nowrap; line-height: 25px;">其它</a>
+      </div> 
+     </div> 
+     <div id="div78" style="display:none;" class="divdiv"> 
+      <div id="zdy1" style="float:left;padding: 0 10px 0 10px;height:25px;">
+       <a href="/task/pingmian/" style=" text-decoration:none; color: #47A0CC;white-space: nowrap; line-height: 25px;">平面设计</a>
+      </div> 
+      <div id="zdy1" style="float:left;padding: 0 10px 0 10px;height:25px;">
+       <a href="/task/logo/" style=" text-decoration:none; color: #47A0CC;white-space: nowrap; line-height: 25px;">Logo设计</a>
+      </div> 
+      <div id="zdy1" style="float:left;padding: 0 10px 0 10px;height:25px;">
+       <a href="/task/cad/" style=" text-decoration:none; color: #47A0CC;white-space: nowrap; line-height: 25px;">三维动画及CAD</a>
+      </div> 
+      <div id="zdy1" style="float:left;padding: 0 10px 0 10px;height:25px;">
+       <a href="/task/flash/" style=" text-decoration:none; color: #47A0CC;white-space: nowrap; line-height: 25px;">Flash动画</a>
+      </div> 
+      <div id="zdy1" style="float:left;padding: 0 10px 0 10px;height:25px;">
+       <a href="/task/media_other/" style=" text-decoration:none; color: #47A0CC;white-space: nowrap; line-height: 25px;">其它</a>
+      </div> 
+     </div> 
+     <div id="div3" style="display:none;" class="divdiv"> 
+      <div id="zdy1" style="float:left;padding: 0 10px 0 10px;height:25px;">
+       <a href="/task/Softdev/" style=" text-decoration:none; color: #47A0CC;white-space: nowrap; line-height: 25px;">软件开发</a>
+      </div> 
+      <div id="zdy1" style="float:left;padding: 0 10px 0 10px;height:25px;">
+       <a href="/task/games/" style=" text-decoration:none; color: #47A0CC;white-space: nowrap; line-height: 25px;">游戏开发</a>
+      </div> 
+      <div id="zdy1" style="float:left;padding: 0 10px 0 10px;height:25px;">
+       <a href="/task/system/" style=" text-decoration:none; color: #47A0CC;white-space: nowrap; line-height: 25px;">系统开发</a>
+      </div> 
+      <div id="zdy1" style="float:left;padding: 0 10px 0 10px;height:25px;">
+       <a href="/task/Soft_other/" style=" text-decoration:none; color: #47A0CC;white-space: nowrap; line-height: 25px;">其它</a>
+      </div> 
+     </div> 
+     <div id="div4" style="display:none;" class="divdiv"> 
+      <div id="zdy1" style="float:left;padding: 0 10px 0 10px;height:25px;">
+       <a href="/task/website/" style=" text-decoration:none; color: #47A0CC;white-space: nowrap; line-height: 25px;">网站开发</a>
+      </div> 
+      <div id="zdy1" style="float:left;padding: 0 10px 0 10px;height:25px;">
+       <a href="/task/wap/" style=" text-decoration:none; color: #47A0CC;white-space: nowrap; line-height: 25px;">wap开发</a>
+      </div> 
+      <div id="zdy1" style="float:left;padding: 0 10px 0 10px;height:25px;">
+       <a href="/task/e-commerce/" style=" text-decoration:none; color: #47A0CC;white-space: nowrap; line-height: 25px;">电子商务</a>
+      </div> 
+      <div id="zdy1" style="float:left;padding: 0 10px 0 10px;height:25px;">
+       <a href="/task/app/" style=" text-decoration:none; color: #47A0CC;white-space: nowrap; line-height: 25px;">应用开发</a>
+      </div> 
+      <div id="zdy1" style="float:left;padding: 0 10px 0 10px;height:25px;">
+       <a href="/task/webgames/" style=" text-decoration:none; color: #47A0CC;white-space: nowrap; line-height: 25px;">网页游戏</a>
+      </div> 
+      <div id="zdy1" style="float:left;padding: 0 10px 0 10px;height:25px;">
+       <a href="/task/web_other/" style=" text-decoration:none; color: #47A0CC;white-space: nowrap; line-height: 25px;">其它</a>
+      </div> 
+     </div> 
+     <div id="div5" style="display:none;" class="divdiv"> 
+      <div id="zdy1" style="float:left;padding: 0 10px 0 10px;height:25px;">
+       <a href="/task/plans/" style=" text-decoration:none; color: #47A0CC;white-space: nowrap; line-height: 25px;">文案策划</a>
+      </div> 
+     </div> 
+    </div> 
+    <div class="d1"> 
+     <span>任务金额</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_fzb', 'click', '任务金额_不限']);" href="http://www.ppwaibao.com/task/" title="不限">不限</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_fzb', 'click', '任务金额_100-500']);" href="http://www.ppwaibao.com/task/p1/" title="100-500">100-500</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_fzb', 'click', '任务金额_500-1000']);" href="http://www.ppwaibao.com/task/p2/" title="500-1000">500-1000</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_fzb', 'click', '任务金额_1000-2000']);" href="http://www.ppwaibao.com/task/p3/" title="1000-2000">1000-2000</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_fzb', 'click', '任务金额_2000-5000']);" href="http://www.ppwaibao.com/task/p4/" title="2000-5000">2000-5000</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_fzb', 'click', '任务金额_5000-20000']);" href="http://www.ppwaibao.com/task/p5/" title="5000-20000">5000-20000</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_fzb', 'click', '任务金额_2万以上']);" href="http://www.ppwaibao.com/task/p6/" title="2万以上">2万以上</a> 
+    </div> 
+    <div class="d1"> 
+     <span>截标时间</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_fzb', 'click', '截标时间_不限']);" href="http://www.ppwaibao.com/task/" title="不限">不限</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_fzb', 'click', '截标时间_24小时内']);" href="http://www.ppwaibao.com/task/t1/" title="">24小时内</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_fzb', 'click', '截标时间_三天内']);" href="http://www.ppwaibao.com/task/t2/" title="">三天内</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_fzb', 'click', '截标时间_五天内']);" href="http://www.ppwaibao.com/task/t3/" title="">五天内</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_fzb', 'click', '截标时间_五天后']);" href="http://www.ppwaibao.com/task/t4/" title="">五天后</a> 
+    </div> 
+   </div> 
+   <div id="newmainfd2" class="newmainfd"> 
+    <div class="d1"> 
+     <span>技术类型</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_works', 'click', '技术类型_不限']);" href="http://www.ppwaibao.com/works/" title="全部">全部</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_works', 'click', '技术类型_移动互联技术']);" href="http://www.ppwaibao.com/works/mobile/" title="移动互联技术">移动互联技术</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_works', 'click', '技术类型_设计及多媒体']);" href="http://www.ppwaibao.com/works/multimedia/" title="设计及多媒体">设计及多媒体</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_works', 'click', '技术类型_软件开发']);" href="http://www.ppwaibao.com/works/Software/" title="软件开发">软件开发</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_works', 'click', '技术类型_Web开发']);" href="http://www.ppwaibao.com/works/webdev/" title="Web开发">Web开发</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_works', 'click', '技术类型_其他']);" href="http://www.ppwaibao.com/works/other/" title="其他">其他</a> 
+    </div> 
+   </div> 
+   <div id="newmainfd3" class="newmainfd"> 
+    <div class="d1"> 
+     <span>按套餐找</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_wzjs', 'click', '按套餐找_不限']);" href="http://jianzhan.ppwaibao.com/fast_jianzhan/" title="快速建站">快速建站</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_wzjs', 'click', '按套餐找_不限']);" href="http://jianzhan.ppwaibao.com/free_jianzhan/" title="免费建站">免费建站</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_wzjs', 'click', '按套餐找_不限']);" href="http://jianzhan.ppwaibao.com/diy_jianzhan/" title="个性化定制">个性化定制</a> 
+    </div> 
+    <div class="d1"> 
+     <span>按案例找</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_wzjs', 'click', '按案例找_企业形象站']);" href="http://jianzhan.ppwaibao.com/case/companyxq/" title="企业形象站">企业形象站</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_wzjs', 'click', '按案例找_电子商务网站']);" href="http://jianzhan.ppwaibao.com/case/e-commerce/" title="电子商务网站">电子商务网站</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_wzjs', 'click', '按案例找_门户网站']);" href="http://jianzhan.ppwaibao.com/case/portal_site/" title="门户网站">门户网站</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_wzjs', 'click', '按案例找_FLASH网站']);" href="http://jianzhan.ppwaibao.com/case/flash/" title="FLASH网站">FLASH网站</a> 
+    </div> 
+    <div class="d1"> 
+     <span>按地区找</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_wzjs', 'click', '按地区找_深圳']);" href="http://jianzhan.ppwaibao.com/company/shenzhen/" title="深圳">深圳</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_wzjs', 'click', '按地区找_杭州']);" href="http://jianzhan.ppwaibao.com/company/hangzhou/" title="杭州">杭州</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_wzjs', 'click', '按地区找_广州']);" href="http://jianzhan.ppwaibao.com/company/guangzhou/" title="广州">广州</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_wzjs', 'click', '按地区找_北京']);" href="http://jianzhan.ppwaibao.com/company/beijing/" title="北京">北京</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_wzjs', 'click', '按地区找_上海']);" href="http://jianzhan.ppwaibao.com/company/shanghai/" title="上海">上海</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_wzjs', 'click', '按地区找_杭州']);" href="http://jianzhan.ppwaibao.com/company/hangzhou/" title="杭州">杭州</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_wzjs', 'click', '按地区找_海南']);" href="http://jianzhan.ppwaibao.com/company/hainan/" title="海南">海南</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_wzjs', 'click', '按地区找_成都']);" href="http://jianzhan.ppwaibao.com/company/chengdu/" title="成都">成都</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_wzjs', 'click', '按地区找_武汉']);" href="http://jianzhan.ppwaibao.com/company/wuhan/" title="武汉">武汉</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_wzjs', 'click', '按地区找_石家庄']);" href="http://jianzhan.ppwaibao.com/company/shijiazhuang/" title="石家庄">石家庄</a> 
+    </div> 
+    <div class="newhfd2"> 
+     <div class="newhfd2d"> 
+      <img src="http://www.ppwaibao.com/image/web/index_tip15.jpg" width="81" height="81" style=" float: left; margin: 5px auto;" alt="快捷省心" /> 
+      <div class="newhfd2dd"> 
+       <a onclick="_hmt.push(['_trackEvent', 'header_wzjs', 'click', '按案例找_企业标准站']);" class="s1" href="http://www.ppwaibao.com/wangzhan/qiye/">企业标准站 - 精美</a>
+       <br /> 
+       <span class="s2">突破传统设计， 台湾设计师模板定制，高端大气。</span> 
+      </div> 
+     </div> 
+     <div class="newhfd2d"> 
+      <img src="http://www.ppwaibao.com/image/web/index_tip16.jpg" width="81" height="81" style=" float: left; margin: 5px auto;" alt="功能强大" /> 
+      <div class="newhfd2dd"> 
+       <a onclick="_hmt.push(['_trackEvent', 'header_wzjs', 'click', '按案例找_电子商城']);" class="s1" href="http://www.ppwaibao.com/wangzhan/e-mall/">电子商城 - 功能强大 </a>
+       <br /> 
+       <span class="s2">强大的产品展示功能 可连通淘宝、拍拍、分销王系统。</span> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+   <div id="newmainfd4" class="newmainfd" style=" padding: 0;"> 
+    <div class="newhfd1"> 
+     <div class="newhfd1d"> 
+      <img src="http://www.ppwaibao.com/image/web/index_tip11.jpg" width="80" height="77" style=" float: left;" alt="交易_免费平台" /> 
+      <div class="newhfd1t"> 
+       <a onclick="_hmt.push(['_trackEvent', 'header_jy', 'click', '交易_免费平台']);" class="s1" href="http://www.ppwaibao.com/common/detail/" target="_blank" title="免费平台">免费平台</a>
+       <br /> 
+       <span class="s2">我们承诺交易过程中不收取任何费用。</span> 
+      </div> 
+     </div> 
+     <div class="newhfd1d" style=" border-right: 0;"> 
+      <img src="http://www.ppwaibao.com/image/web/index_tip12.jpg" width="80" height="77" style=" float: left;" alt="交易_认证服务商" /> 
+      <div class="newhfd1t"> 
+       <a onclick="_hmt.push(['_trackEvent', 'header_jy', 'click', '交易_认证服务商']);" class="s1" href="http://www.ppwaibao.com/common/service/" target="_blank" title="认证服务商">认证服务商</a>
+       <br /> 
+       <span class="s2">百万订单，认证独享。</span> 
+      </div> 
+     </div> 
+    </div> 
+    <div class="newhfd1"> 
+     <div class="newhfd1d"> 
+      <img src="http://www.ppwaibao.com/image/web/index_tip13.jpg" width="80" height="77" style=" float: left;" alt="交易_保障协议" /> 
+      <div class="newhfd1t"> 
+       <a onclick="_hmt.push(['_trackEvent', 'header_jy', 'click', '交易_保障协议']);" class="s1" href="http://www.ppwaibao.com/common/trade/" target="_blank" title="保障协议">保障协议</a>
+       <br /> 
+       <span class="s2">安全交易，从PP开始。资金托管，交易更有保障。</span> 
+      </div> 
+     </div> 
+     <div class="newhfd1d" style=" border-right: 0;"> 
+      <img src="http://www.ppwaibao.com/image/web/index_tip14.jpg" width="80" height="77" style=" float: left;" alt="交易_QQ认证" /> 
+      <div class="newhfd1t"> 
+       <a onclick="_hmt.push(['_trackEvent', 'header_jy', 'click', '交易_QQ认证']);" class="s1" href="http://www.ppwaibao.com/common/rz/" target="_blank" title="QQ认证">QQ认证</a>
+       <br /> 
+       <span class="s2">只需3步，即刻拥有多项免费特权服务。</span> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+   <div id="newmainfd5" class="newmainfd"> 
+    <div class="d1" style=" height: auto; overflow: hidden;"> 
+     <span style=" float: left; line-height: 30px;">热门技能</span> 
+     <div style=" width: 625px; height: auto; float: right; line-height: 30px;"> 
+      <a onclick="_hmt.push(['_trackEvent', 'header_fws', 'click', '热门技能_石家庄']);" href="http://www.ppwaibao.com/supplier/android/" title="Android">Android</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      <a onclick="_hmt.push(['_trackEvent', 'header_fws', 'click', '热门技能_石家庄']);" href="http://www.ppwaibao.com/supplier/iphone/" title="Iphone">Iphone</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      <a onclick="_hmt.push(['_trackEvent', 'header_fws', 'click', '热门技能_石家庄']);" href="http://www.ppwaibao.com/supplier/symbian/" title="Symbian">Symbian</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      <a onclick="_hmt.push(['_trackEvent', 'header_fws', 'click', '热门技能_石家庄']);" href="http://www.ppwaibao.com/supplier/windows-mobile/" title="WindowsMobile">WindowsMobile</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      <a onclick="_hmt.push(['_trackEvent', 'header_fws', 'click', '热门技能_石家庄']);" href="http://www.ppwaibao.com/supplier/flash/" title="Flash">Flash</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      <a onclick="_hmt.push(['_trackEvent', 'header_fws', 'click', '热门技能_石家庄']);" href="http://www.ppwaibao.com/supplier/photoshop/" title="PhotoShop">PhotoShop</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      <br /> 
+      <a onclick="_hmt.push(['_trackEvent', 'header_fws', 'click', '热门技能_石家庄']);" href="http://www.ppwaibao.com/supplier/sina/" title="新浪微博开放平台">新浪微博开放平台</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      <a onclick="_hmt.push(['_trackEvent', 'header_fws', 'click', '热门技能_石家庄']);" href="http://www.ppwaibao.com/supplier/baidu/" title="百度开放平台">百度开放平台</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      <a onclick="_hmt.push(['_trackEvent', 'header_fws', 'click', '热门技能_石家庄']);" href="http://www.ppwaibao.com/supplier/discuz/" title="Discuz">Discuz</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      <a onclick="_hmt.push(['_trackEvent', 'header_fws', 'click', '热门技能_石家庄']);" href="http://www.ppwaibao.com/supplier/java-language/" title="Java">Java</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      <a onclick="_hmt.push(['_trackEvent', 'header_fws', 'click', '热门技能_石家庄']);" href="http://www.ppwaibao.com/supplier/c-net/" title="C#&amp;.Net">C#&amp;.Net</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+      <a onclick="_hmt.push(['_trackEvent', 'header_fws', 'click', '热门技能_石家庄']);" href="http://www.ppwaibao.com/supplier/php/" title="PHP">PHP</a> 
+     </div> 
+    </div> 
+    <div class="d1"> 
+     <span>服务商类型</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_fws', 'click', '服务商类型_认证服务商']);" href="http://www.ppwaibao.com/supplier/rzfws/" title="认证服务商">认证服务商</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_fws', 'click', '服务商类型_已通过实名认证']);" href="http://www.ppwaibao.com/supplier/smrzfws/" title="已通过实名认证">已通过实名认证</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_fws', 'click', '服务商类型_已通过手机认证']);" href="http://www.ppwaibao.com/supplier/mobilefws/" title="已通过手机认证">已通过手机认证</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_fws', 'click', '服务商类型_已通过QQ认证']);" href="http://www.ppwaibao.com/supplier/qqfws/" title="已通过QQ认证">已通过QQ认证</a> 
+    </div> 
+    <div class="d1"> 
+     <span>服务商类型</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_fws', 'click', '服务商类型_个人']);" href="http://www.ppwaibao.com/supplier/gr/" title="个人">个人</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_fws', 'click', '服务商类型_公司']);" href="http://www.ppwaibao.com/supplier/gs/" title="公司">公司</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+     <a onclick="_hmt.push(['_trackEvent', 'header_fws', 'click', '服务商类型_工作室']);" href="http://www.ppwaibao.com/supplier/gzs/" title="工作室">工作室</a> 
+    </div> 
+    <div class="newhfd3"> 
+     <div class="newhfd3s">
+      服务商推荐
+     </div> 
+     <div class="newhfd3d"> 
+      <a href="http://www.ppwaibao.com/home-5284.html" target="_blank"><img src="http://www.ppwaibao.com/logores/upload/avatar/000/00/52/84_avatar_big.jpg" width="60" height="60" class="newhfd3i" /></a> 
+      <div class="newhfd3t"> 
+       <a href="http://www.ppwaibao.com/home-5284.html" target="_blank">zylinkus_com</a>
+       <br /> 上海志彦文化传播有限公司
+       <br /> 上海 - 
+      </div> 
+     </div> 
+     <div class="newhfd3d"> 
+      <a href="http://www.ppwaibao.com/home-2532.html" target="_blank"><img src="http://211.147.242.234:84/data/avatar/000/00/25/32_avatar_middle.jpg" width="60" height="60" class="newhfd3i" /></a> 
+      <div class="newhfd3t"> 
+       <a href="http://www.ppwaibao.com/home-2532.html" target="_blank">redsea</a>
+       <br /> 沈阳红美广告有限公司
+       <br /> 辽宁 - 沈阳
+      </div> 
+     </div> 
+     <div class="newhfd3d"> 
+      <a href="http://www.ppwaibao.com/home-4811.html" target="_blank"><img src="http://211.147.242.234:84/data/avatar/000/00/48/11_avatar_middle.jpg" width="60" height="60" class="newhfd3i" /></a> 
+      <div class="newhfd3t"> 
+       <a href="http://www.ppwaibao.com/home-4811.html" target="_blank">Rnkey</a>
+       <br /> 珠海云际科技有限公司
+       <br /> 广东 - 珠海
+      </div> 
+     </div> 
+     <div class="newhfd3d"> 
+      <a href="http://www.ppwaibao.com/home-4586.html" target="_blank"><img src="http://211.147.242.234:84/data/avatar/000/00/45/86_avatar_middle.jpg" width="60" height="60" class="newhfd3i" /></a> 
+      <div class="newhfd3t"> 
+       <a href="http://www.ppwaibao.com/home-4586.html" target="_blank">SylarND</a>
+       <br /> 北青易万卷（北京）数字科技有限公司
+       <br /> 北京 - 朝阳
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+   <div id="newmainfdl" style=" width: 2px; height: 3px; background: url(http://www.ppwaibao.com/image/web/index_tip7.jpg) no-repeat;position: absolute; display: none;"></div> 
+   <div id="newmainfdr" style=" width: 2px; height: 3px; background: url(http://www.ppwaibao.com/image/web/index_tip7.jpg) no-repeat;position: absolute; display: none;"></div> 
+   <script>
+
+
+
+var t1 = 0;
+//$(document).ready(function (){
+var offset = $("#newindexmenu").offset();
+var left = offset.left;
+if($.browser.msie) { 
+left = left + 1;//IE内核 样式走位处理
+} 
+var top = offset.top+47;
+$(".newmainfd").css({
+top:top+"px",
+left:(left+20)+"px"
+});
+$("#newmainfdl").css({
+top:(top-3)+"px",
+left:(left+20)+"px"
+});
+$("#newmainfdr").css({
+top:(top-3)+"px",
+left:(left+20+765)+"px"
+});
+$("#newlook1").hoverDelay({
+    hoverEvent: function(){
+    	t1 = 1;
+    	$('#newmainfd2').hide();
+    	$('#newmainfd3').hide();
+    	$('#newmainfd4').hide();
+    	$('#newmainfd5').hide();
+    	
+    	$('#newmainfd1').show();
+$('#newmainfdl').show();
+$('#newmainfdr').show();
+    },
+    hoverDuring: 0,
+    outDuring: 300,
+    outEvent: function(){
+    	if(t1 == 1)
+    	{
+    		if($('#newmainfd1').is(":visible"))
+    		{
+    			$('#newmainfd1').hide();
+$('#newmainfdl').hide();
+$('#newmainfdr').hide();
+}
+}
+    }
+});
+$("#newmainfd1").hoverDelay({
+    hoverEvent: function(){
+    	t1 = 2;
+    },
+    hoverDuring: 0,
+    outDuring: 300,
+    outEvent: function(){
+    	if(t1 == 2)
+    	{
+    		$('#newmainfd1').hide();
+$('#newmainfdl').hide();
+$('#newmainfdr').hide();
+}
+    }
+});
+$("#div1").css("display","block");
+function changeDiv(obj)
+{
+$(".divdiv").css("display","none");
+$("#div"+obj).css("display","block");
+if(obj=='1')
+$('#tip1').css("left","93px");
+else if(obj=='78')
+$('#tip1').css("left","198px");
+else if(obj=='3')
+$('#tip1').css("left","295px");
+else if(obj=='4')
+$('#tip1').css("left","383px");
+else if(obj=='5')
+$('#tip1').css("left","460px");
+}
+$("#newlook2").hoverDelay({
+    hoverEvent: function(){
+    	t1 = 1;
+    	$('#newmainfd1').hide();
+    	$('#newmainfd3').hide();
+    	$('#newmainfd4').hide();
+    	$('#newmainfd5').hide();
+    	
+    	$('#newmainfd2').show();
+$('#newmainfdl').show();
+$('#newmainfdr').show();
+    },
+    hoverDuring: 0,
+    outDuring: 300,
+    outEvent: function(){
+    	if(t1 == 1)
+    	{
+    		if($('#newmainfd2').is(":visible"))
+    		{
+    		$('#newmainfd2').hide();
+$('#newmainfdl').hide();
+$('#newmainfdr').hide();
+    		}
+}
+    }
+});
+$("#newmainfd2").hoverDelay({
+    hoverEvent: function(){
+    	t1 = 2;
+    },
+    hoverDuring: 0,
+    outDuring: 300,
+    outEvent: function(){
+    	if(t1 == 2)
+    	{
+    		$('#newmainfd2').hide();
+$('#newmainfdl').hide();
+$('#newmainfdr').hide();
+}
+    }
+});
+$("#newlook3").hoverDelay({
+    hoverEvent: function(){
+    	t1 = 1;
+    	$('#newmainfd1').hide();
+    	$('#newmainfd2').hide();
+    	$('#newmainfd4').hide();
+    	$('#newmainfd5').hide();
+    	
+    	$('#newmainfd3').show();
+$('#newmainfdl').show();
+$('#newmainfdr').show();
+    },
+    hoverDuring: 0,
+    outDuring: 300,
+    outEvent: function(){
+    	if(t1 == 1)
+    	{
+    		if($('#newmainfd3').is(":visible"))
+    		{
+    		$('#newmainfd3').hide();
+$('#newmainfdl').hide();
+$('#newmainfdr').hide();
+    		}
+}
+    }
+});
+$("#newmainfd3").hoverDelay({
+    hoverEvent: function(){
+    	t1 = 2;
+    },
+    hoverDuring: 0,
+    outDuring: 300,
+    outEvent: function(){
+    	if(t1 == 2)
+    	{
+    		$('#newmainfd3').hide();
+$('#newmainfdl').hide();
+$('#newmainfdr').hide();
+}
+    }
+});
+$("#newlook4").hoverDelay({
+    hoverEvent: function(){
+    	t1 = 1;
+    	$('#newmainfd1').hide();
+    	$('#newmainfd2').hide();
+    	$('#newmainfd3').hide();
+    	$('#newmainfd5').hide();
+    	
+    	$('#newmainfd4').show();
+$('#newmainfdl').show();
+$('#newmainfdr').show();
+    },
+    hoverDuring: 0,
+    outDuring: 300,
+    outEvent: function(){
+    	if(t1 == 1)
+    	{
+    		if($('#newmainfd4').is(":visible"))
+    		{
+    		$('#newmainfd4').hide();
+$('#newmainfdl').hide();
+$('#newmainfdr').hide();
+    		}
+}
+    }
+});
+$("#newmainfd4").hoverDelay({
+    hoverEvent: function(){
+    	t1 = 2;
+    },
+    hoverDuring: 0,
+    outDuring: 300,
+    outEvent: function(){
+    	if(t1 == 2)
+    	{
+    		$('#newmainfd4').hide();
+$('#newmainfdl').hide();
+$('#newmainfdr').hide();
+}
+    }
+});
+$("#newlook5").hoverDelay({
+    hoverEvent: function(){
+    	t1 = 1;
+    	$('#newmainfd1').hide();
+    	$('#newmainfd2').hide();
+    	$('#newmainfd3').hide();
+    	$('#newmainfd4').hide();
+    	
+    	$('#newmainfd5').show();
+$('#newmainfdl').show();
+$('#newmainfdr').show();
+    },
+    hoverDuring: 0,
+    outDuring: 300,
+    outEvent: function(){
+    	if(t1 == 1)
+    	{
+    		if($('#newmainfd5').is(":visible"))
+    		{
+    		$('#newmainfd5').hide();
+$('#newmainfdl').hide();
+$('#newmainfdr').hide();
+    		}
+}
+    }
+});
+$("#newmainfd5").hoverDelay({
+    hoverEvent: function(){
+    	t1 = 2;
+    },
+    hoverDuring: 0,
+    outDuring: 300,
+    outEvent: function(){
+    	if(t1 == 2)
+    	{
+    		$('#newmainfd5').hide();
+$('#newmainfdl').hide();
+$('#newmainfdr').hide();
+}
+    }
+});
+//});
+</script> 
+   <div id="wrap"> 
+    <script src="/uploadify/jquery.uploadify-3.1.js" type="text/javascript"></script> 
+    <link rel="stylesheet" type="text/css" href="/uploadify/uploadify.css" /> 
+    <script type="text/javascript">
+function opentbxq(n,uid)
+{
+$("#looktbxqnn_"+n).hide();
+var obj = $("#looktbxq_"+n);
+var obj2 = $("#controltb_"+n);
+if(obj.css('display') == 'none')
+{
+obj.slideDown("300");
+obj2.html("收缩方案");
+
+loaddp(uid);
+
+}
+else
+{
+obj.slideUp("300");
+obj2.html("展开方案");
+}
+}
+function loaddp(uid)
+{
+var str="&uid="+uid+"&renwuid=1430";
+
+$.ajax({
+           type:"POST", //post提交方式默认是get
+           url:"/ajaxcheck.php?op=gettbdp",
+           data:str, 
+           //data:$("#userform").serialize(),   //序列化   
+           //dataTyp:"json",
+           error:function(request) {      // 设置表单提交出错                 
+               //$("#showMsg").html(request);  //登录错误提示信息
+           },
+           success:function(data) {
+        	   var dataObj=eval(data);//转换为json对象 
+if(dataObj.length>0)
+{
+var ret = '';
+$.each(dataObj,function(i,n){
+
+ret += '<div style=" color: #A5A5A5"><a href="#">'+n.fromusername+'</a>&nbsp;于&nbsp;'+n.time+'&nbsp;评论</div>';
+ret += '<div style=" line-height: 20px; margin-bottom: 15px;_margin-bottom: 15px;">'+n.content+'</div>';
+//alert(ret);
+
+//alert(n.fromusername);
+       
+    });
+$('#tbxq_html_'+uid).html(ret);
+}
+else
+{
+$('#tbxq_html_'+uid).html("暂无点评!<br /><br />");
+}
+$('#tbxq_loadcount_'+uid).html(dataObj.length+'条回复');
+$("#tbxq_loaddiv_"+uid).css("display","block");
+$("#tbxq_loadimg_"+uid).css("display","none");
+
+           }
+     });
+}
+function adddp(uid)
+{
+if($("#tbxq_txt_"+uid).val()=='')
+{
+alert("请填写内容");return;
+}
+var str="&content="+$("#tbxq_txt_"+uid).val()+"&renwuid=1430"+"&uid="+uid;
+$.ajax({
+           type:"POST", //post提交方式默认是get
+           url:"/ajaxcheck.php?op=addtbdp",
+           data:str, 
+           //data:$("#userform").serialize(),   //序列化   
+           //dataTyp:"json",
+           error:function(request) {      // 设置表单提交出错                 
+               //$("#showMsg").html(request);  //登录错误提示信息
+           },
+           success:function(data) {
+        	   loaddp(uid);
+           }            
+     });
+}
+function txt_change(uid,count){
+$('#tbxq_txt_'+uid).val();
+$('#tbxq_tishi_'+uid).val();
+if($('#tbxq_txt_'+uid).val().length<count)
+{
+$('#tbxq_tishi_'+uid).html('您还能输入'+(count - $('#tbxq_txt_'+uid).val().length)+'个字符');
+}
+else
+{
+$('#tbxq_tishi_'+uid).html('您还能输入0个字符');
+$('#tbxq_txt_'+uid).val($('#tbxq_txt_'+uid).val().substring(0, count));
+}					
+}
+function looktb(){
+$('#tblook').css({
+display:"block"
+});
+$('#tbcontrol').css({
+display:"none"
+});
+}
+function addfav()
+{
+var str="&renwuid=1430";
+$.ajax({
+           type:"POST", //post提交方式默认是get
+           url:"/ajaxcheck.php?op=addfav",
+           data:str, 
+           //data:$("#userform").serialize(),   //序列化   
+           //dataTyp:"json",
+           error:function(request) {      // 设置表单提交出错                 
+               //$("#showMsg").html(request);  //登录错误提示信息
+           },
+           success:function(data) {
+        	   if(data==1)
+        		   alert("收藏成功!");
+        	   else
+        		   alert("已收藏该任务!");
+           }            
+     });
+}
+function setbx(uid)
+{
+
+var str="&uid="+uid+"&renwuid=1430";
+$.ajax({
+           type:"POST", //post提交方式默认是get
+           url:"/ajaxcheck.php?op=settb_bx",
+           data:str, 
+           //data:$("#userform").serialize(),   //序列化   
+           //dataTyp:"json",
+           error:function(request) {      // 设置表单提交出错                 
+               //$("#showMsg").html(request);  //登录错误提示信息
+           },
+           success:function(data) {
+        	   if(data==1)
+       		{
+       		   alert("设置成功!");
+       		   location.reload();
+       		}
+       	   else
+       		   alert("设置失败!请联系管理员");
+           }            
+     });
+}
+function setzb(uid)
+{
+var str="&uid="+uid+"&renwuid=1430";
+$.ajax({
+           type:"POST", //post提交方式默认是get
+           url:"/ajaxcheck.php?op=settb_zb",
+           data:str, 
+           //data:$("#userform").serialize(),   //序列化   
+           //dataTyp:"json",
+           error:function(request) {      // 设置表单提交出错                 
+               //$("#showMsg").html(request);  //登录错误提示信息
+           },
+           success:function(data) {
+        	   alert(data);
+       	   if(data==1)
+       		{
+       		   alert("设置成功!");
+       		   location.reload();
+       		}
+       	   else
+       		   alert("设置失败!请联系管理员");
+           }            
+     });
+
+}
+function txt_change2(count){
+//$('#xq_hddytxt').val();
+//$('#xq_hddyts').val();
+if($('#xq_hddytxt').val().length<count)
+{
+$('#xq_hddyts').html('您还能输入'+(count - $('#xq_hddytxt').val().length)+'个字符');
+}
+else
+{
+$('#xq_hddyts').html('您还能输入0个字符');
+$('#xq_hddytxt').val($('#xq_hddytxt').val().substring(0, count));
+}					
+}
+function addhddy()
+{
+if($("#xq_hddytxt").val()=='')
+{
+alert("请填写内容");return;
+}
+var str="&message="+$("#xq_hddytxt").val()+"&renwuid=1430";
+$.ajax({
+           type:"POST", //post提交方式默认是get
+           url:"/ajaxcheck.php?op=setmessage",
+           data:str, 
+           //data:$("#userform").serialize(),   //序列化   
+           //dataTyp:"json",
+           error:function(request) {      // 设置表单提交出错                 
+               //$("#showMsg").html(request);  //登录错误提示信息
+           },
+           success:function(data) {
+       	   if(data==1)
+       		{
+       		   location.reload();
+       		}
+       	   else
+       		   alert("失败!请联系管理员");
+           }            
+     });
+}
+</script> 
+    <div class="new_dh">
+      &nbsp;&nbsp;&nbsp;&nbsp;
+     <a href="/">PP外包网首页</a>&nbsp;&gt;&nbsp;
+     <a href="/task/">找项目</a> &nbsp;&gt;&nbsp;
+     <a href="/task/website/">网站开发</a> &nbsp;&gt;&nbsp;
+     <a href="/task/website/1430.html">问卷调查网站开发</a> 
+    </div> 
+    <div style=" width: 970px; height: 100px; margin: 0 auto 10px;"> 
+     <a style="float:left; clear:both;" href="http://www.ppwaibao.com/web/company.php" target="_blank"><img src="/image/new/index_ad2.png" alt="建站服务" width="969" height="100" /></a> 
+    </div> 
+    <div style="width:970px; height: auto; overflow:hidden;"> 
+     <div class="fzb_xq_l"> 
+      <div class="fzb_xq_l1"> 
+       <div class="fzb_xq_l11"> 
+        <span class="fzb_xq_l11_s1">问卷调查网站开发</span> 
+       </div> 
+       <div class="fzb_xq_l11"> 
+        <span class="fzb_xq_l11_s2"> 任务编号：1430&nbsp;&nbsp;&nbsp;&nbsp;发布时间：<span style=" color: #A5A5A5">2013-09-16</span> </span> 
+       </div> 
+       <table cellspacing="1" cellpadding="10"> 
+        <tbody> 
+         <tr> 
+          <td style=" width: 80px;">任务预算 </td> 
+          <td style=" width: 200px;">0~300</td> 
+          <td style=" width: 80px;">招标结束时间 </td> 
+          <td>2013-09-23</td> 
+         </tr> 
+         <tr> 
+          <td>联系方式 </td> 
+          <td><a class="new_span_blue" href="/space.php?do=bidlist&amp;view=alltask" title="投标后可查看联系方式">投标后可查看联系方式</a> </td> 
+          <td>剩余招标时间 </td> 
+          <td class="new_span_red" style=" font-weight: bold;"> <span id="ttime"></span> <script type="text/javascript">
+<!--
+
+//BirthDay=new Date("1-1-2009");
+var str = "2013-09-23";
+var reg=new RegExp(/\-/g);
+str = str.replace(reg, '/');
+
+var BirthDay=new Date(str+" 23:59:59"); //new Date();//这个日期是可以修改的 2012-06-18 23:59:59
+
+//d = "2013-09-23 23:59:59";
+
+BirthDay.setMinutes(BirthDay.getMinutes());//BirthDay.setMinutes(BirthDay.getMinutes()+30);
+
+//document.write("");
+function show_date_time(){
+//var ntime = getfwtime();
+
+today=new Date();
+
+timeold=(BirthDay.getTime()-today.getTime());
+
+sectimeold=timeold/1000
+secondsold=Math.floor(sectimeold);
+msPerDay=24*60*60*1000
+e_daysold=timeold/msPerDay
+daysold=Math.floor(e_daysold);
+e_hrsold=(e_daysold-daysold)*24;
+hrsold=Math.floor(e_hrsold);
+e_minsold=(e_hrsold-hrsold)*60;
+minsold=Math.floor((e_hrsold-hrsold)*60);
+seconds=Math.floor((e_minsold-minsold)*60);
+span_dt_dt = document.getElementById('ttime');
+//alert(timeold);
+if(timeold>0)
+span_dt_dt.innerHTML= daysold+"天"+hrsold+"小时"+minsold+"分"+seconds+"秒";
+else
+{
+span_dt_dt.innerHTML= "招标时间结束";
+document.getElementById('btn_tb_no').style.display = '';
+document.getElementById('btn_tb_yes').style.display = 'none';
+}
+window.setTimeout("show_date_time();",100);
+}
+function getfwtime()
+{
+//var s = "";
+ $.get("/task/gettime.php", function(result){
+// s = result;
+ //alert(s);
+ //$("div").html(result);
+ //return s;
+ 
+ today=new Date(result);
+
+timeold=(BirthDay.getTime()-today.getTime());
+
+sectimeold=timeold/1000
+secondsold=Math.floor(sectimeold);
+msPerDay=24*60*60*1000
+e_daysold=timeold/msPerDay
+daysold=Math.floor(e_daysold);
+e_hrsold=(e_daysold-daysold)*24;
+hrsold=Math.floor(e_hrsold);
+e_minsold=(e_hrsold-hrsold)*60;
+minsold=Math.floor((e_hrsold-hrsold)*60);
+seconds=Math.floor((e_minsold-minsold)*60);
+span_dt_dt = document.getElementById('ttime');
+//alert(timeold);
+if(timeold>0)
+span_dt_dt.innerHTML= daysold+"天"+hrsold+"小时"+minsold+"分"+seconds+"秒";
+else
+{
+span_dt_dt.innerHTML= "招标时间结束";
+document.getElementById('btn_tb_no').style.display = '';
+document.getElementById('btn_tb_yes').style.display = 'none';
+}
+window.setTimeout("getfwtime()",100);
+ 
+ 
+});
+
+}
+
+show_date_time();
+//-->
+</script> </td> 
+         </tr> 
+         <tr> 
+          <td>要求技能 </td> 
+          <td></td> 
+          <td>任务状态 </td> 
+          <td> 时间已过</td> 
+         </tr> 
+        </tbody> 
+       </table> 
+       <div class="fzb_xq_l14">
+         详细需求描述： 
+       </div> 
+       <div class="fzb_xq_l15"> 
+        <div>
+         问卷调查统计参考网站：google form&nbsp;
+        </div> 
+        <div>
+         具体要求：&nbsp;
+        </div> 
+        <div>
+         1、通过google form收集问卷结果，另存为xls格式。
+        </div> 
+        <div>
+         2、创建网页，根据唯一id对xls内容进行查询，通过网页形式返回问卷各个问题的答案，并且可以在线更改。
+        </div> 
+        <div>
+         3、提供对xls文件的内容进行统计，并以柱状图的形式反映在网页上，即问卷内容的归类统计。
+        </div> 
+        <div>
+         可通过QQ联系。
+        </div>
+       </div> 
+       <div class="fzb_xq_l17"> 
+        <div> 
+         <img src="/image/new/fzb_tip2.jpg" width="18" height="17" alt="收藏" />&nbsp;
+         <a onclick="_hmt.push(['_trackEvent', 'fzb_xq', 'click', '收藏']);$('#newlogindiv_a').click();return;addfav()" class="new_a_blue2" style=" cursor: pointer;">收藏</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+         <img src="/image/new/fzb_tip3.jpg" width="18" height="17" alt="我需要类似服务" />&nbsp;
+         <a onclick="_hmt.push(['_trackEvent', 'fzb_xq', 'click', '我需要类似服务']);$('#newlogindiv_a').click();return;location.href='/cp.php?ac=renwu&amp;renwuid=1430'" class="new_a_blue2" style=" cursor: pointer;">我需要类似服务</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+        </div> 
+       </div> 
+      </div> 
+      <div class="fzb_xq_l2"> 
+       <span>项目进度</span>
+       <br /> 
+       <img src="/image/new/fzb_img1.jpg" width="657" height="39" alt="项目进度" /> 
+      </div> 
+      <div id="s" class="fzb_xq_l3"> 
+       <div class="fzb_td1"> 
+        <div class="fzb_td11">
+         <a href="/task/website/1430.html" style=" color: #fff; text-decoration: none;">所有竞标服务商&nbsp;&nbsp;4</a>
+        </div> 
+        <div class="fzb_td12">
+         <a href="/task/website/1430-1.html">备选服务商&nbsp;&nbsp;0</a>
+        </div> 
+        <div class="fzb_td13">
+         <a href="/task/website/1430-2.html">中标服务商&nbsp;&nbsp;0</a>
+        </div> 
+       </div> 
+       <div class="fzb_td2"> 
+        <div class="fzb_xq_l3_id"> 
+         <a href="/home-5253.html" target="_blank"><img src="http://121.199.37.104:84/data/avatar/000/00/52/53_avatar_middle.jpg" alt="engol" width="80" height="80" onerror="this.onerror=null;this.src='http://121.199.37.104:84/images/noavatar_middle.gif'" /></a> 
+        </div> 
+        <div style=" float: left; width:225px; height: 90px; padding-left: 20px;"> 
+         <a href="/home-5253.html" target="_blank" style=" font-size: 15px; font-weight: bold; color: #5E5E5E; line-height: 28px;">engol</a>
+         <br /> 
+         <span style=" color:#7F7D7D; line-height: 28px;">四川-成都</span>
+         <br /> 
+        </div> 
+        <div style=" float: left; width: 250px; height: 90px; line-height: 26px; color: #5E5E5E; position: relative;">
+          投标时间：2013-09-17 11:17
+         <br /> 项目周期：7天
+         <br /> 项目报价： 
+         <a href="/do.php?ac=71888871fa0692518671a730f11ea60b" class="new_a_blue2">登陆后可见</a> 
+         <div onclick="_hmt.push(['_trackEvent', 'fzb_xq', 'click', '展开方案']);opentbxq(0,5253);" id="controltb_0" style=" width:58px; height:20px; line-height:20px; text-align:center; background: #E0E3E4; color: #a5a5a5; position: absolute; top:2px; right: 0px; cursor: pointer;">
+          展开方案
+         </div> 
+        </div> 
+        <div id="looktbxqnn_0" class="fzb_td2d" style=" display:block;"> 
+         <div class="fzb_td2d1">
+          我们是专业做这一块的，希望能够跟您合作，QQ:412161968 Tel:18081945483
+         </div> 
+        </div> 
+        <div id="looktbxq_0" class="fzb_td2d"> 
+         <div class="fzb_td2d1">
+          我们是专业做这一块的，希望能够跟您合作，QQ:412161968 Tel:18081945483
+         </div> 
+         <div class="fzb_td2d3"> 
+          <img id="tbxq_loadimg_5253" alt="加载中" width="32" height="32" src="/image/new/fzbxq_loading.gif" class="fzb_td2d3i1" /> 
+          <div id="tbxq_loaddiv_5253" style=" display: none;"> 
+           <div class="fzb_td2d3d1"> 
+            <span style="color: #0074C5">稿件点评</span>(
+            <span style="color: #0074C5;font-weight: bold;" id="tbxq_loadcount_5253">3条回复</span>) 
+           </div> 
+           <div class="fzb_td2d3d2"> 
+            <div id="tbxq_html_5253"></div> 
+           </div> 
+          </div> 
+         </div> 
+        </div> 
+       </div> 
+       <div class="fzb_td2"> 
+        <div class="fzb_xq_l3_id"> 
+         <a href="/home-4294.html" target="_blank"><img src="http://121.199.37.104:84/data/avatar/000/00/42/94_avatar_middle.jpg" alt="yuanzhonrui" width="80" height="80" onerror="this.onerror=null;this.src='http://121.199.37.104:84/images/noavatar_middle.gif'" /></a> 
+        </div> 
+        <div style=" float: left; width:225px; height: 90px; padding-left: 20px;"> 
+         <a href="/home-4294.html" target="_blank" style=" font-size: 15px; font-weight: bold; color: #5E5E5E; line-height: 28px;">yuanzhonrui</a>
+         <br /> 
+         <span style=" color:#7F7D7D; line-height: 28px;">广东-深圳</span>
+         <br /> 
+         <img src="/image/new/v1.gif" width="92" height="22" alt="认证服务商" /> 
+        </div> 
+        <div style=" float: left; width: 250px; height: 90px; line-height: 26px; color: #5E5E5E; position: relative;">
+          投标时间：2013-09-16 13:53
+         <br /> 项目周期：20天
+         <br /> 项目报价： 
+         <a href="/do.php?ac=71888871fa0692518671a730f11ea60b" class="new_a_blue2">登陆后可见</a> 
+         <div onclick="_hmt.push(['_trackEvent', 'fzb_xq', 'click', '展开方案']);opentbxq(1,4294);" id="controltb_1" style=" width:58px; height:20px; line-height:20px; text-align:center; background: #E0E3E4; color: #a5a5a5; position: absolute; top:2px; right: 0px; cursor: pointer;">
+          展开方案
+         </div> 
+        </div> 
+        <div id="looktbxqnn_1" class="fzb_td2d" style=" display:block;"> 
+         <div class="fzb_td2d1">
+           您好！您的项目我们可以完成，我们有经验， 我是源中瑞网络公司**ruiec*/ 的卢生13826508597 QQ: 1840421365 请您加我的QQ或是请留下您的QQ方便联系，我们方便进一步的沟通一下 
+         </div> 
+        </div> 
+        <div id="looktbxq_1" class="fzb_td2d"> 
+         <div class="fzb_td2d1">
+           您好！您的项目我们可以完成，我们有经验， 我是源中瑞网络公司**ruiec*/ 的卢生13826508597 QQ: 1840421365 请您加我的QQ或是请留下您的QQ方便联系，我们方便进一步的沟通一下 
+         </div> 
+         <div class="fzb_td2d3"> 
+          <img id="tbxq_loadimg_4294" alt="加载中" width="32" height="32" src="/image/new/fzbxq_loading.gif" class="fzb_td2d3i1" /> 
+          <div id="tbxq_loaddiv_4294" style=" display: none;"> 
+           <div class="fzb_td2d3d1"> 
+            <span style="color: #0074C5">稿件点评</span>(
+            <span style="color: #0074C5;font-weight: bold;" id="tbxq_loadcount_4294">3条回复</span>) 
+           </div> 
+           <div class="fzb_td2d3d2"> 
+            <div id="tbxq_html_4294"></div> 
+           </div> 
+          </div> 
+         </div> 
+        </div> 
+       </div> 
+       <div class="fzb_td2"> 
+        <div class="fzb_xq_l3_id"> 
+         <a href="/home-5347.html" target="_blank"><img src="http://121.199.37.104:84/data/avatar/000/00/53/47_avatar_middle.jpg" alt="tec-zhm" width="80" height="80" onerror="this.onerror=null;this.src='http://121.199.37.104:84/images/noavatar_middle.gif'" /></a> 
+        </div> 
+        <div style=" float: left; width:225px; height: 90px; padding-left: 20px;"> 
+         <a href="/home-5347.html" target="_blank" style=" font-size: 15px; font-weight: bold; color: #5E5E5E; line-height: 28px;">tec-zhm</a>
+         <br /> 
+         <span style=" color:#7F7D7D; line-height: 28px;">江苏-南通</span>
+         <br /> 
+        </div> 
+        <div style=" float: left; width: 250px; height: 90px; line-height: 26px; color: #5E5E5E; position: relative;">
+          投标时间：2013-09-16 12:45
+         <br /> 项目周期：20天
+         <br /> 项目报价： 
+         <a href="/do.php?ac=71888871fa0692518671a730f11ea60b" class="new_a_blue2">登陆后可见</a> 
+         <div onclick="_hmt.push(['_trackEvent', 'fzb_xq', 'click', '展开方案']);opentbxq(2,5347);" id="controltb_2" style=" width:58px; height:20px; line-height:20px; text-align:center; background: #E0E3E4; color: #a5a5a5; position: absolute; top:2px; right: 0px; cursor: pointer;">
+          展开方案
+         </div> 
+        </div> 
+        <div id="looktbxqnn_2" class="fzb_td2d" style=" display:block;"> 
+         <div class="fzb_td2d1">
+           10.1之后可以开工
+         </div> 
+        </div> 
+        <div id="looktbxq_2" class="fzb_td2d"> 
+         <div class="fzb_td2d1">
+           10.1之后可以开工
+         </div> 
+         <div class="fzb_td2d3"> 
+          <img id="tbxq_loadimg_5347" alt="加载中" width="32" height="32" src="/image/new/fzbxq_loading.gif" class="fzb_td2d3i1" /> 
+          <div id="tbxq_loaddiv_5347" style=" display: none;"> 
+           <div class="fzb_td2d3d1"> 
+            <span style="color: #0074C5">稿件点评</span>(
+            <span style="color: #0074C5;font-weight: bold;" id="tbxq_loadcount_5347">3条回复</span>) 
+           </div> 
+           <div class="fzb_td2d3d2"> 
+            <div id="tbxq_html_5347"></div> 
+           </div> 
+          </div> 
+         </div> 
+        </div> 
+       </div> 
+       <div class="fzb_td2"> 
+        <div class="fzb_xq_l3_id"> 
+         <a href="/home-4953.html" target="_blank"><img src="http://121.199.37.104:84/data/avatar/000/00/49/53_avatar_middle.jpg" alt="少年外包者" width="80" height="80" onerror="this.onerror=null;this.src='http://121.199.37.104:84/images/noavatar_middle.gif'" /></a> 
+        </div> 
+        <div style=" float: left; width:225px; height: 90px; padding-left: 20px;"> 
+         <a href="/home-4953.html" target="_blank" style=" font-size: 15px; font-weight: bold; color: #5E5E5E; line-height: 28px;">少年外包者</a>
+         <br /> 
+         <span style=" color:#7F7D7D; line-height: 28px;">天津-红挢</span>
+         <br /> 
+        </div> 
+        <div style=" float: left; width: 250px; height: 90px; line-height: 26px; color: #5E5E5E; position: relative;">
+          投标时间：2013-09-16 11:07
+         <br /> 项目周期：10天
+         <br /> 项目报价： 
+         <a href="/do.php?ac=71888871fa0692518671a730f11ea60b" class="new_a_blue2">登陆后可见</a> 
+         <div onclick="_hmt.push(['_trackEvent', 'fzb_xq', 'click', '展开方案']);opentbxq(3,4953);" id="controltb_3" style=" width:58px; height:20px; line-height:20px; text-align:center; background: #E0E3E4; color: #a5a5a5; position: absolute; top:2px; right: 0px; cursor: pointer;">
+          展开方案
+         </div> 
+        </div> 
+        <div id="looktbxqnn_3" class="fzb_td2d" style=" display:block;"> 
+         <div class="fzb_td2d1">
+          我们是三个人的小团队，想要自己接一些项目做做，希望能有机会和您合作，我们专注java和android 
+         </div> 
+        </div> 
+        <div id="looktbxq_3" class="fzb_td2d"> 
+         <div class="fzb_td2d1">
+          我们是三个人的小团队，想要自己接一些项目做做，希望能有机会和您合作，我们专注java和android 
+         </div> 
+         <div class="fzb_td2d3"> 
+          <img id="tbxq_loadimg_4953" alt="加载中" width="32" height="32" src="/image/new/fzbxq_loading.gif" class="fzb_td2d3i1" /> 
+          <div id="tbxq_loaddiv_4953" style=" display: none;"> 
+           <div class="fzb_td2d3d1"> 
+            <span style="color: #0074C5">稿件点评</span>(
+            <span style="color: #0074C5;font-weight: bold;" id="tbxq_loadcount_4953">3条回复</span>) 
+           </div> 
+           <div class="fzb_td2d3d2"> 
+            <div id="tbxq_html_4953"></div> 
+           </div> 
+          </div> 
+         </div> 
+        </div> 
+       </div> 
+       <div style=" width:610px; height: auto; overflow:hidden; padding-top: 15px;"> 
+        <center>
+         <div class="page"></div>
+        </center> 
+       </div> 
+      </div> 
+      <div id="m" class="fzb_xq_l4"> 
+       <div style=" width: 730px; height: 45px; border-bottom: solid 1px #DADADA; margin-bottom: 5px;_margin-bottom: 5px; "> 
+        <span style=" float:left; padding:15px 0 0 33px; font-size:15px; font-weight: bold;color: #5E5E5E">互动答疑</span> 
+       </div> 
+       <div class="new_span_red" style=" width:610px; height: auto; overflow:hidden; padding-top: 15px; text-align: center;">
+         暂无评论 
+       </div> 
+       <div style=" width:555px; height: auto; padding:15px 0 0 55px; overflow:hidden;"> 
+        <textarea id="xq_hddytxt" onkeyup="txt_change2(100)" rows="" cols="" style=" width: 420px; height: 80px;"></textarea> 
+        <br /> 
+        <img src="/image/new/xq_nimg1.jpg" width="65" height="26" alt="发表" onclick="addhddy()" style=" margin-top: 10px;_margin-top: 10px; cursor: pointer;" />&nbsp;&nbsp;&nbsp;
+        <span id="xq_hddyts" style=" color: #aaa;">您还能输入100个汉字</span> 
+       </div> 
+      </div> 
+     </div> 
+     <div class="fzb_xq_r"> 
+      <div class="fzb_xq_r1"> 
+       <div class="fzb_xq_r11"> 
+        <a href="/home-5399.html" target="_blank" onclick="_hmt.push(['_trackEvent', 'fzb_xq', 'click', '买家头像']);"><img src="http://121.199.37.104:84/data/avatar/000/00/53/99_avatar_middle.jpg" alt="chuchude" width="66" height="66" onerror="this.onerror=null;this.src='http://121.199.37.104:84/images/noavatar_middle.gif'" /></a> 
+       </div> 
+       <div class="fzb_xq_r12">
+         买家：
+        <a href="/home-5399.html" target="_blank" style=" color:#0074c5; font-weight: bold; font-size: 16px;top:0px;" onclick="_hmt.push(['_trackEvent', 'fzb_xq', 'click', '买家']);">chuchude</a>
+        <br /> 
+        <a href="/space.php?do=pmessage&amp;touid=5399" target="_blank" onclick="ajaxmenu(event, this.id)"><img src="/image/new/renwu_tip10.jpg" width="19" height="19" alt="私信" style=" border: 0;" /></a>&nbsp; 
+        <a href="/space.php?do=pmessage&amp;touid=5399" target="_blank" onclick="_hmt.push(['_trackEvent', 'fzb_xq', 'click', '私信']);">私信</a> 
+       </div> 
+       <div class="fzb_xq_r13"> 
+        <span style=" position: relative; top:-3px; color: #636363">付款及时性&nbsp;</span>
+        <img src="/image/new/renwu_tip8.gif" width="16" height="16" alt="Star" />
+        <img src="/image/new/renwu_tip8.gif" width="16" height="16" alt="Star" />
+        <img src="/image/new/renwu_tip8.gif" width="16" height="16" alt="Star" />
+        <img src="/image/new/renwu_tip8.gif" width="16" height="16" alt="Star" />
+        <img src="/image/new/renwu_tip8.gif" width="16" height="16" alt="Star" /> 
+        <span style=" position: relative; top:-3px; font:lighter 12px arial; color: #8E8E8E">&nbsp;</span>
+        <br /> 
+        <span style=" position: relative; top:-3px; color: #636363">合作愉快度&nbsp;</span>
+        <img src="/image/new/renwu_tip8.gif" width="16" height="16" alt="Star" />
+        <img src="/image/new/renwu_tip8.gif" width="16" height="16" alt="Star" />
+        <img src="/image/new/renwu_tip8.gif" width="16" height="16" alt="Star" />
+        <img src="/image/new/renwu_tip8.gif" width="16" height="16" alt="Star" />
+        <img src="/image/new/renwu_tip8.gif" width="16" height="16" alt="Star" /> 
+        <span style=" position: relative; top:-3px; font:lighter 12px arial; color: #8E8E8E">&nbsp;</span> 
+       </div> 
+      </div> 
+      <div style=" width: 230px; height: auto; border: solid 1px #DADADA; border-top:0; background: #fff;"> 
+       <div style=" width: 230px; height: 35px; background: #8BD07F;"> 
+        <span style=" padding: 10px 0 0 15px; font-size: 15px; font-weight: bold; color: #fff; float: left;">快速投标</span> 
+       </div> 
+       <div id="tbcontrol" style=" display:; width: 200px; height: auto; padding:20px 0 40px 30px; color: #5E5E5E; font-size:15px;">
+         您可以解决此需求?
+        <br /> 
+        <input id="btn_tb_no" name="btn_tb_no" type="button" style=" border: 0; width: 171px; height: 63px; background: url(/image/new/fzb_btn8.jpg) no-repeat; margin-top: 15px;_margin-top: 15px; margin-bottom: 30px;_margin-bottom: 30px; overflow: hidden;" title="投标结束" />
+        <br /> 有类似需求?
+        <br /> 
+        <input type="button" style=" border: 0; width: 171px; height: 33px; background: url(/image/new/fzb_btn7.jpg) no-repeat; margin-top: 15px;_margin-top: 15px; cursor: pointer;overflow: hidden; " onclick="_hmt.push(['_trackEvent', 'fzb_xq', 'click', '立即发布需求','1']);$('#newlogindiv_a').click();return;location.href='/cp.php?ac=renwu&amp;renwuid=1430'" />
+        <br /> 
+       </div> 
+       <div id="tblook" style=" display:none;"> 
+        <div style=" width: 210px; height: auto; padding:20px 0 20px 20px;  line-height: 23px;"> 
+         <img src="/image/new/fzb_tip6.jpg" width="9" height="10" alt="" style=" position: relative; left:-6px;" />请先
+         <a class="new_a_blue" href="/do.php?ac=71888871fa0692518671a730f11ea60b" style=" font-weight: bold;">登陆</a>，然后提交竞标方案；
+         <br /> 
+         <img src="/image/new/fzb_tip6.jpg" width="9" height="10" alt="" style=" position: relative; left:-6px;" />还不是PP用户？PP期待您的加入，
+         <br />&nbsp;&nbsp;
+         <a class="new_a_blue" href="/do.php?ac=0ba647bf13e2e79dfbc112406bab4ea8" style=" font-weight: bold;">注册</a>成为我们的一员吧！ 
+        </div> 
+       </div> 
+      </div> 
+      <div style=" width: 230px; height: auto; overflow:hidden; padding-bottom:10px; border: solid 1px #DADADA; border-top:0; background: #fff;"> 
+       <div style=" width: 230px; height: 35px; background: #8BD07F;"> 
+        <span style=" padding: 10px 0 0 15px; font-size: 15px; font-weight: bold; color: #fff; float: left;">同类需求成功案例</span> 
+       </div> 
+       <div style=" height: auto; overflow: hidden; padding-bottom: 20px;"> 
+        <div class="d_m2_r4_"> 
+         <center> 
+          <div class="d1"> 
+           <a href="/works/webdev/7095.html" target="_blank"><img src="/attachment/5284_1376467270EKOt.jpg" width="180" alt="有机食物网站开发,有机食品网站制作" /></a> 
+          </div> 
+          <div class="d2"> 
+           <a href="/works/webdev/7095.html" target="_blank" class="new_a_gray" style=" float:left; font-size: 15px;" title="有机食物网站开发,有机食品网站制作">有机食物网站开</a> 
+           <span class="new_span_red" style=" font:bold 14px arial; float: right; padding: 2px 0 0 0;">￥30000</span> 
+          </div> 
+          <div class="d3"> 
+           <span class="d31"><a href="/works/webdev/" target="_blank">服务器</a></span> 
+           <span class="new_span_gray" style=" float: right;">周期：40天</span> 
+          </div> 
+          <div class="d3"> 
+           <span class="d31">BY&nbsp;&nbsp;<a href="/home-5284.html" target="_blank">zylinkus_com</a></span> 
+           <span class="new_span_gray" style=" float: right;">8月14日</span> 
+          </div> 
+         </center> 
+        </div> 
+        <div class="d_m2_r4_"> 
+         <center> 
+          <div class="d1"> 
+           <a href="/works/webdev/7094.html" target="_blank"><img src="/attachment/5284_13764671072VVK.jpg" width="180" alt="公益网站项目" /></a> 
+          </div> 
+          <div class="d2"> 
+           <a href="/works/webdev/7094.html" target="_blank" class="new_a_gray" style=" float:left; font-size: 15px;" title="公益网站项目">公益网站项目</a> 
+           <span class="new_span_red" style=" font:bold 14px arial; float: right; padding: 2px 0 0 0;">￥70000</span> 
+          </div> 
+          <div class="d3"> 
+           <span class="d31"><a href="/works/webdev/" target="_blank">数据库</a></span> 
+           <span class="new_span_gray" style=" float: right;">周期：60天</span> 
+          </div> 
+          <div class="d3"> 
+           <span class="d31">BY&nbsp;&nbsp;<a href="/home-5284.html" target="_blank">zylinkus_com</a></span> 
+           <span class="new_span_gray" style=" float: right;">8月14日</span> 
+          </div> 
+         </center> 
+        </div> 
+        <div class="d_m2_r4_"> 
+         <center> 
+          <div class="d1"> 
+           <a href="/works/webdev/7092.html" target="_blank"><img src="/attachment/5274_1376376426bjUj.jpg" width="180" alt="天行易装饰网站开发,装饰网站建设" /></a> 
+          </div> 
+          <div class="d2"> 
+           <a href="/works/webdev/7092.html" target="_blank" class="new_a_gray" style=" float:left; font-size: 15px;" title="天行易装饰网站开发,装饰网站建设">天行易装饰网站</a> 
+           <span class="new_span_red" style=" font:bold 14px arial; float: right; padding: 2px 0 0 0;">￥20000</span> 
+          </div> 
+          <div class="d3"> 
+           <span class="d31"><a href="/works/webdev/" target="_blank">数据库</a></span> 
+           <span class="new_span_gray" style=" float: right;">周期：19天</span> 
+          </div> 
+          <div class="d3"> 
+           <span class="d31">BY&nbsp;&nbsp;<a href="/home-5274.html" target="_blank">282444219@qq.co</a></span> 
+           <span class="new_span_gray" style=" float: right;">8月13日</span> 
+          </div> 
+         </center> 
+        </div> 
+        <div class="d_m2_r4_"> 
+         <center> 
+          <div class="d1"> 
+           <a href="/works/webdev/7091.html" target="_blank"><img src="/attachment/5261_1376039684zaDf.jpg" width="180" alt="汗牛翻译有限公司网站建设" /></a> 
+          </div> 
+          <div class="d2"> 
+           <a href="/works/webdev/7091.html" target="_blank" class="new_a_gray" style=" float:left; font-size: 15px;" title="汗牛翻译有限公司网站建设">汗牛翻译有限公</a> 
+           <span class="new_span_red" style=" font:bold 14px arial; float: right; padding: 2px 0 0 0;">￥20</span> 
+          </div> 
+          <div class="d3"> 
+           <span class="d31"><a href="/works/webdev/" target="_blank">设计及多媒体</a></span> 
+           <span class="new_span_gray" style=" float: right;">周期：10000天</span> 
+          </div> 
+          <div class="d3"> 
+           <span class="d31">BY&nbsp;&nbsp;<a href="/home-5261.html" target="_blank">bjkinlax</a></span> 
+           <span class="new_span_gray" style=" float: right;">8月9日</span> 
+          </div> 
+         </center> 
+        </div> 
+       </div> 
+      </div> 
+      <a href="http://www.ppwaibao.com/common/zt/" target="_blank"><img src="/image/ad/ad2_230-300.gif" width="230" height="300" border="0" alt="全球服务商" /></a> 
+     </div> 
+    </div> 
+    <div class="fzb_newmore"> 
+     <div class="fzb_newmored1"> 
+      <div class="fzb_newmored1t"> 
+       <span class="fzb_newmoredspan">您可能感兴趣的任务</span> 
+       <a href="/task/" class="fzb_newmoreda" title="更多">更多&gt;&gt;</a> 
+      </div> 
+      <div class="fzb_newmored1m"> 
+       <div class="fzb_newmorediv"> 
+        <span style=" width: 65px; color: #A81801; float: left;">￥2000</span> 
+        <a href="/task/flash/1691.html" title="鼠标游戏" style="color: #5E5E5E; float: left;">鼠标游戏</a> 
+       </div> 
+       <div class="fzb_newmorediv"> 
+        <span style=" width: 65px; color: #A81801; float: left;">￥50000</span> 
+        <a href="/task/flash/1690.html" title="鼠标游戏" style="color: #5E5E5E; float: left;">鼠标游戏</a> 
+       </div> 
+       <div class="fzb_newmorediv"> 
+        <span style=" width: 65px; color: #A81801; float: left;">￥12000</span> 
+        <a href="/task/website/1689.html" title="用html5制作前端页面，调用后台接口" style="color: #5E5E5E; float: left;">用html5制作前端页面，调用</a> 
+       </div> 
+       <div class="fzb_newmorediv"> 
+        <span style=" width: 65px; color: #A81801; float: left;">￥80</span> 
+        <a href="/task/games/1688.html" title="安卓联网炸金花寻外包|代工" style="color: #5E5E5E; float: left;">安卓联网炸金花寻外包|代工</a> 
+       </div> 
+       <div class="fzb_newmorediv"> 
+        <span style=" width: 65px; color: #A81801; float: left;">￥10000</span> 
+        <a href="/task/Softdev/1686.html" title="字符转换" style="color: #5E5E5E; float: left;">字符转换</a> 
+       </div> 
+       <div class="fzb_newmorediv"> 
+        <span style=" width: 65px; color: #A81801; float: left;">￥100000</span> 
+        <a href="/task/mob_other/1685.html" title="寻合作供应商(活动类小游戏、微商城、创意广告等）" style="color: #5E5E5E; float: left;">寻合作供应商(活动类小游戏、微</a> 
+       </div> 
+      </div> 
+     </div> 
+     <div class="fzb_newmored1"> 
+      <div class="fzb_newmored1t"> 
+       <span class="fzb_newmoredspan">最多人竞标的任务</span> 
+       <a href="/task/" class="fzb_newmoreda" title="更多">更多&gt;&gt;</a> 
+      </div> 
+      <div class="fzb_newmored1m"> 
+       <div class="fzb_newmorediv"> 
+        <span style=" width: 65px; color: #A81801; float: left;">￥30000</span> 
+        <a href="/task/website/1116.html" title="学校网站建设项目外包" style="color: #5E5E5E; float: left;">学校网站建设项目外包</a> 
+       </div> 
+       <div class="fzb_newmorediv"> 
+        <span style=" width: 65px; color: #A81801; float: left;">￥20000</span> 
+        <a href="/task/website/1362.html" title="旅游攻略网站建设外包" style="color: #5E5E5E; float: left;">旅游攻略网站建设外包</a> 
+       </div> 
+       <div class="fzb_newmorediv"> 
+        <span style=" width: 65px; color: #A81801; float: left;">￥10000</span> 
+        <a href="/task/system/1238.html" title="工厂销售管理系统开发外包" style="color: #5E5E5E; float: left;">工厂销售管理系统开发外包</a> 
+       </div> 
+       <div class="fzb_newmorediv"> 
+        <span style=" width: 65px; color: #A81801; float: left;">￥2000</span> 
+        <a href="/task/website/1212.html" title="电子类公司网站开发外包招标" style="color: #5E5E5E; float: left;">电子类公司网站开发外包招标</a> 
+       </div> 
+       <div class="fzb_newmorediv"> 
+        <span style=" width: 65px; color: #A81801; float: left;">￥20000</span> 
+        <a href="/task/android/1345.html" title="校园类app项目外包" style="color: #5E5E5E; float: left;">校园类app项目外包</a> 
+       </div> 
+       <div class="fzb_newmorediv"> 
+        <span style=" width: 65px; color: #A81801; float: left;">￥10000</span> 
+        <a href="/task/website/1254.html" title="二手车网站程序PHP开发" style="color: #5E5E5E; float: left;">二手车网站程序PHP开发</a> 
+       </div> 
+      </div> 
+     </div> 
+     <div class="fzb_newmored2"> 
+      <div class="fzb_newmored2t"> 
+       <span class="fzb_newmoredspan">将要截标的任务</span> 
+       <a href="/task/" class="fzb_newmoreda" title="更多">更多&gt;&gt;</a> 
+      </div> 
+      <div class="fzb_newmored2m"> 
+      </div> 
+     </div> 
+    </div> 
+    <div id="backgroundDiv"> 
+    </div> 
+    <div id="info"> 
+     <span style=" font-size: 15px; font-weight: bold; color: #5e5e5e; float: left; margin:0 0 10px 0;">我要投标</span> 
+     <img alt="关闭" src="/image/new/del.gif" width="10" height="10" style="float: right; cursor:pointer; " onclick="closeBackground()" /> 
+     <div class="info_d"> 
+      <div style=" width: 210px; height: auto; padding:20px 0 20px 20px;  line-height: 23px;"> 
+       <img src="/image/new/fzb_tip6.jpg" width="9" height="10" alt="" style=" position: relative; left:-6px;" />请先
+       <a class="new_a_blue" href="/do.php?ac=71888871fa0692518671a730f11ea60b" style=" font-weight: bold;">登陆</a>，然后提交竞标方案；
+       <br /> 
+       <img src="/image/new/fzb_tip6.jpg" width="9" height="10" alt="" style=" position: relative; left:-6px;" />还不是PP用户？PP期待您的加入，
+       <br />&nbsp;&nbsp;
+       <a class="new_a_blue" href="/do.php?ac=0ba647bf13e2e79dfbc112406bab4ea8" style=" font-weight: bold;">注册</a>成为我们的一员吧！ 
+      </div> 
+     </div>
+    </div> 
+    <script>
+            var station = false;
+function edit_album_show2(){
+var obj = document.getElementById('renwu_upload_div');
+if(obj.style.display == '') {
+obj.style.display = 'none';
+} else {
+obj.style.display = '';
+}
+}
+
+function OpenBackground() {
+    var scrollHeight = document.documentElement.scrollHeight;
+    var scrollWidth = document.documentElement.scrollWidth;
+    var divWidth = 0;
+    var divLeft = 0;
+    var divTop = 0;
+    divWidth = 570;
+    divTop = scrollHeight / 3;
+    divLeft = scrollWidth / 2 - divWidth / 2;
+    if (!station) {
+    	document.getElementById("info").style.position = "absolute";
+    	document.getElementById("info").style.top = 350+"px";
+    	document.getElementById("info").style.left = divLeft+"px";
+    	document.getElementById("info").style.display = "block";
+    	document.getElementById("backgroundDiv").style.height = scrollHeight+"px";
+    	document.getElementById("backgroundDiv").style.width = scrollWidth+"px";
+    	document.getElementById("backgroundDiv").style.display = "block";
+    	station = true;
+    }
+}
+
+function closeBackground() {
+    	document.getElementById("info").style.display = "none";
+    	document.getElementById("backgroundDiv").style.display = "none";
+    station = false;
+}
+</script> 
+   </div> 
+  </div> 
+  <div class="nfoot"> 
+   <div class="nfoot_"> 
+    <center> 
+     <div class="nfootm"> 
+      <div class="nfootm1"> 
+       <a href="http://www.ppwaibao.com/common/detail/" class="a1">你该知道的PP外包</a>
+       <br /> PP是免费的交易平台
+       <br /> 人工客服全程支持
+       <br /> 短信通知&nbsp;&nbsp;&nbsp;&nbsp;随时掌握项目进度
+       <br /> 
+       <br />
+       <br /> 
+       <a href="http://www.ppwaibao.com/common/detail/" class="a1">买家流程</a>
+       <br /> 免费发布需求
+       <br /> 线下项目到线上签订协议
+       <br /> 分段支付交易有保障
+       <br /> 服务商需通过实名认证
+       <br /> 
+      </div> 
+      <div class="nfootm2"> 
+       <a href="http://www.ppwaibao.com/common/service/" class="a1">服务商流程</a>
+       <br /> 免费竞标项目
+       <br /> 分段交付更安心
+       <br /> 积累信用 成为精英服务商
+       <br /> 
+       <br />
+       <br /> 
+       <a href="http://www.ppwaibao.com/common/trade/" class="a1">交易安全</a>
+       <br /> 实名认证
+       <br /> 在线保障协议
+       <br /> 分段支付交付 资金托管
+       <br /> 纠纷资金冻结
+       <br /> 
+      </div> 
+      <div class="nfootm3"> 
+       <span class="a1">客服热线</span>
+       <br /> 
+       <span class="a2">400-0039-930</span>
+       <br /> 在线沟通：
+       <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=4000039930&amp;site=qq&amp;menu=yes"><img src="http://www.ppwaibao.com/image/new/foot_qq.gif" width="99" height="23" class="a3" alt="QQ在线咨询" /></a>
+       <br /> 公司邮箱：
+       <a href="mailto:service@ppwaibao.com">service@ppwaibao.com</a>
+       <br /> 
+       <span class="a4">建议或意见</span>
+       <br /> 
+       <textarea id="yj_txt" rows="" cols="" maxlength="100" class="a5"></textarea>
+       <br /> 
+       <input type="button" value="提交" class="a6" onclick="footer_yj_commit();" /> 
+       <script>
+//底部提交意见
+function footer_yj_commit()
+{
+var message = document.getElementById('yj_txt').value;
+if(message == '')
+{
+alert("请填写建议");return;
+}
+var str="&mes=" + message;
+    $.ajax({
+           type:"POST", //post提交方式默认是get
+           url:"/ajaxcheck.php?op=tjjy",
+           data:str, 
+           timeout:8000,//设置8秒延时
+           error:function(request) {      // 设置表单提交出错             
+        	   
+           },
+           success:function(s) {
+if(s>0)
+{
+alert("提交成功");location.reload();
+}
+else if(s==-1)
+alert("检测到危险字符");
+else
+alert("提交失败,请联系管理员");
+           }
+     });
+}
+</script> 
+      </div> 
+     </div> 
+    </center> 
+   </div> 
+  </div> 
+  <div class="newlink"> 
+   <div class="newlink_"> 
+    <div class="newlink_d"> 
+     <ul> 
+      <li> <a href="http://www.ppwaibao.com/" target="_blank" class="a">IT外包</a> </li> 
+      <li> <a href="http://www.ppwaibao.com/" target="_blank" class="a">服务外包</a> </li> 
+      <li> <a href="http://www.ppwaibao.com/" target="_blank" class="a">软件外包</a> </li> 
+      <li> <a href="http://www.ppwaibao.com/supplier/" target="_blank" class="a">外包公司</a> </li> 
+      <li> <a href="http://www.ppwaibao.com/works/" target="_blank" class="a">外包案例</a> </li> 
+      <li> <a href="http://www.ppwaibao.com/task/" target="_blank" class="a">项目外包</a> </li> 
+      <li> <a href="http://jianzhan.ppwaibao.com/" target="_blank" class="a">网站建设</a> </li> 
+      <li> <a href="http://jianzhan.ppwaibao.com/" target="_blank" class="a">免费网站建设</a> </li> 
+      <li> <a href="http://www.ppwaibao.com/friendlink.html" target="_blank" class="a2">友情链接申请</a> </li> 
+     </ul> 
+    </div> 
+   </div> 
+  </div> 
+  <div style="background:#fff; height:50px; text-align: center; padding-top:20px;"> 
+   <div> 
+    <a href="http://www.ppwaibao.com/aboutus.html">关于我们</a>&nbsp;|&nbsp; 
+    <a href="http://www.ppwaibao.com/sitemap.html">网站地图</a>&nbsp;|&nbsp; 
+    <a href="http://www.ppwaibao.com/agreement.html">服务协议</a>&nbsp;|&nbsp; 
+    <a href="http://www.ppwaibao.com/friendlink.html">友情链接</a>&nbsp;|&nbsp; 
+    <a href="http://www.ppwaibao.com/contact.html">联系我们</a>&nbsp;|&nbsp; 
+    <a href="http://www.ppwaibao.com/help.html">帮助中心</a> 
+   </div> 
+   <div>
+     Copyright &copy; 2012 
+    <a href="http://www.ppwaibao.com" style="color:#000000;">www.ppwaibao.com</a> All rights reserved 
+    <a target="_blank" href="http://www.miitbeian.gov.cn/">粤ICP备11072416号-3</a> 
+   </div> 
+  </div> 
+  <!-- Baidu Button BEGIN --> 
+  <script type="text/javascript" id="bdshare_js" data="type=slide&amp;img=2&amp;pos=right&amp;uid=533772"></script> 
+  <script type="text/javascript" id="bdshell_js"></script> 
+  <script type="text/javascript">
+var scrolltop = 200;
+
+var bds_config = {"bdTop":scrolltop};
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + new Date().getHours();
+</script> 
+  <!-- Baidu Button END --> 
+  <div style="display:none;"> 
+   <script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F3a16de819377fd2e4cede42d840ee4a5' type='text/javascript'%3E%3C/script%3E"));
+</script> 
+   <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-42972070-1', 'ppwaibao.com');
+  ga('send', 'pageview');
+</script> 
+  </div> 
+  <style>
+.gettop{width:37px; height:37px;position:absolute; top:0; left:0;display:block;position:absolute;top:0;z-index:99; cursor: pointer; display: none;}
+.gettop2{width:37px; height:37px;position:absolute; top:0; left:0;display:block;position:fixed !important;top:0;z-index:99;cursor: pointer;}
+.gettop2 a{display: block;width:37px; height:37px;background:url(http://www.ppwaibao.com/image/web/gettop_bg2.png) no-repeat;}
+.gettop2 a:hover{display: block;width:37px; height:37px;background:url(http://www.ppwaibao.com/image/web/gettop_bg1.png) no-repeat; text-decoration: none;}
+.gettop a{display: block;width:37px; height:37px;background:url(http://www.ppwaibao.com/image/web/gettop_bg2.png) no-repeat;}
+.gettop a:hover{display: block;width:37px; height:37px;background:url(http://www.ppwaibao.com/image/web/gettop_bg1.png) no-repeat;text-decoration: none;}
+</style> 
+  <div id="gettop" class="gettop">
+   <a href="javascript:void(0)" hidefocus="true" title="返回顶部" onclick="window.scroll(0,0)">&nbsp;</a>
+  </div> 
+  <script type="text/javascript" src="http://www.ppwaibao.com/image/newjs/gettopscroll.js"></script> 
+  <script type="text/javascript">
+$(function(){ 
+var bodywidth = $(window).width();
+var bodyheight = $(window).height();
+var getoptop = bodyheight - 100;
+var getopleft = 950;
+if(bodywidth>1024)
+var getopleft = ((bodywidth - 1002)/2 + 1020)
+$("#gettop").css({
+top:getoptop+"px",
+left:getopleft +"px",
+display:'block'
+});
+$("#gettop").smartFloattt({
+di_top : getoptop,
+di_class1 : 'gettop',
+di_class2 : 'gettop2',
+di_demoid : 'gettop'
+});
+});
+</script>   
+  <script language="javascript" type="text/javascript" src="http://www.ppwaibao.com/do.php?ac=sendmail&amp;rand=1490561789"></script> 
+ </body>
+</html>

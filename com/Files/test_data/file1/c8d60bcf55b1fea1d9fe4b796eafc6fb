@@ -1,0 +1,271 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"><html><head><meta http-equiv="X-UA-Compatible" content="IE=Edge"> 
+<link rel="stylesheet" href="http://hdhft.evergrande.com:80/broker/css/header/superfish.css" media="screen">
+<link rel="stylesheet" href="http://hdhft.evergrande.com:80/broker/css/header/superfish-vertical.css" media="screen">
+<link rel="stylesheet" href="http://hdhft.evergrande.com:80/broker/css/common.css" media="screen">
+<link rel="stylesheet" href="http://hdhft.evergrande.com:80/broker/css/jquery.treeTable.css" media="screen">
+<link rel="stylesheet" href="http://hdhft.evergrande.com:80/broker/timepicker/css/jquery-ui-1.8.17.custom.css" media="screen">
+<link rel="stylesheet" href="http://hdhft.evergrande.com:80/broker/timepicker/css/jquery-ui-timepicker-addon.css" media="screen">
+<link rel="stylesheet" href="http://hdhft.evergrande.com:80/broker/js/fancybox/jquery.fancybox-1.3.4.css" media="screen">
+<link rel="stylesheet" href="http://hdhft.evergrande.com:80/broker/datepicker/datepicker.css" media="screen">
+<link rel="stylesheet" href="http://hdhft.evergrande.com:80/broker/css/initFormTag.css" media="screen">
+<link rel="stylesheet" href="http://hdhft.evergrande.com:80/broker/css/pages.css" media="screen">
+<link rel="stylesheet" href="http://hdhft.evergrande.com:80/broker/css/header.css" media="screen">
+<link rel="stylesheet" href="http://hdhft.evergrande.com:80/broker/css/jquery.autocomplete.css" media="screen">
+<style type="text/css">
+#exportButton{
+	background: #c51823;
+    background: -moz-linear-gradient(center top , #c51823, #c51823) repeat scroll 0 0 transparent;
+    background:-webkit-gradient(linear, 0% 0%, 0% 100%, from(#c51823), to(#c51823));
+    border: 1px solid #c51823;
+    border-radius: 3px 3px 3px 3px;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-size: 14px;
+    height: 30px;
+    
+    text-align: center;
+    width: 79px;
+}
+</style>
+
+<script src="http://hdhft.evergrande.com:80/broker/js/jquery-1.9.1.js"></script>
+<script src="http://hdhft.evergrande.com:80/broker/js/jquery.treeTable.min.js"></script>
+<script src="http://hdhft.evergrande.com:80/broker/js/date.js"></script>
+<script src="http://hdhft.evergrande.com:80/broker/js/jquery.bgiframe.js"></script>
+<script src="http://hdhft.evergrande.com:80/broker/js/util/sysUtil.js"></script>
+<script src="http://hdhft.evergrande.com:80/broker/js/util/busy.js"></script>
+<script src="http://hdhft.evergrande.com:80/broker/js/util/popup.js"></script>
+<script src="http://hdhft.evergrande.com:80/broker/datepicker/datepicker.js"></script>
+<script src="http://hdhft.evergrande.com:80/broker/js/fancybox/jquery.fancybox-1.3.4.js"></script>
+<script src="http://hdhft.evergrande.com:80/broker//timepicker/js/jquery-ui-1.10.2.custom.js"></script>
+<script src="http://hdhft.evergrande.com:80/broker//timepicker/js/jquery-ui-timepicker-addon.js"></script>
+<script src="http://hdhft.evergrande.com:80/broker//timepicker/js/jquery-ui-timepicker-zh-CN.js"></script>
+<script type="text/javascript" jq="last" init="YC.Start();" src="http://hdhft.evergrande.com:80/broker//js/jq/extend/yc.fwk.js?rev=20121218"></script>
+<script src="http://hdhft.evergrande.com:80/broker/js/util/initFormTag.js"></script>
+<script src="http://hdhft.evergrande.com:80/broker/js/pages.js"></script>
+<script src="http://hdhft.evergrande.com:80/broker/js/ajaxfileupload.js"></script>
+<script src="http://hdhft.evergrande.com:80/broker/js/util/util.js"></script>
+<script src="http://hdhft.evergrande.com:80/broker/js/json2.js"></script>
+<script src="http://hdhft.evergrande.com:80/broker/js/jquery.autocomplete.js"></script>
+
+
+
+<script>
+
+  	 var ctxPath='/broker';
+     function redirectUrl(obj){
+        location.href=ctxPath+"/"+$(obj).attr("href");
+     }
+     function redirectBtnUrl(url){
+        location.href=ctxPath+"/"+url;
+     }
+     
+     $(function(){
+        $("#backicon").click(function(){
+            history.back();
+        });
+     });
+     
+     function setExportButtonDisabled(e){
+    	var $exportButton = $(e);
+		$exportButton.css('background-color','gray');
+		$exportButton.css('background-image','-moz-linear-gradient(center top , gray, gray)');
+		$exportButton.css('background','-webkit-gradient(linear, 0% 0%, 0% 100%, from(gray), to(gray))');
+		$exportButton.css('border-color','gray');
+		$exportButton.attr('disabled','disabled');
+     }
+     function setExportButtonUnDisabled(e){
+    	 var $exportButton = $(e);
+    	 setTimeout(function(){
+	   		$exportButton.css('background-color','#C51823');
+	   		$exportButton.css('background-image','-moz-linear-gradient(center top , #C51823, #C51823)');
+	   		$exportButton.css('background','-webkit-gradient(linear, 0% 0%, 0% 100%, from(#c51823), to(#c51823))');
+	   		$exportButton.css('border-color','#C51823');
+	   		$exportButton.removeAttr('disabled');
+	   	},120000);//两分钟
+     }
+    
+     $(document).ready(function(){
+    	 //getCompanyList();
+    	 $("#exportButton").removeAttr("type");
+    	 $("#exportButton").bind("click",function(){
+    		 setExportButtonDisabled(this);
+    		 setExportButtonUnDisabled(this);
+    	 });
+    	 
+    	 /* 项目权限 */
+    	 $("#HeaderCompanyIdUnit").bind("change",function(){
+        	 var companyId = $("#HeaderCompanyIdUnit").val();
+    		 var level = $("#HeaderCompanyIdUnit").find("option:selected").attr("level");
+    		 if (level=='0'){
+    			 $("#HeaderCompanyList").show();
+        	 }else{
+        		 $("#HeaderCompanyList").hide();
+        	 }
+    		 location.href="http://hdhft.evergrande.com:80/broker//user/selectCompany?companyId="+companyId+"&level="+level;
+    	 });
+    	 var value = '';
+    	 $("#HeaderCompanyIdUnit").children().each(function(){
+    		 if($(this).val() == value){
+    			 $(this).attr("selected", true);
+    		 }
+    	 });
+    	 
+    	 /* var levelTemp =  $("#HeaderCompanyIdUnit").find("option:selected").attr("level");
+    	 if (levelTemp=='0'){
+    		 $("#HeaderCompanyList").show();
+    	 }else{
+    		 $("#HeaderCompanyList").hide();
+    	 } */
+    	 
+    	 
+    	 
+    	/*  var roleValue = '';
+    	
+    	 $("#HeaderCompanyList").children().each(function(){
+    		 if($(this).val() == roleValue){
+    			 //console.log($(this).val())
+    			 $(this).attr("selected", true);
+    		 }
+    	 }); */
+    	 
+     });
+     
+     function getCompanyList() {
+    	var params = {};
+		var postData = $.extend({}, params);
+		var bol=true;
+		$.ajax({
+			url : ctxPath+"/buildingRole/queryBuildingRoleByLevel/1",
+			type : "post",
+			dataType : "json",
+			data : null,
+			contentType : "application/json",
+			async: false,
+			success : function(data) {
+				$.each(data, function(i, item) {
+					var model = $("#HeaderCompanyList option:eq(0)").clone();
+					model.val(item.id);
+					model.attr("companyId",item.companyId);
+					model.html(item.companyName);
+					model.show();
+					$("#HeaderCompanyList").append(model);
+				});
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown) {
+			}
+		});
+	}
+     
+</script>
+
+
+<base href="http://hdhft.evergrande.com:80/broker/">
+<link rel="stylesheet" href="http://hdhft.evergrande.com:80/broker//css/sys/login.css" media="screen">
+                        <meta http-equiv="Pragma" content="no-cache"> 
+                        <meta http-equiv="Cache-Control" content="no-cache"> 
+                        <meta http-equiv="Expires" content="0">
+<title>Login</title>
+<style type="text/css">
+body {
+	background-image: url(./image/login/login_repeat_bg.png);
+	background-repeat: repeat;
+	background-position: center;
+}
+
+.greenbg {
+	background-color: #FFF;
+	background-image: url(./image/login/login_repeat_greenbg.png);
+	background-repeat: repeat-x;
+	margin: auto;
+	width: 100%;
+	height: 197px;
+	position: absolute;
+	top: 33%;
+}
+
+.bcontent {
+	width: 100%;
+	height: 660px;
+	margin: 0 auto;
+	position: relative;
+}
+
+.toppic {
+	position: absolute;
+	background-image: url(./image/login/login_banner_bg.png);
+	width: 100%;
+	height: 197px;
+	top: 33%;
+}
+
+.logina {
+	background-image: url(./image/login/login_formbox.png);
+	width: 383px;
+	height: 329px;
+}
+
+.area {
+	position: absolute;
+	left: 56%;
+	top: 12%;
+	overflow: hidden;
+}
+</style>
+<script type="text/javascript">
+ 
+
+</script>
+<script type="text/javascript" src="http://hdhft.evergrande.com/broker/js/jq/extend/jq.formPlugin.js?Rev=0.1.7"></script><script type="text/javascript" src="http://hdhft.evergrande.com/broker/js/jq/extend/jq.dirTree.js?Rev=0.1.7"></script><link rel="stylesheet" type="text/css" href="http://res.huhoo.cn/s/ui/formPlugin/formPlugin.css"></head>
+<body>
+	<div class="bcontent">
+		<div class="greenbg"></div>
+		<div class="toppic"></div>
+		<div class="area">
+			<img src="./image/login/login_logo.png" style="margin:0 auto;margin-left: 15px;">
+			<div class="logina">
+				<form id="signinForm" action="user/verify" method="POST">
+					<div style="margin-left:60px;margin-right:60px;width:250px;overflow:hidden;margin-bottom:16px;padding-top:30px;">
+						<img src="./image/login/login_ico_pls.png" style="margin-right:10px;vertical-align: middle;"><span style="font-size:14px;color:#cacbcc">请输入您的帐号</span> <span class="errormsg"></span>
+					</div>
+					<div style="margin-left:60px;margin-right:60px;border:1px solid #a8a8a8;width:253px;overflow:hidden;height:35px;line-height:35px;margin-bottom:16px;">
+						<img src="./image/login/login_ico_username.png" style="margin-left:8px;"> <span style="font-size:14px;color:#a8a8a8;line-height:32px;height:32px;">用户名：</span> <input type="text" name="name" style="width:165px;height:33px;border:0px #fff;outline:none;position: absolute;line-height:33px;">
+					</div>
+					<div style="margin-left:60px;margin-right:60px;border:1px solid #a8a8a8;width:253px;overflow:hidden;height:35px;line-height:35px;margin-bottom:16px;">
+						<img src="./image/login/login_ico_password.png" style="margin-left:8px;"> <span style="font-size:14px;color:#a8a8a8;line-height:32px;height:32px;">密&nbsp;&nbsp;&nbsp;&nbsp;码：</span>
+						<input type="password" name="pass" autocomplete="off" style="width:164px;height:33px;border:0px #fff;outline:none;position: absolute;line-height:33px;">
+					</div>
+					<div style="margin-left:60px;margin-right:60px;border:1px solid #a8a8a8;position:relative;width:253px;overflow:hidden;height:35px;line-height:35px;margin-bottom:16px;">
+						<img src="./image/login/login_ico_code.png" style="margin-left:8px;"> <span style="font-size:14px;color:#a8a8a8;line-height:32px;height:32px;">验证码：</span> <input type="text" name="captcha" id="captcha" style="width:80px;height:33px;border:0px #fff;outline:none;position: absolute;line-height:33px;">
+						<img id="capImg" src="public/captcha.cap" style="margin-left: 80px;">
+						<img src="./image/common/refresh.gif" style="width:12px;height:12px;position: absolute; cursor:pointer;
+top: 12px;right:2px" onclick="refreshCap();">
+					</div>
+					<div id="sub" style="cursor:pointer;margin-left:60px;margin-right:60px;border:1px solid #a8a8a8;width:250px;overflow:hidden;height:35px;line-height:35px;margin-top:14px;background-color:#ff8d11;text-align:center;border-radius:13px;font-size:20px;color:#fff">
+						登录</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script>
+		$(document).ready(function() {
+			$("#sub").click(function() {
+				$("#signinForm").submit();
+			});
+
+			//监听回车事件
+			$("#captcha").keydown(function(event) {
+				var curKey = event.which;
+				if (curKey == 13) {
+					$("#sub").click();
+				}
+			});
+		});
+		function refreshCap() {
+			var now = new Date();
+			$("#capImg").attr("src", "public/captcha.cap?t=" + now.getTime());
+		}
+	</script>
+
+
+<div id="fancybox-tmp"></div><div id="fancybox-loading"><div></div></div><div id="fancybox-overlay"></div><div id="fancybox-wrap"><div id="fancybox-outer"><div class="fancybox-bg" id="fancybox-bg-n"></div><div class="fancybox-bg" id="fancybox-bg-ne"></div><div class="fancybox-bg" id="fancybox-bg-e"></div><div class="fancybox-bg" id="fancybox-bg-se"></div><div class="fancybox-bg" id="fancybox-bg-s"></div><div class="fancybox-bg" id="fancybox-bg-sw"></div><div class="fancybox-bg" id="fancybox-bg-w"></div><div class="fancybox-bg" id="fancybox-bg-nw"></div><div id="fancybox-content"></div><a id="fancybox-close"></a><div id="fancybox-title"></div><a href="javascript:;" id="fancybox-left"><span class="fancy-ico" id="fancybox-left-ico"></span></a><a href="javascript:;" id="fancybox-right"><span class="fancy-ico" id="fancybox-right-ico"></span></a></div></div></body></html>

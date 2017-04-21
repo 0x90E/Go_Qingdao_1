@@ -1,0 +1,552 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=gbk" /> 
+  <title>主动网络下IPSec VPN安全策略更新机制的研究 - 网络安全 -  优领域 -  在优领域，找到您想要的！</title> 
+  <meta name="keywords" content="主动网络下IPSec VPN安全策略更新机制的研究" /> 
+  <meta name="description" content="摘 要 主动网络（Active Network）是美国国防部高级研究计划署（DARPA）提出的下一代互联网络体系结构。它采用可执行的移动程序代码来代替传统的被动式数据包，让主动节点动态装载可执行的移动程序代码，来实现协议和 ... ,优领域" /> 
+  <meta name="generator" content="优领域" /> 
+  <meta name="author" content="You01.com" /> 
+  <meta name="copyright" content="2001-2011 优领域." /> 
+  <meta name="MSSmartTagsPreventParsing" content="True" /> 
+  <meta http-equiv="MSThemeCompatible" content="Yes" /> 
+  <base href="http://www.you01.com/" />
+  <link rel="stylesheet" type="text/css" href="data/cache/style_1_common.css?3Ja" />
+  <link rel="stylesheet" type="text/css" href="data/cache/style_1_portal_view.css?3Ja" />
+  <script type="text/javascript">var STYLEID = '1', STATICURL = 'static/', IMGDIR = 'static/image/common', VERHASH = '3Ja', charset = 'gbk', discuz_uid = '0', cookiepre = 'G5rS_2132_', cookiedomain = '', cookiepath = '/', showusercard = '1', attackevasive = '0', disallowfloat = 'newthread', creditnotice = '1|威望|,2|金钱|,3|贡献|', defaultstyle = '', REPORTURL = 'aHR0cDovL3d3dy55b3UwMS5jb20vcG9ydGFsLnBocD9tb2Q9dmlldyZhaWQ9MzU0MiZwYWdlPTEm', SITEURL = 'http://www.you01.com/', JSPATH = 'static/js/';</script> 
+  <script src="static/js/common.js?3Ja" type="text/javascript"></script>
+  <meta name="application-name" content="优领域" /> 
+  <meta name="msapplication-tooltip" content="优领域" /> 
+  <meta name="msapplication-task" content="name=优领域;action-uri=http://www.you01.com/portal.php;icon-uri=http://www.you01.com/static/image/common/portal.ico" />
+  <meta name="msapplication-task" content="name=论坛;action-uri=http://www.you01.com/forum.php;icon-uri=http://www.you01.com/static/image/common/bbs.ico" /> 
+  <script src="static/js/portal.js?3Ja" type="text/javascript"></script> 
+ </head> 
+ <body id="nv_portal" class="pg_view" onkeydown="if(event.keyCode==27) return false;"> 
+  <div id="append_parent"></div>
+  <div id="ajaxwaitid"></div> 
+  <div id="toptb" class="cl"> 
+   <div class="wp"> 
+    <div class="z">
+     <a href="javascript:;" onclick="setHomepage('http://www.you01.com/');">设为首页</a>
+     <a href="http://www.you01.com/" onclick="addFavorite(this.href, '优领域');return false;">收藏本站</a>
+     <a href="http://www.you01.com">优领域</a>
+     <script type="text/javascript">var _speedMark = new Date();</script>
+    </div> 
+    <div class="y"> 
+    </div> 
+   </div> 
+  </div> 
+  <div id="qmenu_menu" class="p_pop blk" style="display: none;"> 
+   <div class="ptm pbw hm">
+     请 
+    <a href="javascript:;" class="xi2" onclick="lsSubmit()"><strong>登录</strong></a> 后使用快捷导航
+    <br />没有帐号？
+    <a href="member.php?mod=reg" class="xi2 xw1">立即注册</a> 
+   </div> 
+  </div> 
+  <div id="hd"> 
+   <div class="wp"> 
+    <div class="hdc cl">
+     <h2><a href="portal.php" title="优领域"><img src="data/attachment/common/cf/141930mmgwwd2bwmmu2imm.gif" alt="优领域" border="0" /></a></h2> 
+     <script src="static/js/logging.js?3Ja" type="text/javascript"></script> 
+     <form method="post" autocomplete="off" id="lsform" action="member.php?mod=logging&amp;action=login&amp;loginsubmit=yes&amp;infloat=yes&amp;lssubmit=yes" onsubmit="return lsSubmit()"> 
+      <div class="fastlg cl"> 
+       <span id="return_ls" style="display:none"></span> 
+       <div class="y pns"> 
+        <table cellspacing="0" cellpadding="0"> 
+         <tbody>
+          <tr> 
+           <td> <span class="ftid"> <select name="fastloginfield" id="ls_fastloginfield" width="40" tabindex="900"> <option value="username">用户名</option> <option value="uid">UID</option> <option value="email">Email</option> </select> </span> <script type="text/javascript">simulateSelect('ls_fastloginfield')</script> </td> 
+           <td><input type="text" name="username" id="ls_username" autocomplete="off" class="px vm" tabindex="901" /></td> 
+           <td class="fastlg_l"><label for="ls_cookietime"><input type="checkbox" name="cookietime" id="ls_cookietime" class="pc" value="2592000" tabindex="903" />自动登录</label></td> 
+           <td>&nbsp;<a href="javascript:;" onclick="showWindow('login', 'member.php?mod=logging&amp;action=login&amp;viewlostpw=1')">找回密码</a></td> 
+          </tr> 
+          <tr> 
+           <td><label for="ls_password" class="z psw_w">密码</label></td> 
+           <td><input type="password" name="password" id="ls_password" class="px vm" autocomplete="off" tabindex="902" /></td> 
+           <td class="fastlg_l"><button type="submit" class="pn vm" tabindex="904" style="width: 75px;"><em>登录</em></button></td> 
+           <td>&nbsp;<a href="member.php?mod=reg" class="xi2 xw1">立即注册</a></td> 
+          </tr> 
+         </tbody>
+        </table> 
+        <input type="hidden" name="quickforward" value="yes" /> 
+        <input type="hidden" name="handlekey" value="ls" /> 
+       </div> 
+       <div class="fastlg_fm y" style="margin-right: 10px; padding-right: 10px"> 
+        <p><a href="http://www.you01.com/connect.php?mod=login&amp;op=init&amp;referer=portal.php%3Fmod%3Dview%26aid%3D3542%26page%3D1%26&amp;statfrom=login_simple"><img src="static/image/common/qq_login.gif" class="vm" alt="QQ登录" /></a></p> 
+        <p class="hm xg1" style="padding-top: 2px;">只需一步，快速开始</p> 
+       </div> 
+      </div> 
+     </form> 
+    </div> 
+    <div id="nv"> 
+     <a href="javascript:;" id="qmenu" onmouseover="showMenu({'ctrlid':'qmenu','pos':'34!','ctrlclass':'a','duration':2});">快捷导航</a> 
+     <ul>
+      <li class="a" id="mn_portal"><a href="portal.php" hidefocus="true" title="Portal">优领域<span>Portal</span></a></li>
+      <li id="mn_P1" onmouseover="navShow('P1')"><a href="http://www.you01.com/dzlyml/" hidefocus="true">电子领域</a></li>
+      <li id="mn_P147" onmouseover="navShow('P147')"><a href="http://www.you01.com/itly/" hidefocus="true">IT领域</a></li>
+      <li id="mn_P175" onmouseover="navShow('P175')"><a href="http://www.you01.com/wylylm/" hidefocus="true">外语领域</a></li>
+      <li id="mn_P395" onmouseover="navShow('P395')"><a href="http://www.you01.com/jzly/" hidefocus="true">建筑领域</a></li>
+      <li id="mn_P16" onmouseover="navShow('P16')"><a href="http://www.you01.com/txly/" hidefocus="true">通信领域</a></li>
+      <li id="mn_P1064"><a href="http://www.you01.com/cjly/" hidefocus="true">经济领域</a></li>
+      <li id="mn_P1063"><a href="http://www.you01.com/portal.php?mod=list&amp;catid=1063" hidefocus="true">更多</a></li>
+     </ul> 
+    </div> 
+    <div id="mu" class="cl"> 
+    </div>
+    <div id="scbar" class="cl">
+     <form id="scbar_form" method="post" autocomplete="off" onsubmit="searchFocus($('scbar_txt'))" action="search.php?searchsubmit=yes" target="_blank"> 
+      <input type="hidden" name="mod" id="scbar_mod" value="search" /> 
+      <input type="hidden" name="formhash" value="9ce6ae3a" /> 
+      <input type="hidden" name="srchtype" value="title" /> 
+      <input type="hidden" name="srhfid" value="0" id="dzsearchforumid" /> 
+      <input type="hidden" name="srhlocality" value="portal::view" /> 
+      <table cellspacing="0" cellpadding="0"> 
+       <tbody>
+        <tr> 
+         <td class="scbar_icon_td"></td> 
+         <td class="scbar_txt_td"><input type="text" name="srchtxt" id="scbar_txt" value="请输入搜索内容" autocomplete="off" /></td> 
+         <td class="scbar_type_td"><a href="javascript:;" id="scbar_type" class="showmenu xg1 xs2" onclick="showMenu(this.id)" hidefocus="true">搜索</a></td> 
+         <td class="scbar_btn_td"><button type="submit" name="searchsubmit" id="scbar_btn" class="pn pnc" value="true"><strong class="xi2 xs2">搜索</strong></button></td> 
+         <td class="scbar_hot_td"> 
+          <div id="scbar_hot"> 
+          </div> </td> 
+        </tr> 
+       </tbody>
+      </table> 
+     </form> 
+    </div> 
+    <ul id="scbar_type_menu" class="p_pop" style="display: none;">
+     <li><a href="javascript:;" rel="article" class="curtype">文章</a></li>
+     <li><a href="javascript:;" rel="user">用户</a></li>
+    </ul> 
+    <script type="text/javascript">
+initSearchmenu('scbar', '');
+</script> 
+   </div> 
+  </div> 
+  <div id="wp" class="wp">
+   <!--[name]!portalcategory_viewtplname![/name]--> 
+   <script src="static/js/forum_viewthread.js?3Ja" type="text/javascript"></script> 
+   <script type="text/javascript">zoomstatus = parseInt(1), imagemaxwidth = '600', aimgcount = new Array();</script> 
+   <div id="pt" class="bm cl"> 
+    <div class="z"> 
+     <a href="./" class="nvhm" title="首页">优领域</a> 
+     <em>&#x203a;</em> 
+     <a href="portal.php">优领域</a> 
+     <em>&#x203a;</em>
+     <a href="http://www.you01.com/itly/">IT领域</a>
+     <em>&#x203a;</em> 
+     <a href="http://www.you01.com/portal.php?mod=list&amp;catid=723">信息安全</a>
+     <em>&#x203a;</em> 
+     <a href="http://www.you01.com/portal.php?mod=list&amp;catid=789">网络安全</a> 
+     <em>&#x203a;</em> 查看内容 
+    </div> 
+   </div>
+   <style id="diy_style" type="text/css"></style> 
+   <div class="wp"> 
+    <!--[diy=diy1]-->
+    <div id="diy1" class="area"></div>
+    <!--[/diy]--> 
+   </div> 
+   <div id="ct" class="ct2 wp cl"> 
+    <div class="mn2"> 
+     <div class="bm vw"> 
+      <div class="h hm"> 
+       <h1 class="ph">主动网络下IPSec VPN安全策略更新机制的研究 </h1> 
+       <p class="xg1"> 2012-3-25 20:57<span class="pipe">|</span> 发布者: <a href="space-uid-4556.html">Saiu</a><span class="pipe">|</span> 查看: 589<span class="pipe">|</span> 评论: 0</p> 
+      </div> 
+      <!--[diy=diysummarytop]-->
+      <div id="diysummarytop" class="area"></div>
+      <!--[/diy]--> 
+      <div class="s">
+       <div>
+        <strong>摘要</strong>: 摘 要 主动网络（Active Network）是美国国防部高级研究计划署（DARPA）提出的下一代互联网络体系结构。它采用可执行的移动程序代码来代替传统的被动式数据包，让主动节点动态装载可执行的移动程序代码，来实现协议和 ...
+       </div>
+      </div> 
+      <!--[diy=diysummarybottom]-->
+      <div id="diysummarybottom" class="area"></div>
+      <!--[/diy]--> 
+      <div class="d"> 
+       <!--[diy=diycontenttop]-->
+       <div id="diycontenttop" class="area"></div>
+       <!--[/diy]--> 
+       <table cellpadding="0" cellspacing="0" class="vwtb">
+        <tbody>
+         <tr>
+          <td id="article_content">
+           <div>
+            <font face="宋体"><strong>&nbsp;&nbsp;&nbsp; 摘&nbsp; 要</strong>&nbsp; 主动网络（Active Network）是美国国防部高级研究计划署（DARPA）提出的下一代互联网络体系结构。它采用可执行的移动程序代码来代替传统的被动式数据包，让主动节点动态装载可执行的移动程序代码，来实现协议和服务的动态发布和部署，具有扩展性好、动态可编程的特点。本文利用主动网络下移动程序代码的计算能力，使用ASPKN（Active Security Policy Key Negotiation）和ASPE（Active Security Policy Enable）程序代码来代替传统式策略的更新请求，当策略服务器的策略进行更新后，由策略服务器通过这些程序代码，把更新后的安全策略快速地部署到各个节点中，保证各个节点安全策略的实时性和一致性，而且当VPN中的节点增加时，也不会增加策略服务器的负担，具有很好的扩展性。本文对所提出的协议的安全性作了相应的证明。</font>
+           </div> 
+           <div>
+            <font face="宋体"><strong>&nbsp;&nbsp;&nbsp; 关键词</strong>&nbsp; 主动网络；安全策略；ASPKN；ASPE；实时性</font>
+           </div> 
+           <div>
+            <font face="宋体"></font>&nbsp;
+           </div><br clear="all" /> <h1><a name="_Toc55704122"></a><a name="_Toc55704036"></a><a name="_Toc54490828"><font face="宋体" size="3">1&nbsp; 引言</font></a></h1> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; 传统的网络体系存在着结构相对固定、数据包只能被动传送、新型网络协议及服务无法快速地动态发布等缺点，这些使得许多网络服务的性能不佳。因此针对以上问题，美国国防部高级研究计划署（DARPA）在1994年就开始讨论下一代互联网的网络体系结构，并且提出了主动网络（Active Network）<sup>[1，2，3]</sup>的概念。在主动网络中，主动节点（Active Node）可以被动态地“装载”可执行的移动程序代码，主动节点不仅提供数据包的路由功能，而且还提供一个安全的可执行环境（Execution Environment，EE），允许远程“装载”可执行的移动程序代码在其运行，允许网络协议和服务的动态发布和更新。这种新型的网络体系结构可以动态地支持对网络服务的不同控制。主动网络的最大特点是它提供了一个高度灵活的、可编程动态部署的网络体系结构。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; 随着IPSec<sup>[4]</sup>的出现，在网络层的安全变得非常流行。IPSec用于建立广泛的防护体系，象安全虚拟专用网配置，安全端到端通讯，安全远程访问等等。然而，IPSec应用有一个主要的缺点：它们要求预先共同协商可以接受的加密参数和所有IPSec设备的安全服务。这导致在网络扩展时复杂的管理任务变得非常复杂。而且如果当应用IPSec的安全网关之间存在着安全策略的不一致时，可能会导致不能建立起安全关联，那样就不能对它们之间的通讯进行安全保护。当VPN中的节点增加时，按照SPP协议<sup>[5]</sup>，节点与策略服务器建立安全通道，这无疑会增加策略服务器的负担。按照SPP协议，当节点之间进行通讯时，如果不存在相应的安全策略，就发出查询请求，来进行策略的更新。而本文的思想是如果策略服务器的安全策略发生更新后，就主动去更新VPN中各个节点的安全策略，来保证各个节点安全策略的实时性和一致性。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; 因此，本文利用主动网络下移动程序代码的计算能力，使用ASPKN（Active Security Policy Key Negotiation）和ASPE（Active Security Policy Enable）程序代码来代替传统式安全策略的更新请求，当策略服务器的安全策略进行更新后，由策略服务器通过这些程序代码，把更新后的安全策略快速地部署到各个VPN节点中，保证各个VPN节点安全策略的实时性和一致性，而且当VPN中的节点增加时，也不会增加策略服务器的负担。本文在ATP协议采用高强度的非对称的加/解密方法，来保证可执行的移动程序代码在网络上的传输安全性。对于安全策略的传输，本文采用了对称加密的方法。在ASPKNP协议，在两个主动节点间协商生成一个对称的通讯密钥，用于进行安全策略传输的加/解密处理。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; 本文的组织结构如下：第2节描述安全策略集中化管理的VPN模型；第3节采用形式化的方法对本文提出的协议进行描述并进行相关的安全性分析和证明，第4节是本方法的优点，第五节是本文的结论和展望。</font>
+           </div> <h1><a name="_Toc55704123"></a><a name="_Toc55704037"><font face="宋体" size="3">2&nbsp; 主动网络下的VPN模型</font></a></h1> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; 假定主动网络下VPN模型如图1所示。在图1中，各个符号表示如下：</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; ATP： Active Transmission Protocol，ASPKNP： Active Security Policy Key Negotiation Protocol，AJVPNP： Active <br clear="all" />Joining VPN Protocol，SPS： Security Policy Server，AS： Authentication Server</font>
+           </div> 
+           <div>
+            <font face="宋体">R： Active Router，N： VPN Node</font>
+           </div> 
+           <div align="center">
+            <font face="宋体"></font>
+           </div> <h2><a name="_Toc55704124"></a><font face="宋体" size="2"> <p align="center"><a href="http://www.you01.com/data/attachment/portal/201203/25/205607odi2kkwi1owtzlbv.jpg" target="_blank"><img src="http://www.you01.com/data/attachment/portal/201203/25/205607odi2kkwi1owtzlbv.jpg" /></a></p><a name="_Toc55704038">2.1&nbsp; 安全性假设</a></font></h2> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; 在本文中，安全的假设包括策略服务器、认证服务器、VPN节点以及主动节点结合PKI就可以保证整个VPN系统的安全性。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; 本文的方法是基于下面的安全性假设，在此安全性假设下，本文对相关的协议进行形式化的描述以及对其安全性进行了证明。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; （1）策略服务器是中心式的，安全策略是集中存储的。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; （2）策略服务器必须申请和安装CA证书，安全策略按照IETF的IPSP工作组定义的安全策略的方法进行定义和存储。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; （3）认证服务器必须申请和安装CA证书，而且是可信任的。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; （4）主动节点必须申请和安装CA证书，安全CA证书的主动节点是可信任的。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; （5）主动节点之间的通道是不安全的。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; （6）各个VPN节点必须申请和安装CA证书，经过认证服务器认证后才能加入VPN。</font>
+           </div> <h2><a name="_Toc55704125"></a><a name="_Toc55704039"></a><a name="_Toc54490831"><font face="宋体" size="2">2.2&nbsp; 可执行的移动程序代码的功能定义</font></a></h2> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; （1）AVPNS：Active VPN Subscribe 申请加入VPN，首先检查当前R是否部署ASPE，若无则把该R纪录在List表中，然后调用R的路由功能，向上一个R迁移（朝S方向）。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; （2）AECA：Active Exchange CA 通过ATP协议完成AECA、ASPKN、ASPE的传输。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; （3）ASPKN：Active Security Policy Key Negotiation 通过ASPKNP协议完成两个主动节点之间的安全策略传输的加/解密密钥的协商。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; （4）ASPE：Active Security Policy Enable 完成对用户加入VPN的身份认证以及安全策略传输的加/解密处理。</font>
+           </div> <h2><a name="_Toc55704126"></a><a name="_Toc55704040"></a><a name="_Toc54490832"><font face="宋体" size="2">2.3&nbsp; 协议的动态发布</font></a></h2> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; （1） 初始化阶段</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; 策略服务器SPS、认证服务器AS、主动节点R<sub>i</sub>及VPN节点N分别申请并安装CA证书。 </font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; （2） 申请加入VPN</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; &lt;2.1&gt; N从AS下载AVPNS。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; &lt;2.2&gt; N使用AVPNS完成加入VPN，过程如下：</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; &lt;2.2.1&gt;传送AVPNS移动程序代码到最近的主动节点R<sub>i</sub>。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; &lt;2.2.2&gt;AVPNS开始运行，首先检查R<sub>i</sub>上是否已经部署ASPE，若有则激活ASPE并与N中&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AVPNS完成AJVPNP协议，加入VPN。并且ASPE检查N中身份的合法性，若非法则不允许加入。N与R<sub>i</sub> 的安全策略传输的加/解密的密钥通过双方的ASPKN程序代码通过ASPKNP协议来完成。如果R<sub>i</sub> 上没有部署ASPE则跳转2.2.3。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; &lt;2.2.3&gt;AVPNS把R<sub>i</sub> 加入到链表List中并启用R<sub>i</sub> 的路由功能，往S方向进行迁移，若下一节点为R则跳转2.2.2，否则跳转2.3。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; &lt;2.3&gt;SPS（或R<sub>i</sub>）复制生成AECA、ASPKN和ASPE，并把AECA按List链表的路径部署到R<sub>j</sub>，SPS（或R<sub>i</sub>）与R<sub>j</sub>上的AECA通过ATP协议把ASPKN和ASPE安全地从SPS（或R<sub>i</sub>）部署到R<sub>j</sub>上。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; &lt;2.4&gt;两边（SPS与R<sub>j</sub>或者R<sub>i</sub>与R<sub>j</sub>）的ASPKN通过ASPKNP协议，动态协商生成用于安全策略传输的加/解密处理的密钥。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; &lt;2.5&gt;检查目标节点是否为N，如果不是（为中间R），则按链表List的纪录反向部署AECA、ASPKN和ASPE，反复执行2.3和2.4，否则执行2.6。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; &lt;2.6&gt;R<sub>i</sub>与N上的ASPKN通过ASPKNP协议完成安全策略传输的加/解密密钥的协商。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; （3） 退出VPN</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; 当N与邻近R<sub>i</sub>上的ASPE通信切断，ASPE认为N主动退出。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; 图2到图6描述了N1、N2、N3、N4依次申请加入VPN的处理流程。从图中可以看到当N1申请加入VPN后，AECA、ASPKN和ASPE被动态地部署到R<sub>1</sub>、R<sub>2</sub>、R<sub>3</sub>中。当N2、N3、N4继续申请加入VPN时就只要经过AS认证后，只需要向最近已经部署AECA、ASPKN和ASPE的R申请加入就可以，因此本文采用的方法具有很好的扩展性，当增加VPN节点时，不会增加策略服务器的负担。本文的安全策略协议被动态地发布和部署到R上的，这完全不同于传统的安全策略协议。这种方法的优点是：能够动态地实时发布服务以及可以实时地更新协议。</font>
+           </div><font face="宋体"> <p align="center"><a href="http://www.you01.com/data/attachment/portal/201203/25/2056070z0zo1mqs4m4448b.jpg" target="_blank"><img src="http://www.you01.com/data/attachment/portal/201203/25/2056070z0zo1mqs4m4448b.jpg" /></a></p> </font><p align="center"><font face="宋体"><br clear="all" /></font></p> <p align="center"> </p>
+           <table cellspacing="0" cellpadding="0" width="100%"> 
+            <tbody> 
+             <tr> 
+              <td> 
+               <div align="center">
+                <strong><font face="宋体">图1 主动网络中VPN模型</font></strong>
+               </div> 
+               <div align="center">
+                <font face="宋体"> <p><a href="http://www.you01.com/data/attachment/portal/201203/25/205608lz1ag47htjzlabub.jpg" target="_blank"><img src="http://www.you01.com/data/attachment/portal/201203/25/205608lz1ag47htjzlabub.jpg" /></a></p></font>
+               </div></td>
+             </tr>
+            </tbody>
+           </table><p></p> <p align="center"> </p>
+           <table cellspacing="0" cellpadding="0" width="100%"> 
+            <tbody> 
+             <tr> 
+              <td> 
+               <div align="center">
+                <strong><font face="宋体">图2 N1执行ADP协议从AS获取ID</font></strong>
+               </div> 
+               <div align="center">
+                <font face="宋体"> <p><a href="http://www.you01.com/data/attachment/portal/201203/25/205608doi5o67gfbptdaz5.jpg" target="_blank"><img src="http://www.you01.com/data/attachment/portal/201203/25/205608doi5o67gfbptdaz5.jpg" /></a></p></font>
+               </div></td>
+             </tr>
+            </tbody>
+           </table><p></p> <p align="center"> </p>
+           <table cellspacing="0" cellpadding="0" width="100%"> 
+            <tbody> 
+             <tr> 
+              <td> 
+               <div align="center">
+                <strong><font face="宋体">图3 &nbsp;N1申请加入VPN</font></strong>
+               </div> 
+               <div align="center">
+                <font face="宋体"> <p><a href="http://www.you01.com/data/attachment/portal/201203/25/205609rnrxctrzonrrt9mn.jpg" target="_blank"><img src="http://www.you01.com/data/attachment/portal/201203/25/205609rnrxctrzonrrt9mn.jpg" /></a></p></font>
+               </div></td>
+             </tr>
+            </tbody>
+           </table><p></p> <p align="center"> </p>
+           <table cellspacing="0" cellpadding="0" width="100%"> 
+            <tbody> 
+             <tr> 
+              <td> 
+               <div align="center">
+                <strong><font face="宋体">图4 &nbsp;N1加入VPN成功</font></strong>
+               </div> 
+               <div align="center">
+                <font face="宋体"> <p><a href="http://www.you01.com/data/attachment/portal/201203/25/205609wo2rkcuajr2i2aga.jpg" target="_blank"><img src="http://www.you01.com/data/attachment/portal/201203/25/205609wo2rkcuajr2i2aga.jpg" /></a></p></font>
+               </div></td>
+             </tr>
+            </tbody>
+           </table><p></p> <p align="center"> </p>
+           <table cellspacing="0" cellpadding="0" width="100%"> 
+            <tbody> 
+             <tr> 
+              <td> 
+               <div align="center">
+                <strong><font face="宋体">图5 &nbsp;N2，N3，N4执行ADP协议从AS获取ID</font></strong>
+               </div> 
+               <div align="center">
+                <font face="宋体"> <p><a href="http://www.you01.com/data/attachment/portal/201203/25/2056095hefijeafqewawey.jpg" target="_blank"><img src="http://www.you01.com/data/attachment/portal/201203/25/2056095hefijeafqewawey.jpg" /></a></p></font>
+               </div></td>
+             </tr>
+            </tbody>
+           </table><p></p> <p align="center"> </p>
+           <table cellspacing="0" cellpadding="0" width="100%"> 
+            <tbody> 
+             <tr> 
+              <td> 
+               <div align="center">
+                <strong><font face="宋体">图6 &nbsp;N2，N3，N4成功加入VPN</font></strong>
+               </div> 
+               <div>
+                <font face="宋体"></font>&nbsp;
+               </div></td>
+             </tr>
+            </tbody>
+           </table><p></p> <p align="left"><a name="_Toc54490833"><font face="宋体" size="3"><strong>3&nbsp; 协议的形式化描述和安全性分析</strong></font></a></p> <h2><a name="_Toc55704128"></a><a name="_Toc55704042"></a><a name="_Toc54490834"><font face="宋体" size="2">3.1&nbsp; 符号说明</font></a></h2> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; CA<sub>i</sub>：R<sub>i</sub>的CA证书。n：RSA的模，n=p*q，其中p，q为很大的素数，p，q秘密保存或彻底销毁；e<sub>i</sub>：R<sub>i</sub>的公钥；d<sub>i</sub>：R<sub>i</sub>的私钥，秘密保存在当前节点上；GetPublickey ()：获取公钥；E：表示加密；D：表示解密；H：哈希函数；checkvalid()：检查CA证书合法性的布尔函数；ID：用户身份标识；x：AS的私钥；（g，y）：生成元组，运用于整个系统中，其中y为AS的公钥，满足 ，运用于整个系统中。</font>
+           </div> <h2><a name="_Toc55704129"></a><a name="_Toc55704043"></a><a name="_Toc54490835"><font face="宋体" size="2">3.2 &nbsp;&nbsp;AECA、ASPKN和ASPE传输协议ATP</font></a></h2> <h4><font face="宋体" size="2">3.2.1&nbsp; 协议描述</font></h4> <p align="center"><font face="宋体"></font></p> <h4><font face="宋体" size="2"> <p align="center"><a href="http://www.you01.com/data/attachment/portal/201203/25/2056107t5avvh4ahevjvak.jpg" target="_blank"><img src="http://www.you01.com/data/attachment/portal/201203/25/2056107t5avvh4ahevjvak.jpg" /></a></p>3.2.2&nbsp; ATP协议流程和安全性分析</font></h4> 
+           <div> 
+            <div>
+             <font face="宋体">&nbsp;&nbsp;&nbsp; 主动节点R<sub>i</sub>（或SPS）首先通过明文的方式将自己的CA证书CA<sub>i</sub>和AECA传送给R<sub>j</sub>，R<sub>j</sub>检查CA<sub>i</sub>的合法性与真实性，如果不合法不真实，则协议终止，如果合法则获得R<sub>i</sub>的CA证书的公钥e<sub>i</sub>并且保存，紧接着通过在R<sub>j</sub>上运行AECA获得R<sub>j</sub>的证CA书CA<sub>j</sub>并把它发送给R<sub>i</sub>。R<sub>i</sub>检查CA<sub>j</sub>的合法性与真实性，如果不合法不真实，则协议终止，如果合法则获得R<sub>j</sub>的CA证书的公钥e<sub>j</sub>并且保存，用e<sub>j</sub>对ASPKN及ASPE进行加密，并用R<sub>i</sub>的私钥对哈希加密后的结果进行签名，把加密和签名一起发送给R<sub>j</sub>。R<sub>j</sub>首先对签名进行验证，确认是R<sub>i</sub>发出的，如果不是R<sub>i</sub>发出的，则协议终止，如果是R<sub>i</sub>发出的，则用R<sub>j</sub>的私钥对加密的消息进行解密，得到明文的ASPKN和ASPE。当协议执行结束时，R<sub>i</sub>和R<sub>j</sub>交换了双方的CA证书，并且安全地把ASPKN和ASPE部署到R<sub>j</sub>上。</font>
+            </div> 
+            <div>
+             <font face="宋体">&nbsp;&nbsp;&nbsp; 在安全性假设中，拥有合法CA证书的主动节点被认为是可信的，所以攻击者即使获得明文的CA证书，并且采用“重放攻击”的手段进行攻击，但是由于无法获得相应的私钥，无法破解加密后的ASPKN和ASPE。并且用当前节点的私钥对哈希加密后的结果进行签名，可以防止第三方篡改ASPKN和ASPE。所以通过ATP协议，ASPKN和ASPE被安全地部署到远程节点上。</font>
+            </div> 
+            <h2><font face="宋体" size="2">3.3&nbsp; 基于CA证书的身份分发协议ADP</font></h2> 
+            <h4><font face="宋体" size="2">3.3.1&nbsp; 协议描述</font></h4> 
+            <p align="center"><font face="宋体"></font></p> 
+            <h4><font face="宋体" size="2"> <p align="center"><a href="http://www.you01.com/data/attachment/portal/201203/25/205611qmwedswdnbkpebmm.jpg" target="_blank"><img src="http://www.you01.com/data/attachment/portal/201203/25/205611qmwedswdnbkpebmm.jpg" /></a></p>3.3.2&nbsp; 协议的流程和安全性分析</font></h4>
+           </div> 
+           <div> 
+            <div>
+             <font face="宋体">&nbsp;&nbsp;&nbsp; ADP协议是要加入VPN的节点颁发一个用户ID。首先该节点通过明文的方式将自己的CA证书CA<sub>N</sub>传送给认证服务器AS，AS检查CA<sub>N</sub>的合法性与真实性，如果不合法或真实，则协议终止，如果合法则获得VPN节点的CA证书的公钥e<sub>N</sub>并且保存，用AS的私钥签名节点CA<sub>N</sub>结果ID<sub>N</sub>作为VPN节点的ID，用e<sub>N</sub>对ID<sub>N</sub>进行加密，并用AS的私钥对哈希加密后的结果进行签名，把加密和签名一起发送给VPN节点N。N首先对签名进行验证，确认是AS发出的，如果不是AS发出的，则协议终止，如果是AS发出的，则用N的私钥对加密的消息进行解密，得到VPN节点的身份ID。</font>
+            </div> 
+            <div>
+             <font face="宋体">&nbsp;&nbsp;&nbsp; 本文用AS的私钥对哈希加密后的结果进行签名，可以防止第三方篡改颁发的VPN节点的身份ID<sub>N</sub>。所以通过ADP协议，颁发一个需要加入VPN的节点的身份。</font>
+            </div> 
+            <h2><font face="宋体" size="2">3.4&nbsp; 主动网络中加入VPN协议AJVPNP</font></h2> 
+            <h4><font face="宋体" size="2">3.4.1&nbsp; 协议描述</font></h4> 
+            <p align="center"><font face="宋体"></font></p> 
+            <h4><font face="宋体" size="2"> <p align="center"><a href="http://www.you01.com/data/attachment/portal/201203/25/205611rrt7bx9l0txlr7rn.jpg" target="_blank"><img src="http://www.you01.com/data/attachment/portal/201203/25/205611rrt7bx9l0txlr7rn.jpg" /></a></p>3.4.2&nbsp; 执行流程和安全性分析</font></h4>
+           </div> 
+           <div> 
+            <div>
+             <font face="宋体">&nbsp;&nbsp;&nbsp; 在AJVPNP协议中，AS的CA证书事先保存在各个主动节点R中。在协议执行过程中，首先VPN节点向ASPE发送M<sub>N</sub>和CA<sub>N</sub>；紧接着ASPE验证VPN节点CA证书CA<sub>N</sub>的有效性和真实性，如果不真实或有效，则协议停止，否则，取得AS的公钥，用AS的公钥来验证M<sub>N</sub>的签名，是否与CA<sub>N</sub>一致，如果不一致，则协议停止，否则说明这个VPN节点已经经过认证服务器的认证，允许该节点加入VPN。</font>
+            </div> 
+            <div>
+             <font face="宋体">&nbsp;&nbsp;&nbsp; 如果传送的是伪造的M<sub>N</sub>，在策略服务器进行签名验证时，必然是不匹配的，由于伪造方无法获得认证服务器的私钥，因此它无法能够正确地获得这个ID的信息。</font>
+            </div> 
+            <h2><font face="宋体" size="2">3.5&nbsp; 主动网络中安全策略传输的密钥协商协议ASPKNP</font></h2> 
+            <h4><font face="宋体" size="2">3.5.1&nbsp; 协议描述</font></h4> 
+            <p align="center"><font face="宋体"></font></p> 
+            <h4><font face="宋体" size="2"> <p align="center"><a href="http://www.you01.com/data/attachment/portal/201203/25/205611ohdsoh62a6goydna.jpg" target="_blank"><img src="http://www.you01.com/data/attachment/portal/201203/25/205611ohdsoh62a6goydna.jpg" /></a></p>3.5.2&nbsp; 执行流程和安全性分析</font></h4>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; 主动节点R<sub>i</sub>和R<sub>j</sub>同时运行各自的ASPKN移动程序代码来执行ASPKNP协议，运行的结果是在两个节点之间生成一个通讯密钥，用于安全策略传输的加/解密处理。首先R<sub>i</sub>随机生成一个很大的数i，并计算得到 ，R<sub>i</sub>对 哈希结果进行签名，一起发送给R<sub>j</sub>；R<sub>j</sub>用R<sub>i</sub>的公钥验证数据签名的正确性，如果错误，则协议停止，如果正确，R<sub>j</sub>随机生成一个很大的数j，并计算得到 ，对 哈希结果进行签名，一起发送给R<sub>i</sub>，并且计算通讯密钥 ；最后R<sub>i</sub>用R<sub>j</sub>的公钥验证数据签名的正确性，如果错误，则协议停止，如果正确，就计算会话密钥 。协议执行完后，通讯密钥被动态地部署到两个节点上并秘密保存。从ASPKNP协议执行流程我们可以看到：如果不知道i和j，即使知道g和n，也没有人能够得到通讯密钥 。因为在大小为n的有限域上求解离散对数是很困难的（对通信双方所作的指数运算进行求逆是极端困难的）。为了避免“中间人”攻击，在双方交换的公共值加上了数字签名来防范此类攻击。经过上述分析，可以知道在ASPKNP协议执行完后，在主动节点R<sub>i</sub>和R<sub>j</sub>同时动态部署了用于传输安全策略加解密处理的通讯密钥。每段主动节点之间的通信的通讯密钥是不相同的。</font>
+           </div> <h1><font face="宋体" size="3">4&nbsp;&nbsp; 本方法的优点</font></h1> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; 经过上述的分析，本文提出的方法与传统网络体系结构中的安全策略更新相比较而言，具有以下的优点：</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; （1）在传统的网络体系结构中，安全策略服务器SPS需要与每个节点建立一个IPSec隧道来保证它们之间的安全通讯，而在本文采用的方法中，实际上安全策略服务器只有一个安全通讯密钥，而不是多个，可以降低策略服务器的负担，而且具有很好的扩展性。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; （2）服务和协议被动态地部署到主动节点的，可以方便地进行实时发布和更新。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; （3）AECA、ASPKN和ASPE被动态地部署到主动节点中，VPN节点N可以从最近已经部署上述程序代码的主动节点中获取，一旦通过认证，就不需要直接向策略服务器申请，从而节省网络带宽，减少网络拥塞。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; （4）主动节点之间的通讯密钥是通过ASPKN程序代码动态协商生成的，并且主动地部署到主动节点中，通讯密钥是分布式发布的，某个会话密钥的泄漏不会危及上层节点之间的安全通讯。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; （5）当策略服务器的安全策略更新后，就能使ASPE代码，把更新后的安全策略分发到各个VPN节点中，保证各个VPN节点安全策略的实时性和一致性。</font>
+           </div> <h1><font face="宋体" size="3">5&nbsp;&nbsp; 结论与展望</font></h1> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; 由于传统网络体系结构下安全策略更新存在实时性的问题，本文提出一种在主动网络下保证安全策略实时更新的方法，在主动网络下利用移动程序代码的可执行能力和计算能力来进行安全策略的快速和安全地动态更新，保证VPN节点之间安全策略的一致性，而且具有很好的扩展性，并且对协议进行了安全性分析和可靠性论证。</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; 在安全性假设中，本方法要求策略服务器是集中式的管理方式，在分布式的模式下如何保证安全策略的实时性和一致性是下一步要研究的问题；本方法要求安全CA证书的主动节点必须是安全可信任的，对于如果主动节点是不安全的，即恶意的主动节点是没有在本文中研究和考虑的，这也是我们下一步要解决的问题。</font>
+           </div> <h1><font face="宋体" size="3">参考文献</font></h1> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; [1]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Tennhouse. Towards an Active Network Architecture. Computer Communication Review，Vol.26，No.2，April 1996</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; [2]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; David L. Tennenhouse，et al. A Survey of Active Network Research. IEEE Communication Magazine，Vol. 35，No.1，pp80-86，Jan 1997</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; [3]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Active Network Working Group. Architecture Framework for Active Networks Version1.0，1999</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; [4]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; KENT S，ATKISON R. Security Architecture for the Internet Protocol[S]. RFC2401，November 1998</font>
+           </div> 
+           <div>
+            <font face="宋体">&nbsp;&nbsp;&nbsp; [5]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; L.A. Sanchez，M.N. Condell，Security Policy Protocol，Internet Draft，July 2000</font>
+           </div> 
+           <div>
+            <strong><font face="宋体">&nbsp;&nbsp;&nbsp; 收稿日期：5 月 7 日&nbsp;&nbsp; 修改日期：5 月 10 日</font></strong>
+           </div> 
+           <div>
+            <font face="宋体"></font>
+           </div></td>
+         </tr>
+        </tbody>
+       </table> 
+       <!--[diy=diycontentbottom]-->
+       <div id="diycontentbottom" class="area"></div>
+       <!--[/diy]--> 
+       <script src="static/js/home.js?3Ja" type="text/javascript"></script> 
+       <div id="click_div">
+        <table cellpadding="0" cellspacing="0" class="atd"> 
+         <tbody>
+          <tr></tr> 
+         </tbody>
+        </table> 
+        <script type="text/javascript">
+function errorhandle_clickhandle(message, values) {
+if(values['id']) {
+showCreditPrompt();
+show_click(values['idtype'], values['id'], values['clickid']);
+}
+}
+</script> 
+       </div> 
+       <!--[diy=diycontentclickbottom]-->
+       <div id="diycontentclickbottom" class="area"></div>
+       <!--[/diy]--> 
+      </div> 
+      <div class="o cl ptm pbm"> 
+       <a href="home.php?mod=spacecp&amp;ac=favorite&amp;type=article&amp;id=3542&amp;handlekey=favoritearticlehk_3542" id="a_favorite" onclick="showWindow(this.id, this.href, 'get', 0);" class="oshr ofav">收藏</a> 
+       <a href="home.php?mod=spacecp&amp;ac=share&amp;type=article&amp;id=3542&amp;handlekey=sharearticlehk_3542" id="a_share" onclick="showWindow(this.id, this.href, 'get', 0);" class="oshr">分享</a> 
+      </div> 
+     </div> 
+     <!--[diy=diycontentrelatetop]-->
+     <div id="diycontentrelatetop" class="area"></div>
+     <!--[/diy]-->
+     <div id="related_article" class="bm"> 
+      <div class="bm_h cl"> 
+       <h3>相关阅读</h3> 
+      </div> 
+      <div class="bm_c"> 
+       <ul class="xl xl2 cl">
+        <li>&#x2022; <a href="article-12557-1.html">VPN远程访问在文件服务器中的应用</a></li> 
+        <li>&#x2022; <a href="article-12558-1.html">浅谈Win2003网站服务器的安全策略</a></li> 
+        <li>&#x2022; <a href="article-12611-1.html">Windows 2000信息网络安全与漏洞</a></li> 
+        <li>&#x2022; <a href="article-12633-1.html">IPSec及其在Windows 2000网络中的应用</a></li> 
+       </ul> 
+      </div> 
+     </div> 
+     <!--[diy=diycontentrelate]-->
+     <div id="diycontentrelate" class="area"></div>
+     <!--[/diy]--> 
+     <!--[diy=diycontentcomment]-->
+     <div id="diycontentcomment" class="area"></div>
+     <!--[/diy]--> 
+    </div> 
+    <div class="sd pph"> 
+     <div class="drag"> 
+      <!--[diy=diyrighttop]-->
+      <div id="diyrighttop" class="area"></div>
+      <!--[/diy]--> 
+     </div> 
+     <div class="drag"> 
+      <!--[diy=diy2]-->
+      <div id="diy2" class="area"></div>
+      <!--[/diy]--> 
+     </div> 
+    </div> 
+   </div> 
+   <div class="wp mtn"> 
+    <!--[diy=diy3]-->
+    <div id="diy3" class="area"></div>
+    <!--[/diy]--> 
+   </div> 
+  </div> 
+  <div id="ft" class="wp cl"> 
+   <div id="flk" class="y"> 
+    <p><a href="http://www.51.la">网站统计</a><span class="pipe">|</span><a href="http://www.you01.com">优领域</a><span class="pipe">|</span><strong><a href="http://www.you01.com/" target="_blank">优领域</a></strong> ( <a href="http://www.miitbeian.gov.cn/" target="_blank">粤ICP备12011853号-1</a> )&nbsp;&nbsp;<span id="tcss"></span><script type="text/javascript" src="http://tcss.qq.com/ping.js?v=13Ja" charset="utf-8"></script><script type="text/javascript" reload="1">pgvMain({"discuzParams":{"r2":"7734174","ui":0,"rt":"portal","md":"view","pn":1,"qq":"000","logo":11},"extraParams":""});</script><script language="javascript" type="text/javascript" src="http://js.users.51.la/4005132.js"></script> 
+     <noscript>
+      <a href="http://www.51.la/?4005132" target="_blank"><img alt="我要啦免费统计" src="http://img.users.51.la/4005132.asp" style="border:none" /></a>
+     </noscript></p> 
+    <p class="xs0"> GMT+8, 2017-3-28 04:02<span id="debuginfo"> , Processed in 0.109688 second(s), 12 queries . </span> </p> 
+   </div> 
+   <div id="frt"> 
+    <p>Copyright &copy; 2008-2014 <strong><a href="http://www.you01.com" target="_blank">优领域</a></strong> </p> 
+   </div> 
+  </div> 
+  <div id="g_upmine_menu" class="tip tip_3" style="display:none;"> 
+   <div class="tip_c">
+     积分 0, 距离下一级还需 积分 
+   </div> 
+   <div class="tip_horn"></div> 
+  </div> 
+  <script src="home.php?mod=misc&amp;ac=sendmail&amp;rand=1490644955" type="text/javascript"></script> 
+  <span id="scrolltop" onclick="window.scrollTo('0','0')">回顶部</span> 
+  <script type="text/javascript">_attachEvent(window, 'scroll', function(){showTopLink();});</script>   
+ </body>
+</html>

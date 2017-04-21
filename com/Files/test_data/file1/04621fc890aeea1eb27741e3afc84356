@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<title>会员登录首页</title>
+<link href="http://www.shifujie.net/themes/mall/default/styles/default/css/cssreset.css" rel="stylesheet" type="text/css">
+<link rel="shortcut icon" href="http://www.shifujie.net/favicon.ico" type="image/x-icon">
+<link href="http://www.shifujie.net/themes/mall/default/styles/default/css/login.css" type="text/css" rel="stylesheet">
+<script type="text/javascript" src="http://www.shifujie.net/includes/libraries/javascript/jquery.js" charset="utf-8"></script>
+<script charset="utf-8" type="text/javascript" src="http://www.shifujie.net/includes/libraries/javascript/jquery.plugins/jquery.validate.js"></script><script charset="utf-8" type="text/javascript" src="http://www.shifujie.net/includes/libraries/javascript/jquery.form.js"></script><script type="text/javascript">
+$(function(){
+    $('#login_form').validate({
+       submitHandler:function(form){
+           $(form).ajaxSubmit({
+            dataType:"json",
+            success:function(data)
+            {
+                if(data.done == false)
+                {
+                  $(".error1").html("<label>"+data.msg+"</label>");
+                  return false;
+                    
+                }
+                else
+                {
+                  if (data.retval && data.retval!=''){
+                    window.location.href = data.retval;
+                  } else {
+                    window.location.href = "index.php?app=member&act=login_success";
+                  }
+                    //window.location.href = "index.php?app=member&act=login_success";
+                }
+            }
+           });   
+            return false;
+        },
+        errorPlacement: function(error, element){
+             $(".error1").append(error); 
+        },
+        success       : function(label){
+            $(".error1").val('');
+        },
+        onkeyup : false,
+        rules : {
+            user_name : {
+                required : true
+            },
+            password : {
+                required : true
+            },
+            captcha : {
+                required : true,
+                remote   : {
+                    url : 'index.php?app=captcha&act=check_captcha',
+                    type: 'get',
+                    data:{
+                        captcha : function(){
+                            return $('#captcha1').val();
+                        }
+                    }
+                }
+            }
+        },
+        messages : {
+            user_name : {
+                required : '请填写用户名'
+            },
+            password  : {
+                required : '请填写密码'
+            },
+            captcha : {
+                required : '请输入右侧图片中的文字',
+                remote   : '验证码错误'
+            }
+        }
+    });
+});
+</script></head>
+
+
+
+<body>
+<div id="body">
+ <div class="login_body">
+ <a class="login_001" href="index.php"></a>
+ <div class="login_010">
+ <div class="login_011">
+ <a href="index.php">首页</a>
+ <span>-</span>
+ <a href="index.php?app=member&amp;act=register_before&amp;ret_url=">注册</a>
+ <span>|</span>
+ <a href="index.php?app=help">帮助中心</a>
+ </div>
+ <div class="login_002">
+ <div class="login_003"><span>登录试福街</span> <a href="index.php?app=member&amp;act=register_before&amp;ret_url=">还没有试福街账号？</a><a href="index.php?app=member&amp;act=register_before&amp;ret_url=" style="color: #F01861;">30秒注册</a></div>
+ <div class="clear"></div>
+   <form id="login_form" name="form1" method="post" action="index.php?app=member&amp;act=login&amp;ret_url=">
+     
+     <input type="text" name="user_name" id="textfield2" class="login_004" onfocus="if (this.value==this.defaultValue) this.value='';" onblur="if (this.value=='') this.value=this.defaultValue;" value="用户名"><br>
+
+     <input type="password" name="password" id="textfield" class="login_005">
+    <div class="login_006">  <input type="checkbox" name="auto_login" id="checkbox"> 自动登录  <span><a href="index.php?app=find_password">忘记密码</a></span></div>
+     <div class="submit">
+     <input type="hidden" name="ajax" value="1">
+     <input name="" class="login_007" type="submit" value="" style="float: left;">
+     <div class="error1" style="float: left;color:#f00;height: 42px;line-height: 42px;margin-left: 10px;"></div>
+     </div>
+   </form>
+ </div>
+ </div>
+ <div></div>
+ </div>
+</div>
+<div class="clear h_170"></div>
+<div id="foot">
+杭州凡鸟科技有限公司，保留一切权利。客服QQ:4008448778<br>
+浙ICP备13025642号-2 ©2013 shifujie.net 版权所有<br>
+</div>
+
+</body></html>

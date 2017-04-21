@@ -1,0 +1,279 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+    <title>车智赢，二手车商移动工作台</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, div, table {
+            display: block;
+        }
+
+        html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
+
+        a {
+            border: none;
+            text-decoration: none;
+        }
+
+            a:active {
+                background-color: #85caff;
+            }
+
+        .btn {
+            font-size: 18px;
+            border-radius: 24px;
+            display: block;
+            margin-left: 15%;
+            margin-right: 15%;
+            height: 39px;
+            line-height: 39px;
+            font-family: Arail, "Microsoft Yahei";
+        }
+
+        .btnwhite {
+            background-color: #4498e3;
+            color: #fff;
+        }
+
+        .weixin {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            background: rgba(0,0,0,.6);
+            display: none;
+            text-align: center;
+        }
+
+            .weixin .t {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                padding: 30px;
+                font-size: 14px;
+                line-height: 20px;
+                color: #70655f;
+                box-sizing: border-box;
+                background: no-repeat right 8px #fff;
+                background-size: 45px;
+            }
+
+            .weixin strong {
+                color: #f35c43;
+            }
+
+        body {
+            background-color: #ebf0f4;
+        }
+
+        .top {
+            padding-top: 50px;
+            width: 100%;
+            height: 160px;
+            background-color: #fff;
+            text-align: center;
+        }
+
+        .logo {
+            margin: 0 auto;
+            background-image: url("img/icon_m.png");
+            background-repeat: no-repeat;
+            background-size: 231px 60px;
+            width: 231px;
+            height: 60px;
+        }
+
+        .btnc {
+            margin-top: 35px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .content {
+            padding: 35px 0;
+            width: 100%;
+        }
+
+        .m1, .m2, .m3 {
+            margin: 0 auto;
+            width: 260px;
+            text-indent: -999em;
+        }
+
+        .m1 {
+            margin-bottom: 15px;
+            height: 93px;
+            background: url("img/m1.png") no-repeat;
+            background-size: 251px 93px;
+        }
+
+        .m2 {
+            margin-bottom: 15px;
+            height: 97px;
+            background: url("img/m2.png") no-repeat;
+            background-size: 251px 97px;
+        }
+
+        .m3 {
+            height: 69px;
+            background: url("img/m3.png") no-repeat;
+            background-size: 251px 69px;
+        }
+    </style>
+</head>
+<body>
+    <div class="weixin" id="winxinShow" onclick="msgHide(this)">
+        <div class="t">
+            微信内无法下载，请点击
+
+            <strong>
+                右上角
+            </strong>
+            按钮
+
+            <br>
+            选择
+
+            <strong>
+                【在浏览器中打开】
+            </strong>
+            即可正常下载
+
+        </div>
+    </div>
+    <section id="secBody">
+        <div class="top">
+            <div class="logo"></div>
+            <div class="btnc">
+                <a class="btn btnwhite" id="dlbt" href="javascript:void(0)" onclick="btnDownload()">立即下载</a>
+            </div>
+        </div>
+        <div class="content">
+            <div class="m1">收车</div>
+            <div class="m2">卖车</div>
+            <div class="m3">店铺经营</div>
+        </div>
+    </section>
+
+
+<script type="text/javascript">
+    var BrowserInfo = {
+        userAgent: navigator.userAgent,
+        isAndroid: navigator.userAgent.match(/android/ig),
+        isIphone: navigator.userAgent.match(/iphone|ipod/ig),
+        isIpad: navigator.userAgent.match(/ipad/ig),
+        isWeixin: navigator.userAgent.match(/MicroMessenger/ig),
+        isIosVersionLessThanSeven: function () {
+            if (this.isIphone || this.isIpad) {
+                return Boolean(navigator.userAgent.match(/os [1-6]_\d[_\d]* like mac/ig));
+            }
+            return false;
+        }
+    }
+
+    var SecondCarAppUtitl = {
+        getUrlParameter: function (name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return decodeURIComponent(r[2]); return null;
+        }
+    }
+
+    var Urls = {
+        android: "http://appdownload.autohome.com.cn/usedcar/czy/chezhiying.apk",
+        ios: "itms-services://?action=download-manifest&url=https://appdownload.autohome.com.cn/usedcar/czy/plistModule.plist",
+        weixinAndroid: "",
+        weixinIos: "",
+        other: ""
+    }
+
+    //验证渠道
+    ;(function(){
+        var channels=['pc','2sc','msg','saler','leads','open','usershare','temp'];
+        return function(){
+            var type = SecondCarAppUtitl.getUrlParameter('type');
+            if(channels.indexOf(type)>-1){
+                Urls.android = "http://appdownload.autohome.com.cn/usedcar/czy/chezhiying_" + type + ".apk";
+                Urls.ios = "itms-services://?action=download-manifest&url=https://appdownload.autohome.com.cn/usedcar/czy/plistModule_" + type + ".plist";
+            }else{
+                Urls.android = "http://appdownload.autohome.com.cn/usedcar/czy/chezhiying.apk";
+                Urls.ios = "itms-services://?action=download-manifest&url=https://appdownload.autohome.com.cn/usedcar/czy/plistModule.plist";
+            }
+        }
+    })()();
+
+    function btnDownload() {
+        if (BrowserInfo.isWeixin) {
+            document.getElementById('secBody').style.marginTop = '100px';
+            document.getElementById('winxinShow').style.display = 'block';
+        } else {
+            if (BrowserInfo.isAndroid) {
+                window.location.href = Urls.android;
+            }
+            else if (BrowserInfo.isIpad || BrowserInfo.isIphone) {
+                window.location.href = Urls.ios;
+            } else {
+                window.location.href = Urls.other;
+            }
+        }
+    }
+
+    function msgHide(obj) {
+        obj.style.display = 'none';
+        document.getElementById('secBody').style.marginTop = '0';
+    }
+</script>
+<script type="text/javascript">
+    function onBridgeReady() {
+        WeixinJSBridge.on('menu:share:appmessage', function (argv) {
+            WeixinJSBridge.invoke('sendAppMessage', {
+                "link": window.location.href,
+                "img_url": "http://appdownload.autohome.com.cn/usedcar/img/artwork.png",
+                "img_width": "120",
+                "img_height": "120",
+                "desc": "车智赢，二手车商移动工作台",
+                "title": "车智赢下载"
+            }, function (res) {
+
+            });
+        });
+        WeixinJSBridge.on('menu:share:timeline', function (argv) {
+            WeixinJSBridge.invoke("shareTimeline", {
+                "link": window.location.href,
+                "img_url": "http://appdownload.autohome.com.cn/usedcar/img/artwork.png",
+                "img_width": "120",
+                "img_height": "120",
+                "desc": "车智赢，二手车商移动工作台",
+                "title": "车智赢下载"
+            },
+                function (e) {
+
+                })
+        });
+    }
+
+    if (typeof WeixinJSBridge === "undefined") {
+        if (document.addEventListener) {
+            document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+        }
+    } else {
+        onBridgeReady();
+    }
+</script>
+</body></html>

@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" /> 
+  <meta name="renderer" content="webkit" /> 
+  <meta http-equiv="Cache-Control" content="no-siteapp" /> 
+  <title> 品漫</title> 
+  <meta name="keywords" content="" /> 
+  <meta name="description" content="" /> 
+  <link href="static/css/common.css" type="text/css" rel="stylesheet" /> 
+  <link href="static/css/head&amp;foot.css" type="text/css" rel="stylesheet" /> 
+  <link href="static/css/style.css" type="text/css" rel="stylesheet" /> 
+  <link href="static/css/usercenter.css" type="text/css" rel="stylesheet" /> 
+  <script type="text/javascript" src="static/js/jquery-1.9.1.js"></script> 
+  <script type="text/javascript" src="static/js/slider.js"></script> 
+  <script type="text/javascript" src="static/js/common_mine.js"></script> 
+ </head> 
+ <body class="body_bg"> 
+  <div class="header header_absolute"> 
+   <div class="wrapper1300"> 
+    <a href="/index.php?s=/Index/index.html" class="logo"><img src="static/images/logo.png" /></a> 
+    <div class="city_selection j_dropdown"> 
+     <a href="javascript:;"> <span>南京</span> <i class="icon icon_arrowdown"></i> </a> 
+     <ul> 
+      <li><a href="http://nj.86pm.com">南京</a></li> 
+      <li><a href="http://su.86pm.com">苏州</a></li> 
+     </ul> 
+    </div> 
+    <ul class="nav"> 
+     <li class=""><a href="/index.php?s=/Company/index.html">企业</a></li> 
+     <li class=""><a href="/index.php?s=/Job/index.html">招聘</a></li> 
+     <li class=""><a href="/index.php?s=/People/index.html">人物</a></li> 
+     <li class=""><a href="/index.php?s=/Activity/index.html">活动</a></li> 
+     <li class=""><a href="/index.php?s=/Group/index.html">圈子</a></li> 
+     <li class=""><a href="/index.php?s=/Column/index.html">专栏</a></li> 
+     <li class=""><a href="/index.php?s=/Headlines/index.html">今日头条</a></li> 
+     <!--<li class=""><a href="/index.php?s=/Career/index.html">创业</a></li>--> 
+    </ul> 
+    <a href="javascript:;" class="fr hd_righticon" onclick="showLogin();"><i class="icon icon_user"></i></a> 
+    <a href="/index.php?s=/Search/index.html" class="fr hd_righticon"><i class="icon icon_search"></i></a> 
+    <a href="/index.php?s=/Login/company.html" class="fr hd_righticon hd_rightlink"> <span>企业版</span> </a> 
+    <i class="icon icon_shuxian"></i> 
+    <a href="javascript:;" class="fr hd_righticon hd_rightlink"> <i class="icon icon_pm"></i><span>客户端</span> </a> 
+   </div> 
+  </div> 
+  <script>
+    $(".header_loged_link").mouseenter(function(){
+        $(this).find(".header_loged").show();
+        $(this).find(".header_loged").animate({
+            height:"180px"
+        },"fast");
+    }).mouseleave(function(){
+        $(this).find(".header_loged").animate({
+            height:"0"
+        },"fast");
+        $(this).find(".header_loged").hide();
+    });  
+    </script> 
+  <!--弹出层背景--> 
+  <div class="alert_bg"></div> 
+  <!--品漫提醒-error start--> 
+  <div class="alert" id="dialog_message_error"> 
+   <div class="tcenter alert_login_tit"> 
+    <p class="f18"> <img src="static/images/logo_small.png" alt="" /> 品漫提醒 </p> 
+   </div> 
+   <div class="alert_cont alert_cont_pd"> 
+    <div class="auth_alert_tip"> 
+     <p class="tcenter"><i class="icon_usercenter icon_tips"></i></p> 
+     <p class="f18 tcenter c666">提交失败</p> 
+     <p class="tcenter c999" id="dialog_message_error_content"></p> 
+    </div> 
+    <div class="auth_btn"> 
+     <input type="button" value="确定" onclick="close_dialog();" class="btn btn_default btn_33babd btn_w2" /> 
+    </div> 
+   </div> 
+  </div> 
+  <!--品漫提醒-error end--> 
+  <!--品漫提醒-success start--> 
+  <div class="alert" id="dialog_message_success"> 
+   <div class="tcenter alert_login_tit"> 
+    <p class="f18"> <img src="static/images/logo_small.png" alt="" /> 品漫提醒 </p> 
+   </div> 
+   <div class="alert_cont alert_cont_pd"> 
+    <div class="auth_alert_tip"> 
+     <p class="tcenter"><i class="icon_usercenter icon_success"></i></p> 
+     <p class="f18 tcenter c666">您已提交成功</p> 
+     <p class="tcenter c999" id="dialog_message_success_content"></p> 
+    </div> 
+    <div class="auth_btn"> 
+     <input type="button" value="确定" onclick="close_dialog();" class="btn btn_default btn_33babd btn_w2" /> 
+    </div> 
+   </div> 
+  </div> 
+  <!--品漫提醒-success end--> 
+  <div class="alert" id="dialog_forgotpwd"> 
+   <div class="tcenter alert_login_tit"> 
+    <p class="f18"> <img src="static/images/logo_small.png" alt="" /> 品漫提醒 </p> 
+   </div> 
+   <div class="alert_cont alert_cont_pd"> 
+    <div class="auth_alert_tip"> 
+     <p class="tcenter"><i class="icon_usercenter icon_success"></i></p> 
+     <p class="f18 tcenter c666" id="dialog_forgotpwd_content"></p> 
+    </div> 
+    <div class="auth_btn"> 
+     <input type="button" value="确定" id="forgotpwd_close_dialog" class="btn btn_default btn_33babd btn_w2" /> 
+    </div> 
+   </div> 
+  </div> 
+  <!--登录start--> 
+  <div class="alert" id="j_login"> 
+   <div class="tcenter alert_login_tit"> 
+    <p class="f18"> <img src="static/images/logo_small.png" alt="" /> 加入品漫 </p> 
+    <p class="tcenter c666 f14">漫产品 最青春</p> 
+   </div> 
+   <div class="alert_cont"> 
+    <ul class="login_ul"> 
+     <li> <input name="mobile" id="login_mobile" type="text" value="" placeholder="手机号" class="login_input j_login_input" /> <span class="form_icon"><i class="icon icon_phone"></i></span> </li> 
+     <li> <input name="pwd" id="login_pwd" type="password" value="" placeholder="密码" class="login_input j_login_input" /> <span class="form_icon"><i class="icon icon_lock"></i></span> </li> 
+     <li class="login_link"> <label class="j_checkbox"><i class="icon icon_checkbox on"></i>记住我</label> <a href="javascript:;" onclick="showForgotPWD();" class="fr">忘记密码</a> </li> 
+     <li> <input type="submit" value="登录" id="j_submit_login" class="btn btn_big btn_33babd btn_w2" /> </li> 
+    </ul> 
+   </div> 
+   <div class="alert_bottom"> 
+    <span><span class="c999">没有账号？</span><a href="javascript:;" onclick="showRegister();">注册</a></span> 
+    <a href="javascript:;" onclick="showLoginWX();" class="fr">微信登录</a> 
+   </div> 
+  </div> 
+  <!--登录end--> 
+  <!--注册start--> 
+  <div class="alert" id="j_register"> 
+   <div class="tcenter alert_login_tit"> 
+    <p class="f18"> <img src="static/images/logo_small.png" alt="" /> 加入品漫 </p> 
+    <p class="tcenter c666 f14">漫产品 最青春</p> 
+   </div> 
+   <div class="alert_cont"> 
+    <form id="myform" action="/index.php?s=/register/index.html" method="post"> 
+     <ul class="login_ul"> 
+      <li> <input id="mobile" name="mobile" type="text" autocomplete="off" class="login_input j_login_input" placeholder="手机号" value="" /> <span class="form_icon"><i class="icon icon_phone"></i></span> </li> 
+      <li> <input id="pwd" name="pwd" type="password" autocomplete="off" class="login_input j_login_input" placeholder="密码" value="" /> <span class="form_icon"><i class="icon icon_lock"></i></span> </li> 
+      <li> <input type="text" id="imgcode" autocomplete="off" class="login_input j_login_input fl" placeholder="图形验证码" value="" style="width:110px;" /> <span class="form_icon fl"><i class="icon icon_checkimg"></i></span> <a href="javascript:;" class="fl ml15"><img class="verify" src="/index.php?s=/Register/verify.html" width="150" height="35" /></a> 
+       <div class="clearBoth"></div> </li> 
+      <li> <input type="text" id="smscode" name="code" autocomplete="off" class="login_input j_login_input fl" placeholder="短信验证码" value="" style="width: 110px;" /> <span class="form_icon fl"><i class="icon icon_checknum"></i></span> <input type="button" value="发送验证码" class="btn btn_default btn_white fr" style="width:150px" id="j_register_countdown" onclick="register_countdown();" /> 
+       <div class="clearBoth"></div> </li> 
+      <li id="tipsshow"></li> 
+      <li class="login_link"> <label class="j_checkbox"><i class="icon icon_checkbox on"></i>同意<a href="javascript:;" class="cff8366">网站服务条款</a></label> </li> 
+      <li> <input type="submit" id="j_submit_register" class="btn btn_big btn_33babd btn_w2" value="注册" /> </li> 
+     </ul> 
+    </form> 
+   </div> 
+   <div class="alert_bottom"> 
+    <span><span class="c999">已有账号？</span><a href="javascript:;" onclick="showLogin();">登录</a></span> 
+   </div> 
+  </div> 
+  <!--注册end--> 
+  <!--微信登录start--> 
+  <div class="alert" id="j_loginbywx"> 
+   <div class="tcenter alert_login_tit"> 
+    <p class="f18">微信登录</p> 
+   </div> 
+   <div class="alert_cont"> 
+    <p class="tcenter"> <img src="static/images/wx_img.jpg" width="282" height="282" /> </p> 
+    <p class="tcenter loginwx_txt c555"> 请使用微信扫描二维码登录<br />“品漫网” </p> 
+   </div> 
+   <div class="alert_bottom"> 
+    <span class="c999">没有微信账号，</span>
+    <a href="javascript:;" onclick="showLogin();">使用手机号码登录</a> 
+   </div> 
+  </div> 
+  <!--微信登录end--> 
+  <!--忘记密码start--> 
+  <div class="alert" id="j_forgotPwd"> 
+   <div class="tcenter alert_login_tit alert_forgot_tit"> 
+    <p class="f18">忘记密码</p> 
+   </div> 
+   <div class="alert_cont"> 
+    <ul class="login_ul"> 
+     <li> <input id="forgotpwd_mobile" name="mobile" autocomplete="off" type="text" class="login_input j_login_input" placeholder="手机号" value="" /> <span class="form_icon"><i class="icon icon_phone"></i></span> </li> 
+     <li> <input id="forgotpwd_smscode" name="code" autocomplete="off" type="text" class="login_input j_login_input fl" placeholder="验证码" value="" style="width: 110px;" /> <span class="form_icon fl"><i class="icon icon_checknum"></i></span> <input type="button" class="btn btn_white btn_default fr" id="j_forgotpwd_countdown" onclick="j_forgotpwd_countdown()" style="width: 150px" value="获取验证码" /> 
+      <div class="clearBoth"></div> </li> 
+     <li> <input id="forgotpwd_newpwd" name="newpwd" type="password" class="login_input j_login_input" placeholder="新密码" value="" /> <span class="form_icon"><i class="icon icon_lock"></i></span> </li> 
+     <li> <input id="forgotpwd_newpwd_repeat" name="newpwd_repeat" type="password" class="login_input j_login_input" placeholder="确认密码" value="" /> <span class="form_icon"><i class="icon icon_lock"></i></span> </li> 
+     <li id="tipsshow_forgotpwd"></li> 
+     <li> <input type="submit" id="j_forgotpwd_submit" class="btn btn_big btn_33babd btn_w2" value="确认修改" /> </li> 
+     <li>&nbsp;</li> 
+    </ul> 
+   </div> 
+  </div> 
+  <!--忘记密码end--> 
+  <script>
+    //忘记密码-页面-提交请求
+    $("#j_forgotpwd_submit").click(function () {
+        $("#tipsshow_forgotpwd").html();
+        var mobile = $("#forgotpwd_mobile").val();
+        var smscode = $("#forgotpwd_smscode").val();
+        var newpwd = $("#forgotpwd_newpwd").val();
+        var newpwd_repeat = $("#forgotpwd_newpwd_repeat").val();
+
+        $('#j_forgotpwd_submit').attr("disabled",true);
+
+        if(mobile){
+            var re = /^1\d{10}$/;
+            if (re.test(mobile)) {
+                if(newpwd != newpwd_repeat){
+                    $("#tipsshow_forgotpwd").html('2次输入的密码不一致');
+                    $('#j_forgotpwd_submit').attr("disabled",false);
+                    return false;
+                }
+                if(smscode){
+                    //都校验过了，提交数据到服务器
+                    $.ajax({
+                        type: "POST",
+                        url: "/index.php?s=/Login/ajax_forgotpwd.html",
+                        data: {mobile: mobile,smscode: smscode,newpwd: newpwd,newpwd2:newpwd_repeat},
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.code == 1) {
+                                $(".alert").hide();
+                                $(".alert_bg").show();
+                                $("#dialog_forgotpwd_content").html(data.msg);
+                                $("#dialog_forgotpwd").show();
+                                alertPosition("#dialog_forgotpwd");
+                                $("#forgotpwd_close_dialog").click(function(){
+                                    window.location.href = "/index.php?s=/Login/index.html";
+                                });
+                            }else{
+                                $("#tipsshow_forgotpwd").html(data.msg);
+                                $('#j_forgotpwd_submit').attr("disabled",false);
+                            }
+                        }
+                    });
+                }else{
+                    $("#tipsshow_forgotpwd").html('请输入收到的短信验证码');
+                    $('#j_forgotpwd_submit').attr("disabled",false);
+                    return false;
+                }
+            } else {
+                $("#tipsshow_forgotpwd").html('请输入格式正确的手机号');
+                $('#j_forgotpwd_submit').attr("disabled",false);
+                return false;
+            }
+        }else{
+            $("#tipsshow_forgotpwd").html('请先输入手机号');
+            $('#j_forgotpwd_submit').attr("disabled",false);
+            return false;
+        }
+    });
+
+    //忘记密码-页面-发送验证码
+    function j_forgotpwd_countdown(){
+        $("#tipsshow_forgotpwd").html();
+        var mobile = $("#forgotpwd_mobile").val();
+        $('#j_forgotpwd_countdown').attr("disabled",true);
+
+        if(mobile){
+            var re = /^1\d{10}$/;
+            if (re.test(mobile)) {
+                $.ajax({
+                    type: "POST",
+                    url: "/index.php?s=/Login/ajax_code.html",
+                    data: {mobile: mobile},
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.code == 1) {
+                            countD('#j_forgotpwd_countdown');
+                        }else{
+                            $("#tipsshow_forgotpwd").html(data.msg);
+                            $('#j_forgotpwd_countdown').attr("disabled",false);
+                        }
+                    }
+                });
+            } else {
+                $("#tipsshow_forgotpwd").html('请输入格式正确的手机号');
+                $('#j_forgotpwd_countdown').attr("disabled",false);
+            }
+        }else{
+            $("#tipsshow_forgotpwd").html('请先输入手机号');
+            $('#j_forgotpwd_countdown').attr("disabled",false);
+        }
+    }
+
+    //点击刷新验证码
+    $(".verify").click(function(){
+        var src = "/index.php?s=/register/verify.html";
+        var random = Math.floor(Math.random()*(1000+1));
+        $(this).attr("src",src+"&random="+random);
+    });
+
+    //忘记密码-发送验证码
+    function forgotpwd_countdown(){
+        $("#tipsshow").html();
+        var mobile = $("#forgotpwd_mobile").val();
+        $('#j_forgotpwd_countdown').attr("disabled",true);
+
+        if(mobile){
+            var re = /^1\d{10}$/;
+            if (re.test(mobile)) {
+                $.ajax({
+                    type: "GET",
+                    url: "index.php?s=/Login/ajax_code.html",
+                    data: {mobile: mobile},
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.code == 1) {
+                            countD('#j_forgotpwd_countdown');
+                        }else{
+                            $("#tipsshow").html(data.msg);
+                            $('#j_forgotpwd_countdown').attr("disabled",false);
+                        }
+                    }
+                });
+            } else {
+                $("#tipsshow").html('请输入格式正确的手机号');
+                $('#j_register_countdown').attr("disabled",false);
+            }
+        }else{
+            $("#tipsshow").html('请先输入手机号');
+            $('#j_forgotpwd_countdown').attr("disabled",false);
+        }
+    }
+
+    //注册-必须输入验证码之后才可以倒计时
+    function register_countdown(){
+        $("#tipsshow").html();
+        $('#j_register_countdown').attr("disabled",true);
+        var imgcode = $("#imgcode").val();
+        var mobile = $("#mobile").val();
+
+        if(mobile){
+            var re = /^1\d{10}$/;
+            if (re.test(mobile)) {
+                if(imgcode){
+                    //ajax请求发送验证码
+                    $.ajax({
+                        type: "GET",
+                        url: "index.php?s=/Register/ajax_check_code.html",
+                        data: {mobile: mobile, code: imgcode},
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.code == 1) {
+                                countD('#j_register_countdown');
+                            }else{
+                                $("#tipsshow").html(data.msg);
+                                $('#j_register_countdown').attr("disabled",false);
+                            }
+                        }
+                    });
+                }else{
+                    $("#tipsshow").html('请先输入图形验证码');
+                    $('#j_register_countdown').attr("disabled",false);
+                }
+            } else {
+                $("#tipsshow").html('请输入格式正确的手机号');
+                $('#j_register_countdown').attr("disabled",false);
+            }
+        }else{
+            $("#tipsshow").html('请先输入手机号');
+            $('#j_register_countdown').attr("disabled",false);
+        }
+    }
+
+    //注册提交
+    $("#j_submit_register").click(function () {
+        var mobile = $("#mobile").val();
+        var pwd = $("#pwd").val();
+        var smscode = $("#smscode").val();
+
+        if(mobile){
+            var re = /^1\d{10}$/;
+            if (re.test(mobile)) {
+                if(pwd){
+                    if(smscode){
+                        //提交from表单
+                        document.getElementById('myform').submit();
+                    }else{
+                        $("#tipsshow").html('请输入短信验证码');
+                    }
+                }else{
+                    $("#tipsshow").html('请输入密码');
+                }
+            } else {
+                $("#tipsshow").html('请输入格式正确的手机号');
+            }
+        }else{
+            $("#tipsshow").html('请先输入手机号');
+        }
+    });
+
+    function showLogin() {
+        $(".alert").hide();
+        $(".alert_bg").show();
+        $("#j_login").show();
+        alertPosition("#j_login");
+    }
+    function showRegister() {
+        $(".alert").hide();
+        $(".alert_bg").show();
+        $("#j_register").show();
+        alertPosition("#j_register");
+    }
+    function showForgotPWD() {
+        $(".alert").hide();
+        $(".alert_bg").show();
+        $("#j_forgotPwd").show();
+        alertPosition("#j_forgotPwd");
+    }
+    function showLoginWX() {
+        $(".alert").hide();
+        $(".alert_bg").show();
+        $("#j_loginbywx").show();
+        alertPosition("#j_loginbywx");
+    }
+</script> 
+  <style>
+    .slides li a img{
+        position: absolute;
+        left: 50%;
+        top: 0;
+        margin-left: -700px;
+    }    
+</style> 
+  <div id="banner_tabs" class="flexslider"> 
+   <ul class="slides"> 
+    <li> <a title="" target="_blank" href="javascript:;"> <img width="1400" height="550" alt="" src="static/images/index/banner1.jpg" /> </a> </li> 
+    <li> <a title="" target="_blank" href="javascript:;"> <img width="1400" height="550" alt="" src="static/images/index/banner1.jpg" /> </a> </li> 
+   </ul> 
+   <ul class="flex-direction-nav"> 
+    <li><a class="flex-prev" href="javascript:;">Previous</a></li> 
+    <li><a class="flex-next" href="javascript:;">Next</a></li> 
+   </ul> 
+   <ol id="bannerCtrl" class="flex-control-nav flex-control-paging"> 
+    <li class="active"><a>1</a></li> 
+    <li><a>2</a></li> 
+   </ol> 
+  </div> 
+  <div class="banner_logo"> 
+   <div class="wrapper1200"> 
+    <ul> 
+     <li class="first"><a href="javascript:;"><img src="static/images/index/company_logo1.jpg" /></a></li> 
+     <li><a href="javascript:;"><img src="static/images/index/company_logo2.jpg" /></a></li> 
+     <li><a href="javascript:;"><img src="static/images/index/company_logo3.jpg" /></a></li> 
+     <li><a href="javascript:;"><img src="static/images/index/company_logo4.jpg" /></a></li> 
+     <li><a href="javascript:;"><img src="static/images/index/company_logo5.jpg" /></a></li> 
+    </ul> 
+   </div> 
+  </div> 
+  <div class="wrapper1200"> 
+   <div class="fl index_left"> 
+    <div class="index_tit">
+     新闻资讯
+    </div> 
+    <ul class="index_news_list"> 
+     <li> <a href="/index.php?s=/Headlines/detail/id/283.html"> <img src="http://e.36krcnd.com/nil_class/6767fba6-6b3b-4dff-bbda-2d3b97d73c6d/QQ__20160121193041.png" width="285" height="198" /> </a> 
+      <div class="index_news_cont inline"> 
+       <p class="f18"><a href="/index.php?s=/Headlines/detail/id/283.html">PM，请避免对产品的过度解读</a></p> 
+       <div class="index_news_time"> 
+        <span>PMCAFF产品社区</span> 
+        <span><i class="icon icon_clock"></i>431天前</span> 
+        <span><i class="icon icon_eye"></i>128</span> 
+       </div> 
+       <p class="index_news_intro">人们以自身的文化、经历、思维方式等在探寻、解读某件事物的过程中，强行与其产生联系，造成了可能与事实不相符甚至相违背的结果。</p> 
+       <p class="index_news_keywords"></p> 
+      </div> </li>
+     <li> <a href="/index.php?s=/Headlines/detail/id/282.html"> <img src="http://d.36krcnd.com/nil_class/bf28cfa4-6bd4-4b60-8939-bf87f1a8c48b/e75i-fxnqriy3213470.jpg" width="285" height="198" /> </a> 
+      <div class="index_news_cont inline"> 
+       <p class="f18"><a href="/index.php?s=/Headlines/detail/id/282.html">阿里云发布“数加”平台，想把大数据一站式做全</a></p> 
+       <div class="index_news_time"> 
+        <span>徐宁</span> 
+        <span><i class="icon icon_clock"></i>431天前</span> 
+        <span><i class="icon icon_eye"></i>181</span> 
+       </div> 
+       <p class="index_news_intro">“数加”平台首批集中发布了20款产品，覆盖数据采集、计算引擎、数据加工、数据分析、机器学习、数据应用等数据生产全链条。</p> 
+       <p class="index_news_keywords"></p> 
+      </div> </li>
+     <li> <a href="/index.php?s=/Headlines/detail/id/281.html"> <img src="http://d.36krcnd.com/nil_class/9ff52fef-a3f4-43e7-9ce4-4f1f5a80bb24/Google-Udacity-1024x572.png" width="285" height="198" /> </a> 
+      <div class="index_news_cont inline"> 
+       <p class="f18"><a href="/index.php?s=/Headlines/detail/id/281.html">Google在Udacity推出机器深度学习课程，免费分享机器学习研究成果</a></p> 
+       <div class="index_news_time"> 
+        <span>fuyfu</span> 
+        <span><i class="icon icon_clock"></i>431天前</span> 
+        <span><i class="icon icon_eye"></i>193</span> 
+       </div> 
+       <p class="index_news_intro">Google免费分享机器学习研究成果~</p> 
+       <p class="index_news_keywords"></p> 
+      </div> </li>
+     <li> <a href="/index.php?s=/Headlines/detail/id/280.html"> <img src="http://a.36krcnd.com/nil_class/09d2e9dc-5c00-4476-91ba-188697e5ac08/_____.jpg" width="285" height="198" /> </a> 
+      <div class="index_news_cont inline"> 
+       <p class="f18"><a href="/index.php?s=/Headlines/detail/id/280.html">7年创业路，美丽说的无奈与宿命</a></p> 
+       <div class="index_news_time"> 
+        <span>黄有璨</span> 
+        <span><i class="icon icon_clock"></i>431天前</span> 
+        <span><i class="icon icon_eye"></i>176</span> 
+       </div> 
+       <p class="index_news_intro">身在创业圈这个江湖中，很多事情，真的是宿命一般的。往往，当你做出了一个决定，后面的一切都已经是注定。</p> 
+       <p class="index_news_keywords"></p> 
+      </div> </li>
+     <li> <a href="/index.php?s=/Headlines/detail/id/279.html"> <img src="http://b.36krcnd.com/nil_class/cd674bfa-3a02-48c3-bf29-cc4feaa35991/0.png" width="285" height="198" /> </a> 
+      <div class="index_news_cont inline"> 
+       <p class="f18"><a href="/index.php?s=/Headlines/detail/id/279.html">Waldo融资500万美元，将那些里面有你的照片自动发给你</a></p> 
+       <div class="index_news_time"> 
+        <span>达达</span> 
+        <span><i class="icon icon_clock"></i>431天前</span> 
+        <span><i class="icon icon_eye"></i>156</span> 
+       </div> 
+       <p class="index_news_intro">只要照片里有你，Waldo就会直接自动将照片文件发送给你，你可以自行下载。</p> 
+       <p class="index_news_keywords"></p> 
+      </div> </li>
+     <li> <a href="/index.php?s=/Headlines/detail/id/278.html"> <img src="http://d.36krcnd.com/nil_class/e12ea179-d912-4d96-90f2-367f94015c87/3728l.jpg" width="285" height="198" /> </a> 
+      <div class="index_news_cont inline"> 
+       <p class="f18"><a href="/index.php?s=/Headlines/detail/id/278.html">曾经的中国互联网</a></p> 
+       <div class="index_news_time"> 
+        <span>36氪的朋友们</span> 
+        <span><i class="icon icon_clock"></i>431天前</span> 
+        <span><i class="icon icon_eye"></i>178</span> 
+       </div> 
+       <p class="index_news_intro">你可以当八卦看，也可以多想想，沧海桑田的背后，为什么。然后想想，未来会怎样？我们是不是还会看走眼，选错路？</p> 
+       <p class="index_news_keywords"></p> 
+      </div> </li>
+     <li> <a href="/index.php?s=/Headlines/detail/id/277.html"> <img src="http://e.36krcnd.com/nil_class/a826e3f5-d633-4005-949e-e4caf38cf6b5/00491W1G-0.jpg" width="285" height="198" /> </a> 
+      <div class="index_news_cont inline"> 
+       <p class="f18"><a href="/index.php?s=/Headlines/detail/id/277.html">都大数据时代了，你还不能算出你的用户值多少钱？</a></p> 
+       <div class="index_news_time"> 
+        <span>人人都是产品经理</span> 
+        <span><i class="icon icon_clock"></i>431天前</span> 
+        <span><i class="icon icon_eye"></i>137</span> 
+       </div> 
+       <p class="index_news_intro">我们有10万用户，刚拿了500万天使，现在估值为5000万？！</p> 
+       <p class="index_news_keywords"></p> 
+      </div> </li>
+     <li> <a href="/index.php?s=/Headlines/detail/id/276.html"> <img src="http://d.36krcnd.com/nil_class/fe66893a-6a95-4c05-87cb-d386221b2fc0/_____2016-01-21___4.27.28.png" width="285" height="198" /> </a> 
+      <div class="index_news_cont inline"> 
+       <p class="f18"><a href="/index.php?s=/Headlines/detail/id/276.html">蜘蛛网策略：你可以有一些不赚钱的产品</a></p> 
+       <div class="index_news_time"> 
+        <span>杨志芳</span> 
+        <span><i class="icon icon_clock"></i>431天前</span> 
+        <span><i class="icon icon_eye"></i>209</span> 
+       </div> 
+       <p class="index_news_intro">蜘蛛网策略：你不用想着让你所有的产品都赚更多的钱，只需要关注其中一个赚钱的核心产品，把其他的产品当作为招徕顾客而亏本出售的产品即可。</p> 
+       <p class="index_news_keywords"></p> 
+      </div> </li>
+     <li> <a href="/index.php?s=/Headlines/detail/id/275.html"> <img src="http://e.36krcnd.com/nil_class/4144b949-695f-4153-b591-93494ea676cc/2.jpg" width="285" height="198" /> </a> 
+      <div class="index_news_cont inline"> 
+       <p class="f18"><a href="/index.php?s=/Headlines/detail/id/275.html">是什么让比尔•盖茨如此成功？7个关键的习惯、实践与经验</a></p> 
+       <div class="index_news_time"> 
+        <span>译言</span> 
+        <span><i class="icon icon_clock"></i>431天前</span> 
+        <span><i class="icon icon_eye"></i>150</span> 
+       </div> 
+       <p class="index_news_intro">很多人认为成功是小宇宙爆发，其实不然，每次成功的背后都有一个成功等式。对于爱因斯坦而言成功=劳动+合适的方法+少说废话，那么给比尔•盖茨带来巨大的成功关键因素又是什么呢？</p> 
+       <p class="index_news_keywords"></p> 
+      </div> </li>
+     <li> <a href="/index.php?s=/Headlines/detail/id/274.html"> <img src="http://c.36krcnd.com/nil_class/5b096469-96af-4f54-9ed3-c69ce94d8214/33.jpg" width="285" height="198" /> </a> 
+      <div class="index_news_cont inline"> 
+       <p class="f18"><a href="/index.php?s=/Headlines/detail/id/274.html">优秀的程序员不会为股权卖命</a></p> 
+       <div class="index_news_time"> 
+        <span>译言</span> 
+        <span><i class="icon icon_clock"></i>431天前</span> 
+        <span><i class="icon icon_eye"></i>213</span> 
+       </div> 
+       <p class="index_news_intro">作为程序员，希望遇到一个伟大的企业家并为之效劳，共建商业帝国。但没有“真枪实弹”、仅仅是拿股权来主动交好的所谓企业家，无法打动一个优秀程序员的芳心。在程序员眼里，那根本算不上企业家。</p> 
+       <p class="index_news_keywords"></p> 
+      </div> </li> 
+    </ul> 
+    <div class="page tcenter">
+     <a class="prev" href="/index.php?s=/Index/index/tag/%E4%B8%8B%E5%8E%A8%E6%88%BF/p/19.html"><i class="icon icon_page icon_pageprev"></i>上一页</a> 
+     <a class="num" href="/index.php?s=/Index/index/tag/%E4%B8%8B%E5%8E%A8%E6%88%BF/p/18.html">18</a> 
+     <a class="num" href="/index.php?s=/Index/index/tag/%E4%B8%8B%E5%8E%A8%E6%88%BF/p/19.html">19</a> 
+     <a class="on" href="javascript:;">20</a> 
+     <a class="num" href="/index.php?s=/Index/index/tag/%E4%B8%8B%E5%8E%A8%E6%88%BF/p/21.html">21</a> 
+     <a class="num" href="/index.php?s=/Index/index/tag/%E4%B8%8B%E5%8E%A8%E6%88%BF/p/22.html">22</a> 
+     <a class="num" href="/index.php?s=/Index/index/tag/%E4%B8%8B%E5%8E%A8%E6%88%BF/p/23.html">23</a> 
+     <a class="next" href="/index.php?s=/Index/index/tag/%E4%B8%8B%E5%8E%A8%E6%88%BF/p/21.html">下一页<i class="icon icon_page icon_pagenext"></i></a>
+    </div> 
+   </div> 
+   <div class="fr index_right"> 
+    <div class="index_right bgwhite fr"> 
+     <div class="index_tit">
+      品漫官方认证
+     </div> 
+     <ul class="index_pmrz"> 
+      <li><i class="icon icon_index_rz icon_wx"></i></li> 
+      <li><i class="icon icon_index_rz icon_sina"></i></li> 
+      <li><i class="icon icon_index_rz icon_tencent"></i></li> 
+      <li><i class="icon icon_index_rz icon_qq"></i></li> 
+     </ul> 
+     <div class="clearBoth"></div> 
+     <div class="index_tit">
+      本地市热门群
+     </div> 
+     <div class="index_sys"> 
+      <div class="index_wx fl"> 
+       <span class="fl"> <img src="static/images/index/wx.jpg" /> </span> 
+       <p class="tcenter">扫一扫二维码</p> 
+      </div> 
+      <div class="fl index_tel"> 
+       <p><span class="c333">南京互联网：</span><span class="c999">164236400</span></p> 
+       <p><span class="c333">南京互联网：</span><span class="c999">164236400</span></p> 
+       <p><span class="c333">南京互联网：</span><span class="c999">164236400</span></p> 
+       <p><span class="c333">南京互联网：</span><span class="c999">164236400</span></p> 
+      </div> 
+      <div class="clearBoth"></div> 
+     </div> 
+    </div> 
+    <div class="clearBoth"></div> 
+    <div class="index_ad"> 
+     <a href="javascript:;"><img src="static/images/index/index_img3.jpg" /></a> 
+    </div> 
+    <div class="index_ad"> 
+     <a href="javascript:;"><img src="static/images/index/index_img4.jpg" /></a> 
+    </div> 
+    <div class="index_right bgwhite fr"> 
+     <div class="index_tit">
+      城市名人榜
+     </div> 
+     <ul class="celebrity"> 
+      <li> <a href="/index.php?s=/Home/index/id/5.html"> <span class="celebrity_num">1</span> <span class="celebrity_head inline vaTop"><img src="static/images/character/character_img1.jpg" /></span> 
+        <div class="inline celebrity_intro"> 
+         <p> <span class="mr10">马化腾</span><span>董事会主席兼首席执行官</span> <span class="fr c498889"><i class="icon icon_zan"></i>243</span> </p> 
+         <p class="c999 f12">腾讯</p> 
+        </div> </a> </li>
+      <li> <a href="/index.php?s=/Home/index/id/4.html"> <span class="celebrity_num">2</span> <span class="celebrity_head inline vaTop"><img src="Uploads/Attachment/14563915077545.jpg" /></span> 
+        <div class="inline celebrity_intro"> 
+         <p> <span class="mr10">李忠</span><span>工程师</span> <span class="fr c498889"><i class="icon icon_zan"></i>0</span> </p> 
+         <p class="c999 f12">品漫</p> 
+        </div> </a> </li> 
+     </ul> 
+    </div> 
+    <div class="index_right bgwhite fr mt15"> 
+     <div class="index_tit">
+      热门资讯
+     </div> 
+     <ul class="index_hotnews f16 j_tabs"> 
+      <li class="on"><a href="javascript:;">今日</a></li> 
+      <li><a href="javascript:;">本周</a></li> 
+      <li><a href="javascript:;">本月</a></li> 
+     </ul> 
+     <div class="clearBoth"></div> 
+     <div class="j_tabs_cont"> 
+      <!--今日--> 
+      <ul class="hotnews_list"> 
+       <li> <a href="/index.php?s=/Headlines/detail/id/196.html"> <img src="http://c.36krcnd.com/nil_class/a384b130-6d03-4003-a5ee-28e20650bff3/0.jpg" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>2015全球风险投资报告：总风投金额1285亿美元，同比增长44%</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/289.html"> <img src="http://a.36krcnd.com/nil_class/581c1a69-056b-4d1d-8ace-2979c35d8e42/_____2016-01-22___5.32.23.png" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>车位共享并不一定需要地锁，“私家车位”希望只通过一个App做“滴滴”打车位</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/418.html"> <img src="http://d.36krcnd.com/nil_class/f710641b-2554-40a6-9e78-55dade4760eb/2015-01-20-IdeasMakeorBreakYourBusiness.jpg" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>开源我的business ideas</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/228.html"> <img src="http://c.36krcnd.com/nil_class/17228e5e-91cf-40d4-8718-da1851eb9f03/p7045328.jpg" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>音乐流媒体服务商Deezer融资1.1亿美元，与Apple Music和Spotify死拼</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/188.html"> <img src="http://a.36krcnd.com/nil_class/af28b608-350f-4f25-b38f-6de018efee66/yestone_HD_1132563288.jpg" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>零壹空间CEO舒畅：做中国的SpaceX可能会遇到哪些难题？</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/348.html"> <img src="http://d.36krcnd.com/nil_class/62b2d7be-1f1d-44cd-990b-da4c2f580e30/u_4279794524_1486913308_fm_11_gp_0.jpg" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>“盛大游戏”将不复存在，盛大集团转型全球投资集团</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/435.html"> <img src="" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>作为一个产品经理，你会如何优化自己的需求池？</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/247.html"> <img src="http://e.36krcnd.com/nil_class/5a6b01cd-bd2c-45dc-bb64-59a893fcc238/QQ20160121-8.png" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>暴风魔镜拿到一笔新融资，2.3亿元能买一个多远的未来？</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/428.html"> <img src="http://e.36krcnd.com/nil_class/8f528389-cc81-4479-8f8e-ef8e315d20d1/yestone_HD_1105798234.jpg" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>【独家】农资电商“大丰收168”获经纬数千万A轮投资</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/288.html"> <img src="http://b.36krcnd.com/nil_class/795e12f0-2854-41f9-b29f-97fb04ff7b45/58423263.jpg" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>如何真正消化一本书？</p> 
+         </div> </a> </li> 
+      </ul> 
+      <!--本周--> 
+      <ul class="hotnews_list" style="display: none;"> 
+       <li> <a href="/index.php?s=/Headlines/detail/id/473.html"> <img src="Uploads/Attachment/14810144905021.jpg" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>中国移动医疗医生社区用户专题分析2016</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/465.html"> <img src="Uploads/Attachment/14793542438189.jpg" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>10月移动AppTOP1000大榜单：金融、教育、移动购物表现惹眼！</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/385.html"> <img src="http://a.36krcnd.com/nil_class/bcbc180e-658c-45a5-afd0-fe03fbb13636/_____2016-01-24___9.49.09.png" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>关于创新，大企业能从初创企业里学到什么？</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/375.html"> <img src="http://c.36krcnd.com/nil_class/6ffe6c73-169e-4675-8078-d55b47593333/_____.jpg" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>Android Wear入华第二步，出门问问推官方应用商店</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/373.html"> <img src="http://c.36krcnd.com/nil_class/7a15c244-b9d6-45df-b836-b002789a6c10/e56a52fa62a73cdc5a93ef2e91ab514a.jpg" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>在社交工厂聊一款魔性「输入法」</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/324.html"> <img src="http://e.36krcnd.com/nil_class/08f2be3f-6325-4792-8332-9c24ed4b07ea/yestone_HD_189548004.jpg" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>发现真实好家，“好好住”有可能成为中国版 Houzz 吗？</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/250.html"> <img src="http://a.36krcnd.com/nil_class/3ba873db-595e-42f8-80e0-e28b1d7dfe4e/mqdefault.jpg" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>1997年亚马逊致股东信：一切专注长期</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/216.html"> <img src="http://b.36krcnd.com/nil_class/7c5f3d56-d24f-4d6b-8df9-5d8b95dc868d/3.png" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>虽然拿到了天使投资，但有些创业公司注定失败</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/351.html"> <img src="http://a.36krcnd.com/nil_class/ef907b3b-8da0-4e5d-a97a-218025afce70/yestone_HD_1128063538.jpg" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>梁建章谈“基业长青”：部分工作和职责可能重新调整分配</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/464.html"> <img src="Uploads/Attachment/14792753208757.jpg" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>中国互动娱乐上市企业专题分析2016</p> 
+         </div> </a> </li> 
+      </ul> 
+      <!--本月--> 
+      <ul class="hotnews_list" style="display: none;"> 
+       <li> <a href="/index.php?s=/Headlines/detail/id/323.html"> <img src="http://d.36krcnd.com/nil_class/04fcaaa4-0c01-4d06-8f6f-81efeff87592/yestone_HD_1103550163.jpg" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>【蓝领日志】大嘴巴，定位蓝领工厂的BBS</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/447.html"> <img src="Uploads/Attachment/14746036935490.jpg" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>用户画像：2016年火热的直播领域，背后到底是怎样的用户？</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/473.html"> <img src="Uploads/Attachment/14810144905021.jpg" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>中国移动医疗医生社区用户专题分析2016</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/464.html"> <img src="Uploads/Attachment/14792753208757.jpg" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>中国互动娱乐上市企业专题分析2016</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/390.html"> <img src="http://c.36krcnd.com/nil_class/14f7c212-7f13-4b35-81b2-8e842b58f715/yestone_HD_1126214403.jpg" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>“品尚汇” 收购进口啤酒平台 “朗邦”60%股份，抢进口啤酒风口</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/468.html"> <img src="Uploads/Attachment/14798967721262.jpg" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>在线问诊市场上半年数据盘点分析2016</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/465.html"> <img src="Uploads/Attachment/14793542438189.jpg" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>10月移动AppTOP1000大榜单：金融、教育、移动购物表现惹眼！</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/469.html"> <img src="Uploads/Attachment/14800462279201.jpg" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>【10月直播&amp;视频AppTOP100榜单】市场格局谁执牛耳，是时候用数据来谈谈了！</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/296.html"> <img src="http://d.36krcnd.com/nil_class/c4a84c23-afbf-4176-97a9-65559e8f73d3/110604303.png" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>9点1氪：Apple将推出4英寸iPhone 5se，Google补交1.9亿美元税款，小米2月24日发布小米 5</p> 
+         </div> </a> </li>
+       <li> <a href="/index.php?s=/Headlines/detail/id/470.html"> <img src="Uploads/Attachment/14803126479153.jpg" width="68" height="48" /> 
+         <div class="inline hotnews_cont"> 
+          <p>千帆万像大数据挖掘自由行用户行为！</p> 
+         </div> </a> </li> 
+      </ul> 
+     </div> 
+    </div> 
+   </div> 
+  </div> 
+  <div class="clearBoth"></div> 
+  <script type="text/javascript">
+    $(function () {
+        var bannerSlider = new Slider($('#banner_tabs'), {
+            time: 5000,
+            delay: 400,
+            event: 'hover',
+            auto: true,
+            mode: 'fade',
+            controller: $('#bannerCtrl'),
+            activeControllerCls: 'active'
+        });
+        $('#banner_tabs .flex-prev').click(function () {
+            bannerSlider.prev();
+        });
+        $('#banner_tabs .flex-next').click(function () {
+            bannerSlider.next();
+        });
+    })
+</script> 
+  <div class="footer"> 
+   <div class="footer_top"> 
+    <div class="wrapper1200"> 
+     <img src="static/images/logo.png" /> 
+     <div class="inline footer_link cwhite"> 
+      <span class="f16 cwhite">友情链接：</span> 
+      <a href="javascript:;">阿里妈妈MUX</a> 
+      <a href="javascript:;">淘宝UED</a> 
+      <a href="javascript:;">Alibaba国际站</a> 
+      <a href="javascript:;">UEDAlibaba</a> 
+      <a href="javascript:;">中文站UED</a> 
+      <a href="javascript:;">支付宝UED</a> 
+      <a href="javascript:;">天猫UED</a> 
+      <a href="javascript:;">优秀网页设计</a> 
+      <a href="javascript:;">Bootstrap中文网</a> 
+     </div> 
+    </div> 
+   </div> 
+   <div class="footer_bottom"> 
+    <div class="wrapper1200"> 
+     <div class="footer_bottom_left tcenter fl"> 
+      <p class="f16 cwhite"> <a href="/index.php?s=/Aboutus/index.html">联系我们</a><span>|</span> <a href="/index.php?s=/Aboutus/join.html">加入我们</a><span>|</span> <a href="/index.php?s=/Aboutus/contact.html">关于品漫</a> </p> 
+      <p class="cwhite f12">Copyright 2011-2015 爱新鲜科技有限公司-版权所有 All Rights Reserved</p> 
+     </div> 
+     <div class="footer_bottom_right fr"> 
+      <img src="static/images/footer_ewm.jpg" class="fl" /> 
+      <div class="f16 cwhite fl tcenter"> 
+       <p>扫一扫关注</p> 
+       <p>品漫网官方微信</p> 
+      </div> 
+     </div> 
+    </div> 
+    <div class="clearBoth"></div> 
+   </div> 
+  </div>  
+ </body>
+</html>

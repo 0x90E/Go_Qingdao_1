@@ -1,0 +1,449 @@
+<!DOCTYPE html><!--[if lt IE 7 ]><html class="ie6"><![endif]--><!--[if IE 7 ]><html class="ie7"><![endif]--><!--[if IE 8 ]><html class="ie8"><![endif]--><!--[if IE 9 ]><html class="ie9"><![endif]--><!--[if (gt IE 9)|!(IE)]><!--><html class="w3c"><!--<![endif]--><head>
+<meta charset="utf-8">
+<title>360搜索</title>
+<meta name="keywords" content="360搜索,搜索,搜索引擎,网页搜索,视频搜索,影视搜索,新闻搜索">
+<meta name="description" content="360旗下搜索引擎服务，包含网页、新闻、影视等搜索产品，为您带来更安全、干净的搜索体验。360专业安全保证，杜绝欺诈、木马网站。">
+<script>
+if (/\.(com|cn)/.test(location.pathname)) {
+    location.href = 'https://www.so.com';
+}
+</script>
+<style>
+html, body{
+    height:100%;
+}
+/* reset */
+html, body, form, input, span, p, img,ul {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+/* global */
+body {
+    background: white;
+    font: 12px/1.5 arial,sans-serif;
+    text-align: left;
+}
+
+a {
+    text-decoration: none;
+    cursor: pointer;
+}
+a:hover {
+    text-decoration: underline;
+}
+li{list-style:none;}
+
+#header{
+    font-size:12px;
+    position:relative;
+    z-index:3000;
+}
+#header .inner{
+    height:108px;
+    background:#f8f8f8;
+    border-bottom:1px solid #ebebeb;
+}
+#head{padding:7px 0 0 20px;}
+.form {
+    clear:both;
+    position:relative;
+    zoom:1;
+}
+.round {
+    width:539px;
+    height:34px;
+    display:inline-block;
+    border:1px solid #ccc;
+    border-right:none;
+    background:#fff;
+    vertical-align:top;
+    position:relative;
+}
+.input_key {
+    width:500px;
+    height:22px;
+    font:16px/22px arial;
+    margin:7px 0 0 7px;
+    padding:0;
+    background:#fff;
+    border:0;
+    outline:0;
+    border-radius:0;
+    -webkit-appearance:none;
+}
+
+.input_key::-ms-clear{display:none}
+
+.s_btn {
+    width:93px;
+    height:36px;
+    color:#fff;
+    font-size:14px;
+    padding:0;
+    padding-top:4px\9;
+    border:none;
+    background:#00bc3e;
+    vertical-align:top;
+    cursor:pointer;
+    border-radius:0;
+    -webkit-appearance:none;
+    outline: none;
+    *border:0;
+    margin-left:-3px
+}
+.s_btn:hover{border:none;background:#1ac550;box-shadow:0px 1px 2px rgba(0,0,0,0.1);}
+.s_btn:active{border:none;background:#00ab36;}
+
+#suggest-align.hover{border:1px solid #aaa;border-right:0;box-shadow:none;background:#fff}
+#suggest-align.focus{border:1px solid #00be3c;border-right:0;/*box-shadow:0px 1px 1px rgba(0,0,0,0.06);*/}
+
+.ac_wrap {
+    position:absolute;
+    z-index:1;
+    overflow-y:hidden;
+    font-size:14px;
+    background:#FFF;
+    text-align:left;
+    line-height:20px
+}
+.ac_wrap_inner {
+    border:1px solid #e5e5e5;
+    box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.06);
+}
+.ac_wrap ul {
+    margin:0;
+    padding:0;
+}
+.ac_wrap li {
+    list-style:none;
+    padding:3px 0 3px 7px;
+    line-height:20px;
+    cursor:pointer;
+    position: relative;
+}
+.ac_wrap li.hover {
+    background-color:#e6e6e6;
+}
+.ac_wrap li.selected {
+    background-color:#efefef;
+}
+.ac_toolbar {
+    font-size:12px;
+    position:absolute;
+    bottom:0;
+    right:10px;
+    height:24px;
+    line-height:24px;
+    text-align:right;
+    color:#e5e5e5;
+    display:none;
+}
+.ac_toolbar a {
+    margin-left:15px;
+    color:#66F;
+}
+.ac_bgIframe {
+    position:absolute;
+    top:0;
+    left:0;
+    z-index:0;
+    /*
+    width:expression(this.parentNode.offsetWidth);
+    height:2000px;
+    */
+    width:100%;height:100%;
+}
+
+.ac_wrap .recommend {
+    display: inline-block;
+    background:url(https://p.ssl.qhimg.com/d/inn/758e4b7a/b.png);
+    width:18px;
+    height:16px;
+    vertical-align: middle;
+    margin: 0 0 2px 5px;
+}
+
+.ac_wrap .headline-re{
+    display:inline-block;
+    _padding: 7px 0 5px 0;
+    _line-height: 16px;
+}
+
+.ac_wrap .official {
+    display: inline-block;
+    background-color: #6fb963;/*客服 #ccc #6fb963*/
+    margin: 8px 5px 0 1px;
+    padding: 1px 2px 1px 3px;
+    _padding-top: 3px;
+    font: 12px "simsun";
+    color:#fff;
+    text-align: center;
+    border-radius: 2px;
+}
+.ac_wrap .subheading{
+    display: inline-block;
+    color: #999;
+    font: 13px "simsun";
+}
+.ac_wrap .headline{
+    padding:0px 0 2px 36px;
+    _padding-top:7px;
+    display:block;
+    font-size:14px;
+    font-weight:bold;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 487px;
+    margin-top: -5px;
+}
+
+.ac_wrap li.local{color:#7a77c8}
+.ac_wrap li.local span.del{font-size:12px;color:#666;text-decoration:underline;float:right;margin-right:10px;display:none;}
+.ac_wrap li.selected span.del{display:block}
+
+.ac_wrap li em,
+.ac_wrap li .new {
+    background: url(https://p.ssl.qhimg.com/dmt/15_72_/t0196272126b9546c95.png) no-repeat;
+}
+.ac_wrap li em {
+    background-position: 0 -26px;
+    display: inline-block;
+    overflow: hidden;
+    margin-right: 4px;
+    width: 15px;
+    height: 15px;
+    line-height: 14px;
+    font-size: 11px;
+    text-align: center;
+    color: #fff;
+    -webkit-text-size-adjust: none;
+    font-family: Tahoma;
+    vertical-align: middle;
+}
+.ac_wrap li .s-icon{
+    background-image: url(https://p.ssl.qhimg.com/d/inn/1317e8a3/del.png);
+    _background:none;
+    _background-image:url(https://p.ssl.qhimg.com/d/inn/4878ffce/del.gif);
+    width: 12px;
+    height: 12px;
+    overflow: hidden;
+    margin-right: 4px;
+    display: inline-block;
+    *display: inline;
+    zoom:1;
+}
+.ac_wrap li .cs-del{
+    background-image: url(https://p.ssl.qhimg.com/t01076170932206b0c5.png);
+    _background:none;
+    _background-image:url(https://p.ssl.qhimg.com/t013cd5c8be2bfd819f.gif);
+    /*background-image: -webkit-image-set(url(http://p4.qhimg.com/t011636c97c9de5e440.png) 1x,url(http://p9.qhimg.com/t012356ccf808b7874a.png) 2x);*/
+    background-repeat: no-repeat;
+    width:10px;height:16px;
+    margin:2px 10px 0 0;
+    background-position:0px 0;position: absolute;top:2px;right: 0; cursor:pointer;
+}
+.ac_wrap li.selected .cs-del:hover{
+    background-position:-13px 0;
+}
+.ac_wrap li .hot {
+    background-position: 0 0;
+}
+.ac_wrap li span {
+    display:inline-block;
+    vertical-align: middle;
+}
+.ac_wrap li .new {
+    padding-right: 20px;
+    background-position: right -46px;
+}
+.ac_wrap li.often span.del{
+    background-image: url(https://p.ssl.qhimg.com/t011636c97c9de5e440.png);
+    _background-image:url(https://p.ssl.qhimg.com/t01c2be9bbf2806aa79.png);
+    background-repeat:no-repeat;
+    background-position:3px 0;
+    _background-position:6px 0;
+    display: none;
+    float: right;
+    height: 0;
+    margin: 2px 10px 0 0;
+    overflow: hidden;
+    padding-top: 16px;
+    width: 16px;
+}
+.ac_wrap li.selected span.del{
+    display: block;
+}
+.ac_wrap li.often span.del:hover{
+    background-position: -23px 0;
+}
+</style>
+<style>
+#header{min-width:1000px}
+#g-hd{text-align:left;position:relative;z-index:200; height:45px;font-size:14px;font-family:arial,sans-serif; }
+#g-hd-searchs{display:none;}
+.g-hide-all #g-hd,.g-hide-hd #g-hd{display:none;}
+.g-hide-all #g-hd-searchs,.g-hide-hd #g-hd-searchs{display:none;}
+#g-hd a {text-decoration:none; }
+#g-hd-tabs{margin:0;padding:0;}
+#g-hd-nav .g-hd-more{position:relative;float:left;margin-left:4px}
+#g-hd-nav .morel, #g-hd-searchs .ico{background-image: url(https://p.ssl.qhimg.com/t019016be2616bba0f8.png); background-repeat: no-repeat; }
+#g-hd-nav .morel {margin-right:0;padding-right:22px;width:auto; background-position:31px -513px; }
+#g-hd-nav a.morel:hover {color:#00bc3e }
+#g-hd-nav {float:left;padding-left:20px;display:inline-block;position:relative; }
+#g-hd-nav .g-hd-logo {width:114px;padding-top:13px;float:left;overflow:hidden;}
+#g-hd-nav .g-hd-logo a{width:100px;height:26px;display:inline-block;vertical-align:top;background:url(https://p.ssl.qhimg.com/t0184e4ce3cb83220c1.png) no-repeat;background-image:-webkit-image-set(url(https://p.ssl.qhimg.com/t0184e4ce3cb83220c1.png) 1x,url(https://p.ssl.qhimg.com/t01a0799390ddac7a0b.png) 2x);_background:none;_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='https://p.ssl.qhimg.com/t0184e4ce3cb83220c1.png', sizingMethod='crop');}#g-hd-tabs{float:left;margin-top:9px; }
+#g-hd-tabs li {float:left;margin-right:10px;white-space:nowrap;line-height:normal; }
+#g-hd-tabs li a {color:#666;width:34px;height:34px;line-height:34px; text-align:center;display:inline-block;}
+#g-hd-tabs li a:hover,#g-hd-tabs .g-hd-cur a{color:#00bc3e; }
+#g-hd-nav .g-hd-cur a{font-weight:700 }
+#g-hd-nav #g-hd-more-title a:hover {border-bottom:0; }
+
+#g-hd-nav .g-menu{width:58px;top:32px;left:auto;right:5px;}
+#g-hd-nav .g-menu li{text-align:center;}
+#g-hd-nav .g-menu a{padding:0;width:58px;height:30px;line-height:30px}
+#g-hd-nav .g-menu a:hover{color:#fff}
+
+#g-hd-more-div li{margin:0;}
+
+#g-hd-searchs .ico{width:16px;height:16px;display:inline-block;float:left; margin:7px 4px 0 6px;vertical-align:top; }
+.hd-rtools #g-hd-searchs .change .ico{position:absolute;top:-2px;left:0;margin:0 4px 0 0;float:none;background:url(https://p.ssl.qhimg.com/t016e66672bbb448908.png) no-repeat;background-image:-webkit-image-set(url(https://p.ssl.qhimg.com/t016e66672bbb448908.png) 1x,url(https://p.ssl.qhimg.com/t011f3e3513f305ca0f.png) 2x); }
+#g-hd-searchs #mod-engs .baidu .ico{height:17px;background-position:0px -468px;margin-top:6px; }
+#g-hd-searchs #mod-engs .google .ico{background-position:0px -492px; }
+#g-hd-searchs #mod-engs .bing .ico{background-position:0px -445px;}
+#g-hd-searchs #mod-engs a{padding: 0 0 0 11px;}
+
+.hd-rtools{position:absolute;top:17px;right:15px;z-index:202;}
+.hd-rtools .menu{height:14px;line-height:14px;float:left}
+.hd-rtools .menu div{float:left;padding:0 9px 0 9px;position:relative;border-right:1px solid #e2e2e2;}
+.hd-rtools .menu .title{color:#666;text-decoration:none;}
+.hd-rtools .menu .title:hover,.hd-rtools .menu .title.hover{color:#00be3c}
+.hd-rtools .menu .user-group{border-right:1px solid #f8f8f8}
+.hd-rtools .menu .end{border-left:1px solid #e2e2e2;border-right:0;}
+.hd-rtools .g-menu{display:none;top:22px;width:101px}
+.hd-rtools .user-list{width:76px}
+.hd-rtools .user-list a{padding-left:13px}
+.hd-rtools .engs-list{width:76px;}
+
+.hd-rtools .change{padding-right:15px;background:url(https://p.ssl.qhimg.com/t019016be2616bba0f8.png) no-repeat 102px -523px;display:inline-block;}
+.hd-rtools .change span{display:inline-block;vertical-align: top;width:19px;height:12px;position:relative;}
+
+#main .advice{margin:60px 0 0 20px;width:540px;text-align:center;font-size:14px;}
+#main .advice p{margin:10px 0}
+#main .advice a{text-decoration:none;color:#00bc3e}
+#main .advice a:hover{text-decoration:underline}
+#main .advice #url_404{color:#50BF1F}
+#footer {background: #FAFAFA;font-size:12px;color:#ccc;line-height:53px;height:53px;position:absolute;bottom:0;left:0;width:100%}
+#footer .foot-inner{padding-left:20px}
+#footer a {font-size:12px;color:#999;text-decoration:none;margin:0 8px}
+#footer a:first-child{margin-left:0;}
+#footer span{color:#999;margin-left:15px}
+/*通用，下拉菜单*/
+.g-menu{width:88px;font-size:12px;background:#fff;border:1px solid #e5e5e5;border-bottom:none;position:absolute;left:0;top:0;}
+.g-menu li{height:30px;line-height:30px;border-bottom:1px solid #e5e5e5;white-space:nowrap;}
+.g-menu li a{height:100%;padding:0 0 0 20px;color:#666;text-decoration:none;display:block;}
+.g-menu li a:hover{color:#fff;background:#00be3c;}
+.g-shadow{box-shadow:0 1px 1px rgba(0, 0 , 0, 0.06)}
+</style>
+<!--sobar.js-->
+<script src="https://s.ssl.qhimg.com/static/f6f47ae12bdcbd71.js"></script>
+</head>
+<body>
+<div class="page-wrap">
+<!-- 头部Start -->
+<div id="header">
+    <div class="inner">
+        <div id="g-hd">
+            <div id="g-hd-nav">
+                <div class="g-hd-logo">
+                    <a href="/?src=www" title="到360搜索首页" data-i="home"></a>
+                </div>
+                <ul id="g-hd-tabs">
+                <li class=""><a data-home="http://news.so.com/" data-s="http://news.so.com/ns?q=%q%&amp;src=tab_www" href="http://news.so.com/ns?q=&amp;src=tab_www">新闻</a></li>
+                <li class="g-hd-cur"><a data-home="http://www.so.com/" data-s="http://www.so.com/s?q=%q%&amp;src=tab_www" href="http://www.so.com/s?q=&amp;src=tab_www">网页</a></li>
+                <li class=""><a data-home="http://wenda.so.com/" data-s="http://wenda.so.com/search/?q=%q%&amp;src=tab_www" href="http://wenda.so.com/search/?q=&amp;src=tab_www">问答</a></li>
+                <li class=""><a data-home="http://video.so.com/" data-s="http://video.so.com/v?q=%q%&amp;src=tab_www" href="http://video.so.com/v?q=&amp;src=tab_www">视频</a></li>
+                <li class=""><a data-home="http://image.so.com/" data-s="http://image.so.com/i?q=%q%&amp;src=tab_www" href="http://image.so.com/i?q=&amp;src=tab_www">图片</a></li>
+                <li class=""><a data-home="http://music.so.com/" data-s="http://s.music.so.com/s?q=%q%&amp;src=tab_www" href="http://s.music.so.com/s?q=&amp;src=tab_www">音乐</a></li>
+                <li class=""><a data-home="http://map.so.com/" data-s="http://map.so.com/?k=%q%&amp;src=tab_www" href="http://map.so.com/?k=&amp;src=tab_www">地图</a></li>
+                <li class=""><a data-home="http://baike.so.com/" data-s="http://baike.so.com/doc/search?word=%q%&amp;src=tab_www" href="http://baike.so.com/doc/search?word=&amp;src=tab_www">百科</a></li>
+                <li class=""><a data-home="http://ly.so.com/" data-s="http://ly.so.com/s?q=%q%&amp;src=tab_www" href="http://ly.so.com/s?q=&amp;src=tab_www">良医</a></li>
+                <li><a data-home="http://soft.so.com/?src=tab_www" data-s="http://soft.so.com/search?q=%q%&amp;src=tab_www" href="http://soft.so.com/search?q=&amp;src=tab_www">软件</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="hd-rtools">
+            <div class="menu">
+                <div class="top-feedback">
+                    <a class="title" href="http://info.so.com/feedback.html" target="_blank">反馈</a>
+                </div>
+                <div id="g-hd-searchs" class="show-list end" style="display: block; ">
+                    <a class="title change pngfix" href="javascript:;">切换：<span><cite class="ico pngfix"></cite></span>360搜索</a>
+                    <ul class="g-menu g-shadow engs-list" id="mod-engs">
+                        <li><a data-home="http://www.baidu.com/" data-s="http://www.baidu.com/s?wd=%q%&amp;ie=utf-8" class="baidu" href="http://www.baidu.com/s?wd=&amp;ie=utf-8" target="_blank" rel="noreferrer" hidefocus="false" data-log="baidu"><cite class="ico"></cite>百度</a></li>
+                        <li><a data-home="http://www.bing.com/" data-s="http://www.bing.com/search?q=%q%&amp;ie=utf-8" class="bing" href="http://www.bing.com/search?q=&amp;ie=utf-8" target="_blank" hidefocus="false" data-log="bing"><cite class="ico"></cite>必应</a></li>
+                        <li><a data-home="http://www.google.com.hk/" data-s="http://www.google.com.hk/search?hl=zh-CN&amp;ie=utf-8&amp;q=%q%" class="google" href="http://www.google.com.hk/search?hl=zh-CN&amp;ie=utf-8&amp;q=" target="_blank" hidefocus="false" data-log="google"><cite class="ico"></cite>谷歌</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="head">
+            <form name="f2" class="form" action="/s" method="get">
+                <div class="ac_wrap" style="min-width: 540px; top: 36px; left: 0px; display: none; "><div unselectable="on" class="ac_wrap_inner"><div unselectable="on" class="ac_menu_ctn"><ul unselectable="on" class="ac_menu"></ul></div><div unselectable="on" id="provided-by" class="ac_toolbar">由360搜索提供</div></div></div><span id="suggest-align" class="round">
+                <input id="keyword" name="q" tabindex="1" class="input_key" value="" maxlength="100" autocomplete="off" x-webkit-speech="">
+                </span>
+                <input type="submit" tabindex="2" id="su" value="搜一下" class="s_btn" onmousedown="this.className='s_btn s_btn_h'" onmouseout="this.className='s_btn'">
+                <input name="src" class="src" type="hidden" value="404">
+            </form>
+            <script>
+                window.hd_init({inputId : "keyword"});
+            </script>
+        </div>
+    </div>
+</div>
+<!-- 头部End -->
+<div id="main">
+    <div class="advice">
+        <img src="https://p.ssl.qhimg.com/t01c5c894da473336a2.png" alt="404">
+        <p>对不起，您所访问的 <span id="url_404"></span> 页面不存在</p>
+        <p><a href="/">返回首页</a>或在搜索框中重新搜索</p>
+    </div>
+</div>
+    <div id="footer">
+        <div class="foot-inner">
+            <a href="http://m.so.com/mhtml/app_pc_2016.html" target="_blank" id="haosougw">360搜索客户端官网</a>|<a href="http://info.so.com/feedback.html?src=anniu" target="_blank">意见反馈</a>|<a href="http://bbs.360safe.com/forum-137-1.html" target="_blank">产品论坛</a>|<a href="http://info.so.com/site_submit.html" target="_blank">网站收录</a>|<a href="http://www.so.com/help/help_1_1.html" target="_blank">使用帮助</a>|<a href="http://e.360.cn/?src=srp465" target="_blank">推广合作</a>
+            <span>Copyright © 360.CN 奇虎360旗下搜索服务</span>
+        </div>
+    </div>
+</div>
+
+<script src="https://s.ssl.qhimg.com/ssl/73d56cb3aa573b96.js"></script>
+<script>
+(function() {
+    var keys = document.cookie.match(/[^ =;]+(?=\=)/g);
+    if (keys) {
+        for (var i = 0, len = keys.length; i < len; i++) {
+            document.cookie = keys[i] + '=0; expires=' + new Date(0).toUTCString();
+        }
+    }
+})();
+createSuggest({
+    inputElement: document.getElementById('keyword'),
+    alignElement: document.getElementById('suggest-align'),
+    urlPrefix: '//sug.so.360.cn/suggest/word?callback=suggest_so&encodein=utf-8&encodeout=utf-8&word=',
+    enableHoverState: false
+});
+</script>
+<script src="https://s.ssl.qhimg.com/monitor/;monitor/4f1853e5.js"></script>
+<script type="text/javascript">
+/*打点统计*/
+monitor.setConf('clickUrl', "//s.360.cn/so/click.gif").log({
+    pro: "so", //固定值
+    pid: "www", //该值为home或www，也可以是其他值
+    mod:  '400'
+}, "click");
+</script>
+
+
+</body></html>

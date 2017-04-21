@@ -1,0 +1,829 @@
+<!DOCTYPE html><html class="js cssanimations"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+     
+
+    
+    
+    
+    	
+    	
+    	
+    	
+ 		  <title>鲜特汇</title>
+    	
+    
+     
+     
+     
+     
+     
+
+    <!-- Set render engine for 360 browser -->
+    <meta name="renderer" content="webkit">
+
+    <!-- No Baidu Siteapp-->
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+
+    <link rel="icon" type="image/png" href="/TopMall/resource/amazeui/i/favicon.png">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="/TopMall/resource/amazeui/i/app-icon72x72@2x.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI">
+    <link rel="apple-touch-icon-precomposed" href="/TopMall/resource/amazeui/i/app-icon72x72@2x.png">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="/TopMall/resource/amazeui/i/app-icon72x72@2x.png">
+    <meta name="msapplication-TileColor" content="#0e90d2">
+    
+    
+
+
+
+
+
+
+
+
+
+<!-- CSS -->
+<link rel="stylesheet" type="text/css" href="/TopMall/resource/mmall/css/style.css">
+
+<!-- JS -->
+<script type="text/javascript" src="/TopMall/resource/mmall/js/jquery.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="/TopMall/resource/mmall/js/cwxbox.js" charset="utf-8"></script>
+<script type="text/javascript" src="/TopMall/resource/mmall/js/mmall.common.js" charset="utf-8"></script>
+
+
+
+
+<script type="text/javascript">
+// if(Mobile.isIpad){
+// 	include({
+// 		cssFiles:["/TopMall/resource/mmall/css/ipadStyle.css"]
+// 	});
+// }else{
+// 	include({
+// 		cssFiles:["/TopMall/resource/mmall/css/style.css"]
+// 	});
+// }
+</script>
+    
+    <link rel="stylesheet" href="/TopMall/resource/amazeui/css/amazeui.min.css">
+    <link rel="stylesheet" href="/TopMall/resource/amazeui/css/app.css">
+
+    <link rel="stylesheet" href="/TopMall/resource/mmall/css/user-center.css">
+    <link rel="stylesheet" href="/TopMall/resource/mmall/css/login.css">
+
+    <!-- iCheck -->
+    <link rel="stylesheet" href="/TopMall/resource/mmall/css/iCheck/skins/square/orange.css">
+    
+    <!--[if (gte IE 9)|!(IE)]><!-->
+	<script src="/TopMall/resource/amazeui/js/jquery.min.js"></script>
+	<!--<![endif]-->
+	<!--[if lte IE 8 ]>
+	<script src="http://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+	<script src="http://cdn.staticfile.org/modernizr/2.8.3/modernizr.js"></script>
+	<script src="/TopMall/resource/amazeui/js/amazeui.ie8polyfill.min.js"></script>
+	<![endif]-->
+	<script type="text/javascript" src="/TopMall/resource/js/sha1.js?ramid=1491036653354"></script>
+    <script src="/TopMall/resource/mmall/js/amazeui.modal.js"></script>
+    <script src="/TopMall/resource/mmall/js/mmall.common.js"></script>
+
+	<script type="text/javascript">
+	//生成验证码
+	var savedVCode;
+	function getVerificationCode() {
+		$.ajax({
+			url:'/TopMallWeb/mobUserAction!getNumVerifyCode.action?rand='+Math.random(),
+			type:'POST',
+			dataType:'json',
+			cache:false,
+			async:false,
+			success:function(data) {
+				savedVCode=data;
+				var codeText = data.toString().substring(0, 1)+" "+data.toString().substring(1, 2)+" "+data.toString().substring(2, 3)+" "+data.toString().substring(3, 4);
+				$("#verificationCode").text(codeText);
+			},
+			error:function(data) {
+				modalAlert("提示","网络繁忙");
+			}
+		});
+	}
+	//校验数字验证码
+	function checkNumCode() {
+		var codeFlag = false;
+		if($("#numberCode").val()=="") {
+			modalAlert("提示","验证码不能为空");
+			return;
+		}
+		$.ajax({
+			url:'/TopMallWeb/mobUserAction!checkNumCode.action',
+			type:'POST',
+			dataType:'json',
+			cache:false,
+			async:false,
+			data:{
+				"numberCode":$("#checkCode").val()
+			},
+			success:function(data) {
+				if(data.success) {
+					codeFlag=true;
+				} else {
+					modalAlert("提示",data.msg);
+					codeFlag=false;
+				}
+			},
+			error:function(data) {
+				modalAlert("提示","网络繁忙");
+			}
+		});
+		return codeFlag;
+	}
+	
+	//提交登录表单
+	function submitLoginForm() {
+		
+		//验证输入
+		if($("#custId").val()=="") {
+			modalAlert("提示","请输入用户名");
+			getVerificationCode();
+			return;
+		}
+		if($("#custPwd").val()=="") {
+			modalAlert("提示","请输入密码");
+			getVerificationCode();
+			return;
+		}
+		 if($("#checkCode").val()=="") {
+			modalAlert("提示","请输入验证码");
+			getVerificationCode();
+			return;
+		}
+		
+		//判断验证码是否正确
+		if($("#checkCode").val()!=savedVCode) {
+			modalAlert("提示","验证码输入不正确");
+			$("#checkCode").val("");
+			getVerificationCode();
+			return;
+		}
+		//检查验证码是否正确
+		var isChecked=checkNumCode();
+		if(!isChecked) {
+			return;
+		} 
+		var jm_custPwd = hex_sha1($("#custPwd").val());
+		
+		//提交表单
+		$.ajax({
+			url:'/TopMallWeb/mobUserAction!mobLogin.action',
+			type:'POST',
+			dataType:'json',
+			data:{
+				"custId":$("#custId").val(),
+				"custPwd":jm_custPwd,
+				"isRemember":$('#isRemember').attr('checked'),
+				"numberCode":$("#checkCode").val()
+			},
+			success:function(data) {
+				if(!data.success) {
+					modalAlert("提示",data.msg);
+					getVerificationCode();
+					$("#checkCode").val("");
+				} else {
+					//获取来源页
+					var refererUrl = document.referrer || location.href;
+					if(refererUrl != "" && refererUrl.indexOf('login.jsp')<0 && refererUrl.indexOf('forget.jsp')<0 ) {
+						location.href=refererUrl;
+					}else {
+						//history.go(0);
+						location.href="/TopMallWeb/mmall/cust/myMallNew.jsp";
+					}
+					
+				}
+				
+			},
+			error:function(data) {
+				modalAlert("提示","网络繁忙");
+			}
+		});
+		
+	}
+	
+	
+	
+	//提交微信注册表单
+	function submitWXLoginForm() {
+		
+		 //教育缴费不用协议事件
+        
+			var agreeSelect = $('.agree-select:checked');
+			if(agreeSelect.length === 0){
+				modalAlert("提示","请先选择同意《会员服务协议》");
+				return;
+			}
+        
+		if($("#custMob").val()=="") {
+			modalAlert("提示","请输入手机号码");
+			return;
+		}
+		if(!checkMobileNum($("#custMob").val())) {
+			modalAlert("提示","输入的手机号码有误！");
+			return;
+		}
+		if($("#phoneCode").val()=="") {
+			modalAlert("提示","请输入手机验证码");
+			return;
+		}
+		if($('#refer_name').is(':checked')){
+			if($("#recomNo").val()==""){
+				cwxbox.box.show("请输入推荐序号",1);
+				return;				
+			}
+			if(/[\u4E00-\u9FA5]/i.test($("#recomNo").val())){								
+				cwxbox.box.show("请输入正确的推荐序号",1);
+				return;	
+			}
+			if($("#recomNo").val().length<7){
+				cwxbox.box.show("推荐序号序号不能少于7位",1);
+				return;				
+			}
+			else if($("#recomNo").val().length>7){
+				cwxbox.box.show("请输入正确的推荐序号",1);
+				return;	
+			}
+		}
+		
+		//检查是否已经更换手机号码
+		if(pastPhoneNum!=$("#custMob").val()) {
+			modalAlert("提示","检测到手机号码已更改，请重新获取手机验证码");
+			clearInterval(waitInterver);
+			$("#getRegSmsCodeBtn").text("获取验证码");
+			$("#getRegSmsCodeBtn").css("color","#FFF");
+			waitTime=60;
+			return;
+		}
+		
+		
+		//向后台提交数据
+		$.ajax({
+			url:'/TopMallWeb/mobUserAction!wxReg.action',
+			type:'POST',
+			dataType:'json',
+			data:{
+				'custInf.custMob':$('#custMob').val(),
+				"phoneCode":$("#phoneCode").val(),
+				'fromWeChat':"1",
+				'recomNo':$('#refer_name').is(':checked')?$('#recomNo').val():''
+				
+			},
+			success:function(data) {
+				if(data.success) {
+					  cwxbox.box.show(data.msg,1);					    
+					 setTimeout(function() {
+						 var goUrl = "";
+						 var wxToken = "";							
+						 var localWxToken = localStorage.getItem("wxToken");						
+						 if(!localWxToken) {
+							 localStorage.setItem("wxToken", wxToken);
+						 }						
+						if(goUrl != "" && goUrl != undefined) {
+							window.location.href = goUrl;
+						} else {
+							location.href="/TopMallWeb/mmall/wechat/goIndex.jsp";
+						}
+					}, 3000); 					 
+					 /*  modalAlert("提示",data.msg,function() {
+						var goUrl = "";
+						var wxToken = "";
+						alert(goUrl);
+						alert(wxToken);
+						var localWxToken = localStorage.getItem("wxToken");
+						alert(localWxToken);
+						if(!localWxToken) {
+							localStorage.setItem("wxToken", wxToken);
+						}
+						if(goUrl != "" && goUrl != undefined) {
+							window.location.href = goUrl;
+						} else {
+							location.href="/TopMallWeb/mmall/wechat/goIndex.jsp";
+						}
+					});   */
+				}else{
+					modalAlert("提示",data.msg);					
+				}
+			},
+			error:function(data) {
+				modalAlert("提示","网络繁忙");
+			}
+		});		
+						
+	}
+			
+	/*
+	 * 判断是否微信访问
+	 */
+	 function is_weixin() {
+		var ua = navigator.userAgent.toLowerCase();
+		if(ua.match(/MicroMessenger/i) == "micromessenger") {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	
+	//短信验证码相关
+	var pastPhoneNum;
+	//获取手机验证码
+	var waitInterver;
+	var waitTime=60;
+	var custMob;
+	var propertyName;
+	var numberCode;
+	function getPhoneCode(type) {
+		if(waitTime!=60) {
+			return;
+		}
+		if(type == '1'){
+			//验证手机号码
+			if($("#loginCustMob").val()=="") {
+				modalAlert("提示","请输入手机号码");
+				return;
+			}
+			if(!checkMobileNum($("#loginCustMob").val())) {
+				modalAlert("提示","输入的手机号码有误！");
+				return;
+			}
+			
+			//更改手机号码后要求重新获取验证码
+			pastPhoneNum = $("#loginCustMob").val();
+			
+			custMob = $("#loginCustMob").val();
+			propertyName = "send.message.login";
+			numberCode = "weixinLog"
+		}else if(type == '2'){
+			//验证手机号码
+			if($("#custMob").val()=="") {
+				modalAlert("提示","请输入手机号码");
+				return;
+			}
+			if(!checkMobileNum($("#custMob").val())) {
+				modalAlert("提示","输入的手机号码有误！");
+				return;
+			}
+			
+			//更改手机号码后要求重新获取验证码
+			pastPhoneNum = $("#custMob").val();
+			
+			custMob = $("#custMob").val();
+			propertyName = "send.message.register";
+			numberCode = "weixinReg"
+		}
+		
+		
+		
+		//获取手机验证码
+		$.ajax({
+			url:'/TopMallWeb/mobUserAction!getCustMobileSmsCode.action?rand='+Math.random(),
+			type:'POST',
+			dataType:'json',
+			data:{
+				"custMob":custMob,
+				"propertyName":propertyName,
+				"numberCode":numberCode
+			},
+			success:function(data) {
+				if(data.success) {
+					if(waitTime>0 && numberCode=='weixinLog') {
+						waitLogSmsCode();
+						waitInterver = setInterval(waitLogSmsCode,1000);
+					} else if(waitTime>0 && numberCode=='weixinReg') {
+						waitRegSmsCode();
+						waitInterver = setInterval(waitRegSmsCode,1000);
+					}
+					modalAlert("提示","验证码发送成功！");
+					
+				} else {
+					modalAlert("提示",data.msg);
+					if(data.needlog=="1"){
+						clearInterval(waitInterver);
+						$("#getLogSmsCodeBtn").text("获取验证码");
+						$("#getLogSmsCodeBtn").css("color","#FFF");
+				        waitTime=60;
+						$("#weixin-bond-login").show();
+			        	$("#weixin-login").hide();
+					}
+				}
+			},
+			error:function(data) {
+				modalAlert("提示","网络繁忙");
+			}
+		});
+	}
+	//验证码60秒倒计时  注册
+	function waitRegSmsCode() {
+		if(waitTime>0) {
+			waitTime--;
+			$("#getRegSmsCodeBtn").text(waitTime+"秒");
+			$("#getRegSmsCodeBtn").css("color","#CCC");
+		} else {
+			clearInterval(waitInterver);
+			$("#getRegSmsCodeBtn").text("获取验证码");
+			
+				$("#getRegSmsCodeBtn").css("color","#FFF");
+			
+			
+			waitTime=60;
+		}
+	}
+	
+	//验证码60秒倒计时  登录
+	function waitLogSmsCode() {
+		if(waitTime>0) {
+			waitTime--;
+			$("#getLogSmsCodeBtn").text(waitTime+"秒");
+			$("#getLogSmsCodeBtn").css("color","#CCC");
+		} else {
+			clearInterval(waitInterver);
+			$("#getLogSmsCodeBtn").text("获取验证码");
+			
+				$("#getLogSmsCodeBtn").css("color","#FFF");
+			
+			
+			waitTime=60;
+		}
+	}
+	
+	
+	//提交微信登录表单
+	function wxlogin() {
+		if($("#loginCustMob").val()=="") {
+			modalAlert("提示","请输入手机号码");
+			return;
+		}
+		if(!checkMobileNum($("#loginCustMob").val())) {
+			modalAlert("提示","输入的手机号码有误！");
+			return;
+		}
+		if($("#loginPhoneCode").val()=="") {
+			modalAlert("提示","请输入手机验证码");
+			return;
+		}
+		
+		//检查是否已经更换手机号码
+		if(pastPhoneNum!=$("#loginCustMob").val()) {
+			modalAlert("提示","检测到手机号码已更改，请重新获取手机验证码");
+			clearInterval(waitInterver);
+			$("#getLogSmsCodeBtn").text("获取验证码");
+			$("#getLogSmsCodeBtn").css("color","#FFF");
+			waitTime=60;
+			return;
+		}
+		
+		
+		//向后台提交数据
+		$.ajax({
+			url:'/TopMallWeb/mobUserAction!wxLogin.action',
+			type:'POST',
+			dataType:'json',
+			data:{
+				'custInf.custMob':$('#loginCustMob').val(),
+				"phoneCode":$("#loginPhoneCode").val()
+			},
+			success:function(data) {
+				if(data.success) {
+					  cwxbox.box.show(data.msg,1);					    
+					 setTimeout(function() {
+						location.href="/TopMallWeb/mmall/wechat/goIndex.jsp";
+					}, 3000);
+				}else{
+					modalAlert("提示",data.msg);					
+				}
+			},
+			error:function(data) {
+				modalAlert("提示","网络繁忙");
+			}
+		});		
+						
+	}
+	
+	$(function() {
+		
+		//获取来源页
+		var refererUrl = document.referrer || location.href;
+
+		if(refererUrl != "" && refererUrl.indexOf('login.jsp') < 0) {
+			localStorage.setItem("loginRefererUrl", refererUrl);
+		}
+
+		if(refererUrl.indexOf("WeChatIndex") != -1) {
+			history.back();
+		}
+
+		if(!is_weixin()) {
+			$("#normal-login").show();
+		} else if("" == "1"){
+			$("#weixin-bond-login").show();
+		} else {
+			$("body").html("<p style='text-align:center;font-size:12px;color:#333;margin-top:100px;'>正在检查登录状态，稍后将跳转到来源页...</p>")
+			setTimeout(function() {
+                var goUrl = '';
+                if(!goUrl){
+                    goUrl = localStorage.getItem("loginRefererUrl") || '';
+                }
+				location.href = "/TopMallWeb/servlet/WeChatIndex?goUrl=" + goUrl + "&type=needreg";
+			}, 1000);
+			
+		}
+		
+		
+		getVerificationCode();
+		if('' != "") {
+			$("#isRemember").prop("checked",true);
+		}
+	// 	mmallLoadFooter();
+		numPlaceHolder();
+		
+		$("#register").click(function(){
+			clearInterval(waitInterver);
+	    	waitTime=60;
+	    	$("#weixin-bond-login").hide();
+	    	$("#weixin-login").show();
+	    });
+	});
+	</script>
+</head>
+<body class="es-bg-white">
+<!-- 普通登录页面  -->
+<div id="normal-login" style="">
+<header class="es-header es-bg-orange">
+	
+    <span class="go-back" onclick="history.back()"></span>
+    <h1 class="es-header-title es-header-title-white am-text-middle am-text-center">
+        登录
+    </h1>
+</header>
+
+<section class="login-area">
+    <div class="login-input-wrapper">
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <div class="login-input">
+                    <div class="login-username">
+                        用户名：
+                        <input type="text" name="custId" id="custId" value="">
+                        <span class="username-icon am-icon-user"></span>
+                    </div>
+                    <div class="login-userpwd">
+                        密&nbsp;&nbsp;&nbsp;&nbsp;码：
+                        <input type="password" name="custPwd" id="custPwd">
+                        <span class="username-icon am-icon-lock"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="check-code-wrapper">
+        <div class="am-g">
+            <div class="am-u-sm-8">
+                <input type="number" name="checkCode" id="checkCode" placeholder="请输入验证码">
+            </div>
+            <div class="am-u-sm-4">
+                <button type="button" class="am-btn am-btn-warning am-radius check-code" onclick="getVerificationCode();" id="verificationCode" style="font-size: 16px;">9 9 1 9</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="login-btn-wrapper">
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <button type="button" class="am-btn am-btn-warning am-radius es-bg-orange login-btn" onclick="submitLoginForm();">登  录</button>
+            </div>
+        </div>
+    </div>
+   <!-- /TopMallWeb/mmall/index/reg.jsp -->
+    <div class="login-bottom">
+        <div class="am-g">
+            <div class="am-u-sm-7">
+                <div class="icheckbox_square-orange" style="position: relative; "><input type="checkbox" name="isRemember" id="isRemember" style="position: absolute; opacity: 0; "><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background-color: rgb(255, 255, 255); border: 0px; opacity: 0; background-position: initial initial; background-repeat: initial initial; "></ins></div>
+                记住用户名
+            </div>
+            <div class="am-u-sm-2">
+                <a href="javascript:goUrlRedirect()">注册</a>
+            </div>
+            <div class="am-u-sm-3">
+                <a href="/TopMallWeb/mmall/index/forget.jsp">忘记密码</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+</div>
+
+
+
+
+<!--微信登录页面  -->
+<div id="weixin-login" style="display: none;">
+
+<header class="es-header es-bg-orange">
+	
+    <span class="go-back" onclick="history.back()"></span>
+    <h1 class="es-header-title es-header-title-white am-text-middle am-text-center">
+        快速注册
+    </h1>
+</header>
+
+<section class="reg-area">
+    <div class="reg-input-wrapper">
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <div class="reg-input">
+                    <input type="number" name="custMob" id="custMob" placeholder="请输入手机号码" style="height:42px;line-height:42px;width:100%;vertical-align:top;">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="check-code-wrapper">
+        <div class="am-g">
+            <div class="am-u-sm-8">
+                <input type="number" name="phoneCode" id="phoneCode" placeholder="请输入短信验证码">
+            </div>
+            <div class="am-u-sm-4">
+                <button type="button" onclick="getPhoneCode('2');" id="getRegSmsCodeBtn" class="am-btn am-btn-warning am-radius check-code">获取验证码</button>
+            </div>
+        </div>
+    </div>
+    
+   <div class="reg-bottom" id="wx-reg-bottom">
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <div class="icheckbox_square-orange" style="position: relative; "><input type="checkbox" name="refer_name_input" id="refer_name" style="width: 22px; height: 22px; margin: 0px; position: absolute; opacity: 0; "><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background-color: rgb(255, 255, 255); border: 0px; opacity: 0; background-position: initial initial; background-repeat: initial initial; "></ins></div>
+                	推荐号
+            </div>
+        </div>
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <div class="refer-name-input" style="display:none,margin-top:10px;">
+                    <input type="text" name="recomNo" id="recomNo" placeholder="请输入推荐序号" maxlength="7" onkeyup="limitChinese2(this);" style="height:42px;line-height:42px;width:100%;vertical-align:top;">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+	    <div class="agree-box">
+	    	<input id="agreeSelect" type="checkbox" class="agree-select">同意<a href="/TopMallWeb/mmall/help/surviceInfo.html">《会员服务协议》</a>
+	    </div>
+	
+    
+    <div class="login-btn-wrapper">
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <button type="button" id="wx-reg-btn" onclick="submitWXLoginForm();" class="am-btn am-btn-warning am-radius es-disabled-btn login-btn" disabled="">注  册</button>
+            </div>
+        </div>
+    </div>
+    
+    <section class="index-mid-space" style="height:6px;  background-color: #f5f5f9;"></section>
+    
+    <div class="reg-bottom" id="wx-reg-bottom">
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                	温馨提示：注册成功后下次可以直接使用微信登录，并且在电脑端也可以使用手机号码登录，登录前请点击忘记密码来重设密码.
+            </div>
+        </div>
+    </div>
+
+
+
+</section>
+
+</div>
+
+
+<!--微信登录页面  -->
+<div id="weixin-bond-login" style="display: none;">
+
+<header class="es-header es-bg-orange">
+
+	<span id="goback" class="go-back"></span>
+    <h1 class="es-header-title es-header-title-white am-text-middle am-text-center">
+       	手机快速登录
+       	<!-- <div id="register" class="am-u-sm-3" style="font-size: 10px;">去注册</div> -->
+    </h1>
+    <div id="register" style="font-size: 13px; ">去注册</div>
+</header>
+
+<section class="reg-area">
+    <div class="reg-input-wrapper">
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <div class="reg-input">
+                    <input type="number" name="loginCustMob" id="loginCustMob" placeholder="请输入手机号码" style="height:42px;line-height:42px;width:100%;vertical-align:top;">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="check-code-wrapper">
+        <div class="am-g">
+            <div class="am-u-sm-8">
+                <input type="number" name="loginPhoneCode" id="loginPhoneCode" placeholder="请输入短信验证码">
+            </div>
+            <div class="am-u-sm-4">
+                <button type="button" onclick="getPhoneCode('1');" id="getLogSmsCodeBtn" class="am-btn am-btn-warning am-radius check-code">获取验证码</button>
+            </div>
+        </div>
+    </div>
+    <div class="login-btn-wrapper">
+        <div class="am-g">
+            <div class="am-u-sm-12">
+                <button type="button" id="wx-log-btn" onclick="wxlogin();" class="am-btn am-btn-warning am-radius es-bg-orange login-btn">登  录</button>
+            </div>
+        </div>
+    </div>
+    
+     
+     
+</section>
+
+</div>
+
+
+<script src="/TopMall/resource/amazeui/js/amazeui.min.js"></script>
+<script src="/TopMall/resource/mmall/js/icheck.min.js"></script>
+<script type="text/javascript" src="/TopMall/resource/mmall/js/mmall.common.js" charset="utf-8"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#isRemember').iCheck({
+            checkboxClass: 'icheckbox_square-orange',
+            radioClass: 'iradio_square-orange'
+        });
+        
+        $('#refer_name').iCheck({
+            checkboxClass: 'icheckbox_square-orange',
+            radioClass: 'iradio_square-orange'
+        });
+
+        $('#refer_name').on('ifChanged',function(){
+       		var _check = $(this).prop('checked');
+       		if(_check){
+       			$('.refer-name-input').slideDown();
+       		}
+       		else{
+       			$('.refer-name-input').slideUp();
+       		}
+       	});
+        //点击协议事件
+        $('.agree-select').prop('checked',false).on('click',function(){
+        	var val = $(this).prop('checked'),
+        		regBtn = $('#wx-reg-btn');
+        	if(val){
+        		regBtn.removeClass('es-disabled-btn').prop('disabled',false);
+        	}else{
+        		regBtn.addClass('es-disabled-btn').prop('disabled',true);
+        	}
+        });
+        
+        //教育缴费不用协议事件
+        
+        
+        
+        $("#goback").click(function(){
+        	if(localStorage.getItem("loginRefererUrl")!="" && localStorage.getItem("loginRefererUrl")!=null){
+        		location.href=localStorage.getItem("loginRefererUrl");
+        	}else
+    			history.back();
+        });
+
+    });
+    
+    function goUrlRedirect(){
+    	var refererUrl = document.referrer || location.href;
+    	location.href = "/TopMallWeb/mobUserAction!goUrlRedirect.action?goUrl="+refererUrl;
+    }
+    //限制文本框只能输入英文字母和数字，不能输入中文
+    function limitChinese2(obj){
+    	obj.onblur = function (){
+    		obj.value = obj.value.replace(/[^a-zA-Z0-9]/ig,'');
+    	};
+    	
+    }
+   	
+</script>
+
+
+</body></html>

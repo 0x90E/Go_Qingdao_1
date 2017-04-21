@@ -1,0 +1,405 @@
+<html><head></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">// JavaScript Document
+$(function() {
+	
+
+	/*2015-01-08新加横通切换*/
+	$(".zg_ht17mR01_tab span").each(function(c) {
+        $(this).hover(function(){
+		$(".zg_ht17mR01_tab span").removeClass("on");
+		$(this).addClass("on");
+		$(".zg_ht17mR01tabc").hide();
+		$(".zg_ht17mR01tabc:eq("+c+")").show();
+	})
+    });
+});
+
+(function($){$.fn.bxCarousel=function(options){var defaults={move:4,display_num:4,speed:500,auto:false,auto_interval:2000,auto_dir:'next',auto_hover:false,next_text:'next',next_image:'',prev_text:'prev',prev_image:'',controls:true};var options=$.extend(defaults,options);return this.each(function(){var $this=$(this);var li=$this.find('dl');var first=0;var fe=0;var last=options.display_num-1;var le=options.display_num-1;var is_working=false;var j='';var clicked=false;li.css({'float':'left','listStyle':'none','marginRight':options.margin});var ow=li.outerWidth(true);wrap_width=(ow*options.display_num)-options.margin;var seg=ow*options.move;$this.wrap('&lt;div class="bx_container"&gt;&lt;/div&gt;').width(999999);if(options.controls){if(options.next_image!=''||options.prev_image!=''){var controls='&lt;a href="" class="prev"&gt;&lt;img src="'+options.prev_image+'"/&gt;&lt;/a&gt;&lt;a href="" class="next"&gt;&lt;img src="'+options.next_image+'"/&gt;&lt;/a&gt;';}
+else{var controls='&lt;a href="" class="prev"&gt;'+'&amp;lt;'+'&lt;/a&gt;&lt;a href="" class="next"&gt;'+'&amp;gt;'+'&lt;/a&gt;';}}
+$this.parent('.bx_container').wrap('&lt;div class="bx_wrap"&gt;&lt;/div&gt;').css({'position':'relative','width':wrap_width,'overflow':'hidden'}).before(controls);var w=li.slice(0,options.display_num).clone();var last_appended=(options.display_num+options.move)-1;$this.empty().append(w);get_p();get_a();$this.css({'position':'relative','left':-(seg)});$this.parent().siblings('.next').click(function(){slide_next();clearInterval(j);clicked=true;return false;});$this.parent().siblings('.prev').click(function(){slide_prev();clearInterval(j);clicked=true;return false;});if(options.auto){start_slide();if(options.auto_hover&amp;&amp;clicked!=true){$this.find('dl').live('mouseenter',function(){if(!clicked){clearInterval(j);}});$this.find('dl').live('mouseleave',function(){if(!clicked){start_slide();}});}}
+function start_slide(){if(options.auto_dir=='next'){j=setInterval(function(){slide_next()},options.auto_interval);}else{j=setInterval(function(){slide_prev()},options.auto_interval);}}
+function slide_next(){if(!is_working){is_working=true;set_pos('next');$this.animate({left:'-='+seg},options.speed,function(){$this.find('dl').slice(0,options.move).remove();$this.css('left',-(seg));get_a();is_working=false;});}}
+function slide_prev(){if(!is_working){is_working=true;set_pos('prev');$this.animate({left:'+='+seg},options.speed,function(){$this.find('dl').slice(-options.move).remove();$this.css('left',-(seg));get_p();is_working=false;});}}
+function get_a(){var str=new Array();var lix=li.clone();le=last;for(i=0;i&lt;options.move;i++){le++
+if(lix[le]!=undefined){str[i]=$(lix[le]);}else{le=0;str[i]=$(lix[le]);}}
+$.each(str,function(index){$this.append(str[index][0]);});}
+function get_p(){var str=new Array();var lix=li.clone();fe=first;for(i=0;i&lt;options.move;i++){fe--
+if(lix[fe]!=undefined){str[i]=$(lix[fe]);}else{fe=li.length-1;str[i]=$(lix[fe]);}}
+$.each(str,function(index){$this.prepend(str[index][0]);});}
+function set_pos(dir){if(dir=='next'){first+=options.move;if(first&gt;=li.length){first=first%li.length;}
+last+=options.move;if(last&gt;=li.length){last=last%li.length;}}else if(dir=='prev'){first-=options.move;if(first&lt;0){first=li.length+first;}
+last-=options.move;if(last&lt;0){last=li.length+last;}}}});}})(jQuery);
+
+$(function(){
+	$("#demo1").bxCarousel({display_num: 1, move: 1,margin: 5 });
+})
+
+$(function(){
+	//顶部快捷导航显示与隐藏
+	$(".zg_ul_ksdh .zg_toptab").each(function(d) {
+		$(this).hover(function(){
+        	$(".zg_ul_ksdh .zg_toptab").removeClass("hover");
+			$(this).addClass("hover");
+			$(".zg_header_kjdh").hide();
+			$(".zg_header_kjdh:eq("+d+")").show();
+		},function(){
+			$(".zg_ul_ksdh .zg_toptab").removeClass("hover");
+			$(".zg_header_kjdh").hide();
+		})
+    });	
+	$(".zg_header_kjdh").each(function(d) {
+		$(this).hover(function(){
+        	$(".zg_ul_ksdh .zg_toptab").removeClass("hover");
+			$(".zg_ul_ksdh .zg_toptab:eq("+d+")").addClass("hover");
+			$(".zg_header_kjdh").hide();
+			$(this).show();
+		},function(){
+			$(".zg_ul_ksdh .zg_toptab").removeClass("hover");
+			$(".zg_header_kjdh").hide();
+		})
+    });
+})
+
+
+function show_qq(){
+	document.getElementById("fenxiaoqq").style.display="";
+	document.getElementById("kefuqq").className="kefu";
+}
+function close_qq(){
+	document.getElementById("fenxiaoqq").style.display="none";
+	document.getElementById("kefuqq").className="kefu_online";
+}
+function nav_open()
+{
+	document.getElementById("fenxiao").className="fenxiaonav";
+	document.getElementById("navmore").style.display="none";
+}
+function nav_close()
+{
+	document.getElementById("fenxiao").className="newlogo_fenxiao";
+	document.getElementById("navmore").style.display="";
+}
+//more
+function open_more(obj)
+{
+	document.getElementById("more"+obj).style.display="";
+}
+function close_more(obj)
+{
+	document.getElementById("more"+obj).style.display="none";
+}
+	
+function nav_show(obj)
+{
+	document.getElementById("nav"+obj).className="navnew";
+	document.getElementById("smnav"+obj).style.display="";
+	}
+function nav_dow(obj)
+{
+	document.getElementById("nav"+obj).className="";
+	document.getElementById("smnav"+obj).style.display="none";
+}
+
+
+$(function(){
+	//讲座安排切换
+	$(".ksrl_bt a").each(function(c) {
+        $(this).hover(function(){
+		$(".ksrl_bt a").removeClass("hover");
+		$(this).addClass("hover");
+		$(".ksrl_nr").hide();
+		$(".ksrl_nr:eq("+c+")").show();
+	})
+    });
+	//热门课程切换
+	$(".kecheng a").each(function(c) {
+        $(this).hover(function(){
+		$(".kecheng a").removeClass("hover");
+		$(this).addClass("hover");
+		$(".kechengnr").hide();
+		$(".kechengnr:eq("+c+")").show();
+	})
+    });	
+	//考试日历切换
+	$(".zg_ggxx_left_ksrl a").each(function(c) {
+        $(this).hover(function(){
+		$(".zg_ggxx_left_ksrl a").removeClass("hover");
+		$(this).addClass("hover");
+		$(".zg_ggxx_left_ksrl_cont").hide();
+		$(".zg_ggxx_left_ksrl_cont:eq("+c+")").show();
+	})
+    });
+
+	//公务员
+	$(".xjgwy ul li").each(function(c) {
+        $(this).hover(function(){
+		$(".xjgwy ul li").removeClass("hover");
+		$(this).addClass("hover");
+		$(".xjgwy_cont").hide();
+		$(".xjgwy_cont:eq("+c+")").show();
+	})
+    });
+	//中公网校
+	$(".wangxiao a").each(function(c) {
+        $(this).hover(function(){
+		$(".wangxiao a").removeClass("hover");
+		$(this).addClass("hover");
+		$(".wangxiao_nr").hide();
+		$(".wangxiao_nr:eq("+c+")").show();
+	})
+    });
+	//图书教材
+	$(".tushu a").each(function(c) {
+        $(this).hover(function(){
+		$(".tushu a").removeClass("hover");
+		$(this).addClass("hover");
+		$(".zg_tushu_cont").hide();
+		$(".zg_tushu_cont:eq("+c+")").show();
+	})
+    });
+
+	//友情链接
+	$(".zg_yqlj_bt a").each(function(c) {
+        $(this).hover(function(){
+		$(".zg_yqlj_bt a").removeClass("hover");
+		$(this).addClass("hover");
+		$(".zg_yqlj_cont").hide();
+		$(".zg_yqlj_cont:eq("+c+")").show();
+	})
+    });
+
+	//首页 分校地址 切换
+	$(".zg_fxxx_title span").each(function(c) {
+        $(this).hover(function(){
+		$(".zg_fxxx_title span").removeClass("hover");
+		$(this).addClass("hover");
+		$(".zg_fxxx_left ul").hide();
+		$(".zg_fxxx_left ul:eq("+c+")").show();
+	})
+    });
+/**/
+	//首页 公务员 活动 | 讲座 切换
+	$(".gwy_huodong a").each(function(c) {
+        $(this).hover(function(){
+		$(".gwy_huodong a").removeClass("hover");
+		$(this).addClass("hover");
+		$(".gwy_huodong_nr").hide();
+		$(".gwy_huodong_nr:eq("+c+")").show();
+	})
+    });
+	//首页 事业单位 活动 | 讲座 切换
+	$(".sydw_huodong a").each(function(c) {
+        $(this).hover(function(){
+		$(".sydw_huodong a").removeClass("hover");
+		$(this).addClass("hover");
+		$(".sydw_huodong_nr").hide();
+		$(".sydw_huodong_nr:eq("+c+")").show();
+	})
+    });
+	//首页 教师考试 活动 | 讲座 切换
+	$(".jsks_huodong a").each(function(c) {
+        $(this).hover(function(){
+		$(".jsks_huodong a").removeClass("hover");
+		$(this).addClass("hover");
+		$(".jsks_huodong_nr").hide();
+		$(".jsks_huodong_nr:eq("+c+")").show();
+	})
+    });
+	//首页 金融银行 活动 | 讲座 切换
+	$(".jryh_huodong a").each(function(c) {
+        $(this).hover(function(){
+		$(".jryh_huodong a").removeClass("hover");
+		$(this).addClass("hover");
+		$(".jryh_huodong_nr").hide();
+		$(".jryh_huodong_nr:eq("+c+")").show();
+	})
+    });
+	//首页 其他考试 活动 | 讲座 切换
+	$(".qita_huodong a").each(function(c) {
+        $(this).hover(function(){
+		$(".qita_huodong a").removeClass("hover");
+		$(this).addClass("hover");
+		$(".qita_huodong_nr").hide();
+		$(".qita_huodong_nr:eq("+c+")").show();
+	})
+    });
+/**/
+	//列表页面辅导课程
+	$(".zg_huodong a").each(function(c) {
+        $(this).hover(function(){
+		$(".zg_huodong a").removeClass("hover");
+		$(this).addClass("hover");
+		$(".zg_huodong_cont").hide();
+		$(".zg_huodong_cont:eq("+c+")").show();
+	})
+    });
+	
+	/*左侧课程导航*/
+	$(".offcn_118fk b").click(function(){
+		$('.offcn_118fk').animate({'left':'-150'},500);
+		$('.offcn_118qq').animate({'left':'0'},500);
+	});	
+	$('.offcn_118qq').live('mouseenter', function () {
+		$('.offcn_118fk').animate({'left':'0'},500);
+		$(this).animate({'left':'-80'},500);
+	})
+
+})
+
+$(document).ready(function() {
+	jQuery.jqtab = function(tabtit,tab_conbox,shijian) {
+		$(tab_conbox).find(".tabs").hide();
+		$(tabtit).find("li:first").addClass("hover").show(); 
+		$(tab_conbox).find(".tabs").eq(0).show();
+	
+		$(tabtit).find("li").bind(shijian,function(){
+			
+		  $(this).addClass("hover").siblings("li").removeClass("hover"); 
+			var activeindex = $(tabtit).find("li").index(this);
+			$(tab_conbox).find(".tabs").eq(activeindex).show().siblings().hide();
+			return false;
+		});
+	
+	};
+	/*调用方法如下：*/
+	/*新疆公务员*/
+	$.jqtab(".hegwy_wxts",".hegwy_wxts_nr","hover");//网校图书
+	$.jqtab(".hegwy_kstk",".hegwy_kstk_nr","hover");//考试题库
+	/*国家公务员*/
+	$.jqtab(".gjgwy_wxts",".gjgwy_wxts_nr","hover");//网校图书
+	$.jqtab(".gjgwy_kstk",".gjgwy_kstk_nr","hover");//考试题库
+	/*事业单位*/
+	$.jqtab(".sydw_wxts",".sydw_wxts_nr","hover");//网校图书
+	$.jqtab(".sydw_kstk",".sydw_kstk_nr","hover");//考试题库
+	/*教师招聘*/
+	$.jqtab(".jszp_wxts",".jszp_wxts_nr","hover");//网校图书
+	$.jqtab(".jszp_kstk",".jszp_kstk_nr","hover");//考试题库
+	/*金融银行*/
+	$.jqtab(".jryh_wxts",".jryh_wxts_nr","hover");//网校图书
+	$.jqtab(".jryh_kstk",".jryh_kstk_nr","hover");//考试题库
+	/*大学生村官*/
+	$.jqtab(".cunguan_wxts",".cunguan_wxts_nr","hover");//网校图书
+	$.jqtab(".cunguan_kstk",".cunguan_kstk_nr","hover");//考试题库
+		
+
+	/**/
+	$('#s_xjgwy').click(function(){$('html,body').animate({scrollTop:$('.xjgwy').offset().top}, 800);});
+	$('#s_sydw').click(function(){$('html,body').animate({scrollTop:$('.sydw').offset().top}, 800);});
+	$('#s_jszp').click(function(){$('html,body').animate({scrollTop:$('.jszp').offset().top}, 800);});
+	$('#s_jryh').click(function(){$('html,body').animate({scrollTop:$('.jryh').offset().top}, 800);});
+	$('#s_qita').click(function(){$('html,body').animate({scrollTop:$('.qita').offset().top}, 800);});
+	$('#s_wxkc').click(function(){$('html,body').animate({scrollTop:$('.wxkc').offset().top}, 800);});
+	$('#s_tsjc').click(function(){$('html,body').animate({scrollTop:$('.tsjc').offset().top}, 800);});
+	
+	var topMain=$(".zg_header_box").height()+1250//是样式的高度加头部与nav导航之间的距离。
+	var nav=$(".zg_fuchuang");
+	$(window).scroll(function(){
+		if ($(window).scrollTop()&gt;topMain){//如果滚动条顶部的距离大于topMain则就nav导航就添加类.nav_scroll，否则就移除。
+			nav.addClass("nav_scroll");
+		}
+		else
+		{
+			nav.removeClass("nav_scroll");
+		}
+	});
+});
+
+$(".zg_fuchuang li").click(function(){
+	$(".zg_fuchuang li a").removeClass("hover");
+	$(this).find("a").addClass("hover");
+	});
+$(window).scroll(function(){
+	if($(document).scrollTop()&gt;0&amp;&amp;$(document).scrollTop()&lt;1640){
+		$(".zg_fuchuang").fadeIn(300);
+		$(".zg_fuchuang li a").removeClass("hover");$(".zg_fuchuang li:eq(0)").find("a").addClass("hover");
+	}
+	if($(document).scrollTop()&gt;1640&amp;&amp;$(document).scrollTop()&lt;2012){
+		$(".zg_fuchuang li a").removeClass("hover");$(".zg_fuchuang li:eq(1)").find("a").addClass("hover");
+	}
+	if($(document).scrollTop()&gt;2012&amp;&amp;$(document).scrollTop()&lt;2384){
+		$(".zg_fuchuang li a").removeClass("hover");$(".zg_fuchuang li:eq(2)").find("a").addClass("hover");
+	}
+	if($(document).scrollTop()&gt;2384&amp;&amp;$(document).scrollTop()&lt;2755){
+		$(".zg_fuchuang li a").removeClass("hover");$(".zg_fuchuang li:eq(3)").find("a").addClass("hover");
+	}
+	if($(document).scrollTop()&gt;2755&amp;&amp;$(document).scrollTop()&lt;3121){
+		$(".zg_fuchuang li a").removeClass("hover");$(".zg_fuchuang li:eq(4)").find("a").addClass("hover");
+	}
+	if($(document).scrollTop()&gt;3121&amp;&amp;$(document).scrollTop()&lt;3495){
+		$(".zg_fuchuang li a").removeClass("hover");$(".zg_fuchuang li:eq(5)").find("a").addClass("hover");
+	}
+	if($(document).scrollTop()&gt;3495&amp;&amp;$(document).scrollTop()&lt;3863){
+		$(".zg_fuchuang li a").removeClass("hover");$(".zg_fuchuang li:eq(6)").find("a").addClass("hover");
+	}
+})
+
+
+/*今日热点*/
+$(function () {
+	//
+	$(document).ready(function(){
+	var indexs=0;
+		zg_m01tab(0);
+	})
+	$('#divselect6 ul li').on('click',function () {
+		 $('.zg_mlistciknum01').html(1);
+		 indexs = $(this).index();
+		 $('.zg_mtabcons').hide().eq(indexs).fadeIn();
+		 zg_m01tab(indexs)
+	})
+	function zg_m01tab(indexs) {
+		var var_indexs = 0;
+		var zg_mtabconsUllen =  $('.zg_mtabcons').eq(indexs).find('ul').length;
+		$('.zg_mlistciknum02').html(zg_mtabconsUllen);
+		//
+		$('.zg_mlistdown').on('click',function(){
+			var_indexs++;
+			$('.zg_mlistciknum01').html(var_indexs+1);
+			$('.zg_mtabcons').eq(indexs).find('ul').eq(var_indexs).fadeIn().siblings().hide();
+			if(var_indexs == zg_mtabconsUllen){
+				var_indexs = 0;
+				$('.zg_mtabcons').eq(indexs).find('ul').eq(var_indexs++).fadeIn().siblings().hide();
+				var_indexs--;
+				$('.zg_mlistciknum01').html(var_indexs+1);
+			}
+		})
+		//
+		$('.zg_mlistup').on('click',function(){
+			var_indexs--;
+			$('.zg_mlistciknum01').html(var_indexs+1);
+			$('.zg_mtabcons').eq(indexs).find('ul').eq(var_indexs).fadeIn().siblings().hide();
+			if(var_indexs == -1){
+				var_indexs = zg_mtabconsUllen-1;
+				$('.zg_mtabcons').eq(indexs).find('ul').eq(var_indexs--).fadeIn().siblings().hide();
+				var_indexs++;
+				$('.zg_mlistciknum01').html(var_indexs+1);
+			}
+		})
+	}
+
+})
+
+//倒计时
+$(function(){
+countDown("2017/4/22 08:00:00","#CountMsg #RemainD","#CountMsg #RemainH","#CountMsg #RemainM","#CountMsg #RemainS");
+});
+function countDown(time,day_elem,hour_elem,minute_elem,second_elem){
+//if(typeof end_time == "string")
+var end_time = new Date(time).getTime(),//月份是实际月份-1
+//current_time = new Date().getTime(),
+sys_second = (end_time-new Date().getTime())/1000;
+var timer = setInterval(function(){
+if (sys_second &gt; 0) {
+sys_second -= 1;
+var day = Math.floor((sys_second / 3600) / 24);
+var hour = Math.floor((sys_second / 3600) % 24);
+var minute = Math.floor((sys_second / 60) % 60);
+var second = Math.floor(sys_second % 60);
+day_elem &amp;&amp; $(day_elem).text(day);//计算天
+$(hour_elem).text(hour&lt;10?"0"+hour:hour);//计算小时
+$(minute_elem).text(minute&lt;10?"0"+minute:minute);//计算分
+$(second_elem).text(second&lt;10?"0"+second:second);// 计算秒
+} else { 
+clearInterval(timer);
+}
+}, 1000);
+}</pre></body></html>

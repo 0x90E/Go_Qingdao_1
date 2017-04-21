@@ -1,0 +1,815 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+ <head> 
+  <meta name="viewport" content="width=device-width" /> 
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+  <meta name="keywords" content="算法,LeetCode" /> 
+  <meta name="description" content="LeetCode-Subsets II[暴力枚举]" /> 
+  <title>
+LeetCode-Subsets II[暴力枚举] | Acm之家</title> 
+  <link rel="shortcut icon" href="/favicon.ico" /> 
+  <link rel="pingback" href="http://www.acmerblog.com/xmlrpc.php" /> 
+  <script type="text/javascript" src="http://cdn.acmerblog.com/wp-content/themes/frontopen3/jquery.js"></script> 
+  <script type="text/javascript">$(function(){mod_txt = '#text-3';});</script> 
+  <script type="text/javascript" src="http://cdn.acmerblog.com/wp-content/themes/frontopen3/frontopen_v2.js"></script> 
+  <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+    inlineMath: [ ["\[$","$\]"], ["\\(","\\)"] ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: true
+  },
+  "HTML-CSS": { availableFonts: ["TeX"] }
+});
+</script> 
+  <script type="text/javascript" src="http://cdn.bootcss.com/mathjax/2.6.1/MathJax.js">
+</script> 
+  <link rel="alternate" type="application/rss+xml" title="Acm之家 &raquo; Feed" href="http://www.acmerblog.com/feed" /> 
+  <link rel="alternate" type="application/rss+xml" title="Acm之家 &raquo; 评论Feed" href="http://www.acmerblog.com/comments/feed" /> 
+  <link rel="stylesheet" id="pms-poty-mail-send-css-css" href="http://cdn.acmerblog.com/wp-content/plugins/poty-mail-send/css/poty-mail-send.css?ver=3.7" type="text/css" media="all" /> 
+  <link rel="stylesheet" id="cptchStylesheet-css" href="http://cdn.acmerblog.com/wp-content/plugins/captcha/css/style.css?ver=3.7" type="text/css" media="all" /> 
+  <script type="text/javascript">
+var duoshuoQuery = {"short_name":"acmerblog","sso":{"login":"http:\/\/www.acmerblog.com\/wp-login.php?action=duoshuo_login","logout":"http:\/\/www.acmerblog.com\/wp-login.php?action=logout&_wpnonce=d7d3da243d"},"theme":"default","stylePatch":"wordpress\/"};
+duoshuoQuery.sso.login += '&redirect_to=' + encodeURIComponent(window.location.href);
+duoshuoQuery.sso.logout += '&redirect_to=' + encodeURIComponent(window.location.href);
+</script> 
+  <script type="text/javascript" src="http://static.duoshuo.com/embed.js" charset="UTF-8" async="async"></script> 
+  <script type="text/javascript" src="http://cdn.acmerblog.com/wp-includes/js/jquery/jquery.js?ver=1.10.2"></script> 
+  <script type="text/javascript" src="http://cdn.acmerblog.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.2.1"></script> 
+  <script type="text/javascript" src="http://cdn.acmerblog.com/wp-content/plugins/poty-mail-send/js/poty-mail-send.js?ver=3.7"></script> 
+  <script type="text/javascript" src="http://cdn.acmerblog.com/wp-includes/js/comment-reply.min.js?ver=3.7"></script> 
+  <link rel="prev" title="LeetCode-Combination Sum[DFS]" href="http://www.acmerblog.com/leetcode-solution-combination-sum-6249.html" /> 
+  <link rel="next" title="LeetCode-Spiral Matrix II[模拟]" href="http://www.acmerblog.com/leetcode-solution-spiral-matrix-ii-6251.html" /> 
+  <link rel="canonical" href="http://www.acmerblog.com/leetcode-solution-subsets-ii-6250.html" /> 
+  <link type="text/css" rel="stylesheet" href="http://cdn.acmerblog.com/wp-content/plugins/syntax-highlighter-with-add-button-in-editor/styles/shCoreRDark.css" /> 
+  <link rel="stylesheet" type="text/css" media="all" href="http://cdn.acmerblog.com/wp-content/themes/frontopen3/style.css" /> 
+ </head> 
+ <body class="home"> 
+  <div class="loading"></div> 
+  <div id="shadow" class="rt-container"> 
+   <div class="header marauto"> 
+    <span class="logo"> <a href="http://www.acmerblog.com/" title="Acm之家" rel="home"><b class="bclass">Acm之家</b></a> <i>各大OJ题解 &amp; 数据结构 &amp; 算法 &amp; IT企业面试题</i></span> 
+    <form role="search" method="get" id="searchform" action="http://www.acmerblog.com/"> 
+     <span class="search"> <input name="s" id="s" type="text" class="input" value="poj 1165 或 题目名称" onclick="this.value = '';" style="color:#999" onkeypress="javascript:if(event.keyCode == 13){query(this.value);}" x-webkit-speech="" /> <button id="searchsubmit" class="btn">搜索</button> </span> 
+    </form> 
+   </div> 
+   <div class="navcon marauto"> 
+    <div class="menu-header">
+     <ul id="menu-%e8%8f%9c%e5%8d%951" class="menu">
+      <li id="menu-item-10" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-10"><a href="http://www.acmerblog.com/">首页</a></li> 
+      <li id="menu-item-128" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor menu-item-has-children menu-item-128"><a href="http://www.acmerblog.com/category/problemset">ACM题库</a> 
+       <ul class="sub-menu"> 
+        <li id="menu-item-129" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-129"><a href="http://www.acmerblog.com/category/problemset/hdu">HDU-杭电</a></li> 
+        <li id="menu-item-130" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-130"><a href="http://www.acmerblog.com/category/problemset/poj2">POJ-北大</a></li> 
+        <li id="menu-item-131" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-131"><a href="http://www.acmerblog.com/category/problemset/uva">UVA</a></li> 
+        <li id="menu-item-132" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-132"><a href="http://www.acmerblog.com/category/problemset/zoj2">ZOJ-浙大</a></li> 
+        <li id="menu-item-133" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-133"><a href="http://www.acmerblog.com/category/problemset/jdoj">九度OJ</a></li> 
+       </ul> </li> 
+      <li id="menu-item-147" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-147"><a href="http://www.acmerblog.com/category/basis">基础算法</a> 
+       <ul class="sub-menu"> 
+        <li id="menu-item-151" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-151"><a href="http://www.acmerblog.com/category/basis/simulate">模拟法</a></li> 
+        <li id="menu-item-148" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-148"><a href="http://www.acmerblog.com/category/basis/string">字符串处理</a></li> 
+        <li id="menu-item-153" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-153"><a href="http://www.acmerblog.com/category/basis/recursion">递归和分治</a></li> 
+        <li id="menu-item-149" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-149"><a href="http://www.acmerblog.com/category/basis/sort">排序</a></li> 
+        <li id="menu-item-150" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-150"><a href="http://www.acmerblog.com/category/basis/enumeration">枚举</a></li> 
+        <li id="menu-item-152" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-152"><a href="http://www.acmerblog.com/category/basis/tanxin">贪心</a></li> 
+        <li id="menu-item-154" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-154"><a href="http://www.acmerblog.com/category/basis/recurrence">递推</a></li> 
+       </ul> </li> 
+      <li id="menu-item-165" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-165"><a href="http://www.acmerblog.com/category/data-struct">数据结构</a> 
+       <ul class="sub-menu"> 
+        <li id="menu-item-171" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-171"><a href="http://www.acmerblog.com/category/data-struct/linear">线性结构</a></li> 
+        <li id="menu-item-169" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-169"><a href="http://www.acmerblog.com/category/data-struct/trees">树形结构</a></li> 
+        <li id="menu-item-166" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-166"><a href="http://www.acmerblog.com/category/data-struct/hash">Hash表</a></li> 
+        <li id="menu-item-168" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-168"><a href="http://www.acmerblog.com/category/data-struct/union-find">并查集</a></li> 
+        <li id="menu-item-170" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-170"><a href="http://www.acmerblog.com/category/data-struct/indexed-trees">树状数组</a></li> 
+       </ul> </li> 
+      <li id="menu-item-135" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-135"><a href="http://www.acmerblog.com/category/dp2">动态规划</a> 
+       <ul class="sub-menu"> 
+        <li id="menu-item-138" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-138"><a href="http://www.acmerblog.com/category/dp2/line-dp">线性DP</a></li> 
+        <li id="menu-item-136" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-136"><a href="http://www.acmerblog.com/category/dp2/interval-dp">区间DP</a></li> 
+        <li id="menu-item-137" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-137"><a href="http://www.acmerblog.com/category/dp2/tree-dp">树形DP</a></li> 
+        <li id="menu-item-1166" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1166"><a href="http://www.acmerblog.com/category/dp2/state-dp">状态DP</a></li> 
+        <li id="menu-item-139" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-139"><a href="http://www.acmerblog.com/category/dp2/package">背包问题</a></li> 
+       </ul> </li> 
+      <li id="menu-item-155" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-155"><a href="http://www.acmerblog.com/category/search">搜索</a> 
+       <ul class="sub-menu"> 
+        <li id="menu-item-156" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-156"><a href="http://www.acmerblog.com/category/search/bfs">BFS搜索</a></li> 
+        <li id="menu-item-157" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-157"><a href="http://www.acmerblog.com/category/search/dfs">DFS搜索</a></li> 
+        <li id="menu-item-158" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-158"><a href="http://www.acmerblog.com/category/search/backtracking">回溯和剪枝</a></li> 
+        <li id="menu-item-159" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-159"><a href="http://www.acmerblog.com/category/search/cut">记忆化搜索</a></li> 
+       </ul> </li> 
+      <li id="menu-item-141" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-141"><a href="http://www.acmerblog.com/category/graph">图论</a> 
+       <ul class="sub-menu"> 
+        <li id="menu-item-142" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-142"><a href="http://www.acmerblog.com/category/graph/graph-visit">图的遍历</a></li> 
+        <li id="menu-item-143" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-143"><a href="http://www.acmerblog.com/category/graph/mst">最小生成树</a></li> 
+        <li id="menu-item-144" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-144"><a href="http://www.acmerblog.com/category/graph/shortest-path">最短路径</a></li> 
+        <li id="menu-item-145" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-145"><a href="http://www.acmerblog.com/category/graph/flow">网络流</a></li> 
+        <li id="menu-item-146" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-146"><a href="http://www.acmerblog.com/category/graph/connectivity">连通性问题</a></li> 
+        <li id="menu-item-1729" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1729"><a href="http://www.acmerblog.com/category/graph/bipartite-graph">二分图</a></li> 
+       </ul> </li> 
+      <li id="menu-item-160" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-160"><a href="http://www.acmerblog.com/category/math">数学相关</a> 
+       <ul class="sub-menu"> 
+        <li id="menu-item-161" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-161"><a href="http://www.acmerblog.com/category/math/number-theory">数论应用</a></li> 
+        <li id="menu-item-162" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-162"><a href="http://www.acmerblog.com/category/math/probability">概率计算</a></li> 
+        <li id="menu-item-163" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-163"><a href="http://www.acmerblog.com/category/math/combination">组合数学</a></li> 
+        <li id="menu-item-164" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-164"><a href="http://www.acmerblog.com/category/math/bignumber">高精度计算</a></li> 
+        <li id="menu-item-140" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-140"><a href="http://www.acmerblog.com/category/game">博弈论</a></li> 
+       </ul> </li> 
+      <li id="menu-item-172" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-172"><a href="http://www.acmerblog.com/category/geometry">计算几何</a> 
+       <ul class="sub-menu"> 
+        <li id="menu-item-176" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-176"><a href="http://www.acmerblog.com/category/geometry/basis-geometry">几何基础</a></li> 
+        <li id="menu-item-173" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-173"><a href="http://www.acmerblog.com/category/geometry/convex">凸包问题</a></li> 
+        <li id="menu-item-174" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-174"><a href="http://www.acmerblog.com/category/geometry/solid-geometry">立体几何</a></li> 
+        <li id="menu-item-175" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-175"><a href="http://www.acmerblog.com/category/geometry/analytic-geometry">解析几何</a></li> 
+       </ul> </li> 
+      <li id="menu-item-204" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-204"><a href="http://www.acmerblog.com/category/zhuanti">专题系列</a> 
+       <ul class="sub-menu"> 
+        <li id="menu-item-207" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-207"><a href="http://www.acmerblog.com/category/zhuanti/algorithm">算法分析</a></li> 
+        <li id="menu-item-3998" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3998"><a href="http://www.acmerblog.com/category/zhuanti/classic">经典问题</a></li> 
+        <li id="menu-item-206" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-206"><a href="http://www.acmerblog.com/category/zhuanti/clanguage">C基础练习</a></li> 
+        <li id="menu-item-1730" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1730"><a href="http://www.acmerblog.com/category/zhuanti/kaoyan">考研机试</a></li> 
+        <li id="menu-item-4877" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4877"><a href="http://www.acmerblog.com/category/zhuanti/bigdata">大数据</a></li> 
+       </ul> </li> 
+      <li id="menu-item-3997" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3997"><a href="http://www.acmerblog.com/category/offer">剑指offer</a></li> 
+      <li id="menu-item-5826" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5826"><a href="http://www.acmerblog.com/index">算法分类索引</a></li> 
+     </ul>
+    </div> 
+    <div class="menu-header-m mIco">
+     <ul id="remen_ul" class="menu-header-m">
+      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-10"><a href="http://www.acmerblog.com/">首页</a></li> 
+      <li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor menu-item-has-children menu-item-128"><a href="http://www.acmerblog.com/category/problemset">ACM题库</a></li> 
+      <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-147"><a href="http://www.acmerblog.com/category/basis">基础算法</a></li> 
+      <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-165"><a href="http://www.acmerblog.com/category/data-struct">数据结构</a></li> 
+      <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-135"><a href="http://www.acmerblog.com/category/dp2">动态规划</a></li> 
+      <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-155"><a href="http://www.acmerblog.com/category/search">搜索</a></li> 
+      <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-141"><a href="http://www.acmerblog.com/category/graph">图论</a></li> 
+      <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-160"><a href="http://www.acmerblog.com/category/math">数学相关</a></li> 
+      <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-172"><a href="http://www.acmerblog.com/category/geometry">计算几何</a></li> 
+      <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-204"><a href="http://www.acmerblog.com/category/zhuanti">专题系列</a></li> 
+      <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3997"><a href="http://www.acmerblog.com/category/offer">剑指offer</a></li> 
+      <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-5826"><a href="http://www.acmerblog.com/index">算法分类索引</a></li> 
+     </ul>
+    </div> 
+   </div> 
+   <div class="conter marauto"> 
+    <script type="text/javascript">
+	$('.loading').animate({'width':'33%'},50);
+</script> 
+    <div id="primary" class="side" role="complementary"> 
+     <ul class="xoxo"> 
+      <li id="text-4" class="widget-container widget_text"><h3 class="widget-title">站长推荐</h3> 
+       <div class="textwidget">
+        <div style="margin:10px 5px;color:#FF6100; font-size:14px"> 
+         <a href="http://www.52xiaoshuang.top/?refer=11101" style="color:#ff6100">科学上网工具/多线路－注册送10G流量</a>
+         <br /> 
+         <a href="http://www.vultr.com/?ref=7046940-3B">vultr云主机-联通速度不错,送20$</a>
+         <br /> 
+         <a href="https://m.do.co/c/fdc95032956d
+">digitalocean-带宽大，注册送10$</a> 
+        </div> 
+       </div> </li>
+      <li id="tag_cloud-2" class="widget-container widget_tag_cloud"><h3 class="widget-title">标签</h3>
+       <div class="tagcloud">
+        <a href="http://www.acmerblog.com/tag/a-start" class="tag-link-88" title="1个话题" style="font-size: 14px;">A*算法</a> 
+        <a href="http://www.acmerblog.com/tag/bfs-2" class="tag-link-61" title="201个话题" style="font-size: 14px;">BFS</a> 
+        <a href="http://www.acmerblog.com/tag/c" class="tag-link-65" title="52个话题" style="font-size: 14px;">C++</a> 
+        <a href="http://www.acmerblog.com/tag/dfs-2" class="tag-link-62" title="451个话题" style="font-size: 14px;">DFS</a> 
+        <a href="http://www.acmerblog.com/tag/dijkstra" class="tag-link-83" title="29个话题" style="font-size: 14px;">Dijkstra</a> 
+        <a href="http://www.acmerblog.com/tag/google" class="tag-link-86" title="10个话题" style="font-size: 14px;">Google</a> 
+        <a href="http://www.acmerblog.com/tag/hoj" class="tag-link-11" title="3,656个话题" style="font-size: 14px;">HOJ</a> 
+        <a href="http://www.acmerblog.com/tag/java" class="tag-link-66" title="924个话题" style="font-size: 14px;">Java</a> 
+        <a href="http://www.acmerblog.com/tag/kmp" class="tag-link-82" title="40个话题" style="font-size: 14px;">KMP</a> 
+        <a href="http://www.acmerblog.com/tag/leetcode" class="tag-link-113" title="190个话题" style="font-size: 14px;">LeetCode</a> 
+        <a href="http://www.acmerblog.com/tag/uva" class="tag-link-34" title="31个话题" style="font-size: 14px;">UVA</a> 
+        <a href="http://www.acmerblog.com/tag/bipartite-graph" class="tag-link-96" title="36个话题" style="font-size: 14px;">二分图</a> 
+        <a href="http://www.acmerblog.com/tag/b-tree" class="tag-link-97" title="55个话题" style="font-size: 14px;">二叉树</a> 
+        <a href="http://www.acmerblog.com/tag/priqueue" class="tag-link-92" title="37个话题" style="font-size: 14px;">优先队列</a> 
+        <a href="http://www.acmerblog.com/tag/bit" class="tag-link-114" title="20个话题" style="font-size: 14px;">位运算</a> 
+        <a href="http://www.acmerblog.com/tag/convex" class="tag-link-53" title="43个话题" style="font-size: 14px;">凸包问题</a> 
+        <a href="http://www.acmerblog.com/tag/divide-conquer" class="tag-link-75" title="253个话题" style="font-size: 14px;">分治</a> 
+        <a href="http://www.acmerblog.com/tag/dp" class="tag-link-67" title="607个话题" style="font-size: 14px;">动态规划</a> 
+        <a href="http://www.acmerblog.com/tag/%e5%8d%9a%e5%bc%88%e8%ae%ba" class="tag-link-72" title="27个话题" style="font-size: 14px;">博弈论</a> 
+        <a href="http://www.acmerblog.com/tag/katelan" class="tag-link-95" title="8个话题" style="font-size: 14px;">卡特兰数</a> 
+        <a href="http://www.acmerblog.com/tag/suffix-array" class="tag-link-81" title="12个话题" style="font-size: 14px;">后缀数组</a> 
+        <a href="http://www.acmerblog.com/tag/%e5%9b%9e%e6%ba%af" class="tag-link-117" title="8个话题" style="font-size: 14px;">回溯</a> 
+        <a href="http://www.acmerblog.com/tag/%e5%9b%be" class="tag-link-118" title="129个话题" style="font-size: 14px;">图</a> 
+        <a href="http://www.acmerblog.com/tag/%e5%a4%a7%e6%95%b0%e6%8d%ae" class="tag-link-115" title="3个话题" style="font-size: 14px;">大数据</a> 
+        <a href="http://www.acmerblog.com/tag/trie-tree" class="tag-link-25" title="33个话题" style="font-size: 14px;">字典树</a> 
+        <a href="http://www.acmerblog.com/tag/strings" class="tag-link-64" title="174个话题" style="font-size: 14px;">字符串</a> 
+        <a href="http://www.acmerblog.com/tag/uninfindset" class="tag-link-73" title="66个话题" style="font-size: 14px;">并查集</a> 
+        <a href="http://www.acmerblog.com/tag/ms" class="tag-link-101" title="2个话题" style="font-size: 14px;">微软</a> 
+        <a href="http://www.acmerblog.com/tag/quikpow" class="tag-link-91" title="40个话题" style="font-size: 14px;">快速幂</a> 
+        <a href="http://www.acmerblog.com/tag/topsort" class="tag-link-99" title="17个话题" style="font-size: 14px;">拓扑排序</a> 
+        <a href="http://www.acmerblog.com/tag/sort" class="tag-link-56" title="66个话题" style="font-size: 14px;">排序</a> 
+        <a href="http://www.acmerblog.com/tag/number" class="tag-link-68" title="226个话题" style="font-size: 14px;">数论</a> 
+        <a href="http://www.acmerblog.com/tag/mst" class="tag-link-46" title="122个话题" style="font-size: 14px;">最小生成树</a> 
+        <a href="http://www.acmerblog.com/tag/shortest-path" class="tag-link-45" title="142个话题" style="font-size: 14px;">最短路径</a> 
+        <a href="http://www.acmerblog.com/tag/stack" class="tag-link-87" title="81个话题" style="font-size: 14px;">栈</a> 
+        <a href="http://www.acmerblog.com/tag/%e6%a6%82%e7%8e%87" class="tag-link-71" title="94个话题" style="font-size: 14px;">概率</a> 
+        <a href="http://www.acmerblog.com/tag/%e6%a8%a1%e6%8b%9f" class="tag-link-9" title="264个话题" style="font-size: 14px;">模拟</a> 
+        <a href="http://www.acmerblog.com/tag/%e6%a8%a1%e6%8b%9f%e9%80%80%e7%81%ab" class="tag-link-93" title="3个话题" style="font-size: 14px;">模拟退火</a> 
+        <a href="http://www.acmerblog.com/tag/mhs" class="tag-link-90" title="20个话题" style="font-size: 14px;">母函数</a> 
+        <a href="http://www.acmerblog.com/tag/%e7%8a%b6%e6%80%81%e5%8e%8b%e7%bc%a9" class="tag-link-84" title="70个话题" style="font-size: 14px;">状态压缩</a> 
+        <a href="http://www.acmerblog.com/tag/baidu" class="tag-link-108" title="1个话题" style="font-size: 14px;">百度</a> 
+        <a href="http://www.acmerblog.com/tag/algorithm-2" class="tag-link-103" title="81个话题" style="font-size: 14px;">算法讲解</a> 
+        <a href="http://www.acmerblog.com/tag/segment-tree" class="tag-link-74" title="122个话题" style="font-size: 14px;">线段树</a> 
+        <a href="http://www.acmerblog.com/tag/combination" class="tag-link-27" title="45个话题" style="font-size: 14px;">组合数学</a> 
+        <a href="http://www.acmerblog.com/tag/contest" class="tag-link-111" title="1个话题" style="font-size: 14px;">编程大赛</a> 
+        <a href="http://www.acmerblog.com/tag/flow" class="tag-link-49" title="53个话题" style="font-size: 14px;">网络流</a> 
+        <a href="http://www.acmerblog.com/tag/kaoyan" class="tag-link-98" title="159个话题" style="font-size: 14px;">考研机试</a> 
+        <a href="http://www.acmerblog.com/tag/knapsack" class="tag-link-69" title="68个话题" style="font-size: 14px;">背包问题</a> 
+        <a href="http://www.acmerblog.com/tag/geometry" class="tag-link-20" title="297个话题" style="font-size: 14px;">计算几何</a> 
+        <a href="http://www.acmerblog.com/tag/memsearch" class="tag-link-89" title="27个话题" style="font-size: 14px;">记忆化搜索</a> 
+        <a href="http://www.acmerblog.com/tag/greedy" class="tag-link-70" title="117个话题" style="font-size: 14px;">贪心</a> 
+        <a href="http://www.acmerblog.com/tag/recurrence" class="tag-link-59" title="94个话题" style="font-size: 14px;">递推</a> 
+        <a href="http://www.acmerblog.com/tag/%e9%81%97%e4%bc%a0%e7%ae%97%e6%b3%95" class="tag-link-116" title="2个话题" style="font-size: 14px;">遗传算法</a> 
+        <a href="http://www.acmerblog.com/tag/ali" class="tag-link-102" title="3个话题" style="font-size: 14px;">阿里</a> 
+        <a href="http://www.acmerblog.com/tag/random" class="tag-link-100" title="8个话题" style="font-size: 14px;">随机算法</a> 
+        <a href="http://www.acmerblog.com/tag/interviews" class="tag-link-16" title="83个话题" style="font-size: 14px;">面试题</a> 
+        <a href="http://www.acmerblog.com/tag/precision" class="tag-link-76" title="98个话题" style="font-size: 14px;">高精度</a>
+       </div> </li>
+      <li id="text-3" class="widget-container widget_text"> 
+       <div class="textwidget">
+        <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> 
+        <!-- acm_jx_01 --> 
+        <ins class="adsbygoogle" style="display:inline-block;width:336px;height:280px" data-ad-client="ca-pub-9460629317209118" data-ad-slot="2058307787"></ins> 
+        <script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+       </div> </li> 
+     </ul> 
+    </div>
+    <!-- #primary .widget-area --> 
+    <script type="text/javascript">
+$('.loading').animate({'width':'55%'},50);
+</script> 
+    <div id="container"> 
+     <div id="content" role="main"> 
+      <div class="mbx"> 
+       <a href="http://www.acmerblog.com" class="gray">首页</a> &gt; 
+       <a href="http://www.acmerblog.com/category/problemset" title="查看ACM题库中的全部文章">ACM题库</a> &gt; 
+       <a href="http://www.acmerblog.com/category/problemset/leetcode" title="查看LeetCode中的全部文章">LeetCode</a> &gt; LeetCode-Subsets II[暴力枚举]
+      </div> 
+      <div id="post-6250" class="post-6250 post type-post status-publish format-standard hentry category-leetcode tag-leetcode"> 
+       <div class="c-top2" id="post-55"> 
+        <div class="datetime">
+         2014
+         <br />11-18
+        </div> 
+        <div class="tit">
+         <h1 class="entry-title">LeetCode-Subsets II[暴力枚举]</h1> 
+         <div class="entry-meta iititle2"> 
+          <span class="i2"><a href="http://www.acmerblog.com/author/admin" title="由coder发布" rel="author">coder</a></span>
+          <span class="i1"><a href="http://www.acmerblog.com/category/problemset/leetcode" title="查看LeetCode中的全部文章" rel="category tag">LeetCode</a></span>
+          <span class="i4">围观845次</span>
+          <span class="i3"><a href="http://www.acmerblog.com/leetcode-solution-subsets-ii-6250.html#comments" class="ds-thread-count" data-thread-key="6250" title="《LeetCode-Subsets II[暴力枚举]》上的评论">14 条评论</a></span> 
+         </div> 
+        </div> 
+        <div class="cls"></div> 
+       </div> 
+       <!-- .entry-meta --> 
+       <div class="entry-content"> 
+        <h3><strong>Subsets II</strong></h3> 
+        <div class="question-content"> 
+         <p>Given a collection of integers that might contain duplicates, <i>S</i>, return all possible subsets.</p> 
+         <p><b>Note:</b></p> 
+         <ul> 
+          <li>Elements in a subset must be in non-descending order.</li> 
+          <li>The solution set must not contain duplicate subsets.</li> 
+         </ul> 
+         <p>For example,<br /> If <b><i>S</i></b> = <code>[1,2,2]</code>, a solution is:</p> 
+         <pre>[
+  [2],
+  [1],
+  [1,2,2],
+  [2,2],
+  [1,2],
+  []
+]</pre> 
+        </div> 
+        <p>标签:&nbsp;Array&nbsp;Backtracking<br /> <strong>分析</strong></p> 
+        <p>这题有重复元素，但本质上，跟上一题很类似，上一题中元素没有重复，相当于每个元素只能<br /> 选0 或1 次，这里扩充到了每个元素可以选0 到若干次而已。</p> 
+        <p><strong>1. 递归</strong></p> 
+        <p>增量构造法</p> 
+        <pre class="brush:cpp">// LeetCode, Subsets II
+// 增量构造法，版本1，时间复杂度O(2^n)，空间复杂度O(n)
+class Solution {
+public:
+    vector&lt;vector&lt;int&gt; &gt; subsetsWithDup(vector&lt;int&gt; &amp;S) {
+        sort(S.begin(), S.end());  // 必须排序
+
+        vector&lt;vector&lt;int&gt; &gt; result;
+        vector&lt;int&gt; path;
+
+        dfs(S, S.begin(), path, result);
+        return result;
+    }
+
+private:
+    static void dfs(const vector&lt;int&gt; &amp;S, vector&lt;int&gt;::iterator start,
+            vector&lt;int&gt; &amp;path, vector&lt;vector&lt;int&gt; &gt; &amp;result) {
+        result.push_back(path);
+
+        for (auto i = start; i &lt; S.end(); i++) {
+            if (i != start &amp;&amp; *i == *(i-1)) continue;
+            path.push_back(*i);
+            dfs(S, i + 1, path, result);
+            path.pop_back();
+        }
+    }
+};</pre> 
+        <p>代码2</p> 
+        <pre class="brush:cpp">// LeetCode, Subsets II
+// 增量构造法，版本2，时间复杂度O(2^n)，空间复杂度O(n)
+class Solution {
+public:
+    vector&lt;vector&lt;int&gt; &gt; subsetsWithDup(vector&lt;int&gt; &amp;S) {
+        vector&lt;vector&lt;int&gt; &gt; result;
+        sort(S.begin(), S.end()); // 必须排序
+
+        unordered_map&lt;int, int&gt; count_map; // 记录每个元素的出现次数
+        for_each(S.begin(), S.end(), [&amp;count_map](int e) {
+            if (count_map.find(e) != count_map.end())
+                count_map[e]++;
+            else
+                count_map[e] = 1;
+        });
+
+        // 将map里的pair拷贝到一个vector里
+        vector&lt;pair&lt;int, int&gt; &gt; elems;
+        for_each(count_map.begin(), count_map.end(),
+                [&amp;elems](const pair&lt;int, int&gt; &amp;e) {
+                    elems.push_back(e);
+                });
+        sort(elems.begin(), elems.end());
+        vector&lt;int&gt; path; // 中间结果
+
+        subsets(elems, 0, path, result);
+        return result;
+    }
+
+private:
+    static void subsets(const vector&lt;pair&lt;int, int&gt; &gt; &amp;elems,
+            size_t step, vector&lt;int&gt; &amp;path, vector&lt;vector&lt;int&gt; &gt; &amp;result) {
+        if (step == elems.size()) {
+            result.push_back(path);
+            return;
+        }
+
+        for (int i = 0; i &lt;= elems[step].second; i++) {
+            for (int j = 0; j &lt; i; ++j) {
+                path.push_back(elems[step].first);
+            }
+            subsets(elems, step + 1, path, result);
+            for (int j = 0; j &lt; i; ++j) {
+                path.pop_back();
+            }
+        }
+    }
+};</pre> 
+        <p>位向量法</p> 
+        <pre class="brush:cpp">// LeetCode, Subsets II
+// 位向量法，时间复杂度O(2^n)，空间复杂度O(n)
+class Solution {
+public:
+    vector&lt;vector&lt;int&gt; &gt; subsetsWithDup(vector&lt;int&gt; &amp;S) {
+        vector&lt;vector&lt;int&gt; &gt; result; // 必须排序
+        sort(S.begin(), S.end());
+        vector&lt;int&gt; count(S.back() - S.front() + 1, 0);
+        // 计算所有元素的个数
+        for (auto i : S) {
+            count[i - S[0]]++;
+        }
+
+        // 每个元素选择了多少个
+        vector&lt;int&gt; selected(S.back() - S.front() + 1, -1);
+
+        subsets(S, count, selected, 0, result);
+        return result;
+    }
+
+private:
+    static void subsets(const vector&lt;int&gt; &amp;S, vector&lt;int&gt; &amp;count,
+            vector&lt;int&gt; &amp;selected, size_t step, vector&lt;vector&lt;int&gt; &gt; &amp;result) {
+        if (step == count.size()) {
+            vector&lt;int&gt; subset;
+            for(size_t i = 0; i &lt; selected.size(); i++) {
+                for (int j = 0; j &lt; selected[i]; j++) {
+                    subset.push_back(i+S[0]);
+                }
+            }
+            result.push_back(subset);
+            return;
+        }
+
+        for (int i = 0; i &lt;= count[step]; i++) {
+            selected[step] = i;
+            subsets(S, count, selected, step + 1, result);
+        }
+    }
+};</pre> 
+        <p><strong>&nbsp;2. 迭代</strong></p> 
+        <pre class="brush:cpp">// LeetCode, Subsets II
+// 增量构造法
+// 时间复杂度O(2^n)，空间复杂度O(1)
+class Solution {
+public:
+    vector&lt;vector&lt;int&gt; &gt; subsetsWithDup(vector&lt;int&gt; &amp;S) {
+        sort(S.begin(), S.end()); // 必须排序
+        vector&lt;vector&lt;int&gt; &gt; result(1);
+
+        size_t previous_size = 0;
+        for (size_t i = 0; i &lt; S.size(); ++i) {
+            const size_t size = result.size();
+            for (size_t j = 0; j &lt; size; ++j) {
+                if (i == 0 || S[i] != S[i-1] || j &gt;= previous_size) {
+                    result.push_back(result[j]);
+                    result.back().push_back(S[i]);
+                }
+            }
+            previous_size = size;
+        }
+        return result;
+    }
+};</pre> 
+        <p><strong>&nbsp;二进制法</strong></p> 
+        <pre class="brush:cpp">// LeetCode, Subsets II
+// 二进制法，时间复杂度O(2^n)，空间复杂度O(1)
+class Solution {
+public:
+    vector&lt;vector&lt;int&gt; &gt; subsetsWithDup(vector&lt;int&gt; &amp;S) {
+        sort(S.begin(), S.end()); // 必须排序
+        // 用 set 去重，不能用 unordered_set，因为输出要求有序
+        set&lt;vector&lt;int&gt; &gt; result;
+        const size_t n = S.size();
+        vector&lt;int&gt; v;
+
+        for (size_t i = 0; i &lt; 1U &lt;&lt; n; ++i) {
+            for (size_t j = 0; j &lt; n; ++j) {
+                if (i &amp; 1 &lt;&lt; j)
+                    v.push_back(S[j]);
+            }
+            result.insert(v);
+            v.clear();
+        }
+        vector&lt;vector&lt;int&gt; &gt; real_result;
+        copy(result.begin(), result.end(), back_inserter(real_result));
+        return real_result;
+    }
+};</pre> 
+        <p>Java代码:</p> 
+        <pre class="brush:java">public class Solution {
+    public static List&lt;List&lt;Integer&gt;&gt; subsetsWithDup(int[] S) {
+		int all = 1 &lt;&lt; S.length;
+		Arrays.sort(S);
+		List&lt;List&lt;Integer&gt;&gt; subsetsList = new ArrayList();
+		for (int i = 0; i &lt; all; i++) {
+			int b = 1;
+			List&lt;Integer&gt; tmpList = new ArrayList();
+			for (int j = 0; j &lt; S.length; j++) {
+				if ((i &amp; b) != 0) {
+					tmpList.add(S[j]);
+				}
+				b &lt;&lt;= 1;
+			}
+			if(subsetsList.contains(tmpList)) continue;
+			subsetsList.add(tmpList);
+		}
+		return subsetsList;
+	}
+}</pre> 
+        <p><strong>相关题目</strong></p> 
+        <p><a href="http://www.acmerblog.com/leetcode-solution-subsets-6227.html">Subsets</a></p> 
+        <div> 
+         <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> 
+         <!-- acm-hf-01 --> 
+         <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-9460629317209118" data-ad-slot="5011774182"></ins> 
+         <script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script> 
+        </div> 
+        <div class="bdsharebuttonbox">
+         <a href="#" class="bds_more" data-cmd="more"></a>
+         <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+         <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+         <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+         <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a>
+         <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        </div> 
+        <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script> 
+       </div> 
+       <!-- .entry-content --> 
+       <br /> 
+       <!-- .entry-utility --> 
+      </div>
+      <!-- #post-## --> 
+      <div class="c-bot"> 
+       <span class="cb_bq"><a href="http://www.acmerblog.com/tag/leetcode" rel="tag">LeetCode</a> </span> 
+       <div class="cls"></div> 
+      </div> 
+      <div id="nav-below" class="navigation"> 
+       <div class="nav-previous">
+        <a href="http://www.acmerblog.com/leetcode-solution-combination-sum-6249.html" rel="prev"><span class="meta-nav">⇐</span> LeetCode-Combination Sum[DFS]</a>
+       </div> 
+       <div class="nav-next">
+        <a href="http://www.acmerblog.com/leetcode-solution-spiral-matrix-ii-6251.html" rel="next">LeetCode-Spiral Matrix II[模拟] <span class="meta-nav">⇒</span></a>
+       </div> 
+      </div>
+      <!-- #nav-below --> 
+      <div class="cls"></div> 
+      <div class="relatedposts"> 
+       <h3 class="widget-title">您可能还会对这些文章感兴趣！</h3> 
+       <ul> 
+        <li><a href="http://www.acmerblog.com/leetcode-solutions-6422.html" rel="bookmark" title="详细阅读 LeetCode-分类题解[全]">LeetCode-分类题解[全]</a></li> 
+        <li><a href="http://www.acmerblog.com/leetcode-bfs-6431.html" rel="bookmark" title="详细阅读 LeetCode-BFS(广度优先搜索)总结">LeetCode-BFS(广度优先搜索)总结</a></li> 
+        <li><a href="http://www.acmerblog.com/leetcode-clone-graph-6423.html" rel="bookmark" title="详细阅读 LeetCode-Clone Graph[图论]">LeetCode-Clone Graph[图论]</a></li> 
+        <li><a href="http://www.acmerblog.com/interleaving-stringleetcode-6197.html" rel="bookmark" title="详细阅读 Interleaving String[LeetCode]字符串交错">Interleaving String[LeetCode]字符串交错</a></li> 
+        <li><a href="http://www.acmerblog.com/leetcode-solution-populating-next-right-pointers-in-each-node-6360.html" rel="bookmark" title="详细阅读 LeetCode-Populating Next Right Pointers in Each Node[二叉树]">LeetCode-Populating Next Right Pointers in Each Node[二叉树]</a></li> 
+        <li><a href="http://www.acmerblog.com/leetcode-solution-reverse-integer-6359.html" rel="bookmark" title="详细阅读 LeetCode-Reverse Integer[模拟]">LeetCode-Reverse Integer[模拟]</a></li> 
+        <li><a href="http://www.acmerblog.com/leetcode-solution-distinct-subsequences-6358.html" rel="bookmark" title="详细阅读 LeetCode-Distinct Subsequences[动态规划]">LeetCode-Distinct Subsequences[动态规划]</a></li> 
+        <li><a href="http://www.acmerblog.com/leetcode-solution-letter-combinations-of-a-phone-number-6356.html" rel="bookmark" title="详细阅读 LeetCode-Letter Combinations of a Phone Number[暴力枚举]">LeetCode-Letter Combinations of a Phone Number[暴力枚举]</a></li> 
+       </ul> 
+       <div class="cls"></div> 
+      </div> 
+      <a name="comments"></a> 
+      <div class="ds-thread" data-thread-key="6250" data-author-key="1" data-title="LeetCode-Subsets II[暴力枚举]" data-url="http://www.acmerblog.com/leetcode-solution-subsets-ii-6250.html"></div> 
+      <script type="text/javascript">
+	if (typeof DUOSHUO !== 'undefined')
+		DUOSHUO.EmbedThread('.ds-thread');
+</script> 
+      <div id="ds-ssr"> 
+       <ol id="commentlist"> 
+        <li class="comment even thread-even depth-1" id="li-comment-31562"> 
+         <article id="comment-31562" class="comment"> 
+          <footer class="comment-meta"> 
+           <cite class="comment-author vcard"> <span class="fn"><a href="http://fdsf" rel="external nofollow" class="url">yueyanglou</a></span> on <a rel="nofollow" href="http://www.acmerblog.com/leetcode-solution-subsets-ii-6250.html#comment-31562"><time pubdate="" datetime="2015-07-12T12:41:59+00:00">2015年7月12日 at 下午12:41</time></a> <span class="says">said:</span> </cite>
+           <!-- .comment-author .vcard --> 
+          </footer> 
+          <div class="comment-content">
+           <p>很好！！</p> 
+          </div> 
+         </article>
+         <!-- #comment-## --> </li>
+        <!-- #comment-## --> 
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-31564"> 
+         <article id="comment-31564" class="comment"> 
+          <footer class="comment-meta"> 
+           <cite class="comment-author vcard"> <span class="fn"><a href="http://fdsf" rel="external nofollow" class="url">xuelanghu</a></span> on <a rel="nofollow" href="http://www.acmerblog.com/leetcode-solution-subsets-ii-6250.html#comment-31564"><time pubdate="" datetime="2015-07-01T02:52:46+00:00">2015年7月1日 at 上午2:52</time></a> <span class="says">said:</span> </cite>
+           <!-- .comment-author .vcard --> 
+          </footer> 
+          <div class="comment-content">
+           <p>没错的，九度OJ也有此题</p> 
+          </div> 
+         </article>
+         <!-- #comment-## --> </li>
+        <!-- #comment-## --> 
+        <li class="comment even thread-even depth-1" id="li-comment-50018"> 
+         <article id="comment-50018" class="comment"> 
+          <footer class="comment-meta"> 
+           <cite class="comment-author vcard"> <span class="fn"><a href="http://fdsf" rel="external nofollow" class="url">jade1827</a></span> on <a rel="nofollow" href="http://www.acmerblog.com/leetcode-solution-subsets-ii-6250.html#comment-50018"><time pubdate="" datetime="2015-06-24T14:56:43+00:00">2015年6月24日 at 下午2:56</time></a> <span class="says">said:</span> </cite>
+           <!-- .comment-author .vcard --> 
+          </footer> 
+          <div class="comment-content">
+           <p>正有此意，欢迎更多的建议~</p> 
+          </div> 
+         </article>
+         <!-- #comment-## --> </li>
+        <!-- #comment-## --> 
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-50017"> 
+         <article id="comment-50017" class="comment"> 
+          <footer class="comment-meta"> 
+           <cite class="comment-author vcard"> <span class="fn"><a href="http://fdsf" rel="external nofollow" class="url">yunyang088</a></span> on <a rel="nofollow" href="http://www.acmerblog.com/leetcode-solution-subsets-ii-6250.html#comment-50017"><time pubdate="" datetime="2015-06-11T13:37:04+00:00">2015年6月11日 at 下午1:37</time></a> <span class="says">said:</span> </cite>
+           <!-- .comment-author .vcard --> 
+          </footer> 
+          <div class="comment-content">
+           <p>第15行代码，/n/n，应该改为\n\n</p> 
+          </div> 
+         </article>
+         <!-- #comment-## --> </li>
+        <!-- #comment-## --> 
+        <li class="comment even thread-even depth-1" id="li-comment-50013"> 
+         <article id="comment-50013" class="comment"> 
+          <footer class="comment-meta"> 
+           <cite class="comment-author vcard"> <span class="fn"><a href="http://fdsf" rel="external nofollow" class="url">linyanjin</a></span> on <a rel="nofollow" href="http://www.acmerblog.com/leetcode-solution-subsets-ii-6250.html#comment-50013"><time pubdate="" datetime="2015-06-10T17:53:09+00:00">2015年6月10日 at 下午5:53</time></a> <span class="says">said:</span> </cite>
+           <!-- .comment-author .vcard --> 
+          </footer> 
+          <div class="comment-content">
+           <p>漏了一个&quot;不&quot;，已修正:)</p> 
+          </div> 
+         </article>
+         <!-- #comment-## --> </li>
+        <!-- #comment-## --> 
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-31561"> 
+         <article id="comment-31561" class="comment"> 
+          <footer class="comment-meta"> 
+           <cite class="comment-author vcard"> <span class="fn"><a href="http://fdsf" rel="external nofollow" class="url">645198</a></span> on <a rel="nofollow" href="http://www.acmerblog.com/leetcode-solution-subsets-ii-6250.html#comment-31561"><time pubdate="" datetime="2015-05-24T09:16:21+00:00">2015年5月24日 at 上午9:16</time></a> <span class="says">said:</span> </cite>
+           <!-- .comment-author .vcard --> 
+          </footer> 
+          <div class="comment-content">
+           <p>可以根据二叉排序树的定义进行严格的排序树创建和后序遍历操作。如果形成的排序树相同，其树的前、中、后序遍历是相同的，但在此处不能使用中序遍历，因为，中序遍历的结果就是排序的结果。经在九度测试，运行时间90ms，比楼主的要快。</p> 
+          </div> 
+         </article>
+         <!-- #comment-## --> </li>
+        <!-- #comment-## --> 
+        <li class="comment even thread-even depth-1" id="li-comment-50015"> 
+         <article id="comment-50015" class="comment"> 
+          <footer class="comment-meta"> 
+           <cite class="comment-author vcard"> <span class="fn"><a href="http://fdsf" rel="external nofollow" class="url">xiaoliubuer</a></span> on <a rel="nofollow" href="http://www.acmerblog.com/leetcode-solution-subsets-ii-6250.html#comment-50015"><time pubdate="" datetime="2015-05-13T03:18:35+00:00">2015年5月13日 at 上午3:18</time></a> <span class="says">said:</span> </cite>
+           <!-- .comment-author .vcard --> 
+          </footer> 
+          <div class="comment-content">
+           <p>不好意思，写错了．应该是　path[0]=0, visited[V] = true;</p> 
+          </div> 
+         </article>
+         <!-- #comment-## --> </li>
+        <!-- #comment-## --> 
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-31563"> 
+         <article id="comment-31563" class="comment"> 
+          <footer class="comment-meta"> 
+           <cite class="comment-author vcard"> <span class="fn"><a href="http://fdsf" rel="external nofollow" class="url">H.Watson</a></span> on <a rel="nofollow" href="http://www.acmerblog.com/leetcode-solution-subsets-ii-6250.html#comment-31563"><time pubdate="" datetime="2015-05-01T18:38:18+00:00">2015年5月1日 at 下午6:38</time></a> <span class="says">said:</span> </cite>
+           <!-- .comment-author .vcard --> 
+          </footer> 
+          <div class="comment-content">
+           <p>程序输出是对的，呈三角型。原程序是按C++写的，已经改成了C的</p> 
+          </div> 
+         </article>
+         <!-- #comment-## --> </li>
+        <!-- #comment-## --> 
+        <li class="comment even thread-even depth-1" id="li-comment-31560"> 
+         <article id="comment-31560" class="comment"> 
+          <footer class="comment-meta"> 
+           <cite class="comment-author vcard"> <span class="fn"><a href="http://fdsf" rel="external nofollow" class="url">keyyuanxin</a></span> on <a rel="nofollow" href="http://www.acmerblog.com/leetcode-solution-subsets-ii-6250.html#comment-31560"><time pubdate="" datetime="2015-04-10T20:38:44+00:00">2015年4月10日 at 下午8:38</time></a> <span class="says">said:</span> </cite>
+           <!-- .comment-author .vcard --> 
+          </footer> 
+          <div class="comment-content">
+           <p>很给力啊，学习了</p> 
+          </div> 
+         </article>
+         <!-- #comment-## --> </li>
+        <!-- #comment-## --> 
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-50014"> 
+         <article id="comment-50014" class="comment"> 
+          <footer class="comment-meta"> 
+           <cite class="comment-author vcard"> <span class="fn"><a href="http://fdsf" rel="external nofollow" class="url">Sacomplex</a></span> on <a rel="nofollow" href="http://www.acmerblog.com/leetcode-solution-subsets-ii-6250.html#comment-50014"><time pubdate="" datetime="2015-04-07T13:36:38+00:00">2015年4月7日 at 下午1:36</time></a> <span class="says">said:</span> </cite>
+           <!-- .comment-author .vcard --> 
+          </footer> 
+          <div class="comment-content">
+           <p>博主您好，这是一个内容十分优秀的博客，而且界面也非常漂亮。但是为什么博客的响应速度这么慢，虽然博客的主机在国外，但是我开启VPN还是经常响应很久，再者打开某些页面经常会出现数据库连接出错的提示</p> 
+          </div> 
+         </article>
+         <!-- #comment-## --> </li>
+        <!-- #comment-## --> 
+        <li class="comment even thread-even depth-1" id="li-comment-50020"> 
+         <article id="comment-50020" class="comment"> 
+          <footer class="comment-meta"> 
+           <cite class="comment-author vcard"> <span class="fn"><a href="http://fdsf" rel="external nofollow" class="url">xuelanghu</a></span> on <a rel="nofollow" href="http://www.acmerblog.com/leetcode-solution-subsets-ii-6250.html#comment-50020"><time pubdate="" datetime="2015-03-27T16:03:25+00:00">2015年3月27日 at 下午4:03</time></a> <span class="says">said:</span> </cite>
+           <!-- .comment-author .vcard --> 
+          </footer> 
+          <div class="comment-content">
+           <p>你好，这题给出的代码好像弄错了，这个是pow那道题目的解法</p> 
+          </div> 
+         </article>
+         <!-- #comment-## --> </li>
+        <!-- #comment-## --> 
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-31565"> 
+         <article id="comment-31565" class="comment"> 
+          <footer class="comment-meta"> 
+           <cite class="comment-author vcard"> <span class="fn"><a href="http://fdsf" rel="external nofollow" class="url">Ailing</a></span> on <a rel="nofollow" href="http://www.acmerblog.com/leetcode-solution-subsets-ii-6250.html#comment-31565"><time pubdate="" datetime="2015-03-20T07:26:52+00:00">2015年3月20日 at 上午7:26</time></a> <span class="says">said:</span> </cite>
+           <!-- .comment-author .vcard --> 
+          </footer> 
+          <div class="comment-content">
+           <p>很好的题，还是能做出几道的，嘿嘿</p> 
+          </div> 
+         </article>
+         <!-- #comment-## --> </li>
+        <!-- #comment-## --> 
+        <li class="comment even thread-even depth-1" id="li-comment-50019"> 
+         <article id="comment-50019" class="comment"> 
+          <footer class="comment-meta"> 
+           <cite class="comment-author vcard"> <span class="fn"><a href="http://fdsf" rel="external nofollow" class="url">xuelanghu</a></span> on <a rel="nofollow" href="http://www.acmerblog.com/leetcode-solution-subsets-ii-6250.html#comment-50019"><time pubdate="" datetime="2015-01-25T12:00:23+00:00">2015年1月25日 at 下午12:00</time></a> <span class="says">said:</span> </cite>
+           <!-- .comment-author .vcard --> 
+          </footer> 
+          <div class="comment-content">
+           <p>妈呀！这个Dijkstra模板好长OwQ！</p> 
+          </div> 
+         </article>
+         <!-- #comment-## --> </li>
+        <!-- #comment-## --> 
+        <li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-50016"> 
+         <article id="comment-50016" class="comment"> 
+          <footer class="comment-meta"> 
+           <cite class="comment-author vcard"> <span class="fn"><a href="http://fdsf" rel="external nofollow" class="url">we</a></span> on <a rel="nofollow" href="http://www.acmerblog.com/leetcode-solution-subsets-ii-6250.html#comment-50016"><time pubdate="" datetime="2014-11-30T22:13:45+00:00">2014年11月30日 at 下午10:13</time></a> <span class="says">said:</span> </cite>
+           <!-- .comment-author .vcard --> 
+          </footer> 
+          <div class="comment-content">
+           <p>这个也是算法导论的习题</p> 
+          </div> 
+         </article>
+         <!-- #comment-## --> </li>
+        <!-- #comment-## --> 
+       </ol> 
+      </div> 
+     </div>
+     <!-- #content --> 
+    </div>
+    <!-- #container --> 
+    <script type="text/javascript">
+	$('.loading').animate({'width':'78%'},50);
+</script> 
+   </div>
+   <!-- #main --> 
+   <div class="cls"></div> 
+   <div id="footer" role="contentinfo"> 
+    <div id="colophon"> 
+     <div id="site-info"> 
+      <a href="javascript:void(0)" onclick="goRoll(0)" id="goTop">返回顶部</a> 
+      <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-45794754-1', 'acmerblog.com');
+  ga('send', 'pageview');
+</script> 
+      <script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F26bd445f61ee3db53a8eb7ab066fbf90' type='text/javascript'%3E%3C/script%3E"));
+</script> &nbsp;| 
+      <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000161429'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s22.cnzz.com/z_stat.php%3Fid%3D1000161429' type='text/javascript'%3E%3C/script%3E"));</script>&nbsp;| 
+      <a href="http://www.acmerblog.com/about/">关于</a>&nbsp;| 
+      <a href="http://www.acmerblog.com/wp-login.php">登录</a> &nbsp;|
+      <a href="/wp-login.php?action=register">注册</a> &nbsp;|&nbsp;
+      <a href="http://www.acmerblog.com/sitemap.xml">网站地图</a> &nbsp;|&nbsp;
+      <a href="http://www.miibeian.gov.cn/">沪ICP备14003302号-1</a>&nbsp;|&nbsp;&copy;2014&nbsp;ACM之家版权所有 
+     </div>
+     <!-- #site-info --> 
+    </div>
+    <!-- #colophon --> 
+   </div>
+   <!-- #footer --> 
+  </div>
+  <!-- #wrapper --> 
+  <script type="text/javascript" src="http://cdn.acmerblog.com/wp-content/plugins/syntax-highlighter-with-add-button-in-editor/scripts/shCore.js"></script> 
+  <script type="text/javascript" src="http://cdn.acmerblog.com/wp-content/plugins/syntax-highlighter-with-add-button-in-editor/scripts/shAutoloader.js"></script> 
+  <script type="text/javascript">
+    function path()
+    {
+      var args = arguments,
+          result = []
+          ;
+      for(var i = 0; i < args.length; i++)
+          result.push(args[i].replace('@', 'http://cdn.acmerblog.com/wp-content/plugins/syntax-highlighter-with-add-button-in-editor/scripts/'));
+      return result
+    };
+    SyntaxHighlighter.autoloader.apply(null, path(
+      'applescript            @shBrushAppleScript.js',
+      'actionscript3 as3      @shBrushAS3.js',
+      'bash shell             @shBrushBash.js',
+      'coldfusion cf          @shBrushColdFusion.js',
+      'cpp c                  @shBrushCpp.js',
+      'c# c-sharp csharp      @shBrushCSharp.js',
+      'css                    @shBrushCss.js',
+      'delphi pascal          @shBrushDelphi.js',
+      'diff patch pas         @shBrushDiff.js',
+      'erl erlang             @shBrushErlang.js',
+      'groovy                 @shBrushGroovy.js',
+      'java                   @shBrushJava.js',
+      'jfx javafx             @shBrushJavaFX.js',
+      'js jscript javascript  @shBrushJScript.js',
+      'perl pl                @shBrushPerl.js',
+      'php                    @shBrushPhp.js',
+      'text plain             @shBrushPlain.js',
+      'ps                     @shBrushPowerShell.js',
+      'py python              @shBrushPython.js',
+      'ruby rails ror rb      @shBrushRuby.js',
+      'sass scss              @shBrushSass.js',
+      'scala                  @shBrushScala.js',
+      'sql                    @shBrushSql.js',
+      'vb vbnet               @shBrushVb.js',
+      'xml xhtml xslt html    @shBrushXml.js',
+      'other                  @shBrushOther.js'
+    ));
+    SyntaxHighlighter.defaults['auto-links'] = true;
+    SyntaxHighlighter.defaults['collapse'] = false;
+    SyntaxHighlighter.defaults['first-line'] = 1;
+    SyntaxHighlighter.defaults['gutter'] = true;
+    SyntaxHighlighter.defaults['smart-tabs'] = true;
+    SyntaxHighlighter.defaults['tab-size'] = 4;
+    SyntaxHighlighter.defaults['toolbar'] = true;
+    SyntaxHighlighter.config.tagName = "pre";
+	SyntaxHighlighter.config.clipboardSwf = 'http://cdn.acmerblog.com/wp-content/plugins/syntax-highlighter-with-add-button-in-editor/scripts/clipboard.swf';
+    SyntaxHighlighter.all();
+    </script>   
+  <script src="http://cdn.acmerblog.com/wp-content/themes/frontopen3/include/ai.js"></script> 
+  <script src="http://cdn.acmerblog.com/wp-content/themes/frontopen3/include/slip.js"></script> 
+  <script src="http://cdn.acmerblog.com/wp-content/themes/frontopen3/include/page.js"></script> 
+  <script type="text/javascript">
+	$('.loading').animate({'width':'100%'},50);
+</script> 
+  <!-- Dynamic page generated in 1.122 seconds. --> 
+  <!-- Cached page generated by WP-Super-Cache on 2017-02-16 05:46:47 --> 
+  <!-- super cache -->
+ </body>
+</html>

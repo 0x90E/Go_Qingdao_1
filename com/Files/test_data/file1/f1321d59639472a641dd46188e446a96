@@ -1,0 +1,129 @@
+<!DOCTYPE html><html><head>
+	<title>登录</title>
+	<meta name="save" content="history">
+	<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="blank">
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+	<link rel="stylesheet" type="text/css" href="https://flashsale.ciurl.cn/user/static/201704554/css/common.css">
+            <link rel="stylesheet" type="text/css" href="https://flashsale.ciurl.cn/user/static/201704554/css/login.css">
+    	<script type="text/javascript" language="javascript" src="https://flashsale.ciurl.cn/user/static/201704554/js/jquery_172.js"></script>
+	<script type="text/javascript" src="https://flashsale.ciurl.cn/user/static/201704554/js/common.js"></script>
+	</head>
+<body>
+<div class="main">
+	<div class="login-from">
+	<form id="loginfm" name="loginfm" action="" method="POST">
+		<input type="hidden" id="backurl" name="backurl" value="https://shop.ci123.com/yiqigou/seller/desktop?store_id">
+		<dl class="uinfo-box">
+			<dd>
+				<span class="form-hd">账号：</span>
+			<span class="form-td">
+				<input type="text" id="username" name="username" value="" maxlength="50" placeholder="请输入育儿网帐号或手机号" class="text-input">
+			</span>
+			</dd>
+			<dd>
+				<span class="form-hd">密码：</span>
+			<span class="form-td">
+				<input type="password" id="password" name="password" value="" maxlength="50" placeholder="输入密码" class="text-input">
+			</span>
+			</dd>
+		</dl>
+
+		<div class="clearfix">
+			<a href="https://user.shop.ci123.com/login/register??backurl=https%3A%2F%2Fshop.ci123.com%2Fyiqigou%2Fseller%2Fdesktop%3Fstore_id" class="l">立即注册&gt;&gt;</a>
+			<a href="https://user.shop.ci123.com/login/resetpd??backurl=https%3A%2F%2Fshop.ci123.com%2Fyiqigou%2Fseller%2Fdesktop%3Fstore_id" class="r">忘记密码?</a>
+		</div>
+		<input class="glb-btn" id="csub" onsubmit="return login();" type="submit" value="登录">
+	</form>
+	</div>
+
+	<div class="third-login">
+		<div class="third-login-hd">使用以下方式登录妈妈购</div>
+		<div class="icons clearfix">
+			<a class="icon" onclick="window.location='http://user.ci123.com/qq/zone.php?channel=2&amp;display=mobile&amp;back_url=http%3A%2F%2Fm.ci123.com%2Fuser%2Flogin%2Fopen%3Fbackurl%3Dhttps%253A%252F%252Fshop.ci123.com%252Fyiqigou%252Fseller%252Fdesktop%253Fstore_id';">
+				<i class="qq"></i>
+				<span>QQ</span>
+			</a>
+			<a class="icon" onclick="window.location='http://user.ci123.com/qq/sina/result.php?channel=2&amp;display=mobile&amp;back_url=http%3A%2F%2Fm.ci123.com%2Fuser%2Flogin%2Fopen%3Fbackurl%3Dhttps%253A%252F%252Fshop.ci123.com%252Fyiqigou%252Fseller%252Fdesktop%253Fstore_id';">
+				<i class="sina"></i>
+				<span>微博</span>
+			</a>
+		</div>
+	</div>
+
+	<div class="guarante">
+		<img src="https://flashsale.ciurl.cn/user/static/201704554/images/guarante.png" class="guarante-info">
+	</div>
+
+</div>
+<script type="text/javascript">
+
+	function checkInput(field, value, cf) {
+		value = value.replace(/[\f\n\r\t\v]+/gi, '');
+		switch (field) {
+			case 'username':
+				if (value.length == 0) {
+					alertMes('请填写手机号/邮箱/用户名');
+				} else {
+					return true;
+				}
+				break;
+			case 'password':
+				if (value.length == 0) {
+					alertMes('请填写密码');
+				} else {
+					return true;
+				}
+				break;
+			default:
+				break;
+		}
+		return false;
+	}
+
+	var lgstate = 0;
+	function login() {
+		if (lgstate) {
+			return false;
+		}
+		alertMes('登录中...');
+		var username = $('#username').val();
+		var password = $('#password').val();
+		var chk = checkInput('username', username);
+		if (!chk) {
+			return false;
+		}
+		var chk = checkInput('password', password);
+		if (!chk) {
+			return false;
+		}
+		lgstate = 1;
+		$.post('https://user.shop.ci123.com/ajax/login/login_sub?',
+			{username:username,password:password}, function(data) {
+			if (!data || !data.hasOwnProperty('state')) {				
+				alertMes('登录失败，请稍后再试！');
+			} else {
+				if(data.state == 1) {
+					alertMes('欢迎您..'+data.data.nickname);
+					var backurl = 'http://m.ci123.com/shop.php?continue='+encodeURIComponent($('#backurl').val());
+					setTimeout("window.location='"+backurl+"'", 500);
+				} else {
+					alertMes('用户名或密码错误');
+				}
+			}
+			lgstate = 0;
+		}, 'json');
+		return false;
+	}
+
+	$(document).ready(function(){
+		$('#loginfm').submit(function(){
+			return login();
+		});
+	});
+</script>
+
+
+</body></html>

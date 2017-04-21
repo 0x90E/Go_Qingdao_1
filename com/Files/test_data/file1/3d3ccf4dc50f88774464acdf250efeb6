@@ -1,0 +1,66 @@
+<html><head></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">function _reduce(id)
+{
+    var bnum = $("#txt_number_"+id).val();
+    if ($.isNumeric(bnum)) {
+    	bnum  = (--bnum &lt; 1 ? 1 : bnum);
+    } else {
+    	$("#txt_number_"+id).val(1);
+        //console.log("error num");
+    }
+    $("#txt_number_"+id).val(bnum);
+}
+
+
+function _increase(id,maxnum)
+{
+    var bnum = $("#txt_number_"+id).val();
+    if ($.isNumeric(bnum)) {
+    	if(bnum&lt;maxnum)
+    		bnum=(++bnum &gt;maxnum ? maxnum :bnum);
+		else
+			bnum=(maxnum &lt;= 0?1:maxnum);
+    } else {
+    	$("#txt_number_"+id).val(1);
+        //console.log("error num");
+    }
+    
+    $("#txt_number_"+id).val(bnum);
+}
+
+function _addCart(id)
+{
+	
+	var value = $("#txt_number_"+id).val();
+	if (typeof value=='undefined')
+		value=1;
+
+	addCart(id,value,'',addCartClient);
+}
+
+function _addCartDefCount(id,value)
+{
+	addCart(id,value,'',addCartClient);
+	getCartNum(showCartNum);
+}
+
+function  _blur(id,maxnum)
+{
+    var bnum = $("#txt_number_"+id).val();
+    if (bnum.indexOf(".")&gt;-1 ||bnum.indexOf("0")==0)
+    {
+    	bnum=1;
+        var bnum = $("#txt_number_"+id).val(1);
+    }
+    
+	 if ($.isNumeric(bnum)) {
+		 if(bnum&gt;maxnum)
+	    		bnum=(maxnum &lt;= 0?1:maxnum);
+		 $("#txt_number_"+id).val(bnum);
+		 }else {
+		 $("#txt_number_"+id).val(1);
+			     //console.log("error num");
+	    }
+}
+
+
+</pre></body></html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+		<title>装移修进度查询</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE9">
+		<meta name="Keywords" content="">
+		<meta name="Description" content="">
+		<link href="/css/basic.css" rel="stylesheet" type="text/css">
+		<link href="/css/service.css" rel="stylesheet" type="text/css">
+		<link href="/css/mobile.css" rel="stylesheet" type="text/css" id="info_query1">
+		<style type="text/css">
+			
+		</style>
+
+		<script type="text/javascript">
+			function selectSearchType(id,type,title){
+				document.getElementById("type").value=type;
+				
+				document.getElementById("phone").className ="khmqh_wxz";
+				//document.getElementById("orderNum").className ="khmqh_wxz";
+				document.getElementById("cardNum").className ="khmqh_wxz";
+				document.getElementById(id).className ="khmqh_xz";
+				if(type=='3'){
+					document.getElementById("showCardNumMsg").style.display="block";
+					document.getElementById("latnIdTd").style.display="none";
+					document.getElementById("productTypeTd").style.display="none";
+					document.getElementById("latnIdTd2").style.display="none";
+					document.getElementById("productTypeTd2").style.display="none";
+				}else if(type=='2'){
+					document.getElementById("showCardNumMsg").style.display="none";
+					document.getElementById("latnIdTd").style.display="none";
+					document.getElementById("productTypeTd").style.display="none";
+					document.getElementById("latnIdTd2").style.display="none";
+					document.getElementById("productTypeTd2").style.display="none";
+				}else if(type=='1'){
+					document.getElementById("showCardNumMsg").style.display="none";
+					document.getElementById("latnIdTd").style.display="block";
+					document.getElementById("productTypeTd").style.display="block";
+					document.getElementById("latnIdTd2").style.display="block";
+					document.getElementById("productTypeTd2").style.display="block";
+				}
+	
+				document.getElementById("paramValue").value="";
+				document.getElementById("paramTitle").innerHTML=title;
+				document.getElementById("linkTelTip").innerHTML="";
+				
+			}
+			/**var searchTypeCC = "1";
+			function selectSearchTypeCC(id,type){
+				searchTypeCC = type;	
+				
+				document.getElementById("zhuangyiji").className ="khmqh_wxz";
+				document.getElementById("guzhangdan").className ="khmqh_wxz";
+				document.getElementById(id).className ="khmqh_xz";
+
+			}**/
+			function searchResult(){
+				var productType = document.getElementById("productType").value;
+				var paramValue = document.getElementById("paramValue").value;
+				var type = document.getElementById("type").value;
+				var searchTypeCC = document.getElementById("querytype").value;
+				var flag = true;
+				if(type=='1'&& productType=='4'){
+					var patrn=/^(133)|(153)|(18[0|1|9])\d{8}$/;
+					if (!patrn.exec(paramValue)){
+						document.getElementById("linkTelTip").innerHTML="<IMG src=\"http://qh.189.cn:10001/r/cms/ah/default/images/onError.gif\"/><font color=\"red\">请输入手机号！</font>";
+						flag = false;
+					}
+				}
+				var reg = new RegExp("^[0-9|A-Za-z|\u4e00-\u9fa5]*$");
+			    if(!reg.test(paramValue) || paramValue==null || paramValue.length==0){
+					document.getElementById("linkTelTip").innerHTML="<IMG src=\"http://qh.189.cn:10001/r/cms/ah/default/images/onError.gif\"/><font color=\"red\">请输入正确值!</font>";
+					flag = false;
+				} 
+				if(flag){
+					if(searchTypeCC=='1'){
+						document.getElementById("form1").action ="/ProgressSearchApp;jid=d8hyYftSSQqg1ppy!1817474335?flag=progressQueriesList";
+					}else if(searchTypeCC=='2'){
+						document.getElementById("form1").action ="/ProgressSearchApp;jid=d8hyYftSSQqg1ppy!1817474335?flag=queryMalfunctionList";
+					}
+					
+					document.getElementById("searchResultBT").disabled="disabled"  ;
+					document.getElementById("form1").submit();
+				}
+			}
+		</script>
+		
+		<script type="text/javascript" src="/js/formUtil.js"></script>
+	</head>
+
+	<body style="align:center;">&nbsp;  
+		<form id="form1" method="post">
+		<div>	
+			<input type="hidden" name="type" id="type" value="1">
+		   
+			<table class="tab_admin" style="width:80%" border="0" cellpadding="0">
+				<tbody><tr>
+					<td>
+						<span class="fl" style="cursor: pointer;"><div class="khmqh_xz" style="margin-top: 0px;" id="phone" onclick="selectSearchType('phone','1','业务号码')"> 产品号码查询</div></span>
+						<span class="fl" style="cursor: pointer;"><div class="khmqh_wxz" style="margin-top: 0px;" id="cardNum" onclick="selectSearchType('cardNum','3','身份证号')">身份证号查询</div></span>
+						<div class="clear"></div>
+					</td>
+				</tr>
+				<tr id="showCardNumMsg" style="display: none;"><td colspan="2"><span class="red">此查询方式下查询时间较长，请您耐心等待</span></td></tr>
+		        <tr id="latnIdTd">
+	        		<td><strong class="red">*</strong><span>所属地市</span></td><td>
+				</td></tr><tr>
+				</tr><tr id="latnIdTd2">
+					<td>	
+			        	<select id="latnId" name="latnId" style="width:235px;padding-top: 1px;" class="login-text" tabindex="1">
+							<option value="971">西宁市</option>
+							<option value="970">海北州</option>
+							<option value="972">海东</option>
+							<option value="973">黄南州</option>
+							<option value="974">海南州</option>
+							<option value="975">果洛州</option>
+							<option value="976">玉树州</option>
+							<option value="977">海西州</option>
+							<option value="979">格尔木</option>	
+						</select>
+						<span id="latnTip"></span>
+					</td> 
+				</tr><tr id="productTypeTd">
+					<td><strong class="red ">*</strong><span>产品类型</span></td><td>
+				</td></tr><tr>
+				</tr><tr id="productTypeTd2">
+					<td>	
+							<select id="productType" name="productType" style="width:235px;height: 25px;padding-top: 1px; " class="login-text" tabindex="1">
+							<option value="5">宽带  </option>
+							<option value="4">手机</option>
+							<option value="2">固话  </option>
+							<option value="6">ITV</option>
+						</select>
+			        </td>	
+		      </tr><tr id="paramValueTd">
+			        <td><strong class="red">*</strong><span id="paramTitle">业务号码</span></td><td>
+				</td></tr><tr>
+				</tr><tr>
+					<td>	
+			        	<input type="text" size="11" maxlength="30" class="login-text" style=";width:228px;padding-top: 1px; " tabindex="1" id="paramValue" name="paramValue">
+                </td>	
+                 </tr><tr>
+                 	<td> 
+                        <input class="btn_l57" style="margin-left: 80px;" type="button" value="查询" onclick="searchResult()" id="searchResultBT">
+					 <input type="hidden" value="1" id="querytype" name="querytype">
+						<span id="linkTelTip"></span>
+                    </td>
+                 </tr>	
+			</tbody></table>
+		</div>
+	</form> 
+	
+	
+<script>
+var token = getCookie('csrftoken');
+updateTags(token);
+</script>	
+</body></html>

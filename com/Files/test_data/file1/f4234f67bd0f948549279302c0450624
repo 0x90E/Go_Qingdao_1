@@ -1,0 +1,367 @@
+<html><head></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">// 网摘广告控制标题图片描述整体都能点击
+var __wangzhai_r_url = getReferUrl();//投放页面
+var _zk_qiqi_cpc = -1;
+var _zvn_qiqi_cpc = 0;
+var _zj_qiqi_cpc = -1;
+var _is_jifei = 0;
+$(function () {
+    // 获取计费参数
+    try {
+        _is_jifei = getArgs()['isjf'];
+    } catch (e) {
+    }
+    setTimeout(function () {
+        abc()
+    }, 50);
+    // setTimeout(function(){ abc() }, 1000);
+});
+function showeffect(obj) {
+    $(obj).css({border: '1px solid red', fontWeight: 'bold'});
+}
+function hideeffect(obj) {
+    $(obj).css({borderColor: '', fontWeight: ''});
+}
+function p_getcookie(n) {
+    var sRE = '(?:; )?' + n + '=([^;]*);?';
+    var oRE = new RegExp(sRE);
+    if (oRE.test(document.cookie)) {
+        return decodeURIComponent(RegExp['$1']);
+    }
+    return '';
+};
+function p_setcookie(n, v, e) {
+    document.cookie = n + '=' + escape(v) + ';expires=' + e.toGMTString() + ';path=/';
+};
+function abc() {
+    // 需要绑定点击事件的有
+    $('.rows li,.nitem,.sitem').hover(function () {
+        var img = $(this).find('img');
+        img.animate({'opacity': '0.4'}, 200, function () {
+            img.animate({'opacity': '1'}, 200);
+        });
+        showeffect(this);
+    }, function () {
+        var img = $(this).find('img');
+        img.animate({'opacity': '1'}, 200);
+        hideeffect(this);
+    }).each(function () {
+        $(this).mousemove(function (event) {
+            if (_is_jifei == 1) {
+                var mousepos = getMousePos(event);
+                sicre(event);
+                $(this).attr('u_sw', window.screen.width);
+                $(this).attr('u_sh', window.screen.height);
+                $(this).attr('u_url', __wangzhai_u_url);
+                $(this).attr('r_url', __wangzhai_r_url);
+                $(this).attr('u_scd', window.screen.colorDepth);
+                $(this).attr('u_bw', document.body.offsetWidth);
+                $(this).attr('u_bh', document.body.offsetHeight);
+                $(this).attr('u_utz', getTimeZone());
+                $(this).attr('u_fv', getFlashVersion());
+                $(this).attr('ucx', mousepos.x);
+                $(this).attr('ucy', mousepos.y);
+                $(this).attr('ucb', _zk_qiqi_cpc);
+                $(this).attr('uce', _zj_qiqi_cpc);
+                $(this).attr('s_id', 0);
+            }
+        }).click(function () {
+            goUrl(this);
+        }).mousedown(function(evt){
+            var s_event = window.event || evt;
+            s_event.button==2 &amp;&amp; goUrl(this);
+        }).css('cursor', 'pointer');
+    });
+}
+
+function goUrl(obj){
+    if (_is_jifei == 1) {
+        // 请求pv统计
+        var tmp = $(obj).attr('myvalue').split(',');
+        //var url = __wangzhai_backdomain + '/d.php?adsId=' + tmp[0] + '&amp;zoneId=' + tmp[1] + '&amp;op=click&amp;time=' + new Date().getTime();
+        //new Image().src = url;
+    }
+    // 打开跳转地址,计费地址
+    var action = $(obj).attr('myhref');
+    var myvalue = $(obj).attr('myvalue').split(',');
+    var u_sw = $(obj).attr('u_sw');
+    var u_sh = $(obj).attr('u_sh');
+    var u_url = $(obj).attr('u_url');
+    var r_url = $(obj).attr('r_url');
+    var u_scd = $(obj).attr('u_scd');
+    var u_bw = $(obj).attr('u_bw');
+    var u_bh = $(obj).attr('u_bh');
+    var u_utz = $(obj).attr('u_utz');
+    var u_fv = $(obj).attr('u_fv');
+    var ucx = $(obj).attr('ucx');
+    var ucy = $(obj).attr('ucy');
+    var ucb = $(obj).attr('ucb');
+    var uce = $(obj).attr('uce');
+    var s_id = $(obj).attr('s_id');
+    try {
+        $('#form1').remove();
+    } catch (e) {
+    }
+    //如果已点击过计划，则打开直链地址
+    var cdate = new Date();
+    var cdate1 = new Date();
+    var cdate2 = new Date(cdate1.getFullYear(), cdate1.getMonth(), cdate1.getDate() + 1, 0, 0, 0);
+    var ctime = cdate2.getTime() - cdate1.getTime()
+    cdate.setTime(cdate.getTime() + ctime);
+    //var ddd_cookie = p_getcookie("ddd_cookie_"+myvalue[1]+"_"+myvalue[2]);
+    var ddd_cookie = p_getcookie("ddd_cookie_" + myvalue[2]);
+    if (ddd_cookie == 1) {
+        action = typeof(w_zl_url) != 'undefined' &amp;&amp; w_zl_url != '' ? w_zl_url : action;
+    } else {
+        //p_setcookie("ddd_cookie_"+myvalue[1]+"_"+myvalue[2], 1, cdate);
+        p_setcookie("ddd_cookie_" + myvalue[2], 1, cdate);
+    }
+    var isweixin = checkWX();
+    if (isweixin) {
+        var wx_url = action + '&amp;u_sw=' + u_sw + '&amp;u_sh=' + u_sh + '&amp;u_url=' + u_url + '&amp;r_url=' + r_url + '&amp;u_scd=' + u_scd + '&amp;u_bw=' + u_bw
+            + '&amp;u_bh=' + u_bh + '&amp;u_utz=' + u_utz + '&amp;u_fv=' + u_fv + '&amp;ucx=' + ucx + '&amp;ucy=' + ucy + '&amp;ucb=' + ucb + '&amp;vt=' + parseInt(new Date().getTime() / 1000) + '&amp;s_id=' + s_id;
+        //console.log(wx_url);
+        window.open(wx_url);
+    } else {
+        var form = $('&lt;form&gt;&lt;/form&gt;').attr('id', "form1").attr('method', 'post').attr('action', action).attr('target', '_blank');
+        $('&lt;input name="u_sw" type="hidden" value="' + u_sw + '"/&gt;').appendTo(form);
+        $('&lt;input name="u_sh" type="hidden" value="' + u_sh + '"/&gt;').appendTo(form);
+        $('&lt;input name="u_url" type="hidden" value="' + u_url + '"/&gt;').appendTo(form);
+        $('&lt;input name="r_url" type="hidden" value="' + r_url + '"/&gt;').appendTo(form);
+        $('&lt;input name="u_scd" type="hidden" value="' + u_scd + '"/&gt;').appendTo(form);
+        $('&lt;input name="u_bw" type="hidden" value="' + u_bw + '"/&gt;').appendTo(form);
+        $('&lt;input name="u_bh" type="hidden" value="' + u_bh + '"/&gt;').appendTo(form);
+        $('&lt;input name="u_utz" type="hidden" value="' + u_utz + '"/&gt;').appendTo(form);
+        $('&lt;input name="u_fv" type="hidden" value="' + u_fv + '"/&gt;').appendTo(form);
+        $('&lt;input name="ucx" type="hidden" value="' + ucx + '"/&gt;').appendTo(form);
+        $('&lt;input name="ucy" type="hidden" value="' + ucy + '"/&gt;').appendTo(form);
+        $('&lt;input name="ucb" type="hidden" value="' + ucb + '"/&gt;').appendTo(form);
+        $('&lt;input name="uce" type="hidden" value="' + uce + '"/&gt;').appendTo(form);
+        $('&lt;input name="vt" type="hidden" value="' + parseInt(new Date().getTime() / 1000) + '"/&gt;').appendTo(form);
+        $('&lt;input name="s_id" type="hidden" value="' + s_id + '"/&gt;').appendTo(form);
+        form.appendTo(document.body).submit();
+    }
+}
+
+function myfun2(b) {
+    var Z = {};
+    if (b in Z)return Z[b];
+    return Z[b] = navigator.userAgent.toLowerCase().indexOf(b) != -1
+}
+function myfun(s) {
+    if (!s) return '';
+    str = s.replace(/[\u4E00-\u9FA5]/ig, 'x');
+    return str;
+}
+function getReferUrl() {
+    var r;
+    try {
+        r = window.top.document.referrer;
+    } catch (e) {
+        r = document.referrer;
+    }
+    ;
+    if (r) {
+        return r;
+    } else {
+        return '';
+    }
+    ;
+}
+function getSiteUrl() {
+    var s;
+    try {
+        s = window.top.document.location.href;
+    } catch (e) {
+        s = document.location.href;
+    }
+    ;
+    if (s) {
+        return myfun(s);
+    } else {
+        return '';
+    }
+    ;
+}
+function getTimeZone() {
+    return (-new Date().getTimezoneOffset()) / 60;
+}
+function getFlashVersion() {
+    if (navigator.plugins &amp;&amp; navigator.mimeTypes.length) {
+        var b = navigator.plugins["Shockwave Flash"];
+        if (b &amp;&amp; b.description)return b.description.replace(/([a-zA-Z]|\s)+/, "").replace(/(\s)+r/, ".")
+    } else if (myfun2("msie") &amp;&amp; !window.opera) {
+        var c = null;
+        try {
+            c = new ActiveXObject("ShockwaveFlash.ShockwaveFlash.7")
+        } catch (e) {
+            var a = 0;
+            try {
+                c = new ActiveXObject("ShockwaveFlash.ShockwaveFlash.6");
+                a = 6;
+                c.AllowScriptAccess = "always"
+            } catch (e) {
+                if (a == 6)return a.toString ()
+            }
+            try {
+                c = new ActiveXObject("ShockwaveFlash.ShockwaveFlash")
+            } catch (e) {
+            }
+        }
+        if (c != null) {
+            var a = c.GetVariable("$version").split(" ")[1];
+            return a.replace(/,/g, ".")
+        }
+    }
+    return "0"
+}
+function getMousePos(event) {
+    var e = event || window.event;
+    var scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
+    var scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+    var x = e.pageX || e.clientX + scrollX;
+    var y = e.pageY || e.clientY + scrollY;
+    //alert('x: ' + x + '\ny: ' + y);
+    return {'x': x, 'y': y};
+}
+function sicre(i) {
+    if (_zvn_qiqi_cpc &gt; 5) {
+        return
+    }
+    if (_zk_qiqi_cpc == -1)
+        _zk_qiqi_cpc = i.clientX;
+    else {
+        _zk_qiqi_cpc = _zk_qiqi_cpc + "," + i.clientX;
+        _zvn_qiqi_cpc++
+    }
+    _zj_qiqi_cpc == -1 ? _zj_qiqi_cpc = i.clientY : _zj_qiqi_cpc = _zj_qiqi_cpc
+        + "," + i.clientY
+}
+function getOS() {
+    var sUserAgent = navigator.userAgent.toLowerCase();
+    var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+    var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+    var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+    var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+    var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+    var bIsAndroid = sUserAgent.match(/android/i) == "android";
+    var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+    var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+    if (bIsAndroid) {
+        return 1;
+    } else if (bIsIphoneOs || bIsIpad) {
+        return 2;
+    } else {
+        return 3;
+    }
+}
+
+//判断微信浏览器
+function checkWX() {
+    var sUserAgent = navigator.userAgent.toLowerCase();
+    var bIsWX = sUserAgent.match(/MicroMessenger/i) == "micromessenger";
+    if (bIsWX) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+
+//planOS 0所有 1android 2ios 3android&amp;ios 4pc 5pc&amp;android
+/**
+ *
+
+function checkPlanOS(planOS) {
+    var os = getOS(); //1android 2ios 3pc
+    var wx = checkWX();
+    //if(os==1 &amp;&amp; wx==0){ // 当是android 并且不是微信浏览器
+    if (os == 1) { // 当是android 并且不是微信浏览器
+        if (planOS == 0 || planOS == 1 || planOS == 3 || planOS == 5) return true;
+    } else if (os == 1 &amp;&amp; wx == 1) {
+        if (planOS == 6) return true;
+        //}else if(os==2 &amp;&amp; wx==0){
+    } else if (os == 2) {
+        if (planOS == 0 || planOS == 2 || planOS == 3) return true;
+    } else if (os == 2 &amp;&amp; wx == 1) {
+        if (planOS == 7) return true;
+    } else if (os == 3) {
+        if (planOS == 0 || planOS == 4 || planOS == 5) return true;
+    }
+    return false;
+}
+*/
+
+//planOS 5所有 1android 2ios 0android&amp;ios 4pc
+function checkPlanOS(planOS) {
+    var os = getOS(); //1android 2ios 3其他/pc
+    if (os == 1) {
+        if (planOS == 0 || planOS == 1 || planOS == 3) return true;
+    } else if (os == 2) {
+        if (planOS == 0 || planOS == 2 || planOS == 3) return true;
+    } else if (os == 3) {
+        if (planOS == 0 || planOS == 4 ) return true;
+    }
+    return false;
+}
+
+function listAdsimg(){
+	var os = getOS();//1android 2ios 3pc
+	var ret = [];
+	for(var i=0;i&lt;w_imglist.length;i++){
+		if(os==3){
+			//pc端
+			if(w_imglist[i][1]==0 || w_imglist[i][1]==1) {
+				ret.push(w_imglist[i][0]);
+			}
+		}else{
+			//手机端
+			if(w_imglist[i][1]==0 || w_imglist[i][1]==2) {
+				ret.push(w_imglist[i][0]);
+			}
+		}
+	}
+	ret = ret.sort(randomsort); 
+	return ret;
+}
+function randomsort(a, b) {
+	return Math.random()&gt;0.5 ? -1 : 1;  
+}
+function getQueryString(name)
+{
+     var reg = new RegExp("(^|&amp;)"+ name +"=([^&amp;]*)(&amp;|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+} 
+// 获取js文件文件传递的参数
+var getArgs = (function () {
+    var sc = document.getElementsByTagName('script');
+    var paramsArr = (typeof sc[sc.length - 1].src.split('?')[1] == 'undefined') ? [] : sc[sc.length - 1].src.split('?')[1].split('&amp;');
+    var args = {}, argsStr = [], param, t, name, value;
+    for (var ii = 0, len = paramsArr.length; ii &lt; len; ii++) {
+        param = paramsArr[ii].split('=');
+        name = param[0], value = param[1];
+        if (typeof args[name] == "undefined") { //参数尚不存在
+            args[name] = value;
+        } else if (typeof args[name] == "string") { //参数已经存在则保存为数组
+            args[name] = [args[name]]
+            args[name].push(value);
+        } else {  //已经是数组的
+            args[name].push(value);
+        }
+    }
+    /*在实际应用中下面的showArg和args.toString可以删掉，这里只是为了测试函数getArgs返回的内容*/
+    var showArg = function (x) {   //转换不同数据的显示方式
+        if (typeof(x) == "string" &amp;&amp; !/\d+/.test(x)) return "'" + x + "'";   //字符串
+        if (x instanceof Array) return "[" + x + "]" //数组
+        return x;   //数字
+    }
+    //组装成json格式
+    args.toString = function () {
+        for (var ii in args) argsStr.push(ii + ':' + showArg(args[ii]));
+        return '{' + argsStr.join(',') + '}';
+    }
+    return function () {
+        return args;
+    } //以json格式返回获取的所有参数
+})();
+</pre></body></html>

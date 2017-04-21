@@ -1,0 +1,308 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<title>国家教育资源公共服务平台</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+<link rel="icon" href="favicon.ico" type="image/x-icon">
+<link href="/ysyk/skins/green/css/style.css" rel="stylesheet" type="text/css">
+<link href="/ysyk/skins/loginpage/css/all.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="/portal/redesign/common/manager/css/global.css">
+<link rel="stylesheet" type="text/css" href="/portal/redesign/common/manager/css/index.css">
+<script type="text/javascript" src="/ysyk/common/js/jquery-1.4.4.min.js"></script>
+<script src="/ysyk/common/js/jquery.cookie.js" type="text/javascript"></script>
+</head><body><div style="display:none;">
+<script src="http://s11.cnzz.com/stat.php?id=1260315890&amp;web_id=1260315890" language="JavaScript"></script><script src="http://c.cnzz.com/core.php?web_id=1260315890&amp;t=z" charset="utf-8" type="text/javascript"></script><a href="http://www.cnzz.com/stat/website.php?web_id=1260315890" target="_blank" title="站长统计">站长统计</a>
+</div>
+<style>
+
+.log_wang {
+    clear: both;
+    overflow: hidden;
+    padding: 5px 0 0 57px;
+}
+</style>
+<script type="text/javascript">
+	var i=0;
+	var j=0;
+	var isLogining = false;
+	var isAnzhuang=false;
+	function chkSubmit(frm,ismanager) {
+		if(isLogining){
+			return false;
+		}
+		if(frm.loginName.value.length!=0&&frm.password.value.length!=0&&frm.rand.value.length!=0){
+				i=1;
+				j=1;
+		}
+		if (frm.loginName.value.length==0) {
+	    	$("#errorType").html("用户名不允许为空!");
+	    	frm.loginName.focus();
+	    	return false;
+	    }
+		else{
+			if(i==0){
+				if(frm.password.value.length==0){
+					frm.password.focus();
+					$("#errorType").html("密码不允许为空!");
+				}
+				i++;
+				return false;
+			}
+		 }
+	    if (frm.password.value.length==0) {
+	    	$("#errorType").html("密码不允许为空!");
+	    	frm.password.focus();
+	    	return false;
+	    }
+	    else{
+	        if(frm.rand.value.length==0){
+	        	$("#errorType").html("请输入图形验证码!");
+		    	frm.rand.focus();
+	        }
+	    	if(j==0){
+				j++;
+				return false;
+			}
+	    }
+	    if (frm.rand.value.length==0) {
+			$("#errorType").html("请输入图形验证码!");
+			frm.rand.focus();
+			return false;
+		}
+	    saveUser();
+	    isAnzhuang=true;
+	    if (!isAnzhuang) {
+	    	var params=$("#loginFrm").serialize();
+	    	$.ajax({
+	 		   type: "POST",
+	 		   url: '/ysyk/login/Login/validateUser.jspx?date='+new Date().getTime(),
+	 		   data:params,
+	 		   success: function(msg){
+	 			   if (msg=="success"){
+	 			    $(".x_zhezhaoceng").show(); 
+	 		   		$(".x_tanchu").show();
+	 		   		$("#errorType").html("&nbsp;");
+	 		   		return false;
+	 			   }else if (msg=="ImageChkFailed"){
+	 				  $("#errorType").html("验证码错误！");
+	 				  frm.rand.focus();
+	 				  return false;
+	 			   }else if (msg=="UserInactive"){
+	 				  $("#errorType").html("用户名或密码错误！");
+	 				   frm.loginName.focus();
+	 				  return false;
+	 			   }else if (msg=="UserInactiveStatus"){
+	 				  $("#errorType").html("帐号已被锁定！");
+	 				  frm.loginName.focus();
+	 				  return false;  
+	 			   }else {
+	 				   return false;
+	 			   }
+	 		   }
+	 		}); 
+	    	
+	    } else {
+	    	//document.getElementById('loginBtn').value='';
+	    	document.getElementById('loginBtn').disabled="disabled";
+	    	document.getElementById('loginBtn').style.cursor="default";
+			isLogining=true;
+			var params=$("#loginFrm").serialize();
+	    	$.ajax({
+	 		   type: "POST",
+	 		   url: '/ysyk/login/Login/validateUser.jspx?date='+new Date().getTime(),
+	 		   data:params,
+	 		   success: function(msg){
+	 			   if (msg=="success"){
+	 				  document.frm.submit();
+	 			   }else if (msg=="ImageChkFailed"){
+	 				  $("#errorType").html("验证码错误！");
+	 				  frm.rand.focus();
+	 				 //document.getElementById('loginBtn').value='';
+	  		    	 document.getElementById('loginBtn').disabled="";
+	  		    	 document.getElementById('loginBtn').style.cursor="print";
+	  		    	 isLogining=false;
+	 				  return false;
+	 			   }else if (msg=="UserInactive"){
+	 				  $("#errorType").html("用户名或密码错误！");
+	 				  frm.loginName.focus();
+	 				// document.getElementById('loginBtn').value='';
+	  		    	 document.getElementById('loginBtn').disabled="";
+	  		    	 document.getElementById('loginBtn').style.cursor="print";
+	  		    	 isLogining=false;
+	 				 return false;
+	 			   }else if (msg=="UserInactiveStatus"){
+	 				  $("#errorType").html("帐号已被锁定！");
+	 				  frm.loginName.focus();
+	 				 //document.getElementById('loginBtn').value='';
+	  		    	 document.getElementById('loginBtn').disabled="";
+	  		    	 document.getElementById('loginBtn').style.cursor="print";
+	  		    	 isLogining=false;
+	 				 return false;  
+	 			   }
+	 		   }
+	 		}); 
+	    }
+	}
+	//保存用户信息
+	function saveUserInfo() {
+		if(document.getElementById("nolonger").checked){
+	        $.cookie("nolonger", "true", { expires: 7 }); // 存储一个带7天期限的 cookie
+	        isAnzhuang=true;
+	    }
+	    else {
+	        $.cookie("nolonger", "false", { expires: -1 });
+	        isAnzhuang=false;
+	    }
+		document.getElementById('x_btn').disabled="disabled";
+		//document.getElementById('loginBtn').value='';
+		document.getElementById('loginBtn').disabled="disabled";
+		document.getElementById('loginBtn').style.cursor="default";
+		isLogining=true;
+		document.frm.submit();
+	}
+	function enter(frm,evt) {
+		var k=window.event?evt.keyCode:evt.which;
+		if (k==13) {
+			chkSubmit(frm); 
+		}
+	}
+	function change_authimage()
+	{
+		document.getElementById('authimage').src="/ysyk/common/authimage/authimage.gif?r="+Math.random();
+	}
+	function selectName(){
+	
+		document.getElementById("loginName").focus();
+	}
+	
+	//初始化页面时验证是否记住了不在提醒
+	function readercookie(){
+	    if ($.cookie("nolonger") == "true" || '${nsLogin}' == 'true') {
+	    	isAnzhuang=true;
+	    }else {
+	    	isAnzhuang=false;
+	    }
+	    if ($.cookie("rememberLm") == "true") {
+	        $("#rememberLm").attr("checked", true);
+	        $("#loginName").val($.cookie("loginName"));
+	    }
+	    if ($.cookie("rememberPwd") == "true") {
+	        $("#rememberPwd").attr("checked", true);
+	        $("#password").val($.cookie("password"));
+	    }
+    }
+	
+	$(document).ready(function(){
+		readercookie();
+		document.getElementById("loginName").focus();
+		change_authimage();
+	});
+	
+	//保存用户信息
+	function saveUser() {
+		if(document.getElementById("rememberLm").checked){
+	        var userName = $("#loginName").val();
+	        var passWord = $("#password").val();
+	        $.cookie("rememberLm", "true", { expires: 7 }); // 存储一个带7天期限的 cookie
+	        $.cookie("loginName", userName, { expires: 7 }); // 存储一个带7天期限的 cookie
+	        $.cookie("rememberPwd", "true", { expires: 7 }); // 存储一个带7天期限的 cookie
+	        $.cookie("password", passWord, { expires: 7 }); // 存储一个带7天期限的 cookie
+	    } else {
+	        $.cookie("rememberLm", "false", { expires: -1 });
+	        $.cookie("loginName", '', { expires: -1 });
+	        $.cookie("rememberPwd", "false", { expires: -1 });
+	        $.cookie("password", '', { expires: -1 });
+	    }
+		
+	}
+	function checkBoxClick(checkBoxId){
+		var check=document.getElementById(checkBoxId);
+		if (check.checked){
+			check.checked=false;
+		}else
+			{
+			check.checked=true;
+			}
+	}
+	
+</script>
+
+
+	<form action="/ysyk/login/Login/login.jspx" method="post" name="frm" id="loginFrm">
+		<input type="hidden" name="url" value="&lt;%=url%&gt;">
+		<input type="hidden" name="imagechk" value="true">
+			<div class="loginpage">
+				<div class="DengLuK">
+					<div class="log">
+						<label>用户名：</label>
+						<input onkeyup="enter(this.form,event)" type="text" class="text" name="loginName" id="loginName" maxlength="100" tabindex="1" value="" onfocus="if(this.value==this.defaultValue){this.value='';}; this.style.color='black';" onblur="if(this.value==''){this.value=this.defaultValue;}; this.style.color='#A4A4A4'" style="color: black; ">
+					</div>
+					<div class="log">
+						<label>密码：</label>
+						<input class="text text02" placeholder="密码长度必须小于16位" value="" name="password" maxlength="15" id="password" type="password" onkeypress="enter(this.form,event)" tabindex="2">
+					</div>
+					<div class="log">
+						<label>验证码：</label><input type="text" class="yzm" maxlength="4" name="rand" value="" onfocus="if(this.value==this.defaultValue){this.value='';}; this.style.color='#a4a4a4';" onblur="if(this.value==''){this.value=this.defaultValue;}; this.style.color='#A4A4A4'" onkeypress="enter(this.form,event)" tabindex="3">
+						<label><img id="authimage" name="authimage" src="/ysyk/common/authimage/authimage.gif?r=0.4579117123503238" style="padding-top:5px;*padding-top: 5px !important;line-height: 40px;*line-height: 40px !important;cursor:pointer;height:25px;width:60px;" onclick="change_authimage();">
+							
+						</label>
+						<a href="###" class="color3" onclick="change_authimage();" style="font-size: 12px;cursor:pointer;color: #888888;margin-left:5px;line-height: 40px;*line-height: 40px !important;">换一个！</a>
+					</div>
+					<div class="log_wang">
+					<p class="mian" style="color: red;clear: both; padding:0 0 10px 0;" id="errorType">&nbsp;</p>
+						<input type="checkbox" name="记住我" value="记住我" class="danxuan" id="rememberLm"><span onclick="checkBoxClick('rememberLm')">记住我</span><a href="#" onclick="window.open('/ysyk/find_pwd.jsp')">忘记密码？</a>
+					</div>
+					<div class="log log2">
+						<input type="button" class="but01" value="登录" onclick="chkSubmit(document.forms[0],'2')" id="loginBtn">
+					</div>
+				</div>
+			</div>
+    </form>
+    <object classid="clsid:87E69CB3-A6A0-4F0C-B969-94A987D9F225" id="Slider1" width="0" height="0">
+	</object>
+	<object classid="clsid:42CFBF51-9870-406D-8358-200687E4E369" id="Slider2" width="0" height="0">
+	</object>
+	
+	<div class="x_zhezhaoceng" style="display:none" id="xlogin1"></div>
+    <div class="x_tanchu" style="display:none;" id="xlogin">
+    	<h3>友情提示</h3>
+    	<a href="#" class="closed" title="关闭"></a>
+        <table>
+        	<tbody>
+        	   <tr>
+        	       <td>请下载并安装课件工具客户端，如果没有安装该客户端，部分功能将无法正常使用，安装后请重新启动浏览器。</td>
+        	   </tr>
+        	   <tr>
+        	       <td style="height: 20px;padding-left: 70px;"><a href="/upload/upload/client/35client.rar" target="_blank" style="color: #0078b6;">课件工具下载</a></td> 
+        	   </tr>
+        	    <tr>
+        	       <td style="height: 20px;padding-left: 70px;+*padding-left: 66px;" valign="top"><div style="float:left;padding-top: 2.5px;+*padding-top: 0px;"><input type="checkbox" id="nolonger"></div><span style="float:left;padding-left: 2px;+*padding-left: 0px;padding-top: 1px;+*padding-top: 3px;">不再提示</span></td> 
+        	   </tr>
+            </tbody>
+        </table>
+        <p class="x_btn"><a href="###" id="x_btn" onclick="saveUserInfo()"></a></p>
+    </div>
+    
+        <iframe id="downloadIframe" name="downloadIframe" frameborder="0" scrolling="no" style="width:0%;height:0px;display: none;"></iframe>
+<script type="text/javascript">
+	$(".x_tanchu .closed").click(function(){
+		 $(".x_tanchu").hide();
+		 $(".x_zhezhaoceng").hide();
+		 return false;
+		})
+  	function setPadding(){ 
+		var x = (document.documentElement.clientHeight-109-428-150)/2;
+		 if(x>0) {
+				$(".newLoginBox, .newLoginBox2").css("padding-top",x)
+		}else {
+			 $(".newLoginBox, .newLoginBox2").css("padding-top",0)
+		}
+	}
+	 $(window).resize(function(){
+ 			 setPadding()
+	     });
+	  setPadding()  
+  </script>
+
+
+</body></html>

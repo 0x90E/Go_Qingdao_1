@@ -1,0 +1,1766 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ <head id="Head">
+  <title>
+	IT天涯 - BlogJava
+</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta id="metaKeywords" name="keywords" content="java,j2ee,博客,blog,java blog,blogjava" />
+  <link type="text/css" rel="stylesheet" href="/css/common.css" />
+  <link id="MainCss" type="text/css" rel="stylesheet" href="http://www.blogjava.net/Skins/sea/style.css" />
+  <link id="RSSLink" title="RSS" type="application/rss+xml" rel="alternate" href="http://www.blogjava.net/d66380022/rss.aspx" />
+ </head> 
+ <body> 
+  <form name="Form1" method="post" action="default.html?page=1" id="Form1"> 
+   <input type="hidden" name="__VIEWSTATE" id="
+__VIEWSTATE" value="" /> 
+   <!--done--> 
+   <div id="header"> 
+    <!--done--> 
+    <div class="header"> 
+     <div class="headerText"> 
+      <a id="Header1_HeaderTitle" class="headermaintitle" href="http://www.blogjava.net/d66380022/">IT天涯</a>
+      <br /> 传智生涯 
+     </div> 
+    </div> 
+   </div> 
+   <div id="mytopmenu"> 
+    <div id="mylinks"> 
+     <!--done--> 
+     <a id="MyLinks1_HomeLink" class="menu" href="http://www.blogjava.net/">BlogJava</a>&nbsp;&nbsp; 
+     <a id="MyLinks1_MyHomeLink" class="menu" href="http://www.blogjava.net/d66380022/">首页</a>&nbsp;&nbsp; 
+     <a id="MyLinks1_NewPostLink" class="menu" href="http://www.blogjava.net/d66380022/admin/EditPosts.aspx?opt=1">新随笔</a> 
+     <a id="MyLinks1_ContactLink" class="menu" href="http://www.blogjava.net/d66380022/contact.aspx?id=1">联系</a>&nbsp;&nbsp; 
+     <a id="MyLinks1_Syndication" class="menu" href="http://www.blogjava.net/d66380022/rss">聚合</a>
+     <a id="MyLinks1_XMLLink" href="http://www.blogjava.net/d66380022/rss"><img src="http://www.blogjava.net/images/xml.gif" border="0" /></a>&nbsp;&nbsp; 
+     <a id="MyLinks1_Admin" class="menu" href="http://www.blogjava.net/d66380022/admin/EditPosts.aspx">管理</a> 
+    </div> 
+    <div id="mystats"> 
+     <!--done--> 随笔-54&nbsp; 评论-0&nbsp; 文章-2&nbsp; trackbacks-0 
+    </div> 
+   </div> 
+   <div id="centercontent"> 
+    <!--done--> 
+    <div class="day"> 
+     <div class="dayTitle"> 
+      <a id="homepage1_HomePageDays_ctl00_ImageLink" title="Day link"><img src="/skins/sea/images/title_post.gif" border="0" align="absmiddle" /></a> &nbsp; 
+     </div> 
+     <div class="postTitle"> 
+      <a id="homepage1_HomePageDays_ctl00_DayList_ctl00_TitleUrl" class="postTitle2" href="http://www.blogjava.net/d66380022/archive/2010/04/01/317110.html">传智播客 2010-03-31 巴巴运动网的权限模块总结</a> 
+     </div> 巴巴运动网的权限模块总结
+     <br /> &nbsp; 因为巴巴运动网的权限设计模块对我来说，可以实现，打算好好整理一下思路，面试时说不定还能起点作用，看了两遍，自己总结下：
+     <br /> 权限定义/权限组(角色)模块
+     <br /> 1.对系统的所有功能定义相应的权限
+     <br /> 2.由网管针对不同部门不同员工分配权限组(角色)，在分配角色时，
+     <br /> &nbsp; 可以选择该角色具有的权限
+     <br /> 3.权限拦截模块
+     <br /> &nbsp;
+     <br /> 具体步骤：
+     <br /> &nbsp;1.设计权限实体
+     <br /> &nbsp;&nbsp;&nbsp; 联合主键(SystemPrivilegePK),该类有module和privilage两个属性
+     <br /> &nbsp;2.初始化权限
+     <br /> &nbsp;3.设计权限组(角色)PrivilegeGroup实体,如果我们希望通过修改权限组添加或删除权限，那么权限和角色之间的多对多关系的维护端由角色来维护
+     <br /> &nbsp;&nbsp;&nbsp; private String groupid;
+     <br /> &nbsp;&nbsp;&nbsp; private String name;
+     <br /> &nbsp;&nbsp;&nbsp; private Set&lt;SystemPrivilege&gt; privileges = new HashSet&lt;SystemPrivilege&gt;();
+     <br /> 同时加上到数据库表的映射
+     <br /> 当然由于权限和角色之间的多对多关系是双向关联，所以要在SystemPrivilege实体bean中加上和PrivilegeGroup实体Bean之间的映射
+     <br /> 
+     <br /> 4.实现权限组的添删改
+     <br /> 路径：/control/
+     <br /> &nbsp;新建接口PrivilegeGroupService，继承Dao&lt;PrivilegeGroupService&gt;，
+     <br /> &nbsp;新建PrivilegeGroupService，继承DaoSupport
+     <br /> 当然这些Bean都需要交给Spring管理，加上相应的注解即可
+     <br /> 5.实现权限组的分页，这个简单
+     <br /> 6.实现添加权限，分页列表上的Action，新建Action，名称为PrivilegeGroupManageAction，
+     <br /> &nbsp; ①.第一个方法是AddUI,主要是显示页面
+     <br /> &nbsp; 接下来就是增删该操作了(...)
+     <br /> 
+     <br /> 7.权限做完后要新建一个Action用于完成SystemPrivilege，权限组，超级管理员的初始化，初始化完成后点击“确定”，进入登陆页面
+     <br /> 
+     <br /> 
+     <br /> &nbsp;权限模块的核心：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 权限拦截模块
+     <br /> 
+     <br /> 1.员工要访问control开头的路径，必须登陆，即粗粒度的权限拦截，这是通过Fileter实现的，这里我们定义为PrivilegeFilter，先从session范围中得到employee对象，如果对象为空，就浏览器重定向到登陆界面，，如果登陆了，就chain.doFilter(request,response);之后在web.xml配置,这样就实现粗粒度的权限控制了3
+     <br /> 2.对于界面上的某些功能，不是每一个登陆到系统的员工对页面的功能都有操作权限，这就是细粒度的权限拦截
+     <br /> 关键是怎样细粒度的权限控制
+     <br /> 怎样实现细粒度的权限控制？
+     <br /> 每点击页面上的按钮，都会提交给相应的Action处理，细粒度的权限拦截就是对Action拦截，在不修改原代码情况下，增加拦截代码，使用的是AOP技术
+     <br /> &nbsp;每一个功能Action都有相应的方法处理，我们用JDK5中的注解为Action中的方法注解相应的权限，因为我们有时会修改方法名称，用注解维护起来比较方便比如：
+     <br /> @Permission(module=&quot;order&quot;,privilege=&quot;modify&quot;)
+     <br /> public ActionForward OrderModify(){}
+     <br /> &nbsp;
+     <br /> 实现过程：
+     <br /> ①.新建注解Permission，
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @Retention(PetentionPolicy.RUNTIME)
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; @Target(ElementType.METHOD)
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; public @interface Permission{
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; String module();
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; String privilege();
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 为Action中的方法，加上注解
+     <br /> &nbsp;&nbsp;&nbsp; 只有拦截到Action中的这个方法，才能实现权限拦截，现在我们的Action已经交给Spring管理，所以我们可以使用Spring的AOP技术进行权限拦截，有必要复习一下AOP的知识：
+     <br /> &nbsp;在Action类上加一个注解如下：@Aspect，当然要使这个注解起作用，我们必须在Spring的配置文件里配置：
+     <br /> &nbsp; &lt;aop:aspectj-autoproxy&gt; &lt;!--注解解析器--&gt;
+     <br /> 要实现切面编程，抽象过程体现在代码上， 就是一个采用类来描述，要是这个类起作用，我们必须要把它交给Spring管理，很郁闷
+     <br /> @Aspect@Component
+     <br /> public class Interceptor｛
+     <br /> &nbsp;@Pointcut(&quot;exception(org.apache.struts.action.ActionForward&nbsp; cn.itcast.web.action.. * *(org.apache.struts.actionMapping,...))&quot;)
+     <br /> &nbsp;private void actionMethod(){}
+     <br /> @Around(&quot;actionMethod&quot;)
+     <br /> public Object interceptor(ProceedingJoinPoint pjp) throw Throwable{
+     <br /> &nbsp; System.out.println(&quot;拦截到了&quot;+pjp.getSignature().getName()+&quot;方法&quot;);
+     <br /> &nbsp; return pjp.proceed();
+     <br /> &nbsp;}
+     <br /> ｝
+     <br /> 注意：
+     <br /> 通知：
+     <br /> 前置通知，在拦截的方法前加通知，这个通知执行后，被拦截的方法仍然会执行。
+     <br /> 所以使用环绕通知，但是这样的拦截只能是拦截Action实现的，他不能拦截继承自DispatchAction
+     <br /> 原因：Spring的动态代理技术的问题
+     <br /> Spring不能对通过反射调用的方法应用上通知(Advice)
+     <br /> 当Spring发现我们的继承的DispatchAction的那个类符合他拦截的要求，就会生成一个代理对象，因为无接口，默认使用cglib为这个Action生成代理对象，根据cglib生成代理对象的特点，继承目标类，并且重写所有非final的方法来实现
+     <br /> &nbsp;
+     <br /> 注：spring只会为本类定义的方法应用通知
+     <br /> 
+     <br /> 
+     <br /> 
+     <br /> 
+     <div class="postDesc">
+      posted @ 
+      <a href="http://www.blogjava.net/d66380022/archive/2010/04/01/317110.html" title="permalink">2010-04-01 07:10</a> d66380022|&nbsp;
+      <a href="http://www.blogjava.net/d66380022/admin/EditPosts.aspx?postid=317110">编辑</a>&nbsp;
+      <a href="http://www.blogjava.net/d66380022/AddToFavorite.aspx?id=317110">收藏</a>
+     </div> 
+     <div class="postSeparator"></div> 
+     <div class="postTitle"> 
+      <a id="homepage1_HomePageDays_ctl00_DayList_ctl02_TitleUrl" class="postTitle2" href="http://www.blogjava.net/d66380022/archive/2010/03/25/316546.html">2010-03-24 Struts2基础</a> 
+     </div> 
+     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />&nbsp;今天初步学习了一下Struts2，对于Struts2，企业中已应用十分广泛，由于他是在Struts基础上发展而来，技术上比struts高，比如
+     <span lang="EN-US">struts2</span>
+     <span style="font-family: 宋体;">对同一个路径的每个请求分别使用一个独立</span>
+     <span lang="EN-US">Action</span>
+     <span style="font-family: 宋体;">实例对象，所有使用</span>
+     <span lang="EN-US">struts2</span>
+     <span style="font-family: 宋体;">不用考虑线程安全问题，还有就是修改下配置文件，</span>
+     <span style="font-family: 宋体;">不用</span>
+     <span style="font-family: 宋体;">重启服务器</span>
+     <br /> 1.struts2的建立过程:
+     <br /> 配置过程:
+     <br /> 1.新建web项目
+     <br /> 2.导入struts2类库. [blank项目中含有最少的jar文件]
+     <br /> 3.配置web.xml
+     <br /> &lt;filter&gt;[...SrutsPrepareAndExecuteFilter]
+     <br /> 4.写Action类
+     <br /> public class HelloWorldAction {
+     <br /> public String execute(){
+     <br /> System.out.println(&quot;hello world!&quot;);
+     <br /> try {
+     <br /> ServletActionContext.getResponse().getWriter().printf(&quot;hello!&quot;);
+     <br /> } catch (Exception e) {
+     <br /> e.printStackTrace();
+     <br /> }
+     <br /> return null ;
+     <br /> }
+     <br /> }
+     <br /> 5.创建struts.xml
+     <br /> ①.struts2默认在类路径下查找struts.xml文件
+     <br /> 关于struts.xml配置，可以参看struts2-blank-2.1.8.1.war解压后的配置
+     <br /> 设置环境为开发模式.设置为开发模式,有利于编程和调试,
+     <br /> &lt;constant name=&quot;struts.devMode&quot; value=&quot;true&quot; /&gt;
+     <br /> 3.让struts.xml中的Package继承struts-default.xml中的默认包.
+     <br /> 所有的默认包中的元素配置就引入进来.
+     <br /> 4.配置默认值.
+     <br /> &lt;action name=&quot;HelloWorldAction&quot; class=&quot;cn.itcast.struts2.helloworld.HelloWorldAction&quot;&gt;
+     <br /> &lt;result name=&quot;success&quot;&gt;
+     <br /> &lt;param name=&quot;location&quot;&gt;/index.jsp&lt;/param&gt;
+     <br /> &lt;/result&gt;
+     <br /> &lt;/action&gt;
+     <br /> 
+     <br /> 5.strtus2中的action不是单例的,它会为每个请求单独分配一个action实例,所以可以在action类中声明实体属性.
+     <br /> Struts2的Action是模型层,不是控制层,原因它是需要携带业务数据的.
+     <br /> 6.struts2中的拦截器是负责每个独立的一项任务.例如,参数传递,国际化,异常处理，StrutsPrepareAndExecuteFilter是Struts 2框架的核心控制器，它负责拦截由&lt;url-pattern&gt;/*&lt;/url-pattern&gt;指定的所有用户请求，当用户请求到达时，该Filter会过滤用户的请求。
+     <br /> 7.在struts2的jsp中输出数据,借助于struts-tag.tld标签库.该库在[struts-core.jar/META-INF/struts-tag.tld，但是其重要作用还是用于回显数据
+     <br /> 
+     <br /> 8.Struts2可以数据的范围:ActionContext request session application 
+     <br /> ActionContext是数据中心,ValueStack不过是该数据中心中的一个特殊对象.
+     <br /> 在jsp中访问ActionContext中的数据的话,可以使用OGNL语言.
+     <br /> 9.struts2中包的名字空间搜索原则:
+     <br /> 
+     <br /> 1.&lt;package name=&quot;xxPkg&quot;&gt;
+     <br /> 2.&lt;package name=&quot;xxPkg&quot; namespace=&quot;&quot;&gt;
+     <br /> 3.&lt;package name=&quot;xxPkg&quot; namespace=&quot;/&quot;&gt;
+     <br /> 4.&lt;package name=&quot;xxPkg&quot; namespace=&quot;/HelloWorld&quot;&gt;
+     <br /> 
+     <br /> 1.和2.效果一样,都是默认的包.
+     <br /> 2.都会自后向前搜索,直到找到为止,&quot;/&quot; 和 &quot;/HelloWorld&quot;唯一不同就是也可以作为搜索目录.
+     <br /> 3.空包是默认包,如果每个包都没有找到相应的action的话,就去默认包下去找.
+     <br /> 10.struts2中进行动态方法调用.
+     <br /> http://localhost:8085/struts2/Hell/HelloWorldAction!toRewView.do
+     <br /> 11.struts2中使用标签库
+     <br /> &lt;s:form action=&quot;HelloWorldAction_doReg&quot; [namespace=&quot;&quot;]&gt;
+     <br /> &lt;s:textfield name=&quot;name&quot; label=&quot;UserName&quot; /&gt;
+     <br /> &lt;s:submit /&gt;
+     <br /> &lt;/s:form&gt;
+     <br /> namespace:如果不写,会使用当期的名字空间.
+     <br /> struts给的所有控件标签,主要目的用于回显数据.
+     <br /> 12.struts2中进行基本的校验,需要Validateable和ValidationAware两个接口的支持,同时还需要
+     <br /> workflow拦截器的支持.
+     <br /> 13.在struts2中，默认的表达式语言是OGNL，Object Graphic Navigation Language（对象图导航语言）的缩写，它是一个开源项目。 Struts 2框架使用OGNL作为默认的表达式语言。相对EL表达式，它提供了平时我们需要的一些功能，如：支持对象方法调用，支持类静态方法调用和值访问，操作集合对象。例如()：
+     <br /> 
+     <p> 访问值栈中的action的普通属性: username = &lt;s:property value=&quot;username&quot;/&gt; <br /> </p> 
+     <p>由于下午有公司来面试，耽误了一些时间,老徐说明天再多补一个小时，太敬业了啊，佩服！</p> 
+     <div class="postDesc">
+      posted @ 
+      <a href="http://www.blogjava.net/d66380022/archive/2010/03/25/316546.html" title="permalink">2010-03-25 16:39</a> d66380022|&nbsp;
+      <a href="http://www.blogjava.net/d66380022/admin/EditPosts.aspx?postid=316546">编辑</a>&nbsp;
+      <a href="http://www.blogjava.net/d66380022/AddToFavorite.aspx?id=316546">收藏</a>
+     </div> 
+     <div class="postSeparator"></div> 
+     <div class="postTitle"> 
+      <a id="homepage1_HomePageDays_ctl00_DayList_ctl04_TitleUrl" class="postTitle2" href="http://www.blogjava.net/d66380022/archive/2010/03/24/316385.html">传智播客 2010-03-23 易宝支付流程及面试技巧</a> 
+     </div> 
+     <p class="MsoNormal"><span style="mso-spacerun:yes">&nbsp;</span><span style="mso-spacerun:yes">&nbsp;</span><span style="font-family:宋体;mso-ascii-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">在线支付时针对易宝支付的网关而开设的，众所周知，易宝已是三大网上支付平台之一，正好明天易宝来招聘，正好练练，呵呵，下午是面试技巧</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp; </span></span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">好好学习，毕业倒计时：</span><span lang="EN-US">15</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">天</span></p> 
+     <p class="MsoNormal"><span lang="EN-US">1.</span><span style="font-family:宋体;
+mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">支付宝是不能立即拿到现钱的，这也是商家喜欢在线支付的一个原因吧，在线支付是直接和银行对接的，这样商家可以立即拿到现钱，避免了和买家产生矛盾后，钱被封的风险。</span></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">下面就来实现在线支付吧，首先提出请求，如果通过，会得到账号和密钥</span></p> 
+     <p class="MsoNormal" style="tab-stops:239.25pt"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp;</span></span><span style="font-family:宋体;mso-ascii-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">我们要做的事有两项</span><span lang="EN-US"><span style="mso-tab-count:1">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp; </span>1.</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">向支付网关发起请求，就是向</span><span lang="EN-US">http</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">发起请求，所谓请求就是我们平常使用</span><span lang="EN-US">Http</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">请求</span><span lang="EN-US">(<a href="http://www.xxx.cn/xxx.do">http://www.xxx.cn/xxx.do</a>),</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">请求方式：</span><span lang="EN-US">Get/Post</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp; </span>&lt;form method=”” action=”https://www.yeepay.com/app-method”&gt;</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp; </span>&lt;input name=”?”,value=””/&gt;</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp; </span>&lt;input name=”url” value=”http://www.itcast.cn/re.do”/&gt;</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp; </span>&lt;input name=”hmac” value=””&gt;</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp; </span>…..</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp; </span>Hmac = MD5(pd_FrpId + p0_Cmd + p8_Url,key);32</span><span style="font-family:宋体;
+mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">位，不可逆</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp; </span></span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">支付网关：其实就是一个</span><span lang="EN-US">http</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">路径</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp; </span>2.</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">接收支付网关返回的支付结果信息</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp;&nbsp; </span></span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">第一次使用浏览器重定向技术，</span></p> 
+     <p class="MsoNormal" style="text-indent:15.75pt;mso-char-indent-count:1.5"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp;</span></span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">把支付信息发送给：</span><span lang="EN-US">http://www.itcast.cn/re.do?id=21432&amp;result=1</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp;&nbsp; </span></span></p> 
+     <p class="MsoNormal"><span lang="EN-US">2.</span><span style="font-family:宋体;
+mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">相关知识点：</span></p> 
+     <p class="MsoNormal" style="margin-left:18.0pt"><span style="font-family:宋体;
+mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">一</span><span lang="EN-US">.</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">接入方式：两种接入方案</span></p> 
+     <p class="MsoNormal" style="margin-left:17.95pt;mso-para-margin-left:1.71gd;
+text-indent:21.0pt;mso-char-indent-count:2.0"><span style="font-family:宋体;
+mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">①</span><span lang="EN-US">.</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">直接与银行对接</span></p> 
+     <p class="MsoNormal" style="margin-left:17.95pt;mso-para-margin-left:1.71gd;
+text-indent:21.0pt;mso-char-indent-count:2.0"><span style="font-family:宋体;
+mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;;
+mso-bidi-font-weight:bold">优点<strong>：</strong></span><span style="font-family:宋体;
+mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">因为直接与银行进行财务结算，交易资金结算比较安全</span></p> 
+     <p class="MsoNormal" style="margin-left:17.95pt;mso-para-margin-left:1.71gd;
+text-indent:21.0pt;mso-char-indent-count:2.0"><span style="font-family:宋体;
+mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;;
+mso-bidi-font-weight:bold">缺点：</span><span style="font-family:宋体;mso-ascii-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">开发工作量比较大，而且银行会不定期升级交易系统，随着银行系统的升级，企业也需要作相应改动，所以维护工作量也是比较大的，而且企业每年还需要向银行交纳一定数量的接口使用费。</span></p> 
+     <p class="MsoNormal" style="margin-left:17.95pt;mso-para-margin-left:1.71gd;
+text-indent:21.0pt;mso-char-indent-count:2.0"><span lang="EN-US">
+       <o:p>
+        &nbsp;
+       </o:p></span></p> 
+     <p class="MsoNormal" style="margin-left:17.95pt;mso-para-margin-left:1.71gd;
+text-indent:21.0pt;mso-char-indent-count:2.0"><span style="font-family:宋体;
+mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">②</span><span lang="EN-US">.</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">通过中间公司间接与银行对接</span></p> 
+     <p class="MsoNormal" style="margin-left:42.0pt;mso-para-margin-left:4.0gd"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;;mso-bidi-font-weight:bold">优点：</span><span style="font-family:
+宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">开发工作量较少，因为使用的是中间企业提供的接入规范，所以银行升级系统，不需要企业作相应修改，除非中间企业的接入规范发生了改变，企业才作相应修改。</span></p> 
+     <p class="MsoNormal" style="margin-left:42.0pt;mso-para-margin-left:4.0gd"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;;mso-bidi-font-weight:bold">缺点</span><span style="font-family:
+宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">：因为是与中间企业进行资金结算，目前所有中间企业都是私企，资金安全是个大问题。</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp;</span>3. </span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">对支付数据进行</span><span lang="EN-US">Md5</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">加密</span></p> 
+     <p class="MsoNormal" style="text-indent:5.25pt;mso-char-indent-count:.5"><span lang="EN-US">4. </span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">支付流程：</span></p> 
+     <p class="MsoNormal" style="text-indent:26.25pt;mso-char-indent-count:2.5"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">通过</span><span lang="EN-US">http</span><span style="font-family:
+宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">请求方式向易宝支付网关发起一个支付请求，请求可以是</span><span lang="EN-US">get</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">或</span><span lang="EN-US">post</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">方式提交。</span></p> 
+     <p class="MsoNormal" style="text-indent:21.0pt;mso-char-indent-count:2.0"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">易宝支付网关对企业发来的数据使用用户的密钥生成</span><span lang="EN-US">MD5-hmac</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">码，然后跟企业发来的</span><span lang="EN-US">MD5-hmac</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">码</span><span lang="EN-US">(</span><span style="font-family:
+宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">即上面表单由</span><span lang="EN-US">hmac</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">字段提供的值</span><span lang="EN-US">)</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">比较是否相同，如果相同即把请求转发到银行网关，当用户支付完成后，银行网关会引导用户的浏览器重定向到易宝支付网关，然后易宝支付网关再引导用户的浏览器重定向到企业提供的</span><span lang="EN-US">url(</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">即上面表单由</span><span lang="EN-US">p8_Url</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">提供的地址</span><span lang="EN-US">)</span></p> 
+     <p class="MsoNormal"><span lang="EN-US">
+       <o:p>
+        &nbsp;
+       </o:p></span></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">接下来我们只需处理结果了</span></p> 
+     <p class="MsoNormal"><span lang="EN-US">
+       <o:p>
+        &nbsp;
+       </o:p></span></p> 
+     <p class="MsoNormal"><strong style="mso-bidi-font-weight:normal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">下午是面试技巧：</span><span lang="EN-US">
+        <o:p></o:p></span></strong></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">薪水：一定要写</span> <span style="font-family:
+宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">，不要写区间</span><span lang="EN-US"> 4000 <span style="mso-spacerun:yes">&nbsp;</span></span></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">心得体会：具体点</span></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">责任描述：多写，详细，写开发难点，描述清楚，介绍清楚</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp; </span></span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">对某一模块详细描述，对难点的解决过程</span></p> 
+     <p class="MsoNormal" style="text-indent:10.5pt;mso-char-indent-count:1.0"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">描述自己负责的模块，抓住一点，详细说，千千不要泛泛而谈</span></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">不能写培训经验</span></p> 
+     <p class="MsoNormal"><span lang="EN-US">
+       <o:p>
+        &nbsp;
+       </o:p></span></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">三好学生，写一等奖学金是应届的</span></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">爱好还是要写的</span></p> 
+     <p class="MsoNormal" style="text-indent:5.25pt;mso-char-indent-count:.5"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">身份证不能造假，教育经历</span><span lang="EN-US">,</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">通常企业筛选简历过程：</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp;</span></span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">从</span><span lang="EN-US">1-2</span><span style="font-family:
+宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">千封中选，让前台做</span><span lang="EN-US">/</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">人力去筛选简历，要求：</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp;&nbsp; </span>A.</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">只提取两年工作年限以上</span><span lang="EN-US">(</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">一般企业都是这样干的</span><span lang="EN-US">)</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp;&nbsp; </span>B.</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">连人力都能判断出造假的简历，排除</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp;&nbsp; </span>C.</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">经过人力，剩下</span><span lang="EN-US">100</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">封</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp;&nbsp; </span>D.</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">面试官</span></p> 
+     <p class="MsoNormal"><span lang="EN-US">
+       <o:p>
+        &nbsp;
+       </o:p></span></p> 
+     <p class="MsoNormal" style="text-indent:10.5pt;mso-char-indent-count:1.0"><span lang="EN-US">88</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">年可以写两年，教育经历：把毕业信息提前，证书造假</span></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">简历上可适当造假</span></p> 
+     <p class="MsoNormal"><strong style="mso-bidi-font-weight:normal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">薪水：</span><span lang="EN-US">
+        <o:p></o:p></span></strong></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">写</span><span lang="EN-US">2</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">年，月薪（北京，上海，广州）：</span></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">初级：</span><span lang="EN-US">3000 – 4000 4500<span style="mso-spacerun:yes">&nbsp; </span>-- 8-12</span></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">中级：</span><span lang="EN-US">4500 – 6000 7K </span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">其中</span><span lang="EN-US">5K-6K</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">比较多</span><span lang="EN-US"> -- </span></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">高级：</span><span lang="EN-US">7000 – 1.2W<span style="mso-spacerun:yes">&nbsp; </span></span><span style="font-family:
+宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">（</span><span lang="EN-US">3-5</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">）</span></p> 
+     <p class="MsoNormal"><span lang="EN-US">
+       <o:p>
+        &nbsp;
+       </o:p></span></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">从事</span><span lang="EN-US">Android</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">，薪水如下：</span></p> 
+     <p class="MsoNormal" style="margin-left:10.5pt;mso-para-margin-left:1.0gd"><span lang="EN-US">Android 2</span><span style="font-family:宋体;mso-ascii-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">年</span> <span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">最长就</span><span lang="EN-US">2</span><span style="font-family:
+宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">年</span></p> 
+     <p class="MsoNormal" style="margin-left:10.5pt;mso-para-margin-left:1.0gd"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">原来做过</span><span lang="EN-US">j2se</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">开发</span><span lang="EN-US">3-4</span><span style="font-family:
+宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">年</span><span lang="EN-US"> 8K-1.2W</span></p> 
+     <p class="MsoNormal" style="margin-left:10.5pt;mso-para-margin-left:1.0gd"><span lang="EN-US">android 3</span><span style="font-family:宋体;mso-ascii-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">个月（</span><span lang="EN-US">j2ee 1-2</span><span style="font-family:宋体;mso-ascii-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">）</span><span lang="EN-US">6K</span></p> 
+     <p class="MsoNormal" style="margin-left:10.5pt;mso-para-margin-left:1.0gd"><span lang="EN-US">Android </span><span style="font-family:宋体;mso-ascii-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">干半年</span><span lang="EN-US"> 4.5K</span></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">如果我们老老实实干半年，编码能力就会没问题</span></p> 
+     <p class="MsoNormal"><span lang="EN-US">
+       <o:p>
+        &nbsp;
+       </o:p></span></p> 
+     <p class="MsoNormal"><strong style="mso-bidi-font-weight:normal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">工作经验：</span><span lang="EN-US">
+        <o:p></o:p></span></strong></p> 
+     <p class="MsoNormal"><span lang="EN-US">1.</span><span style="font-family:宋体;
+mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">为什么离职？</span></p> 
+     <p class="MsoNormal" style="text-indent:21.0pt;mso-char-indent-count:2.0"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">我在深圳那边</span><span lang="EN-US">4K</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">，也不知道北京这边的行情。</span></p> 
+     <p class="MsoNormal"><span lang="EN-US">2.</span><span style="font-family:宋体;
+mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">当公司准备要你的时候，会让你填以前公司的地址信息，联系人信息</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp;</span></span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">造假呗，找个外地的同学</span></p> 
+     <p class="MsoNormal"><span lang="EN-US">3.</span><span style="font-family:宋体;
+mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">入职后，离职证明，随便盖个章，离职证明模版网上有一大堆</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp;</span></span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">新公司不想惹麻烦，已经和原来公司解除了劳动合同</span></p> 
+     <p class="MsoNormal"><span lang="EN-US">
+       <o:p>
+        &nbsp;
+       </o:p></span></p> 
+     <p class="MsoNormal"><span lang="EN-US">4.</span><span style="font-family:宋体;
+mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">关于</span><span lang="EN-US">android</span><span style="font-family:宋体;mso-ascii-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">面试</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp;</span></span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">基础：</span></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">多线程（并发控制）</span><span lang="EN-US">,Socket</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">通信</span><span lang="EN-US">,http</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">通信</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp;</span>android</span><span style="font-family:宋体;
+mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">：</span></p> 
+     <p class="MsoNormal"><span lang="EN-US">android</span><span style="font-family:
+宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">的什么项目</span></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">项目针对那些手机型号的手机</span><span lang="EN-US">HTC</span></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">如何适应各个分辨率的问题，大分辨率靠前</span></p> 
+     <p class="MsoNormal"><span lang="EN-US">ContentProvider</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">（难度），共享数据</span></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">联系人（如何获取联系人）</span></p> 
+     <p class="MsoNormal"><span lang="EN-US">Activity</span><span style="font-family:
+宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">的生命周期：运行</span> <span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">暂停</span> <span style="font-family:宋体;mso-ascii-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">停止</span></p> 
+     <p class="MsoNormal" style="margin-left:21.0pt;mso-para-margin-left:2.0gd"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">前台生命周期</span></p> 
+     <p class="MsoNormal" style="margin-left:21.0pt;mso-para-margin-left:2.0gd"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">完整生命周期</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp; </span></span></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">意图：隐<a name="OLE_LINK7">式</a>，显式</span></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">组件：广播，内容提供者，</span><span lang="EN-US">Service </span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">四大组件</span></p> 
+     <p class="MsoNormal"><span lang="EN-US">MMI</span><span style="font-family:宋体;
+mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">：多媒体接口</span></p> 
+     <p class="MsoNormal"><span lang="EN-US">SQLite</span><span style="font-family:宋体;
+mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">：数据库访问</span></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">项目开发</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp; </span>3</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">人</span><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp;&nbsp; </span>2-3</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">月</span></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">公司部门</span><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-family:
+宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">人员</span></p> 
+     <p class="MsoNormal"><a name="OLE_LINK8"><span style="font-family:宋体;mso-ascii-font-family:
+&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">研发部</span></a><span lang="EN-US">/</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">技术部</span><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp; </span>50-60</span><span style="font-family:宋体;
+mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">人</span></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">测试部</span><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>8-10</span><span style="font-family:
+宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:&quot;Times New Roman&quot;">人</span></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">客服部</span><span lang="EN-US">/</span><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;mso-hansi-font-family:
+&quot;Times New Roman&quot;">售后服务</span></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">市场部</span><span lang="EN-US"><span style="mso-spacerun:yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></p> 
+     <p class="MsoNormal"><span style="font-family:宋体;mso-ascii-font-family:&quot;Times New Roman&quot;;
+mso-hansi-font-family:&quot;Times New Roman&quot;">行政部</span></p> 
+     <div class="postDesc">
+      posted @ 
+      <a href="http://www.blogjava.net/d66380022/archive/2010/03/24/316385.html" title="permalink">2010-03-24 00:49</a> d66380022|&nbsp;
+      <a href="http://www.blogjava.net/d66380022/admin/EditPosts.aspx?postid=316385">编辑</a>&nbsp;
+      <a href="http://www.blogjava.net/d66380022/AddToFavorite.aspx?id=316385">收藏</a>
+     </div> 
+     <div class="postSeparator"></div> 
+     <div class="postTitle"> 
+      <a id="homepage1_HomePageDays_ctl00_DayList_ctl06_TitleUrl" class="postTitle2" href="http://www.blogjava.net/d66380022/archive/2010/03/20/316041.html"> 传智播客 3.19 3G获得网上数据显示</a> 
+     </div> 
+     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+     <meta name="ProgId" content="Word.Document" /> 
+     <meta name="Generator" content="Microsoft Word 11" /> 
+     <meta name="Originator" content="Microsoft
+Word 11" /> 
+     <link rel="File-List" href="file:///C:%5CDOCUME%7E1%5CADMINI%7E1%5CLOCALS%7E1%5CTemp%5Cmsohtml1%5C01%5Cclip_filelist.xml" />
+     <o:smarttagtype namespaceuri="urn:schemas-microsoft-com:office:smarttags" name="chmetcnv"></o:smarttagtype>
+     <!--[if gte mso 9]><xml>
+<w:WordDocument>
+<w:View>Normal</w:View>
+<w:Zoom>0</w:Zoom>
+<w:PunctuationKerning/>
+<w:DrawingGridVerticalSpacing>7.8 磅</w:DrawingGridVerticalSpacing>
+<w:DisplayHorizontalDrawingGridEvery>0</w:DisplayHorizontalDrawingGridEvery>
+<w:DisplayVerticalDrawingGridEvery>2</w:DisplayVerticalDrawingGridEvery>
+<w:ValidateAgainstSchemas/>
+<w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+<w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+<w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+<w:Compatibility>
+<w:SpaceForUL/>
+<w:BalanceSingleByteDoubleByteWidth/>
+<w:DoNotLeaveBackslashAlone/>
+<w:ULTrailSpace/>
+<w:DoNotExpandShiftReturn/>
+<w:AdjustLineHeightInTable/>
+<w:BreakWrappedTables/>
+<w:SnapToGridInCell/>
+<w:WrapTextWithPunct/>
+<w:UseAsianBreakRules/>
+<w:DontGrowAutofit/>
+<w:UseFELayout/>
+</w:Compatibility>
+<w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+</w:WordDocument>
+</xml><![endif]-->
+     <!--[if gte mso 9]><xml>
+<w:LatentStyles deflockedstate="false" latentstylecount="156">
+</w:LatentStyles>
+</xml><![endif]-->
+     <!--[if !mso]><object classid="clsid:38481807-CA0E-42D2-BF39-B33AF135CC4D" id="ieooui"></object>
+<style>
+st1\:*{behavior:url(#ieooui) }
+</style>
+<![endif]-->
+     <style>
+<!-- /* Font Definitions */
+&#64;font-face
+{font-family:Wingdings;
+panose-1:5 0 0 0 0 0 0 0 0 0;
+mso-font-charset:2;
+mso-generic-font-family:auto;
+mso-font-pitch:variable;
+mso-font-signature:0 268435456 0 0 -2147483648 0;}
+&#64;font-face
+{font-family:宋体;
+panose-1:2 1 6 0 3 1 1 1 1 1;
+mso-font-alt:SimSun;
+mso-font-charset:134;
+mso-generic-font-family:auto;
+mso-font-pitch:variable;
+mso-font-signature:3 135135232 16 0 262145 0;}
+&#64;font-face
+{font-family:"Arial Black";
+panose-1:2 11 10 4 2 1 2 2 2 4;
+mso-font-charset:0;
+mso-generic-font-family:swiss;
+mso-font-pitch:variable;
+mso-font-signature:647 0 0 0 159 0;}
+&#64;font-face
+{font-family:"\&#64;宋体";
+panose-1:2 1 6 0 3 1 1 1 1 1;
+mso-font-charset:134;
+mso-generic-font-family:auto;
+mso-font-pitch:variable;
+mso-font-signature:3 135135232 16 0 262145 0;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+{mso-style-parent:"";
+margin:0cm;
+margin-bottom:.0001pt;
+text-align:justify;
+text-justify:inter-ideograph;
+mso-pagination:none;
+font-size:10.5pt;
+mso-bidi-font-size:12.0pt;
+font-family:"Times New Roman";
+mso-fareast-font-family:宋体;
+mso-font-kerning:1.0pt;}
+/* Page Definitions */
+&#64;page
+{mso-page-border-surround-header:no;
+mso-page-border-surround-footer:no;}
+&#64;page Section1
+{size:595.3pt 841.9pt;
+margin:72.0pt 90.0pt 72.0pt 90.0pt;
+mso-header-margin:42.55pt;
+mso-footer-margin:49.6pt;
+mso-paper-source:0;
+layout-grid:15.6pt;}
+div.Section1
+{page:Section1;}
+--</style> 
+     <p class="MsoNormal" style="text-indent: 21.75pt;"><span style="font-family: 宋体;">今天学习从网上获得数据，以</span><span lang="EN-US">xml</span><span style="font-family: 宋体;">文件输出。流程：</span><span lang="EN-US">android</span><span style="font-family: 宋体;">客户端</span><span lang="EN-US"> -----</span><span style="font-family: Wingdings;" lang="EN-US"></span><span style="font-family: 宋体;">已经开发好的</span><span lang="EN-US">CRM(220.113.15.23) -----[</span><span style="font-family: 宋体;">客户资料</span><span lang="EN-US">]--</span><span style="font-family: Wingdings;" lang="EN-US"><span>&agrave;</span></span><span style="font-family: 宋体;">屏幕</span></p> 
+     <p class="MsoNormal" style="text-indent: 5.25pt;"><span style="font-family: 宋体;">用的是</span><span lang="EN-US">struts1.3</span><span style="font-family: 宋体;">的环境</span></p> 
+     <p class="MsoNormal"><span lang="EN-US">1.</span><span style="font-family: 宋体;">搭建环境</span></p> 
+     <p class="MsoNormal" style="text-indent: 21.75pt;"><span lang="EN-US">1.web.xml</span><span style="font-family: 宋体;">配置</span><span lang="EN-US">struts servlet</span></p> 
+     <p class="MsoNormal" style="text-indent: 21.75pt;"><span lang="EN-US">2.</span><span style="font-family: 宋体;">添加</span><span lang="EN-US">jar</span></p> 
+     <p class="MsoNormal" style="text-indent: 21pt;"><span lang="EN-US">3.</span><span style="font-family: 宋体;">复制</span><span lang="EN-US">struts-config.xml</span></p> 
+     <p class="MsoNormal" style="text-indent: 21pt;"><span style="font-family: 宋体;">环境搞定后，新建</span><span lang="EN-US">jsp</span><span style="font-family: 宋体;">文件，写好文件头：</span><span lang="EN-US">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; </span><span style="font-family: 宋体;">注意</span></p> 
+     <p class="MsoNormal" style="margin-left: 21pt;"><span style="font-family: 宋体;">接着新建一个</span><span lang="EN-US">ContactAction</span></p> 
+     <p class="MsoNormal" style="margin-left: 21pt;"><span style="font-family: 宋体;">最后配置</span><span lang="EN-US">struts-config.xml</span><span style="font-family: 宋体;">文件</span></p> 
+     <p class="MsoNormal" style="margin-left: 21pt;"><span style="font-family: 宋体;">新建</span><span lang="EN-US">contact.jsp</span><span style="font-family: 宋体;">文件，得到数据</span></p> 
+     <p class="MsoNormal" style="margin-left: 21pt;"><span style="font-family: 宋体;">访问路径，测试得到的数据，以验证是否正确，若正确的话，第一步完成</span></p> 
+     <p class="MsoNormal"><span style="font-family: 宋体;">下面是</span><span lang="EN-US">Android</span><span style="font-family: 宋体;">应用</span></p> 
+     <p class="MsoNormal"><span lang="EN-US">2 .</span><span style="font-family: 宋体;">①</span><span lang="EN-US">.</span><span style="font-family: 宋体;">设计要显示的界面</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span>&nbsp; </span></span><span style="font-family: 宋体;">②</span><span lang="EN-US">.</span><span style="font-family: 宋体;">新建</span><span lang="EN-US">service</span><span style="font-family: 宋体;">，可以调用</span></p> 
+     <p class="MsoNormal" style="text-indent: 21.75pt;"><span style="font-family: 宋体;">关键代码：</span></p> 
+     <p class="MsoNormal" style="text-indent: 21.75pt;"><span lang="EN-US">String path = “http://192.168.1.100:8080/crm/contacts.do”;</span></p> 
+     <p class="MsoNormal" style="text-indent: 21.75pt;"><span lang="EN-US">URL url = new URL(path);</span></p> 
+     <p class="MsoNormal" style="text-indent: 21.75pt;"><span lang="EN-US">HttpURLConnection conn = (HttpURLConnection)url.openConnection();</span></p> 
+     <p class="MsoNormal" style="text-indent: 21.75pt;"><span lang="EN-US">conn.setConnectionTimeout(5*1000);</span></p> 
+     <p class="MsoNormal" style="text-indent: 21.75pt;"><span lang="EN-US">conn.setRequestMethod(“POST”);</span></p> 
+     <p class="MsoNormal" style="text-indent: 21.75pt;"><span lang="EN-US">return conn.getInputStream();</span></p> 
+     <p class="MsoNormal" style="text-indent: 21.75pt;"><span style="font-family: 宋体;">在该类中还应该新建</span><span lang="EN-US">sax</span><span style="font-family: 宋体;">解析方法，解析文档</span><span lang="EN-US">,</span><span style="font-family: 宋体;">保存数据</span></p> 
+     <p class="MsoNormal" style="text-indent: 10.5pt;"><span style="font-family: 宋体;">③</span><span lang="EN-US">.</span><span style="font-family: 宋体;">新建</span><span lang="EN-US">android</span><span style="font-family: 宋体;">测试类，以日志形式打印出</span><span lang="EN-US">xml</span><span style="font-family: 宋体;">文件中的数据</span></p> 
+     <p class="MsoNormal"><span lang="EN-US">3.</span><span style="font-family: 宋体;">应用</span><span lang="EN-US">HttpURLConnection</span><span style="font-family: 宋体;">对象</span><span lang="EN-US">,</span><span style="font-family: 宋体;">我们可以向网络发送请求参数</span><span lang="EN-US">.</span><span style="font-family: 宋体;">下面以</span><span lang="EN-US">POST</span><span style="font-family: 宋体;">发送为例，写一些关键代码点</span></p> 
+     <p class="MsoNormal" style="margin-left: 10.5pt;"><span style="font-size: 9pt;" lang="EN-US">Map&lt;String, String&gt; params = new HashMap&lt;String, String&gt;();
+       <o:p></o:p></span></p> 
+     <p class="MsoNormal" style="margin-left: 10.5pt;"><span style="font-size: 9pt;" lang="EN-US">params.put(&quot;age&quot;, &quot;22&quot;);
+       <o:p></o:p></span></p> 
+     <p class="MsoNormal" style="margin-left: 10.5pt;"><span style="font-size: 9pt;" lang="EN-US">params.put(&quot;name&quot;, &quot;</span><span style="font-size: 9pt; font-family: 宋体;">浪淘沙</span><span style="font-size: 9pt;" lang="EN-US">&quot;);
+       <o:p></o:p></span></p> 
+     <p class="MsoNormal" style="margin-left: 10.5pt;"><span style="font-size: 9pt;" lang="EN-US"><span>&nbsp;</span>StringBuilder params = new StringBuilder();
+       <o:p></o:p></span></p> 
+     <p class="MsoNormal" style="margin-left: 10.5pt;"><span style="font-size: 9pt;" lang="EN-US">for(Map.Entry&lt;String, String&gt; entry : params.entrySet()){
+       <o:p></o:p></span></p> 
+     <p class="MsoNormal" style="margin-left: 10.5pt;"><span style="font-size: 9pt;" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp; </span>params.append(entry.getKey());
+       <o:p></o:p></span></p> 
+     <p class="MsoNormal" style="margin-left: 10.5pt;"><span style="font-size: 9pt;" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp; </span>params.append(&quot;=&quot;).append(URLEncoder.encode(entry.getValue(), &quot;UTF-8&quot;));
+       <o:p></o:p></span></p> 
+     <p class="MsoNormal" style="margin-left: 10.5pt;"><span style="font-size: 9pt;" lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp; </span>params.append(&quot;&amp;&quot;);
+       <o:p></o:p></span></p> 
+     <p class="MsoNormal" style="margin-left: 10.5pt;"><span style="font-size: 9pt;" lang="EN-US">}
+       <o:p></o:p></span></p> 
+     <p class="MsoNormal" style="margin-left: 10.5pt;"><span style="font-size: 9pt;" lang="EN-US">if (params.length() &gt; 0) params.deleteCharAt(params.length() - 1);
+       <o:p></o:p></span></p> 
+     <p class="MsoNormal" style="margin-left: 10.5pt;"><span style="font-size: 9pt;" lang="EN-US">byte[] data = params.toString().getBytes();
+       <o:p></o:p></span></p> 
+     <p class="MsoNormal"><span lang="EN-US">
+       <o:p>
+        &nbsp;
+       </o:p></span></p> 
+     <p class="MsoNormal"><span lang="EN-US">4. </span><span style="font-family: 宋体;">为应用添加新的</span><span lang="EN-US">Activity</span></p> 
+     <p class="MsoNormal" style="margin-left: 21pt;"><span style="font-family: 宋体;">①：新建一个继承</span><span lang="EN-US">Activity</span><span style="font-family: 宋体;">的类</span></p> 
+     <p class="MsoNormal" style="margin-left: 21pt;"><span style="font-family: 宋体;">②：需要在功能清单</span><span lang="EN-US">AndroidManifest.xml</span><span style="font-family: 宋体;">文件中添加进上面</span><span lang="EN-US">Activity</span><span style="font-family: 宋体;">配置代码</span></p> 
+     <p class="MsoNormal"><span lang="EN-US">
+       <o:p>
+        &nbsp;
+       </o:p></span></p> 
+     <p class="MsoNormal" style="text-indent: 10.5pt;"><span style="font-family: 宋体;">打开新的</span><span lang="EN-US">Activity</span><span style="font-family: 宋体;">，不传递参数</span></p> 
+     <p class="MsoNormal"><span style="font-family: 宋体;">通过意图打开</span><span lang="EN-US">Activity</span><span style="font-family: 宋体;">，</span><span lang="EN-US">Intent</span><span style="font-family: 宋体;">，用于激活</span><span lang="EN-US">Activity</span><span style="font-family: 宋体;">的，在组件之间传递数据</span></p> 
+     <p class="MsoNormal" style="text-indent: 10.5pt;"><span style="font-family: 宋体;">在新的</span><span lang="EN-US">Activity</span><span style="font-family: 宋体;">中接收前面</span><span lang="EN-US">Activity</span><span style="font-family: 宋体;">传递过来的参数：</span></p> 
+     <p class="MsoNormal"><span style="font-family: 宋体;">添加参数的另一种方法：</span><span lang="EN-US">Bundle</span></p> 
+     <p class="MsoNormal"><span lang="EN-US">Bundle</span><span style="font-family: 宋体;">类用作携带数据，它类似于</span><span lang="EN-US">Map</span><span style="font-family: 宋体;">，用于存放</span><span lang="EN-US">key-value</span><span style="font-family: 宋体;">名值对形式的值。相对于</span><span lang="EN-US">Map</span><span style="font-family: 宋体;">，它提供了各种常用类型的</span><span lang="EN-US">putXxx()/getXxx()</span><span style="font-family: 宋体;">方法，</span><span lang="EN-US"> putXxx()</span><span style="font-family: 宋体;">用于往</span><span lang="EN-US">Bundle</span><span style="font-family: 宋体;">对象放入数据，</span><span lang="EN-US">getXxx()</span><span style="font-family: 宋体;">方法用于从</span><span lang="EN-US">Bundle</span><span style="font-family: 宋体;">对象里获取数据。</span><span lang="EN-US">Bundle</span><span style="font-family: 宋体;">的内部实际上是使用了</span><span lang="EN-US">HashMap&lt;String, Object&gt;</span><span style="font-family: 宋体;">类型的变量来存放</span><span lang="EN-US">putXxx()</span><span style="font-family: 宋体;">方法放入的值：</span></p> 
+     <p class="MsoNormal"><span lang="EN-US">
+       <o:p>
+        &nbsp;
+       </o:p></span></p> 
+     <p class="MsoNormal"><span lang="EN-US">5.</span><span style="font-size: 29pt; font-family: &quot;Arial Black&quot;; color: #336666;" lang="EN-US"> </span><span lang="EN-US">Intent</span><span style="font-family: 宋体;">过滤器</span></p> 
+     <p class="MsoNormal" style="text-indent: 26.25pt;"><span lang="EN-US">Android</span><span style="font-family: 宋体;">鼓励减少组件间的耦合，因此</span><span lang="EN-US">Android</span><span style="font-family: 宋体;">提供了</span><span lang="EN-US">Intent (</span><span style="font-family: 宋体;">意图</span><span lang="EN-US">) </span><span style="font-family: 宋体;">，</span><span lang="EN-US">Intent</span><span style="font-family: 宋体;">提供了一种通用的消息系统，它允许在你的应用程序与其它的应用程序间传递</span><span lang="EN-US">Intent</span><span style="font-family: 宋体;">来执行动作和产生事件。使用</span><span lang="EN-US">Intent</span><span style="font-family: 宋体;">可以激活</span><span lang="EN-US">Android</span><span style="font-family: 宋体;">应用的三个核心组件：活动、 服务和广播接收器。</span></p> 
+     <p class="MsoNormal"><span lang="EN-US">Intent</span><span style="font-family: 宋体;">可以划分成显式意图和隐式意图。</span></p> 
+     <p class="MsoNormal"><span lang="EN-US">
+       <o:p>
+        &nbsp;
+       </o:p></span></p> 
+     <p class="MsoNormal"><span lang="EN-US">
+       <o:p>
+        &nbsp;
+       </o:p></span></p> 
+     <div class="postDesc">
+      posted @ 
+      <a href="http://www.blogjava.net/d66380022/archive/2010/03/20/316041.html" title="permalink">2010-03-20 23:30</a> d66380022|&nbsp;
+      <a href="http://www.blogjava.net/d66380022/admin/EditPosts.aspx?postid=316041">编辑</a>&nbsp;
+      <a href="http://www.blogjava.net/d66380022/AddToFavorite.aspx?id=316041">收藏</a>
+     </div> 
+     <div class="postSeparator"></div> 
+     <div class="postTitle"> 
+      <a id="homepage1_HomePageDays_ctl00_DayList_ctl08_TitleUrl" class="postTitle2" href="http://www.blogjava.net/d66380022/archive/2010/03/17/315729.html">传智播客 2010-3-17 3g数据存储与数据显示</a> 
+     </div> 
+     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+     <meta name="ProgId" content="Word.Document" /> 
+     <meta name="Generator" content="Microsoft Word 11" /> 
+     <meta name="Originator" content="Microsoft
+Word 11" /> 
+     <link rel="File-List" href="file:///C:%5CDOCUME%7E1%5CADMINI%7E1%5CLOCALS%7E1%5CTemp%5Cmsohtml1%5C01%5Cclip_filelist.xml" />
+     <!--[if gte mso 9]><xml>
+Normal
+0
+7.8 磅
+0
+2
+false
+false
+false
+MicrosoftInternetExplorer4
+</xml><![endif]-->
+     <!--[if gte mso 9]><![endif]-->
+     <!--[if !mso]>
+<style>
+st1":*{behavior:url(#ieooui) }
+</style>
+<![endif]-->
+     <style>
+<!--
+/* Font Definitions */
+&#64;font-face
+{font-family:宋体;
+panose-1:2 1 6 0 3 1 1 1 1 1;}
+&#64;font-face
+{font-family:""&#64;宋体";
+panose-1:2 1 6 0 3 1 1 1 1 1;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+{mso-style-parent:"";
+margin:0cm;
+margin-bottom:.0001pt;
+text-align:justify;
+text-justify:inter-ideograph;
+font-size:10.5pt;
+font-family:"Times New Roman";}
+/* Page Definitions */
+&#64;page
+{}
+&#64;page Section1
+{size:595.3pt 841.9pt;
+margin:72.0pt 90.0pt 72.0pt 90.0pt;
+layout-grid:15.6pt;}
+div.Section1
+{page:Section1;}
+/* List Definitions */
+&#64;list l0
+{}
+&#64;list l0:level1
+{
+margin-left:18.0pt;
+text-indent:-18.0pt;}
+ol
+{margin-bottom:0cm;}
+ul
+{margin-bottom:0cm;}
+-->
+</style>
+     <!--[if gte mso 10]>
+<style>
+/* Style Definitions */
+table.MsoNormalTable
+{
+mso-style-parent:"";
+font-size:10.0pt;
+font-family:"Times New Roman";}
+</style>
+<![endif]-->
+     <!--[if gte mso 9]><![endif]-->
+     <!--[if gte mso 9]><![endif]--> 
+     <p style="text-indent: 21pt;"><span style="font-family: 宋体;">使用</span>SharedPreferences<span style="font-family: 宋体;">进行数据存储，是专门用来向用户提供软件参数设置功能，</span></p> 
+     <p style="margin-left: 18pt; text-indent: -18pt;"><span><span>1.<span style="font: 7pt &quot;Times New Roman&quot;;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></span>SharedPreferences<span style="font-family: 宋体;">类，它是适合用于保存软件配置参数。使用</span>SharedPreferences<span style="font-family: 宋体;">保存数据，其背后是用</span>xml<span style="font-family: 宋体;">文件存放数据。</span></p> 
+     <p style="margin-left: 10.5pt; text-indent: -10.5pt;">2. SharedPreferences<span style="font-family: 宋体;">使 用</span>xml<span style="font-family: 宋体;">文件保存 数据，</span>getSharedPreferences(name,mode)<span style="font-family: 宋体;">方法的第一个参数用于指定该文件的名称，不用带后缀，后缀由</span>Android<span style="font-family: 宋体;">自动加上，方法的第二个参数指 定文件的操作模式，共有四种操作模式。</span></p> 
+     <p>3.<span style="font-family: 宋体;">设置软件参数过程：</span></p> 
+     <p>&nbsp;<span style="font-family: 宋体;">①．当用户点击保存按钮时，就激发保存事件</span></p> 
+     <p>&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family: 宋体;">在</span>Activity<span style="font-family: 宋体;">中的匿名内部类中</span>,<span style="font-family: 宋体;">得到用户输入值</span></p> 
+     <p style="margin-left: 26.25pt; text-indent: -26.25pt;">&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family: 宋体;">需要注意的是：</span>android.content.SharedPreferences.Editor<span style="font-family: 宋体;">用于保存参数，该</span>editor<span style="font-family: 宋体;">最后要</span>commit<span style="font-family: 宋体;">一下。</span></p> 
+     <p style="margin-left: 26.25pt; text-indent: -26.25pt;">&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family: 宋体;">最后要</span><span>Toast.makeText(PreferencesActivity.this, &quot;</span><span style="font-family: 宋体;">保存参数成功</span><span>&quot;, 1).show();</span><span style="font-family: 宋体;">用于提示保存参数成功</span></p> 
+     <p style="margin-left: 26.25pt; text-indent: -15.75pt;"><span style="font-family: 宋体;">②</span>.<span style="font-family: 宋体;">如果访问其他应用中的</span>Preference<span style="font-family: 宋体;">，前提条件是：该</span>preference<span style="font-family: 宋体;">创建时指定了</span>Context.MODE_WORLD_READABLE<span style="font-family: 宋体;">或者</span>Context.MODE_WORLD_WRITEABLE<span style="font-family: 宋体;">权限。如：有个</span><span>&lt;package name&gt;</span><span style="font-family: 宋体;">为</span>cn.itcast<span style="font-family: 宋体;">的应用使用下面语句创建了</span>preference<span style="font-family: 宋体;">。</span></p> 
+     <p style="margin-left: 26.25pt; text-indent: 5.25pt;"><span>getSharedPreferences(&quot;itcast&quot;, Context.<em>MODE_WORLD_READABLE);</em></span></p> 
+     <p style="margin-left: 26.25pt; text-indent: -5.25pt;"><span style="font-family: 宋体;">其他应用要访问上面应用的</span>preference<span style="font-family: 宋体;">，首先需要创建上面应用的</span>Context<span style="font-family: 宋体;">，然后通过</span>Context <span style="font-family: 宋体;">访问</span>preference <span style="font-family: 宋体;">，访问</span>preference<span style="font-family: 宋体;">时会在应用所在包下的</span>shared_prefs<span style="font-family: 宋体;">目录找到</span>preference <span style="font-family: 宋体;">：</span></p> 
+     <p style="margin-left: 26.25pt;"><span>Context otherAppsContext = createPackageContext(&quot;cn.itcast&quot;, </span></p> 
+     <p style="margin-left: 26.25pt; text-indent: -5.25pt;">Context.<em>CONTEXT_IGNORE_SECURITY</em>);</p> 
+     <p style="margin-left: 26.25pt; text-indent: -26.25pt;">4. <span style="font-family: 宋体;">使 用</span>SQLite<span style="font-family: 宋体;">数 据库存储数据</span></p> 
+     <p style="margin-left: 26.25pt; text-indent: -5.25pt;"><span style="font-family: 宋体;">在</span>Android<span style="font-family: 宋体;">平台上，集成了一个嵌入式关系型数据库—</span>SQLite<span style="font-family: 宋体;">，</span>SQLite3<span style="font-family: 宋体;">支持</span> NULL<span style="font-family: 宋体;">、</span>INTEGER<span style="font-family: 宋体;">、</span>REAL<span style="font-family: 宋体;">（浮点数字）、</span>TEXT(<span style="font-family: 宋体;">字符串文本</span>)<span style="font-family: 宋体;">和</span>BLOB(<span style="font-family: 宋体;">二进制对象</span>)<span style="font-family: 宋体;">数据类型，虽然它支持的类型只有五种，</span><span> SQLite</span><span style="font-family: 宋体;">最大的特点是你可以保存任何类型的数据到任何字段中，无论这 列声明的数据类型是什么。</span>SQLite<span style="font-family: 宋体;">可以解析大部分标准</span>SQL<span style="font-family: 宋体;">语句。</span></p> 
+     <p>5.<span style="font-family: 宋体;">开发</span>3g<span style="font-family: 宋体;">数据库 软件需求：</span></p> 
+     <p>&nbsp;<span style="font-family: 宋体;">①．用户初次使用软件，初始化数据库</span></p> 
+     <p>&nbsp;<span style="font-family: 宋体;">②．用户升级软件，自动更新数据库</span></p> 
+     <p style="margin-left: 18pt;">&nbsp;<span style="font-family: 宋体;">为此，类对应提供了两个重要的方 法，分别是</span>onCreate(SQLiteDatabase db)<span style="font-family: 宋体;">和</span><span>onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)</span><span style="font-family: 宋体;">，</span></p> 
+     <p>6.<span style="font-family: 宋体;">利用继承自</span><span style="font-size: 10pt; font-family: &quot;Courier New&quot;; color: black;">SQLiteOpenHelper</span><span style="font-size: 10pt; font-family: 宋体; color: black;">的</span><span style="font-size: 10pt; font-family: &quot;Courier New&quot;; color: black;">DatabaseHelper</span><span style="font-size: 10pt; font-family: 宋体; color: black;">类实现增删改查，和我们以前的用</span><span style="font-size: 10pt; font-family: &quot;Courier New&quot;; color: black;">JDBC</span><span style="font-size: 10pt; font-family: 宋体; color: black;">实现的增删改查语法基本一样，举例：</span></p> 
+     <p><span style="font-size: 10pt; font-family: &quot;Courier New&quot;; color: black;">&nbsp;SQLiteDatabase db = ....;</span></p> 
+     <p><span style="font-size: 10pt; font-family: &quot;Courier New&quot;; color: black;">db.execSQL(&quot;insert into person(name, age) values(?,?)&quot;, new Object[]{&quot;</span><span style="font-size: 10pt; font-family: 宋体; color: black;">传智播客</span><span style="font-size: 10pt; font-family: &quot;Courier New&quot;; color: black;">&quot;, 4}); </span></p> 
+     <p><span style="font-size: 10pt; font-family: &quot;Courier New&quot;; color: black;">db.close();</span></p> 
+     <p><span style="font-size: 10pt; font-family: &quot;Courier New&quot;; color: black;">&nbsp;</span><span style="font-size: 10pt; font-family: 宋体; color: black;">需要注意的是</span><span style="font-size: 10pt; font-family: &quot;Courier New&quot;; color: black;">SQLiteDatabase</span><span style="font-size: 10pt; font-family: 宋体; color: black;">的</span><span style="font-size: 10pt; font-family: &quot;Courier New&quot;; color: black;">rawQuery() </span><span style="font-size: 10pt; font-family: 宋体; color: black;">用于 执行</span><span style="font-size: 10pt;">select</span><span style="font-size: 10pt; font-family: 宋体; color: black;">语句</span></p> 
+     <p style="text-indent: 21pt;"><span style="font-size: 10pt; font-family: &quot;Courier New&quot;; color: black;">7.</span><span style="font-size: 10pt; font-family: 宋体; color: black;">将数据动态显示在手机屏幕上，用</span><span style="font-size: 10pt; font-family: &quot;Courier New&quot;; color: black;">SimpleAparter实现</span></p> 
+     <p style="text-indent: 21pt;"><span style="font-size: 10pt; font-family: &quot;Courier New&quot;; color: black;"><br /> </span></p> 
+     <p style="text-indent: 21pt;">今天到此结束！<br /> </p> 
+     <p><span style="font-size: 10pt; font-family: &quot;Courier New&quot;; color: black;">&nbsp;&nbsp;&nbsp; </span></p> 
+     <p><span style="font-size: 10pt; font-family: &quot;Courier New&quot;; color: black;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></p> 
+     <div class="postDesc">
+      posted @ 
+      <a href="http://www.blogjava.net/d66380022/archive/2010/03/17/315729.html" title="permalink">2010-03-17 23:53</a> d66380022|&nbsp;
+      <a href="http://www.blogjava.net/d66380022/admin/EditPosts.aspx?postid=315729">编辑</a>&nbsp;
+      <a href="http://www.blogjava.net/d66380022/AddToFavorite.aspx?id=315729">收藏</a>
+     </div> 
+     <div class="postSeparator"></div> 
+     <div class="postTitle"> 
+      <a id="homepage1_HomePageDays_ctl00_DayList_ctl10_TitleUrl" class="postTitle2" href="http://www.blogjava.net/d66380022/archive/2010/03/16/315536.html">传智播客 2010-3-15 3G单元测试和文档解析</a> 
+     </div> 
+     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+     <meta name="ProgId" content="Word.Document" /> 
+     <meta name="Generator" content="Microsoft Word 11" /> 
+     <meta name="Originator" content="Microsoft Word 11" /> 
+     <link rel="File-List" href="file:///C:%5CDOCUME%7E1%5CADMINI%7E1%5CLOCALS%7E1%5CTemp%5Cmsohtml1%5C01%5Cclip_filelist.xml" /> 
+     <link rel="Edit-Time-Data" href="file:///C:%5CDOCUME%7E1%5CADMINI%7E1%5CLOCALS%7E1%5CTemp%5Cmsohtml1%5C01%5Cclip_editdata.mso" />
+     <!--[if !mso]>
+<style>
+v\:* {behavior:url(#default#VML);}
+o\:* {behavior:url(#default#VML);}
+w\:* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style>
+<![endif]-->
+     <o:smarttagtype namespaceuri="urn:schemas-microsoft-com:office:smarttags" name="chmetcnv"></o:smarttagtype>
+     <!--[if gte mso 9]><xml>
+<w:WordDocument>
+<w:View>Normal</w:View>
+<w:Zoom>0</w:Zoom>
+<w:PunctuationKerning/>
+<w:DrawingGridVerticalSpacing>7.8 磅</w:DrawingGridVerticalSpacing>
+<w:DisplayHorizontalDrawingGridEvery>0</w:DisplayHorizontalDrawingGridEvery>
+<w:DisplayVerticalDrawingGridEvery>2</w:DisplayVerticalDrawingGridEvery>
+<w:ValidateAgainstSchemas/>
+<w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+<w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+<w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+<w:Compatibility>
+<w:SpaceForUL/>
+<w:BalanceSingleByteDoubleByteWidth/>
+<w:DoNotLeaveBackslashAlone/>
+<w:ULTrailSpace/>
+<w:DoNotExpandShiftReturn/>
+<w:AdjustLineHeightInTable/>
+<w:BreakWrappedTables/>
+<w:SnapToGridInCell/>
+<w:WrapTextWithPunct/>
+<w:UseAsianBreakRules/>
+<w:DontGrowAutofit/>
+<w:UseFELayout/>
+</w:Compatibility>
+<w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+</w:WordDocument>
+</xml><![endif]-->
+     <!--[if gte mso 9]><xml>
+<w:LatentStyles deflockedstate="false" latentstylecount="156">
+</w:LatentStyles>
+</xml><![endif]-->
+     <!--[if !mso]><object classid="clsid:38481807-CA0E-42D2-BF39-B33AF135CC4D" id="ieooui"></object>
+<style>
+st1\:*{behavior:url(#ieooui) }
+</style>
+<![endif]-->
+     <style>
+<!-- /* Font Definitions */
+&#64;font-face
+{font-family:宋体;
+panose-1:2 1 6 0 3 1 1 1 1 1;
+mso-font-alt:SimSun;
+mso-font-charset:134;
+mso-generic-font-family:auto;
+mso-font-pitch:variable;
+mso-font-signature:3 135135232 16 0 262145 0;}
+&#64;font-face
+{font-family:"\&#64;宋体";
+panose-1:2 1 6 0 3 1 1 1 1 1;
+mso-font-charset:134;
+mso-generic-font-family:auto;
+mso-font-pitch:variable;
+mso-font-signature:3 135135232 16 0 262145 0;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+{mso-style-parent:"";
+margin:0cm;
+margin-bottom:.0001pt;
+text-align:justify;
+text-justify:inter-ideograph;
+mso-pagination:none;
+font-size:10.5pt;
+mso-bidi-font-size:12.0pt;
+font-family:"Times New Roman";
+mso-fareast-font-family:宋体;
+mso-font-kerning:1.0pt;}
+/* Page Definitions */
+&#64;page
+{mso-page-border-surround-header:no;
+mso-page-border-surround-footer:no;}
+&#64;page Section1
+{size:595.3pt 841.9pt;
+margin:72.0pt 90.0pt 72.0pt 90.0pt;
+mso-header-margin:42.55pt;
+mso-footer-margin:49.6pt;
+mso-paper-source:0;
+layout-grid:15.6pt;}
+div.Section1
+{page:Section1;}
+/* List Definitions */
+&#64;list l0
+{mso-list-id:1384479452;
+mso-list-type:hybrid;
+mso-list-template-ids:1506952220 -1251949078 67698713 67698715 67698703 67698713 67698715 67698703 67698713 67698715;}
+&#64;list l0:level1
+{mso-level-number-format:decimal-enclosed-circle;
+mso-level-text:%1．;
+mso-level-tab-stop:31.5pt;
+mso-level-number-position:left;
+margin-left:31.5pt;
+text-indent:-21.0pt;}
+ol
+{margin-bottom:0cm;}
+ul
+{margin-bottom:0cm;}
+-->
+</style>
+     <!--[if gte mso 10]>
+<style>
+/* Style Definitions */
+table.MsoNormalTable
+{mso-style-name:普通表格;
+mso-tstyle-rowband-size:0;
+mso-tstyle-colband-size:0;
+mso-style-noshow:yes;
+mso-style-parent:"";
+mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+mso-para-margin:0cm;
+mso-para-margin-bottom:.0001pt;
+mso-pagination:widow-orphan;
+font-size:10.0pt;
+font-family:"Times New Roman";
+mso-ansi-language:#0400;
+mso-fareast-language:#0400;
+mso-bidi-language:#0400;}
+</style>
+<![endif]-->
+     <!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext="edit" spidmax="1026" />
+</xml><![endif]-->
+     <!--[if gte mso 9]><xml>
+<o:shapelayout v:ext="edit">
+<o:idmap v:ext="edit" data="1" />
+</o:shapelayout></xml><![endif]--> 
+     <p class="MsoNormal" style="text-indent: 21.75pt;">
+      <st1:chmetcnv tcsc="0" numbertype="1" negative="False" hasspace="False" sourcevalue="3" unitname="g" w:st="on">
+       <span lang="EN-US">3G</span>
+      </st1:chmetcnv><span style="font-family: 宋体;">的第二天，单元测试，老黎讲的东西当天基本可以掌握，很喜欢</span></p> 
+     <p class="MsoNormal"><strong><span lang="EN-US">1.</span></strong><strong><span style="font-family: 宋体;">单元测试步骤：</span><span lang="EN-US">
+        <o:p></o:p></span></strong></p> 
+     <p class="MsoNormal"><span style="font-family: 宋体;">第一步：首先在</span><span lang="EN-US">AndroidManifest.xml</span><span style="font-family: 宋体;">中加入下面红色代码</span><span lang="EN-US">:</span></p> 
+     <p class="MsoNormal" style="margin-left: 31.5pt; text-indent: -21pt;">
+      <!--[if !supportLists]--><span lang="EN-US"><span>①．</span></span>
+      <!--[endif]--><span style="font-family: 宋体;">在</span><span lang="EN-US">&lt;application&gt;</span><span style="font-family: 宋体;">中加入：</span></p> 
+     <p class="MsoNormal" style="text-indent: 31.5pt;"><span lang="EN-US">&lt;uses-library android:name=&quot;android.test.runner&quot; /&gt;</span></p> 
+     <p class="MsoNormal" style="text-indent: 10.5pt;"><span style="font-family: 宋体;">②．在最后的标签前加上：</span></p> 
+     <p class="MsoNormal" style="text-indent: 26.25pt;"><span lang="EN-US">&lt;instrumentation android:name=&quot;android.test.InstrumentationTestRunner&quot;</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span>&nbsp;</span><span>&nbsp;&nbsp;&nbsp; </span>android:targetPackage=&quot;cn.itcast.action&quot; android:label=&quot;Tests for My App&quot; /&gt;</span></p> 
+     <p class="MsoNormal" style="text-indent: 15.75pt;"><span style="font-family: 宋体; color: red;">注意：</span><span style="font-family: 宋体;">上面</span><span lang="EN-US">targetPackage</span><span style="font-family: 宋体;">指定的包要和应用的</span><span lang="EN-US">package</span><span style="font-family: 宋体;">相同。</span></p> 
+     <p class="MsoNormal"><span style="font-family: 宋体;">第二步：编写单元测试代码（选择要测试的方法，右键点击</span><span lang="EN-US">“Run As”--“Android Junit Test” </span><span style="font-family: 宋体;">）：</span></p> 
+     <p class="MsoNormal"><strong><span lang="EN-US">2.</span></strong><strong><span style="font-family: 宋体;">数据存储和访问</span><span lang="EN-US">
+        <o:p></o:p></span></strong></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span>&nbsp;</span></span><span style="font-family: 宋体;">软件需要对处理后的数据存储，</span><span lang="EN-US">Android</span><span style="font-family: 宋体;">为数据存储提供了</span><span lang="EN-US">5</span><span style="font-family: 宋体;">种方式：</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span>&nbsp; </span><span>&nbsp;&nbsp;&nbsp;</span></span><span style="font-family: 宋体;">文件，</span><span lang="EN-US">SharedPreferences</span><span style="font-family: 宋体;">，</span><span lang="EN-US">SQLite</span><span style="font-family: 宋体;">数据库，内容提供者（</span><span lang="EN-US">Content provider</span><span style="font-family: 宋体;">），网络</span></p> 
+     <p class="MsoNormal" style="margin-left: 42pt; text-indent: -31.5pt;"><span style="font-family: 宋体;">使用文件对数据进行存储，</span><span lang="EN-US">Activity</span><span style="font-family: 宋体;">提供了</span><span lang="EN-US">openFileOutput()</span><span style="font-family: 宋体;">方法可以用于把数据输出到文件中。</span><span lang="EN-US">openFileOutput()</span><span style="font-family: 宋体;">方法的第二参数用于指定操作模式，有四种模式，分别为：</span> </p> 
+     <p class="MsoNormal" style="margin-left: 42pt;"><span lang="EN-US">Context.MODE_PRIVATE </span></p> 
+     <p class="MsoNormal" style="margin-left: 42pt;"><span lang="EN-US">Context.MODE_APPEND<span>&nbsp; </span></span></p> 
+     <p class="MsoNormal" style="margin-left: 42pt;"><span lang="EN-US">Context.MODE_WORLD_READABLE </span></p> 
+     <p class="MsoNormal" style="margin-left: 42pt;"><span lang="EN-US">Context.MODE_WORLD_WRITEABLE</span></p> 
+     <p class="MsoNormal"><strong><span lang="EN-US">3.SAX</span></strong><strong><span style="font-family: 宋体;">解析</span><span lang="EN-US">XML
+        <o:p></o:p></span></strong></p> 
+     <p class="MsoNormal" style="text-indent: 10.5pt;"><span lang="EN-US">SAX</span><span style="font-family: 宋体;">是一个解析速度快并且占用内存少的</span><span lang="EN-US">xml</span><span style="font-family: 宋体;">解析器，解析采用的是事件驱动，这些方法定义在</span><span lang="EN-US">ContentHandler</span><span style="font-family: 宋体;">接口中，下面是一些</span><span lang="EN-US">ContentHandler</span><span style="font-family: 宋体;">接口常用的方法：</span></p> 
+     <p class="MsoNormal" style="text-indent: 15.8pt;"><strong><span style="color: #339966;" lang="EN-US">startDocument()
+        <o:p></o:p></span></strong></p> 
+     <p class="MsoNormal" style="text-indent: 15.75pt;"><span style="font-family: 宋体;">当遇到文档的开头的时候，调用这个方法，可以在其中做一些预处理的工作。</span></p> 
+     <p class="MsoNormal" style="text-indent: 15.8pt;"><strong><span style="color: #339966;" lang="EN-US">endDocument()
+        <o:p></o:p></span></strong></p> 
+     <p class="MsoNormal" style="text-indent: 15.75pt;"><span style="font-family: 宋体;">和上面的方法相对应，当文档结束的时候，调用这个方法，可以在其中做一些善后的工作。</span><span lang="EN-US"> </span></p> 
+     <p class="MsoNormal" style="text-indent: 15.8pt;"><strong><span style="color: #339966;" lang="EN-US">startElement(String namespaceURI, String localName, String qName, Attributes atts) 
+        <o:p></o:p></span></strong></p> 
+     <p class="MsoNormal" style="text-indent: 15.75pt;"><span style="font-family: 宋体;">当读到一个开始标签的时候，会触发这个方法。</span></p> 
+     <p class="MsoNormal" style="text-indent: 15.8pt;"><strong><span style="color: #339966;" lang="EN-US">endElement(String uri, String localName, String name)
+        <o:p></o:p></span></strong></p> 
+     <p class="MsoNormal" style="text-indent: 15.75pt;"><span style="font-family: 宋体;">这个方法和上面的方法相对应，在遇到结束标签的时候，调用这个方法。</span></p> 
+     <p class="MsoNormal" style="text-indent: 15.8pt;"><strong><span style="color: #339966;" lang="EN-US">characters(char[] ch, int start, int length) 
+        <o:p></o:p></span></strong></p> 
+     <p class="MsoNormal" style="text-indent: 15.75pt;"><span style="font-family: 宋体;">这个方法用来处理在</span><span lang="EN-US">XML</span><span style="font-family: 宋体;">文件中读到的内容，第一个参数为文件的字符串内容，后面两个参数是读到的字符串在这个数组中的起始位置和长度，使用</span><span lang="EN-US">new String(ch,start,length)</span><span style="font-family: 宋体;">就可以获取内容。</span></p> 
+     <p class="MsoNormal"><strong><span lang="EN-US">4.</span></strong><strong><span style="font-family: 宋体;">使用</span><span lang="EN-US">Pull</span></strong><strong><span style="font-family: 宋体;">解析器读取</span><span lang="EN-US">XML</span></strong><strong><span style="font-family: 宋体;">文件</span><span lang="EN-US">
+        <o:p></o:p></span></strong></p> 
+     <p class="MsoNormal" style="text-indent: 15.75pt;"><span style="font-family: 宋体;">如果需要生成一个</span><span lang="EN-US">XML</span><span style="font-family: 宋体;">文件，生成</span><span lang="EN-US">XML</span><span style="font-family: 宋体;">文件的方法有很多，如：可以只使用一个</span><span lang="EN-US">StringBuilder</span><span style="font-family: 宋体;">组拼</span><span lang="EN-US">XML</span><span style="font-family: 宋体;">内容，然后把内容写入到文件中；</span></p> 
+     <p class="MsoNormal" style="text-indent: 15.75pt;"><span style="font-family: 宋体;">或者使用</span><span lang="EN-US">DOM API</span><span style="font-family: 宋体;">生成</span><span lang="EN-US">XML</span><span style="font-family: 宋体;">文件，或者也可以使用</span><span lang="EN-US">pull</span><span style="font-family: 宋体;">解析器生成</span><span lang="EN-US">XML</span><span style="font-family: 宋体;">文件，推荐使用</span><span lang="EN-US">Pull</span><span style="font-family: 宋体;">解析器。</span></p> 
+     <p class="MsoNormal"><span lang="EN-US">
+       <o:p>
+        &nbsp;
+       </o:p></span></p> 
+     <p class="MsoNormal"><span style="font-family: 宋体;">最后，</span></p> 
+     <p class="MsoNormal" style="text-indent: 5.25pt;"><span lang="EN-US">巴巴运动网，好好学习权限和优化等技术，面试特别有帮助
+       <o:p></o:p>
+       <!--[endif]--></span></p> 
+     <span lang="EN-US">
+      <o:p></o:p></span>
+     <span lang="EN-US">
+      <!--[endif]--></span> 
+     <p class="MsoNormal"><span lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br /> </span></span></p> 
+     <div class="postDesc">
+      posted @ 
+      <a href="http://www.blogjava.net/d66380022/archive/2010/03/16/315536.html" title="permalink">2010-03-16 00:29</a> d66380022|&nbsp;
+      <a href="http://www.blogjava.net/d66380022/admin/EditPosts.aspx?postid=315536">编辑</a>&nbsp;
+      <a href="http://www.blogjava.net/d66380022/AddToFavorite.aspx?id=315536">收藏</a>
+     </div> 
+     <div class="postSeparator"></div> 
+     <div class="postTitle"> 
+      <a id="homepage1_HomePageDays_ctl00_DayList_ctl12_TitleUrl" class="postTitle2" href="http://www.blogjava.net/d66380022/archive/2010/03/16/315534.html">传智播客 2010-3-14 3G开发环境的搭建和入门案例</a> 
+     </div> 
+     <p><span style="font-family: 宋体;">&nbsp;&nbsp;&nbsp; 今天是黎老师的</span>3G<span style="font-family: 宋体;">应用开发</span>Android<span style="font-family: 宋体;">项目的第一天，</span>Android<span style="font-family: 宋体;">相当火，从事</span>Android<span style="font-family: 宋体;">开发的人员不太多，接下来开始</span>Android<span style="font-family: 宋体;">之旅。</span> </p> 
+     <p>1.3G<span style="font-family: 宋体;">简介：</span></p> 
+     <p>&nbsp;3G<span style="font-family: 宋体;">，即</span>3rd Generation<span style="font-family: 宋体;">，目前中国联通使用的是</span>WCDMA<span style="font-family: 宋体;">，中国电信使用的是</span><span>CDMA2000 </span><span style="font-family: 宋体;">中国，移动使用的是具有自主知识产权的</span>TD-SCDMA<span style="font-family: 宋体;">，</span>3G<span style="font-family: 宋体;">的最大优点：速度上的提升</span></p> 
+     <p>2.wml<span style="font-family: 宋体;">标签，比</span>Html<span style="font-family: 宋体;">标签简单，</span>1-2<span style="font-family: 宋体;">天就可以搞定，工作中用到再学，因为他是</span>2.5G<span style="font-family: 宋体;">中用到的技术，如果</span>3G<span style="font-family: 宋体;">普及的话，这门技术就</span>Over<span style="font-family: 宋体;">了。</span></p> 
+     <p>3.<span style="font-family: 宋体;">智能手机操作平台</span></p> 
+     <p>&nbsp;<span style="font-family: 宋体;">我们学</span>Android<span style="font-family: 宋体;">操作系统，</span>RIM BlackBerry<span style="font-family: 宋体;">，黑莓我比较喜欢，但在国内还不怎么流行，</span><span> Symbian</span><span style="font-family: 宋体;">手机硬件比较好，所以占用很大市场，在</span>3G<span style="font-family: 宋体;">时代，手机基本上可以当做电脑，用户更看重手机是否能满足日常生活和工作的需要。这就好像大多电脑 用户都安装了</span>Windows<span style="font-family: 宋体;">操作系统，很少安装</span>Linux<span style="font-family: 宋体;">系统。开发</span>Android<span style="font-family: 宋体;">的人员的增多，必然会带来手机软件的增多，软件的多少会决定以后操作系统的市场份额，</span>windows mobile<span style="font-family: 宋体;">比</span>Android<span style="font-family: 宋体;">，</span>iPhone<span style="font-family: 宋体;">的界面差远了。我们关注：</span>Android<span style="font-family: 宋体;">，</span>iPhone<span style="font-family: 宋体;">，</span>Symbian<span style="font-family: 宋体;">智能手机平台，因为我们搞</span>Java<span style="font-family: 宋体;">开发，只能学</span>Android<span style="font-family: 宋体;">了</span></p> 
+     <p>4.Android<span style="font-family: 宋体;">资料</span></p> 
+     <p>&nbsp;<span style="font-family: 宋体;">买</span>Android<span style="font-family: 宋体;">手机就买多普达和</span>Moto<span style="font-family: 宋体;">的，质量好。</span>Android<span style="font-family: 宋体;">最好的资料是</span>android.pdf<span style="font-family: 宋体;">。</span>Google Android SDK<span style="font-family: 宋体;">开发范例大全提供了</span>Android<span style="font-family: 宋体;">的全部功能，在学完课程之后可以看</span></p> 
+     <p>5. <span style="font-family: 宋体;">开发环境的搭建：</span>&nbsp;</p> 
+     <p><span>&nbsp;JDK 5 </span><span style="font-family: 宋体;">或</span><span> JDK 6 (</span><span style="font-family: 宋体;">仅有</span>JRE<span style="font-family: 宋体;">不够</span>) </p> 
+     <p style="text-indent: 21pt;"><span>Eclipse 3.5 (galileo)</span></p> 
+     <p style="text-indent: 10.5pt;"><span style="font-family: 宋体;">①．下载</span>ADT <span style="font-family: 宋体;">的</span>Eclipse <span style="font-family: 宋体;">插件</span></p> 
+     <p style="margin-left: 21pt;">http://dl.google.com/android/ADT-0.9.5.zip</p> 
+     <p style="text-indent: 10.5pt;"><span style="font-family: 宋体;">②．安装</span><span> Eclipse </span><span style="font-family: 宋体;">插件</span> (ADT)</p> 
+     <p style="margin-left: 21pt;"><span style="font-family: 宋体;">启动</span> Eclipse<span style="font-family: 宋体;">，选择</span><span> Help &gt; Install New Software</span><span style="font-family: 宋体;">，在出现的对话框里，点击</span>Add<span style="font-family: 宋体;">按钮，在对话框的</span>name<span style="font-family: 宋体;">一栏输入</span>“ADT”<span style="font-family: 宋体;">，</span> <span style="font-family: 宋体;">然后点击</span>Archive...<span style="font-family: 宋体;">，浏览和选择已经下载的</span><strong>ADT</strong><span style="font-family: 宋体;">插件</span><span style="font-family: 宋体;">压缩文件。</span></p> 
+     <p style="margin-left: 21pt;"><span style="font-family: 宋体;">点击</span> OK.<span style="font-family: 宋体;">。返回可用软件的视图，你会看到这个插件，然后选择</span>Developer Tools (<span style="font-family: 宋体;">会选中下 面的</span>“Android Developer Tools”<span style="font-family: 宋体;">和</span> “Android Editors“)<span style="font-family: 宋体;">，点击</span> Next<span style="font-family: 宋体;">，最后重启</span> Eclipse<span style="font-family: 宋体;">。</span></p> 
+     <p style="text-indent: 15.75pt;"><span style="font-family: 宋体;">③．下载</span><span>Android SDK</span><span style="font-family: 宋体;">：</span></p> 
+     <p style="margin-left: 21pt;">http://dl.google.com/android/android-sdk_r04-windows.zip</p> 
+     <p style="margin-left: 21pt;"><span style="font-family: 宋体;">下载完</span>SDK<span style="font-family: 宋体;">后，把</span>.zip<span style="font-family: 宋体;">文件解压到你电脑上合适位置。启动</span><span> Eclipse</span><span style="font-family: 宋体;">，选择</span>window-&gt;preferences<span style="font-family: 宋体;">， 在打开的视图左边点击</span>android<span style="font-family: 宋体;">，在右边的</span>SDK Location<span style="font-family: 宋体;">中选择</span><span>Android SDK</span><span style="font-family: 宋体;">所在位置。</span></p> 
+     <p>6.<span style="font-family: 宋体;">开发</span>Android<span style="font-family: 宋体;">的第一个应用：</span></p> 
+     <p style="text-indent: 10.5pt;">1.<span style="font-family: 宋体;">点击工具栏上手机形状的虚拟设备管理器（简称“</span>AVD<span style="font-family: 宋体;">“）</span></p> 
+     <p style="text-indent: 10.5pt;">2.<span style="font-family: 宋体;">在打开的虚拟设备管理器中创建一个虚拟手机</span></p> 
+     <p style="text-indent: 10.5pt;">3.<span style="font-family: 宋体;">在项目上右键点击</span><span>run as ?Android application </span></p> 
+     <p style="text-indent: 10.5pt;">OK<span style="font-family: 宋体;">，第一个应用就</span>OK<span style="font-family: 宋体;">了</span></p> 
+     <p>7.<span style="font-family: 宋体;">端口号：</span>127.0.0.1:5554</p> 
+     <p>8.Activity</p> 
+     <p>&nbsp;<span style="font-family: 宋体;">就像</span>struts<span style="font-family: 宋体;">中的</span>Action<span style="font-family: 宋体;">，处理用户请求，除此之外，</span>Activity<span style="font-family: 宋体;">还代表一个用户界面</span></p> 
+     <p>9. Android<span style="font-family: 宋体;">应用程序架构</span></p> 
+     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; src/&nbsp;java<span style="font-family: 宋体;">原代码存放目录</span></p> 
+     <p><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gen/ </span><span style="font-family: 宋体;">自动生成目录</span></p> 
+     <p><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; gen </span><span style="font-family: 宋体;">目录中存放所有由</span>Android<span style="font-family: 宋体;">开发工具自动生成的文件。目录中最重要的就是</span>R.java<span style="font-family: 宋体;">文件。</span> <span style="font-family: 宋体;">这个文件 由</span>Android<span style="font-family: 宋体;">开 发工具自动产生的。</span>Android<span style="font-family: 宋体;">开发工具会自动根据你放入</span>res<span style="font-family: 宋体;">目录的</span>xml<span style="font-family: 宋体;">界面文件、图标与常量，同步更新修改</span>R.java<span style="font-family: 宋体;">文件。</span></p> 
+     <p><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; res/ </span><span style="font-family: 宋体;">资源</span>(Resource)<span style="font-family: 宋体;">目录</span></p> 
+     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family: 宋体;">在这个目录中我们可以存放应用使用到的各种资源，如</span>xml<span style="font-family: 宋体;">界面文件，图片或数据。具体请看</span>ppt<span style="font-family: 宋体;">下方备注栏。</span></p> 
+     <p><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; AndroidManifest.xml </span><span style="font-family: 宋体;">功能清单文件</span></p> 
+     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;<span style="font-family: 宋体;">这个文件列出了应用程序所提供的功 能，相当于</span>struts<span style="font-family: 宋体;">的</span>config<span style="font-family: 宋体;">文件，只有配置好后，才能调用此</span>Activity<span style="font-family: 宋体;">。</span></p> 
+     <p><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; default.properties </span><span style="font-family: 宋体;">项目环境信息，一般是不需要修改此文件中</span></p> 
+     <p>10.<span style="font-family: 宋体;">短信发送器</span></p> 
+     <p>&nbsp;<span style="font-family: 宋体;">注意：因为应用要使用手机的短信服务，所以要在清单文件</span>AndroidManifest.xml<span style="font-family: 宋体;">中添 加短信服务权限</span>:</p> 
+     <p>11.<span style="font-family: 宋体;">通知</span></p> 
+     <p>&nbsp;<span style="font-family: 宋体;">关于这些东西，还是看看文档，拷过来运行一下，测试测试看看效果就差不多了。</span></p> 
+     <br /> 
+     <div class="postDesc">
+      posted @ 
+      <a href="http://www.blogjava.net/d66380022/archive/2010/03/16/315534.html" title="permalink">2010-03-16 00:20</a> d66380022|&nbsp;
+      <a href="http://www.blogjava.net/d66380022/admin/EditPosts.aspx?postid=315534">编辑</a>&nbsp;
+      <a href="http://www.blogjava.net/d66380022/AddToFavorite.aspx?id=315534">收藏</a>
+     </div> 
+     <div class="postSeparator"></div> 
+     <div class="postTitle"> 
+      <a id="homepage1_HomePageDays_ctl00_DayList_ctl14_TitleUrl" class="postTitle2" href="http://www.blogjava.net/d66380022/archive/2010/03/13/315349.html">传智播客 2010-3-12 报表生成和面试技巧</a> 
+     </div> 
+     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+     <meta name="ProgId" content="Word.Document" /> 
+     <meta name="Generator" content="Microsoft Word 11" /> 
+     <meta name="Originator" content="Microsoft Word 11" /> 
+     <link rel="File-List" href="file:///C:%5CDOCUME%7E1%5CADMINI%7E1%5CLOCALS%7E1%5CTemp%5Cmsohtml1%5C01%5Cclip_filelist.xml" />
+     <o:smarttagtype namespaceuri="urn:schemas-microsoft-com:office:smarttags" name="City"></o:smarttagtype>
+     <o:smarttagtype namespaceuri="urn:schemas-microsoft-com:office:smarttags" name="place"></o:smarttagtype>
+     <!--[if gte mso 9]><xml>
+<w:WordDocument>
+<w:View>Normal</w:View>
+<w:Zoom>0</w:Zoom>
+<w:PunctuationKerning/>
+<w:DrawingGridVerticalSpacing>7.8 磅</w:DrawingGridVerticalSpacing>
+<w:DisplayHorizontalDrawingGridEvery>0</w:DisplayHorizontalDrawingGridEvery>
+<w:DisplayVerticalDrawingGridEvery>2</w:DisplayVerticalDrawingGridEvery>
+<w:ValidateAgainstSchemas/>
+<w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>
+<w:IgnoreMixedContent>false</w:IgnoreMixedContent>
+<w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>
+<w:Compatibility>
+<w:SpaceForUL/>
+<w:BalanceSingleByteDoubleByteWidth/>
+<w:DoNotLeaveBackslashAlone/>
+<w:ULTrailSpace/>
+<w:DoNotExpandShiftReturn/>
+<w:AdjustLineHeightInTable/>
+<w:BreakWrappedTables/>
+<w:SnapToGridInCell/>
+<w:WrapTextWithPunct/>
+<w:UseAsianBreakRules/>
+<w:DontGrowAutofit/>
+<w:UseFELayout/>
+</w:Compatibility>
+<w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>
+</w:WordDocument>
+</xml><![endif]-->
+     <!--[if gte mso 9]><xml>
+<w:LatentStyles deflockedstate="false" latentstylecount="156">
+</w:LatentStyles>
+</xml><![endif]-->
+     <!--[if !mso]><object classid="clsid:38481807-CA0E-42D2-BF39-B33AF135CC4D" id="ieooui"></object>
+<style>
+st1\:*{behavior:url(#ieooui) }
+</style>
+<![endif]-->
+     <style>
+<!-- /* Font Definitions */
+&#64;font-face
+{font-family:宋体;
+panose-1:2 1 6 0 3 1 1 1 1 1;
+mso-font-alt:SimSun;
+mso-font-charset:134;
+mso-generic-font-family:auto;
+mso-font-pitch:variable;
+mso-font-signature:3 135135232 16 0 262145 0;}
+&#64;font-face
+{font-family:"\&#64;宋体";
+panose-1:2 1 6 0 3 1 1 1 1 1;
+mso-font-charset:134;
+mso-generic-font-family:auto;
+mso-font-pitch:variable;
+mso-font-signature:3 135135232 16 0 262145 0;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+{mso-style-parent:"";
+margin:0cm;
+margin-bottom:.0001pt;
+text-align:justify;
+text-justify:inter-ideograph;
+mso-pagination:none;
+font-size:10.5pt;
+mso-bidi-font-size:12.0pt;
+font-family:"Times New Roman";
+mso-fareast-font-family:宋体;
+mso-font-kerning:1.0pt;}
+/* Page Definitions */
+&#64;page
+{mso-page-border-surround-header:no;
+mso-page-border-surround-footer:no;}
+&#64;page Section1
+{size:612.0pt 792.0pt;
+margin:72.0pt 90.0pt 72.0pt 90.0pt;
+mso-header-margin:36.0pt;
+mso-footer-margin:36.0pt;
+mso-paper-source:0;}
+div.Section1
+{page:Section1;}
+-->
+</style>
+     <!--[if gte mso 10]>
+<style>
+/* Style Definitions */
+table.MsoNormalTable
+{mso-style-name:普通表格;
+mso-tstyle-rowband-size:0;
+mso-tstyle-colband-size:0;
+mso-style-noshow:yes;
+mso-style-parent:"";
+mso-padding-alt:0cm 5.4pt 0cm 5.4pt;
+mso-para-margin:0cm;
+mso-para-margin-bottom:.0001pt;
+mso-pagination:widow-orphan;
+font-size:10.0pt;
+font-family:"Times New Roman";
+mso-fareast-font-family:"Times New Roman";
+mso-ansi-language:#0400;
+mso-fareast-language:#0400;
+mso-bidi-language:#0400;}
+</style>
+<![endif]-->
+     <!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext="edit" spidmax="1026" />
+</xml><![endif]-->
+     <!--[if gte mso 9]><xml>
+<o:shapelayout v:ext="edit">
+<o:idmap v:ext="edit" data="1" />
+</o:shapelayout></xml><![endif]--> 
+     <p class="MsoNormal"><span style="font-family: 宋体;">一</span><span lang="EN-US">.</span><span style="font-family: 宋体;">使用</span><span lang="EN-US">poi</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span>&nbsp; </span>1.</span><span style="font-family: 宋体;">参见</span><span lang="EN-US">poi</span><span style="font-family: 宋体;">的文档，添加</span><span lang="EN-US">jar</span><span style="font-family: 宋体;">包</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span>&nbsp; </span>2.workbook</span><span style="font-family: 宋体;">表示一个</span><span lang="EN-US">Excel</span><span style="font-family: 宋体;">文档</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span>&nbsp; </span>3.</span><span style="font-family: 宋体;">下载</span><span lang="EN-US">Excel</span><span style="font-family: 宋体;">模版，必须按格式</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp; </span>1.</span><span style="font-family: 宋体;">创建</span><span lang="EN-US">workbook</span><span style="font-family: 宋体;">对象</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span>&nbsp; </span><span>&nbsp;&nbsp;&nbsp; </span><span>&nbsp;</span>2.</span><span style="font-family: 宋体;">创建下载</span><span lang="EN-US">Excel</span><span style="font-family: 宋体;">文件的第一行</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span>&nbsp;</span>3.</span><span style="font-family: 宋体;">从数据库中读取到需要的</span><span lang="EN-US">Employee</span><span style="font-family: 宋体;">列表</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp; </span>5.</span><span style="font-family: 宋体;">利用</span><span lang="EN-US">Servlet Api </span><span style="font-family: 宋体;">对准备好的</span><span lang="EN-US">Excel</span><span style="font-family: 宋体;">下载</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span>&nbsp; </span>4.</span><span style="font-family: 宋体;">上传</span><span lang="EN-US">excel<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-family: 宋体;">①</span><span lang="EN-US">.</span><span style="font-family: 宋体;">配置</span><span lang="EN-US">Action</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-family: 宋体;">②</span><span lang="EN-US">.</span><span style="font-family: 宋体;">导入两个</span><span lang="EN-US">jar</span><span style="font-family: 宋体;">包</span><span lang="EN-US">commons-io</span><span style="font-family: 宋体;">，</span><span lang="EN-US">commons-fileupload.jar</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span><span style="font-family: 宋体;">③</span><span lang="EN-US">.</span><span style="font-family: 宋体;">上传</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>1.</span><span style="font-family: 宋体;">根据</span><span lang="EN-US">ActionForm</span><span style="font-family: 宋体;">的</span><span lang="EN-US">FormFile</span><span style="font-family: 宋体;">属性读取上传数据，获得</span><span lang="EN-US">Workbook</span><span style="font-family: 宋体;">对象</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span>&nbsp;</span>2.</span><span style="font-family: 宋体;">读取</span><span lang="EN-US">Workbook</span><span style="font-family: 宋体;">对象中的内容：遍历</span><span lang="EN-US">Workbook</span><span style="font-family: 宋体;">对象除标题行以外的行</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>3.</span><span style="font-family: 宋体;">把每一行都转换为一个</span><span lang="EN-US">Employee</span><span style="font-family: 宋体;">对象</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>4.</span><span style="font-family: 宋体;">调用方法，把</span><span lang="EN-US">Employee</span><span style="font-family: 宋体;">对象的集合保存到数据库中，注意：有可能不能保存，其原因可能违反格式或者违反数据库的唯一性约束</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></p> 
+     <p class="MsoNormal"><span style="font-family: 宋体;">二</span><span lang="EN-US">.PDF</span><span style="font-family: 宋体;">文档输出</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span>&nbsp; </span>1.iText</span><span style="font-family: 宋体;">介绍：</span><span lang="EN-US">iText</span><span style="font-family: 宋体;">是著名的开放源码的站点</span><span lang="EN-US">sourceforge</span><span style="font-family: 宋体;">一个项目</span><span lang="EN-US">, </span><span style="font-family: 宋体;">是用于生成</span><span lang="EN-US"> PDF </span><span style="font-family: 宋体;">文档的一个</span><span lang="EN-US">java</span><span style="font-family: 宋体;">类库</span><span lang="EN-US">.<span>&nbsp; </span></span></p> 
+     <p class="MsoNormal" style="text-indent: 10.5pt;"><span lang="EN-US">2.Pdf </span><span style="font-family: 宋体;">文件输出的</span><span lang="EN-US"> 5 </span><span style="font-family: 宋体;">个步骤</span></p> 
+     <p class="MsoNormal" style="margin-left: 31.5pt;"><span lang="EN-US">1. </span><span style="font-family: 宋体;">创建一个</span><span lang="EN-US"> Document </span><span style="font-family: 宋体;">对象</span><span lang="EN-US">.</span></p> 
+     <p class="MsoNormal" style="margin-left: 52.5pt;"><span lang="EN-US">public Document()</span></p> 
+     <p class="MsoNormal" style="margin-left: 52.5pt;"><span lang="EN-US">public Document(Rectangle pageSize): </span><span style="font-family: 宋体;">定义页面的大小</span></p> 
+     <p class="MsoNormal" style="margin-left: 52.5pt;"><span lang="EN-US">public Document(Rectangle pageSize, int marginLeft, int marginRight, int marginTop, int marginBottom): </span><span style="font-family: 宋体;">定义页面的大小</span><span lang="EN-US">, </span><span style="font-family: 宋体;">后边的四个参数分别指定左</span><span lang="EN-US">, </span><span style="font-family: 宋体;">右</span><span lang="EN-US">, </span><span style="font-family: 宋体;">上</span><span lang="EN-US">, </span><span style="font-family: 宋体;">下页边距</span></p> 
+     <p class="MsoNormal" style="margin-left: 31.5pt;"><span lang="EN-US">2.</span><span style="font-family: 宋体;">建立一个书写器</span><span lang="EN-US"> (Writer) </span><span style="font-family: 宋体;">与</span><span lang="EN-US">document</span><span style="font-family: 宋体;">对象关联</span><span lang="EN-US">, </span><span style="font-family: 宋体;">通过书写器</span><span lang="EN-US">(Writer)</span><span style="font-family: 宋体;">可以将文档写入到磁盘中</span></p> 
+     <p class="MsoNormal" style="margin-left: 31.5pt;"><span lang="EN-US">3. </span><span style="font-family: 宋体;">打开文档</span></p> 
+     <p class="MsoNormal" style="margin-left: 31.5pt;"><span lang="EN-US">4. </span><span style="font-family: 宋体;">在文档中添加文字</span></p> 
+     <p class="MsoNormal" style="margin-left: 31.5pt;"><span lang="EN-US">5. </span><span style="font-family: 宋体;">关闭文档</span><span lang="EN-US"><span>&nbsp; </span></span></p> 
+     <p class="MsoNormal"><span style="font-family: 宋体;">其中：</span></p> 
+     <p class="MsoNormal" style="margin-left: 31.5pt;"><span lang="EN-US">
+       <o:p>
+        &nbsp;
+       </o:p></span></p> 
+     <p class="MsoNormal" style="margin-left: 31.5pt;"><span style="font-family: 宋体;">①。设定文档属性</span></p> 
+     <p class="MsoNormal" style="margin-left: 31.5pt;"><span style="font-family: 宋体;">当新的页面产生之前</span><span lang="EN-US">, </span><span style="font-family: 宋体;">可以设定页面的大小、书签、脚注（</span><span lang="EN-US">HeaderFooter</span><span style="font-family: 宋体;">）等信息，调用的方法是</span><span lang="EN-US">:</span></p> 
+     <p class="MsoNormal" style="margin-left: 31.5pt;"><span lang="EN-US">
+       <o:p>
+        &nbsp;
+       </o:p></span></p> 
+     <p class="MsoNormal" style="margin-left: 31.5pt;"><span style="font-family: 宋体;">②。添加文档内容</span><span lang="EN-US"> </span></p> 
+     <p class="MsoNormal" style="margin-left: 31.5pt;"><span style="font-family: 宋体;">所有向文档添加的内容都是以对象为单位的</span><span lang="EN-US">, </span><span style="font-family: 宋体;">如</span><span lang="EN-US">Phrase</span><span style="font-family: 宋体;">、</span><span lang="EN-US">Paragraph</span><span style="font-family: 宋体;">、</span><span lang="EN-US">Table</span><span style="font-family: 宋体;">等</span><span lang="EN-US">. </span><span style="font-family: 宋体;">比较常用的是段落</span><span lang="EN-US">(Paragraph)</span><span style="font-family: 宋体;">对象</span><span lang="EN-US">, </span><span style="font-family: 宋体;">用于向文档中添加一段文字</span></p> 
+     <p class="MsoNormal" style="margin-left: 31.5pt;"><span style="font-family: 宋体;">③。文本处理</span><span lang="EN-US"> </span></p> 
+     <p class="MsoNormal" style="margin-left: 31.5pt;"><span lang="EN-US">iText</span><span style="font-family: 宋体;">中用文本块</span><span lang="EN-US">(Chunk)</span><span style="font-family: 宋体;">、短语</span><span lang="EN-US">(Phrase)</span><span style="font-family: 宋体;">和段落</span><span lang="EN-US">(paragraph)</span><span style="font-family: 宋体;">处理文本。</span><span lang="EN-US"> </span></p> 
+     <p class="MsoNormal" style="margin-left: 31.5pt;"><span style="font-family: 宋体;">文本块</span><span lang="EN-US">(Chunk)</span><span style="font-family: 宋体;">是处理文本的最小单位</span><span lang="EN-US">, </span><span style="font-family: 宋体;">由一串带格式（包括字体、颜色、大小）的字符串组成</span><span lang="EN-US">:</span></p> 
+     <p class="MsoNormal" style="margin-left: 31.5pt;"><span lang="EN-US">
+       <o:p>
+        &nbsp;
+       </o:p></span></p> 
+     <p class="MsoNormal" style="margin-left: 31.5pt;"><span lang="EN-US">
+       <o:p>
+        &nbsp;
+       </o:p></span></p> 
+     <p class="MsoNormal" style="margin-left: 31.5pt;"><span style="font-family: 宋体;">注意</span><span lang="EN-US">:</span><span style="font-family: 宋体;">在</span><span lang="EN-US"> iText </span><span style="font-family: 宋体;">中没有行的概念</span><span lang="EN-US">, </span><span style="font-family: 宋体;">一个表格里直接放单元格</span><span lang="EN-US">, </span><span style="font-family: 宋体;">如果一个</span><span lang="EN-US"> 3 </span><span style="font-family: 宋体;">列的表格中放进</span><span lang="EN-US"> 6 </span><span style="font-family: 宋体;">个单元格</span><span lang="EN-US">, </span><span style="font-family: 宋体;">那就是两行的表格</span><span lang="EN-US">. </span><span style="font-family: 宋体;">如果放入</span><span lang="EN-US"> 5 </span><span style="font-family: 宋体;">个基本的没有任何跨列设置的单元格</span><span lang="EN-US">, </span><span style="font-family: 宋体;">表格就会出错</span><span lang="EN-US">. </span><span style="font-family: 宋体;">此时表格不会添加到文档中</span><span lang="EN-US">, </span><span style="font-family: 宋体;">并且没有任何提示</span></p> 
+     <p class="MsoNormal" style="margin-left: 31.5pt;"><span lang="EN-US">
+       <o:p>
+        &nbsp;
+       </o:p></span></p> 
+     <p class="MsoNormal"><span style="font-family: 宋体;">三</span><span lang="EN-US">.</span><span style="font-family: 宋体;">面试</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span>&nbsp;&nbsp; </span></span><span style="font-family: 宋体;">老佟给我们找了一个简历，介绍了一些面试的注意点，要点：</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp; </span>1.</span><span style="font-family: 宋体;">符合自身条件，各种技术。</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp; </span>2.</span><span style="font-family: 宋体;">最好写点权限设计，</span><span lang="EN-US">Compass+Lucene</span><span style="font-family: 宋体;">实现全文搜索，流程采用</span><span lang="EN-US">JBPM</span><span style="font-family: 宋体;">管理。</span></p> 
+     <p class="MsoNormal"><span lang="EN-US"><span>&nbsp;&nbsp;&nbsp;&nbsp; </span>3.</span><span style="font-family: 宋体;">项目三个：小汤的ＯＡ和老佟的权限整合为一个项目，网上商城（巴巴运功网），３ｇ，数据采集</span></p> 
+     <p class="MsoNormal"><span style="font-family: 宋体;">ＯＡ用到的技术：ＳＳＨ</span></p> 
+     <p class="MsoNormal" style="text-indent: 21pt;"><span lang="EN-US">jQuery + 
+       <st1:city w:st="on">
+        <st1:place w:st="on">
+         Ajax
+        </st1:place>
+       </st1:city></span></p> 
+     <p class="MsoNormal" style="text-indent: 21pt;"><span lang="EN-US">jbpm </span><span style="font-family: 宋体;">完成审批流程</span></p> 
+     <p class="MsoNormal" style="text-indent: 21pt;"><span lang="EN-US">spring-security</span></p> 
+     <p class="MsoNormal" style="text-indent: 21pt;"><span lang="EN-US">lucence </span><span style="font-family: 宋体;">：全文检索</span></p> 
+     <p class="MsoNormal" style="text-indent: 21pt;"><span lang="EN-US">
+       <o:p>
+        &nbsp;
+       </o:p></span></p> 
+     <div class="postDesc">
+      posted @ 
+      <a href="http://www.blogjava.net/d66380022/archive/2010/03/13/315349.html" title="permalink">2010-03-13 23:40</a> d66380022|&nbsp;
+      <a href="http://www.blogjava.net/d66380022/admin/EditPosts.aspx?postid=315349">编辑</a>&nbsp;
+      <a href="http://www.blogjava.net/d66380022/AddToFavorite.aspx?id=315349">收藏</a>
+     </div> 
+     <div class="postSeparator"></div> 
+     <div class="postTitle"> 
+      <a id="homepage1_HomePageDays_ctl00_DayList_ctl16_TitleUrl" class="postTitle2" href="http://www.blogjava.net/d66380022/archive/2010/03/13/315346.html">传智播客 2010-03-10 权限管理的实现</a> 
+     </div> &nbsp;接着昨天的实现将拦截的url，权限信息，用户信息放到数据库中，并将spring-security集成到项目中
+     <br /> 
+     <span style="font-weight: bold;"><br /> 1. 实现资源信息存放到数据库中:</span>
+     <br /> 访问资源时, spring-security 能区分出访问该资源需要哪些权限
+     <br /> &nbsp; 1. 自定义ObjectDefinitionSource 接口的实现类, 将该类的实例装配给 FilterSecurityInterceptor 的 objectDefinitionSource 的属性. 即可实现自定义的资源获取.
+     <br /> 
+     <br /> &nbsp; 2. 通过继承 DefaultFilterInvocationDefinitionSource 类的方法定义ObjectDefinitionSource 接口的实现类有困难, 因为 DefaultFilterInvocationDefinitionSource中没有无参的构造器
+     <br /> 
+     <br /> &nbsp;&nbsp; 3．通过查看 spring-security 核心 jar 包的 META-IN 下 的 spring.handlers 找到 SecurityNamespaceHandler, 在该类中查看 registerBeanDefinitionParser(Elements.HTTP, new HttpSecurityBeanDefinitionParser()); 方法在 HttpSecurityBeanDefinitionParser 类中可以看到如何创建 DefaultFilterInvocationDefinitionSource 实例.
+     <br /> 
+     <br /> &nbsp;&nbsp; 4. 通过 FactoryBean 在 IOC 容器中注册&nbsp; DefaultFilterInvocationDefinitionSource 实例&nbsp; &nbsp;
+     <br /> 
+     <br /> &nbsp;&nbsp; 5. 实现ResourceDetailsService 接口&nbsp;&nbsp; &nbsp;
+     <br /> 
+     <br /> 
+     <span style="font-weight: bold;">2.关于MD5加密：</span>
+     <br /> 
+     <br /> 1.网上的关于MD5已经很多了，MD5算法对密码进行摘要加密，这是一种单项加密手段，无法通过加密后的结果反推回原来的密码明文。
+     <br /> 
+     <br /> 为了使用MD5对密码加密，我们需要修改一下配置文件
+     <br /> &lt;authentication-provider&gt;
+     <br /> &nbsp;&nbsp;&nbsp; &lt;password-encoder hash=&quot;md5&quot; &gt;
+     <br /> &nbsp;&nbsp;&nbsp; &lt;jdbc-user-service data-source-ref=&quot;dataSource&quot; &gt;
+     <br /> &lt; authentication-provider&gt; &nbsp;
+     <br /> 上述代码中新增的黄色部分，将启用md5算法。
+     <br /> 
+     <br /> 
+     <span style="font-weight: bold;">3.管理会话(HttpSession)</span>
+     <br /> &nbsp;&nbsp;&nbsp; 多个用户不能使用同一个账号同时登陆系统。
+     <br /> 添加监听器
+     <br /> 在web.xml中添加一个监听器，这个监听器会在session创建和销毁的时候通知Spring Security。
+     <br /> 这种监听session生命周期的监听器主要用来收集在线用户的信息，比如统计在线用户数之类的事。后登陆的将先登录的踢出系统默认情况下，后登陆的用户 会把先登录的用户踢出系统。
+     <br /> 
+     <br /> ============================================================================================
+     <br /> 
+     <span style="font-weight: bold; background-color: #006699; color: #669933;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 集成spring-security框架</span>
+     <br /> 
+     <br /> 
+     <span style="font-weight: bold;">1. 集成 spring-security 框架</span>
+     <br /> 
+     <br /> &nbsp;&nbsp;&nbsp; 1. 加入 spring-security 的两个 jar 包
+     <br /> &nbsp;&nbsp;&nbsp; 2. 在 web.xml 文件中加入加入 spring-security 框架的过滤器
+     <br /> &nbsp;&nbsp;&nbsp; 3. 新建 applicationContext-security.xml 配置文件,并且把 security 作为默认的命名空间, 并将其导入到 applicationContext.xml 中
+     <br /> &nbsp;&nbsp;&nbsp; 4. 设计领域模型:
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Authority -- 权限
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Resource -- 资源
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Role -- 角色
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Employee -- 添加 Set&lt;Role&gt; roleSet 属性
+     <br /> 
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Resource 和 Authority 为多对多的对应关系
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Authority 和 Role 为多对多的对应关系
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Role 和 Employee 为多对多的对应关系
+     <br /> 需要 3 个关联表
+     <br /> &nbsp;&nbsp;&nbsp; 5.
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1. 修改当前系统的 login.jsp 页面, 改为 spring-security 的登录页面, 并且在 &lt;http&gt; 节点中进行配置.
+     <br /> 
+     <span style="font-weight: bold;">注意:</span> spring-security 在登录成功后, 利用 &quot;重定向&quot; 转到 form-login 节点对应的 default-target-url 属性对应的页面. 所以不能直接将其配置为 WEB-INF 目录下的任何页面
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2. 新建 UserDetailsService 接口的实现类, 以实现从数据库中获取用户信息(需要查询 Employee, Role, Authority, 参见 spring-security-2 的UserDetailsServiceImpl, 基于 Hibernate 实现),并把该类的 Bean 引用装配给 &lt;authentication-provider&gt; 节点的 user-service-ref 属性&nbsp; 
+     <br /> &nbsp;&nbsp;&nbsp; 6. 向 ems_resource_table, ems_authority_table, ems_resource_authority_table 数据表中添加数据 
+     <br /> &nbsp;&nbsp;&nbsp; 7. 新建 ResourceDetailsService 接口的实现类, 实现从数据库中读取需要被保护的资源信息及其可以访问这些资源的权限信息
+     <br /> &nbsp;&nbsp;&nbsp; 8. 利用 FactoryBean 新建 DefaultFilterInvocationDefinitionSource 接口的 Bean, 并把&nbsp; ResourceDetailsService 的 Bean 注入进来, 再把该 Bean 配置为 filterSecurityInterceptor 过滤器的 objectDefinitionSource 属性 
+     <br /> 
+     <br /> 
+     <span style="font-weight: bold;">2. 实现权限模块:</span>
+     <br /> &nbsp;1. 实现 Role 的增, 删, 改, 查
+     <br /> 
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 角色的添加:
+     <br /> 
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 页面 UI:
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; a. 对字段的 jQuery validation 验证
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; b. struts validator 验证 **
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; c. Action的复杂验证: 角色名不能重复 **.
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; d. 角色名的 ajax 验证, 角色名不能重复 **.
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; e. 勾选权限时的级联选择. 例如: 勾选 &quot;员工删除&quot; 的同时必须勾选 &quot;员工查询&quot;, 即不能让用户只有 &quot;员工删除&quot; 权限, 而没有 &quot;员工查询&quot; 权限.
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; f. 使用到 Authority 的如下两个字段: relatedAuthorites(与当前权限关联的权限信息, 多个权限使用 &quot;,&quot; 分隔), parentAuthority(当前权限的父权限)
+     <br /> subAuthorities(当前权限的子权限)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 若验证都通过, 在 Action 中受理请求, 录入角色
+     <br /> &nbsp;&nbsp;&nbsp; 
+     <br /> 注意:
+     <br /> 
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 不能通过以下代码获取 parentAuthority 为 null 的 Authority 集合
+     <br /> &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; List list = authorityDao.findBy(&quot;parentAuthority&quot;, null);
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.out.println(list.size());
+     <br /> 而应该使用:
+     <br /> 
+     <br /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; List list = authorityDao.find(&quot;FROM Authority auth WHERE auth.parentAuthority IS null&quot;);
+     <br /> &nbsp;&nbsp;&nbsp; 为 #select 添加 change 相应事件,　当选取某个父权限时, 子权限显示
+     <br /> 
+     <br /> 
+     <br /> 今天就此为止，明天继续！ 
+     <div class="postDesc">
+      posted @ 
+      <a href="http://www.blogjava.net/d66380022/archive/2010/03/13/315346.html" title="permalink">2010-03-13 23:21</a> d66380022|&nbsp;
+      <a href="http://www.blogjava.net/d66380022/admin/EditPosts.aspx?postid=315346">编辑</a>&nbsp;
+      <a href="http://www.blogjava.net/d66380022/AddToFavorite.aspx?id=315346">收藏</a>
+     </div> 
+     <div class="postSeparator"></div> 
+     <div class="postTitle"> 
+      <a id="homepage1_HomePageDays_ctl00_DayList_ctl18_TitleUrl" class="postTitle2" href="http://www.blogjava.net/d66380022/archive/2010/03/10/315010.html">传智播客 2010-03-08 员工信息的修改和权限管理基础</a> 
+     </div> 
+     <p>&nbsp;&nbsp; 
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+      <meta name="ProgId" content="Word.Document" /> 
+      <meta name="Generator" content="Microsoft Word 11" /> 
+      <meta name="Originator" content="Microsoft
+Word 11" /> 
+      <link rel="File-List" href="file:///C:%5CDOCUME%7E1%5CADMINI%7E1%5CLOCALS%7E1%5CTemp%5Cmsohtml1%5C01%5Cclip_filelist.xml" /> 
+      <link rel="Edit-Time-Data" href="file:///C:%5CDOCUME%7E1%5CADMINI%7E1%5CLOCALS%7E1%5CTemp%5Cmsohtml1%5C01%5Cclip_editdata.mso" />
+      <!--[if !mso]>
+<style>
+v":* {behavior:url(#default#VML);}
+o":* {behavior:url(#default#VML);}
+w":* {behavior:url(#default#VML);}
+.shape {behavior:url(#default#VML);}
+</style>
+<![endif]-->
+      <!--[if gte mso 9]><xml>
+Normal
+0
+7.8 磅
+0
+2
+false
+false
+false
+MicrosoftInternetExplorer4
+</xml><![endif]-->
+      <!--[if gte mso 9]><![endif]-->
+      <!--[if !mso]>
+<style>
+st1":*{behavior:url(#ieooui) }
+</style>
+<![endif]--><style>
+<!--
+/* Font Definitions */
+&#64;font-face
+{font-family:Wingdings;
+panose-1:5 0 0 0 0 0 0 0 0 0;}
+&#64;font-face
+{font-family:宋体;
+panose-1:2 1 6 0 3 1 1 1 1 1;}
+&#64;font-face
+{font-family:""&#64;宋体";
+panose-1:2 1 6 0 3 1 1 1 1 1;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+{mso-style-parent:"";
+margin:0cm;
+margin-bottom:.0001pt;
+text-align:justify;
+text-justify:inter-ideograph;
+font-size:10.5pt;
+font-family:"Times New Roman";}
+/* Page Definitions */
+&#64;page
+{}
+&#64;page Section1
+{size:595.3pt 841.9pt;
+margin:72.0pt 90.0pt 72.0pt 90.0pt;
+layout-grid:15.6pt;}
+div.Section1
+{page:Section1;}
+/* List Definitions */
+&#64;list l0
+{}
+&#64;list l0:level1
+{
+margin-left:0cm;
+text-indent:0cm;}
+&#64;list l0:level1 lfo1
+{
+margin-left:0cm;
+text-indent:0cm;
+font-family:Wingdings;}
+&#64;list l0:level1 lfo2
+{
+margin-left:0cm;
+text-indent:0cm;
+font-family:Arial;}
+&#64;list l0:level1 lfo3
+{
+margin-left:0cm;
+text-indent:0cm;
+font-family:Wingdings;}
+&#64;list l0:level1 lfo4
+{
+margin-left:0cm;
+text-indent:0cm;
+font-family:Arial;}
+&#64;list l0:level1 lfo5
+{
+margin-left:0cm;
+text-indent:0cm;
+font-family:Wingdings;}
+&#64;list l0:level1 lfo6
+{
+margin-left:0cm;
+text-indent:0cm;
+font-family:Arial;}
+&#64;list l0:level1 lfo7
+{
+margin-left:0cm;
+text-indent:0cm;
+font-family:Arial;}
+&#64;list l0:level1 lfo8
+{
+margin-left:0cm;
+text-indent:0cm;
+font-family:Arial;}
+&#64;list l0:level1 lfo9
+{
+margin-left:0cm;
+text-indent:0cm;
+font-family:Arial;}
+ol
+{margin-bottom:0cm;}
+ul
+{margin-bottom:0cm;}
+-->
+</style>
+      <!--[if gte mso 10]>
+<style>
+/* Style Definitions */
+table.MsoNormalTable
+{
+mso-style-parent:"";
+font-size:10.0pt;
+font-family:"Times New Roman";}
+</style>
+<![endif]-->
+      <!--[if gte mso 9]><![endif]-->
+      <!--[if gte mso 9]><![endif]--> </p> 
+     <p style="text-indent: 21.75pt;"><span style="font-family: 宋体;">今天主要实现的是员工信息的修改和权限管理基础，修改用</span>AJAX<span style="font-family: 宋体;">实现的，权限看了不少的源代码，感觉蛮难的，不过今天只是初步介绍，还有时间再学习一下！</span></p> 
+     <p><strong>&nbsp;</strong></p> 
+     <p><strong>1.</strong><strong><span style="font-family: 宋体;">员工信息的修改</span></strong></p> 
+     <p><strong>&nbsp;</strong>1.struts<span style="font-family: 宋体;">对表单信息的回显</span></p> 
+     <p><strong>&nbsp;</strong>2.<span style="font-family: 宋体;">对可以进行修改的字段</span></p> 
+     <p style="text-indent: 21.75pt;">1.<span style="font-family: 宋体;">当该字段值发生改变时，</span>confirm”<span style="font-family: 宋体;">确定修改该信息吗？</span>”</p> 
+     <p style="text-indent: 21.75pt;">&nbsp;&nbsp; <span style="font-family: 宋体;">点击</span>”<span style="font-family: 宋体;">取消</span>”<span style="font-family: 宋体;">：使该字段恢复为以前的默认值，不做改变，需要使用隐藏域</span></p> 
+     <p style="text-indent: 21.75pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;</p> 
+     <p style="text-indent: 21.75pt;">&nbsp;<span style="font-family: 宋体;">点击“确定”：用</span>AJAX<span style="font-family: 宋体;">改变字段</span>,<span style="font-family: 宋体;">在配置文件中不需返回任何信息</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </p> 
+     <p style="text-indent: 21.75pt;">&nbsp;&nbsp; &lt;script type=”text/javascript”&gt;</p> 
+     <p style="text-indent: 27pt;"><span><span>&nbsp;&nbsp;&nbsp; </span>$(function(){</span></p> 
+     <p style="text-indent: 21.75pt;">&nbsp;&nbsp;&nbsp;&nbsp; $(“:text,select”).change(function(){</p> 
+     <p style="text-indent: 21.75pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; var flag = confirm(“<span style="font-family: 宋体;">确定要修改</span><span>” + $(this).prev(“label”).text()+”</span><span style="font-family: 宋体;">信息吗？</span>”);</p> &nbsp; &nbsp; &nbsp; &nbsp; ... 
+     <p style="text-indent: 42.75pt;">});</p> 
+     <p style="text-indent: 21.75pt;">}):</p> 
+     <p style="text-indent: 21.75pt;">&lt;/script&gt;</p> 
+     <p style="text-indent: 21.75pt;"><span>
+       <!--[if gte vml 1]>
+<![endif]--></span><span style="font-family: 宋体;">信息</span></p> 
+     <p>2.<strong><span style="font-family: 宋体;">集成</span></strong><strong>spring-security </strong><strong><span style="font-family: 宋体;">框架</span></strong></p> 
+     <p>&nbsp;1<strong>.</strong> Spring Security <span style="font-family: 宋体;">能用 于保护各种</span> Java <span style="font-family: 宋体;">应 用程序</span>(<span style="font-family: 宋体;">权限管理框架</span>).</p> 
+     <p>&nbsp;2.spring-security<span style="font-family: 宋体;">入门</span></p> 
+     <p style="margin-left: 63pt; text-indent: -63pt;">&nbsp;&nbsp; <span style="font-family: 宋体;">需 求：</span>1. Spring-security <span style="font-family: 宋体;">应用的根目录下有两个</span> Jsp <span style="font-family: 宋体;">页面</span>: index.jsp <span style="font-family: 宋体;">和</span> admin.jsp. admin <span style="font-family: 宋体;">用户有权限访问这两个页面</span>, <span style="font-family: 宋体;">而</span> user <span style="font-family: 宋体;">用户只能访问</span> index.jsp</p> 
+     <p style="text-indent: 52.5pt;">2.<span style="font-family: 宋体;">提供”登出”功能</span></p> 
+     <p>&nbsp;&nbsp; <span style="font-family: 宋体;">搭建环境：</span></p> 
+     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family: 宋体;">首先添加</span>spring<span style="font-family: 宋体;">环境</span></p> 
+     <p style="text-indent: 42pt;">1.<span style="font-family: 宋体;">加入</span>spring-security <span style="font-family: 宋体;">的</span>jar <span style="font-family: 宋体;">包：</span></p> 
+     <p style="margin-left: 21pt; text-indent: 31.5pt;">spring-security-2.0.5&quot;dist&quot;spring-security-core-2.0.5.RELEASE.jar</p> 
+     <p style="margin-left: 42pt;">2.<span style="font-family: 宋体;">在</span>web.xml <span style="font-family: 宋体;">文件中加入加入</span>spring-security <span style="font-family: 宋体;">框架的过滤器</span></p> 
+     <p style="margin-left: 42pt;">3.<span style="font-family: 宋体;">新建</span>applicationContext-security.xml <span style="font-family: 宋体;">配置文件</span>,<span style="font-family: 宋体;">并且把</span>security <span style="font-family: 宋体;">作为默认的命名</span></p> 
+     <p style="margin-left: 42pt;"><span style="font-family: 宋体;">空间</span>, <span style="font-family: 宋体;">并将其导入到</span>applicationContext.xml <span style="font-family: 宋体;">中</span></p> 
+     <p style="margin-left: 21pt;">applicationContext-security.xml<span style="font-family: 宋体;">中</span>,<span style="font-family: 宋体;">有几种重要配置：</span></p> 
+     <p style="margin-left: 21pt; text-indent: 15.75pt;">1. <span style="font-family: 宋体;">配置</span> spring-security <span style="font-family: 宋体;">的</span> http <span style="font-family: 宋体;">安全属性</span> &nbsp;&nbsp;</p> 
+     <p style="margin-left: 21pt;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;http auto-config=&quot;true&quot;&gt;</span></p> 
+     <p style="margin-left: 21pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2. <span style="font-family: 宋体;">配置需要保护那些 资源</span>, <span style="font-family: 宋体;">以及访问这些资源 所需要的权限</span>, <span style="font-family: 宋体;">若有多个 权限使用</span> ',' <span style="font-family: 宋体;">分隔</span>&nbsp;&nbsp;&nbsp;</p> 
+     <p style="margin-left: 21pt;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;intercept-url pattern=&quot;/admin.jsp&quot; access=&quot;ROLE_ADMIN&quot;/&gt;</span></p> 
+     <p style="margin-left: 21pt;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;intercept-url pattern=&quot;/index-1.jsp&quot; access=&quot;ROLE_USER&quot;/&gt;</span></p> 
+     <p style="margin-left: 21pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3.<span style="font-family: 宋体;">配置登出服务</span> &nbsp;&nbsp;</p> 
+     <p style="margin-left: 21pt;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;logout logout-url=&quot;/logout&quot;</span></p> 
+     <p style="margin-left: 21pt;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; logout-success-url=&quot;/loguot-success.jsp&quot; </span></p> 
+     <p style="margin-left: 21pt;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; invalidate-session=&quot;false&quot; /&gt;</span></p> 
+     <p style="margin-left: 21pt;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4.<span style="font-family: 宋体;">配置登录页面</span>, </p> 
+     <p style="margin-left: 21pt;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; default-target-url: </span><span style="font-family: 宋体;">若直接请求登录页面</span>, <span style="font-family: 宋体;">那么该属性配置登录成功之后的相应页面</span>&nbsp;&nbsp; </p> 
+     <p style="margin-left: 21pt;"><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; always-use-default-target: </span><span style="font-family: 宋体;">若请求的目标页面受保护</span><span>, </span><span style="font-family: 宋体;">则</span><span> spring-security </span><span style="font-family: 宋体;">会相应</span>&nbsp;login-page <span style="font-family: 宋体;">属性对应的页面</span>, <span style="font-family: 宋体;">默认情况下</span>, <span style="font-family: 宋体;">若登录成功将相应刚才请求的目标页面</span>,</p> 
+     <p><span style="font-family: 宋体;">但这相当麻烦，每次都要配置不少信息。下面 有更好的实现，即</span></p> 
+     <p><span style="font-family: 宋体;">把需要拦截的</span>url<span style="font-family: 宋体;">，权限，用户信息放到放数据库中，实现如下：</span></p> 
+     <p>1.<span style="font-family: 宋体;">实体类：</span></p> 
+     <p style="margin-left: 10.5pt;"><span>Authority -- </span><span style="font-family: 宋体;">权限</span></p> 
+     <p style="margin-left: 10.5pt;"><span>Resource -- </span><span style="font-family: 宋体;">资源</span></p> 
+     <p style="margin-left: 10.5pt;"><span>Role -- </span><span style="font-family: 宋体;">角色</span></p> 
+     <p style="margin-left: 10.5pt;"><span>Employee -- </span><span style="font-family: 宋体;">添加</span><span>Set&lt;Role&gt; roleSet </span><span style="font-family: 宋体;">属性</span></p> 
+     <p>2.<span style="font-family: 宋体;">关系</span></p> 
+     <p style="margin-left: 10.5pt;"><span>Resource </span><span style="font-family: 宋体;">和</span><span>Authority </span><span style="font-family: 宋体;">为多对多的对应关系</span></p> 
+     <p style="margin-left: 10.5pt;"><span>Authority </span><span style="font-family: 宋体;">和</span><span>Role </span><span style="font-family: 宋体;">为多对多的对应关系</span></p> 
+     <p style="margin-left: 10.5pt;"><span>Role </span><span style="font-family: 宋体;">和</span>Employee <span style="font-family: 宋体;">为多对多的对应关系</span></p> 
+     <p style="text-indent: 10.5pt;"><span style="font-family: 宋体;">所以还需要</span>3 <span style="font-family: 宋体;">个额外的关联表</span></p> 
+     <p><span>
+       <!--[if gte vml 1]>
+<![endif]--><br /> </span></p> 
+     <p>3.<span style="font-family: 宋体;">实现把用户信息，权限信息存放到数据库中</span></p> 
+     <p><strong>&nbsp;</strong>&nbsp;1. <span style="font-family: 宋体;">实现把用户信息</span>, <span style="font-family: 宋体;">权限信息存放到数据库中</span></p> 
+     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1). <span style="font-family: 宋体;">自定义</span> UserDetailsService <span style="font-family: 宋体;">接口的实现类</span>, <span style="font-family: 宋体;">将该类配置到</span> Spring <span style="font-family: 宋体;">的</span> IOC <span style="font-family: 宋体;">容器中</span>, <span style="font-family: 宋体;">并在</span></p> 
+     <p><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &lt;authentication-provider user-service-ref=&quot;&quot;&gt; </span><span style="font-family: 宋体;">节点的</span> user-service-ref <span style="font-family: 宋体;">属性中引用该</span> Bean. </p> 
+     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2). <span style="font-family: 宋体;">通过</span> debug <span style="font-family: 宋体;">查看</span> UserDetailsService <span style="font-family: 宋体;">接口的实现类返回的</span> UserDetails <span style="font-family: 宋体;">对象</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </p> 
+     <p>4. <span style="font-family: 宋体;">实现资源信息存放到数据库中</span>: <span style="font-family: 宋体;">访问资源时</span>, spring-security <span style="font-family: 宋体;">能区分出访问该资源需要哪些权限</span></p> 
+     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1). <span style="font-family: 宋体;">自定义</span><span> ObjectDefinitionSource </span><span style="font-family: 宋体;">接口的实现类</span>, <span style="font-family: 宋体;">将该类的实例装配给</span><span> FilterSecurityInterceptor </span><span style="font-family: 宋体;">的</span> objectDefinitionSource <span style="font-family: 宋体;">的 属性</span>.<span style="font-family: 宋体;">即可实现自定义的资 源获取</span>.</p> 
+     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2). <span style="font-family: 宋体;">通过继承</span><span> DefaultFilterInvocationDefinitionSource </span><span style="font-family: 宋体;">类的方法定义</span> <span>&nbsp;&nbsp; ObjectDefinitionSource </span><span style="font-family: 宋体;">接口的实现类有困难</span>, <span style="font-family: 宋体;">因为</span><span> DefaultFilterInvocationDefinitionSource</span></p> 
+     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family: 宋体;">中没有无参的构 造器</span>, <span style="font-family: 宋体;">该构造器有两个参 数</span><span>: UrlMatcher urlMatcher, LinkedHashMap requestMap. </span></p> 
+     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; urlMatcher <span style="font-family: 宋体;">参数可 以通过</span> bean <span style="font-family: 宋体;">的形式 事先配置</span>, <span style="font-family: 宋体;">但</span> requestMap <span style="font-family: 宋体;">参数类似于</span><span>: {[/admin.jsp]=[ROLE_ADMIN], [/index.jsp]=[ROLE_USER]}, </span><span style="font-family: 宋体;">需要访问数据库才能对其初始化</span>, <span style="font-family: 宋体;">但这不可能</span>.</p> 
+     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3). <span style="font-family: 宋体;">通过查看</span> spring-security <span style="font-family: 宋体;">核心</span> jar <span style="font-family: 宋体;">包的</span> META-IN <span style="font-family: 宋体;">下</span><span style="font-family: 宋体;">的</span> spring.handlers <span style="font-family: 宋体;">找到</span><span> SecurityNamespaceHandler, </span><span style="font-family: 宋体;">在该类中查看</span><span> registerBeanDefinitionParser(Elements.HTTP, new HttpSecurityBeanDefinitionParser()); </span><span style="font-family: 宋体;">方法</span></p> 
+     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="font-family: 宋体;">在</span><span> HttpSecurityBeanDefinitionParser </span><span style="font-family: 宋体;">类 中可以看到如何创建</span> DefaultFilterInvocationDefinitionSource <span style="font-family: 宋体;">实例</span>.</p> 
+     <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4). <span style="font-family: 宋体;">通过</span> FactoryBean <span style="font-family: 宋体;">在</span> IOC <span style="font-family: 宋体;">容器中注册</span><span>&nbsp;DefaultFilterInvocationDefinitionSource </span><span style="font-family: 宋体;">实例</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </p> 
+     <p><strong>&nbsp;</strong></p> 
+     <p><br /> </p> 
+     <div class="postDesc">
+      posted @ 
+      <a href="http://www.blogjava.net/d66380022/archive/2010/03/10/315010.html" title="permalink">2010-03-10 01:00</a> d66380022|&nbsp;
+      <a href="http://www.blogjava.net/d66380022/admin/EditPosts.aspx?postid=315010">编辑</a>&nbsp;
+      <a href="http://www.blogjava.net/d66380022/AddToFavorite.aspx?id=315010">收藏</a>
+     </div> 
+     <div id="homepage1_HomePageDays_ctl00_DayList_BottomPager" style="text-align:right;margin-right:10px;margin-top:10px;">
+      <style>.pager { text-align:right;	}</style>
+      <a href="http://www.blogjava.net/d66380022/default.html?page=1&amp;OnlyTitle=1">仅列出标题</a>
+      <div class="pager">
+        共5页:&nbsp;1&nbsp;
+       <a href="http://www.blogjava.net/d66380022/default.html?page=2">2</a>&nbsp;
+       <a href="http://www.blogjava.net/d66380022/default.html?page=3">3</a>&nbsp;
+       <a href="http://www.blogjava.net/d66380022/default.html?page=4">4</a>&nbsp;
+       <a href="http://www.blogjava.net/d66380022/default.html?page=5">5</a>&nbsp;
+       <a href="http://www.blogjava.net/d66380022/default.html?page=2">下一页</a>&nbsp; 
+      </div>
+     </div> 
+    </div> 
+   </div> 
+   <div id="leftcontent" style="display:none"> 
+    <div id="leftcontentcontainer"> 
+     <table id="Calendar1_entryCal" class="Cal" cellspacing="0" cellpadding="0" title="日历" border="0"> 
+      <tbody>
+       <tr>
+        <td colspan="7" bgcolor="Silver">
+         <table class="CalTitle" cellspacing="0" border="0" width="100%"> 
+          <tbody>
+           <tr>
+            <td class="CalNextPrev" width="15%"><a href="javascript:__doPostBack('Calendar1$entryCal','V6241')" style="color:Black" title="转到上一个月">&lt;</a></td>
+            <td align="center" width="70%">2017年3月</td>
+            <td class="CalNextPrev" align="right" width="15%"><a href="javascript:__doPostBack('Calendar1$entryCal','V6300')" style="color:Black" title="转到下一个月">&gt;</a></td>
+           </tr> 
+          </tbody>
+         </table></td>
+       </tr>
+       <tr>
+        <th class="CalDayHeader" align="center" abbr="日" scope="col">日</th>
+        <th class="CalDayHeader" align="center" abbr="一" scope="col">一</th>
+        <th class="CalDayHeader" align="center" abbr="二" scope="col">二</th>
+        <th class="CalDayHeader" align="center" abbr="三" scope="col">三</th>
+        <th class="CalDayHeader" align="center" abbr="四" scope="col">四</th>
+        <th class="CalDayHeader" align="center" abbr="五" scope="col">五</th>
+        <th class="CalDayHeader" align="center" abbr="六" scope="col">六</th>
+       </tr>
+       <tr>
+        <td class="CalOtherMonthDay" align="center" width="14%">26</td>
+        <td class="CalOtherMonthDay" align="center" width="14%">27</td>
+        <td class="CalOtherMonthDay" align="center" width="14%">28</td>
+        <td align="center" width="14%">1</td>
+        <td align="center" width="14%">2</td>
+        <td align="center" width="14%">3</td>
+        <td class="CalWeekendDay" align="center" width="14%">4</td>
+       </tr>
+       <tr>
+        <td class="CalWeekendDay" align="center" width="14%">5</td>
+        <td align="center" width="14%">6</td>
+        <td align="center" width="14%">7</td>
+        <td align="center" width="14%">8</td>
+        <td align="center" width="14%">9</td>
+        <td align="center" width="14%">10</td>
+        <td class="CalWeekendDay" align="center" width="14%">11</td>
+       </tr>
+       <tr>
+        <td class="CalWeekendDay" align="center" width="14%">12</td>
+        <td align="center" width="14%">13</td>
+        <td align="center" width="14%">14</td>
+        <td align="center" width="14%">15</td>
+        <td align="center" width="14%">16</td>
+        <td align="center" width="14%">17</td>
+        <td class="CalWeekendDay" align="center" width="14%">18</td>
+       </tr>
+       <tr>
+        <td class="CalWeekendDay" align="center" width="14%">19</td>
+        <td align="center" width="14%">20</td>
+        <td align="center" width="14%">21</td>
+        <td align="center" width="14%">22</td>
+        <td align="center" width="14%">23</td>
+        <td align="center" width="14%">24</td>
+        <td class="CalWeekendDay" align="center" width="14%">25</td>
+       </tr>
+       <tr>
+        <td class="CalWeekendDay" align="center" width="14%">26</td>
+        <td class="CalTodayDay" align="center" width="14%">27</td>
+        <td align="center" width="14%">28</td>
+        <td align="center" width="14%">29</td>
+        <td align="center" width="14%">30</td>
+        <td align="center" width="14%">31</td>
+        <td class="CalOtherMonthDay" align="center" width="14%">1</td>
+       </tr>
+       <tr>
+        <td class="CalOtherMonthDay" align="center" width="14%">2</td>
+        <td class="CalOtherMonthDay" align="center" width="14%">3</td>
+        <td class="CalOtherMonthDay" align="center" width="14%">4</td>
+        <td class="CalOtherMonthDay" align="center" width="14%">5</td>
+        <td class="CalOtherMonthDay" align="center" width="14%">6</td>
+        <td class="CalOtherMonthDay" align="center" width="14%">7</td>
+        <td class="CalOtherMonthDay" align="center" width="14%">8</td>
+       </tr> 
+      </tbody>
+     </table> 
+     <br /> 
+     <h3>常用链接</h3> 
+     <ul> 
+      <li><a id="SingleColumn1_ctl00_repeaterLinks_ctl01_lnkLinkItem" href="http://www.blogjava.net/d66380022/MyPosts.html">我的随笔</a></li> 
+      <li><a id="SingleColumn1_ctl00_repeaterLinks_ctl02_lnkLinkItem" href="http://www.blogjava.net/d66380022/MyComments.html">我的评论</a></li> 
+      <li><a id="SingleColumn1_ctl00_repeaterLinks_ctl03_lnkLinkItem" href="http://www.blogjava.net/d66380022/OtherPosts.html">我的参与</a></li> 
+     </ul> 
+     <h3>留言簿</h3> 
+     <ul> 
+      <li> <a id="SingleColumn1_ctl01_lnkMessages" href="http://www.blogjava.net/d66380022/Contact.aspx?id=1">给我留言</a> </li>
+      <li> <a id="SingleColumn1_ctl01_lnkPublicMsgView" href="http://www.blogjava.net/d66380022/default.aspx?opt=msg">查看公开留言</a> </li>
+      <li> <a id="SingleColumn1_ctl01_lnkPrivateMsgView" href="http://www.blogjava.net/d66380022/admin/MyMessages.aspx">查看私人留言</a> </li> 
+     </ul> 
+     <!--done--> 
+     <h1 class="catListTitle">随笔档案<span style="font-size:11px;font-weight:normal">(44)</span></h1> 
+     <ul class="catList"> 
+      <li class="catListItem"> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl01_Link" class="listitem" href="http://www.blogjava.net/d66380022/archive/2010/04.html">2010年4月 (1)</a></li> 
+      <li class="catListItem"> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl02_Link" class="listitem" href="http://www.blogjava.net/d66380022/archive/2010/03.html">2010年3月 (14)</a></li> 
+      <li class="catListItem"> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl03_Link" class="listitem" href="http://www.blogjava.net/d66380022/archive/2010/02.html">2010年2月 (16)</a></li> 
+      <li class="catListItem"> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl04_Link" class="listitem" href="http://www.blogjava.net/d66380022/archive/2010/01.html">2010年1月 (13)</a></li> 
+     </ul> 
+     <h1 class="catListTitle">文章档案<span style="font-size:11px;font-weight:normal">(2)</span></h1> 
+     <ul class="catList"> 
+      <li class="catListItem"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl01_Link" class="listitem" href="http://www.blogjava.net/d66380022/archives/2010/01.html">2010年1月 (2)</a></li> 
+     </ul> 
+     <script language="JavaScript">
+function SearchGoogle(key,evt,site)
+		{
+			if(evt.keyCode==13 || evt.keyCode==0 || evt.type =='click')
+			{
+				key.focus();
+				var keystr = encodeURIComponent(key.value);
+				url = "http://www.google.com/search?q=";
+				url = url+keystr;
+				url += "&ie=UTF-8&oe=GB2312&hl=zh-CN&domains="+site+"&sitesearch="+site;
+				window.location=url;
+				return false;
+			}
+		}
+</script> 
+     <h3>搜索</h3> 
+     <ul> 
+      <li> </li>
+      <li><input style="WIDTH: 130px" type="text" name="q" id="q" onkeydown="return SearchGoogle(document.getElementById('q'),event,'www.blogjava.net/d66380022')" />&nbsp;<input onclick="SearchGoogle(document.getElementById('q'),event,'www.blogjava.net/d66380022')" type="button" value="搜索" name="sa" /> </li> 
+     </ul> 
+     <h3>最新评论 <a id="SingleColumn1__2e115bc_RSSHyperlink1" href="http://www.blogjava.net/d66380022/CommentsRSS.aspx"><img src="/images/xml.gif" border="0" /></a></h3> 
+     <div class="RecentComment"> 
+     </div> 
+     <h3>阅读排行榜</h3> 
+     <div class="RecentComment"> 
+      <ul style="word-break:break-all"> 
+       <li> <a id="SingleColumn1__3c122dd_TopList_ctl01_Hyperlink1" href="http://www.blogjava.net/d66380022/archive/2010/01/16/309747.html">1.&nbsp;传智播客--Struts的FormBean及常见错误和标签的使用(2676)</a> </li> 
+       <li> <a id="SingleColumn1__3c122dd_TopList_ctl02_Hyperlink1" href="http://www.blogjava.net/d66380022/archive/2010/01/15/309626.html">2.&nbsp;传智播客 重写Struts底层(1771)</a> </li> 
+       <li> <a id="SingleColumn1__3c122dd_TopList_ctl03_Hyperlink1" href="http://www.blogjava.net/d66380022/archive/2010/01/15/309625.html">3.&nbsp;传智播客--2010-01-14 Struts1.x的深入(1337)</a> </li> 
+       <li> <a id="SingleColumn1__3c122dd_TopList_ctl04_Hyperlink1" href="http://www.blogjava.net/d66380022/archive/2010/03/24/316385.html">4.&nbsp;传智播客 2010-03-23 易宝支付流程及面试技巧(1050)</a> </li> 
+       <li> <a id="SingleColumn1__3c122dd_TopList_ctl05_Hyperlink1" href="http://www.blogjava.net/d66380022/archive/2010/03/13/315346.html">5.&nbsp;传智播客 2010-03-10 权限管理的实现(1036)</a> </li> 
+      </ul> 
+     </div> 
+     <h3>评论排行榜</h3> 
+     <div class="RecentComment"> 
+      <ul style="word-break:break-all"> 
+       <li> <a id="SingleColumn1__3a8a5b1_TopList_ctl01_Hyperlink1" href="http://www.blogjava.net/d66380022/archive/2010/04/01/317110.html">1.&nbsp;传智播客 2010-03-31 巴巴运动网的权限模块总结(0)</a> </li> 
+       <li> <a id="SingleColumn1__3a8a5b1_TopList_ctl02_Hyperlink1" href="http://www.blogjava.net/d66380022/archive/2010/03/25/316546.html">2.&nbsp;2010-03-24 Struts2基础(0)</a> </li> 
+       <li> <a id="SingleColumn1__3a8a5b1_TopList_ctl03_Hyperlink1" href="http://www.blogjava.net/d66380022/archive/2010/03/24/316385.html">3.&nbsp;传智播客 2010-03-23 易宝支付流程及面试技巧(0)</a> </li> 
+       <li> <a id="SingleColumn1__3a8a5b1_TopList_ctl04_Hyperlink1" href="http://www.blogjava.net/d66380022/archive/2010/03/20/316041.html">4.&nbsp; 传智播客 3.19 3G获得网上数据显示(0)</a> </li> 
+       <li> <a id="SingleColumn1__3a8a5b1_TopList_ctl05_Hyperlink1" href="http://www.blogjava.net/d66380022/archive/2010/03/17/315729.html">5.&nbsp;传智播客 2010-3-17 3g数据存储与数据显示(0)</a> </li> 
+      </ul> 
+     </div> 
+    </div> 
+   </div> 
+   <!--done--> 
+   <div class="footer">
+     Powered by: 
+    <a href="http://www.cnblogs.com">博客园</a> 模板提供：
+    <a href="http://blog.hjenglish.com">沪江博客</a> Copyright &copy;2017 d66380022 
+   </div> 
+  </form> 
+  <script type="text/javascript" src="/script/ShowHidden.js"></script> 
+  <script type="text/javascript">
+	  var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-476124-3']);
+	  _gaq.push(['_trackPageview']);
+
+	  (function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	</script>   
+ </body>
+</html>

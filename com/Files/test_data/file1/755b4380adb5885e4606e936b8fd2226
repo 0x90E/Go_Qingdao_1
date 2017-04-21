@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <meta http-equiv="X-UA-Compatible" content="IE=10,IE=9,IE=8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" /> 
+  <title>PHP利用ImageMagick把PDF转成PNG - Phper - 水平凡's Blog</title> 
+  <link rel="stylesheet" id="style-css" href="http://www.abc3210.com/statics/themes/d8/css/style.css?ver=30830" type="text/css" media="all" /> 
+  <link rel="canonical" href="http://www.abc3210.com/2012/phper_12/55.shtml/" /> 
+  <meta name="description" content="ImageMagick是基于命令行的图像处理软件，能实现非常丰富的功能。如果服务器上安装了ImageMagick，php脚本可以使用shell命令来完成，也可以用php的原生函数库Imagick或者MagickWandForPHP函数来调用ImageMagick软件来实现。" /> 
+  <meta name="keywords" content="PHP,ImageMagick" /> 
+  <!--[if lt IE 9]><script src="http://www.abc3210.com/statics/themes/d8/js/html5.js"></script><![endif]--> 
+  <script type="text/javascript">
+//全局变量
+var GV = {
+    DIMAUB: "http://www.abc3210.com/",
+    JS_ROOT: "statics/js/"
+};
+</script> 
+  <script type="text/javascript" src="http://cbjs.baidu.com/js/m.js"></script> 
+ </head> 
+ <body class="single single-post postid-5067 single-format-standard"> 
+  <header class="header"> 
+   <div class="navbar"> 
+    <h1 class="logo"><a href="http://www.abc3210.com/" title="水平凡's Blog - –ImageMagick是基于命令行的图像处理软件，能实现非常丰富的功能。如果服务器上安装了ImageMagick，php脚本可以使用shell命令来完成，也可以用php的原生函数库Imagick或者MagickWandForPHP函数来调用ImageMagick软件来实现。">水平凡's Blog</a></h1> 
+    <ul class="nav"> 
+     <li id="menu-item-0" class="menu-item menu-item-type-custom menu-item-object-custom   menu-item-home menu-item-0"><a href="http://www.abc3210.com/">首页</a></li> 
+     <li id="menu-item-1" class="menu-item menu-item-type-taxonomy menu-item-object-category current-menu-item menu-item-1"><a href="http://www.abc3210.com/list-1.html">日志</a> 
+      <ul class="sub-menu"> 
+       <li id="menu-item-2" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-2"><a href="http://www.abc3210.com/record/web/">网站推荐</a></li>
+       <li id="menu-item-3" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3"><a href="http://www.abc3210.com/record/log/">心情日志</a></li>
+       <li id="menu-item-4" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-4"><a href="http://www.abc3210.com/record/work/">个人作品</a></li>
+       <li id="menu-item-5" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-5"><a href="http://www.abc3210.com/record/network/">互联网络</a></li>
+       <li id="menu-item-6" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-6"><a href="http://www.abc3210.com/record/phper/">Phper</a></li>
+       <li id="menu-item-7" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7"><a href="http://www.abc3210.com/record/js/">JavaScript</a></li>
+       <li id="menu-item-8" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-8"><a href="http://www.abc3210.com/record/html5/">HTML5</a></li>
+       <li id="menu-item-13" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-13"><a href="http://www.abc3210.com/record/android/">安卓</a></li>
+       <li id="menu-item-14" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-14"><a href="http://www.abc3210.com/record/mysql/">MySQL</a></li> 
+      </ul> </li>
+     <li id="menu-item-9" class="menu-item menu-item-type-taxonomy menu-item-object-category  menu-item-9"><a href="http://www.abc3210.com/photo/">相册</a> </li>
+     <li id="menu-item-10" class="menu-item menu-item-type-taxonomy menu-item-object-category  menu-item-10"><a href="http://www.abc3210.com/music/">音乐</a> 
+      <ul class="sub-menu"> 
+       <li id="menu-item-11" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-11"><a href="http://www.abc3210.com/music/sad/">流行歌曲</a></li>
+       <li id="menu-item-12" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12"><a href="http://www.abc3210.com/music/mv/">网络视频</a></li> 
+      </ul> </li>
+     <li id="menu-item-15" class="menu-item menu-item-type-taxonomy menu-item-object-category  menu-item-15"><a href="http://www.abc3210.com/2012/work_05/1.shtml">留言</a> </li> 
+    </ul> 
+    <div class="menu pull-right"> 
+     <form method="post" class="dropdown search-form" action="http://www.abc3210.com/index.php?g=Search"> 
+      <input class="search-input" name="q" type="text" placeholder="输入关键字搜索" autofocus="" x-webkit-speech="" /> 
+      <input class="btn btn-success search-submit" type="submit" value="搜索" /> 
+      <ul class="dropdown-menu search-suggest"> 
+      </ul> 
+     </form> 
+     <div class="btn-group pull-left"> 
+      <button class="btn btn-primary" data-toggle="modal" data-target="#feed">订阅</button> 
+      <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown">关注 <i class="caret"></i></button> 
+      <ul class="dropdown-menu pull-right"> 
+       <li><a href="http://t.qq.com/shuipf" target="_blank">腾讯微博</a></li> 
+       <li><a href="http://weibo.com/1612909231" target="_blank">新浪微博</a></li> 
+      </ul> 
+     </div> 
+    </div> 
+   </div> 
+   <div class="speedbar"> 
+    <div class="pull-right" style="display:none"> 
+     <i class="icon-user icon12"></i> 
+     <a href="http://www.abc3210.com/index.php?g=Member&amp;a=login">登录</a> 
+    </div> 
+    <div class="toptip">
+     <strong class="text-success">最新消息：</strong>ShuipFCMS 已经发布 
+    </div> 
+   </div> 
+  </header> 
+  <section class="container"> 
+   <div class="content-wrap"> 
+    <div class="content"> 
+     <header class="article-header"> 
+      <h1 class="article-title"><a href="http://www.abc3210.com/2012/phper_12/55.shtml">PHP利用ImageMagick把PDF转成PNG</a></h1> 
+      <div class="meta"> 
+       <span class="muted"><a href="http://www.abc3210.com/record/phper/"><i class="icon-list-alt icon12"></i> Phper</a></span> 
+       <time class="muted"><i class="ico icon-time icon12"></i> 2012-12-25 22:38:42</time> 
+       <span class="muted"><i class="ico icon-eye-open icon12"></i> <span id="hits">0</span>浏览</span> 
+       <span class="muted"><i class="icon-comment icon12"></i> <a href="#comments">0评论</a></span> 
+      </div> 
+     </header> 
+     <div class="banner banner-post"> 
+      <!-- 广告位：栏目横幅 950*90 -->
+      <script type="text/javascript">BAIDU_CLB_fillSlot("767544");</script> 
+     </div> 
+     <article class="article-content"> 
+      <p style="padding:0px;color:#444444;font-size:13px;line-height:23px;-webkit-text-size-adjust:none;background-color:#ffffff;margin-top:0px;margin-bottom:0px;">需求：通过PHP把PDF生成PNG图片，一般用在在线阅读浏览用的。</p>
+      <p style="padding:0px;color:#444444;font-size:13px;line-height:23px;-webkit-text-size-adjust:none;background-color:#ffffff;margin-top:0px;margin-bottom:0px;"><br /></p>
+      <p style="padding:0px;color:#444444;font-size:13px;line-height:23px;-webkit-text-size-adjust:none;background-color:#ffffff;margin-top:0px;margin-bottom:0px;"><strong>Windows下实现：</strong><br />1.PHP的DLL扩展下载地址：http://valokuva.org/outside-blog-content/imagick-windows-builds/<br />2.里面有用于PHP不同的版本DLL，要注意和你的版本相同<br />3.把下载好的DLL改名成 php_imagick.dll（我是下载的php_imagick_dyn-Q16.dll）然后放入到PHP安装目录中的EXT。<br />4.修改php.ini 增加 &quot;extension=php_imagick.dll&quot; 不包含双引号哦！<br />5.重启apache后写个phpinfo后搜索“imagick”关键字，有的话就代表安装好了。<br />6.最后要安装ghostscript.exe，要不然会报错的。下载地址：http://downloads.ghostscript.com/public/gs904w32.exe<br />7.最后执行PHP脚本即可，根据需求自己修改。</p>
+      <p style="padding:0px;color:#444444;font-size:13px;line-height:23px;-webkit-text-size-adjust:none;background-color:#ffffff;margin-top:0px;margin-bottom:0px;"><br /><strong>Linux下实现：</strong><br />1 下载ImageMagick-6.7.1-6<br /></p>
+      <pre class="prettyprint lang-" style="font-family:menlo, monaco, 'courier new', monospace;margin:5px;padding:10px;border-top-left-radius:3px;border-top-right-radius:3px;border-bottom-right-radius:3px;border-bottom-left-radius:3px;background-color:#fee9cc;border:1px dashed #cccccc;font-size:12px;line-height:20px;color:#444444;-webkit-text-size-adjust:none;"><span class="pln" style="color:#000000;">wget ftp</span><span class="pun" style="color:#666600;">:</span><span class="com" style="color:#880000;">//ftp.u-aizu.ac.jp/pub/graphics/image/ImageMagick/imagemagick.org/ImageMagick.tar.gz</span></pre>
+      <p><span style="color:#444444;font-size:13px;line-height:23px;-webkit-text-size-adjust:none;background-color:#ffffff;">2 解压</span><br style="color:#444444;font-size:13px;line-height:23px;-webkit-text-size-adjust:none;background-color:#ffffff;" /></p>
+      <pre class="prettyprint lang-" style="font-family:menlo, monaco, 'courier new', monospace;margin:5px;padding:10px;border-top-left-radius:3px;border-top-right-radius:3px;border-bottom-right-radius:3px;border-bottom-left-radius:3px;background-color:#fee9cc;border:1px dashed #cccccc;font-size:12px;line-height:20px;color:#444444;-webkit-text-size-adjust:none;"><span class="com" style="color:#880000;"># tar -xzvf ImageMagick.tar.gz</span></pre>
+      <p><span style="color:#444444;font-size:13px;line-height:23px;-webkit-text-size-adjust:none;background-color:#ffffff;">3 编译安装</span><br style="color:#444444;font-size:13px;line-height:23px;-webkit-text-size-adjust:none;background-color:#ffffff;" /></p>
+      <pre class="prettyprint lang-" style="font-family:menlo, monaco, 'courier new', monospace;margin:5px;padding:10px;border-top-left-radius:3px;border-top-right-radius:3px;border-bottom-right-radius:3px;border-bottom-left-radius:3px;background-color:#fee9cc;border:1px dashed #cccccc;font-size:12px;line-height:20px;color:#444444;-webkit-text-size-adjust:none;"><span class="com" style="color:#880000;"># cd &nbsp;ImageMagick-6.7.1-6</span><span class="pln" style="color:#000000;"><br /></span><span class="com" style="color:#880000;"># ./configure -prefix=/usr/local/imagemagick -enable-lzw -with-modules &amp;&amp; make &amp;&amp; make install</span></pre>
+      <p><span style="color:#444444;font-size:13px;line-height:23px;-webkit-text-size-adjust:none;background-color:#ffffff;">4.查看一下</span><br style="color:#444444;font-size:13px;line-height:23px;-webkit-text-size-adjust:none;background-color:#ffffff;" /></p>
+      <pre class="prettyprint lang-" style="font-family:menlo, monaco, 'courier new', monospace;margin:5px;padding:10px;border-top-left-radius:3px;border-top-right-radius:3px;border-bottom-right-radius:3px;border-bottom-left-radius:3px;background-color:#fee9cc;border:1px dashed #cccccc;font-size:12px;line-height:20px;color:#444444;-webkit-text-size-adjust:none;"><span class="com" style="color:#880000;"># /usr/local/imagemagick/bin/convert -version</span></pre>
+      <p><span style="color:#444444;font-size:13px;line-height:23px;-webkit-text-size-adjust:none;background-color:#ffffff;">5.测试一下</span><br style="color:#444444;font-size:13px;line-height:23px;-webkit-text-size-adjust:none;background-color:#ffffff;" /></p>
+      <pre class="prettyprint lang-" style="font-family:menlo, monaco, 'courier new', monospace;margin:5px;padding:10px;border-top-left-radius:3px;border-top-right-radius:3px;border-bottom-right-radius:3px;border-bottom-left-radius:3px;background-color:#fee9cc;border:1px dashed #cccccc;font-size:12px;line-height:20px;color:#444444;-webkit-text-size-adjust:none;"><span class="com" style="color:#880000;"># pwd</span><span class="pln" style="color:#000000;"><br /></span><span class="pun" style="color:#666600;">/</span><span class="pln" style="color:#000000;">root</span><span class="pun" style="color:#666600;">/</span><span class="pln" style="color:#000000;">test</span><span class="pun" style="color:#666600;">/</span><span class="typ" style="color:#660066;">ImageMagick</span><span class="pun" style="color:#666600;">-</span><span class="lit" style="color:#006666;">6.7</span><span class="pun" style="color:#666600;">.</span><span class="lit" style="color:#006666;">1</span><span class="pun" style="color:#666600;">-</span><span class="lit" style="color:#006666;">6</span><span class="pln" style="color:#000000;"><br /></span><span class="com" style="color:#880000;"># cd images/</span><span class="pln" style="color:#000000;"><br /></span><span class="com" style="color:#880000;"># /usr/local/imagemagick/bin/convert -sample 25%x25% wizard.jpg test.jpg</span></pre>
+      <p><span style="color:#444444;font-size:13px;line-height:23px;-webkit-text-size-adjust:none;background-color:#ffffff;">6.开始装imagick的PHP扩展(注意：安装imagick扩展时需要PHP &gt;= 5.1.3，ImageMagick &gt;= 6.2.4)</span><br /></p>
+      <p style="padding:0px;color:#444444;font-size:13px;line-height:23px;-webkit-text-size-adjust:none;background-color:#ffffff;margin-top:0px;margin-bottom:0px;">7.获取imagick(最新版本获取：http://pecl.php.net/package/imagick)<br /></p>
+      <pre class="prettyprint lang-" style="font-family:menlo, monaco, 'courier new', monospace;margin:5px;padding:10px;border-top-left-radius:3px;border-top-right-radius:3px;border-bottom-right-radius:3px;border-bottom-left-radius:3px;background-color:#fee9cc;border:1px dashed #cccccc;font-size:12px;line-height:20px;color:#444444;-webkit-text-size-adjust:none;"><span class="com" style="color:#880000;"># wget http://pecl.php.net/get/imagick-3.1.0RC1.tgz</span></pre>
+      <p><span style="color:#444444;font-size:13px;line-height:23px;-webkit-text-size-adjust:none;background-color:#ffffff;"></span><span style="color:#444444;font-size:13px;line-height:23px;-webkit-text-size-adjust:none;background-color:#ffffff;">http://code.google.com/p/lnamp-web-server/downloads/detail?name=imagick-3.1.0b1.tgz&amp;can=2&amp;q=label%3Aimagick</span></p>
+      <p style="padding:0px;color:#444444;font-size:13px;line-height:23px;-webkit-text-size-adjust:none;background-color:#ffffff;margin-top:0px;margin-bottom:0px;">8.解压<br /></p>
+      <pre class="prettyprint lang-" style="font-family:menlo, monaco, 'courier new', monospace;margin:5px;padding:10px;border-top-left-radius:3px;border-top-right-radius:3px;border-bottom-right-radius:3px;border-bottom-left-radius:3px;background-color:#fee9cc;border:1px dashed #cccccc;font-size:12px;line-height:20px;color:#444444;-webkit-text-size-adjust:none;"><span class="com" style="color:#880000;"># tar -zxvf imagick-3.1.0RC1.tgz</span><span class="pln" style="color:#000000;"><br />apt</span><span class="pun" style="color:#666600;">-</span><span class="kwd" style="color:#000088;">get</span><span class="pln" style="color:#000000;"> install php5</span><span class="pun" style="color:#666600;">-</span><span class="pln" style="color:#000000;">dev</span></pre>
+      <p><span style="color:#444444;font-size:13px;line-height:23px;-webkit-text-size-adjust:none;background-color:#ffffff;">9.phpize</span><br style="color:#444444;font-size:13px;line-height:23px;-webkit-text-size-adjust:none;background-color:#ffffff;" /></p>
+      <pre class="prettyprint lang-" style="font-family:menlo, monaco, 'courier new', monospace;margin:5px;padding:10px;border-top-left-radius:3px;border-top-right-radius:3px;border-bottom-right-radius:3px;border-bottom-left-radius:3px;background-color:#fee9cc;border:1px dashed #cccccc;font-size:12px;line-height:20px;color:#444444;-webkit-text-size-adjust:none;"><span class="com" style="color:#880000;"># cd imagick-3.1.0RC1</span><span class="pln" style="color:#000000;"><br /></span><span class="com" style="color:#880000;"># phpize</span></pre>
+      <p><span style="color:#444444;font-size:13px;line-height:23px;-webkit-text-size-adjust:none;background-color:#ffffff;">10.配置编译</span><br style="color:#444444;font-size:13px;line-height:23px;-webkit-text-size-adjust:none;background-color:#ffffff;" /></p>
+      <pre class="prettyprint lang-" style="font-family:menlo, monaco, 'courier new', monospace;margin:5px;padding:10px;border-top-left-radius:3px;border-top-right-radius:3px;border-bottom-right-radius:3px;border-bottom-left-radius:3px;background-color:#fee9cc;border:1px dashed #cccccc;font-size:12px;line-height:20px;color:#444444;-webkit-text-size-adjust:none;"><span class="com" style="color:#880000;"># ./configure</span><span class="pln" style="color:#000000;"><br /></span><span class="com" style="color:#880000;"># make&amp;&amp;make install</span></pre>
+      <p><span style="color:#444444;font-size:13px;line-height:23px;-webkit-text-size-adjust:none;background-color:#ffffff;">注意：编译成功后会在php 扩展目录生成imagick.so，然后再php.ini里面 加上“extension=&quot;/usr/lib/php5/20090626+lfs/imagick.so&quot;”</span><br /></p>
+      <p style="padding:0px;color:#444444;font-size:13px;line-height:23px;-webkit-text-size-adjust:none;background-color:#ffffff;margin-top:0px;margin-bottom:0px;">11.重启apache</p>
+      <pre class="prettyprint lang-" style="font-family:menlo, monaco, 'courier new', monospace;margin:5px;padding:10px;border-top-left-radius:3px;border-top-right-radius:3px;border-bottom-right-radius:3px;border-bottom-left-radius:3px;background-color:#fee9cc;border:1px dashed #cccccc;font-size:12px;line-height:20px;color:#444444;-webkit-text-size-adjust:none;"><span class="str" style="color:#008800;">/etc/</span><span class="pln" style="color:#000000;">init</span><span class="pun" style="color:#666600;">.</span><span class="pln" style="color:#000000;">d</span><span class="pun" style="color:#666600;">/</span><span class="pln" style="color:#000000;">apache2 restart</span></pre>
+      <p style="padding:0px;color:#444444;font-size:13px;line-height:23px;-webkit-text-size-adjust:none;background-color:#ffffff;margin-top:0px;margin-bottom:0px;">12.也可以使用PECL方式安装</p>
+      <p style="padding:0px;color:#444444;font-size:13px;line-height:23px;-webkit-text-size-adjust:none;background-color:#ffffff;margin-top:0px;margin-bottom:0px;">1) sudo apt-get install libmagick-dev<br />2) sudo apt-get install php-pear php5-dev<br />3) sudo pecl install imagick<br /></p>
+      <p style="padding:0px;color:#444444;font-size:13px;line-height:23px;-webkit-text-size-adjust:none;background-color:#ffffff;margin-top:0px;margin-bottom:0px;"><strong>PHP代码调用：</strong></p>
+      <pre class="prettyprint lang-php" style="font-family:menlo, monaco, 'courier new', monospace;margin:5px;padding:10px;border-top-left-radius:3px;border-top-right-radius:3px;border-bottom-right-radius:3px;border-bottom-left-radius:3px;background-color:#fee9cc;border:1px dashed #cccccc;font-size:12px;line-height:20px;color:#444444;-webkit-text-size-adjust:none;"><span class="kwd" style="color:#000088;">function</span><span class="pln" style="color:#000000;"> pdf2png</span><span class="pun" style="color:#666600;">(</span><span class="pln" style="color:#000000;">$PDF</span><span class="pun" style="color:#666600;">,</span><span class="pln" style="color:#000000;">$Path</span><span class="pun" style="color:#666600;">){</span><span class="pln" style="color:#000000;"><br /> &nbsp; </span><span class="kwd" style="color:#000088;">if</span><span class="pun" style="color:#666600;">(!</span><span class="pln" style="color:#000000;">extension_loaded</span><span class="pun" style="color:#666600;">(</span><span class="str" style="color:#008800;">'imagick'</span><span class="pun" style="color:#666600;">)){</span><span class="pln" style="color:#000000;"><br /> &nbsp; &nbsp; &nbsp; </span><span class="kwd" style="color:#000088;">return</span><span class="pln" style="color:#000000;"></span><span class="kwd" style="color:#000088;">false</span><span class="pun" style="color:#666600;">;</span><span class="pln" style="color:#000000;"><br /> &nbsp; </span><span class="pun" style="color:#666600;">}</span><span class="pln" style="color:#000000;"><br /> &nbsp; </span><span class="kwd" style="color:#000088;">if</span><span class="pun" style="color:#666600;">(!</span><span class="pln" style="color:#000000;">file_exists</span><span class="pun" style="color:#666600;">(</span><span class="pln" style="color:#000000;">$PDF</span><span class="pun" style="color:#666600;">)){</span><span class="pln" style="color:#000000;"><br /> &nbsp; &nbsp; &nbsp; </span><span class="kwd" style="color:#000088;">return</span><span class="pln" style="color:#000000;"></span><span class="kwd" style="color:#000088;">false</span><span class="pun" style="color:#666600;">;</span><span class="pln" style="color:#000000;"><br /> &nbsp; </span><span class="pun" style="color:#666600;">}</span><span class="pln" style="color:#000000;"><br /> &nbsp; $IM </span><span class="pun" style="color:#666600;">=</span><span class="pln" style="color:#000000;"></span><span class="kwd" style="color:#000088;">new</span><span class="pln" style="color:#000000;"> imagick</span><span class="pun" style="color:#666600;">();</span><span class="pln" style="color:#000000;"><br /> &nbsp; $IM</span><span class="pun" style="color:#666600;">-&gt;</span><span class="pln" style="color:#000000;">setResolution</span><span class="pun" style="color:#666600;">(</span><span class="lit" style="color:#006666;">120</span><span class="pun" style="color:#666600;">,</span><span class="lit" style="color:#006666;">120</span><span class="pun" style="color:#666600;">);</span><span class="pln" style="color:#000000;"><br /> &nbsp; $IM</span><span class="pun" style="color:#666600;">-&gt;</span><span class="pln" style="color:#000000;">setCompressionQuality</span><span class="pun" style="color:#666600;">(</span><span class="lit" style="color:#006666;">100</span><span class="pun" style="color:#666600;">);</span><span class="pln" style="color:#000000;"><br /> &nbsp; $IM</span><span class="pun" style="color:#666600;">-&gt;</span><span class="pln" style="color:#000000;">readImage</span><span class="pun" style="color:#666600;">(</span><span class="pln" style="color:#000000;">$PDF</span><span class="pun" style="color:#666600;">);</span><span class="pln" style="color:#000000;"><br /> &nbsp; </span><span class="kwd" style="color:#000088;">foreach</span><span class="pln" style="color:#000000;"></span><span class="pun" style="color:#666600;">(</span><span class="pln" style="color:#000000;">$IM </span><span class="kwd" style="color:#000088;">as</span><span class="pln" style="color:#000000;"> $Key </span><span class="pun" style="color:#666600;">=&gt;</span><span class="pln" style="color:#000000;"> $Var</span><span class="pun" style="color:#666600;">){</span><span class="pln" style="color:#000000;"><br /> &nbsp; &nbsp; &nbsp; $Var</span><span class="pun" style="color:#666600;">-&gt;</span><span class="pln" style="color:#000000;">setImageFormat</span><span class="pun" style="color:#666600;">(</span><span class="str" style="color:#008800;">'png'</span><span class="pun" style="color:#666600;">);</span><span class="pln" style="color:#000000;"><br /> &nbsp; &nbsp; &nbsp; $Filename </span><span class="pun" style="color:#666600;">=</span><span class="pln" style="color:#000000;"> $Path</span><span class="pun" style="color:#666600;">.</span><span class="str" style="color:#008800;">'/'</span><span class="pun" style="color:#666600;">.</span><span class="pln" style="color:#000000;">md5</span><span class="pun" style="color:#666600;">(</span><span class="pln" style="color:#000000;">$Key</span><span class="pun" style="color:#666600;">.</span><span class="pln" style="color:#000000;">time</span><span class="pun" style="color:#666600;">()).</span><span class="str" style="color:#008800;">'.png'</span><span class="pun" style="color:#666600;">;</span><span class="pln" style="color:#000000;"><br /> &nbsp; &nbsp; &nbsp; </span><span class="kwd" style="color:#000088;">if</span><span class="pun" style="color:#666600;">(</span><span class="pln" style="color:#000000;">$Var</span><span class="pun" style="color:#666600;">-&gt;</span><span class="pln" style="color:#000000;">writeImage</span><span class="pun" style="color:#666600;">(</span><span class="pln" style="color:#000000;">$Filename</span><span class="pun" style="color:#666600;">)</span><span class="pln" style="color:#000000;"></span><span class="pun" style="color:#666600;">==</span><span class="pln" style="color:#000000;"></span><span class="kwd" style="color:#000088;">true</span><span class="pun" style="color:#666600;">){</span><span class="pln" style="color:#000000;"><br /> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $Return</span><span class="pun" style="color:#666600;">[]</span><span class="pln" style="color:#000000;"></span><span class="pun" style="color:#666600;">=</span><span class="pln" style="color:#000000;"> $Filename</span><span class="pun" style="color:#666600;">;</span><span class="pln" style="color:#000000;"><br /> &nbsp; &nbsp; &nbsp; </span><span class="pun" style="color:#666600;">}</span><span class="pln" style="color:#000000;"><br /> &nbsp; </span><span class="pun" style="color:#666600;">}</span><span class="pln" style="color:#000000;"><br /> &nbsp; </span><span class="kwd" style="color:#000088;">return</span><span class="pln" style="color:#000000;"> $Return</span><span class="pun" style="color:#666600;">;</span><span class="pln" style="color:#000000;"><br /></span><span class="pun" style="color:#666600;">}</span></pre> 
+      <p>转载请注明：<a href="http://www.abc3210.com/">水平凡's Blog</a> &raquo; <a href="http://www.abc3210.com/2012/phper_12/55.shtml">PHP利用ImageMagick把PDF转成PNG</a></p> 
+     </article> 
+     <footer class="article-footer"> 
+      <div class="article-tags">
+       继续浏览有关 
+       <a href="http://www.abc3210.com/tag-php.html" target="_blank">PHP</a>,
+       <a href="http://www.abc3210.com/tag-ImageMagick.html" target="_blank">ImageMagick</a> 的文章
+      </div> 
+      <div class="share"> 
+       <div id="ckepop" class="bdshare_t bds_tools get-codes-bdshare">
+        <span class="share-tit">分享到：</span>
+        <a class="jiathis_button_qzone"></a> 
+        <a class="jiathis_button_tsina"></a> 
+        <a class="jiathis_button_tqq"></a> 
+        <a class="jiathis_button_renren"></a> 
+        <a class="jiathis_button_kaixin001"></a> 
+        <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+       </div> 
+      </div> 
+     </footer> 
+     <nav class="article-nav"> 
+      <span class="article-nav-prev">上一篇：<a class="pre_a" href="http://www.abc3210.com/2012/phper_11/49.shtml">PHP魔术方法总结</a></span> 
+      <span class="article-nav-next">下一篇：<a class="pre_a" href="http://www.abc3210.com/2013/phper_02/66.shtml">转：PHP执行Linux命令行小例-文件压缩</a></span> 
+     </nav> 
+     <div class="relates"> 
+      <h3>与本文相关的文章</h3> 
+      <ul> 
+       <li><a href="http://www.abc3210.com/2013/work_05/84.shtml"><img style="height:110px;" src="http://www.abc3210.com/statics/themes/d8/images/thumbnail.png" width="150" height="110" alt="时隔半个月ShuipFCMS又迎来新版本：20130517" /><br /> 时隔半个月ShuipFCMS又迎来新版本：20130517</a></li>
+       <li><a href="http://www.abc3210.com/2013/work_04/81.shtml"><img style="height:110px;" src="http://www.abc3210.com/statics/themes/d8/images/thumbnail.png" width="150" height="110" alt="ShuipFCMS更新，版本：20130426，欢迎更新！" /><br /> ShuipFCMS更新，版本：20130426，欢迎更新！</a></li>
+       <li><a href="http://www.abc3210.com/2013/phper_03/78.shtml"><img style="height:110px;" src="http://file.abc3210.com/d/file/contents/2013/03/51490fab50e63.jpg" width="150" height="110" alt="使用PHP获取根域名的方法！" /><br /> 使用PHP获取根域名的方法！</a></li>
+       <li><a href="http://www.abc3210.com/2013/phper_02/66.shtml"><img style="height:110px;" src="http://www.abc3210.com/statics/themes/d8/images/thumbnail.png" width="150" height="110" alt="转：PHP执行Linux命令行小例-文件压缩" /><br /> 转：PHP执行Linux命令行小例-文件压缩</a></li> 
+      </ul> 
+     </div> 
+     <div class="banner banner-related"> 
+      <script type="text/javascript">BAIDU_CLB_fillSlot("767570");</script> 
+     </div> 
+     <div id="ds-reset" class="commentlist"> 
+     </div> 
+    </div> 
+   </div> 
+   <aside class="sidebar"> 
+    <div class="widget d_textbanner">
+     <a class="style02" href="http://www.shuipfcms.com"><strong>推荐作品</strong> <h2>ShuipFCMS</h2> <p>这是一款 基于ThinkPHP框架为核心，采用独立分组的方式开发的内容管理系统。支持模块安装/卸载，模型自定义，整合UCenter通行证等。...</p> </a> 
+    </div> 
+    <div class="widget d_banner"> 
+     <div class="d_banner_inner"> 
+      <script type="text/javascript">BAIDU_CLB_fillSlot("767569");</script> 
+     </div> 
+    </div> 
+    <div class="widget d_postlist"> 
+     <h3 class="widget_tit">最新发布</h3> 
+     <ul> 
+      <li><a href="http://www.abc3210.com/2015/web_05/136.shtml"><span class="thumbnail"><img src="http://www.abc3210.com/statics/themes/d8/images/thumbnail.png" alt="CentOS一键安装shadowsocks脚本，轻松畅游网络" /></span><span class="text">CentOS一键安装shadowsocks脚本，轻松畅游网络</span><span class="muted">2015-05-13</span><span class="muted">0评论</span></a></li>
+      <li><a href="http://www.abc3210.com/2015/web_03/135.shtml"><span class="thumbnail"><img src="http://www.abc3210.com/d/file/content/2015/03/550be51f3758a.png" alt="推荐一款苹果mac os系统下蛮好用的Git客户端" /></span><span class="text">推荐一款苹果mac os系统下蛮好用的Git客户端</span><span class="muted">2015-03-20</span><span class="muted">0评论</span></a></li>
+      <li><a href="http://www.abc3210.com/2015/log_01/134.shtml"><span class="thumbnail"><img src="http://www.abc3210.com/statics/themes/d8/images/thumbnail.png" alt="TF" /></span><span class="text">TF</span><span class="muted">2015-01-03</span><span class="muted">0评论</span></a></li>
+      <li><a href="http://www.abc3210.com/2014/log_08/133.shtml"><span class="thumbnail"><img src="http://www.abc3210.com/d/file/content/2014/08/thumb_53e4d1b59c3cf.jpg" alt="最不能勉强的，莫过于感情" /></span><span class="text">最不能勉强的，莫过于感情</span><span class="muted">2014-08-08</span><span class="muted">2评论</span></a></li>
+      <li><a href="http://www.abc3210.com/2014/web_06/132.shtml"><span class="thumbnail"><img src="http://www.abc3210.com/d/file/content/2014/06/53b118f10547a.png" alt="artDialog v6 更新，经典的网页对话框组件，内外皆用心雕琢" /></span><span class="text">artDialog v6 更新，经典的网页对话框组件，内外皆用心雕琢</span><span class="muted">2014-06-30</span><span class="muted">0评论</span></a></li>
+      <li><a href="http://www.abc3210.com/2014/web_06/131.shtml"><span class="thumbnail"><img src="http://www.abc3210.com/statics/themes/d8/images/thumbnail.png" alt="向鼠标右键菜单增加菜单项" /></span><span class="text">向鼠标右键菜单增加菜单项</span><span class="muted">2014-06-26</span><span class="muted">1评论</span></a></li>
+      <li><a href="http://www.abc3210.com/2014/log_06/129.shtml"><span class="thumbnail"><img src="http://www.abc3210.com/d/file/content/2014/06/thumb_426_221_53a63dc12843f.png" alt="这两天把程序ShuipFCMS升级到2.0" /></span><span class="text">这两天把程序ShuipFCMS升级到2.0</span><span class="muted">2014-06-22</span><span class="muted">1评论</span></a></li>
+      <li><a href="http://www.abc3210.com/2014/phper_05/128.shtml"><span class="thumbnail"><img src="http://www.abc3210.com/statics/themes/d8/images/thumbnail.png" alt="使用CURL抓取淘宝页面" /></span><span class="text">使用CURL抓取淘宝页面</span><span class="muted">2014-05-22</span><span class="muted">0评论</span></a></li>
+      <li><a href="http://www.abc3210.com/2014/phper_05/126.shtml"><span class="thumbnail"><img src="http://www.abc3210.com/statics/themes/d8/images/thumbnail.png" alt="PHP的ArrayAccess接口介绍" /></span><span class="text">PHP的ArrayAccess接口介绍</span><span class="muted">2014-05-09</span><span class="muted">0评论</span></a></li>
+      <li><a href="http://www.abc3210.com/2014/web_02/122.shtml"><span class="thumbnail"><img src="http://www.abc3210.com/statics/themes/d8/images/thumbnail.png" alt="分享一个网上找到的Linux下日志按日分割" /></span><span class="text">分享一个网上找到的Linux下日志按日分割</span><span class="muted">2014-02-18</span><span class="muted">2评论</span></a></li> 
+     </ul> 
+    </div> 
+    <div class="widget d_tag"> 
+     <h3 class="widget_tit"><a class="btn btn-primary" href="http://www.abc3210.com/Index/tags.html">标签云</a>标签云</h3> 
+     <div class="d_tags"> 
+      <a href="http://www.abc3210.com/tag-ShuipFCMS.html">ShuipFCMS (17)</a>
+      <a href="http://www.abc3210.com/tag-php.html">php (10)</a>
+      <a href="http://www.abc3210.com/tag-jQuery.html">jQuery (9)</a>
+      <a href="http://www.abc3210.com/tag-linux.html">linux (7)</a>
+      <a href="http://www.abc3210.com/tag-MySQL.html">MySQL (7)</a>
+      <a href="http://www.abc3210.com/tag-视频.html">视频 (6)</a>
+      <a href="http://www.abc3210.com/tag-插件.html">插件 (4)</a>
+      <a href="http://www.abc3210.com/tag-UEditor.html">UEditor (4)</a>
+      <a href="http://www.abc3210.com/tag-CURL.html">CURL (3)</a>
+      <a href="http://www.abc3210.com/tag-计划任务.html">计划任务 (2)</a>
+      <a href="http://www.abc3210.com/tag-ThinkPHP.html">ThinkPHP (2)</a>
+      <a href="http://www.abc3210.com/tag-优酷.html">优酷 (2)</a>
+      <a href="http://www.abc3210.com/tag-模板.html">模板 (2)</a>
+      <a href="http://www.abc3210.com/tag-编辑器.html">编辑器 (2)</a>
+      <a href="http://www.abc3210.com/tag-HTML5.html">HTML5 (2)</a>
+      <a href="http://www.abc3210.com/tag-Oschina.html">Oschina (2)</a>
+      <a href="http://www.abc3210.com/tag-技巧.html">技巧 (2)</a>
+      <a href="http://www.abc3210.com/tag-升级.html">升级 (2)</a>
+      <a href="http://www.abc3210.com/tag-api.html">api (2)</a>
+      <a href="http://www.abc3210.com/tag-Windows.html">Windows (2)</a>
+      <a href="http://www.abc3210.com/tag-D-Simple.html">D-Simple (2)</a>
+      <a href="http://www.abc3210.com/tag-Netbeans.html">Netbeans (2)</a>
+      <a href="http://www.abc3210.com/tag-ubuntu.html">ubuntu (2)</a>
+      <a href="http://www.abc3210.com/tag-留言.html">留言 (1)</a>
+      <a href="http://www.abc3210.com/tag-Adobe.html">Adobe (1)</a>
+      <a href="http://www.abc3210.com/tag-CS6.html">CS6 (1)</a>
+      <a href="http://www.abc3210.com/tag-Photoshop.html">Photoshop (1)</a>
+      <a href="http://www.abc3210.com/tag-搬家.html">搬家 (1)</a>
+      <a href="http://www.abc3210.com/tag-程序.html">程序 (1)</a>
+      <a href="http://www.abc3210.com/tag-无限循环.html">无限循环 (1)</a>
+      <a href="http://www.abc3210.com/tag-Windows7.html">Windows7 (1)</a>
+      <a href="http://www.abc3210.com/tag-注册表.html">注册表 (1)</a>
+      <a href="http://www.abc3210.com/tag-源码.html">源码 (1)</a>
+      <a href="http://www.abc3210.com/tag-远程附件.html">远程附件 (1)</a>
+      <a href="http://www.abc3210.com/tag-PoshyTip.html">PoshyTip (1)</a>
+      <a href="http://www.abc3210.com/tag-Waterfall.html">Waterfall (1)</a>
+      <a href="http://www.abc3210.com/tag-minify.html">minify (1)</a>
+      <a href="http://www.abc3210.com/tag-合并.html">合并 (1)</a>
+      <a href="http://www.abc3210.com/tag-压缩.html">压缩 (1)</a>
+      <a href="http://www.abc3210.com/tag-外键.html">外键 (1)</a>
+      <a href="http://www.abc3210.com/tag-触发器.html">触发器 (1)</a>
+      <a href="http://www.abc3210.com/tag-京东商城.html">京东商城 (1)</a>
+      <a href="http://www.abc3210.com/tag-显卡.html">显卡 (1)</a>
+      <a href="http://www.abc3210.com/tag-infinite-scroll.html">infinite-scroll (1)</a>
+      <a href="http://www.abc3210.com/tag-Mcrypt.html">Mcrypt (1)</a>
+      <a href="http://www.abc3210.com/tag-artTemplate.html">artTemplate (1)</a>
+      <a href="http://www.abc3210.com/tag-模板引擎.html">模板引擎 (1)</a>
+      <a href="http://www.abc3210.com/tag-干爹.html">干爹 (1)</a>
+      <a href="http://www.abc3210.com/tag-翻唱.html">翻唱 (1)</a>
+      <a href="http://www.abc3210.com/tag-国产神作.html">国产神作 (1)</a> 
+     </div> 
+    </div> 
+    <div class="widget d_reader"> 
+     <h3 class="widget_tit"><a class="btn btn-primary" href="javascript:;;">读者墙</a>活跃读者</h3> 
+     <ul> 
+      <li><a title="[水平凡] 近期点评156次" target="_blank"><img alt="" src="http://www.abc3210.com/api.php?m=avatar&amp;a=gravatar&amp;email=admin@abc3210.com" class="avatar avatar-36 photo" height="36" width="36" /></a></li>
+      <li><a title="[yuuk] 近期点评20次" target="_blank"><img alt="" src="http://www.abc3210.com/api.php?m=avatar&amp;a=gravatar&amp;email=645481746@qq.com" class="avatar avatar-36 photo" height="36" width="36" /></a></li>
+      <li><a title="[网友] 近期点评19次" target="_blank"><img alt="" src="http://www.abc3210.com/api.php?m=avatar&amp;a=gravatar&amp;email=ntwycom@126.com" class="avatar avatar-36 photo" height="36" width="36" /></a></li>
+      <li><a title="[缘来是尔] 近期点评10次" target="_blank"><img alt="" src="http://www.abc3210.com/api.php?m=avatar&amp;a=gravatar&amp;email=zhaoqingpeng@126.com" class="avatar avatar-36 photo" height="36" width="36" /></a></li>
+      <li><a title="[zj] 近期点评8次" target="_blank"><img alt="" src="http://www.abc3210.com/api.php?m=avatar&amp;a=gravatar&amp;email=cdpc120@163.com" class="avatar avatar-36 photo" height="36" width="36" /></a></li>
+      <li><a title="[wb] 近期点评8次" target="_blank"><img alt="" src="http://www.abc3210.com/api.php?m=avatar&amp;a=gravatar&amp;email=wb1491@189.cn" class="avatar avatar-36 photo" height="36" width="36" /></a></li>
+      <li><a title="[97站长网] 近期点评8次" target="_blank"><img alt="" src="http://www.abc3210.com/api.php?m=avatar&amp;a=gravatar&amp;email=123456@qq.com" class="avatar avatar-36 photo" height="36" width="36" /></a></li>
+      <li><a title="[food] 近期点评7次" target="_blank"><img alt="" src="http://www.abc3210.com/api.php?m=avatar&amp;a=gravatar&amp;email=kingf_c@foxmail.com" class="avatar avatar-36 photo" height="36" width="36" /></a></li>
+      <li><a title="[我的名字叫麒] 近期点评7次" target="_blank"><img alt="" src="http://www.abc3210.com/api.php?m=avatar&amp;a=gravatar&amp;email=franziska.cool@gmail.com" class="avatar avatar-36 photo" height="36" width="36" /></a></li>
+      <li><a title="[wk6999] 近期点评7次" target="_blank"><img alt="" src="http://www.abc3210.com/api.php?m=avatar&amp;a=gravatar&amp;email=wk6999@vip.qq.com" class="avatar avatar-36 photo" height="36" width="36" /></a></li>
+      <li><a title="[zzjjzz] 近期点评6次" target="_blank"><img alt="" src="http://www.abc3210.com/api.php?m=avatar&amp;a=gravatar&amp;email=zzjjzz1970@sohu.com" class="avatar avatar-36 photo" height="36" width="36" /></a></li>
+      <li><a title="[cry] 近期点评6次" target="_blank"><img alt="" src="http://www.abc3210.com/api.php?m=avatar&amp;a=gravatar&amp;email=1765876538@qq.com" class="avatar avatar-36 photo" height="36" width="36" /></a></li>
+      <li><a title="[jz] 近期点评6次" target="_blank"><img alt="" src="http://www.abc3210.com/api.php?m=avatar&amp;a=gravatar&amp;email=jz@admin.com" class="avatar avatar-36 photo" height="36" width="36" /></a></li>
+      <li><a title="[bobo] 近期点评6次" target="_blank"><img alt="" src="http://www.abc3210.com/api.php?m=avatar&amp;a=gravatar&amp;email=omail@163.com" class="avatar avatar-36 photo" height="36" width="36" /></a></li>
+      <li><a title="[完美] 近期点评6次" target="_blank"><img alt="" src="http://www.abc3210.com/api.php?m=avatar&amp;a=gravatar&amp;email=landy2020@qq.com" class="avatar avatar-36 photo" height="36" width="36" /></a></li>
+      <li><a title="[aaaa] 近期点评5次" target="_blank"><img alt="" src="http://www.abc3210.com/api.php?m=avatar&amp;a=gravatar&amp;email=328105663@qq.com" class="avatar avatar-36 photo" height="36" width="36" /></a></li> 
+     </ul> 
+    </div> 
+   </aside> 
+  </section> 
+  <footer class="footer"> 
+   <div class="footer-inner"> 
+    <div class="copyright pull-left">
+      版权所有，保留一切权利！ &copy; 2015 
+     <a href="http://www.shuipfcms.com">本系统由 ShuipFCMS 驱动</a>　Theme 
+     <a href="http://www.daqianduan.com/" target="_blank">D8</a> 备案号：
+     <a target="_blank" href="http://www.miitbeian.gov.cn/">闽ICP备13015355号-1</a> 空间支持：
+     <a href="http://www.aliyun.com/cps/rebate?from_uid=D+t0iM/HBr0=" target="_blank">阿里云主机</a>
+    </div> 
+    <div class="trackcode pull-right"> 
+    </div> 
+   </div> 
+  </footer> 
+  <script type="text/javascript">
+window._deel = {
+    name: "水平凡's Blog",
+    rss: 'http://www.abc3210.com/index.php?m=Rss&rssid=6',
+    maillist: 'on',
+    maillistCode: '2c71a16adfbf60765cfd166c9ca523620d2bd7cee528ab48',
+    roll: [0,0]
+}
+function loginStatus(){
+	$.getJSON("http://www.abc3210.com/index.php?g=Api&m=User&a=getuser&callback=%3F", function (data) {
+		if (data['status']) {
+			$('.speedbar .pull-right').html('<i class="icon-user icon12"></i> ' + data['username'] + ' &nbsp; <a href="http://www.abc3210.com/index.php?g=Member">会员中心</a> &nbsp; &nbsp; <i class="icon-off icon12"></i> <a href="http://www.abc3210.com/index.php?g=Member&a=logout">登出</a>');
+		}
+	});
+};
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F6a7ac600fcf5ef3f164732dcea2e2ba5' type='text/javascript'%3E%3C/script%3E"));
+</script> 
+  <script type="text/javascript" src="http://www.abc3210.com/statics/js/jquery.js"></script> 
+  <script type="text/javascript" src="http://www.abc3210.com/statics/js/wind.js"></script> 
+  <script type="text/javascript" src="http://www.abc3210.com/statics/themes/d8/js/d8.js"></script> 
+  <script type="text/javascript" src="http://www.abc3210.com/statics/js/ajaxForm.js"></script> 
+  <script>
+//评论
+var commentsQuery = {
+    'catid': '6',
+    'id': '55',
+    'size': 10
+};
+(function () {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = GV.DIMAUB+'statics/js/comment/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+})();
+jQuery(document).ready(function($) {
+	//点击
+	$.get("http://www.abc3210.com/api.php?m=Hits&catid=6&id=55", function (data) {
+	    $("#hits").html(data.views);
+	}, "json");
+	//代码高亮
+	if($("div.article-entry pre").length){
+		Wind.css('http://www.abc3210.com/statics/js/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css');
+		Wind.use('http://www.abc3210.com/statics/js/ueditor/third-party/SyntaxHighlighter/shCore.js', function () {
+			SyntaxHighlighter.highlight();
+		});
+	}
+});
+</script> 
+  <script type="text/javascript" src="http://v2.jiathis.com/code/jia.js" charset="utf-8"></script>  
+ </body>
+</html>

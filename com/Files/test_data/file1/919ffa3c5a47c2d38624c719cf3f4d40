@@ -1,0 +1,227 @@
+<!--?php defined('IN_USER') or exit('No permission resources.'); ?--><!DOCTYPE html><html lang="en-US"><head>
+	<meta charset="gb2312">
+	<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,initial-scale=1.0">
+	<meta content="yes" name="apple-mobile-web-app-capable">
+	<meta content="yes" name="apple-touch-fullscreen">
+	<meta content="telephone=no" name="format-detection">
+	<meta content="black" name="apple-mobile-web-app-status-bar-style">
+	<title>重置密码</title>
+	<link rel="stylesheet" href="https://scs.static.xywy.com/ucenter/css/m_reset.css">
+	<link rel="stylesheet" href="https://scs.static.xywy.com/ucenter/css/reset_login.css">
+</head>
+<body>
+	<div class="wrap">
+		<header class="header box borderBox">
+			<div class="header-logo boxFlex">
+                        	<a href="http://3g.xywy.com">寻医问药网</a><span class="header-dot">·</span><a href="http://3g.i.xywy.com">个人中心</a>
+                        </div>
+			<div class="header-reg boxFlex"><a href="/member/3g_reg_mobile.htm?backurl=http://3g.i.xywy.com">注册</a></div>
+		</header>	
+		<section class="reset-con">
+			<div class="title">
+				<h2 class="title-name">重置密码</h2>
+				<a href="/member/3g_login.htm?backurl=http://3g.i.xywy.com" class="lgoin-link">登录</a>
+			</div>
+			<form class="reset-form">
+				<div class="error"></div>
+				<div class="reset-list">
+					<input type="text" class="j-close-show username" name="userName" placeholder="请输入用户名/手机号/邮箱">
+					<span class="closebtn"></span>
+				</div>
+				<div class="reset-yzm box">
+					<div class="reset-yzm-input boxFlex borderBox">
+						<input type="text" class="yzm" name="keyword" placeholder="请输入验证码">
+					</div>
+					<img class="reset-yzm-pic" onclick="this.src='/getpwd.php?act=confirm_captcha&amp;'+Math.random()" src="/getpwd.php?act=confirm_captcha" alt="">
+					<span class="reset-yzm-change boxFlex borderBox">换一张</span>
+				</div>
+				<input type="button" class="reset-submit" value="提交，进入安全验证">
+			</form>
+		</section>
+        <section class="mt20" id="ifooter">
+	<div class="f14 w Qkentry">
+		<div class="fl">
+        <a href="/member/3g_login.htm" id="a_login">登录</a>
+        <a href="http://3g.i.xywy.com/user/index?from=question">我的提问</a></div>
+		<div class="fr mr10" id="appdownit"><a href="http://app.xywy.com/xywy/app_down.html">下载客户端</a></div>
+		
+	</div>
+     <!--<script>
+        if(getAppQingTag('frombd_app')) { 
+        	var appdownit = document.getElementById('appdownit');
+        		appdownit.style.display="none";
+        }
+        </script>
+	</div>
+    <?php if($alwaysShow) { ?>
+	  <script type="text/javascript">
+        function gospeed(){
+             AdClickimg = window['imgObj' + (new Date().getTime())] = new Image();
+             AdClickimg.src = 'http://stat-z.xywy.com/e.png?clickname=clickwap_3g_wenkang_speed_version_entrance&time=' + new Date().getTime();
+        }   
+		
+    </script> 
+    <p style="color:#666;text-align:center;font-size:14px;margin-top:10px;"><a onmousedown="gospeed()" href="<?php echo '/m'.$data['info']['quesData']['qdir'].'/'.$data['info']['quesData']['qid'].'.htm'; ?>">极速版</a>丨触屏版</p>
+	<?php } ?>-->
+     <script type="text/javascript">
+		if(document.cookie.indexOf("cookie_user_3g")>-1 || document.cookie.indexOf("cookie_user")>-1){
+			document.getElementById('a_login').style.display="none";
+		}
+	</script>
+
+	<nav class="tc w navList f14 clearfix">
+    <a href="http://3g.xywy.com/">寻医问药网首页</a><a href="http://3g.club.xywy.com/">有问必答</a><a href="http://3g.zhuanjia.xywy.com">找专家</a><a href="http://3g.jib.xywy.com">查疾病</a><a href="http://3g.yao.xywy.com/">查药品</a>
+    </nav>
+	<footer class="clearfix foot lh180 pt10">
+		<div class="w320 clearfix bc">
+		<div class="footfl fl tc"><a class="dib f8 mt30" href="http://3g.xywy.com/"><span class="db graydeep">XYWY</span></a></div>
+       
+		<div class="footfr fl f13 graydeep mt5"><p>参考信息不作为诊断医疗数据</p>版权所有：寻医问药（2002-2017） <a href="http://3g.xywy.com/feedback?from=3g_i" style="color:#256ac9">反馈</a></div>
+		</div>
+	</footer>
+</section>
+
+<script type="text/javascript"> 
+
+    if(/alipay/i.test(navigator.userAgent)){
+        //$("#iheader").css({"visibility":"hidden"});
+        //$("#ifooter").css({"visibility":"hidden"});
+        document.getElementById("iheader").style.display="none"; 
+        document.getElementById("ifooter").style.display="none"; 
+    } 
+
+</script>
+<script type="text/javascript" src="https://stat.xywy.com/odm.js"></script>	</div>
+<script type="text/javascript" src="https://scs.static.xywy.com/ucenter/js/jquery.min.js"></script>
+<script>
+$(function(){
+	//清空删除文本框
+	$('.j-close-show').on('input', function(){
+		var userVal = $.trim($(this).val());
+		if(!userVal == ''){
+			$(this).siblings('.closebtn').show();
+		}else{
+			$(this).siblings('.closebtn').hide();
+		}
+	});
+	$('.closebtn').on('click', function(){
+		$(this).siblings('.j-close-show').val('');
+		$(this).hide();
+	});
+	//验证码变化
+	function changeCaptcha(){
+		$('.reset-yzm-pic').attr('src', '/getpwd.php?act=confirm_captcha&amp;' + Math.random());
+	}
+	$('.reset-yzm-change').click(function(){
+		changeCaptcha();
+	});
+	//开始验证
+	$('input[type=text]').focus(function(){
+		$(this).closest('.bor-warn').removeClass('bor-warn');
+		$('.error').text('');
+	});
+	function showError(XMLHttpRequest, textStatus, errorThrown) {
+	    var pattern = /timeout|error|notmodified|parsererror/i;
+	    if (pattern.test(textStatus)) {
+	    	$('[data-title=error]').html('加载失败');
+	    	$('[data-login=loginUp]').html('登录');
+            $('input').removeAttr('disabled');
+	    }
+	}
+	$('.reset-submit').on({
+		click: function(){			
+			$(this).val('提交中...');
+			var self = $(this),
+				username = $.trim($('.username').val()),
+				yzm =  $.trim($('.yzm').val()),
+				json_data = {
+					account : username,
+					usertype : 1,
+					captcha : yzm
+				};
+			var from_url = '';
+			var link_url = '';
+			if(from_url){
+				link_url='&fromurl=';
+			}
+			self.closest('.reset-form').find('input').prop('disabled', 'disabled');
+			if(username === '' && yzm === ""){
+				self.val('提交，进入安全验证');
+				self.closest('.reset-form').find('input').removeAttr('disabled');
+				$('.reset-list,.reset-yzm-input').addClass('bor-warn');
+				changeCaptcha();
+				$('.error').text('请输入用户名和验证码');
+			}else if(username === ''){
+				self.val('提交，进入安全验证');
+				self.closest('.reset-form').find('input').removeAttr('disabled');
+				$('.reset-list').addClass('bor-warn');
+				changeCaptcha();
+				$('.error').text('请输入用户名');
+			}else if(yzm === ''){
+				self.val('提交，进入安全验证');
+				self.closest('.reset-form').find('input').removeAttr('disabled');
+				$('.reset-yzm-input').addClass('bor-warn');
+				changeCaptcha();
+				$('.error').text('请输入验证码');
+			}else{
+				$.ajax({
+					url: '/getpwd.php?act=confirm_submit',
+					type: 'get',
+					dataType: 'jsonp',
+					jsonpCallback: 'uN3nOu4w',
+					data: json_data,
+					error: showError,
+					success: function(data){
+						if(data.result == '10000'){
+							window.location.href = '/sec/3g_getpwd_verify.htm?v=' + data.content+link_url;
+							self.closest('.reset-form').find('input').removeAttr('disabled');
+							$('.reset-list,.reset-yzm-input').removeClass('bor-warn');
+							self.val('提交，进入安全验证');
+						}else{
+							if(data.result == '-20002'){
+								self.val('提交，进入安全验证');
+								self.closest('.reset-form').find('input').removeAttr('disabled');
+								$('.reset-list').addClass('bor-warn');
+								changeCaptcha();
+								$('.error').text('请输入用户名');
+							}else if(data.result == '-20001'){
+								self.val('提交，进入安全验证');
+								self.closest('.reset-form').find('input').removeAttr('disabled');
+								$('.reset-yzm-input').addClass('bor-warn');
+								changeCaptcha();
+								$('.error').text('请输入验证码');
+							}else if(data.result == '-20007'){
+								self.val('提交，进入安全验证');
+								self.closest('.reset-form').find('input').removeAttr('disabled');
+								$('.reset-list').addClass('bor-warn');
+								changeCaptcha();
+								$('.error').text('用户不存在');
+							}else if(data.result == '-20006'){
+								self.val('提交，进入安全验证');
+								self.closest('.reset-form').find('input').removeAttr('disabled');
+								$('.reset-yzm-input').addClass('bor-warn');
+								changeCaptcha();
+								$('.error').text('图形验证码错误');
+							}else if(data.result == '-20005'){
+								self.val('提交，进入安全验证');
+								self.closest('.reset-form').find('input').removeAttr('disabled');
+								$('.reset-yzm-input').addClass('bor-warn');
+								changeCaptcha();
+								$('.error').text('图形验证码校验错误次数达到限定,请稍后再试');
+							}else{
+								self.val('提交，进入安全验证');
+								self.closest('.reset-form').find('input').removeAttr('disabled');
+								changeCaptcha();
+								alert(data.content);
+							}
+						}
+					}
+				});
+			}
+		}
+	});
+	
+});
+</script>
+
+</body></html>

@@ -1,0 +1,2113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+  <meta http-equiv="x-ua-compatible" content="ie=7" /> 
+  <meta name="Author" content="万户网络设计制作" /> 
+  <title>ilifesports</title> 
+  <meta name="keywords" content="广州竞赛风贸易有限公司" /> 
+  <meta name="Description" content="广州竞赛风贸易有限公司" /> 
+  <link rel="Shortcut Icon" href="/uploadfiles/Setting/1603021625_79869.ico" /> 
+  <link href="/res/css/css_whir.css" rel="stylesheet" type="text/css" /> 
+  <script src="/res/script/jquery-1.4.2.min.js" type="text/javascript"></script> 
+  <script src="/res/script/whir.common.js" type="text/javascript"></script> 
+  <script src="/res/script/whir.shop.js" type="text/javascript"></script> 
+  <link href="/res/script/jPage/css/pagination.css" rel="stylesheet" type="text/css" /> 
+  <script src="/res/script/jPage/jquery.pagination.js" type="text/javascript"></script> 
+  <script type="text/javascript">
+
+	    
+
+
+	    var type =''.toLocaleLowerCase(); //活动类型
+	    var id ='1333'; //规格商品ID
+	    var prom ='0'; //活动主键
+	    var pkey = ""; //授权
+	    var svalues = ""; //规格值列表 
+	    var nav = '0';
+	    var locationUrl = "";
+	    var selectSpec = "".split(",");
+
+	    //默认省市区
+//			var myprovince = remote_ip_info['province'];
+//			var mycity = remote_ip_info['city'];
+//			var mydistrict = remote_ip_info['desc'];
+	    //默认省市区 END
+
+
+	    jQuery(function() {
+
+				
+		    //var json = jQuery.parseJSON(data);
+		    //$("#areaSelTxt").html(json.data.country + '-' + json.data.area + '-' + json.data.region + '-' + json.data.city + '-' + json.data.county);
+
+		    if (jQuery("#areaSelTxt").length > 0) {
+			    jQuery.get("../ajax/GetAreaByIP.aspx", { dd: new Date().getMilliseconds() }, function(data) {
+				    var aid = 0;
+				    try {
+					    var json = jQuery.parseJSON(data);
+					    aid = json.AreaID;
+                        if(aid!="0")
+                        {
+					        jQuery("#areaSelTxt").html(json.AreaName);
+					        jQuery("#areaSelTxt").attr("value", aid);
+                        }
+				    } catch(e) {
+					    aid = jQuery(".arrow[value]").attr("value");
+				    }
+				    GetStockState(aid);
+			    });
+
+		    }				
+
+
+		    GetPromInfo(type, prom, pkey);
+
+		    //导航定位及面包屑
+		    switch (type) {
+		    case "groupbuy":
+			    //nav = '1';
+			    locationUrl = "<a href='/groupbuy/groupbuy.aspx'>团购</a> > <span>" + $(".detail .name").html() + "</span>";
+			    break;
+		    case "rushbuy":
+			   // nav = '3';
+			    locationUrl = "<a href='/rushbuy/rushbuy.aspx'>抢购</a> > <span>" + $(".detail .name").html() + "</span>";
+			    break;
+		    case "auction":
+			   // nav = '5';
+			    locationUrl = "<a href='/auction/auction.aspx'>竞拍</a> > <span>" + $(".detail .name").html() + "</span>";
+			    break;
+		    case "integral":
+			    //nav = '4';
+			    locationUrl = "<a href='/integral/integral.aspx'>积分换购</a> > <span>" + $(".detail .name").html() + "</span>";
+			    break;
+		    }
+
+		   // jQuery(".mainnav li").eq(nav).attr("class", "onnav");
+		    if (locationUrl != "")
+			    jQuery(".location").html(locationUrl);
+
+		    jQuery(".location").show();
+		    $(".sidebar_history").each(function() {
+			    if ($(this).find('dl').length < 1) {
+				    $(this).hide();
+			    }
+		    });
+	    });
+    
+    </script> 
+  <script src="/res/script/product.js" type="text/javascript"></script> 
+  <!--[if IE 6]>
+   <script src="/res/script/DD_belatedPNG.js" type="text/javascript"></script>
+<![endif]--> 
+ </head> 
+ <!--
+商品详细页路径
+url,product/productinfo,id=规格商品主键 普通商品
+url,product/productinfo,id=规格商品主键&type=groupbuy&prom=团购主键 团购
+url,product/productinfo,id=规格商品主键&type=rushbuy&prom=抢购主键 抢购
+url,product/productinfo,id=规格商品主键&type=auction&prom=竞拍主键 竞拍
+url,product/productinfo,id=规格商品主键&type=integral&prom=积分换购主键 积分换购
+--> 
+ <body> 
+  <!--Header--> 
+  <script>    (function (w) { if (w.screen.availWidth >= 1280) document.body.className = 'wrap_1280'; })(window);</script> 
+  <script src="/res/script/whir.shop.js" type="text/javascript"></script> 
+  <script type="text/javascript" src="/res/script/hoverIntent.js"></script> 
+  <script type="text/javascript" src="/res/script/superfish.js"></script> 
+  <div class="hader"> 
+   <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=" type="text/javascript" charset="utf-8"></script> 
+   <div class="nav" id="div_head_nav"> 
+    <div class="navbox"> 
+     <span id="tcart"><a href="/cart.aspx">购物车</a></span> 
+     <span id="ablank"></span> 
+     <span class="spanHelp"><a href="/help/help.aspx">帮助中心</a><a href="http://share.v.t.qq.com/index.php?c=share&amp;a=index" target="_blank" class="share_qq"></a></span> 
+     <script type="text/javascript" charset="utf-8">        //新浪分享按钮
+	    (function () {
+		    var _w = 16, _h = 18;
+		    var param = {
+			    url: location.href,
+			    type: '3',
+			    count: '', /**是否显示分享数，1显示(可选)*/
+			    appkey: '', /**您申请的应用appkey,显示分享来源(可选)*/
+			    title: '', /**分享的文字内容(可选，默认为所在页面的title)*/
+			    pic: '', /**分享图片的路径(可选)*/
+			    ralateUid: '', /**关联用户的UID，分享微博会@该用户(可选)*/
+			    language: 'zh_cn', /**设置语言，zh_cn|zh_tw(可选)*/
+			    dpc: 1
+		    };
+		    var temp = [];
+		    for (var p in param) {
+			    temp.push(p + '=' + encodeURIComponent(param[p] || ''));
+		    }
+		    document.write('<span class="spanSina"><iframe allowTransparency="true" frameborder="0" scrolling="no" src="http://service.weibo.com/staticjs/weiboshare.html?' + temp.join('&') + '" width="' + _w + '" height="' + _h + '"></iframe></span>')
+	    })()
+    </script> 
+    </div> 
+   </div> 
+   <div class="logo"> 
+    <a href="/index.aspx"> </a> 
+   </div> 
+   <span class="favorite"><a href="javascript:;" onclick="SetHome(this)">设为首页</a> <a href="javascript:;" onclick="javascript:addfavor(window.location.href);">加入收藏</a></span>
+   <span class="hotline"><b>服务热线：</b><em>国内 020-31103384<br />香港 +852 51909869</em></span> 
+   <script type="text/javascript">
+
+	//获取logo
+	jQuery.ajax({
+		url: "/uploadfiles/1604021623_44443.jpg?t=" + new Date().getMilliseconds(),
+		success: function (data) {
+			var logo ='<img src="/uploadfiles/1604021623_44443.jpg" />';
+			jQuery(".logo a").html(logo);
+			
+		},
+		error: function () {
+			jQuery(".logo a").html('<img src="/res/images/logo.png" />');
+		}
+	});
+
+	//会员登录信息使用异步加载，在 根目录/Ajax/Member/AjaxHead.aspx 页面
+	jQuery.ajax({
+		url: "/Ajax/Member/Ajaxhead.aspx?t=" + new Date().getMilliseconds(),
+		success: function (data) {
+			jQuery("#ablank").after(data);
+			ajaxComplete();
+		},
+		error: function () {
+			//alert("ajax出错");
+		}
+	});
+
+	function ajaxComplete() {
+		document.getElementById('div_head_nav').style.display = "block";
+		var isLogin = jQuery.trim(jQuery("#head_loginName").attr("flag")) != '';
+		if (isLogin) {//已经登录
+			jQuery(".spanLogin").hide();
+			jQuery(".spanMember").show();
+		}
+		else {//还没登录
+			jQuery(".spanLogin").show();
+			jQuery(".spanMember").hide();
+		}
+		if ("False" == "False") {
+			jQuery('#head_qqlogin').hide();
+		} else {
+			if (!isLogin) { $('#head_qqlogin').show(); }
+		}
+		if ("False" == "False") {
+			jQuery('#head_sinalogin').hide();
+		} else {
+			if (!isLogin) { jQuery('#head_sinalogin').show(); }
+		}
+	}
+
+</script> 
+   <div class="search"> 
+    <input type="text" name="textfield" id="keyword" value="请输入你要查找的内容..." onblur="if(this.value=='')this.value='请输入你要查找的内容...';" onfocus="this.value='';" class="text" /> 
+    <input type="button" name="button" id="btnserach" value="" class="btn" /> 
+    <script type="text/javascript">
+
+            var keyword = "请输入你要查找的内容";
+            if (keyword != "")
+                jQuery("#keyword").val(keyword);
+
+
+
+            jQuery("#btnserach").click(function () {
+                GoSearchUrl(2);
+
+            });
+            jQuery("#keyword").keydown(function (e) {
+                if (e.keyCode == 13)
+                    jQuery("#btnserach").click();
+            });
+
+            jQuery("#btnserach").keydown(function (e) {
+                if (e.keyCode == 13)
+                    jQuery(this).click();
+
+            });
+
+
+            function GoSearchUrl(flag) {
+                var searchinput;
+                if (flag == 1) {
+                    var searchinput = document.getElementById("keywordH");
+                }
+                if (flag == 2) {
+                    var searchinput = document.getElementById("keyword");
+                }
+
+                if (searchinput.value == "" || searchinput.value == "请输入你要查找的内容..." || searchinput.value == "请输入你要查找的内容") {
+                    alert("请输入关键字！");
+                    searchinput.focus();
+                    return false;
+                }
+                if (searchinput.value.length > 50) {
+                    alert("输入的关键字字数不要过多！");
+                    searchinput.focus();
+                    return false;
+                }
+                CheckString(searchinput.value);
+            }
+
+            function GoSreach(rs) {
+
+                var searchUrl = '/search.aspx?keyword=1';
+                searchUrl = searchUrl.replace('keyword=1', 'keyword=' + escape(rs));
+                window.location.href = searchUrl;
+
+                return true;
+            }
+
+            function entersearch() {
+
+                var event = window.event || arguments.callee.caller.arguments[0];
+                if (event.keyCode == 13) {
+                    GoSearchUrl();
+                }
+            }
+
+            function CheckString(s) {
+                var pattern = new RegExp("[`~!@#$^*()=|{}':;',\\[\\]<>/?~！@#￥……*（）—|{}【】‘；：”“'。，、？]")
+                var rs = "";
+                for (var i = 0; i < s.length; i++) {
+                    rs = rs + s.substr(i, 1).replace(pattern, '');
+                }
+                if (rs == "") {
+                    alert("不能输入特殊字符！");
+                    return false;
+                }
+                else {
+                    GoSreach(rs);
+                }
+            }
+
+
+        </script> 
+   </div> 
+   <div class="keyword">
+     热门搜索： 
+   </div> 
+   <div class="mainnav"> 
+    <ul se_editmode="nav" se_id="nav1" class="sf-menu"> 
+     <li id="nav9"><b><a href="/index.aspx">首页</a></b></li> 
+     <li id="nav29"> <b><a href="/about/about.aspx?id=150">关于我们</a></b> 
+      <ul class="ul"> 
+       <li><a href="/about/about.aspx?id=149">我们的优质产品</a></li> 
+       <li><a href="/about/about.aspx?id=150">理念</a></li> 
+       <li><a href="/about/about.aspx?id=151">我们的团队</a></li> 
+       <li><a href="/about/about.aspx?id=152">我们的地址</a></li> 
+      </ul> </li> 
+     <li id="nav2718" class="show nn1"><b><a href="/product/product.aspx?TopCateID=2718&amp;CateID=2718">Q36.5</a></b> 
+      <ul> 
+       <li><a href="/product/product.aspx?TopCateID=2718&amp;CateID=2719">男装</a> 
+        <ul> 
+         <li><a href="/product/product.aspx?TopCateID=2718&amp;CateID=2722">吊带/短裤/长裤</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2718&amp;CateID=2723">车衣/夹克/软壳</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2718&amp;CateID=2726">Baselayers</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2718&amp;CateID=2725">T恤</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2718&amp;CateID=2788">头套/帽子</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2718&amp;CateID=2727">袜子</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2718&amp;CateID=2783">袖套</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2718&amp;CateID=2784">腿套</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2718&amp;CateID=2786">手套</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2718&amp;CateID=2787">鞋套</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2718&amp;CateID=2728">附件</a> 
+          <ul> 
+          </ul> </li> 
+        </ul> </li> 
+       <li><a href="/product/product.aspx?TopCateID=2718&amp;CateID=2720">女装</a> 
+        <ul> 
+         <li><a href="/product/product.aspx?TopCateID=2718&amp;CateID=2729">吊带/短裤/长裤</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2718&amp;CateID=2730">车衣/夹克/软壳</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2718&amp;CateID=2732">Baselayers</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2718&amp;CateID=2731">T恤</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2718&amp;CateID=2794">头套/帽子</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2718&amp;CateID=2733">袜子</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2718&amp;CateID=2789">袖套</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2718&amp;CateID=2795">腿套</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2718&amp;CateID=2796">手套</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2718&amp;CateID=2797">鞋套</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2718&amp;CateID=2734">附件</a> 
+          <ul> 
+          </ul> </li> 
+        </ul> </li> 
+       <li><a href="/product/product.aspx?TopCateID=2718&amp;CateID=2721">童装</a> 
+        <ul> 
+        </ul> </li> 
+      </ul> </li> 
+     <li id="nav2517" class="show nn2"><b><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2517">骑行</a></b> 
+      <ul> 
+       <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2521">自行车</a> 
+        <ul> 
+         <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2535">公路整车/车架</a> 
+          <ul> 
+           <li><a href="/product/product.aspx?TopCateID=2521&amp;CateID=2758">AX-Lightness</a> </li>
+           <li><a href="/product/product.aspx?TopCateID=2521&amp;CateID=2687">Argon 18</a> </li>
+           <li><a href="/product/product.aspx?TopCateID=2521&amp;CateID=2688">Boardman</a> </li>
+           <li><a href="/product/product.aspx?TopCateID=2521&amp;CateID=2810">bmc</a> </li>
+           <li><a href="/product/product.aspx?TopCateID=2521&amp;CateID=2689">Cipollini</a> </li>
+           <li><a href="/product/product.aspx?TopCateID=2521&amp;CateID=2690">Cerv&eacute;lo</a> </li>
+           <li><a href="/product/product.aspx?TopCateID=2521&amp;CateID=2691">Colnago</a> </li>
+           <li><a href="/product/product.aspx?TopCateID=2521&amp;CateID=2693">De rosa</a> </li>
+           <li><a href="/product/product.aspx?TopCateID=2521&amp;CateID=2759">Dedacciai</a> </li>
+           <li><a href="/product/product.aspx?TopCateID=2521&amp;CateID=2760">Kemo</a> </li>
+           <li><a href="/product/product.aspx?TopCateID=2521&amp;CateID=2699">Look</a> </li>
+           <li><a href="/product/product.aspx?TopCateID=2521&amp;CateID=2762">Officina</a> </li>
+           <li><a href="/product/product.aspx?TopCateID=2521&amp;CateID=2702">pinarello</a> </li>
+           <li><a href="/product/product.aspx?TopCateID=2521&amp;CateID=2811">Factor</a> </li>
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2634">折叠车</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2583">童车</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2770">山地车</a> 
+          <ul> 
+          </ul> </li> 
+        </ul> </li> 
+       <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2518">骑行装备</a> 
+        <ul> 
+         <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2615">把带/把套</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2739">鞋</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2740">眼镜</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2741">坐垫</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2742">SOLESTAR鞋垫</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2774">头盔</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2775">水壶</a> 
+          <ul> 
+          </ul> </li> 
+        </ul> </li> 
+       <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2579">补充与恢复</a> 
+        <ul> 
+         <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2743">能量类</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2744">恢复</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2745">电子类</a> 
+          <ul> 
+          </ul> </li> 
+        </ul> </li> 
+       <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2614">训练台</a> 
+        <ul> 
+         <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2747">Bkool</a> 
+          <ul> 
+          </ul> </li> 
+        </ul> </li> 
+       <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2780">自行车部件</a> 
+        <ul> 
+         <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2781">把手</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2782">坐杆</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2806">轮组</a> 
+          <ul> 
+           <li><a href="/product/product.aspx?TopCateID=2780&amp;CateID=2807">公路</a> </li>
+           <li><a href="/product/product.aspx?TopCateID=2780&amp;CateID=2808">山地</a> </li>
+           <li><a href="/product/product.aspx?TopCateID=2780&amp;CateID=2809">三铁</a> </li>
+          </ul> </li> 
+        </ul> </li> 
+       <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2798">清洁保养</a> 
+        <ul> 
+         <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2805">润滑油</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2804">清洁剂</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2803">润滑脂</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2802">肌肤护理</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2801">自行车维护</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2800">清洁保养工具</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2517&amp;CateID=2799">按摩油</a> 
+          <ul> 
+          </ul> </li> 
+        </ul> </li> 
+      </ul> </li> 
+     <li id="nav2576" class="show nn3"><b><a href="/product/product.aspx?TopCateID=2576&amp;CateID=2576">铁人</a></b> 
+      <ul> 
+       <li><a href="/product/product.aspx?TopCateID=2576&amp;CateID=2752">车架</a> 
+        <ul> 
+        </ul> </li> 
+       <li><a href="/product/product.aspx?TopCateID=2576&amp;CateID=2755">装备</a> 
+        <ul> 
+         <li><a href="/product/product.aspx?TopCateID=2576&amp;CateID=2778">服装</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2576&amp;CateID=2766">眼镜</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2576&amp;CateID=2767">鞋垫</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2576&amp;CateID=2768">坐垫</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2576&amp;CateID=2776">鞋</a> 
+          <ul> 
+          </ul> </li> 
+         <li><a href="/product/product.aspx?TopCateID=2576&amp;CateID=2777">电子恢复</a> 
+          <ul> 
+          </ul> </li> 
+        </ul> </li> 
+      </ul> </li> 
+     <li id="nav2538" class="show nn4"><b><a href="/product/product.aspx?TopCateID=2538&amp;CateID=2538">跑步</a></b> 
+      <ul> 
+      </ul> </li> 
+     <li id="nav2558" class="show nn5"><b><a href="/product/product.aspx?TopCateID=2558&amp;CateID=2558">户外</a></b> 
+      <ul> 
+       <li><a href="/product/product.aspx?TopCateID=2558&amp;CateID=2763">sup（桨板）</a> 
+        <ul> 
+        </ul> </li> 
+       <li><a href="/product/product.aspx?TopCateID=2558&amp;CateID=2764">旅游</a> 
+        <ul> 
+        </ul> </li> 
+       <li><a href="/product/product.aspx?TopCateID=2558&amp;CateID=2765">比赛</a> 
+        <ul> 
+        </ul> </li> 
+      </ul> </li> 
+     <li id="nav30"><a href="/news/news.aspx">资讯</a></li> 
+    </ul> 
+   </div> 
+   <div class="topcart"> 
+    <div id="piece"> 
+     <a href="/cart.aspx">购物车</a>
+     <!--（<a class="QuantityTotal"></a>）件-->
+    </div> 
+    <!--下拉窗--> 
+    <div class="cart_top"> 
+     <div class="tips" id="CartTips">
+       您的购物车还是空的，赶紧行动吧！
+     </div> 
+     <!--弹出窗购物车Start--> 
+     <div class="txt" id="CartItem"> 
+      <dl class="total">
+        共 
+       <b class="QuantityTotal"></b>件商品 金额总计：
+       <b class="PriceTotal"></b>
+      </dl> 
+      <dl class="clear"> 
+       <a href="javascript:void(0);" onclick="clearCart()">清空购物车</a>
+      </dl> 
+      <dl class="pay"> 
+       <a href="/cart.aspx">去购物车并结算</a>
+      </dl> 
+     </div> 
+     <!--弹出窗购物车End--> 
+    </div> 
+   </div> 
+   <div class="wrap_category" id="category_div"> 
+    <h2 class="arrow"><a href="/product/allcategory.aspx"><b>全部分类</b></a></h2> 
+    <div class="category"> 
+     <div class="list" id="proCategory2718"> 
+      <div class="sub"> 
+       <h3> <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2718">Q36.5</a> </h3> 
+       <h4> <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2719">男装</a> <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2720">女装</a> <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2721">童装</a> </h4> 
+      </div> 
+      <div class="hide_txt" style="display:none;"> 
+       <div class="item"> 
+        <dl> 
+         <dt> 
+          <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2719">男装</a> 
+         </dt> 
+         <dd> 
+          <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2722">吊带/短裤/长裤</a> 
+          <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2723">车衣/夹克/软壳</a> 
+          <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2726">Baselayers</a> 
+          <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2725">T恤</a> 
+          <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2788">头套/帽子</a> 
+          <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2727">袜子</a> 
+          <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2783">袖套</a> 
+          <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2784">腿套</a> 
+          <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2786">手套</a> 
+          <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2787">鞋套</a> 
+          <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2728">附件</a> 
+         </dd> 
+        </dl> 
+        <dl> 
+         <dt> 
+          <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2720">女装</a> 
+         </dt> 
+         <dd> 
+          <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2729">吊带/短裤/长裤</a> 
+          <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2730">车衣/夹克/软壳</a> 
+          <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2732">Baselayers</a> 
+          <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2731">T恤</a> 
+          <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2794">头套/帽子</a> 
+          <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2733">袜子</a> 
+          <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2789">袖套</a> 
+          <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2795">腿套</a> 
+          <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2796">手套</a> 
+          <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2797">鞋套</a> 
+          <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2734">附件</a> 
+         </dd> 
+        </dl> 
+        <dl> 
+         <dt> 
+          <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2721">童装</a> 
+         </dt> 
+         <dd> 
+         </dd> 
+        </dl> 
+       </div> 
+       <div class="other">
+         Q36.5 
+       </div> 
+      </div> 
+     </div> 
+     <div class="list" id="proCategory2517"> 
+      <div class="sub"> 
+       <h3> <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2517">骑行</a> </h3> 
+       <h4> <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2521">自行车</a> <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2518">骑行装备</a> <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2579">补充与恢复</a> <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2614">训练台</a> <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2780">自行车部件</a> <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2798">清洁保养</a> </h4> 
+      </div> 
+      <div class="hide_txt" style="display:none;"> 
+       <div class="item"> 
+        <dl> 
+         <dt> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2521">自行车</a> 
+         </dt> 
+         <dd> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2535">公路整车/车架</a> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2634">折叠车</a> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2583">童车</a> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2770">山地车</a> 
+         </dd> 
+        </dl> 
+        <dl> 
+         <dt> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2518">骑行装备</a> 
+         </dt> 
+         <dd> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2615">把带/把套</a> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2739">鞋</a> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2740">眼镜</a> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2741">坐垫</a> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2742">SOLESTAR鞋垫</a> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2774">头盔</a> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2775">水壶</a> 
+         </dd> 
+        </dl> 
+        <dl> 
+         <dt> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2579">补充与恢复</a> 
+         </dt> 
+         <dd> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2743">能量类</a> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2744">恢复</a> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2745">电子类</a> 
+         </dd> 
+        </dl> 
+        <dl> 
+         <dt> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2614">训练台</a> 
+         </dt> 
+         <dd> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2747">Bkool</a> 
+         </dd> 
+        </dl> 
+        <dl> 
+         <dt> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2780">自行车部件</a> 
+         </dt> 
+         <dd> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2781">把手</a> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2782">坐杆</a> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2806">轮组</a> 
+         </dd> 
+        </dl> 
+        <dl> 
+         <dt> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2798">清洁保养</a> 
+         </dt> 
+         <dd> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2805">润滑油</a> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2804">清洁剂</a> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2803">润滑脂</a> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2802">肌肤护理</a> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2801">自行车维护</a> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2800">清洁保养工具</a> 
+          <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2799">按摩油</a> 
+         </dd> 
+        </dl> 
+       </div> 
+       <div class="other"> 
+       </div> 
+      </div> 
+     </div> 
+     <div class="list" id="proCategory2576"> 
+      <div class="sub"> 
+       <h3> <a href="/product/product.aspx?TopCateID=2576&amp;CateID=2576">铁人</a> </h3> 
+       <h4> <a href="/product/product.aspx?TopCateID=2576&amp;CateID=2752">车架</a> <a href="/product/product.aspx?TopCateID=2576&amp;CateID=2755">装备</a> </h4> 
+      </div> 
+      <div class="hide_txt" style="display:none;"> 
+       <div class="item"> 
+        <dl> 
+         <dt> 
+          <a href="/product/product.aspx?TopCateID=2576&amp;CateID=2752">车架</a> 
+         </dt> 
+         <dd> 
+         </dd> 
+        </dl> 
+        <dl> 
+         <dt> 
+          <a href="/product/product.aspx?TopCateID=2576&amp;CateID=2755">装备</a> 
+         </dt> 
+         <dd> 
+          <a href="/product/product.aspx?TopCateID=2576&amp;CateID=2778">服装</a> 
+          <a href="/product/product.aspx?TopCateID=2576&amp;CateID=2766">眼镜</a> 
+          <a href="/product/product.aspx?TopCateID=2576&amp;CateID=2767">鞋垫</a> 
+          <a href="/product/product.aspx?TopCateID=2576&amp;CateID=2768">坐垫</a> 
+          <a href="/product/product.aspx?TopCateID=2576&amp;CateID=2776">鞋</a> 
+          <a href="/product/product.aspx?TopCateID=2576&amp;CateID=2777">电子恢复</a> 
+         </dd> 
+        </dl> 
+       </div> 
+       <div class="other"> 
+       </div> 
+      </div> 
+     </div> 
+     <div class="list" id="proCategory2538"> 
+      <div class="sub"> 
+       <h3> <a href="/product/product.aspx?TopCateID=2538&amp;CateID=2538">跑步</a> </h3> 
+       <h4> </h4> 
+      </div> 
+      <div class="hide_txt" style="display:none;"> 
+       <div class="item"> 
+       </div> 
+       <div class="other"> 
+       </div> 
+      </div> 
+     </div> 
+     <div class="list" id="proCategory2558"> 
+      <div class="sub"> 
+       <h3> <a href="/product/product.aspx?TopCateID=2558&amp;CateID=2558">户外</a> </h3> 
+       <h4> <a href="/product/product.aspx?TopCateID=2558&amp;CateID=2763">sup（桨板）</a> <a href="/product/product.aspx?TopCateID=2558&amp;CateID=2764">旅游</a> <a href="/product/product.aspx?TopCateID=2558&amp;CateID=2765">比赛</a> </h4> 
+      </div> 
+      <div class="hide_txt" style="display:none;"> 
+       <div class="item"> 
+        <dl> 
+         <dt> 
+          <a href="/product/product.aspx?TopCateID=2558&amp;CateID=2763">sup（桨板）</a> 
+         </dt> 
+         <dd> 
+         </dd> 
+        </dl> 
+        <dl> 
+         <dt> 
+          <a href="/product/product.aspx?TopCateID=2558&amp;CateID=2764">旅游</a> 
+         </dt> 
+         <dd> 
+         </dd> 
+        </dl> 
+        <dl> 
+         <dt> 
+          <a href="/product/product.aspx?TopCateID=2558&amp;CateID=2765">比赛</a> 
+         </dt> 
+         <dd> 
+         </dd> 
+        </dl> 
+       </div> 
+       <div class="other"> 
+       </div> 
+      </div> 
+     </div> 
+     <div class="list" id="proCategory2501"> 
+      <div class="sub"> 
+       <h3> <a href="/product/product.aspx?TopCateID=2501&amp;CateID=2501">促销</a> </h3> 
+       <h4> <a href="/product/product.aspx?TopCateID=2501&amp;CateID=2773">特价商品区</a> </h4> 
+      </div> 
+      <div class="hide_txt" style="display:none;"> 
+       <div class="item"> 
+        <dl> 
+         <dt> 
+          <a href="/product/product.aspx?TopCateID=2501&amp;CateID=2773">特价商品区</a> 
+         </dt> 
+         <dd> 
+         </dd> 
+        </dl> 
+       </div> 
+       <div class="other"> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+   <script type="text/javascript">
+    jQuery(".category div[id^='proCategory']").mouseover(function () {        
+        jQuery(this).find("div").eq(1).show();
+       // jQuery(this).addClass("show");
+    });
+    jQuery(".category div[id^='proCategory']").mouseleave(function () {
+        $(this).find("div").eq(1).hide();
+     //   jQuery(this).removeClass("show");
+    });
+	
+	  jQuery("#category_div .arrow").bind("mouseover",function(){
+		  jQuery("#category_div .category").show();       
+	  })
+	  jQuery("#category_div").bind("mouseleave",function(){
+		  jQuery("#category_div .category").hide();
+	  })
+</script> 
+  </div> 
+  <script type="text/javascript">				
+$(document).ready(function(){
+	$("ul.sf-menu").superfish();
+});
+	$("ul.sf-menu ul li").each(function () {
+		var num = $(this).find("ul").find("li").length
+		if (num >= 1) {
+			$(this).addClass("on");
+		}
+	});
+
+</script> 
+  <script type="text/javascript">
+    $(".mainnav li:last-child").find("a").css("background-image", "none")
+//	jQuery(".topcart").bind("mouseover", function() {
+//		jQuery("#piece").attr("class", "show");
+//		jQuery(this).children(".cart_top").show();
+
+//	}).bind("mouseout", function() {
+//		jQuery(this).children(".cart_top").hide();
+//		jQuery("#piece").attr("class", "");
+//	});
+
+    function clearCart() {
+    	jQuery.ajax({
+            url: "/Ajax/Order/ClearCart.ashx",
+            cache: false,
+            success: function (result) {
+                showCart();
+            }
+        });
+    }
+
+    function showCart() {
+    	jQuery.ajax({
+            url: "/Ajax/Order/GetCart.ashx",
+            cache: false,
+            success: function (result) {
+                var dataObj = eval(result);
+                jQuery(dataObj).each(function (idx, item) {
+                	jQuery("#CartItem").find("ul").remove();
+                	jQuery(".QuantityTotal").html(item.count);
+                	jQuery(".PriceTotal").html("¥" + item.price);
+	                var cartInfo = "<ul>";
+                    jQuery(item.data).each(function (idx2, item2) {
+                        cartInfo += "<li id=\"CartList\"><div class=\"picture\"><a href=\"" + item2.url + "\"><img src=\"/uploadfiles/" + item2.img + "\" onerror=\"this.src=\'/res/images/nopic.jpg\'\" /></a></div>" +
+                            "<h5><a href=\"" + item2.url + "\">" + item2.name + "</a></h5><p><b>¥" + item2.price + "</b> x <b>" + item2.quantity + "</b></p></li>";
+                    });
+                    jQuery("#CartItem").prepend(cartInfo + "</ul>");
+                    if (item.count == "0") {
+                    	jQuery("#CartTips").show();
+                    	jQuery("#CartItem").hide();
+                    } else {
+                    	jQuery("#CartTips").hide();
+                    	jQuery("#CartItem").show();
+                    }
+                });
+            },
+            error: function () {
+
+            }
+        });
+    }
+    showCart();
+</script> 
+  <!--下拉窗End--> 
+  <script language="javascript">
+    //加入收藏
+    function addfavor(url, name) {
+    	name = jQuery("title").eq(0).html();
+        if (document.all) {
+	        window.external.AddFavorite(url, name);
+        } else {
+	        try
+            {
+	            window.sidebar.addPanel(name, url, '');
+            } catch(e) {
+                whir.shop.alert("加入收藏失败，请使用Ctrl+D进行添加");
+            }
+        }
+    }
+    //设为首页
+    function SetHome(obj) {
+        try {
+            obj.style.behavior = 'url(#default#homepage)';
+            obj.setHomePage(location.href);
+        } catch (e) {
+            if (window.netscape) {
+                try {
+                    netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
+                } catch (e) {
+                    whir.shop.alert("抱歉，您所使用的浏览器无法完成此操作。");
+                }
+            } else {
+                whir.shop.alert("抱歉，您所使用的浏览器无法完成此操作。");
+            }
+        }
+    }
+</script> 
+  <script type="text/javascript">
+    jQuery(function () {
+        $("#nav" + nav).addClass("onnav");
+//        $(".mainnav li.show dl dt").each(function () {
+//            var num = $(this).find(".th").find("p").length
+//            if (num >= 1) {
+//                $(this).addClass("on");
+//            }
+//        });
+//        //二级显示
+//        $(".mainnav li.show").bind("mouseover", function () {
+//            $(this).find("b").addClass("on");
+//            $(this).find("dl").show();
+//        })
+//        $(".mainnav li.show").bind("mouseleave", function () {
+//            $(this).find("b").removeClass("on");
+//            $(this).find("dl").hide();
+//        })
+//        //三级显示
+//        $(".mainnav li.show dt").bind("mouseover", function () {
+//            $(this).find("span").addClass("on");
+//            $(this).find(".th").show();
+//        })
+//        $(".mainnav li.show dt").bind("mouseleave", function () {
+//            $(this).find("span").removeClass("on");
+//            $(this).find(".th").hide();
+//        })
+    });
+</script> 
+  <!--Header end--> 
+  <!--Mid--> 
+  <div class="contain"> 
+   <div class="sidebar"> 
+    <div class="menu_category" id="productSearchItems"> 
+     <ul> 
+      <li> 
+       <dl> 
+        <dt> 
+         <h6 id="h6_27">类别</h6> 
+         <dl class="current_filter" id="filter_27"> 
+          <dd>
+           <a href="?TopCateID=0&amp;CateID=2741&amp;BrandID=&amp;ob=0&amp;qst=&amp;keyword=">全部</a>
+          </dd> 
+         </dl> 
+        </dt> 
+        <dt> 
+         <h6 id="h6_24">类别</h6> 
+         <dl class="current_filter" id="filter_24"> 
+          <dd>
+           <a href="?TopCateID=0&amp;CateID=2741&amp;BrandID=&amp;ob=0&amp;qst=&amp;keyword=">全部</a>
+          </dd> 
+          <dd>
+           <a value="161" id="Sid161" hidhref="?TopCateID=0&amp;CateID=2741&amp;BrandID=&amp;ob=0&amp;keyword=" href="javascript:;">坐垫</a>
+          </dd> 
+         </dl> 
+        </dt> 
+        <dt> 
+         <h6 id="h6_20">车型</h6> 
+         <dl class="current_filter" id="filter_20"> 
+          <dd>
+           <a href="?TopCateID=0&amp;CateID=2741&amp;BrandID=&amp;ob=0&amp;qst=&amp;keyword=">全部</a>
+          </dd> 
+         </dl> 
+        </dt> 
+        <dt> 
+         <h6 id="h6_15">性别</h6> 
+         <dl class="current_filter" id="filter_15"> 
+          <dd>
+           <a href="?TopCateID=0&amp;CateID=2741&amp;BrandID=&amp;ob=0&amp;qst=&amp;keyword=">全部</a>
+          </dd> 
+         </dl> 
+        </dt> 
+        <dt> 
+         <h6 id="h6_12">品牌</h6> 
+         <dl class="current_filter" id="filter_12"> 
+          <dd>
+           <a href="?TopCateID=0&amp;CateID=2741&amp;BrandID=&amp;ob=0&amp;qst=&amp;keyword=">全部</a>
+          </dd> 
+          <dd>
+           <a value="125" id="Sid125" hidhref="?TopCateID=0&amp;CateID=2741&amp;BrandID=&amp;ob=0&amp;keyword=" href="javascript:;">ISM</a>
+          </dd> 
+          <dd>
+           <a value="36" id="Sid36" hidhref="?TopCateID=0&amp;CateID=2741&amp;BrandID=&amp;ob=0&amp;keyword=" href="javascript:;">Selleitalla</a>
+          </dd> 
+         </dl> 
+        </dt> 
+       </dl> </li> 
+     </ul> 
+    </div> 
+    <script type="text/javascript">
+    $("#Fid0").addClass("on");
+    $("#Fid0").siblings("dl").show();
+
+    //点击展开收缩
+    $(".menu_category li h5").click(function () {
+        if($(this).hasClass("on")){
+            $(this).removeClass("on");
+            $(this).next("dl").find("dl").hide();
+            $(this).next("dl").find("h6").removeClass("on");
+        }else{
+            $(this).addClass("on");
+        }
+        $(this).next("dl").slideToggle();
+    });
+
+    $(".menu_category li h6").each(function () {
+        var num = $(this).next("dl").find("dd").length;
+        if (num != 0) {
+            $(this).click(function () {
+                $(this).next("dl").slideToggle();
+                if ($(this).hasClass("on")) {
+                    $(this).removeClass("on");
+                } else {
+                    $(this).addClass("on");
+                }
+            });
+        } else {
+            $(this).find("a").addClass("all");
+            $(this).next("dl").hide();
+        }
+
+	$(this).next("dl").find("dd a").click(function () {
+            var parentId = $(this).parent().parent().prev().attr("id");
+            var hidhref = $(this).attr("hidhref");
+            var value = $(this).attr("value");
+            var ids = "";
+            $(".menu_category li h6").each(function () {
+                if ($(this).attr("id") != parentId) {
+                    var id = $(this).next("dl").find("dd a[class='on']").attr("value");
+                    if (id != undefined) {
+                        ids += $(this).next("dl").find("dd a[class='on']").attr("value") + ",";
+                    }
+                }
+            });
+            if (value == undefined) {
+                if (ids.length > 0) {
+                    ids = ids.substring(0, ids.length - 1);
+                }
+            }
+            else {
+                ids += value;
+            }
+            location.href ="product.aspx" + hidhref + "&qst=" + ids;
+        });
+
+    });
+
+</script> 
+    <div class="sidebar_history"> 
+     <h2><b>浏览过的人还浏览过</b></h2> 
+     <dl> 
+      <div class="picture">
+       <a href="/product/productinfo.aspx?id=10862"><img lazysrc="/uploadfiles/Product/Thumb/1612281620_17643.jpg" onerror="this.src='/res/images/nopic.jpg'" /></a>
+      </div> 
+      <h5 class="name"><a href="/product/productinfo.aspx?id=10862" title="Factor One 公路整车 51 黑色 ">Factor One 公路整车 51 黑色 </a></h5> 
+      <div class="price">
+       &yen;80749.00
+      </div> 
+     </dl> 
+     <dl> 
+      <div class="picture">
+       <a href="/product/productinfo.aspx?id=10814"><img lazysrc="/uploadfiles/Product/Thumb/1612281537_11733.jpg" onerror="this.src='/res/images/nopic.jpg'" /></a>
+      </div> 
+      <h5 class="name"><a href="/product/productinfo.aspx?id=10814" title="Factor O2 公路车架 49 黑色 ">Factor O2 公路车架 49 黑色 </a></h5> 
+      <div class="price">
+       &yen;29449.00
+      </div> 
+     </dl> 
+     <dl> 
+      <div class="picture">
+       <a href="/product/productinfo.aspx?id=10753"><img lazysrc="/uploadfiles/Product/Thumb/1612011740_80749.jpg" onerror="this.src='/res/images/nopic.jpg'" /></a>
+      </div> 
+      <h5 class="name"><a href="/product/productinfo.aspx?id=10753" title="XeNTiS MARK2 TT Track 亮白 管胎 ">XeNTiS MARK2 TT Track 亮白 管胎 </a></h5> 
+      <div class="price">
+       &yen;28499.00
+      </div> 
+     </dl> 
+     <dl> 
+      <div class="picture">
+       <a href="/product/productinfo.aspx?id=10754"><img lazysrc="/uploadfiles/Product/Thumb/1612011740_96156.jpg" onerror="this.src='/res/images/nopic.jpg'" /></a>
+      </div> 
+      <h5 class="name"><a href="/product/productinfo.aspx?id=10754" title="XeNTiS MARK2 TT Track 哑黑色 管胎 ">XeNTiS MARK2 TT Track 哑黑色 管胎 </a></h5> 
+      <div class="price">
+       &yen;28499.00
+      </div> 
+     </dl> 
+     <dl> 
+      <div class="picture">
+       <a href="/product/productinfo.aspx?id=10751"><img lazysrc="/uploadfiles/Product/Thumb/1612011724_23742.jpg" onerror="this.src='/res/images/nopic.jpg'" /></a>
+      </div> 
+      <h5 class="name"><a href="/product/productinfo.aspx?id=10751" title="XeNTiS MARK2 TT Clincher Carbon 亮白 开口胎 ">XeNTiS MARK2 TT Clincher Carbon 亮白 开口胎 </a></h5> 
+      <div class="price">
+       &yen;24699.00
+      </div> 
+     </dl> 
+    </div> 
+    <div class="sidebar_history"> 
+     <h2><b>浏览过的人还购买过</b></h2> 
+    </div> 
+    <script type="text/javascript" language="javascript">
+	      jQuery(".sidebar_history dl:last-child").css("background", "none");
+      </script> 
+    <div class="sidebar_browse"> 
+     <h2><b>最近浏览过的</b></h2> 
+     <dl> 
+      <div class="picture">
+       <a href="/product/productinfo.aspx?id=1333"><img alt="ISM (PN) Adamo 单车座垫 Attack (窄后)" lazysrc="/uploadfiles/Product/Thumb/1604261054_75798.jpg" onerror="this.src='/res/images/nopic.jpg'" /></a>
+      </div> 
+      <h5 class="name"><a href="/product/productinfo.aspx?id=1333" title="ISM (PN) Adamo 单车座垫 Attack (窄后)">ISM (PN) Adamo 单车座垫 Attack (窄后) </a></h5> 
+      <div class="price">
+       &yen;1799.00
+      </div> 
+     </dl> 
+     <div class="clearhistory"> 
+      <a href="javascript:;" id="clearHistory">清除浏览历史&gt;&gt;</a> 
+     </div> 
+    </div> 
+    <script type="text/javascript">
+    var RemoveClear = function () {
+        if ($(".sidebar_browse").find("dl").length < 1) {
+            $(".sidebar_browse").hide();
+        }
+    }
+    RemoveClear();
+    $("#clearHistory").click(function () {
+        whir.shop.confirm("确定清除吗?", function () {
+            $.post("/ajax/ClearBrowse.aspx", function (e) {
+                $(".sidebar_browse").find("dl").remove();
+                RemoveClear();
+            });
+        });
+        return false;
+    });
+   
+</script> 
+   </div> 
+   <div class="main"> 
+    <div class="location" style="display: none">
+     <a href="/index.aspx">首页</a> &gt; 
+     <a href="/product/product.aspx?TopCateID=0&amp;CateID=2517">骑行</a> &gt; 
+     <a href="/product/product.aspx?TopCateID=0&amp;CateID=2518">骑行装备</a> &gt; 
+     <a href="/product/product.aspx?TopCateID=0&amp;CateID=2741">坐垫</a> &gt; 
+     <span>ISM (PN) Adamo 单车座垫 Attack (窄后)</span> 
+    </div> 
+    <!--产品详情--> 
+    <div class="product_detail"> 
+     <div class="photo"> 
+      <div class="jqzoom" id="spec-n1" xzoom="800" yzoom="800">
+       <img class="img" src="/uploadfiles/Product/Middle/1604261054_75798.jpg" onerror="this.src='/res/images/nopic.jpg';this.bimgsrc='/res/images/nopic.jpg'" bimgsrc="/uploadfiles/Product/FullSize/1604261054_75798.jpg" />
+      </div> 
+      <div id="spec-n5"> 
+       <a id="spec-left"></a> 
+       <div id="spec-list"> 
+        <ul class="list-h"> 
+        </ul> 
+       </div> 
+       <a id="spec-right"></a> 
+      </div> 
+      <script type="text/javascript">
+	        var imglist = '1604261054_32686.jpg,1604261054_30772.jpg,1604261054_75798.jpg,1604261054_71593.jpg,1604261054_77956.jpg,1604261054_52585.jpg,1604261054_79189.jpg,1604261054_56746.jpg'.split(',');
+
+	        for (var i = 0; i < imglist.length; i++) {
+		        if (imglist[i] != '') {
+			        var model = '<li><img  src="/uploadfiles/Product/Middle/' + imglist[i] + '" bimgsrc="/uploadfiles/Product/FullSize/' + imglist[i] + '" onerror="this.src=\'/res/images/nopic.jpg\';this.bimgsrc=\'/res/images/nopic.jpg\';" /></li>';
+			        $("#spec-list").find(".list-h").append(model);
+		        }
+	        }
+
+	        if ($("#spec-list").find(".list-h li").length == 0) {
+
+		        var model = "<li><img  src='/res/images/nopic.jpg' bimgsrc='/res/images/nopic.jpg' /></li>";
+		        $("#spec-list").find(".list-h").append(model);
+	        }
+        </script> 
+      <script type="text/javascript">
+	       var xZoom = 500;
+	       var yZoom = 500;
+       </script> 
+      <script type="text/javascript" id="pshow"></script> 
+      <script type="text/javascript">
+
+	         if ('1' == '1')
+		         document.getElementById("pshow").src = "/res/script/p.pshow.js?cdnversion=" + Math.ceil(new Date() / 3600000);
+         </script> 
+      <!-- Baidu Button BEGIN --> 
+      <!-- Baidu Button END --> 
+     </div> 
+     <div class="detail"> 
+      <div class="txt"> 
+       <!-- 详细页名称 BEGIN --> 
+       <h5 id="promInfoName" class="name"> </h5> 
+       <h5 style="display: none" id="proInfoName" class="name">ISM (PN) Adamo 单车座垫 Attack (窄后)</h5> 
+       <script type="text/javascript">
+          		if ($.trim($("#promInfoName").html()) == "") {
+          			$("#proInfoName").show();
+          			$("#promInfoName").remove();
+          		} else {
+          			$("#proInfoName").remove();
+          		}
+          	</script> 
+       <!--详细页名称 END --> 
+       <!--商品编号：100000248<br />--> 
+      </div> 
+      <div class="info"> 
+       <!-- 促销 --> 
+       <dl id="cxlist"> 
+        <!--<dt>促　　销：</dt>--> 
+        <dd id="promoList"> 
+        </dd> 
+       </dl> 
+       <script type="text/javascript">
+  				if (jQuery("#promoList .promo").length == 0) {
+  					jQuery("#promoList").html("暂无促销活动");
+  					jQuery("#cxlist").hide();
+  				}
+  			</script> 
+       <!-- 促销 END--> 
+       <!-- 普通商品价格--> 
+       <dl class="price"> 
+        <dt>
+         <b>省 0.00%</b>建议零售价 &yen;1799.00
+        </dt> 
+        <dd>
+         &yen;1799.00
+        </dd> 
+        <dd style=" display:none;" id="promPrice"></dd> 
+       </dl> 
+       <script type="text/javascript">
+             if ($("#promoList").html() != "暂无促销活动") {
+                 var promVal = $("#promValue").val();
+                 var type = $("#promValue").attr("rel");
+                 if (promVal != "" && promVal != null && promVal != undefined && type == 2) {
+                     var price = $(".price dd").html().replace("¥", "");
+                     var newPrice = price * (promVal / 100).toFixed(2);
+                     $(".price dd").css("text-decoration", "line-through");
+                     $("#promPrice").html("¥" + newPrice);
+                     $("#promPrice").css("display", "block");
+                     $("#promPrice").css("text-decoration", "none").css("color", "red");
+                 }
+             }
+         </script> 
+       <!-- 普通商品价格 END--> 
+       <div class="Star"> 
+        <!--网友评级：-->
+        <span id="plStar" class="star S0"></span>
+        <em id="plNum">(共0条评论)</em> 
+       </div> 
+       <!-- 送货地址 --> 
+       <dl class="area_dl"> 
+        <!--<dt>送　　至：</dt>--> 
+        <dd> 
+         <span class="area"> <a id="areaSelTxt" class="arrow" value="2184">广东省广州市天河区</a> 
+          <!--选择地区--> 
+          <div id="areaSel" class="area_div"> 
+           <h6 class="tab"><em class="on" pid="0">请选择省</em><em style="display:none">请选择市</em><em style="display:none">请选择区县</em></h6> 
+           <div class="box"> 
+           </div> 
+           <div class="box" style="display:none;"> 
+           </div> 
+           <div class="box" style="display:none;"> 
+           </div> 
+          </div> 
+          <!--选择地区--> </span> 
+         <label id="stockContain"></label> 
+        </dd> 
+       </dl> 
+       <script type="text/javascript">
+			   //获取库存状况
+	              function GetStockState(area)
+	              {
+		              $.get("/Ajax/Product/GetStock.aspx", { specproid: 1333, code:area,ddd:new Date().getMilliseconds()}, function (data) {
+
+			              $("#stockContain").html(data);
+		              });
+	              }
+
+              	
+              </script> 
+       <!-- 促销 END--> 
+      </div> 
+      <div class="auction"></div> 
+      <div class="parameter"> 
+       <!-- 商品规格 --> 颜色： 
+       <dl class="speclist" style=""> 
+        <dt></dt> 
+        <dd> 
+         <span rel="248" id="spec_13" class="pic"> <a class="not" value="63" title="黑色" href="#"> 黑色 
+           <!-- 
+                   <img src="/uploadfiles/Product/Icon/1604121111_66445.jpg" onerror="this.src='/res/images/nopic.jpg'" alt='黑色' />
+                --> <em></em> </a> <a class="not" value="142" title="白色" href="#"> 白色 
+           <!-- 
+                   <img src="/uploadfiles/" onerror="this.src='/res/images/nopic.jpg'" alt='白色' />
+                --> <em></em> </a> </span> 
+        </dd> 
+        <script type="text/javascript">
+	                  if ($("#spec_13").find("img").length == 0)
+		                  $("#spec_13").attr("class", "norm");
+                  </script> 
+       </dl> 
+       <script type="text/javascript">
+          //初始化选中规格SQL1="svalues"
+
+
+							selectSpec =decodeURI("").split(',');
+							if(selectSpec=="")
+								selectSpec='63'.split(',');
+
+							for (var i = 0; i < selectSpec.length; i++) {
+								$(".parameter a[value='" + selectSpec[i] + "']").attr("class", "select");
+							}
+							var arraySpec = '63';//同一主商品下的规格商品的规格值组
+							if(arraySpec.split(',').length>1)
+							{
+								$.each(arraySpec.split(','),function(i,item){
+			
+								
+									if(',63,'.indexOf(','+item+',')>-1)
+									{
+										$.each("63".split(','),function(j,value){
+											$(".not[value='"+value+"']").removeClass("not");
+				
+										})
+									}
+								
+									if(',142,'.indexOf(','+item+',')>-1)
+									{
+										$.each("142".split(','),function(j,value){
+											$(".not[value='"+value+"']").removeClass("not");
+				
+										})
+									}
+								
+
+								})
+							}else
+							{
+								$(".not").removeClass("not");
+							}
+
+							//绑定规格选项点击事件
+							$(".parameter a[value]").click(function () {
+
+                                if ($(".specTip").html() != null) {
+									$(".specTip").html("");
+								}
+                                   
+								var parentid = $(this).parent().attr("id");
+             
+								$(this).parent().find("a").attr("class", "not");
+								$(this).attr("class", "select");
+              
+								var arrayObj = new Array();//已选则规格数组
+								$(".parameter .select[value]").each(function (i, item) {
+									//if ($(item).parent().attr("id") != parentid) {
+										arrayObj[arrayObj.length]= parseInt($(item).attr("value"),10);
+									//}
+								});
+
+								//arrayObj[arrayObj.length]=$(this).attr("value");
+              
+
+								var specid='';
+
+								var length=arrayObj.length;
+			
+							
+								 if(mergeSpecLength('63',arrayObj))
+										{ 
+											          specid=1333;
+										          }
+							
+								else if(mergeSpecLength('142',arrayObj))
+										{ 
+											          specid=1334;
+										          }
+							
+
+								if(specid=='') {
+									if ($(".specTip").html() == null) {
+										$(".selNum").before("<dl class=\"specTip\">您选择的规格商品未上架</dl>");
+									}
+                                    //else{
+                                        //$(".specTip").html("您选择的规格商品未上架");
+                                    //}
+									$(".operate").find("a[class^='buy']").hide();
+									$(".operate").find("a[class^='favorite']").hide();
+									var selText = "";
+									$(".parameter a[value]").each(function() {
+										if ($(this).attr("class") == "select") {
+											selText += "“" + $(this).attr("title") + "”";
+										}
+									});
+
+									if (selText != "")
+										$(".result").html("已选择" + selText);
+		          
+									return false;
+								}
+			  
+
+								var href = "/product/productinfo.aspx?id="+specid+"&type=&prom=0";
+
+								$(this).attr("href", href);
+
+							})
+							function mergeSpecLength(arr0,arr1)
+							{
+
+						           
+                                                             return (arr1.join(",")==$(arr0.split(',')).toArray().join(","));
+							}
+
+						</script> 
+       <!-- 商品规格 END--> 
+       <script type="text/javascript">
+                $(".speclist").each(function () {
+                    $(this).find("dt").click(function () {
+                        $(this).next("dd").show();
+                    });
+                });
+                $(".speclist").bind("mouseleave", function () {
+                    $(this).find("dd").hide();
+                })
+            </script> 
+       <div> 
+        <dl class="selNum"> 
+         <span style="display:none"> 
+          <dt>
+           购买数量：
+          </dt> 
+          <dd>
+           <span class="num"><a href="javascript:void(0);" class="jia" onclick="minusQuantity();">-</a> <input type="text" name="txtQuantity" id="txtQuantity" value="1" class="text" maxlength="6" /> <a href="javascript:void(0);" class="jian" onclick="plusQuantity();">+</a> 件</span>
+          </dd> </span> 
+        </dl> 
+        <script type="text/javascript">
+
+
+	              function plusQuantity() {
+		              var quantity = $("#txtQuantity").val();
+		              $("#txtQuantity").val(Number(parseInt(quantity) + 1));
+	              }
+	              function minusQuantity() {
+		              var quantity = $("#txtQuantity").val();
+		              if (quantity <= 1) {
+			              $("#txtQuantity").val(1);
+		              } else {
+			              $("#txtQuantity").val(Number(quantity - 1));
+		              }
+	              }
+              </script> 
+        <!--已选择规格--> 
+        <div class="result"></div> 
+        <script type="text/javascript">
+	              var selText = "";
+	              for (var i = 0; i < selectSpec.length; i++) {
+		              if (selText != "")
+			              selText += ",";
+		              if ($(".parameter a[value='" + selectSpec[i] + "']").attr("title"))
+			              selText += "“" + $(".parameter a[value='" + selectSpec[i] + "']").attr("title") + "”";
+	              }
+	              if (selText != "")
+		              $(".result").html("已选择" + selText);
+              </script> 
+        <!--已选择规格 END--> 
+       </div> 
+       <!--购买按钮--> 
+       <div class="operate">
+        <a style="display:none" class="buy"></a>
+       </div> 
+       <script type="text/javascript">
+
+  				if ('True'.toLocaleLowerCase() != 'true') {
+  					$(".buy").click(function () {
+  						return false;
+  					});
+  					$(".buy").attr("class", "buy_not");
+  					$(".buy_not").show();
+  				}
+
+  			</script> 
+       <!--提示加入购物车弹出层--> 
+       <div class="AddtoCart" style="z-index: 1001; display: none; position: absolute;"> 
+        <h6>商品已成功添加到购物车</h6> 
+        <p>购物车共<span id="span_count" class="QuantityTotal"></span>种商品，合计：<span id="span_price" class="PriceTotal"></span></p> 
+        <p><a href="/cart.aspx" class="btn-pay"></a><a onclick="jQuery('.AddtoCart').hide();" class="btn-close"></a></p> 
+       </div> 
+       <!--提示加入购物车弹出层--> 
+       <script type="text/javascript">
+	              var LoginURL='/Member/login.aspx';
+	              var requestUrl = "/Ajax/Order/AddCart.ashx";
+	              function AddShopping() {
+				        
+                        var NewProID= GetSpecId();
+
+
+		              var Quantity = $("#txtQuantity").val();
+		              var r = /^[0-9]*[1-9][0-9]*$///正整数
+
+		              if (!r.test(Quantity)) {
+			              whir.shop.alert("购买数量输入有误！");
+			              return;
+		              }
+		              if (parseInt(Quantity)<=0) {
+			              whir.shop.alert("购买数量至少要为1");
+			              return;
+		              }
+		              var areaValue=$("#areaSelTxt").attr("value");
+		              var requestData = {
+			              
+			              source: "info",
+			             // ProID: "1333",
+                          ProID: NewProID,
+			              
+			              Quantity: Quantity,
+			              areaID: areaValue,
+			              time: new Date().getMilliseconds()
+		              };
+		              $.ajax({
+			              url: requestUrl,
+			              data: requestData,
+			              cache: false,
+			              success: function (result) {
+				              if(result.indexOf('NotLogin')>-1){
+					              LoginURL+='?backurl='+escape(location.href);
+					              location.href=LoginURL;
+					              return false;
+				              }
+				              if (result.indexOf('ErrorMessage') != -1) {
+					              whir.shop.alert(result.split("|")[1]);
+				              } else {
+					              showCart();
+					              $(".AddtoCart").show();
+				              }
+			              },
+			              error: function () {
+
+			              }
+		              });
+	              }
+
+                  function GetSpecId()
+                  {
+                    	var arrayObj = new Array();//已选则规格数组
+								$(".parameter .select[value]").each(function (i, item) {
+									arrayObj[arrayObj.length]= parseInt($(item).attr("value"),10);
+								});
+						 var specid='';
+ 
+						
+                                 
+                                if( ( ',' + arrayObj.join(",") + ',' ) ==',63,')
+								{ 
+									specid=1333;
+								}
+						
+                                else 
+                                if( ( ',' + arrayObj.join(",") + ',' ) ==',142,')
+								{ 
+									specid=1334;
+								}
+						
+                        return  specid;
+                  }
+
+              </script> 
+       <!--购买按钮 END--> 
+       <div class="add_favorite">
+        <a href="#" class="favorite" onclick="return fav(1333)">添加至愿望清单</a>
+        <!--<a href="#" class="contrast">添加对比</a>-->
+       </div> 
+      </div> 
+      <div class="parameter2" style=" display:none;"> 
+       <dl> 
+        <dt>
+         选择规格：
+        </dt> 
+        <dd>
+         &nbsp;
+        </dd> 
+        <dd> 
+         <a href="?id=1333&amp;type=&amp;prom=0">ISM (PN) Adamo 单车座垫 Attack (窄后) 黑色 </a> 
+        </dd> 
+        <dd> 
+         <a href="?id=1334&amp;type=&amp;prom=0">ISM (PN) Adamo 单车座垫 Attack (窄后) 白色 </a> 
+        </dd> 
+        <dd>
+         &nbsp;
+        </dd> 
+       </dl> 
+      </div> 
+      <div class="intro">
+        官网：http://www.ismseat.com/ 
+      </div> 
+     </div> 
+     <div class="clear"></div> 
+    </div> 
+    <!--产品详情 end--> 
+    <div class="clear"></div> 
+    <!--推荐套餐--> 
+    <script src="/res/script/MSClass.js" type="text/javascript"></script> 
+    <div id="tjHot" class="product_package"> 
+     <h2><b>推荐套餐</b></h2> 
+     <dl class="tab"> 
+     </dl> 
+     <script type="text/javascript">
+	        jQuery(".product_package a[id^='package']:first").attr("class", "show");
+	        jQuery(".product_package div[id^='packProList']:first").show();
+	        jQuery(".product_package label:last").remove();
+
+
+	        jQuery(".product_package a[id^='package']").click(function () {
+		        jQuery(".product_package a[id^='package']").removeClass("show");
+		        jQuery(this).addClass("show");
+		        jQuery(".product_package div[id^='packProList']").hide();
+		        var index = jQuery(this).index(".product_package a[id^='package']");
+		        jQuery(".product_package div[id^='packProList']").eq(index).show();
+
+		        //修复套餐切换时，ie下需重新延时加载图片
+		        if ($.browser.msie) {
+			        jQuery('img[lazysrc]').scrollLoading();
+		        }
+
+		        return false;
+	        });
+
+        </script> 
+     <script type="text/javascript">
+                       function AddShopping2(proID) {
+                        
+		                   var requestData = {
+			                   source: "packet",
+			                   Quantity: "1",
+			                   ProID: proID,
+			                   areaID: "",
+			                   time: new Date().getMilliseconds()
+		                   };
+		                   $.ajax({
+			                   url: "/Ajax/Order/AddCart.ashx",
+			                   data: requestData,
+			                   cache: false,
+			                   success: function (result) {
+				                   if (result.indexOf('ErrorMessage') != -1) {
+					                   whir.shop.alert(result.split("|")[1]);
+				                   } else {
+					                   showCart();
+					                   whir.shop.alert("商品成功添加到购物车");
+				                   }
+			                   },
+			                   error: function () {
+
+			                   }
+		                   });
+	                   }
+                   </script> 
+    </div> 
+    <script type="text/javascript">
+
+
+	if (jQuery("#tjHot .box").length == 0) {
+		jQuery("#tjHot").hide();
+	}
+</script> 
+    <!--推荐套餐--> 
+    <!--其他客户同样购买了--> 
+    <div id="xgHot" class="sidebar_hot"> 
+     <h2><b>其他客户同样购买了</b></h2> 
+    </div> 
+    <script type="text/javascript">
+          jQuery("#xgHot dl:last").addClass("end");
+          if (jQuery("#xgHot dl").length == 0) {
+              jQuery("#xgHot").hide();
+          }
+      </script> 
+    <!--其他客户同样购买了 end--> 
+    <!--详情--> 
+    <div class="product_intro_tab"> 
+     <h2 id="H_piaofu" class="tab"> <a class="show">描述</a> <a>尺寸</a> <a>送货及退换货</a> <a id="commentNumTab">客户评价（0）</a> <a>常见问题解答</a>
+      <!--<a>相关资讯</a>--></h2> 
+     <!--产品介绍--> 
+     <div class="product_intro box" style="display:block;"> 
+      <h3 style="box-sizing:border-box;font-family:&quot;font-weight:500;line-height:1.1;color:#444444;margin-top:20px;margin-bottom:10px;font-size:21px;white-space:normal;text-align:justify;background-color:#FFFFFF;"> <span lang="EN-US" style="box-sizing:border-box;font-family:新細明體, serif;"> <h3 style="box-sizing:border-box;font-family:'Open Sans', sans-serif;font-weight:500;line-height:1.1;color:#444444;margin-top:20px;margin-bottom:10px;font-size:21px;white-space:normal;background-color:#FFFFFF;"> •类别: 窄<br style="box-sizing:border-box;" />•长度: 270 毫米<br style="box-sizing:border-box;" />•宽度: 110 毫米<br style="box-sizing:border-box;" />•座垫: 25 系列泡绵和矽胶<br style="box-sizing:border-box;" />•轨: 钛合金<span style="font-family:新細明體, serif;font-size:12px;line-height:1.5;"></span> </h3></span> </h3>
+      <h3 style="box-sizing:border-box;font-family:&quot;font-weight:500;line-height:1.1;color:#444444;margin-top:20px;margin-bottom:10px;font-size:21px;white-space:normal;text-align:justify;background-color:#FFFFFF;"> <span lang="EN-US" style="box-sizing:border-box;font-family:新細明體, serif;">ISM</span><span lang="ZH-CN" style="box-sizing:border-box;font-family:SimSun;">贵为美国顶级铁人座垫品牌，始创于</span><span lang="EN-US" style="box-sizing:border-box;font-family:新細明體, serif;">1999</span><span lang="ZH-CN" style="box-sizing:border-box;font-family:SimSun;">年。由热爱自行车竞赛的</span><span lang="EN-US" style="box-sizing:border-box;font-family:新細明體, serif;">Steve Toll</span><span lang="ZH-CN" style="box-sizing:border-box;font-family:SimSun;">先生创立</span><span lang="EN-US" style="box-sizing:border-box;font-family:新細明體, serif;">,</span><span lang="ZH-CN" style="box-sizing:border-box;font-family:SimSun;">当时</span><span lang="EN-US" style="box-sizing:border-box;font-family:新細明體, serif;">Steve</span><span lang="ZH-CN" style="box-sizing:border-box;font-family:SimSun;">先生与太太</span><span lang="EN-US" style="box-sizing:border-box;font-family:新細明體, serif;">Laura Steve</span><span lang="ZH-CN" style="box-sizing:border-box;font-family:SimSun;">长期忍受骑乘的痛苦不适，因自行车座垫设计一成不变，不着重舒适感。终于在</span><span lang="EN-US" style="box-sizing:border-box;font-family:新細明體, serif;">1997</span><span lang="ZH-CN" style="box-sizing:border-box;font-family:SimSun;">年冬天，</span><span lang="EN-US" style="box-sizing:border-box;font-family:新細明體, serif;">Steve</span><span lang="ZH-CN" style="box-sizing:border-box;font-family:SimSun;">先生亲手设计了一款可舒缓不适的自行车座垫，在</span><span lang="EN-US" style="box-sizing:border-box;font-family:新細明體, serif;">1999</span><span lang="ZH-CN" style="box-sizing:border-box;font-family:SimSun;">年成功申请专利。直至现时，经过专门测试的</span><span lang="EN-US" style="box-sizing:border-box;font-family:新細明體, serif;">ISM</span><span lang="ZH-CN" style="box-sizing:border-box;font-family:SimSun;">自行车座垫，已为无数的运动员取得胜利，三项铁人、奥运会、公路赛等等。许多的专业及业余自行车爱好者也赞许，</span><span lang="EN-US" style="box-sizing:border-box;font-family:新細明體, serif;">ISM</span><span lang="ZH-CN" style="box-sizing:border-box;font-family:SimSun;">自行车座垫是世界上最舒适的自行车座位。</span> </h3>
+      <h3 style="box-sizing:border-box;font-family:&quot;font-weight:500;line-height:1.1;color:#444444;margin-top:20px;margin-bottom:10px;font-size:21px;white-space:normal;text-align:justify;background-color:#FFFFFF;"> <span lang="ZH-CN" style="box-sizing:border-box;font-family:SimSun;">在</span><span lang="EN-US" style="box-sizing:border-box;font-family:新細明體, serif;">2016</span><span lang="ZH-CN" style="box-sizing:border-box;font-family:SimSun;">年</span><span lang="EN-US" style="box-sizing:border-box;font-family:新細明體, serif;">ISM</span><span lang="ZH-CN" style="box-sizing:border-box;font-family:SimSun;">重新整合旗下所有座垫产品的系列及分类，按着不同的性能，分别推出</span><span lang="EN-US" style="box-sizing:border-box;font-family:新細明體, serif;">5</span><span lang="ZH-CN" style="box-sizing:border-box;font-family:SimSun;">大系列：</span><span lang="EN-US" style="box-sizing:border-box;font-family:新細明體, serif;">PS</span><span lang="ZH-CN" style="box-sizing:border-box;font-family:SimSun;">、</span><span lang="EN-US" style="box-sizing:border-box;font-family:新細明體, serif;">PL</span><span lang="ZH-CN" style="box-sizing:border-box;font-family:SimSun;">、</span><span lang="EN-US" style="box-sizing:border-box;font-family:新細明體, serif;">PN</span><span lang="ZH-CN" style="box-sizing:border-box;font-family:SimSun;">、</span><span lang="EN-US" style="box-sizing:border-box;font-family:新細明體, serif;">PR</span><span lang="ZH-CN" style="box-sizing:border-box;font-family:SimSun;">及</span><span lang="EN-US" style="box-sizing:border-box;font-family:新細明體, serif;">PM</span><span lang="ZH-CN" style="box-sizing:border-box;font-family:SimSun;">。</span> </h3>
+      <p style="text-align:center;"> <span lang="ZH-CN" style="box-sizing:border-box;font-family:SimSun;"><embed src="/uploadfiles/Editor/flash/1608161737_13366.swf" type="application/x-shockwave-flash" width="640" height="360" quality="high" /><br /></span> </p>
+      <table style="width:100%;" cellpadding="0" cellspacing="0" border="0" class="ke-zeroborder" bordercolor="#000000"> 
+       <tbody> 
+        <tr> 
+         <td> <img src="/uploadfiles/Editor/image/1608171100_28510.jpg" alt="" /><br /> </td> 
+        </tr> 
+        <tr> 
+         <td> <img src="/uploadfiles/Editor/image/1608171100_36972.jpg" alt="" /><br /> </td> 
+        </tr> 
+        <tr> 
+         <td> <img src="/uploadfiles/Editor/image/1608171100_71625.jpg" alt="" /><br /> </td> 
+        </tr> 
+        <tr> 
+         <td> <img src="/uploadfiles/Editor/image/1608171100_27968.jpg" alt="" /><br /> </td> 
+        </tr> 
+        <tr> 
+         <td> <br /> </td> 
+        </tr> 
+        <tr> 
+         <td> <br /> </td> 
+        </tr> 
+        <tr> 
+         <td> <br /> </td> 
+        </tr> 
+        <tr> 
+         <td> <br /> </td> 
+        </tr> 
+       </tbody>
+      </table>
+      <br /> 
+     </div> 
+     <!--产品介绍 end--> 
+     <!--描述--> 
+     <div class="product_intro box" rel="248" style="display:none;"> 
+     </div> 
+     <!--描述 end--> 
+     <!--抢购介绍 --> 
+     <!--抢购介绍 end--> 
+     <!--团购介绍 --> 
+     <!--团购介绍 end--> 
+     <!--积分换购介绍 --> 
+     <!--积分换购介绍 end--> 
+     <!--竞拍介绍 --> 
+     <!--竞拍介绍 end--> 
+     <!--送货及退换货--> 
+     <div class="product_intro box" style="display:none;">
+       1 
+     </div> 
+     <!--送货及退换货 end--> 
+     <div class="product_comment box" style="display:none;"> 
+      <!--商品评价--> 
+      <div id="OverallRating" class="score_schedule"> 
+       <div class="score"> 
+        <p><b>商品满意度评分</b></p> 
+        <p><em id="point">0</em>分</p> 
+        <p><span id="pointIcon" class="star S0"></span></p> 
+        <p id="commentNum">共0位网友参与评分</p> 
+       </div> 
+       <div class="schedule"> 
+        <p><b>好评（0%）</b><span><em id="goodC" style="width:100%"></em></span></p> 
+        <p><b>中评（0%）</b><span><em id="midC" style="width:100%"></em></span></p> 
+        <p><b>差评（0%）</b><span><em id="badC" style="width:100%"></em></span></p> 
+       </div> 
+      </div> 
+      <div class="comment"> 
+       <h3 class="name_num"><span class="show" id="AllComments">全部评价（0）</span><span id="AllgoodCs">好评（0）</span><span id="AllmidCs">中评（0）</span><span id="AllbadCs">差评（0）</span></h3> 
+      </div> 
+      <!--pages--> 
+      <div id="commentPage" class="pagination"> 
+      </div> 
+      <!--pages--> 
+      <script type="text/javascript">
+        //评论信息&prom=8&type=integral
+	        jQuery(function(){
+		
+		
+		        GetCommentTotal(1333);
+
+
+		        jQuery(".comment .name_num span").click(function () {
+			        jQuery(".comment .name_num span").removeClass();
+			        jQuery(this).addClass("show");
+			        PageComment(1,5,1333);
+			        GetCommentTotal(1333);
+		        });
+	        });
+
+     
+        </script> 
+      <!--商品评价 end--> 
+      <div class="advisory"> 
+       <h3 class="name_num"><span class="show">商品咨询</span><span>发表咨询</span></h3> 
+       <div id="advisoryList" class="txtbox"> 
+       </div> 
+       <div class="txtbox" style="display:none"> 
+        <p><textarea name="ConsultingContent" formgroup="cForm" regular="^.{6,1000}$" errmesage="咨询内容在6-1000个字内" id="ConsultingContent" cols="45" rows="5"></textarea></p> 
+        <p><input type="button" name="btnConsulting" formid="cForm" id="btnConsulting" value="" class="btnConsulting" /></p> 
+        <script>
+$(function(){$('#btnConsulting').click(function(){
+var formid = $(this).attr('formID');var result= '';var mess ='';
+$('*[formGroup="' + formid + '"]').each(function () {var reg = $(this).attr('Regular');
+if (reg && reg != '') {
+if ($(this).val() && !(new RegExp(reg)).test($(this).val()) || !$(this).val() && !(new RegExp(reg)).test($(this).html()))
+{ mess += $(this).attr("ErrMesage") + '\n'; }}});
+if (mess != '') {whir.shop.alert(mess);return false;}
+
+$(this).after("<form id='" + formid + "' style='display:none' />");
+$('*[formGroup="' + formid + '"]').each(function () {var temp = $(this).clone(true);
+$(temp).val($(this).val());
+$('#' + formid).append(temp);});
+
+$('#' + formid).append("<input type='text' name='specproid' value='1333'>");
+$.ajax({type: "POST",processData: false,
+url: '/Ajax/ConsultingSubmit.aspx',data: $('#' + formid).serialize(),async: false,beforeSend :function(){
+$('#btnConsulting').val($('#btnConsulting').val() + '...');$('#btnConsulting').attr('disabled',true);},complete:function(){
+$('#btnConsulting').val($('#btnConsulting').val().replace('...', ''));$('#btnConsulting').attr('disabled', false);},success: function (msg) {$('#' + formid).remove();
+if (msg.indexOf('error') < 0){
+$('*[formGroup="' + formid + '"]').each(function (j,control) {if ($(control).val()) {$(control).val('');}}); $('textarea[formGroup="' + formid + '"]').each(function(i,item){$(item).html('')});  }msg=msg.substring(msg.indexOf(':')+1);
+whir.shop.alert(msg);}});
+
+return false; })
+ })
+</script> 
+       </div> 
+      </div> 
+      <script type="text/javascript" language="javascript">
+	        jQuery(".advisory .name_num span").bind("click", function () {
+		        var index = jQuery(this).index();
+		        jQuery(this).parents(".advisory").find(".name_num span").removeClass("show");
+		        jQuery(this).addClass("show");
+		        jQuery(this).parents(".advisory").find(".txtbox").hide();
+		        jQuery(this).parents(".advisory").find(".txtbox").eq(index).show();
+		        if (index != 0)
+			        $("#ConsultingPage").hide();
+		        else if ($("#ConsultingPage li").length > 1) {
+			        $("#ConsultingPage").show();
+		        }
+
+	        });
+        </script> 
+      <!--pages--> 
+      <div id="ConsultingPage" class="pagination"> 
+      </div> 
+      <!--pages--> 
+      <script type="text/javascript">
+	jQuery(function(){
+		//咨询信息
+		PageConsulting(1,5,1333);
+	})
+</script> 
+     </div> 
+     <!--常见问题解答--> 
+     <div class="product_intro box" style="display:none;"> 
+     </div> 
+     <div class="product_intro box news_list" style="display:none;"> 
+      <ul> 
+      </ul> 
+     </div> 
+     <!--常见问题解答 end--> 
+    </div> 
+    <script type="text/javascript" language="javascript">
+			jQuery("#H_piaofu a").bind("click", function () {
+				var index = jQuery(this).index();
+				jQuery(this).parents(".product_intro_tab").find(".tab a").removeClass("show");
+				jQuery(this).addClass("show");
+				jQuery(this).parents(".product_intro_tab").find(".box").hide();
+				jQuery(this).parents(".product_intro_tab").find(".box").eq(index).show();
+
+				if (jQuery(this).attr("id") == "commentNumTab") {
+					jQuery(".comment .name_num span:first").click();
+
+				} else if (jQuery(this).attr("id") == "auctionNumTab") {
+
+					PageAuctionLog(1, 10, "0");
+				}
+
+			});
+		</script> 
+    <script type="text/javascript">
+            //分类漂浮             
+	        var offset = $("#H_piaofu").offset();
+	        var height = offset.top;
+
+	        $(window).scroll(function () {
+		        var scrolled = $(window).scrollTop();
+		        if (scrolled > height) {
+					
+			        jQuery("#H_piaofu").attr("class", "tab piaofu");
+		        }
+		        else {
+			        jQuery("#H_piaofu").attr("class", "tab");
+		        }
+	        }); 
+        </script> 
+    <!--详情 end--> 
+   </div> 
+   <div class="clear"> 
+   </div> 
+  </div> 
+  <!--Mid end--> 
+  <!--Footer--> 
+  <div class="bottom_help"> 
+   <dl> 
+    <dd class="h_dd"> 
+     <h1>帮助</h1> 
+     <p>广州竞赛风贸易有限公司提供在线的产品帮助,解决使用时遇到的问题</p> 
+     <a id="aQQHelp" href="tencent://message/?uin=2535498495&amp;Site=QQ在线&amp;Menu=yes" class="more">我需要帮助</a> 
+     <span>帮助热线：
+      <div>
+       国内 020-31103384
+       <br />香港 +852 51909869
+      </div></span> 
+    </dd> 
+    <dd class="mail_dd"> 
+     <h1>邮件联系</h1> 
+     <p>如果您无法找到所需信息,请联系我们的客户服务团队,我们会很乐意回答您所提出的有关设备、配件或服务的相关问题。</p> 
+     <div class="input">
+      <!--<input type="text" value=""  class="text"/>-->
+      <a href="mailto:orderinfo@ilifesports.com" class="text"></a>
+      <a href="mailto:orderinfo@ilifesports.com" class="btn"></a>
+     </div> 
+    </dd> 
+    <dd class="about_dd"> 
+     <h2></h2> 
+     <p>我们是热爱运动，热爱生活-ilifesports 倡导“热爱户外运动，享受健康生活”</p> 
+     <a href="/help/about.aspx" class="more">查看详细</a> 
+    </dd> 
+   </dl> 
+   <div class="clear"></div> 
+  </div> 
+  <div class="footer"> 
+   <div class="contain"> 
+    <div class="contact_dl"> 
+     <h5></h5> 
+     <p>帮助热线：<b>国内 020-31103384<br />香港 +852 51909869</b></p> 
+     <div class="share"> 
+      <ul> 
+       <li class="email"> <a href="mailto:orderinfo@ilifesports.com" title="邮箱"></a> </li> 
+       <li class="sina"> <a href="http://sina.com" target="_blank" title="新浪微博"></a> </li> 
+       <li class="wx"> <a href="javascript:void(0);" title="微信公众号"></a> 
+        <div class="ewm">
+         <img src="/uploadfiles/1605111553_92463.jpg" title="微信公众号" alt="微信公众号" />
+        </div> </li> 
+       <li><a href="http://tq.com" target="_blank" title="腾讯微博"></a></li> 
+      </ul> 
+      <div class="clear"></div> 
+     </div> 
+    </div> 
+    <div class="menu_dl"> 
+     <dl> 
+      <dt>
+       产品全系列
+      </dt> 
+      <dd>
+       <a href="/product/product.aspx?TopCateID=2718&amp;CateID=2718">Q36.5</a>
+      </dd> 
+      <dd>
+       <a href="/product/product.aspx?TopCateID=2517&amp;CateID=2517">骑行</a>
+      </dd> 
+      <dd>
+       <a href="/product/product.aspx?TopCateID=2576&amp;CateID=2576">铁人</a>
+      </dd> 
+      <dd>
+       <a href="/product/product.aspx?TopCateID=2538&amp;CateID=2538">跑步</a>
+      </dd> 
+      <dd>
+       <a href="/product/product.aspx?TopCateID=2558&amp;CateID=2558">户外</a>
+      </dd> 
+      <dd>
+       <a href="/product/product.aspx?TopCateID=2501&amp;CateID=2501">促销</a>
+      </dd> 
+     </dl> 
+     <dl id="newsDL"> 
+      <dt>
+       资讯与分享
+      </dt> 
+      <dd>
+       <a href="/news/news.aspx?cid=40" title="我们的实体店">我们的实体店</a> 
+      </dd> 
+      <dd>
+       <a href="/news/news.aspx?cid=39" title="出游信息">出游信息</a> 
+      </dd> 
+      <dd>
+       <a href="/news/news.aspx?cid=38" title="比赛">比赛</a> 
+      </dd> 
+      <dd>
+       <a href="/news/news.aspx?cid=34" title="健康与训练">健康与训练</a> 
+      </dd> 
+      <dd>
+       <a href="/news/news.aspx?cid=30" title="资讯">资讯</a> 
+       <span><a href="/news/news.aspx?cid=37" title="测评">测评</a></span>
+       <span><a href="/news/news.aspx?cid=35" title="产品推价">产品推价</a></span>
+       <span><a href="/news/news.aspx?cid=33" title="环保">环保</a></span> 
+      </dd> 
+     </dl> 
+     <dl> 
+      <dt>
+       促销
+      </dt> 
+      <dd>
+       <a href="/promotion/promotion.aspx">折扣专区</a>
+      </dd> 
+      <dd>
+       <a href="/GroupBuy/GroupBuy.aspx">团购专区</a>
+      </dd> 
+      <dd>
+       <a href="/integral/integral.aspx">积分换购</a>
+      </dd> 
+      <dd>
+       <a href="/rushbuy/rushbuy.aspx">抢购</a>
+      </dd> 
+      <dd>
+       <a href="/auction/auction.aspx">竞拍</a> 
+      </dd> 
+     </dl> 
+     <dl> 
+      <dt>
+       <a href="/help/about.aspx">关于ilife</a>
+      </dt> 
+      <dd>
+       <a href="/help/help.aspx">帮助中心</a>
+      </dd> 
+      <dd>
+       <a href="/member/personal.aspx">会员中心</a>
+      </dd> 
+     </dl> 
+     <dl> 
+      <dt>
+       联系我们
+      </dt> 
+      <dd>
+       <a href="/help/contact.aspx">联系我们</a>
+      </dd> 
+     </dl> 
+     <div class="clear"></div> 
+    </div> 
+    <div class="clear"></div> 
+    <div class="footer_nav">
+     <script src="http://pw.cnzz.com/c.php?id=1259396741&amp;l=2" language="JavaScript" charset="gb2312"></script> | 
+     <a href="/help/other.aspx?id=71">网站地图</a> | 
+     <a href="/help/other.aspx?id=72">法律声明</a> | 
+     <a href="/help/other.aspx?id=73">友情链接</a>
+    </div> 
+    <div class="copyright">
+     Copyright &copy; 2014 广州竞赛风贸易有限公司 粤ICP备17010641号-1 版权所有 Designed Wanhu
+    </div> 
+   </div> 
+  </div> 
+  <script type="text/javascript">
+    //整站无图处理
+    jQuery.each(jQuery("img"), function (i, n) { jQuery(n).error(function () { n.src = '/res/images/nopic.jpg'; }); n.src = n.src; });
+    //
+    $("#newsDL").find("dd").each(function () {
+        var numindex = $(this).find("span").length;
+        if (numindex != 0) {
+            var href = $(this).find("span").eq(0).find("a").attr("href");
+            $(this).find("a").eq(0).attr("href", href);
+        }
+    });
+</script> 
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?90c1ad206ac40a7fbac67a63c940000f";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+  <!--Footer end--> 
+  <script type="text/javascript">
+	    jQuery(".product_intro_tab img").each(function (i, item) {
+		    var src = jQuery(item).attr("src");
+		    if (src != "" && src.indexOf('/') < 0)
+			    jQuery(item).attr("src", '/' + src.substring(1));
+	    })
+
+    </script> 
+  <script type="text/javascript" src="/res/script/jquery.scrollLoading.js"></script> 
+  <script type="text/javascript">
+/*只有如<img lazysrc='图片路径'>写法的img才会有延时加载效果*/
+jQuery(function(){
+jQuery('img[lazysrc]').scrollLoading()
+ })
+</script>  
+  <script type="text/javascript">
+    $(".speclist dd span a").bind("click", function () {
+        var title = $(this).attr("title");
+        $(this).parent().parent().prev().html(title);
+        $(".operate .buy").show();
+    })
+
+    $(".speclist dd span a").each(function () {
+        var cla = $(this).attr("class");
+        var title = $(this).attr("title");
+        if ("select" == cla) {
+          $(this).parent().parent().prev().html(title);
+        }
+
+    })
+
+</script> 
+  <script type="text/javascript">
+
+    $(".mainnav li").each(function () {
+        if ($.trim($(".location a:eq(1)").text()) == $.trim($(this).text())) {
+            $(this).attr("class", "onnav");
+        }
+    })
+
+
+</script>  
+ </body>
+</html>

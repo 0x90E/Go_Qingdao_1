@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+ <head> 
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?a9833d1a52e104a7d5777501d25e7495";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+  <meta charset="UTF-8" /> 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+  <link rel="profile" href="http://gmpg.org/xfn/11" /> 
+  <link rel="pingback" href="http://www.coderecord.cn/xmlrpc.php" /> 
+  <title>使用CLLocationManager定位获取经纬度 – CODE RECORD</title> 
+  <script type="text/javascript">
+             window.onload = function(){
+                 prettyPrint();
+             }
+        </script> 
+  <link rel="dns-prefetch" href="//www.coderecord.cn" /> 
+  <link rel="dns-prefetch" href="//fonts.googleapis.com" /> 
+  <link rel="alternate" type="application/rss+xml" title="CODE RECORD &raquo; Feed" href="http://www.coderecord.cn/feed" /> 
+  <link rel="alternate" type="application/rss+xml" title="CODE RECORD &raquo; 评论Feed" href="http://www.coderecord.cn/comments/feed" /> 
+  <link rel="alternate" type="application/rss+xml" title="CODE RECORD &raquo; 使用CLLocationManager定位获取经纬度评论Feed" href="http://www.coderecord.cn/get-location.html/feed" /> 
+  <link rel="stylesheet" id="prettify-css-css" href="http://www.coderecord.cn/wp-content/plugins/kindeditor-for-wordpress/plugins/code/desert.css?ver=20110329" media="all" /> 
+  <link rel="stylesheet" id="flat-fonts-css" href="//fonts.googleapis.com/css?family=Amatic+SC%7CRoboto:400,700%7CRoboto+Slab%7CRoboto+Condensed" media="all" /> 
+  <link rel="stylesheet" id="flat-theme-css" href="http://www.coderecord.cn/wp-content/themes/flat/assets/css/flat.min.css?ver=1.7.7" media="all" /> 
+  <link rel="stylesheet" id="flat-style-css" href="http://www.coderecord.cn/wp-content/themes/flat/style.css?ver=4.7.3" media="all" /> 
+  <script src="http://www.coderecord.cn/wp-content/plugins/kindeditor-for-wordpress/plugins/code/prettify.js?ver=20110329"></script> 
+  <script src="http://www.coderecord.cn/wp-includes/js/jquery/jquery.js?ver=1.12.4"></script> 
+  <script src="http://www.coderecord.cn/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1"></script> 
+  <script src="http://www.coderecord.cn/wp-content/themes/flat/assets/js/flat.min.js?ver=1.7.7"></script> 
+  <!--[if lt IE 9]>
+<script src='http://www.coderecord.cn/wp-content/themes/flat/assets/js/html5shiv.min.js?ver=3.7.2'></script>
+<![endif]--> 
+  <link rel="https://api.w.org/" href="http://www.coderecord.cn/wp-json/" /> 
+  <link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.coderecord.cn/xmlrpc.php?rsd" /> 
+  <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.coderecord.cn/wp-includes/wlwmanifest.xml" /> 
+  <link rel="prev" title="Demo：PhotoPickerSwift" href="http://www.coderecord.cn/photopickerdemo.html" /> 
+  <link rel="next" title="OSX 10.11中触控板设置的变化" href="http://www.coderecord.cn/osx-1011-touchpad-change.html" /> 
+  <meta name="generator" content="WordPress 4.7.3" /> 
+  <link rel="canonical" href="http://www.coderecord.cn/get-location.html" /> 
+  <link rel="shortlink" href="http://www.coderecord.cn/?p=249" /> 
+  <meta name="robots" content="noindex,follow" /> 
+  <link rel="alternate" type="application/json+oembed" href="http://www.coderecord.cn/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.coderecord.cn%2Fget-location.html" /> 
+  <link rel="alternate" type="text/xml+oembed" href="http://www.coderecord.cn/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.coderecord.cn%2Fget-location.html&amp;format=xml" /> 
+  <style type="text/css"></style>
+  <style type="text/css">#masthead .site-title {font-family:Amatic SC}body {font-family:Roboto }h1,h2,h3,h4,h5,h6 {font-family:Roboto Slab}#masthead .site-description, .hentry .entry-meta {font-family:Roboto Condensed}</style>
+  <style type="text/css" id="custom-background-css">
+body.custom-background { background-image: url("http://www.coderecord.cn/wp-content/themes/flat/assets/img/default-background.jpg"); background-position: left top; background-size: cover; background-repeat: no-repeat; background-attachment: fixed; }
+</style> 
+  <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> 
+ </head> 
+ <body class="post-template-default single single-post postid-249 single-format-standard custom-background" itemscope="" itemtype="http://schema.org/WebPage"> 
+  <div id="page"> 
+   <div class="container"> 
+    <div class="row row-offcanvas row-offcanvas-left"> 
+     <div id="secondary" class="col-lg-3"> 
+      <header id="masthead" class="site-header" role="banner"> 
+       <div class="hgroup"> 
+        <h1 class="site-title display-title"><a href="http://www.coderecord.cn/" title="CODE RECORD" rel="home"><span itemprop="name">CODE RECORD</span></a></h1>
+        <h2 itemprop="description" class="site-description">JUST ANOTHER BLOG</h2> 
+       </div> 
+       <button type="button" class="btn btn-link hidden-lg toggle-sidebar" data-toggle="offcanvas" aria-label="Sidebar"><i class="fa fa-gear"></i></button> 
+       <button type="button" class="btn btn-link hidden-lg toggle-navigation" aria-label="Navigation Menu"><i class="fa fa-bars"></i></button> 
+       <nav id="site-navigation" class="navigation main-navigation" role="navigation"> 
+        <div class="nav-menu">
+         <ul> 
+          <li class="page_item page-item-43"><a href="http://www.coderecord.cn/about">关于</a></li> 
+          <li class="page_item page-item-200"><a href="http://www.coderecord.cn/docset-download">离线文档(DocSet)下载地址汇总</a></li> 
+         </ul>
+        </div> 
+       </nav> 
+      </header> 
+      <div class="sidebar-offcanvas"> 
+       <div id="main-sidebar" class="widget-area" role="complementary"> 
+        <aside id="search-2" class="widget widget_search"> 
+         <form method="get" id="searchform" action="http://www.coderecord.cn/"> 
+          <label for="s" class="assistive-text">搜索</label> 
+          <input type="text" class="field" name="s" id="s" placeholder="搜索" /> 
+          <input type="submit" class="submit" name="submit" id="searchsubmit" value="搜索" /> 
+         </form> 
+        </aside> 
+        <aside id="text-5" class="widget widget_text"> 
+         <div class="textwidget">
+          <script type="text/javascript">var jd_union_unid="306120451",jd_ad_ids="520:6",jd_union_pid="CKCtkuqsKxCDjvyRARoAIKSe5dICKgA=";var jd_width=250;var jd_height=250;var jd_union_euid="";var p="ABMPVxNdFQoVNwpfBkgyTUMIRmtKRk9aZV8ETVxNNwpfBkgyek8xciBNUhNlFEsnQlZCXxYSEn1iYgtZK1kUBRADXR1SFDIQBlIbWBQHFgdlKwRRX083HnVaJV1WWggrWxALGgNUGF8UCxQHVitaJTIi";</script>
+          <script type="text/javascript" charset="utf-8" src="//u.x.jd.com/static/js/auto.js"></script>
+         </div> 
+        </aside> 
+        <aside id="views-2" class="widget widget_views"> 
+         <h3 class="widget-title">热门文章</h3> 
+         <ul> 
+          <li><a href="http://www.coderecord.cn/use-jos-api-get-link.html" title="利用京东联盟API获取自定义推广链接">利用京东联盟API获取自定义推广链接</a> - 524 Views</li>
+          <li><a href="http://www.coderecord.cn/ios-dev-certificates.html" title="苹果开发证书的配置(在Xcode中操作)">苹果开发证书的配置(在Xcode中操作)</a> - 236 Views</li>
+          <li><a href="http://www.coderecord.cn/xcode-lipo-framework.html" title="用lipo合并模拟器Framework与真机Framework">用lipo合并模拟器Framework与真机Framework</a> - 188 Views</li>
+          <li><a href="http://www.coderecord.cn/xcode-simulators-download-and-install.html" title="Xcode模拟器手动下载与安装方法">Xcode模拟器手动下载与安装方法</a> - 142 Views</li>
+          <li><a href="http://www.coderecord.cn/use-mbprogresshud-in-swift.html" title="在Swift项目中使用MBProgressHUD">在Swift项目中使用MBProgressHUD</a> - 136 Views</li>
+          <li><a href="http://www.coderecord.cn/ios-docset-in-dash.html" title="IOS离线教程下载与Dash的使用">IOS离线教程下载与Dash的使用</a> - 117 Views</li>
+          <li><a href="http://www.coderecord.cn/intercept-302-request.html" title="IOS拦截重定向请求(302)的几种方式">IOS拦截重定向请求(302)的几种方式</a> - 115 Views</li>
+          <li><a href="http://www.coderecord.cn/dash-use.html" title="Dash工具使用小技巧">Dash工具使用小技巧</a> - 107 Views</li>
+          <li><a href="http://www.coderecord.cn/ios-swift-picker-movie-picture.html" title="Swift调用摄像头拍照或者录制视频">Swift调用摄像头拍照或者录制视频</a> - 106 Views</li>
+          <li><a href="http://www.coderecord.cn/swift-sha1.html" title="Swift调用sha1算法">Swift调用sha1算法</a> - 77 Views</li>
+         </ul> 
+        </aside> 
+        <aside id="categories-2" class="widget widget_categories"> 
+         <h3 class="widget-title">分类目录</h3> 
+         <ul> 
+          <li class="cat-item cat-item-383"><a href="http://www.coderecord.cn/category/csharp">C#</a> (2) </li> 
+          <li class="cat-item cat-item-391"><a href="http://www.coderecord.cn/category/chrome">Chrome</a> (1) </li> 
+          <li class="cat-item cat-item-56"><a href="http://www.coderecord.cn/category/ftp" title="Linux下的ftp管理与维护">FTP</a> (2) 
+           <ul class="children"> 
+            <li class="cat-item cat-item-67"><a href="http://www.coderecord.cn/category/ftp/vsftpd" title="一个完全免费的、开发源代码的ftp服务器软件">VsFTPd</a> (1) </li> 
+           </ul> </li> 
+          <li class="cat-item cat-item-313"><a href="http://www.coderecord.cn/category/gitcode">Git代码</a> (11) </li> 
+          <li class="cat-item cat-item-57"><a href="http://www.coderecord.cn/category/init" title="各程序的/etc/init.d文件，便于管理服务的启动与关闭">Init</a> (12) </li> 
+          <li class="cat-item cat-item-209"><a href="http://www.coderecord.cn/category/ios">IOS开发</a> (33) </li> 
+          <li class="cat-item cat-item-58"><a href="http://www.coderecord.cn/category/lamp" title="lamp安装与配置(apache,nginx,mysql,php...)">LAMP</a> (34) 
+           <ul class="children"> 
+            <li class="cat-item cat-item-75"><a href="http://www.coderecord.cn/category/lamp/apache" title="流行的web服务器">Apache</a> (8) </li> 
+            <li class="cat-item cat-item-59"><a href="http://www.coderecord.cn/category/lamp/lighttpd" title="一个德国人领导的开源Web服务器软件，具有非常低的内存开销、cpu占用率低、效能好以及丰富的模块等特点">Lighttpd</a> (1) </li> 
+            <li class="cat-item cat-item-61"><a href="http://www.coderecord.cn/category/lamp/mysql" title="一个关系型数据库管理系统">MySQL</a> (10) </li> 
+            <li class="cat-item cat-item-62"><a href="http://www.coderecord.cn/category/lamp/nginx" title="一个高性能的 HTTP 和 反向代理 服务器">Nginx</a> (9) </li> 
+            <li class="cat-item cat-item-63"><a href="http://www.coderecord.cn/category/lamp/postgresql">postgresql</a> (1) </li> 
+           </ul> </li> 
+          <li class="cat-item cat-item-60"><a href="http://www.coderecord.cn/category/base" title="linux基础知识，比如自带的各种命令使用，参数学习等">Linux基础</a> (4) 
+           <ul class="children"> 
+            <li class="cat-item cat-item-64"><a href="http://www.coderecord.cn/category/base/vi" title="vi与vim编辑器的学习">VI</a> (1) </li> 
+           </ul> </li> 
+          <li class="cat-item cat-item-293"><a href="http://www.coderecord.cn/category/openapi">OpenAPI</a> (3) </li> 
+          <li class="cat-item cat-item-189"><a href="http://www.coderecord.cn/category/osx">OSX系统</a> (19) </li> 
+          <li class="cat-item cat-item-2"><a href="http://www.coderecord.cn/category/php">PHP</a> (18) </li> 
+          <li class="cat-item cat-item-216"><a href="http://www.coderecord.cn/category/swift">Swift</a> (16) </li> 
+          <li class="cat-item cat-item-65"><a href="http://www.coderecord.cn/category/vpn">VPN</a> (1) </li> 
+          <li class="cat-item cat-item-66"><a href="http://www.coderecord.cn/category/vps" title="玩vps的一些笔记">VPS</a> (7) </li> 
+          <li class="cat-item cat-item-204"><a href="http://www.coderecord.cn/category/xcode">XCode</a> (8) </li> 
+          <li class="cat-item cat-item-3"><a href="http://www.coderecord.cn/category/xsl">XSL</a> (7) </li> 
+          <li class="cat-item cat-item-382"><a href="http://www.coderecord.cn/category/other-tech">其他技术</a> (2) </li> 
+          <li class="cat-item cat-item-68"><a href="http://www.coderecord.cn/category/other" title="其他各种Linux下的程序安装与配置">各类程序</a> (8) </li> 
+          <li class="cat-item cat-item-69"><a href="http://www.coderecord.cn/category/logs" title="linux下日志文件统计分析">日志管理</a> (2) 
+           <ul class="children"> 
+            <li class="cat-item cat-item-76"><a href="http://www.coderecord.cn/category/logs/awstats" title="一个免费非常简洁而且强大有个性的统计工具">Awstats</a> (1) </li> 
+            <li class="cat-item cat-item-84"><a href="http://www.coderecord.cn/category/logs/webalizer" title="一个高效的、免费的web服务器日志分析程序">Webalizer</a> (1) </li> 
+           </ul> </li> 
+          <li class="cat-item cat-item-70"><a href="http://www.coderecord.cn/category/sitebuild" title="关于站点的功能样式等">站点相关</a> (4) </li> 
+          <li class="cat-item cat-item-71"><a href="http://www.coderecord.cn/category/system-optimize" title="linux系统性能优化">系统优化</a> (1) </li> 
+          <li class="cat-item cat-item-72"><a href="http://www.coderecord.cn/category/system-secure" title="linux系统的安全性配置维护">系统安全</a> (5) 
+           <ul class="children"> 
+            <li class="cat-item cat-item-78"><a href="http://www.coderecord.cn/category/system-secure/fail2ban" title="可以监视你的系统日志，然后匹配日志的错误信息（正则式匹配）执行相应的屏蔽动作">Fail2Ban</a> (1) </li> 
+            <li class="cat-item cat-item-79"><a href="http://www.coderecord.cn/category/system-secure/iptables" title="linux下优秀的防火墙">IPtables</a> (1) </li> 
+           </ul> </li> 
+          <li class="cat-item cat-item-73"><a href="http://www.coderecord.cn/category/system-manage" title="linux系统的监控&amp;远程等管理">系统管理</a> (18) 
+           <ul class="children"> 
+            <li class="cat-item cat-item-81"><a href="http://www.coderecord.cn/category/system-manage/openssh" title="SSH协议族可以用来进行远程控制， 或在计算机之间传送文件">OpenSSH</a> (1) </li> 
+            <li class="cat-item cat-item-83"><a href="http://www.coderecord.cn/category/system-manage/vpsmate" title="Linux 服务器 WEB 管理面板">VPSMate</a> (2) </li> 
+            <li class="cat-item cat-item-85"><a href="http://www.coderecord.cn/category/system-manage/webmin" title="功能最强大的基于Web的Unix系统管理工具">Webmin</a> (2) </li> 
+           </ul> </li> 
+          <li class="cat-item cat-item-74"><a href="http://www.coderecord.cn/category/email-system" title="各种邮件系统(Postfix,SendMail,dovecot)的安装与配置与维护">邮件系统</a> (4) 
+           <ul class="children"> 
+            <li class="cat-item cat-item-77"><a href="http://www.coderecord.cn/category/email-system/dovecot" title="一个开源的 IMAP 和 POP3 邮件服务器，支持 Linux/Unix 系统">Dovecot</a> (1) </li> 
+            <li class="cat-item cat-item-82"><a href="http://www.coderecord.cn/category/email-system/postfix" title="一种电子邮件服务器,它是由任职于IBM华生研究中心(T.J. Watson Research Center)的荷兰籍研究员Wietse Venema为了改良sendmail邮件服务器而产生的">Postfix</a> (2) </li> 
+           </ul> </li> 
+         </ul> 
+        </aside> 
+        <aside id="archives-2" class="widget widget_archive"> 
+         <h3 class="widget-title">文章归档</h3> 
+         <ul> 
+          <li><a href="http://www.coderecord.cn/2017/03">2017年三月</a>&nbsp;(6)</li> 
+          <li><a href="http://www.coderecord.cn/2016/10">2016年十月</a>&nbsp;(8)</li> 
+          <li><a href="http://www.coderecord.cn/2016/09">2016年九月</a>&nbsp;(13)</li> 
+          <li><a href="http://www.coderecord.cn/2016/08">2016年八月</a>&nbsp;(3)</li> 
+          <li><a href="http://www.coderecord.cn/2015/12">2015年十二月</a>&nbsp;(1)</li> 
+          <li><a href="http://www.coderecord.cn/2015/10">2015年十月</a>&nbsp;(1)</li> 
+          <li><a href="http://www.coderecord.cn/2015/09">2015年九月</a>&nbsp;(7)</li> 
+          <li><a href="http://www.coderecord.cn/2015/08">2015年八月</a>&nbsp;(5)</li> 
+          <li><a href="http://www.coderecord.cn/2015/07">2015年七月</a>&nbsp;(18)</li> 
+          <li><a href="http://www.coderecord.cn/2015/06">2015年六月</a>&nbsp;(18)</li> 
+          <li><a href="http://www.coderecord.cn/2015/05">2015年五月</a>&nbsp;(23)</li> 
+          <li><a href="http://www.coderecord.cn/2015/04">2015年四月</a>&nbsp;(2)</li> 
+          <li><a href="http://www.coderecord.cn/2015/03">2015年三月</a>&nbsp;(8)</li> 
+          <li><a href="http://www.coderecord.cn/2014/07">2014年七月</a>&nbsp;(2)</li> 
+          <li><a href="http://www.coderecord.cn/2014/06">2014年六月</a>&nbsp;(1)</li> 
+          <li><a href="http://www.coderecord.cn/2013/07">2013年七月</a>&nbsp;(2)</li> 
+          <li><a href="http://www.coderecord.cn/2013/06">2013年六月</a>&nbsp;(6)</li> 
+          <li><a href="http://www.coderecord.cn/2013/05">2013年五月</a>&nbsp;(23)</li> 
+          <li><a href="http://www.coderecord.cn/2013/04">2013年四月</a>&nbsp;(6)</li> 
+          <li><a href="http://www.coderecord.cn/2013/03">2013年三月</a>&nbsp;(22)</li> 
+          <li><a href="http://www.coderecord.cn/2013/02">2013年二月</a>&nbsp;(32)</li> 
+         </ul> 
+        </aside> 
+        <aside id="text-3" class="widget widget_text"> 
+         <div class="textwidget">
+          <!-- 自适应广告 --> 
+          <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5266258901056426" data-ad-slot="9334624319" data-ad-format="auto"></ins> 
+          <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+         </div> 
+        </aside> 
+       </div> 
+      </div> 
+     </div> 
+     <div id="primary" class="content-area col-lg-9" itemprop="mainContentOfPage"> 
+      <div id="content" class="site-content" role="main" itemscope="" itemtype="http://schema.org/Article"> 
+       <article id="post-249" class="post-249 post type-post status-publish format-standard hentry category-ios tag-cllocation tag-cllocationmanager tag-corelocation tag-275"> 
+        <header class="entry-header"> 
+         <h1 class="entry-title" itemprop="name">使用CLLocationManager定位获取经纬度</h1> 
+         <div class="entry-meta">
+          <span class="entry-date"><a href="http://www.coderecord.cn/get-location.html" rel="bookmark"><time class="entry-date published" datetime="2015-06-15T00:02:14+08:00" itemprop="datepublished">2015年6月15日</time></a></span> by 
+          <span class="author vcard" itemscope="" itemprop="author" itemtype="http://schema.org/Person"><a class="url fn n" href="http://www.coderecord.cn/author/dragon0036" rel="author" itemprop="url"><span itemprop="name">管理员</span></a></span>
+          <span class="sep">&middot;</span>
+          <span class="comments-link"><a href="http://www.coderecord.cn/get-location.html#respond" itemprop="discussionUrl">0评论</a></span>
+         </div> 
+        </header> 
+        <div class="entry-content" itemprop="articleBody"> 
+         <p> 定位服务是很多程序中都用到的，主要使用CoreLocation库中的CLLocationManager类和CLLocation类。 </p> 
+         <p> 实现结果使用弹窗显示，如下图： </p> 
+         <p> <img src="http://files.coderecord.cn/wpupload/20150614/QQ20150614-6.png" alt="" /> </p> 
+         <p> </p> 
+         <p> 实现步骤： </p> 
+         <p> 首先，我们需要在Info.plist文件中添加两个字段： </p> 
+         <p> </p> 
+         <pre class="prettyprint lang-js">//始终开启定位的用户提示信息
+NSLocationAlwaysUsageDescription
+
+//仅在程序使用时开启定位的用户提示信息
+NSLocationWhenInUseUsageDescription</pre> 
+         <p> 如下图，Value为自定义信息，用来显示在系统的设置界面中： </p> 
+         <p> <img src="http://files.coderecord.cn/wpupload/20150614/QQ20150614-4.png" alt="" /> </p> 
+         <p>当程序打开时，如果用户没有选择过是否允许App获取定位信息，会弹出窗口显示，在窗口中会显示NSLocationWhenInUseUsageDescription的内容：</p> 
+         <p> </p> 
+         <p> </p> 
+         <p> <img src="http://files.coderecord.cn/wpupload/20150614/QQ20150614-5.png" alt="" /> </p> 
+         <p> </p> 
+         <p> 在系统的设置-定位中，显示如下(应用程序说明)： </p> 
+         <p> </p> 
+         <p> <img src="http://files.coderecord.cn/wpupload/20150614/2015-06-14%2023_48_51.gif" alt="" /> </p> 
+         <p> </p> 
+         <p> 现在，可以开始写代码了： </p> 
+         <p> </p> 
+         <pre class="prettyprint lang-cpp">import UIKit
+import CoreLocation
+
+class ViewController: UIViewController,CLLocationManagerDelegate {
+
+    var locationManager:CLLocationManager!
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        //如果设备没有开启定位服务
+        if !CLLocationManager.locationServicesEnabled(){
+            dispatch_async(dispatch_get_main_queue()){
+                SCMessageBox.showquick(self, contentMsg: &quot;无法定位，因为您的设备没有启用定位服务，请到设置中启用&quot;)
+            }
+            return
+        }
+
+        locationManager = CLLocationManager()
+
+        //设置精确度
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        //变化距离  超过50米 重新定位
+        locationManager.distanceFilter = 50
+        //在IOS8以上系统中，需要使用requestWhenInUseAuthorization方法才能弹窗让用户确认是否允许使用定位服务的窗口
+        if SCDevice.getVersion() &gt;=  8.0 {
+
+            //状态为，用户还没有做出选择，那么就弹窗让用户选择
+            if CLLocationManager.authorizationStatus() == CLAuthorizationStatus.NotDetermined {
+                locationManager.requestWhenInUseAuthorization()
+                //locationManager.requestAlwaysAuthorization()
+            }
+            //状态为，用户在设置-定位中选择了【永不】，就是不允许App使用定位服务
+            else if(CLLocationManager.authorizationStatus() == CLAuthorizationStatus.Denied){
+                //需要把弹窗放在主线程才能强制显示
+                dispatch_async(dispatch_get_main_queue()){
+                    SCMessageBox.showquick(self, contentMsg: &quot;无法定位，因为您没有授权本程序使用定位，请至设置中开启！&quot;)
+                    return
+                }
+            }
+        }
+        //设置定位获取成功或者失败后的代理，Class后面要加上CLLocationManagerDelegate协议
+        locationManager.delegate = self
+
+        //开始获取定位信息，异步方式
+        locationManager.startUpdatingLocation()
+    }
+
+    func locationManager(manager: CLLocationManager!, didFailWithError error: NSError!) {
+        SCMessageBox.showquick(self, contentMsg: &quot;定位发生异常：\(error)&quot;)
+    }
+
+    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+        if locations.count &gt; 0{ //  使用last 获取 最后一个最新的位置， 前面是上一次的位置信息
+            var locationInfo:CLLocation = locations.last as! CLLocation
+            SCMessageBox.showquick(self, contentMsg: &quot;经度：\(locationInfo.coordinate.longitude),纬度：\(locationInfo.coordinate.latitude)&quot;)
+        }
+    }
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+}</pre> 
+        </div> 
+        <script type="text/javascript">var jd_union_unid="306120451",jd_ad_ids="507:6",jd_union_pid="CNfdqeqsKxCDjvyRARoAIJmh5NICKgA=";var jd_width=728;var jd_height=90;var jd_union_euid="";var p="ABMPVxNdFQoVNwpfBkgyTUMIRmtKRk9aZV8ETVxNNwpfBkgyVlEiaCN9YUpiF2U7dFRrWy9QC3NCYgtZK1kUBRADXR1SFDIQBlIbWBQHFgdlKwRRX083HnVaJV1WWggrWxALGgNUGFIdAhQCVitaJTIi";</script>
+        <script type="text/javascript" charset="utf-8" src="//u.x.jd.com/static/js/auto.js"></script> 
+        <!-- 自适应广告 --> 
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5266258901056426" data-ad-slot="9334624319" data-ad-format="auto"></ins> 
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> 
+        <div class="tags-links">
+         <a href="http://www.coderecord.cn/tag/cllocation" rel="tag">CLLocation</a> 
+         <a href="http://www.coderecord.cn/tag/cllocationmanager" rel="tag">CLLocationManager</a> 
+         <a href="http://www.coderecord.cn/tag/corelocation" rel="tag">CoreLocation</a> 
+         <a href="http://www.coderecord.cn/tag/%e5%ae%9a%e4%bd%8d" rel="tag">定位</a>
+        </div> 
+       </article> 
+       <nav class="navigation post-navigation" role="navigation"> 
+        <h2 class="screen-reader-text">文章导航</h2> 
+        <div class="nav-links">
+         <div class="nav-previous">
+          <a href="http://www.coderecord.cn/photopickerdemo.html" rel="prev"><span class="meta-nav" aria-hidden="true">上一</span> <span class="screen-reader-text">上篇文章：</span> <span class="post-title">Demo：PhotoPickerSwift</span></a>
+         </div>
+         <div class="nav-next">
+          <a href="http://www.coderecord.cn/osx-1011-touchpad-change.html" rel="next"><span class="meta-nav" aria-hidden="true">继续</span> <span class="screen-reader-text">下篇文章：</span> <span class="post-title">OSX 10.11中触控板设置的变化</span></a>
+         </div>
+        </div> 
+       </nav> 
+       <div id="comments" class="comments-area"> 
+        <div id="respond" class="comment-respond"> 
+         <h3 id="reply-title" class="comment-reply-title">向<a href="#comment-17">管理员</a>进行回复 <small><a rel="nofollow" id="cancel-comment-reply-link" href="/get-location.html#respond">取消回复</a></small></h3> 
+         <form action="http://www.coderecord.cn/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate=""> 
+          <p class="comment-notes"><span id="email-notes">电子邮件地址不会被公开。</span> 必填项已用<span class="required">*</span>标注</p>
+          <p class="comment-form-comment"><label for="comment">评论</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" aria-required="true" required="required"></textarea></p>
+          <p class="comment-form-author"><label for="author">姓名 <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" aria-required="true" required="required" /></p> 
+          <p class="comment-form-email"><label for="email">电子邮件 <span class="required">*</span></label> <input id="email" name="email" type="email" value="" size="30" maxlength="100" aria-describedby="email-notes" aria-required="true" required="required" /></p> 
+          <p class="comment-form-url"><label for="url">站点</label> <input id="url" name="url" type="url" value="" size="30" maxlength="200" /></p> 
+          <p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="发表评论" /> <input type="hidden" name="comment_post_ID" value="249" id="comment_post_ID" /> <input type="hidden" name="comment_parent" id="comment_parent" value="17" /> </p>
+          <p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="cb00a85804" /></p>
+          <p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="15" /></p> 
+         </form> 
+        </div>
+        <!-- #respond --> 
+       </div> 
+      </div> 
+      <footer class="site-info" itemscope="" itemtype="http://schema.org/WPFooter"> 
+       <a href="http://www.miitbeian.gov.cn/" target="_blank">沪ICP备15027210号</a> / 
+       <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=32068102810040" target="_blank">苏公网安备 32068102810040号</a> 
+      </footer> 
+     </div> 
+    </div> 
+   </div> 
+  </div> 
+  <script src="http://www.coderecord.cn/wp-content/plugins/akismet/_inc/form.js?ver=3.3"></script> 
+  <script src="http://www.coderecord.cn/wp-includes/js/comment-reply.min.js?ver=4.7.3"></script> 
+  <script src="http://www.coderecord.cn/wp-includes/js/wp-embed.min.js?ver=4.7.3"></script> 
+  <!--百度自动推送--> 
+  <script type="text/javascript">
+(function(){
+    var bp = document.createElement('script');
+     bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>  
+ </body>
+</html>

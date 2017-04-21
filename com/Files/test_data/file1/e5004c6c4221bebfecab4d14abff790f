@@ -1,0 +1,206 @@
+<!DOCTYPE html><html lang="en" v-app="ibsapp" class="v-scope"><head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<meta http-equiv="X-Ua-Compatible" content="IE=EmulateIE8">
+<meta name="keywords" content="上海银行企业网银">
+<meta name="description" content="上海银行企业网银">
+<title>上海银行</title>
+<!-- <link href="css/extra-core.css" rel="stylesheet" type="text/css">
+<link href="css/slideBox.css" rel="stylesheet" type="text/css">
+<link href="css/extra-ui.css" rel="stylesheet" type="text/css">
+<link href="css/login.css" rel="stylesheet" type="text/css" id="loginCss"> -->
+
+<link href="dist/css/min/extra-core.min.css?_=0.0.8" rel="stylesheet" type="text/css"> 
+<link href="dist/css/min/extra-ui.min.css?_=0.0.8" rel="stylesheet" type="text/css">
+<link href="dist/css/min/login.min.css?_=0.0.8" rel="stylesheet" type="text/css" id="loginCss"> 
+
+<style type="text/css">
+@charset "UTF-8";
+
+[v\:cloak],[v-cloak],[data-v-cloak],[x-v-cloak],.v-cloak,.x-v-cloak {
+	display: none;
+}
+
+v\:form {
+	display: block;
+}
+</style>
+<script type="text/javascript" src="lib/script.js"></script>
+<script type="text/javascript" src="lib/common.js"></script>
+<script type="text/javascript">
+</script>
+
+<script language="javascript" for="powerpass" event="EventReturn">
+		if($("#certPasswordDiv").css("display")=="none"){
+			   if($(".rigtxt").css("display")=="none"){
+				   $("#submitBtn").click();
+			   }else{
+				   _vTokenName_p.focus();
+			   }
+		}else{ 
+			 //需要跳转到的位置
+			  UKeyPassword.focus();
+		 } 
+	
+</script>
+
+<!--  处理 密码控件 的Tab事件 -->
+<script language="javascript" for="powerpass" event="EventTab">
+	if($("#certPasswordDiv").css("display")!="none"){
+		//需要跳转到的位置
+		 UKeyPassword.focus(); 
+	}else if($(".rigtxt").css("display")!="none"){
+		_vTokenName_p.focus();
+	}
+</script>
+</head>
+<body>
+	<div v-controller="loginCtrl" class="v-scope">
+		<!--[if IE 6]>
+	
+  <div id="kie-bar" class="kie-bar" >
+      您现在使用的浏览器版本过低，如需使用新版企业网上银行，请立即 <a href="http://www.microsoft.com/china/windows/IE/upgrade/index.aspx" class="kie-setup-IE8" seed="kie-setup-IE8" target="_blank" title="免费升级至IE8浏览器">免费升级</a>
+  </div>
+  <![endif]-->
+		<!--头部区域 -->
+		<div id="top">
+			<div class="top">
+				<div class="header">
+					<div class="logo">
+						<img src="images/logo.jpg" width="241" height="87">
+					</div>
+					<div class="phone_hot">
+						<a href="/eweb/entlogin.do?LoginType=R&amp;_locale=zh_CN">旧版</a> |
+						<a locale="zh_CN" id="zh_CN" v-show="isZh_CnOrZh_Tw" href="#" v-click="transZh_CN();" style="display: none; ">简体版	</a> 
+						<a locale="zh_TW" id="zh_TW" v-hide="isZh_CnOrZh_Tw" href="#" v-click="transZh_TW();" style="">繁體版</a> |
+						<a href="#" v-click="linkHelp();"><span v-bind="_L.L25||'帮助中心'" class="v-binding">帮助中心</span></a> | <span v-bind="_L.L26||&quot;客户服务热线&quot;" class="v-binding">客户服务热线</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="bgbar">
+			<div class="leftbg"></div>
+			<div class="rightbg"></div>
+		</div>
+		<!--两侧浮动广告-->
+	<div id="sideAdv1" v-show="!isZh_CnOrZh_Tw&amp;&amp;isLoginSideAdShow" style="z-index: 100; position: absolute; top: 25%; left: 2%; display: none; width: 93px; "><img onclick="document.getElementById('sideAdv1').style.display ='none'" src="images/cancel.gif" style="height:13px;width:14px; margin-top:220px;CURSOR: pointer;margin-bottom:5px;margin-left:90px;"><img v-click="openLoginSideAd();" src="images/adv_zh_CN.gif" style="CURSOR: pointer;" border="0"></div>
+    <div id="sideAdv3" v-show="isZh_CnOrZh_Tw&amp;&amp;isLoginSideAdShow" style="z-index: 100; position: absolute; top: 25%; left: 2%; display: none; width: 93px; "><img onclick="document.getElementById('sideAdv3').style.display ='none'" src="images/cancel.gif" style="height:13px;width:14px; margin-top:220px;CURSOR: pointer;margin-bottom:5px;margin-left:90px;"><img v-click="openLoginSideAd();" src="images/adv_zh_TW.gif" style="CURSOR: pointer;" border="0"></div>
+	
+		<div class="placeholderDiv" id="placeholderDiv">
+			<div class="placeholderContain">
+				<img alt="登陆页展示图片" src="images/palcehoder.gif">
+			</div>
+		</div>
+
+		<div class="service_c" id="placeholderDivService">
+			<div class="service_c_div">
+				<p>
+					<img src="images/servic_zh_CN_i.gif">
+				</p>
+				<div class="service_c_ul">
+					<a v-href="/eweb/vx_zh_CN/htmls/help/HelpInfoPage_zh_CN.html?a2" target="_blank" href="/eweb/vx_zh_CN/htmls/help/HelpInfoPage_zh_CN.html?a2">申请指南</a> | <a href="http://www.bankofshanghai.com/WebServlet?go=shbank_corporateaccount_pg_SignContractNew" target="_blank">在线申请</a> <br>
+					<!-- TODO 是旧的"申请文档下载"？ -->
+					<a href="/eweb/vx_zh_CN/htmls/help/HelpInfoPage_zh_CN.html?a3" target="_blank">功能介绍</a>
+					<!-- TODO -->
+					| <a href="/ewebDemo/zh_CN/login.html" target="_blank">网银演示</a>
+				</div>
+			</div>
+			<div class="service_c_div">
+				<p>
+					<img src="images/first_zh_CN_i.gif">
+				</p>
+				<div class="service_c_ul">
+					<a href="http://download1.bankofshanghai.com/kjxzdoc/ocx/SHBOSHENT_2.3.9.2.exe" target="_blank">控件下载</a> | <a href="/eweb/vx_zh_CN/htmls/help/HelpInfoPage_zh_CN.html?a4" target="_blank">控件安装</a> <br> <a href="/eweb/vx_zh_CN/htmls/help/HelpInfoPage_zh_CN.html?a5" target="_blank">登录指南</a> | <a href="/eweb/vx_zh_CN/htmls/help/HelpInfoPage_zh_CN.html?a6" target="_blank">设置说明</a>
+				</div>
+			</div>
+			<div class="service_c_div">
+				<p>
+					<img class="localeImg" src="images/mobile_zh_CN_i.gif" style="width:158px;height:45px;">
+				</p>
+				<div class="service_c_ul">
+					<a href="http://www.bankofshanghai.com/zh/dzyh/dzyh_qysjyh/18082.shtml" target="_blank">手机秘籍</a> | <a href="http://www.bankofshanghai.com/zh/dzyh/dzyh_qysjyh/18080.shtml" target="_blank">下载客户端</a>
+					<br>
+					<a href="http://www.bankofshanghai.com/zh/dzyh/dzyh_xpdt/28883.shtml" target="_blank">微信攻略</a>
+				</div>
+		   </div>
+			<div style="background: none" class="service_c_div">
+				<p>
+					<img src="images/help_zh_CN_i.gif">
+				</p>
+				<div class="service_c_ul">
+					<a href="/eweb/vx_zh_CN/htmls/help/HelpInfoPage_zh_CN.html?a7" target="_blank">安全须知</a> | <a v-click="hphhDownload()" target="_blank">网银助手</a> <br> <a href="/eweb/vx_zh_CN/htmls/help/HelpInfoPage_zh_CN.html?a9" target="_blank">常见问题</a> | <a href="http://get.adobe.com/cn/reader/" target="blank">Adobe
+						Reader下载</a>
+				</div>
+			</div>
+
+		</div>
+
+		<!--理财产品推荐-->
+		<div class="product_login" id="placeholderDivlicai">
+			<div class="pro_titleL">
+				<img class="localeImg" src="images/lc_zh_CN_i.gif">
+			</div>
+			<div class="product_cententL" style="background-color: white; height: 90px">
+				<div>
+					<div style="padding-left: 360px; padding-top: 15px;">
+						<img alt="理财产品推荐" src="images/palcehoder.gif">
+					</div>
+				</div>
+			</div>
+		</div>
+		
+	   <div class="warmPrompt" id="warmPromptDiv">
+			<div class="warmPrompt_img"><img class="localeImg" src="images/tige_zh_CN_i.gif">
+			</div>
+			 <ul>
+			 	
+			</ul> 
+		</div>
+
+
+
+		<div>
+			<div v-viewport="loginPort" href="htmls/login/login/mod.html" apply="true" history="true" class="v-scope"><div class="viewport-wrapper v-scope"></div></div>
+		</div>
+
+		<!--底部版权-->
+		<div class="foot">
+			<div class="copyright">
+				<p>
+					<a href="http://www.bankofshanghai.com/zh/khfw/khfw_lxwm/index.shtml" target="_blank"><span v-bind="_L.L27||&quot;联系我们&quot;" class="v-binding">联系我们</span></a> | <a v-click="addfavorite()"><span v-bind="_L.L28||&quot;加入收藏夹&quot;" class="v-binding">加入收藏夹</span></a>
+				</p>
+				<img src="images/icpLogo.gif" width="26" height="31">
+				沪ICP备05019381,<span v-bind="_L.L29||&quot;上海银行 版权所有 客户服务热线 95594&quot;" class="v-binding">上海银行 版权所有 客户服务热线 95594</span>
+
+			</div>
+		</div>
+
+		<!--需要引入的js文件-->
+		<!-- <script type="text/javascript" src="/eweb/vx_zh_CN/lib/jQuery.js"></script> -->
+		<script type="text/javascript" src="dist/lib/min/jQuery.min.js?_=0.0.5"></script>
+		<script type="text/javascript" src="lib/vx.min.js"></script>
+		
+		<!--[if lte IE 6]>
+		<script type="text/javascript" src="lib/DD_belatedPNG.js"></script>
+		<script type="text/javascript"> /* EXAMPLE */ DD_belatedPNG.fix('.'); /* 将 .png_bg 改成你应用了透明PNG的CSS选择器*/ </script>
+		<![endif]-->
+	<!-- 	<script type="text/javascript" src="lib/vx-loginConfig.js"></script>
+		<script type="text/javascript" src="lib/ui.js"></script>
+		<script type="text/javascript" src="lib/vx-plugin.js"></script>
+	
+		<script type="text/javascript" src="lib/service/httpService.js"></script>			
+		<script type="text/javascript" src="lib/module/artDialog/artDialog.source.js?skin=aero"></script>
+		<script type="text/javascript" src="lib/service/certFactoryService.js"></script>
+		<script type="text/javascript" src="lib/service/certUtilService.js"></script>
+		<script type="text/javascript" src="lib/service/cookieService.js"></script> -->
+		
+		<script type="text/javascript" src="dist/lib/min/vx-loginConfig.min.js?_=0.0.9"></script>
+		<script type="text/javascript" src="dist/lib/min/ui.min.js?_=0.0.9"></script>
+		<script type="text/javascript" src="dist/lib/min/fliter.min.js?_=0.0.9"></script>
+		<script type="text/javascript" src="dist/lib/min/vx-plugin.min.js?_=0.0.9"></script>
+		<script type="text/javascript" src="dist/lib/min/directive.min.js?_=0.0.9"></script>
+		<script type="text/javascript" src="dist/lib/min/service.min.js?_=0.0.9"></script>
+		<link rel="stylesheet" href="https://ibank.bankofshanghai.com/eweb/vx_zh_CN/lib/module/artDialog/skins/aero.css?4.1.2"><script type="text/javascript" src="lib/module/artDialog/artDialog.source.js?skin=aero"></script>
+
+		<script type="text/javascript" src="login.js"></script>
+
+</div></body></html>

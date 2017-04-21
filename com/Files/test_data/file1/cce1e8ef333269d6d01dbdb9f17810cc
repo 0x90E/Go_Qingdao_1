@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<!--[if IE 6]>ie6
+<html lang="en-us" class="ie6">
+<![endif]-->
+<!--[if IE 7]>
+<html lang="en-us" class="ie7">
+<![endif]-->
+<!--[if IE 8]>
+<html lang="en-us" class="ie8">
+<![endif]-->
+<html>
+ <head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+  <meta name="baidu-site-verification" content="Lr0oaWpQCL" /> 
+  <meta name="google-site-verification" content="HNOJ1ZJ1W0drTtDVVptGt3-GljovSaPROWs_9LFZhms" /> 
+  <meta name="360-site-verification" content="ec6a657b2d4ff36153edf70c62976be7" /> 
+  <link rel="shortcut icon" type="image/x-icon" href="http://www.dailtale.com/wp-content/themes/wordpress157/images/favicon.ico" /> 
+  <!--KEY--> 
+  <title>Centos6架设VPN服务器 | RedHat/Centos | 人生记事录</title> 
+  <meta name="keywords" content="RedHat/Centos, 操作系统, 科技" /> 
+  <meta name="description" content="写在前面： &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; 为什么要架设VPN服务器？因为我们要科学上网，要看外面的世界，你懂的。本文不过多解释。 &nbsp;&nbsp;&nbsp;&nbsp; 本文的脚本，应该是来自： http://www.hi-vps.com &nbsp;&nbsp;&nbsp;&nbsp; 本文需要使用root权限操作。 具体步骤： &nbsp;&nbsp;&nbsp; 1，服务器的操作系统选择【Centos 6 x86_64 minimal&nbsp; 】即可。如果只用作VPN的话，不需要那么多“额外”的服务，最小化的系统，只占用内存2M不到，只有4个进程。.." /> 
+  <!--调用STYLE样式表--> 
+  <link rel="stylesheet" href="http://www.dailtale.com/wp-content/themes/wordpress157/css/slimbox2.css" type="text/css" media="screen" /> 
+  <link rel="stylesheet" href="http://www.dailtale.com/wp-content/themes/wordpress157/css/prettify.css" type="text/css" media="screen" /> 
+  <link rel="stylesheet" href="http://www.dailtale.com/wp-content/themes/wordpress157/style.css" type="text/css" media="screen" /> 
+  <script>
+		var _hmt = _hmt || [];
+		(function() {
+		  var hm = document.createElement("script");
+		  hm.src = "//hm.baidu.com/hm.js?d5e1cd1a43e1ebf8a989095c200bea58";
+		  var s = document.getElementsByTagName("script")[0]; 
+		  s.parentNode.insertBefore(hm, s);
+
+		var bp = document.createElement('script');
+		var curProtocol = window.location.protocol.split(':')[0];
+		if (curProtocol === 'https') {
+			bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+		}
+		else {
+			bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+		}
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(bp, s);
+	})();
+	</script> 
+ </head> 
+ <body>
+  <div id="page"> 
+   <!-- 顶部 --> 
+   <div id="top"> 
+    <div class="wrap"> 
+     <!-- 顶部左导航 --> 
+     <div class="menu"></div> 
+     <!-- sns --> 
+     <div class="sns"> 
+     </div> 
+     <div class="cc"></div> 
+    </div> 
+   </div> 
+   <!-- 头部 --> 
+   <div id="header">
+    <div class="wrap"> 
+     <!-- logo --> 
+     <div class="logo"> 
+      <a class="logolink" href="http://www.dailtale.com" title="人生记事录"><img src="http://www.dailtale.com/wp-content/themes/wordpress157/images/logo.png" alt="人生记事录" /></a> 
+      <span class="notice"></span> 
+     </div> 
+     <!-- 搜索 --> 
+     <div class="fr"> 
+      <form role="search" method="get" id="searchform" class="searchform" action="http://www.dailtale.com/"> 
+       <div> 
+        <label class="screen-reader-text" for="s">搜索：</label> 
+        <input type="text" value="" name="s" id="s" /> 
+        <input type="submit" id="searchsubmit" value="搜索" /> 
+       </div> 
+      </form> 
+     </div> 
+     <div class="cc"></div> 
+    </div>
+   </div> 
+   <div id="nav">
+    <div class="wrap"> 
+     <!-- 导航左 --> 
+     <div id="nav_left_menu" class="menu-%e4%b8%bb%e9%a1%b5%e8%8f%9c%e5%8d%95-container">
+      <ul id="menu-%e4%b8%bb%e9%a1%b5%e8%8f%9c%e5%8d%95" class="menu">
+       <li id="menu-item-8" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-8"><a href="http://www.dailtale.com/">首页</a></li> 
+       <li id="menu-item-1514" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1514"><a href="http://www.dailtale.com/?cat=40">网络编程</a></li> 
+       <li id="menu-item-1515" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1515"><a href="http://www.dailtale.com/?cat=41">软件编程</a></li> 
+       <li id="menu-item-1516" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-1516"><a href="http://www.dailtale.com/?cat=42">操作系统</a></li> 
+       <li id="menu-item-3878" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-3878"><a href="http://www.dailtale.com/?cat=1">RedHat/Centos</a></li> 
+       <li id="menu-item-3879" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3879"><a href="http://www.dailtale.com/?cat=59">Android</a></li> 
+       <li id="menu-item-3880" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-3880"><a href="http://www.dailtale.com/?cat=52">PHP编程</a></li> 
+       <li id="menu-item-31" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-31"><a href="http://www.dailtale.com/?cat=19">电商微商</a></li> 
+       <li id="menu-item-7632" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-7632"><a href="http://www.dailtale.com/?cat=47">宗教文化</a></li> 
+       <li id="menu-item-1521" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-1521"><a href="http://www.dailtale.com/?cat=50">公益</a></li> 
+      </ul>
+     </div> 
+     <!-- 导航右 --> 
+     <div class="menu"></div> 
+     <div class="cc"></div> 
+    </div>
+   </div> 
+   <div id="modienav">
+     Centos6架设VPN服务器 
+   </div> 
+   <div id="content">
+    <div class="wrap" style="background: none repeat scroll 0 0 #F6F6F6;"> 
+     <div class="breadcrumb">
+      首页 &raquo; 
+      <a href="http://www.dailtale.com/?cat=42">操作系统</a> &raquo; 
+      <a href="http://www.dailtale.com/?cat=1">RedHat/Centos</a> &raquo; 
+      <span>Centos6架设VPN服务器</span>
+     </div> 
+     <div id="single" style="margin:0 auto;float:none;position:relative;border-right: 0px;"> 
+      <div class="part"> 
+       <h1 class="single-title">Centos6架设VPN服务器</h1> 
+       <!-- 文章信息 --> 
+       <div class="single-info"> 
+        <span>作者：飞来飞往</span>&nbsp;|&nbsp; 
+        <span>时间：2016-04-09</span>&nbsp;|&nbsp; 
+        <span>浏览：95</span>&nbsp;|&nbsp; 
+        <span><span class="pl_num"><a href="http://www.dailtale.com/?p=3442#respond">0</a></span> 条评论</span> 
+       </div> 
+       <!-- 内容 --> 
+       <div id="single-con"> 
+        <p><strong>写在前面： &nbsp;&nbsp;</strong></p> 
+        <p style="margin: 0px; padding: 0px; color: #000000; font-family: Arial; font-size: 14px; line-height: 26px;">&nbsp;&nbsp;&nbsp;&nbsp; 为什么要架设VPN服务器？因为我们要科学上网，要看外面的世界，你懂的。本文不过多解释。</p> 
+        <p style="margin: 0px; padding: 0px; color: #000000; font-family: Arial; font-size: 14px; line-height: 26px;">&nbsp;&nbsp;&nbsp;&nbsp; 本文的脚本，应该是来自： http://www.hi-vps.com</p> 
+        <p style="margin: 0px; padding: 0px; color: #000000; font-family: Arial; font-size: 14px; line-height: 26px;">&nbsp;&nbsp;&nbsp;&nbsp; 本文需要使用root权限操作。</p> 
+        <p style="margin: 0px; padding: 0px; color: #000000; font-family: Arial; font-size: 14px; line-height: 26px;"><strong>具体步骤：</strong></p> 
+        <p style="margin: 0px; padding: 0px; color: #000000; font-family: Arial; font-size: 14px; line-height: 26px;">&nbsp;&nbsp;&nbsp; 1，服务器的操作系统选择【Centos 6 x86_64 minimal&nbsp; 】即可。如果只用作VPN的话，不需要那么多“额外”的服务，最小化的系统，只占用内存2M不到，只有4个进程。</p> 
+        <p style="margin: 0px; padding: 0px; color: #000000; font-family: Arial; font-size: 14px; line-height: 26px;">&nbsp;&nbsp;&nbsp; 2，选定一个空目录，或者新建一个目录。</p> 
+        <p style="margin: 0px; padding: 0px; color: #000000; font-family: Arial; font-size: 14px; line-height: 26px;">&nbsp;&nbsp;&nbsp; 3，进入这个目录，新建一个bash脚本：</p> 
+        <p style="margin: 0px; padding: 0px; color: #000000; font-family: Arial; font-size: 14px; line-height: 26px;">vi vpn_centos6.sh</p> 
+        <p style="margin: 0px; padding: 0px; color: #000000; font-family: Arial; font-size: 14px; line-height: 26px;">然后输入脚本内容：</p> 
+        <div class="dp-highlighter bg_plain" style="font-family: Consolas, 'Courier New', Courier, mono, serif; width: 750px; overflow: auto; padding-top: 1px; color: #000000; line-height: 26px; margin: 18px 0px !important; background-color: #e7e5dc;"> 
+         <ol style="padding-right: 0px; padding-left: 0px; border: none; color: #5c5c5c; margin: 0px 0px 1px 45px !important; background-color: #ffffff;" start="1"> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;"><span style="margin: 0px; padding: 0px; border: none; background-color: inherit;">#!/bin/bash&nbsp;&nbsp;</span></span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">function&nbsp;installVPN(){&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;“begin&nbsp;to&nbsp;install&nbsp;VPN&nbsp;services”;&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;#check&nbsp;wether&nbsp;vps&nbsp;suppot&nbsp;ppp&nbsp;and&nbsp;tun&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;yum&nbsp;remove&nbsp;-y&nbsp;pptpd&nbsp;ppp&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;iptables&nbsp;–flush&nbsp;POSTROUTING&nbsp;–table&nbsp;nat&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;iptables&nbsp;–flush&nbsp;FORWARD&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;rm&nbsp;-rf&nbsp;/etc/pptpd.conf&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;rm&nbsp;-rf&nbsp;/etc/ppp&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;arch=`uname&nbsp;-m`&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;wget&nbsp;http://www.hi-vps.com/downloads/dkms-2.0.17.5-1.noarch.rpm&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;wget&nbsp;http://wty.name/linux/sources/kernel_ppp_mppe-1.0.2-3dkms.noarch.rpm&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;wget&nbsp;http://www.hi-vps.com/downloads/kernel_ppp_mppe-1.0.2-3dkms.noarch.rpm&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;wget&nbsp;http://www.hi-vps.com/downloads/pptpd-1.3.4-2.el6.$arch.rpm&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;wget&nbsp;http://www.hi-vps.com/downloads/ppp-2.4.5-17.0.rhel6.$arch.rpm&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;yum&nbsp;-y&nbsp;install&nbsp;make&nbsp;libpcap&nbsp;iptables&nbsp;gcc-c++&nbsp;logrotate&nbsp;tar&nbsp;cpio&nbsp;perl&nbsp;pam&nbsp;tcp_wrappers&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;rpm&nbsp;-ivh&nbsp;dkms-2.0.17.5-1.noarch.rpm&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;rpm&nbsp;-ivh&nbsp;kernel_ppp_mppe-1.0.2-3dkms.noarch.rpm&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;rpm&nbsp;-qa&nbsp;kernel_ppp_mppe&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;rpm&nbsp;-Uvh&nbsp;ppp-2.4.5-17.0.rhel6.$arch.rpm&nbsp;&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;rpm&nbsp;-ivh&nbsp;pptpd-1.3.4-2.el6.$arch.rpm&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;mknod&nbsp;/dev/ppp&nbsp;c&nbsp;108&nbsp;0&nbsp;&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;1&nbsp;&gt;&nbsp;/proc/sys/net/ipv4/ip_forward&nbsp;&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;“mknod&nbsp;/dev/ppp&nbsp;c&nbsp;108&nbsp;0”&nbsp;&gt;&gt;&nbsp;/etc/rc.local&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;“echo&nbsp;1&nbsp;&gt;&nbsp;/proc/sys/net/ipv4/ip_forward”&nbsp;&gt;&gt;&nbsp;/etc/rc.local&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;“localip&nbsp;172.16.36.1”&nbsp;&gt;&gt;&nbsp;/etc/pptpd.conf&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;“remoteip&nbsp;172.16.36.2-254”&nbsp;&gt;&gt;&nbsp;/etc/pptpd.conf&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;“ms-dns&nbsp;8.8.8.8”&nbsp;&gt;&gt;&nbsp;/etc/ppp/options.pptpd&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;“ms-dns&nbsp;8.8.4.4”&nbsp;&gt;&gt;&nbsp;/etc/ppp/options.pptpd&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;pass=`openssl&nbsp;rand&nbsp;6&nbsp;-base64`&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;if&nbsp;[&nbsp;“$1”&nbsp;!=&nbsp;“”&nbsp;]&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;then&nbsp;pass=$1&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;fi&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;“vpn&nbsp;pptpd&nbsp;${pass}&nbsp;*”&nbsp;&gt;&gt;&nbsp;/etc/ppp/chap-secrets&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;iptables&nbsp;-t&nbsp;nat&nbsp;-A&nbsp;POSTROUTING&nbsp;-s&nbsp;172.16.36.0/24&nbsp;-j&nbsp;SNAT&nbsp;–to-source&nbsp;`ifconfig&nbsp;&nbsp;|&nbsp;grep&nbsp;‘inet&nbsp;addr:’|&nbsp;grep&nbsp;-v&nbsp;‘127.0.0.1’&nbsp;|&nbsp;cut&nbsp;-d:&nbsp;-f2&nbsp;|&nbsp;awk&nbsp;‘NR==1&nbsp;{&nbsp;print&nbsp;$1}’`&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;iptables&nbsp;-A&nbsp;FORWARD&nbsp;-p&nbsp;tcp&nbsp;–syn&nbsp;-s&nbsp;172.16.36.0/24&nbsp;-j&nbsp;TCPMSS&nbsp;–set-mss&nbsp;1356&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;service&nbsp;iptables&nbsp;save&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;chkconfig&nbsp;iptables&nbsp;on&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;chkconfig&nbsp;pptpd&nbsp;on&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;service&nbsp;iptables&nbsp;start&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;service&nbsp;pptpd&nbsp;start&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;“VPN&nbsp;service&nbsp;is&nbsp;installed,&nbsp;your&nbsp;VPN&nbsp;username&nbsp;is&nbsp;vpn,&nbsp;VPN&nbsp;password&nbsp;is&nbsp;${pass}”&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">}&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">function&nbsp;repaireVPN(){&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;“begin&nbsp;to&nbsp;repaire&nbsp;VPN”;&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;mknod&nbsp;/dev/ppp&nbsp;c&nbsp;108&nbsp;0&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;service&nbsp;iptables&nbsp;restart&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;service&nbsp;pptpd&nbsp;start&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">}&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">function&nbsp;addVPNuser(){&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;“input&nbsp;user&nbsp;name:”&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;read&nbsp;username&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;“input&nbsp;password:”&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;read&nbsp;userpassword&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;“${username}&nbsp;pptpd&nbsp;${userpassword}&nbsp;*”&nbsp;&gt;&gt;&nbsp;/etc/ppp/chap-secrets&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;service&nbsp;iptables&nbsp;restart&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;&nbsp;&nbsp;service&nbsp;pptpd&nbsp;start&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">}&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">echo&nbsp;“which&nbsp;do&nbsp;you&nbsp;want&nbsp;to?input&nbsp;the&nbsp;number.”&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">echo&nbsp;“1.&nbsp;install&nbsp;VPN&nbsp;service”&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">echo&nbsp;“2.&nbsp;repaire&nbsp;VPN&nbsp;service”&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">echo&nbsp;“3.&nbsp;add&nbsp;VPN&nbsp;user”&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">read&nbsp;num&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">case&nbsp;“$num”&nbsp;in&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">[1]&nbsp;)&nbsp;(installVPN);;&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">[2]&nbsp;)&nbsp;(repaireVPN);;&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">[3]&nbsp;)&nbsp;(addVPNuser);;&nbsp;&nbsp;</span></li> 
+          <li style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important; background-color: #f8f8f8;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">*)&nbsp;echo&nbsp;“nothing,exit”;;&nbsp;&nbsp;</span></li> 
+          <li class="alt" style="border-style: none none none solid; border-left-width: 3px; border-left-color: #6ce26c; list-style: decimal-leading-zero outside; color: inherit; line-height: 18px; margin: 0px !important; padding: 0px 3px 0px 10px !important;"><span style="margin: 0px; padding: 0px; border: none; color: black; background-color: inherit;">esac&nbsp;&nbsp;</span></li> 
+         </ol> 
+        </div> 
+        <p><br style="color: #000000; font-family: Arial; font-size: 14px; line-height: 26px;" /><span style="color: #000000; font-family: Arial; font-size: 14px; line-height: 26px;">&nbsp;&nbsp;&nbsp; 4，保存退出，运行这个脚本：</span></p> 
+        <p style="margin: 0px; padding: 0px; color: #000000; font-family: Arial; font-size: 14px; line-height: 26px;">sh vpn_centos6.sh</p> 
+        <p style="margin: 0px; padding: 0px; color: #000000; font-family: Arial; font-size: 14px; line-height: 26px;">&nbsp;&nbsp;&nbsp; 5，根据提示的选项，按数字1运行安装。</p> 
+        <p style="margin: 0px; padding: 0px; color: #000000; font-family: Arial; font-size: 14px; line-height: 26px;">&nbsp;&nbsp;&nbsp; 6，根据提示的选项，新建VPN的账号和密码，即可。</p> 
+       </div> 
+       <div class="single-tags">
+        标签：
+       </div> 
+       <div class="single-copyright"> 
+        <div class="fl">
+         转载请注明来自：
+         <a href="http://www.dailtale.com" title="人生记事录">人生记事录</a>
+        </div> 
+        <div class="fr">
+         <!-- Baidu Button BEGIN --> 
+         <div class="bdsharebuttonbox"> 
+          <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a> 
+          <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a> 
+          <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a> 
+          <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a> 
+          <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a> 
+          <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a> 
+          <a href="#" class="bds_more" data-cmd="more"></a> 
+         </div> 
+         <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{},"image":{"viewList":["weixin","tqq","qzone","sqq","tsina","copy"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["weixin","tqq","qzone","sqq","tsina","copy"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script> 
+         <!-- Baidu Button END -->
+        </div> 
+        <div class="cc"></div> 
+       </div> 
+      </div> 
+      <div class="part"> 
+       <ul class="otherPost"> 
+        <li>下一篇： <a href="http://www.dailtale.com/?p=3440" rel="next">CentOS下mysql自动备份数据库 crontab定时任务</a></li> 
+        <li>上一篇： <a href="http://www.dailtale.com/?p=3447" rel="prev">centos6.7部署Zimbra邮件系统的环境</a></li> 
+       </ul> 
+      </div> 
+      <!-- 评论 --> 
+      <div class="part">
+       <div id="comments"> 
+        <div class="comt"> 
+         <p>评论已关闭。</p> 
+         <p>评论已关闭。</p> 
+        </div> 
+       </div>
+      </div>
+      <!-- 相关推荐 --> 
+      <div class="single-relevance part"> 
+       <h3 class="title"> 
+        <div class="fl">
+         相关推荐
+        </div> 
+        <div class="fr"></div> 
+        <div class="cc"></div> </h3> 
+       <div class="single-relevance-list"> 
+        <dl> 
+         <dt>
+          <a href="http://www.dailtale.com/?p=7104" title="CentOS5.x内核优化详细解析 (sysctl.conf)">CentOS5.x内核优化详细解析 (sysctl.conf)</a>
+         </dt> 
+         <dd>
+          Posted on 04月26日
+         </dd> 
+        </dl> 
+        <dl> 
+         <dt>
+          <a href="http://www.dailtale.com/?p=6437" title="使用john爆破CentOS密码">使用john爆破CentOS密码</a>
+         </dt> 
+         <dd>
+          Posted on 05月05日
+         </dd> 
+        </dl> 
+        <dl> 
+         <dt>
+          <a href="http://www.dailtale.com/?p=19672" title="Android实现音频条形图效果(仿音频动画无监听音频输入)">Android实现音频条形图效果(仿音频动画无监听音频输入)</a>
+         </dt> 
+         <dd>
+          Posted on 12月16日
+         </dd> 
+        </dl> 
+        <dl> 
+         <dt>
+          <a href="http://www.dailtale.com/?p=3376" title="Centos6安装oracle">Centos6安装oracle</a>
+         </dt> 
+         <dd>
+          Posted on 04月10日
+         </dd> 
+        </dl> 
+       </div> 
+      </div> 
+     </div> 
+     <div class="cc"></div> 
+    </div>
+   </div> 
+   <div class="company" id="toutiaoCompanyWrapper"> 
+    <p> <span class="J-company-name">Copyright &copy; 2017 人生记事录 dailtale.com</span> <a href="http://www.miitbeian.gov.cn/" rel="external nofollow" target="_blank">粤ICP备15104039号-1</a> </p> 
+    <p> QQ:995672371 Email:fegngao@126.com 微信：fegngao 技术支持：聆风策展工作室 </p> 
+   </div> 
+  </div> 
+  <!-- 滚动组件 --> 
+  <div id="pagelet-feedback"> 
+   <ul> 
+    <li> <a id="gotop" class="btn" href="javascript:;" data-node="back"> <i class="icon icon-back"></i> </a> </li> 
+    <li> <a id="feedback" class="btn" href="javascript:;" data-node="feedback"> <i class="icon icon-comment"></i> </a> </li> 
+   </ul> 
+  </div> 
+  <div id="rollFooter"></div> 
+  <script type="text/javascript" src="http://www.dailtale.com/wp-content/themes/wordpress157/js/jquery.min.js"></script> 
+  <script type="text/javascript" src="http://www.dailtale.com/wp-content/themes/wordpress157/js/slimbox2.js"></script> 
+  <script type="text/javascript" src="http://www.dailtale.com/wp-content/themes/wordpress157/js/prettify.js"></script> 
+  <script type="text/javascript" src="http://www.dailtale.com/wp-content/themes/wordpress157/js/core.js"></script> 
+  <script type="text/javascript" src="http://www.dailtale.com/wp-content/themes/wordpress157/comments-ajax.js"></script>  
+ </body>
+</html>

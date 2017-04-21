@@ -1,0 +1,208 @@
+<html><head>
+<title>百果园</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<style type="text/css">
+<!--
+.style5 {font-family: "宋体"; font-size: 14px; color: #2B6217; }
+-->
+</style>
+
+<script language="JavaScript" src="/new/shrj/ierp/cn/js/ErrorCheck.js"></script>
+
+
+<script language="JavaScript">
+
+var width = 788;
+var height = 412;
+var posx = (screen.availWidth - width) / 2;
+var posy = (screen.availHeight - height) / 2;
+
+try {
+	self.resizeTo(width, height);
+	self.moveTo(posx, posy);
+} catch (e) {
+}
+
+
+function message() { 
+	
+	document.browser.enterpriseCode.focus();
+}
+
+function keypressdown(){
+	var obj = event.srcElement;
+	var obj = event.srcElement;
+	if (obj.id == "captcha" && event.keyCode ==13) {
+		a1.focus();
+		return;
+	}
+
+	if (obj.type == "button") {
+		return;
+	}
+
+	if (obj.tagName == "IMG" && event.keyCode ==13) {
+		return;
+	}
+
+	if (event.keyCode ==13){//Enter
+		event.keyCode=9;
+		
+	}
+	if (event.keyCode ==27){//ESC
+		event.keyCode=9;
+	}
+	
+}
+
+var logined = false;
+function login() 
+{
+	if (logined) {
+		return;
+	}
+	if( checkLength(document.browser.enterpriseCode.value) <1 ) {
+		alert("请您输入您的企业代码。");
+		document.browser.enterpriseCode.focus();
+		return false;
+	}		
+	if( checkLength(document.browser.userCode.value) <1 ) {
+		alert("请输入您的用户代码。");
+		document.browser.userCode.focus();
+		return false;
+	}		
+	if( checkLength(document.browser.password.value) <1 ) {
+		alert("请输入您的用户密码。");
+		document.browser.password.focus();
+		return false;
+	}	
+	if( checkLength(document.browser.captcha.value) <1 ) {
+		alert("请输入验证码。");
+		document.browser.captcha.focus();
+		return false;
+	}
+
+	document.browser.action="/MainServlet";
+	document.browser.funcName.value = "security_login";
+	document.browser.service.value = "login";
+	document.browser.menuStyle.value = "loadMenu";
+	document.browser.style.value = "shrj";
+	document.browser.submit();
+	logined = true;
+} 
+
+function showChangepasswordDialog() {
+	var url = "/new/shrj/ierp/cn/main/ChangePassword.jsp";
+
+	var width = 400;
+	var height = 165;
+	var posx = (screen.width - width) / 2;
+	var posy = (screen.height - height) / 2;
+
+	//window.showModalDialog(url, window, "dialogWidth:400px;dialogHeight:175px;center:yes;help:no;resizable:off;scroll:no;status:no;");
+	window.open(url, '', 'top=' + posy + ',left=' + posx + ',Toolbar=no,menubar=no,scrollbars=no,status=no,location=no,resizable=no,directories=no,width=' + width + ',height=' + height);
+}
+
+function changeCaptcha() {
+	var captcha = document.getElementById("captchaimg");
+	var random = Math.random();
+	var url = "/captcha.jpg?" + random;
+	captcha.src = url;
+}
+
+</script>
+
+</head>
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="message()" onkeydown="return keypressdown()">
+<!-- ImageReady Slices (bgy.psd) -->
+
+<form name="browser" method="POST">
+	<input name="funcName" type="hidden" value="-1">
+	<input name="service" type="hidden" value="-1">
+	<input name="style" type="hidden" value="-1">
+	<input name="menuStyle" type="hidden" value="-1">
+	<input name="ledgerNo" value="" type="hidden">
+
+<div align="left">
+  <table id="Table_01" width="779" height="387" border="0" cellpadding="0" cellspacing="0">
+      <tbody><tr>
+	      <td colspan="2">
+		      <img src="/new/shrj/ierp/cn/image/bgy/bgy_01.gif" width="779" height="45" alt=""></td>
+      </tr>
+      <tr>
+	      <td rowspan="3">			  <img src="/new/shrj/ierp/cn/image/bgy/bgy_02.gif" width="482" height="294" alt=""></td>
+	      <td height="237" valign="top" background="/new/shrj/ierp/cn/image/bgy/bgy_03.gif">			<div align="left">
+	        <div id="Layer1" style="position:absolute; width:225px; height:120; z-index:1; left: 530px; top: 80px;">
+              <table width="225" height="190" border="0">
+                <tbody><tr>
+                  <td width="61"><span class="style5">企业代码</span></td>
+                  <td width="154"><div id="Layer2" style="position:absolute; width:140; height:20; z-index:2; left: 70px; top: 4;">
+                      <input name="enterpriseCode" value="" type="text" size="20">
+                    </div></td>
+                </tr>
+                <tr>
+                  <td><span class="style5">用 户 名</span></td>
+                  <td><div id="Layer3" style="position:absolute; width:140; height:20; z-index:2; left: 70; top: 34;">
+                      <input name="userCode" value="" type="text" size="20">
+                    </div></td>
+                </tr>
+                <tr>
+                  <td><span class="style5">用户密码</span></td>
+                  <td><div id="Layer4" style="position:absolute; width:140px; height:20; z-index:2; left: 70px; top: 64;">
+                      <input id="password" type="password" name="password" size="20">
+                    </div></td>
+                </tr>
+                <tr>
+                  <td><span class="style5">帐 套 号</span></td>
+                  <td><div id="Layer5" style="position:absolute; width:140; height:20; z-index:2; left: 70px; top: 94px;">
+                      <input id="ledgerNo" name="ledgerNo" value="" type="text" size="20">
+                    </div></td>
+                </tr>
+				<tr>
+                  <td><span class="style5">微 信 码</span></td>
+                  <td><div id="Layer5" style="position:absolute; width:140; height:20; z-index:2; left: 70px; top: 124px;">
+                      <input id="wxcode" name="wxcode" value="" type="text" size="20">
+                    </div></td>
+                </tr>
+				<tr>
+				  <td><span class="style5">验证码</span></td>
+				  <td><div id="Layer5" style="position:absolute; width:140; height:20; z-index:2; left: 70; top: 154px;">
+					  <table border="0" cellspacing="0" cellpadding="0">
+							<tbody><tr>
+									<td>
+					  <input id="captcha" name="captcha" value="" type="text" size="8">
+									</td>
+									<td>
+							  <img id="captchaimg" src="/captcha.jpg?0.4116473268477654" title="点击更换" onclick="changeCaptcha();" style="cursor:pointer">
+									</td>
+							</tr>
+					</tbody></table>
+				  </div></td>
+				</tr>
+                </tbody></table>
+            </div>
+	      </div></td>
+      </tr>
+      <tr>
+	      <td>
+		      <img src="/new/shrj/ierp/cn/image/bgy/bgy_04.gif" width="297" height="3" alt=""></td>
+      </tr>
+      <tr>
+	      <td>
+		      <img src="/new/shrj/ierp/cn/image/bgy/bgy_05.gif" width="297" height="54" alt="" border="0" usemap="#Map"></td>
+      </tr>
+      <tr>
+	      <td colspan="2">
+		      <img src="/new/shrj/ierp/cn/image/bgy/bgy_06.gif" width="779" height="48" alt=""></td>
+      </tr>
+  </tbody></table>
+  <!-- End ImageReady Slices -->
+  </div>
+<map name="Map">
+  <area id="a1" shape="rect" coords="61,3,133,19" href="#" onclick="login()">
+  <area shape="rect" coords="171,1,245,18" href="#" onclick="showChangepasswordDialog()">
+</map>
+</form>
+
+
+</body></html>

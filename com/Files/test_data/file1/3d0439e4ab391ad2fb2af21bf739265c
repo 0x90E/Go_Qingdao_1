@@ -1,0 +1,173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="favicon.ico">
+    <title>新华美育</title>
+    <!-- Bootstrap core CSS -->
+    <link href="http://res.xinhuameiyu.com/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="/css/marko.css" rel="stylesheet">
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="http://res.xinhuameiyu.com/ie8-responsive-file-warning.js"></script><![endif]-->
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="http://res.xinhuameiyu.com/html5shiv.min.js"></script>
+      <script src="http://res.xinhuameiyu.com/respond.min.js"></script>
+    <![endif]-->
+        <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://res.xinhuameiyu.com/jquery.min.js"></script>
+    <script src="http://res.xinhuameiyu.com/jquery.cookie.js" type="text/javascript"></script>
+    <script src="http://res.xinhuameiyu.com/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="http://res.xinhuameiyu.com/ie10-viewport-bug-workaround.js"></script>
+  </head>
+<body class="marko marginlogin">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="markoHeader">
+	<div class="wrap">
+		<a href="/index.html"><img class="m_logo" src="/img/m_logo.png"></a>
+		<a class="t_nav" href="/index.action">首页</a> <a class="t_nav" href="/subject/searchSubject.action">美育微课堂</a> <a class="t_nav" href="/website/getsAffiche.action">体卫艺动态 </a> <a class="t_nav" href="/customer/pagerFeedback.action?curPage=feedback">意见反馈</a> <a class="t_nav" href="/help.action">使用帮助</a>
+			
+		<a class="t_log" href="/customer/toLogin.action">登录</a> <a class="t_log" href="/customer/typeCustomer.action">注册</a>
+			
+		<form class="t_search" action="/subject/searchSubject.action">
+			<input id="searchKeywords" class="" type="search" name="vo.title" value="" placeholder="请输入课程名称" autocomplete="off">
+			<button class="" id="searchSubmit"></button>
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#searchSubmit").click(function(){
+		var title=$("#searchKeywords").val();
+		if( title == "" )  return null;
+		var url="/subject/searchSubject.action?vo.title="+encodeURI(title);
+		window.location.href=url;
+	});
+});
+</script>
+
+ 
+
+
+
+
+
+
+	<div class="wrap" style="background:url('http://img1.xinhuameiyu.com/log2.png') no-repeat 15% top">
+		<div class="c">
+			<p class="title">学员登录</p>
+			<p class="p"><a href="/customer/toGetUsr.action">忘记用户名?</a> <a href="/customer/toGetPwd.action">忘记密码?</a></p>
+			<form class="form-signin" onsubmit="return loginValidator();" action="/customer/login.action" method="post" id="frm_login">
+			
+  
+<input type="hidden" name="r_code" value="ECE691FD50586BA4DF33C31F8E7606C1" id="r_code">  
+
+
+			<input id="name" maxlength="20" type="text" class="itxt" name="customerVo.customer_name" tabindex="1" autocomplete="off" placeholder="用户名">
+			<input type="password" maxlength="16" id="password" name="customerVo.customer_password" class="itxt itxt-error" tabindex="2" autocomplete="off" placeholder="密码">
+			<span>
+			<input id="rmbUser" type="checkbox" checked="checked">
+			<label for="">记住密码</label>
+			<label id="tips_error" style="color: red;"></label>
+			</span>
+			<button class="btn  btn-primary btn-block tattobtn" type="submit">登录</button>
+			</form>
+		</div>
+	</div>
+<script type="text/javascript">
+	var error = "";
+	if (error.length > 0) {
+		$("#tips_error").html(error);
+	}
+	
+	function loginValidator(){
+	    var flag = false;
+	    if($("#name").val() == ''){
+	       	$("#tips_error").html("用户名不能为空!");                                            
+	        $("#name").focus();
+	        flag = true;
+	    }else if($("#password").val() == ''){     
+	       	$("#tips_error").html("密码不能为空!"); 
+	       	$("#password").val("");
+	        $("#password").focus();
+	        flag = true;
+	    }else if($("#name").val().length<6){     
+	       	$("#tips_error").html("用户名不能小于6位!"); 
+	       	$("#name").val("");
+	        $("#name").focus();
+	        flag = true;
+	    }else if($("#password").val().length<6){     
+	       	$("#tips_error").html("密码不能小于6位!"); 
+	       	$("#password").val("");
+	        $("#password").focus();
+	        flag = true;
+	    }
+	    if(!flag){
+	    	saveUserInfo();
+	    }
+	    return !flag;
+	}
+	
+	$(document).ready(function() { 
+		if ($.cookie("rmbUser") == "true") { 
+			$("#rmbUser").attr("checked", true); 
+			$("#name").val($.cookie("name")); 
+			$("#password").val($.cookie("password")); 
+		} 
+	});
+	
+	function saveUserInfo() { 
+		if ($("#rmbUser").attr("checked") == "checked") { 
+			var userName = $("#name").val(); 
+			var passWord = $("#password").val(); 
+			$.cookie("rmbUser", "true", { expires: 7 }); // 存储一个带7天期限的 cookie 
+			$.cookie("name", userName, { expires: 7 }); // 存储一个带7天期限的 cookie 
+			$.cookie("password", passWord, { expires: 7 }); // 存储一个带7天期限的 cookie 
+		} else { 
+			$.cookie("rmbUser", "false", { expires: -1 }); 
+			$.cookie("name", '', { expires: -1 }); 
+			$.cookie("password", '', { expires: -1 }); 
+		} 
+	} 
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="tattoFooter">
+	版权所有：新华美育 Copyright 2016 XINHUAMEIYU.com All
+	Rights Reserved.<br>
+	联络邮箱：xinhuameiyu@163.com | 备案号：陕ICP备15013324号 | <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1257696508'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1257696508%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script><span id="cnzz_stat_icon_1257696508"><a href="http://www.cnzz.com/stat/website.php?web_id=1257696508" target="_blank" title="站长统计"><img border="0" hspace="0" vspace="0" src="http://icon.cnzz.com/img/pic.gif"></a></span><script src=" http://s4.cnzz.com/z_stat.php?id=1257696508&amp;show=pic" type="text/javascript"></script><script src="http://c.cnzz.com/core.php?web_id=1257696508&amp;show=pic&amp;t=z" charset="utf-8" type="text/javascript"></script><br>
+</div>
+
+
+</body></html>

@@ -1,0 +1,793 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+  <title>centos下ss多用户后端manyuser+前端sspanel搭建过程 - 安云网 - AnYun.ORG |  专注于网络信息收集、网络数据分享、网络安全研究、网络各种猎奇八卦。</title> 
+  <meta name="keywords" content="manyuser,SSR,sspanel" /> 
+  <meta name="description" content="一台新的VPS，如何搭建shadowsocks多用户后端+sspanel前端？曾经折腾失败，最近又重新折腾了许久终于成功，把过程记录一下。我的环境是centos6，安装所有组件之前先升级一下VPS环境！SSH登录VPS： yum -y update or apt-get update -y 一、安装" /> 
+  <link href="/templets/default-black/style/dedecms.css" rel="stylesheet" media="screen" type="text/css" /> 
+  <script type="text/javascript" src="/include/Ueditor/third-party/SyntaxHighlighter/shCore.js"></script> 
+  <link href="/include/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css" rel="stylesheet" type="text/css" /> 
+  <script type="text/javascript" src="/include/Ueditor/third-party/SyntaxHighlighter/shCoreDefault.css"></script> 
+  <script type="text/javascript">
+SyntaxHighlighter.all();
+</script> 
+  <script language="javascript" type="text/javascript" src="/include/dedeajax2.js"></script> 
+  <script language="javascript" type="text/javascript">
+<!--pl?-->
+function CheckLogin(){
+	  var taget_obj = document.getElementById('_ajax_feedback');
+	  myajax = new DedeAjax(taget_obj,false,false,'','','');
+	  myajax.SendGet2("/member/ajax_feedback.php");
+	  DedeXHTTP = null;
+}
+function postBadGood(ftype,fid)
+{
+	var taget_obj = document.getElementById(ftype+fid);
+	var saveid = GetCookie('badgoodid');
+	if(saveid != null)
+	{
+		var saveids = saveid.split(',');
+		var hasid = false;
+		saveid = '';
+		j = 1;
+		for(i=saveids.length-1;i>=0;i--)
+		{
+			if(saveids[i]==fid && hasid) continue;
+			else {
+				if(saveids[i]==fid && !hasid) hasid = true;
+				saveid += (saveid=='' ? saveids[i] : ','+saveids[i]);
+				j++;
+				if(j==10 && hasid) break;
+				if(j==9 && !hasid) break;
+			}
+		}
+		if(hasid) { alert('您刚才已表决过了喔！'); return false;}
+		else saveid += ','+fid;
+		SetCookie('badgoodid',saveid,1);
+	}
+	else
+	{
+		SetCookie('badgoodid',fid,1);
+	}
+	myajax = new DedeAjax(taget_obj,false,false,'','','');
+	myajax.SendGet2("/plus/feedback.php?aid="+fid+"&action="+ftype+"&fid="+fid);
+}
+function postDigg(ftype,aid)
+{
+	var taget_obj = document.getElementById('newdigg');
+	var saveid = GetCookie('diggid');
+	if(saveid != null)
+	{
+		var saveids = saveid.split(',');
+		var hasid = false;
+		saveid = '';
+		j = 1;
+		for(i=saveids.length-1;i>=0;i--)
+		{
+			if(saveids[i]==aid && hasid) continue;
+			else {
+				if(saveids[i]==aid && !hasid) hasid = true;
+				saveid += (saveid=='' ? saveids[i] : ','+saveids[i]);
+				j++;
+				if(j==20 && hasid) break;
+				if(j==19 && !hasid) break;
+			}
+		}
+		if(hasid) { alert("您已经顶过该帖，请不要重复顶帖 ！"); return; }
+		else saveid += ','+aid;
+		SetCookie('diggid',saveid,1);
+	}
+	else
+	{
+		SetCookie('diggid',aid,1);
+	}
+	myajax = new DedeAjax(taget_obj,false,false,'','','');
+	var url = "/plus/digg_ajax.php?action="+ftype+"&id="+aid;
+	myajax.SendGet2(url);
+}
+function getDigg(aid)
+{
+	var taget_obj = document.getElementById('newdigg');
+	myajax = new DedeAjax(taget_obj,false,false,'','','');
+	myajax.SendGet2("/plus/digg_ajax.php?id="+aid);
+	DedeXHTTP = null;
+}
+<!--pl?-->
+</script> 
+ </head> 
+ <body class="articleview">
+   ﻿ 
+  <div class="header_top"> 
+   <div class="w960 center"> 
+    <span id="time" class="time">安云网 - AnYun.ORG | 专注于网络信息收集、网络数据分享、网络安全研究、网络各种猎奇八卦。</span> 
+    <div class="toplinks">
+     <a href="/plus/heightsearch.php" target="_blank">高级搜索</a>|
+     <a href="/tags.php">Tag标签</a>|
+     <a href="/data/rssmap.html" class="rss">Rss订阅</a>|
+     <a href="/data/sitemap.html" target="_blank">Sitemap</a>
+    </div> 
+   </div> 
+  </div> 
+  <div class="header"> 
+   <div class="top w960 center"> 
+    <div class="title"> 
+     <h1><a href="http://anyun.org/"> 安云网<img src="/templets/default-black/images/logo.gif" height="150" width="2500" alt="安云网 - AnYun.ORG |  专注于网络信息收集、网络数据分享、网络安全研究、网络各种猎奇八卦。" /> </a> </h1> 
+    </div> 
+    <div class="banner"></div> 
+    <div class="banner2">
+     <script src="/plus/ad_js.php?aid=8" language="javascript"></script>
+    </div> 
+   </div>
+   <!-- //top --> 
+   <!-- //菜单 --> 
+   <div class="module blue mT10 wrapper w963"> 
+    <div id="navMenu" class="nav_bg"> 
+     <ul class="nav"> 
+      <li class="取消hover"><a href="/">首 页</a></li> 
+      <li color="#ff0000">|</li>
+      <li><a href="/a/yejiezixun/" rel="dropmenu1">业界资讯</a></li> 
+      <li class="hover"><a href="/a/jishuguanzhu/" rel="dropmenu2">技术关注</a></li> 
+      <li color="#ff0000">|</li>
+      <li><a href="/a/WordPressjiqiao/">WordPress技巧</a></li> 
+      <li color="#ff0000">|</li>
+      <li><a href="/a/yulebagua/" rel="dropmenu4">娱乐八卦</a></li> 
+      <li color="#ff0000">|</li>
+      <li><a href="/a/ziyuanlianjie/" rel="dropmenu6">资源链接</a></li> 
+      <li color="#ff0000">|</li>
+      <li><a href="/a/zhishixuetang/">知识学堂</a></li> 
+      <li color="#ff0000">|</li>
+      <li><a href="/a/jinrongxinxi/">金融信息</a></li> 
+      <li color="#ff0000">|</li>
+      <li><a href="/a/benzhanrizhi/">本站日志</a></li> 
+      <li color="#ff0000">|</li>
+      <li><a href="http://anyun.org/a/benzhanrizhi/2015/0318/5062.html">申请链接</a></li> 
+     </ul> 
+    </div> 
+    <div class="search"> 
+     <form name="formsearch" action="/plus/search.php"> 
+      <div class="form"> 
+       <h4>搜索</h4> 
+       <input type="hidden" name="kwtype" value="0" /> 
+       <input type="hidden" name="searchtype" value="title" /> 
+       <input name="q" type="text" class="search-keyword" id="search-keyword" value="在这里搜索..." onfocus="if(this.value=='在这里搜索...'){this.value='';}" onblur="if(this.value==''){this.value='在这里搜索...';}" /> 
+       <button type="submit" class="search-submit">搜索</button> 
+      </div> 
+     </form> 
+     <div class="tags"> 
+      <h4>随机标签:</h4> 
+      <ul> 
+       <li><a href="/tags.php?/Struts2/">Struts2</a></li> 
+       <li><a href="/tags.php?/HttpWatch%E4%BD%BF%E7%94%A8/">HttpWatch使用</a></li> 
+       <li><a href="/tags.php?/SWIFT%E7%B3%BB%E7%BB%9F/">SWIFT系统</a></li> 
+       <li><a href="/tags.php?/%E6%96%AD%E6%B5%81/">断流</a></li> 
+       <li><a href="/tags.php?/%E7%BB%8F%E6%B5%8E%E5%8D%8A%E5%B0%8F%E6%97%B6/">经济半小时</a></li> 
+       <li><a href="/tags.php?/masscan/">masscan</a></li> 
+       <li><a href="/tags.php?/EmbeddedWB/">EmbeddedWB</a></li> 
+       <li><a href="/tags.php?/WooyunClub/">WooyunClub</a></li> 
+       <li><a href="/tags.php?/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8%E6%97%A5/">网络安全日</a></li> 
+       <li><a href="/tags.php?/ZMAP%E5%AE%89%E8%A3%85/">ZMAP安装</a></li> 
+       <li><a href="/tags.php?/%E9%AA%8C%E8%AF%81%E7%A0%81/">验证码</a></li> 
+       <li><a href="/tags.php?/%E7%AC%AC%E4%B8%89%E6%96%B9%E6%8E%A7%E4%BB%B6/">第三方控件</a></li> 
+       <li><a href="/tags.php?/%E5%AE%89%E5%85%A8%E7%AE%97%E6%B3%95%E5%BC%B1%E7%82%B9/">安全算法弱点</a></li> 
+       <li><a href="/tags.php?/%E5%88%B6%E4%BD%9C%E8%8F%9C%E5%88%80%E5%90%8E%E9%97%A8/">制作菜刀后门</a></li> 
+       <li><a href="/tags.php?/theHarvester/">theHarvester</a></li> 
+       <li><a href="/tags.php?/%E4%B8%80%E6%9D%A1%E5%91%BD%E4%BB%A4%E5%AE%9E%E7%8E%B0/">一条命令实现</a></li> 
+       <li><a href="/tags.php?/fuzz%E5%B7%A5%E5%85%B7/">fuzz工具</a></li> 
+       <li><a href="/tags.php?/%E6%80%9D%E7%BB%B4%E4%BA%92%E8%81%94%E7%BD%91/">思维互联网</a></li> 
+      </ul>
+     </div> 
+    </div> 
+   </div> 
+  </div> 
+  <!-- /header --> 
+  <div class="w960 center clear mt1"> 
+   <div class="pleft"> 
+    <div class="place"> 
+     <strong>当前位置:</strong> 
+     <a href="http://anyun.org/">安云网</a> &gt; 
+     <a href="/a/jishuguanzhu/">技术关注</a> &gt; 
+     <a href="/a/jishuguanzhu/shenbingliren/">神兵利刃</a> &gt; centos下ss多用户后端manyuser+前端sspanel搭建过程 
+    </div> 
+    <!-- /place --> 
+    <div class="viewbox"> 
+     <div class="title"> 
+      <h2>centos下ss多用户后端manyuser+前端sspanel搭建过程</h2> 
+     </div> 
+     <!-- /title --> 
+     <div class="info">
+      <small>时间:</small>2017-02-16
+      <small>来源:</small>未知 
+      <small>作者:</small>安云网
+      <small>点击:</small> 
+      <script src="/plus/count.php?view=yes&amp;aid=8584&amp;mid=1" type="text/javascript" language="javascript"></script> 次 
+     </div> 
+     <!-- /info --> 
+     <div class="intro">
+      一台新的VPS，如何搭建shadowsocks多用户后端+sspanel前端？曾经折腾失败，最近又重新折腾了许久终于成功，把过程记录一下。我的环境是centos6，安装所有组件之前先升级一下VPS环境！SSH登录VPS： yum -y update or apt-get update -y 一、安装
+     </div> 
+     <div class="content"> 
+      <div class="bdsharebuttonbox">
+       <a href="#" class="bds_more" data-cmd="more"></a>
+       <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+       <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+       <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+       <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a>
+       <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+      </div> 
+      <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script> 
+      <div id="wenzi_test" style="margin:10px auto">
+       <script type="text/javascript">
+    /*640*60 创建于 2017/3/5*/
+    var cpro_id = "u2912582";
+</script> 
+       <script type="text/javascript" src="http://cpro.baidustatic.com/cpro/ui/c.js"></script>
+      </div> 
+      <!--2017-03-05--> 
+      <table width="100%"> 
+       <tbody>
+        <tr> 
+         <td> 
+          <div id="contentMidPicAD" style="float:right; clear:both; top:0; vertical-align:top;"> 
+          </div> <style> .Wto493 { display:none; } </style> <p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);">一台新的VPS，如何搭建shadowsocks多用户后端+sspanel前端？曾经折腾失败，最近又重新折腾了许久终于成功，把过程记录一下。我的环境是centos6，安装所有组件之前先升级一下VPS环境！SSH登录VPS： </p><p class="Wto493">//本文来自安云网</p> <p></p><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);"><code style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px 2px; outline: 0px; padding: 2px 4px; vertical-align: baseline; background: rgb(241, 241, 241); color: rgb(85, 85, 85); border-radius: 2px;">yum -y update</code>or<code style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px 2px; outline: 0px; padding: 2px 4px; vertical-align: baseline; background: rgb(241, 241, 241); color: rgb(85, 85, 85); border-radius: 2px;">apt-get update -y</code> </p><p class="Wto493">//安云网，anyun.org</p> <p></p><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);"><strong style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px; outline: 0px; padding: 0px; vertical-align: baseline;">一、安装shadowsocks多用户后端shadowsocks-manyuser</strong><br />项目地址：<a href="https://www.cmsky.com/wp-content/themes/begin/inc/go.php?url=https://github.com/mengskysama/shadowsocks-rm/tree/manyuser" target="_blank" style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px; outline: 0px; padding: 0px; vertical-align: baseline; color: rgb(47, 136, 154); text-decoration: none; -webkit-tap-highlight-color: rgba(255, 0, 0, 0);">https://github.com/mengskysama/shadowsocks-rm/tree/manyuser</a> </p>
+          <div class="Wto493">
+           //copyright AnYun.ORG
+          </div> <br />1.先安装需要的环境依赖 
+          <div class="Wto493">
+           //本文来自安云网
+          </div> <p></p><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);"><strong style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px; outline: 0px; padding: 0px; vertical-align: baseline;">Debian / Ubuntu:</strong><br /><code style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px 2px; outline: 0px; padding: 2px 4px; vertical-align: baseline; background: rgb(241, 241, 241); color: rgb(85, 85, 85); border-radius: 2px;">apt-get install python-pip python-m2crypto</code> <span class="Wto493">//安云网，anyun.org</span> </p><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);"><strong style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px; outline: 0px; padding: 0px; vertical-align: baseline;">CentOS:</strong> </p><p class="Wto493">//本文来自安云网</p> <p></p>
+          <blockquote style="box-sizing: inherit; border: 1px dashed rgb(221, 221, 221); font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin: 0px auto; outline: 0px; padding: 10px; vertical-align: baseline; quotes: none; width: 802.797px; color: rgb(139, 139, 139); clear: both; white-space: normal; background-color: rgb(255, 255, 255);">
+           <p style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all;">yum install m2crypto python-setuptools<br />easy_install pip </p>
+           <p class="Wto493">//内容来自AnYun.ORG</p> 
+           <p></p>
+          </blockquote><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);">2.安装cymysql<br /><code style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px 2px; outline: 0px; padding: 2px 4px; vertical-align: baseline; background: rgb(241, 241, 241); color: rgb(85, 85, 85); border-radius: 2px;">pip install cymysql</code> </p><p class="Wto493">//copyright AnYun.ORG</p> <p></p><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);">3、安装shadowsocks-manyuser<br /><code style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px 2px; outline: 0px; padding: 2px 4px; vertical-align: baseline; background: rgb(241, 241, 241); color: rgb(85, 85, 85); border-radius: 2px;">git clone -b manyuser https://github.com/mengskysama/shadowsocks.git</code><br />或者<code style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px 2px; outline: 0px; padding: 2px 4px; vertical-align: baseline; background: rgb(241, 241, 241); color: rgb(85, 85, 85); border-radius: 2px;">git clone -b manyuser https://github.com/mengskysama/shadowsocks-rm.git</code> </p>
+          <div class="Wto493">
+           //内容来自安云网
+          </div> <br />SSR第三方版<code style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px 2px; outline: 0px; padding: 2px 4px; vertical-align: baseline; background: rgb(241, 241, 241); color: rgb(85, 85, 85); border-radius: 2px;">git clone -b manyuser https://github.com/breakwa11/shadowsocks.git</code>多用户版配置在第一层ss目录下<br />如果提示没有安装git，则先安装git<br /><code style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px 2px; outline: 0px; padding: 2px 4px; vertical-align: baseline; background: rgb(241, 241, 241); color: rgb(85, 85, 85); border-radius: 2px;">yum -y install git</code><br />通过phpmyadmin创建数据库shadowsocks（名称随意），然后将shadowsocks-manyuser文件夹中的shadowsocks.sql导入到你创建的数据库中。 <font color="#FFFFFF">//内容来自安云网</font> <p></p><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);">4、配置数据库连接<br />cd /用户名/shadowsocks/shadowsocks 打开Config.py所在文件夹 </p>
+          <div class="Wto493">
+           //内容来自AnYun.ORG
+          </div> <p></p><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);">编辑Config.py文件：vi Config.py，修改对应的端口、密码等等操作。如下格式 </p><p class="Wto493">//安云网咨询系统</p> <p></p>
+          <blockquote style="box-sizing: inherit; border: 1px dashed rgb(221, 221, 221); font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin: 0px auto; outline: 0px; padding: 10px; vertical-align: baseline; quotes: none; width: 802.797px; color: rgb(139, 139, 139); clear: both; white-space: normal; background-color: rgb(255, 255, 255);">
+           <p style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all;">#Config<br />MYSQL_HOST = '127.0.0.1' #这一行是服务器IP，127.0.0.1表示本机<br />MYSQL_PORT = 3306 #数据库端口号<br />MYSQL_USER = 'ss' #数据库用户名<br />MYSQL_PASS = 'ss' #数据库密码<br />MYSQL_DB = 'shadowsocks' #数据库名称 </p>
+           <p class="Wto493">//安云网咨询系统</p> 
+           <p></p>
+           <p style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all;">MANAGE_PASS = 'ss233333333'<br />#if you want manage in other server you should set this value to global ip<br />MANAGE_BIND_IP = '127.0.0.1'<br />#make sure this port is idle<br />MANAGE_PORT = 23333 <font color="#FFFFFF">//内容来自AnYun.ORG</font> </p>
+          </blockquote><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);">5、开启服务 </p>
+          <div class="Wto493">
+           //内容来自安云网
+          </div> <p></p><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);">python server.py <span class="Wto493">//ANYUN.ORG</span> </p><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);"><a href="http://cmsky.qiniudn.com/wp-content/uploads/2015/06/shadowsocksmanyuser.png" class="fancybox" style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px; outline: 0px; padding: 0px; vertical-align: baseline; color: rgb(47, 136, 154); text-decoration: none; -webkit-tap-highlight-color: rgba(255, 0, 0, 0);"><img class="alignnone size-full wp-image-1629" src="/ueditor/php/upload/image/20170216/1487246099229918.png" alt="centos下ss多用户后端manyuser+前端sspanel搭建过程" width="633" height="162" /></a> </p>
+          <div class="Wto493">
+           //copyright AnYun.ORG
+          </div> <p></p><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);">如上图所示就算安装成功了。 <font color="#FFFFFF">//ANYUN.ORG</font> </p><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);">如果放在后台运行则可以，<code style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px 2px; outline: 0px; padding: 2px 4px; vertical-align: baseline; background: rgb(241, 241, 241); color: rgb(85, 85, 85); border-radius: 2px;">nohup python server.py &amp;</code><br />nohup用法可以百度，也可以用screen或者配置supervisor进程守护。我是centos用的screen，方法如下： </p><p class="Wto493">//安云网，anyun.org</p> <p></p>
+          <blockquote style="box-sizing: inherit; border: 1px dashed rgb(221, 221, 221); font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin: 0px auto; outline: 0px; padding: 10px; vertical-align: baseline; quotes: none; width: 802.797px; color: rgb(139, 139, 139); clear: both; white-space: normal; background-color: rgb(255, 255, 255);">
+           <p style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all;">screen -S ss<br />cd /root/shadowsocks/shadowsocks/<br />python server.py <span class="Wto493">//本文来自安云网</span> </p>
+          </blockquote><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);">此时按住Ctrl+a，然后按d退出就可以了。<br />查看screen运行任务可以screen -ls可以看到刚才创建的ss任务在运行。 <font color="#FFFFFF">//copyright AnYun.ORG</font> </p><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);">如果需要恢复执行：<br /><code style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px 2px; outline: 0px; padding: 2px 4px; vertical-align: baseline; background: rgb(241, 241, 241); color: rgb(85, 85, 85); border-radius: 2px;">screen -r ss</code><br />当然，出意外的话killall也是可以。 <span class="Wto493">//copyright AnYun.ORG</span> </p><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);">Shadowsocks开机自动启动并后台运行<br /><code style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px 2px; outline: 0px; padding: 2px 4px; vertical-align: baseline; background: rgb(241, 241, 241); color: rgb(85, 85, 85); border-radius: 2px;">vi /etc/rc.local</code><br />用vi编辑器添加以下内容（先按键盘Ins键，切换到编辑模式）： </p><p class="Wto493">//安云网，anyun.org</p> <p></p>
+          <blockquote style="box-sizing: inherit; border: 1px dashed rgb(221, 221, 221); font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin: 0px auto; outline: 0px; padding: 10px; vertical-align: baseline; quotes: none; width: 802.797px; color: rgb(139, 139, 139); clear: both; white-space: normal; background-color: rgb(255, 255, 255);">
+           <p style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all;">cd /root/shadowsocks/shadowsocks<br />screen -dmS Shadowsocks python server.py <span class="Wto493">//copyright AnYun.ORG</span> </p>
+          </blockquote><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);">然后<strong style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px; outline: 0px; padding: 0px; vertical-align: baseline;">Esc退出编辑，Shift+;打出英文半角冒号，然后wq，回车，</strong>保存文件。<br />（screen -dmS Shadowsocks python server.py，也就是让程序运行后就在后台了。）<br />至此多用户SS后端安装完毕。 <span class="Wto493">//copyright AnYun.ORG</span> </p><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);">debian下使用<strong style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px; outline: 0px; padding: 0px; vertical-align: baseline;">supervisor</strong>进程守护的方法<br />安装supervisor<br /><code style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px 2px; outline: 0px; padding: 2px 4px; vertical-align: baseline; background: rgb(241, 241, 241); color: rgb(85, 85, 85); border-radius: 2px;">apt-get install supervisor</code><br />配置supervisor进程守护<br />在目录/etc/supervisor/conf.d/下， 新建一个文件，名字：shadowsocks.conf<br />在shadowsocks.conf文件里编辑添加： <font color="#FFFFFF">//ANYUN.ORG</font> </p>
+          <blockquote style="box-sizing: inherit; border: 1px dashed rgb(221, 221, 221); font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin: 0px auto; outline: 0px; padding: 10px; vertical-align: baseline; quotes: none; width: 802.797px; color: rgb(139, 139, 139); clear: both; white-space: normal; background-color: rgb(255, 255, 255);">
+           <p style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all;">[program:shadowsocks]<br />command=python /root/shadowsocks/shadowsocks/server.py -c /root/shadowsocks/shadowsocks/config.json<br />user=root<br />autostart = true<br />autoresart = true<br />stderr_logfile = /var/log/shadowsocks.log<br />stdout_logfile = /var/log/shadowsocks.log<br />stderr_logfile_maxbytes=4MB<br />stderr_logfile_backups=10<br />startsecs=3 </p>
+           <div class="Wto493">
+            //copyright AnYun.ORG
+           </div> 
+           <p></p>
+          </blockquote>
+          <ul style="list-style-type: none;" class=" list-paddingleft-2">
+           <li><p>command就是ss的运行命令； <font color="#FFFFFF">//copyright AnYun.ORG</font> </p></li>
+           <li><p>user是执行命令的用户； </p>
+            <div class="Wto493">
+             //安云网，anyun.org
+            </div> <p></p></li>
+           <li><p>autostart和autoresart指自动启动和自动重启； <span class="Wto493">//安云网，anyun.org</span> </p></li>
+           <li><p>stdout_logfile重定向程序输出到此文件； </p>
+            <div class="Wto493">
+             //内容来自安云网
+            </div> <p></p></li>
+           <li><p>stderr_logfile重定向程序错误到此文件； </p>
+            <div class="Wto493">
+             //ANYUN.ORG
+            </div> <p></p></li>
+          </ul><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);">修改以下文件<br />/etc/profile<br />/etc/default/supervisor<br />在文件结尾处添加以下3行内容 </p>
+          <div class="Wto493">
+           //copyright AnYun.ORG
+          </div> <p></p>
+          <blockquote style="box-sizing: inherit; border: 1px dashed rgb(221, 221, 221); font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin: 0px auto; outline: 0px; padding: 10px; vertical-align: baseline; quotes: none; width: 802.797px; color: rgb(139, 139, 139); clear: both; white-space: normal; background-color: rgb(255, 255, 255);">
+           <p style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all;">ulimit -n 51200<br />ulimit -Sn 4096<br />ulimit -Hn 8192 <font color="#FFFFFF">//本文来自安云网</font> </p>
+          </blockquote><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);">启动supervisor<br /><code style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px 2px; outline: 0px; padding: 2px 4px; vertical-align: baseline; background: rgb(241, 241, 241); color: rgb(85, 85, 85); border-radius: 2px;">service supervisor start</code>&nbsp;#启动<br /><code style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px 2px; outline: 0px; padding: 2px 4px; vertical-align: baseline; background: rgb(241, 241, 241); color: rgb(85, 85, 85); border-radius: 2px;">supervisorctl reload</code>&nbsp;#重载<br />debug查看连接日志等<br /><code style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px 2px; outline: 0px; padding: 2px 4px; vertical-align: baseline; background: rgb(241, 241, 241); color: rgb(85, 85, 85); border-radius: 2px;">supervisorctl tail -f shadowsocks stderr</code>&nbsp;#Ctrl+C 取消查看 </p><p class="Wto493">//安云网，anyun.org</p> <p></p><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);">2015.8.13补充centos使用supervisor<br />安装<code style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px 2px; outline: 0px; padding: 2px 4px; vertical-align: baseline; background: rgb(241, 241, 241); color: rgb(85, 85, 85); border-radius: 2px;">easy_install supervisor</code><br />运行<code style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px 2px; outline: 0px; padding: 2px 4px; vertical-align: baseline; background: rgb(241, 241, 241); color: rgb(85, 85, 85); border-radius: 2px;">echo_supervisord_conf</code>测试是否安装成功。<br />创建配置文件： </p>
+          <div class="Wto493">
+           //安云网，anyun.org
+          </div> <br /><code style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px 2px; outline: 0px; padding: 2px 4px; vertical-align: baseline; background: rgb(241, 241, 241); color: rgb(85, 85, 85); border-radius: 2px;">echo_supervisord_conf &gt; /etc/supervisord.conf</code><br />修改配置文件：<br />在supervisord.conf最后增加： <font color="#FFFFFF">//内容来自安云网</font> <p></p>
+          <blockquote style="box-sizing: inherit; border: 1px dashed rgb(221, 221, 221); font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin: 0px auto; outline: 0px; padding: 10px; vertical-align: baseline; quotes: none; width: 802.797px; color: rgb(139, 139, 139); clear: both; white-space: normal; background-color: rgb(255, 255, 255);">
+           <p style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all;">[program:shadowsocks]<br />command = python /root/shadowsocks/shadowsocks/server.py -c /root/shadowsocks/shadowsocks/config.json<br />user=root<br />autostart=true<br />autorestart=true<br />stderr_logfile = /var/log/shadowsocks.log<br />stdout_logfile = /var/log/shadowsocks.log<br />startsecs=3 <span class="Wto493">//安云网咨询系统</span> </p>
+          </blockquote><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);">使用指定配置文件启动：<code style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px 2px; outline: 0px; padding: 2px 4px; vertical-align: baseline; background: rgb(241, 241, 241); color: rgb(85, 85, 85); border-radius: 2px;">/usr/bin/supervisord -c /etc/supervisord.conf</code>/<br />-c 表示配置文件的路径，读取这里个配置文件，之前也是可以根据自己的情况放在不同的文件夹下<br />修改配置文件之后：supervisorctl reload 重载 服务重新启动<br />debug查看连接日志：<code style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px 2px; outline: 0px; padding: 2px 4px; vertical-align: baseline; background: rgb(241, 241, 241); color: rgb(85, 85, 85); border-radius: 2px;">supervisorctl tail -f shadowsocks stderr</code>&nbsp;#Ctrl+C 取消查看 </p><p class="Wto493">//内容来自安云网</p> <br />设置supervisord开机启动<br />编辑文件：vi&nbsp;/etc/rc.local<br />在末尾另起一行添加supervisord，保存退出（和上文类似）。<br />另centos7还需要为rc.local添加执行权限<br />chmod&nbsp;+x&nbsp;/etc/rc.local<br />至此运用supervisord控制shadowsocks开机自启和后台运行设置完成<br />常用命令<br />控制命令基本都通过supervisorctl执行，输入help可以看到命令列表。这是一些常用命令：<br />获得所有程序状态 supervisorctl status<br />关闭目标程序 supervisorctl stop spider<br />启动目标程序 supervisorctl start spider<br />关闭所有程序 supervisorctl shutdown<br />二、安装shadowsocks多用户前端sspanel，PS：不适用sspanel V3版本<br />1、首先安装前端所需环境，推荐军哥的LNMP1.3。我自己装的是sspanelV2版本，需要PHP不低于5.4，否则打开是一片空白。<br />安装LNMP步骤请看：http://lnmp.org/install.html<br />这里不做详述，具体可搜索之。<br />2、下面开始安装sspanel V2： <p class="Wto493">//安云网，anyun.org</p> <br />git项目地址：<a href="https://www.cmsky.com/wp-content/themes/begin/inc/go.php?url=https://github.com/orvice/ss-panel/releases" target="_blank" style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px; outline: 0px; padding: 0px; vertical-align: baseline; color: rgb(47, 136, 154); text-decoration: none; -webkit-tap-highlight-color: rgba(255, 0, 0, 0);">https://github.com/orvice/ss-panel/releases</a><br />中文安装文档：<a href="https://www.cmsky.com/wp-content/themes/begin/inc/go.php?url=https://github.com/orvice/ss-panel/wiki/Install-Guide-zh_cn" target="_blank" style="box-sizing: inherit; border: 0px; font-family: inherit; font-style: inherit; margin: 0px; outline: 0px; padding: 0px; vertical-align: baseline; color: rgb(47, 136, 154); text-decoration: none; -webkit-tap-highlight-color: rgba(255, 0, 0, 0);">https://github.com/orvice/ss-panel/wiki/Install-Guide-zh_cn</a> <span class="Wto493">//本文来自安云网</span> <p></p><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);">中文安装文档已经说明的很详细了。导入ss-panel-master里sql文件夹下面的所有数据库到你自己建立的数据库中，就是之前建立了的ss数据库，修改lib/config-sample.php（里面填写你的数据库信息）并改为：config.php即可。<br />修改默认配置即可。 </p><p class="Wto493">//安云网咨询系统</p> <p></p><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);">后台默认信息：<br />后台地址：你的域名/admin<br />帐号：<a class="__cf_email__" href="/cdn-cgi/l/email-protection" data-cfemail="90fdf5d0fdf5bef3fffd">[email&nbsp;protected]</a><script data-cfhash="f9e31" type="text/javascript">/* <![CDATA[ */!function(t,e,r,n,c,a,p){try{t=document.currentScript||function(){for(t=document.getElementsByTagName('script'),e=t.length;e--;)if(t[e].getAttribute('data-cfhash'))return t[e]}();if(t&&(c=t.previousSibling)){p=t.parentNode;if(a=c.getAttribute('data-cfemail')){for(e='',r='0x'+a.substr(0,2)|0,n=2;a.length-n;n+=2)e+='%'+('0'+('0x'+a.substr(n,2)^r).toString(16)).slice(-2);p.replaceChild(document.createTextNode(decodeURIComponent(e)),c)}p.removeChild(t)}}catch(u){}}()/* ]]> */</script><br />密码：my <span class="Wto493">//安云网咨询系统</span> </p><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);">2015.8.4更新，新版sspanel后台默认用户名密码已更新，默认情况下，user表中uid为1的用户为管理员 <span class="Wto493">//ANYUN.ORG</span> </p><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);">默认管理帐号: <a class="__cf_email__" href="/cdn-cgi/l/email-protection" data-cfemail="e7818e959493a7858b888883c984888a">[email&nbsp;protected]</a><script data-cfhash="f9e31" type="text/javascript">/* <![CDATA[ */!function(t,e,r,n,c,a,p){try{t=document.currentScript||function(){for(t=document.getElementsByTagName('script'),e=t.length;e--;)if(t[e].getAttribute('data-cfhash'))return t[e]}();if(t&&(c=t.previousSibling)){p=t.parentNode;if(a=c.getAttribute('data-cfemail')){for(e='',r='0x'+a.substr(0,2)|0,n=2;a.length-n;n+=2)e+='%'+('0'+('0x'+a.substr(n,2)^r).toString(16)).slice(-2);p.replaceChild(document.createTextNode(decodeURIComponent(e)),c)}p.removeChild(t)}}catch(u){}}()/* ]]> */</script> 密码 1993 </p>
+          <div class="Wto493">
+           //ANYUN.ORG
+          </div> <p></p><p style="box-sizing: inherit; border: 0px; font-family: &quot;Microsoft YaHei&quot;, Helvetica, Arial, &quot;Lucida Grande&quot;, Tahoma, sans-serif; font-size: 15px; margin-top: 0px; outline: 0px; padding: 0px; vertical-align: baseline; word-wrap: break-word; word-break: break-all; color: rgb(68, 68, 68); white-space: normal; background-color: rgb(255, 255, 255);">PS：admin账户不要删除！ <span class="Wto493">//ANYUN.ORG</span> </p><p><br /> <font color="#FFFFFF">//内容来自AnYun.ORG</font> </p> </td> 
+        </tr> 
+       </tbody>
+      </table> 
+      <div id="anyun_art_footer" style="margin:10px auto">
+       <script type="text/javascript">
+    /*640*60 创建于 2017/3/5*/
+    var cpro_id = "u2912733";
+</script> 
+       <script type="text/javascript" src="http://cpro.baidustatic.com/cpro/ui/c.js"></script> 
+      </div> 
+      <div class="bdsharebuttonbox">
+       <a href="#" class="bds_more" data-cmd="more"></a>
+       <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+       <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+       <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+       <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a>
+       <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+      </div> 
+      <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script> 
+     </div> 
+     <!-- /content --> 
+     <!-- /pages --> 
+     <!-- //顶踩 --> 
+     <div class="newdigg" id="newdigg"> 
+      <div class="diggbox digg_good" onmousemove="this.style.backgroundPosition='left bottom';" onmouseout="this.style.backgroundPosition='left top';" onclick="javascript:postDigg('good',8584)"> 
+       <div class="digg_act">
+        顶一下
+       </div> 
+       <div class="digg_num">
+        (0)
+       </div> 
+       <div class="digg_percent"> 
+        <div class="digg_percent_bar">
+         <span style="width:0%"></span>
+        </div> 
+        <div class="digg_percent_num">
+         0%
+        </div> 
+       </div> 
+      </div> 
+      <div class="diggbox digg_bad" onmousemove="this.style.backgroundPosition='right bottom';" onmouseout="this.style.backgroundPosition='right top';" onclick="javascript:postDigg('bad',8584)"> 
+       <div class="digg_act">
+        踩一下
+       </div> 
+       <div class="digg_num">
+        (0)
+       </div> 
+       <div class="digg_percent"> 
+        <div class="digg_percent_bar">
+         <span style="width:0%"></span>
+        </div> 
+        <div class="digg_percent_num">
+         0%
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+     <script language="javascript" type="text/javascript">getDigg(8584);</script> 
+     <!-- //顶踩部份的源码结束 --> 
+     <!-- //分享代码开始 --> 
+     <!-- //分享代码结束 --> 
+     <div class="boxoff"> 
+      <strong>------分隔线----------------------------</strong> 
+     </div> 
+     <div class="handle"> 
+      <div class="context"> 
+       <ul> 
+        <li>上一篇：<a href="/a/jishuguanzhu/shenbingliren/2017/0216/8583.html"> Mimikatz 非官方指南和命令参考_Part3</a> </li> 
+        <li>下一篇：<a href="/a/jishuguanzhu/shenbingliren/2017/0218/8587.html">免费科学上网 的DNS小工具</a> </li> 
+       </ul> 
+      </div> 
+      <!-- /context --> 
+      <div class="actbox"> 
+       <ul> 
+        <li id="act-fav"><a href="/plus/stow.php?aid=8584" target="_blank">收藏</a></li> 
+        <li id="act-err"><a href="/plus/erraddsave.php?aid=8584&amp;title=centos下ss多用户后端manyuser+前端sspanel搭建过程" target="_blank">挑错</a></li> 
+        <li id="act-pus"><a href="/plus/recommend.php?aid=8584" target="_blank">推荐</a></li> 
+        <li id="act-pnt"><a href="#" onclick="window.print();">打印</a></li> 
+       </ul> 
+      </div> 
+     </div> 
+     <!-- /handle --> 
+    </div> 
+    <!-- /viewbox --> 
+    <!-- //AJAX评论区 --> 
+    <!-- //主模板必须要引入/include/dedeajax2.js --> 
+    <a name="postform"></a> 
+    <div class="mt1"> 
+     <dl class="tbox"> 
+      <dt> 
+       <strong>发表评论</strong> 
+       <span class="more"></span> 
+      </dt> 
+      <dd> 
+       <div class="dede_comment_post"> 
+        <form action="#" method="post" name="feedback" onsubmit="return false;"> 
+         <input type="hidden" name="dopost" value="send" /> 
+         <input type="hidden" name="comtype" value="comments" /> 
+         <input type="hidden" name="aid" value="8584" /> 
+         <input type="hidden" name="fid" id="feedbackfid" value="0" /> 
+         <div class="dcmp-title"> 
+          <small>请自觉遵守互联网相关的政策法规，严禁发布色情、暴力、反动的言论。</small> 
+         </div> 
+         <!-- /dcmp-title --> 
+         <div class="dcmp-stand"> 
+          <strong>评价:</strong> 
+          <input type="radio" name="feedbacktype" checked="1" value="feedback" id="dcmp-stand-neu" /> 
+          <label for="dcmp-stand-neu"><img src="/templets/default-black/images/cmt-neu.gif" />中立</label> 
+          <input type="radio" name="feedbacktype" value="good" id="dcmp-stand-good" /> 
+          <label for="dcmp-stand-good"><img src="/templets/default-black/images/cmt-good.gif" />好评</label> 
+          <input type="radio" name="feedbacktype" value="bad" id="dcmp-stand-bad" /> 
+          <label for="dcmp-stand-bad"><img src="/templets/default-black/images/cmt-bad.gif" />差评</label> 
+         </div> 
+         <!-- /dcmp-stand --> 
+         <div class="clr"></div> 
+         <div class="dcmp-content"> 
+          <script type="text/javascript">
+					//<![CDATA[
+					window.CKEDITOR_BASEPATH='/include/ckeditor/';
+					//]]>
+                    </script> 
+          <script type="text/javascript" src="/include/ckeditor/ckeditor.js?t=B8DJ5M3"></script> 
+          <script type="text/javascript" charset="utf-8" src="/include/ueditor/ueditor.config.js"></script>
+          <script type="text/javascript" charset="utf-8" src="/include/ueditor/ueditor.all.js"></script>
+          <link rel="stylesheet" type="text/css" href="/include/ueditor/themes/default/css/ueditor.css" />
+          <script type="text/plain" name="msg" id="msg"><p></p></script>
+          <script type="text/javascript">UE.getEditor("msg",{toolbars:[["Source","|",
+        "bold", "italic", "underline","|","fontsize","forecolor","emotion","Undo", "Redo"]],initialFrameHeight:100});</script> 
+         </div> 
+         <!-- /dcmp-content --> 
+         <div class="dcmp-post"> 
+          <!--未登陆--> 
+          <div class="dcmp-userinfo" id="_ajax_feedback">
+            验证码: 
+           <input type="text" name="validate" size="4" class="ipt-txt" style="text-transform:uppercase;" /> 
+           <img src="/include/vdimgck.php" id="validateimg" style="cursor:pointer" onclick="this.src=this.src+'?'" title="点击我更换图片" alt="点击我更换图片" class="vdimg" /> 
+           <input type="checkbox" name="notuser" id="dcmp-submit-guest" /> 
+           <label for="dcmp-submit-guest"></label> 匿名?  
+          </div> 
+          <div class="dcmp-submit"> 
+           <button type="button" onclick="PostComment()">发表评论</button> 
+          </div> 
+         </div> 
+        </form> 
+       </div> 
+      </dd> 
+     </dl> 
+    </div> 
+    <!-- //评论表单区结束 --> 
+    <!-- //评论内容区 --> 
+    <a name="commettop"></a> 
+    <div class="mt1"> 
+     <dl class="tbox"> 
+      <dt> 
+       <strong>最新评论</strong> 
+       <span class="more"><a href="/plus/feedback.php?aid=8584">进入详细评论页&gt;&gt;</a></span> 
+      </dt> 
+      <!-- //这两个ID的区块必须存在，否则JS会出错 --> 
+      <dd id="commetcontentNew"></dd> 
+      <dd id="commetcontent"></dd> 
+     </dl> 
+    </div> 
+    <!--
+//由于评论载入时使用异步传输，因此必须在最后一步加载（DIGG和评论框须放在评论内容前面）
+//如果一定需要提前的把myajax.SendGet改为myajax.SendGet2，但可能会引起页面阻滞
+--> 
+    <script language="javascript">
+var whichEditor = "ueditor";
+function LoadCommets(page)
+{
+		var taget_obj = document.getElementById('commetcontent');
+		var waithtml = "<div style='line-height:50px'><img src='/images/loadinglit.gif' />评论加载中...</div>";
+		var myajax = new DedeAjax(taget_obj, true, true, '', 'x', waithtml);
+		myajax.SendGet2("/plus/feedback_ajax.php?dopost=getlist&aid=8584&page="+page);
+		DedeXHTTP = null;
+}
+function PostComment()
+{
+		var f = document.feedback;
+		//var msg = CKEDITOR.instances.msg.getData();
+		if(whichEditor == 'ckeditor')
+		{
+			var msg = CKEDITOR.instances.msg.getData();
+		}
+		else if(whichEditor == 'ueditor')
+		{
+			var msg = UE.getEditor('msg').getContent()
+		}
+		var nface = '6';
+		var nfeedbacktype = 'feedback';
+		var nvalidate = '';
+		var nnotuser = '';
+		var nusername = '';
+		var npwd = '';
+		var taget_obj = $DE('commetcontentNew');
+		var waithtml = "<div style='line-height:30px'><img src='/images/loadinglit.gif' />正在发送中...</div>";
+		if(msg=='')
+		{
+			alert("评论内容不能为空！");
+			return;
+		}
+		if(f.validate)
+		{
+			if(f.validate.value=='') {
+				alert("请填写验证码！");
+				return;
+			}
+			else {
+				nvalidate = f.validate.value;
+			}
+		}
+		if(msg.length > 500)
+		{
+			alert("你的评论是不是太长了？请填写500字以内的评论。");
+			return;
+		}
+		if(f.feedbacktype) {
+			for(var i=0; i < f.feedbacktype.length; i++)
+				if(f.feedbacktype[i].checked) nfeedbacktype = f.feedbacktype[i].value;
+		}
+		/*
+		if(f.face) {
+			for(var j=0; j < f.face.length; j++)
+				if(f.face[j].checked) nface = f.face[j].value;
+		}
+		*/
+		if(f.notuser.checked) nnotuser = '1';
+		if(f.username) nusername = f.username.value;
+		if(f.pwd) npwd = f.pwd.value;
+		
+		var myajax = new DedeAjax(taget_obj, false, true, '', '', waithtml);
+		myajax.sendlang = 'utf-8';
+		myajax.AddKeyN('dopost', 'send');
+		myajax.AddKeyN('aid', '8584');
+		myajax.AddKeyN('fid', f.fid.value);
+		myajax.AddKeyN('face', nface);
+		myajax.AddKeyN('feedbacktype', nfeedbacktype);
+		myajax.AddKeyN('validate', nvalidate);
+		myajax.AddKeyN('notuser', nnotuser);
+		myajax.AddKeyN('username', nusername);
+		myajax.AddKeyN('pwd', npwd);
+		myajax.AddKeyN('msg', msg);
+		myajax.SendPost2('/plus/feedback_ajax.php');
+		//msg = '';
+		//CKEDITOR.instances.msg.setData('');
+		if(whichEditor == 'ckeditor')
+		{
+			CKEDITOR.instances.msg.setData('');
+		}
+		else if(whichEditor == 'ueditor')
+		{
+			UE.getEditor('msg').setContent('', false);
+		}
+		//taget_obj.removeAttribute('id');
+		f.fid.value = 0;
+		if(f.validate)
+		{
+			if($DE('validateimg')) $DE('validateimg').src = "/include/vdimgck.php?"+f.validate.value;
+			f.validate.value = '';
+		}
+		
+}
+function quoteCommet(fid)
+{
+	    document.feedback.fid.value = fid;
+}
+  
+function ajaxFeedback(aid, fid, type)
+{
+	
+	var taget_obj = $DE('ajaxfeedback_'+fid);
+	if(taget_obj.innerHTML == '')
+	{
+		var myajax = new DedeAjax(taget_obj, true, true, '', 'x');
+		myajax.SendGet2("/plus/feedback.php?aid="+aid+"&fid="+fid+"&action=quote&type=ajax");
+		eval('var result = typeof CKEDITOR.instances.msg_'+fid);
+		if(result != 'undefined')
+		{
+			// 删除实例
+			eval('var edit = CKEDITOR.instances.msg_'+fid);
+			CKEDITOR.remove(edit);
+		}
+		CKEDITOR.replace(document.getElementById('msg_'+fid) , CKEDITOR.instances.msg.config);
+		scroll(0, taget_obj.offsetTop - 120);
+		var formname = 'f = document.ajaxfeedback_'+fid;
+		eval(formname);
+		if(f.validate)
+		{
+			if($DE('vdimg_'+fid)) $DE('vdimg_'+fid).src = "/include/vdimgck.php?"+f.validate.value;
+			f.validate.value = '';
+		}
+		
+		DedeXHTTP = null;
+	}
+}
+
+
+
+function ajaxQuotePost(fid)
+{
+	var formname = 'f = document.ajaxfeedback_'+fid;
+	eval(formname);
+	//var f = document.formname;
+	//var f = f[0];
+	var nvalidate = '';
+	var nnotuser = '';
+	var nusername = '';
+	var npwd = '';
+	var taget_obj = $DE('commetcontentNew');
+	var waithtml = "<div style='line-height:30px'><img src='/images/loadinglit.gif' />正在发送中...</div>";
+	eval('var msg = CKEDITOR.instances.msg_'+fid+'.getData()');
+
+	if(f.validate)
+	{
+		if(f.validate.value=='') {
+			alert("请填写验证码！");
+			return;
+		}
+		else {
+			nvalidate = f.validate.value;
+		}
+	}
+	var myajax = new DedeAjax(taget_obj, false, true, '', '', waithtml);
+	
+	if(f.notuser.checked) nnotuser = '1';
+	if(f.username) nusername = f.username.value;
+	if(f.pwd) npwd = f.pwd.value;
+	
+	myajax.sendlang = 'utf-8';
+	myajax.AddKeyN('dopost', 'send');
+	myajax.AddKeyN('aid', '8584');
+	myajax.AddKeyN('fid', f.fid.value);
+	myajax.AddKeyN('type', 'ajax');
+	myajax.AddKeyN('comtype', f.comtype.value);
+	myajax.AddKeyN('isconfirm','yes');
+	
+	myajax.AddKeyN('typeid', f.typeid.value);
+	myajax.AddKeyN('quotemsg', f.quotemsg.value);
+	myajax.AddKeyN('validate', nvalidate);
+	myajax.AddKeyN('notuser', nnotuser);
+	myajax.AddKeyN('username', nusername);
+	myajax.AddKeyN('pwd', npwd);
+	myajax.AddKeyN('msg', msg);
+	myajax.SendPost2('/plus/feedback_ajax.php');
+	//alert(f.quotemsg.value);
+	if($DE('ajaxfeedback_'+fid).innerHTML != null)
+	{
+		$DE('ajaxfeedback_'+fid).innerHTML = '';
+	}
+	scroll(0, taget_obj.offsetTop);
+}
+LoadCommets(1);
+</script> 
+    <!-- //评论内容区结束 --> 
+    <div class="intro"></div> 
+    <div class="viewbox"></div> 
+   </div> 
+   <!-- //左边内容结束 --> 
+   <!-- //右边内容开始 --> 
+   <div class="pright"> 
+    <div> 
+     <dl class="tbox"> 
+      <dt>
+       <strong>相关内容</strong>
+      </dt> 
+      <dd> 
+       <ul class="c1 ico2"> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2015/0501/5390.html">“高端”人士必备：新型安全加密</a> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0719/2367.html">JSP端口转发工具 – KPortTran</a> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2015/0417/5168.html">brainfuck编译器</a> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2016/0828/6088.html">谷歌为MacOS打造开源恶意检测系统</a> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2015/0304/5055.html">nmap命令扫描服务器信息的格式</a> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0719/2376.html">实时协作工具库 – TogetherJS</a> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0719/2544.html">思科Cisco设备密码恢复工具-Cisco P</a> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0719/2550.html">Web渗透测试工具-WAppEx</a> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0719/2693.html">Burp Suite详细使用教程-Intruder模块详</a> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0719/2510.html">Exploit防御工具-ExploitShield Browser E</a> </li> 
+        <li><a href="/plus/view.php?aid=2962">NETBOX实用代码集合</a> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0731/3010.html">burpsuite v1.4.10发布</a> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0719/2679.html">防0day工具 EMET V3官方发布</a> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2015/0501/5398.html">解密Nuclear漏洞利用工具包中的Fla</a> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0719/2695.html">[技巧]使用Burpsuite辅助Sqlmap进行PO</a> </li> 
+       </ul> 
+      </dd> 
+     </dl> 
+    </div> 
+    <div class="commend mt1"> 
+     <dl class="tbox light"> 
+      <dt class="light">
+       <strong>推荐内容</strong>
+      </dt> 
+      <dd class="light"> 
+       <ul class="d4"> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2016/1226/7378.html">安全行业从业人员自研开源扫</a> <p>Scanners-Box是一个集合github平台上的安全行业从业人员自研开源扫...</p> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2016/0828/6083.html">ngrok一款内网穿透+记录HTTP请求</a> <p>双方都是内网的反弹shell工具。Ngrok的下载地址:https://ngrok.com/d...</p> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2016/0828/6053.html">攻击中东欧的间谍工具集|</a> <p>图1图1在过去的一年里，ESET检测并分析了若干有针对性的进行间...</p> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2016/0828/6024.html">基于Python的反连Shell和后渗透工</a> <p>声明：该软件供学习研究使用或作为一个POC。开发者不赞同和鼓...</p> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2016/0828/6025.html">LinuxRootkit系列二：基于修改s</a> <p>前言： 《Linux Rootkit 系列一： LKM的基础编写及隐藏》的作者似乎...</p> </li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2016/0828/6033.html">开源系统漏洞扫描工具Binmap使</a> <p>开源工具binmap可以帮助安全研究人员扫描文件系统，可用于获取...</p> </li> 
+       </ul> 
+      </dd> 
+     </dl> 
+    </div> 
+    <!-- /commend --> 
+    <div class="hot mt1"> 
+     <dl class="tbox light"> 
+      <dt class="light">
+       <strong>热点内容</strong>
+      </dt> 
+      <dd class="light"> 
+       <ul class="c1 ico2"> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0724/2967.html">整理下工具，发现自己搜</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0719/2684.html">XOIC DDOS压力测试工具</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0804/3097.html">AndroRAT中文版</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/1211/3777.html">如何制作属于自己的菜刀</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0719/2628.html">XSS漏洞扫描器 – Xele</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2016/1210/7368.html">锐速(lotServer) 一键安装脚</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0819/3143.html">wr703n移植wifipineapple</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/1208/3742.html">暗组2015最新渗透包</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0508/808.html">Android渗透专用测试神器</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/1028/3480.html">从入门到精通：WiFi渗透哪</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2016/0617/5972.html">fenghuangscannerV3 EXE版本</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0701/2118.html">翻墙不再需要任何软件,真</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2016/0128/5842.html">抓包工具charles</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2015/0820/5783.html"> Ashley-Madison 数据库下载地</a></li> 
+        <li><a href="/a/jishuguanzhu/shenbingliren/2014/0914/3286.html">[转]HFS 2.3x 远程命令执行</a></li> 
+       </ul> 
+      </dd> 
+     </dl> 
+    </div> 
+    <!--<div id="contentRtPicAD222" style="margin:10px auto"></div>2017-03-05--> 
+    <div id="anyun_art_R_pic" style="margin:10px auto">
+     <script type="text/javascript">
+    /*222*500 创建于 2017/3/5*/
+    var cpro_id = "u2912732";
+</script> 
+     <script type="text/javascript" src="http://cpro.baidustatic.com/cpro/ui/c.js"></script> 
+    </div> 
+   </div> 
+   <!-- /pright --> ﻿ 
+  </div> 
+  <div class="footer"> 
+   <div class="copyright"> 
+    <span class="c2">免责申明：安云网部分内容来自互联网，如果不小心侵犯了您的权益，请与我们（<a class="__cf_email__" href="/cdn-cgi/l/email-protection" data-cfemail="e89a87879ca88986919d86c6879a8f">[email&nbsp;protected]</a><script data-cfhash="f9e31" type="text/javascript">/* <![CDATA[ */!function(t,e,r,n,c,a,p){try{t=document.currentScript||function(){for(t=document.getElementsByTagName('script'),e=t.length;e--;)if(t[e].getAttribute('data-cfhash'))return t[e]}();if(t&&(c=t.previousSibling)){p=t.parentNode;if(a=c.getAttribute('data-cfemail')){for(e='',r='0x'+a.substr(0,2)|0,n=2;a.length-n;n+=2)e+='%'+('0'+('0x'+a.substr(n,2)^r).toString(16)).slice(-2);p.replaceChild(document.createTextNode(decodeURIComponent(e)),c)}p.removeChild(t)}}catch(u){}}()/* ]]> */</script>）联系，我们会尽快为您处理。. <br />Copyright &copy; 2014-2018 安云网 版权所有. <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_5882523'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D5882523' type='text/javascript'%3E%3C/script%3E"));</script> <p>你站在桥上看风景,看风景的人在楼上看你,明月装饰了你的窗子,你装饰了别人的梦.--卞之琳《断章》</p> 
+     <!-- Baidu Button BEGIN --> 
+     <!-- Baidu Button END --> </span>
+   </div> 
+  </div> 
+  <!-- //二级子类下拉菜单 ，考虑SEO原因放置于底部 
+
+--> 
+  <script type="text/javascript" src="/images/js/dropdown.js"></script> 
+  <ul id="dropmenu1" class="dropMenu"> 
+   <li><a href="/a/yejiezixun/yejierenwu/">业界人物</a></li> 
+   <li><a href="/a/jishuguanzhu/jikepinchang/">极客品尝</a></li> 
+  </ul>
+  <ul id="dropmenu2" class="dropMenu"> 
+   <li><a href="/a/jishuguanzhu/nixianggongcheng/">逆向工程</a></li> 
+   <li><a href="/a/jishuguanzhu/ExploitS/">ExploitS</a></li> 
+   <li><a href="/a/jishuguanzhu/xitongwendang/">系统文档</a></li> 
+   <li><a href="/a/jishuguanzhu/yidonganquan/">移动安全</a></li> 
+   <li><a href="/a/jishuguanzhu/yingjiananquan/">硬件安全</a></li> 
+   <li><a href="/a/jishuguanzhu/wuxiananquan/">无线安全</a></li> 
+   <li><a href="/a/jishuguanzhu/WEBjishu/">WEB安全</a></li> 
+   <li><a href="/a/jishuguanzhu/DataBase/">DataBase</a></li> 
+   <li><a href="/a/jishuguanzhu/shenbingliren/">神兵利刃</a></li> 
+   <li><a href="/a/jishuguanzhu/wangluoanquan/">网络安全</a></li> 
+   <li><a href="/a/jishuguanzhu/bianchengchalou/">编程茶楼</a></li> 
+   <li><a href="/a/jishuguanzhu/WooYun/">WooYun</a></li> 
+  </ul>
+  <ul id="dropmenu3" class="dropMenu"> 
+  </ul>
+  <ul id="dropmenu4" class="dropMenu"> 
+   <li><a href="/a/yulebagua/qiwenqushi/">奇闻趣事</a></li> 
+  </ul>
+  <ul id="dropmenu6" class="dropMenu"> 
+   <li><a href="/a/ziyuanlianjie/yule/">娱乐</a></li> 
+   <li><a href="/a/ziyuanlianjie/jishu/">技术</a></li> 
+  </ul>
+  <ul id="dropmenu18" class="dropMenu"> 
+  </ul>
+  <ul id="dropmenu5" class="dropMenu"> 
+  </ul>
+  <ul id="dropmenu37" class="dropMenu"> 
+  </ul> 
+  <script type="text/javascript">cssdropdown.startchrome("navMenu")</script>   
+ </body>
+</html>

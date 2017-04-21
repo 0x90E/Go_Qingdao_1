@@ -1,0 +1,271 @@
+<!DOCTYPE html><html><head>
+    <meta content="text/html;charset=utf-8;" http-equiv="content-type">
+	<title>智学资源分发平台</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=10;IE=9;IE=8">
+	<link type="image/x-icon" href="zhixue.ico" rel="shortcut icon">
+    <link rel="stylesheet" type="text/css" href="/crowdsourced/css/common/base.css">
+    <link rel="stylesheet" type="text/css" href="/crowdsourced/css/common/commom.css">
+    <link rel="stylesheet" type="text/css" href="/crowdsourced/css/login/login.css">
+    <script src="//hm.baidu.com/hm.js?71f0ed158f554118b01c2f97eac16263"></script><script type="text/javascript" src="/crowdsourced/scripts/libs/jquery/jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="/crowdsourced/scripts/libs/jquery.cookie.js"></script>
+	<!--[if lte IE 10]> 
+		<script src="/crowdsourced/scripts/libs/loginPlaceholder.js?2015-01-27T12:27:20.973Z?2015-01-27T14:17:52.126Z" type="text/javascript"></script>
+	<![endif]-->
+</head>
+
+<body class="bg">
+   <!-- 当前页面的LOGO -->
+   <div class="login_logo tc"><img src="/crowdsourced/images/logo.png"></div>
+   <!-- 当前页面的LOGO -->
+
+   <!-- 页面的中间部分 -->
+   <div class="login">
+   <!-- 表单区域 -->
+        <div class="login_main">
+        <!-- 错误提示的地方，引导用户注册 -->
+        <div class="error-info-div">
+            <span class="error-info error-position" id="errorMsg"></span>
+        </div>
+        <!-- 错误提示的地方，引导用户注册 -->
+
+        	<!-- 表单-用户名 -->
+            <div class="login_name">
+	            <i></i> 
+	            <input placeholder="请输入用户名" class="input" id="txtUserName" name="txtUserName" type="text" style="outline: none;">
+            </div>
+            <span class="error-name">用户名不能为空</span>
+            <!-- 表单-用户名 -->
+
+            <!-- 表单-密码 -->
+            <div class="login_psw">
+	            <i></i>
+	            <input placeholder="请输入密码" class="input" id="txtPassword" name="txtPassword" type="password" style="outline: none;">
+	        </div>
+            <span class="error-psw">密码不能为空</span>
+            <!-- 表单-密码 -->
+            
+             <!-- 表单-验证码 -->
+            <div class="login_code">
+	            <i></i>
+	            <input placeholder="请输入验证码" class="input" autocomplete="off" id="txtVerifyCode" name="txtVerifyCode" type="text" style="outline: none;">    
+        		<img id="codeImg" class="verification-code" alt="" src="/crowdsourced/common/getVerifyCode"> 
+	        </div>
+            <span class="error-code">验证码不能为空</span>
+            <!-- 表单-密码 -->
+			
+			<!-- 密码 -->
+            <div class="login_tip clearfix ft14">
+                <span class="icon fl"></span>
+                <span class="fl">记住密码</span>
+                <a href="#" class="fr forget">忘记密码</a>
+            </div>
+            <!-- 密码 -->
+
+            <!-- 登陆与申请 -->
+            <p class="tc clearfix login-in-btn"><a href="#" id="signup_button" class="login_btn">登 录</a></p><p>
+            <!-- <p class="tc notice-color">
+            	无权限登录？赶快去
+            	<a href="/crowdsourced/authorizationrequest/torequest?sourceplace=zbpt" class="signin-info" title="申请" target="_blank" alt=''>
+            	申请
+            	</a>
+            	吧
+            </p> -->
+            <!-- 登陆与申请 -->
+                  
+        </p></div>
+   <!-- 表单区域 -->
+   </div>
+   <!-- 页面的中间部分 -->
+ <script type="text/javascript">
+        $(function () {
+        	
+        	//session过期时登录页面跳出iframe框
+        	if (window != top) {
+        		top.location.href = location.href;
+        	}
+
+        	//记住密码
+        	$(".icon").click(function() {
+        		var $this = $(this);
+        		if ($this.hasClass('icon-selected')) {
+        			//记住密码标识
+        			$this.removeClass('icon-selected');
+        			//删除cookie（将cookie过期时间设置成过去的某一时间点）
+        			/* $.cookie('txtUserName', null, { path: '/crowdsourced/login.jsp', expires: -7 });
+        			$.cookie('txtPassword', null, { path: '/crowdsourced/login.jsp', expires: -7 });
+        		 */
+        		} else {
+        			$this.addClass('icon-selected');
+        			//记住cookie，key、value、存储路径、存储时间期限（30天）
+        			/* $.cookie('txtUserName', $("#txtUserName").val(), { path: '/crowdsourced/login.jsp', expires: 30 });
+        			$.cookie('txtPassword', $("#txtPassword").val(), { path: '/crowdsourced/login.jsp', expires: 30 }); */
+        		}
+        	});
+        	//存在cookie就取出并赋值
+        	if($.cookie('txtUserName') && $.cookie('txtUserName')!='null'){
+        		$("#txtUserName").val($.cookie('txtUserName'));
+        		$("#txtPassword").val($.cookie('txtPassword'));
+        		$(".icon").addClass('icon-selected');
+        	}else{
+        		//不存在则置空
+        		// $("#txtUserName").val('');
+        		// $("#txtPassword").val('');
+        	}
+        	//更换验证码
+        	$("#codeImg").click(function(){
+        		var imgSrc = $("#codeImg");     
+        	    var src = imgSrc.attr("src").split('?')[0] + "?timestamp=" + (new Date()).valueOf(); 
+        	    imgSrc.attr("src",src); 
+        	    $('#txtVerifyCode').val("");
+        	});
+        	
+            $("#signup_button").click(function () {
+            	
+				if($('#signup_button').html() == "正在登录..."){
+					return;
+				}
+				//若记住密码
+            	if ($(".icon").hasClass('icon-selected')) {
+        			//记住cookie，key、value、存储路径、存储时间期限（30天）
+        			$.cookie('txtUserName', $("#txtUserName").val(), { path: '/crowdsourced/login.jsp', expires: 30 });
+        			$.cookie('txtPassword', $("#txtPassword").val(), { path: '/crowdsourced/login.jsp', expires: 30 });
+        		}else{
+        		// 若不记住密码
+        			//删除cookie（将cookie过期时间设置成过去的某一时间点）
+        			$.cookie('txtUserName', null, { path: '/crowdsourced/login.jsp', expires: -7 });
+        			$.cookie('txtPassword', null, { path: '/crowdsourced/login.jsp', expires: -7 });
+        		}
+				var userName =  $.trim( $('#txtUserName').val() );
+				var userPassword = $('#txtPassword').val();
+				var verifyCode = $.trim( $('#txtVerifyCode').val() );
+				if(!userName){
+                    $('#txtUserName').focus().select();
+					$("#errorMsg").html("*用户名不能为空").show();
+					return;
+				}
+				if(!userPassword){
+                    $('#txtPassword').focus().select();
+					$("#errorMsg").html("*密码不能为空").show();
+					return;
+				}
+				if(!verifyCode){
+                    $('#txtVerifyCode').focus().select();
+					$("#errorMsg").html("*验证码不能为空").show();
+					return;
+				}
+                login(userName,userPassword,verifyCode);
+            });
+
+            $("#txtUserName,#txtPassword,#signup_button").on("mousedown",function () {
+                $("#errorMsg").html("").hide();
+            });
+
+            document.onkeydown=function(event){
+                var e = event || window.event || arguments.callee.caller.arguments[0];
+                if(e && e.keyCode==13 && $('#signup_button').html() != "正在登录..."){ // enter 键
+                    $("#signup_button").trigger("click");
+                }
+            };
+            // 初始进入聚焦
+            var userName = $.trim($('#txtUserName').val()),
+                password = $.trim($('#txtPassword').val()),
+                securityCode = $.trim($('#txtVerifyCode').val());
+            if (!userName) {
+                $('#txtUserName').focus();
+                return;
+            }
+            if (!password) {
+                $('#txtPassword').focus();
+                return;
+            }
+            if (!securityCode) {
+                $('#txtVerifyCode').focus();
+                return;
+            };
+        });
+
+		function login(txtUserName,txtPassword,verifyCode){
+			$('#signup_button').html("正在登录...").css("cursor","default");
+			var params = {
+                loginName:txtUserName,
+                password:txtPassword,
+                verifyCode:verifyCode
+            };
+			var userId;
+
+            $.ajax("./loginauth",{
+                        type: "POST",
+                        dataType: "json",
+                        data: params || {},
+                        success: function (resultInfo) {
+                        	if(resultInfo.flag == false){
+                                $("#errorMsg").html("*"+resultInfo.message).show();
+                                $("#codeImg").trigger('click');
+                                $('#signup_button').html("登录").css("cursor","pointer");
+                                return;
+                        	}else if(resultInfo.flag == true) {
+                        		userId = resultInfo.result;
+                        		
+								 var ssoredirectUrl='ssoredirect';
+								 var successParams = {
+											userId : userId
+									};
+										
+										$.ajax("./loginSuccess",{
+						                        type: "POST",
+						                        dataType: "json",
+						                        data: successParams || {},
+						                        success: function (loginSuccessResult) {
+						                        	if(loginSuccessResult.flag == false){
+						                        		$("#errorMsg").html("*您没有登录权限，现在去<a href='/crowdsourced/authorizationrequest/torequest?sourceplace=zbpt' style='color:blue; text-decoration:underline;'>申请</a>吧~").show();
+														$('#signup_button').html("登录").css("cursor","pointer");
+						                        	} else {
+							                        	location.href=ssoredirectUrl;
+						                        	}
+						                        },
+						                        error:  function (loginSuccessResult) {
+						                        	location.href=ssoredirectUrl;
+						                        }
+						                });
+                           }
+                        },
+                        error: function (request, textStatus, errorThrown) {
+							 var errorInfo = "";
+                        	 try {
+                                 result = eval('('+ request.responseText +')');
+                                 if (result) {
+                                     errorInfo = "您输入的用户名或密码有误";
+                                     $("#codeImg").trigger('click');
+                                     //errorInfo = result.message;
+                                 } else {
+                                     errorInfo = "系统请求出错，请稍后重试！";
+                                     $("#codeImg").trigger('click');
+                                 }
+							    $("#errorMsg").html("*"+errorInfo).show();
+								$('#signup_button').html("登录").css("cursor","pointer");
+                             } catch (e) {
+								$("#errorMsg").html("*系统请求出错，请稍后重试！").show();
+								$("#codeImg").trigger('click');
+							    $('#signup_button').html("登录").css("cursor","pointer");
+                             }
+                        }
+                    });
+		}
+    </script>
+    <div style="display:none;">
+		<script>
+		var _hmt = _hmt || [];
+		(function() {
+		  var hm = document.createElement("script");
+		  hm.src = "//hm.baidu.com/hm.js?71f0ed158f554118b01c2f97eac16263";
+		  var s = document.getElementsByTagName("script")[0];
+		  s.parentNode.insertBefore(hm, s);
+		})();
+		</script>
+		<script type="text/javascript">
+			var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+			document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F29be5e7a29f87448fa6b5decb3e4e066' type='text/javascript'%3E%3C/script%3E"));
+		</script><script src=" http://hm.baidu.com/h.js?29be5e7a29f87448fa6b5decb3e4e066" type="text/javascript"></script>
+	</div>
+
+</body></html>

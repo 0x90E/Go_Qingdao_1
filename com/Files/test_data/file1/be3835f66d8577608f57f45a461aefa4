@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><meta http-equiv="Content-Type" content="text/html;charset=utf-8;"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta http-equiv="Cache-Control" content="no-transform">
+ <title>用户登录-链家网</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<link href="favicon.ico" type="image/x-icon" rel="icon">
+<link href="favicon.ico" type="image/x-icon" rel="shortcut icon">
+<link rel="stylesheet" href="lianjia/css/common.css?_v=201701171519">
+<link rel="stylesheet" href="lianjia/css/login.css?_v=201701171519">
+<!--[if lt IE 9]><script type="text/javascript" src="lianjia/js/html5.js?_v=201701171519"></script><![endif]-->
+<script>
+function RESIZEIMG(b,k,l,m){var c=b.parentNode;var d=parseInt(c.offsetWidth)||k;var e=parseInt(c.offsetHeight)||l;var f=d/e;var g=b.naturalWidth||b.width;var h=b.naturalHeight||b.height;var i=g/h;var j="width";if(f<i){j="height";try{b.style["left"]="-"+parseInt(Math.abs((d-(g*e/h))/2))+"px"}catch(e){}}else if(m){try{b.style["top"]="-"+parseInt(Math.abs((e-(h*d/g))/2))+"px"}catch(e){}};b.style[j]="100%";};
+</script>
+<script src="https://s1.ljcdn.com/dig-log/static/lianjiaUlog.js?t=1491083090077"></script></head>
+<body>
+	<div class="user-login">
+		<div class="headerBox">
+			<img src="lianjia/images/logo.png" class="headerLogo">
+			<a href="http://www.lianjia.com" class="gotoIndex">返回链家网首页</a>
+		</div>
+		<div class="wrapper">
+			<h1>登录</h1>
+			<div class="guideBox">
+				<a href="https://passport.lianjia.com/register/resources/lianjia/register.html?service=http://user.lianjia.com/site/index/" id="regUrl">没有账号，立即注册</a>
+			</div>
+			<form id="loginUserForm" class="fm-v clearfix" data-neddcaptcha="false" action="/cas/login;jsessionid=6BDBD5452DA1DB70BD5440F231E1EF1D-n2?service=http%3A%2F%2Fuser.lianjia.com%2Fsite%2Findex%2F" method="post">
+				<input type="hidden" name="redirect" id="r" value="http://user.lianjia.com/site/index/">
+				<input type="hidden" name="verifyCode" id="verifyCode" val="">
+				<ul class="user-logn">
+					<li class="user-phone">
+						<div class="li-bg">
+							<input id="username" name="username" validatename="手机号" autocomplete="off" placeholder="请输入手机号" class="phonecode basisyle inputText topSpecial" type="text" validate="notNull,isTel" value="">
+						</div>
+					</li>
+					<li class="pwd">
+						<div class="li-bg">
+							<input id="password" name="password" validatename="密码" placeholder="请输入登录密码" class="basisyle inputText botSpecial" validate="notNull" type="password" value="">
+						</div>
+					</li>
+					<li style="display: none;">
+						<div class="li-bg">
+							<input id="code" name="code" autocomplete="off" type="text" value="">
+						</div>
+					</li>
+					
+					<li class="mt10">
+						<label>
+							<input type="checkbox" name="remember" value="1" class="mind-login">下次自动登录
+							<a href="https://passport.lianjia.com/register/resources/lianjia/forget.html?service=http://user.lianjia.com/site/index/" class="fr findPwd">找回密码</a>
+						</label>
+					</li>
+					<li>
+
+					<input type="hidden" name="lt" value="LT-23533271-yXPhvqtS1azj5vAWKKodjWEhfWoX1t-www.lianjia.com">
+					<input type="hidden" name="execution" value="e1s1">
+					<input type="hidden" name="_eventId" value="submit">
+					<button class="actDoSubmit basisyle btnStyle">立即登录</button>
+			</li>
+		</ul></form></div>
+	</div>
+	<div class="lianjia-footer-simple">北京链家房地产经纪有限公司 / 网络经营许可证 京ICP备11024601号-12<br>北京链家房地产经纪有限公司保留全部权利&nbsp;</div>
+	<script src="lianjia/js/fe.js?_v=201701171519"></script>
+	<script src="lianjia/js/common.js?_v=201701171519"></script>
+	<script src="lianjia/js/login.js?_v=201701171657"></script>
+	<script type="text/javascript">
+		require(["user/UserForm"],function(UserForm){
+		  new UserForm($("#loginUserForm"))
+		})
+		window.__UDL_CONFIG={"pid":"lianjiaweb"};
+	    var ulogScript=document.createElement("script");
+		var hrefVal   = location.href;
+		if(hrefVal.indexOf("https") != -1){
+			ulogScript.src="https://s1.ljcdn.com/dig-log/static/lianjiaUlog.js" + "?t=" + ((new Date()).getTime());
+		}else{
+			ulogScript.src="http://s1.ljcdn.com/dig-log/static/lianjiaUlog.js" + "?t=" + ((new Date()).getTime());
+		}
+	    document.getElementsByTagName("head")[0].appendChild(ulogScript);
+	
+		$(function(){
+			var host   = location.host;
+			var query  = $.parseURL(location.href).query;
+			if(host == "passport.off.lianjia.com"){
+				$("#regUrl").attr("href","http://172.16.3.147:5300/register/resources/lianjia/register.html?"+query);
+				$(".findPwd").attr("href","http://172.16.3.147:5300/register/resources/lianjia/forget.html?"+query)
+			}
+			
+			var json = $.queryToJson(query);
+			if(json.service){
+				$("#r").val(decodeURIComponent(json.service))
+			}
+		});
+	</script>
+
+
+</body></html>

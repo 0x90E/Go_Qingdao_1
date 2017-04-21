@@ -1,0 +1,98 @@
+<!DOCTYPE html><html><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="edge">
+    <title>2144网页游戏-用户登录</title>
+    <meta name="keywords" content="login">
+    <meta name="description" content="login">
+    <link rel="stylesheet" href="http://static.2144.cn/web/theme/site/css/logreg-170223.css?v=2015102802">
+    <base target="_blank">
+    <script type="text/javascript" src="http://static.2144.cn/web/theme/site1/js/jquery-1.8.3.min.js"></script>
+</head>
+<body class="login">
+<div class="log_hd">
+    <h1 class="lr_logo">
+        <a href="http://web.2144.cn">2144.cn国内最大的网页游戏平台,最好玩的游戏尽在2144</a>
+        <i></i>
+    </h1>
+</div>
+<div class="log_bd clearfix">
+    <span class="hidden">最高人气最酷游戏尽在2144</span>
+    <div class="logbox">
+        <h2>2144用户登录</h2>
+        <div class="log_tips hidden"><i></i><span>用户名或密码不正确</span></div>
+        <ul class="log_ul clearfix">
+            <form target="_self" id="login-form" action="/site/ajaxLoginVer" method="post">            <li>
+                <span>用户名</span>
+                <input class="lr_inupt" name="LoginForm[username]" id="LoginForm_username" type="text" maxlength="16">            </li>
+            <li>
+                <span>密&nbsp;&nbsp;&nbsp;码</span>
+                <input class="lr_inupt" name="LoginForm[password]" id="LoginForm_password" type="password" maxlength="20">            </li>
+            <li class="yzm_li ">
+                <span>验证码</span>
+                <input type="hidden" class="lr_inupt" name="LoginForm[refurl]" value="http://my.2144.cn">
+                <input type="text" class="lr_inupt yz_ipt" name="LoginForm[captcha]">
+                <div class="yzm_box">
+                    <img class="yan" style="cursor:pointer" id="yw0" src="/site/captcha?v=58e00c6b65d68" alt="">                </div>
+            </li>
+            <li>
+                <label class="label_css"><input checked="checked" type="checkbox">记住用户名</label>
+                <a href="/site/recove" class="forget_a">忘记密码？</a>
+            </li>
+            <li>
+                <input type="button" class="l_button" name="yt0" id="yt0" value="" onclick="submitLoginInfo()">
+            </li>
+            <li>
+                <div class="other_log">其他方式：<a href="#" class="qq_btn">用QQ号登录</a><a href="#" class="wec_btn">用微信登录</a>
+                </div>
+            </li>
+            <input id="ytLoginForm_remember" type="hidden" value="1" name="LoginForm[remember]">
+            </form>        </ul>
+        <p class="reg_p">还没有2144帐号？<a href="/site/register">免费注册&gt;&gt;</a></p>
+    </div>
+</div>
+<script src="http://static.2144.cn/web/theme/site2015/js/login.js?V=17"></script>
+<script type="text/javascript">
+    if (!!window.ActiveXObject || "ActiveXObject" in window) {
+        if ($(window).width() < 900) {
+            $(".logbox").addClass("wdlog");
+            $(".log_hd").hide();
+        } else {
+            $(".logbox").removeClass("wdlog");
+            $(".log_hd").show();
+        }
+    }
+    var queryUrl = function (item) {
+        var svalue = location.search.match(new RegExp("[\?\&]" + item + "=([^\&]*)(\&?)", "i"));
+        return svalue ? svalue[1] : svalue;
+    };
+    $(document).delegate('.qq_btn', 'click', function () {
+        var qqLoginUrl = 'https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=100371397&redirect_uri=http%3A%2F%2Fweb.2144.cn%2Fbind%2Fqq%3Fredirecturl%3Dhttp%3A%2F%2Fweb.2144.cn/auth/authcallback&scope=get_user_info';
+        window.open(qqLoginUrl, 'n', "width=800,height=660,location=no,menubar=no,scrollbars=yes");
+        return false;
+    }).delegate('.wec_btn', 'click', function () {
+        var posId = queryUrl('pos');
+        if (!posId) posId = 0;
+        var wecLoginUrl = 'https://ptlogin.2144.cn/wechat/login?callback_mode=redirect&source=webgame&pos=' + posId + '&redirect_url=http%3A%2F%2Fweb.2144.cn/auth/authcallback';
+        window.open(wecLoginUrl, 'n', "width=800,height=660,location=no,menubar=no,scrollbars=yes");
+        return false;
+    });
+
+    /*<![CDATA[*/
+    jQuery(function ($) {
+        jQuery(document).on('click', '#yw0', function () {
+            jQuery.ajax({
+                url: "\/site\/captcha?refresh=1",
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    jQuery('#yw0').attr('src', data['url']);
+                    jQuery('body').data('captcha.hash', [data['hash1'], data['hash2']]);
+                }
+            });
+            return false;
+        });
+    });
+    /*]]>*/
+</script>
+
+</body></html>

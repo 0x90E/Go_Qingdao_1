@@ -1,0 +1,522 @@
+<html lang="zh_CN"><head>
+	 <meta http-equiv="X-UA-Compatible" content="ie=7">
+     <meta http-equiv="content-type" content="text/html;charset=utf-8;">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+		<script language="javascript" type="text/javascript" src="/mls/mls/js/jquery-1.9.1.js"></script>
+<title>中国移动手机学堂下载</title>
+<style>
+*{margin:0;padding:0;}
+	html{height: 100%;} 
+	body{position:relative;z-index:1;height: 100%;}
+	.position{position:absolute;left:0;top:0;z-index:2;width:100%;}
+	.shouji{text-align:center;position:absolute;left:0;top:0;z-index:3;width: 100%;}
+	.text{text-align:center;}
+	.buttons{width:100%;}
+	p{margin-bottom:2%;text-align:center;}
+	.mr{/*margin-right:6%;*/}
+	img {border: 0}
+	.position img{display: block;}
+	
+	
+	 .mcover {
+	    position: absolute;
+	    top: 0;
+	    left: 0;
+	    width: 100%;
+	    height: 100%;
+	     background: rgba(0, 0, 0, 0.5); 
+	    display: none;
+	    z-index: 888;
+	    
+	    /*filter:alpha(opacity=70);*/
+	}
+	.mcover img {
+	    position: absolute;
+	    right: 0px;
+	    /*top: 5px;*/
+	    width: 100%;
+	    /*height:100%;*/
+	    z-index: 999;
+	}
+	
+</style>
+<script type="text/javascript">
+
+ 
+
+/**  
+浏览器版本信息
+* @type {Object} 
+* @return {Boolean}  返回布尔值     
+*/
+function browser() {
+    var u = navigator.userAgent.toLowerCase();
+    var app = navigator.appVersion.toLowerCase();
+   // alert("app----"+app);
+    //alert("agent---"+u); 
+    
+  
+        
+    return {
+        txt: u, // 浏览器版本信息
+        version: (u.match(/.+(?:rv|it|ra|ie)[\/: ]([\d.]+)/) || [])[1], // 版本号       
+        msie: /msie/.test(u) && !/opera/.test(u), // IE内核
+        mozilla: /mozilla/.test(u) && !/(compatible|webkit)/.test(u), // 火狐浏览器
+        safari: /safari/.test(u) && !/chrome/.test(u)&&!/mqqbrowser/.test(u), //是否为safair
+        is_mobileQQ:u.match(/\sQQ/i) == " qq" && /iphone/i.test(u),//手机QQ
+    	is_android_mobileQQ:u.match(/\sQQ/i) == " qq",//安卓手机QQ
+        is_weixin:u.match(/MicroMessenger/i)=="micromessenger",//微信
+        chrome: /chrome/.test(u), //是否为chrome
+        opera: /opera/.test(u), //是否为oprea
+        presto: u.indexOf('presto/') > -1, //opera内核
+        webKit: u.indexOf('applewebkit/') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('gecko/') > -1 && u.indexOf('khtml') == -1, //火狐内核
+        mobile: !!u.match(/applewebkit.*mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( u;)? cpu.+mac os x/), //ios终端
+        android: u.indexOf('android') > -1, //android终端
+        iPhone: u.indexOf('iphone') > -1, //是否为iPhone
+        iPod: u.indexOf('ipod') > -1, //是否为iPod
+        iPad: u.indexOf('ipad') > -1, //是否iPad
+        webApp: !!u.match(/applewebkit.*mobile.*/) && u.indexOf('safari/') == -1 //是否web应该程序，没有头部与底部
+    };
+}
+//判断IOS版本。
+function getIosVer(){
+	var u = navigator.userAgent.toLowerCase();
+	var version;
+	if(u.indexOf("like mac os x") > 0){
+	    //ios
+	    var regStr_saf = /os [\d._]*/gi ;
+	    var verinfo = u.match(regStr_saf) ;
+	    version = (verinfo+"").replace(/[^0-9|_.]/ig,"").replace(/_/ig,".");
+	}
+	
+	var version_str = version+"";
+	if(version_str != "undefined" && version_str.length >0){
+	    version=version.substring(0,1);
+		
+	}
+	 
+	//alert("---verstr----"+version_str);
+	//alert("---ver---"+version);
+	return  version;
+}
+function showDialog(str){
+ var d = dialog({
+	    title: '  ',
+	    content: str,
+		okValue: '确定',
+	    ok: function () {
+	    }
+	});
+	d.show();
+
+ }
+
+//APP已安装，直接打开APP，未安装直接下载APP
+function openIosApp(){
+	scroll(0,0);
+	var b=browser();
+	 
+	if(!b.iPhone&&!b.iPod){
+		 document.getElementById('tupian').src='/mls/mls/img/no_open.png';
+		 document.getElementById('mcover').style.display='block';
+		
+		}else{
+	
+				document.getElementById('tupian').src='/mls/mls/img/rightTop.png';
+				if(b.is_mobileQQ){
+					document.getElementById('mcover').style.display='block';
+					//showDialog('请点击右上角，左右滑动选项选择“用safari打开”进行安装。');
+					 
+				 }else if(b.is_weixin){
+					 document.getElementById('mcover').style.display='block';
+					 //showDialog('请点击右上角，选择“在safari中打开”进行安装。');
+				 
+				 }else if(b.safari){
+
+					 var ver=getIosVer();  //获取IOS版本
+					 if(ver>=9||(ver>=7&&ver<8)){ //IOS9以上 和IOS7
+					    tryOpenIosApp9('shoujixuetangphone://open','iphone');//尝试打开APP
+					 }else{
+					    tryOpenIosApp('shoujixuetangphone://open','iphone');//尝试打开APP
+						 }
+				 }else{
+					 document.getElementById('tupian').src='/mls/mls/img/rightTop2.png';
+					 document.getElementById('mcover').style.display='block';
+				    //showDialog('请复制网址到safari浏览器中粘贴打开网页进行安装。');
+			 	  
+				}
+			}
+
+	}
+
+	 /***
+     * @description 打开Android端手机学堂
+     **/
+	function openAndriodApp(aload){
+		scroll(0,0);
+	  var b=browser();
+	
+	  if(!b.android){
+			 document.getElementById('tupian').src='/mls/mls/img/no_open.png';
+			 document.getElementById('mcover').style.display='block';
+			}else{
+					if(b.is_android_mobileQQ){
+						document.getElementById('tupian').src='/mls/mls/img/rightTop_andriod.png';
+						document.getElementById('mcover').style.display='block';
+					 }else if(b.is_weixin){
+					 	document.getElementById('tupian').src='/mls/mls/img/rightTop_andriod.png';
+						document.getElementById('mcover').style.display='block';
+					 }else{
+						tryOpenAndriodApp(aload); 
+					}
+			}	
+	}
+	
+  /***
+     * @description 打开Android端手机学堂
+     **/	
+  function tryOpenAndriodApp(aload) {
+		var timeout, t = 1000, hasApp = true;
+		var ifr = document.createElement("iframe");
+		scroll(0,0);
+	  var b=browser();
+		setTimeout(function () {
+			if (hasApp) {
+				//alert('安装了app');
+			} else {
+	    if(!b.android){
+			 document.getElementById('tupian').src='/mls/mls/img/no_open.png';
+			 document.getElementById('mcover').style.display='block';
+			}else{
+					if(b.is_android_mobileQQ){
+						document.getElementById('tupian').src='/mls/mls/img/rightTop_andriod.png';
+						document.getElementById('mcover').style.display='block';
+					 }else if(b.is_weixin){
+					 	document.getElementById('tupian').src='/mls/mls/img/rightTop_andriod.png';
+						document.getElementById('mcover').style.display='block';
+					 }else{
+						//下载次数统计
+						downloadNum('D', 'A', '66', '2.1.2');
+					  window.location.href='http://cmuonline.chinamobile.com/mainpage/mls/mlearn'+aload;
+					 }
+			  }	
+			}
+			document.body.removeChild(ifr);
+		}, 2000);
+		var t1 = Date.now();
+		ifr.setAttribute('src', 'chinamobilelearning://parim.net.mobile.chinamobile/');
+		ifr.setAttribute('style', 'display:none');
+		document.body.appendChild(ifr);
+		timeout = setTimeout(function () {
+			 var t2 = Date.now();
+			 if (!t1 || t2 - t1 < t + 100) {
+				 hasApp = false;
+			 }
+		}, t);
+	}	
+
+
+
+
+
+
+//下载ipad客户端
+function downloadIpad(url){
+	scroll(0,0);
+	var b=browser();
+
+	if(!b.iPad){
+		 document.getElementById('tupian').src='/mls/mls/img/no_open.png';
+		 document.getElementById('mcover').style.display='block';
+		
+		}else{
+	
+				document.getElementById('tupian').src='/mls/mls/img/rightTop.png';
+				if(b.is_mobileQQ){
+					document.getElementById('mcover').style.display='block';
+					//showDialog('请点击右上角，左右滑动选项选择“用safari打开”进行安装。');
+					 
+				 }else if(b.is_weixin){
+					 document.getElementById('mcover').style.display='block';
+					 //showDialog('请点击右上角，选择“在safari中打开”进行安装。');
+				 
+				 }else if(b.safari){
+					 tryOpenIosApp('com.ChinaMobileStudyIpad','ipad');//尝试打开APP 
+				 }else{
+					 
+					 document.getElementById('tupian').src='/mls/mls/img/rightTop2.png';
+					 document.getElementById('mcover').style.display='block';
+				    //showDialog('请复制网址到safari浏览器中粘贴打开网页进行安装。');
+			 	  
+				}
+			}
+	
+	
+	}
+
+  
+
+
+
+   //尝试打开IOSApp IOS9以上
+   function tryOpenIosApp9(url,dtype) {
+	var timeout, t = 1000, hasApp = true;
+	setTimeout(function () {
+		if (hasApp) {
+			//alert('安装了app1');
+		} else {//未安装直接下载
+			
+			if(dtype=='ipad'){
+				//下载次数统计
+				downloadNum('D', 'I', '70', '2.1.2');
+				window.location.href="itms-services://?action=download-manifest&url=https://files.parim.net/cmcc/ipad/Install.plist";
+			}else{
+				//下载次数统计
+				downloadNum('D', 'I', '70', '2.1.2');
+				window.location.href="itms-services://?action=download-manifest&url=https://files.parim.net/cmcc/iphone/Install.plist";
+			  	//window.location.href="itms-services://?action=download-manifest&url=https://files.parim.net/parim/ilearn/demo/Install.plist";
+			  
+			}
+		}
+		//document.body.removeChild(ifr);
+	}, 2000)
+
+	var t1 = Date.now();
+
+	window.location.href =url;
+	timeout = setTimeout(function () {
+		 var t2 = Date.now();
+		 
+		 if (!t1 || t2 - t1 < t + 100) {
+			 hasApp = false;
+		 }
+	}, t);
+}
+
+
+   //尝试打开IOSApp
+   function tryOpenIosApp(url,dtype) {
+	var timeout, t = 1000, hasApp = true;
+	setTimeout(function () {
+		if (hasApp) {
+			//alert('安装了app1');
+		} else {//未安装直接下载
+			
+			if(dtype=='ipad'){
+				//下载次数统计
+				downloadNum('D', 'I', '70', '2.1.2');
+				window.location.href="itms-services://?action=download-manifest&url=https://files.parim.net/cmcc/ipad/Install.plist";
+			}else{
+				//下载次数统计
+				downloadNum('D', 'I', '70', '2.1.2');
+				window.location.href="itms-services://?action=download-manifest&url=https://files.parim.net/cmcc/iphone/Install.plist";
+			  	//window.location.href="itms-services://?action=download-manifest&url=https://files.parim.net/parim/ilearn/demo/Install.plist";
+			  
+			}
+		}
+		document.body.removeChild(ifr);
+	}, 2000)
+
+	var t1 = Date.now();
+
+	var ifr = document.createElement("iframe");
+	ifr.setAttribute('src', url);
+	ifr.setAttribute('style', 'display:none');
+	document.body.appendChild(ifr);
+	timeout = setTimeout(function () {
+		 var t2 = Date.now();
+		 
+		 if (!t1 || t2 - t1 < t + 100) {
+			 hasApp = false;
+		 }
+	}, t);
+}
+  //IOS9提示
+   function closeIos9Tishi(){
+	   document.getElementById('tishi').style.display='none';
+		  
+	   }
+  //下载次数Ajax
+	function downloadNum(from_type, mls_model, phoneVer, phoneCode){
+		$.ajax({
+				type: "post",
+				async: false,
+				url: "/ilearn/en/cst/jsp/f/share/downloadNumAjax.jsp",
+				data:{
+					from_type: from_type,
+					mls_model: mls_model,
+					phoneVer: phoneVer,
+					phoneCode: phoneCode
+				},
+				dataType: "json",
+				success: function(data){
+				},
+				error: function(){
+				
+				
+				}
+			});
+	}
+
+	function onloadApp(){
+		var b=browser();
+		if(b.ios){
+			openIosApp();
+		}else{
+
+				
+			openAndriodApp('/android/MobileLearning66.apk');
+		}
+
+
+		}
+
+/**
+ * 下载IOS
+ */
+	function downloadIOS(){
+	
+
+		scroll(0,0);
+		var b=browser();
+		 
+		if(!b.iPhone&&!b.iPod){
+			 document.getElementById('tupian').src='/mls/mls/img/no_open.png';
+			 document.getElementById('mcover').style.display='block';
+			
+			}else{
+		
+					document.getElementById('tupian').src='/mls/mls/img/rightTop.png';
+					if(b.is_mobileQQ){
+						document.getElementById('mcover').style.display='block';
+						//showDialog('请点击右上角，左右滑动选项选择“用safari打开”进行安装。');
+						 
+					 }else if(b.is_weixin){
+						 document.getElementById('mcover').style.display='block';
+						 //showDialog('请点击右上角，选择“在safari中打开”进行安装。');
+					 
+					 }else if(b.safari){
+
+							//下载次数统计
+							downloadNum('D', 'I', '70', '2.1.2');
+							window.location.href="itms-services://?action=download-manifest&url=https://files.parim.net/cmcc/iphone/Install.plist";
+					 }else{
+						 document.getElementById('tupian').src='/mls/mls/img/rightTop2.png';
+						 document.getElementById('mcover').style.display='block';
+					    //showDialog('请复制网址到safari浏览器中粘贴打开网页进行安装。');
+				 	  
+					}
+				}
+
+		
+
+		
+		}
+
+
+	//下载andriod客户端
+	function downloadAndroid(url){
+		scroll(0,0);
+		var b=browser();
+		 
+	    if(!b.android){
+			 document.getElementById('tupian').src='/mls/mls/img/no_open.png';
+			 document.getElementById('mcover').style.display='block';
+			}else{
+					if(b.is_android_mobileQQ){
+						document.getElementById('tupian').src='/mls/mls/img/rightTop_andriod.png';
+						document.getElementById('mcover').style.display='block';
+					 }else if(b.is_weixin){
+					 	document.getElementById('tupian').src='/mls/mls/img/rightTop_andriod.png';
+						document.getElementById('mcover').style.display='block';
+					 }else{
+						
+						//下载次数统计
+						downloadNum('D', 'A', '66', '2.1.2');
+					  window.location.href='http://cmuonline.chinamobile.com/mainpage/mls/mlearn'+url;
+					 }
+			  }	
+		
+		
+		}
+
+	//加载在浏览器中打开提示遮罩层
+	function aloadAppDiv(){
+		scroll(0,0);
+		var b=browser();
+		if(b.ios){
+			if(b.is_mobileQQ||b.is_weixin){//微信或者QQ中
+				document.getElementById('tupian').src='/mls/mls/img/rightTop.png';
+				document.getElementById('mcover').style.display='block';
+				 
+				 
+			 }
+
+		}else{//安卓
+			if(b.is_android_mobileQQ||b.is_weixin){
+				document.getElementById('tupian').src='/mls/mls/img/rightTop_andriod.png';
+				document.getElementById('mcover').style.display='block';
+			 }
+			}
+	}
+</script>
+</head>
+ <body onload="aloadAppDiv()">
+    <div id="tishi" class="mcover" style="background: rgba(0, 0, 0, 0.0);">
+       <img id="tupian_t" src="/mls/mls/img/tishi.png">
+        <a href="javascript:closeIos9Tishi()">  <img style="position:relative; margin-top:140%;left:30%; width:40%;z-index: 1112" id="tupian_i" src="/mls/mls/img/iknown.png"></a>
+  </div> 
+	
+  <script type="text/javascript">
+  
+  var b=browser();
+  if(b.ios&&b.safari){
+  var ver=getIosVer();  //获取IOS版本
+	 if(ver>=9){ //IOS9以上
+		 document.getElementById('tishi').style.display='block';
+		 
+	 }
+  }
+  </script>
+<div class="position">
+	<img src="/mls/mls/img/body_bg_2.jpg" width="100%">
+</div>
+
+<div class="shouji">
+	<div class="text">
+    	<img src="/mls/mls/img/text_bg.jpg" style="width:80%;visibility:hidden;">
+    </div>
+	<img src="/mls/mls/img/shouji.png" style="width:80%;visibility:hidden;">
+<br>
+    <div class="buttons" style="margin-top:35px;">
+        <p>
+            <a href="javascript:downloadIOS()" class="mr"><img src="/mls/mls/img/iphone3.png" style="width:50%;"></a>
+            
+          <!--  <a href="javascript:downloadIpad('itms-services://?action=download-manifest&url=https://files.parim.net/cmcc/ipad/Install.plist')"><img src="/mls/mls/img/ipad.png"  style="width:44%;"></a> -->
+        </p>
+<br>
+				<p>
+        	
+        		<!--  <a href="javascript:openAndriodApp('/android/MobileLearning66.apk')" class="mr"><img src="/mls/mls/img/android2.png"  style="width:50%;" ></a> -->
+            <a href="javascript:downloadAndroid('/android/MobileLearning66.apk')" class="mr"><img src="/mls/mls/img/android2.png" style="width:50%;"></a>
+            
+            
+            <!--   <a href="javascript:openAndriodApp('/android/pad/MobileLearning10.apk')"><img src="/mls/mls/img/pad.png"  style="width:44%;" ></a>  -->
+            
+        </p>
+    </div>      
+</div>
+<!-- 遮罩层 -->
+  <div id="mcover" class="mcover" onclick="document.getElementById('mcover').style.display='none';" style="display: none;">
+       <img id="tupian" src="/mls/mls/img/rightTop.png">
+  </div>
+ 
+ 
+    
+
+
+</body></html>

@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+ <head> 
+  <meta charset="utf-8" /> 
+  <meta content="IE=edge" http-equiv="X-UA-Compatible" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" /> 
+  <title>如何设置L2TP VPN IPSec安全设备/对思科asa5505？_野薄荷</title> 
+  <meta name="keywords" content="" /> 
+  <meta name="Description" content="我试图在思科asa5505安全设备连接到内部接口外部接口用户建立VPN。我明白了，这应该是一个Windows用户L2TP VPN，但之后我在安全的VPN设置向导，我仍然没有运气。基本的网络环境是贴在下面。谁能给我一些建议如何设置工作VPN在思科asa5505？先谢谢了。
+接口VLAN1
+如果里..." /> 
+  <meta property="qc:admins" content="34371213216152705636" /> 
+  <meta property="wb:webmaster" content="4055e590e4cd8037" /> 
+  <meta name="baidu-site-verification" content="B0ZJxXt8O6" /> 
+  <meta name="360-site-verification" content="b4d33d7d7c840d74d22d14e4206c7f3b" /> 
+  <meta name="sogou_site_verification" content="T4sYjgr8Kf" /> 
+  <link rel="Bookmark" type="image/x-icon" href="http://7d9ptt.com1.z0.glb.clouddn.com/img/favicon.ico" /> 
+  <link rel="shortcut icon" type="image/x-icon" href="http://7d9ptt.com1.z0.glb.clouddn.com/img/favicon.ico" /> 
+  <link rel="stylesheet" type="text/css" href="http://7d9ptt.com1.z0.glb.clouddn.com/js/library/bootstrap/css/bootstrap.css?v=1" /> 
+  <link rel="stylesheet" type="text/css" href="http://7d9ptt.com1.z0.glb.clouddn.com/js/library/bootstrap/css/bootstrap-responsive.min.css?v=1" /> 
+  <link rel="stylesheet" type="text/css" href="http://7d9ptt.com1.z0.glb.clouddn.com/css/common/common.css?v=20141029" /> 
+  <link rel="stylesheet" type="text/css" href="http://7d9ptt.com1.z0.glb.clouddn.com/css/article/article.css?v=20141029" /> 
+  <script>
+    //for baidu tongji
+	var _hmt = _hmt || [];
+	</script> 
+ </head> 
+ <body class="bhLayout"> 
+  <div class="bhNavbar"> 
+   <div class="container"> 
+    <a href="/" class="logo"><img src="http://7d9ptt.com1.z0.glb.clouddn.com/img/common/logo.png" /></a> 
+    <form class="bhHeaderForm" role="search" action="/search/"> 
+     <input type="text" class="input-block-level" placeholder="请输入关键字…" name="keyword" value="" /> 
+     <input type="button" class="bhHeaderBtn" value="搜索" id="submit_search" /> 
+    </form> 
+    <a href="javascript:;" data-toggle="modal" class="bhHeaderLogin" id="login">登录</a> 
+    <a href="javascript:;" class="bhHeaderLogin1">登录</a> 
+    <ul class="bhHeaderSign"> 
+     <li class="weibo"><a href="/sns/login/weibo/?backurl=/article/052f8ca96121274a1163e428b8824444/"><i>新浪微博</i>新浪微博</a></li> 
+     <li class="qq"><a href="/sns/login/qq/?backurl=/article/052f8ca96121274a1163e428b8824444/"><i>腾讯QQ</i>腾讯QQ</a></li> 
+    </ul> 
+    <a href="javascript:;" class="bhHeaderSearch">搜索按钮</a> 
+   </div> 
+  </div> 
+  <!-- loginModal bein --> 
+  <div id="loginModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
+   <div class="modal-header"> 
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
+    <h3 id="myModalLabel">选择登录方式</h3> 
+   </div> 
+   <div class="modal-body"> 
+    <div class="loginMethod"> 
+     <a href="/sns/login/weibo/?backurl=/article/052f8ca96121274a1163e428b8824444/" class="weibo">新浪微博登录<i></i></a> 
+     <a href="/sns/login/qq/?backurl=/article/052f8ca96121274a1163e428b8824444/" class="qq">腾讯QQ登录<i></i></a> 
+    </div> 
+   </div> 
+  </div> 
+  <!-- loginModal bein --> 
+  <div class="tips"> 
+   <div class="tipsBox"> 
+    <div class="hd"> 
+     <a href="###" target="_blank" class="pic"><img src="http://7d9ptt.com1.z0.glb.clouddn.com/img/common/user_40x40.jpg" /></a> 
+     <h5 class="_tit"><a href="###" target="_blank">Alan第七封印</a><span class=""></span></h5> 
+     <p class="intro">带你装逼带你飞</p> 
+     <p class="vocation">电商行业</p> 
+    </div> 
+    <div class="ft">
+     <span class="txt mr20"><em>15</em> 摘要</span>
+     <span class="txt"><em>274</em> 赞</span>
+    </div> 
+    <span class="arrow"><i></i></span> 
+   </div> 
+  </div> 
+  <div class="container"> 
+   <ul class="breadcrumb"> 
+    <li><a href="/">首页</a> <span class="divider">&gt;</span></li> 
+    <li class="active">如何设置L2TP VPN IPSec安全设备/对思科asa5505？</li> 
+   </ul> 
+   <div class="row"> 
+    <!-- left begin --> 
+    <div class="span8 pb30 article"> 
+     <div class="row hd"> 
+      <div class="span6"> 
+       <div class="titArea undis">
+        <form action="/edit/title/052f8ca96121274a1163e428b8824444/" id="postTitle" method="post">
+         <textarea name="title">如何设置L2TP VPN IPSec安全设备/对思科asa5505？</textarea>
+         <a href="javascript:;" class="btn4 mt10 mr10" id="postTitle"><span class="loading" style="display:none">保存中</span><span id="saveTitle">保存</span></a>
+         <a href="javascript:;" class="titCancel">取消</a>
+        </form>
+       </div> 
+       <div class="titSub">
+        <h1 id="titleCn">如何设置L2TP VPN IPSec安全设备/对思科asa5505？</h1>
+        <a href="javascript:;" class="btn1 editBtn">修改标题</a>
+       </div> 
+       <p class="titBar"> <span class="time">时间：2011-03-15</span> <span class="read">阅读：739</span> </p> 
+      </div> 
+      <div class="span2"> 
+       <div class="recom"> 
+        <div class="recomBox " data-article_id="052f8ca96121274a1163e428b8824444"> 
+         <p class="num">27</p> 
+         <p class="txt">推荐</p> 
+        </div> 
+        <div class="addNum">
+         +1
+        </div> 
+       </div> 
+       <a href="javascript:;" class="favorite" id="favorite_article"><i></i>收藏本文</a> 
+       <a href="javascript:;" class="favorite " id="unfavorite_article" style="display:none;"><i></i>已收藏</a> 
+      </div> 
+     </div> 
+     <div class="summary"> 
+      <h4 class="title">摘要</h4> 
+      <div class="nullCon">
+       还没有中文摘要，写点什么，一起分享？ 
+       <a href="javascript:;" class="btn1 operaSummary" name="editSummary">写摘要</a>
+      </div> 
+      <div class="conEdit undis"> 
+       <form action="/write/digest/052f8ca96121274a1163e428b8824444/" id="postDigest" method="post"> 
+        <textarea class="conArea" name="digest"></textarea> 
+        <p class="_conBox"> <span class="_conBoxR"> <label class="checkbox _conChk"><input type="checkbox" checked="checked" name="postWeibo" /> 同时分享到腾讯微博</label> <a href="javascript:;" class="btn3 saveSummary" id="postDigest"><span class="loading" style="display:none">保存中</span><span id="saveDigest">保存</span></a> <a href="javascript:;" class="sumCancel">取消</a> </span> </p> 
+       </form> 
+      </div> 
+     </div> 
+     <div class="bd"> 
+      <ul class="newsNav"> 
+       <li data-type="cn">译文<i></i></li> 
+      </ul> 
+      <div class="newsCon"> 
+       <div class="cn"> 
+        <p>我试图在思科asa5505安全设备连接到内部接口外部接口用户建立VPN。我明白了，这应该是一个Windows用户L2TP VPN，但之后我在安全的VPN设置向导，我仍然没有运气。基本的网络环境是贴在下面。谁能给我一些建议如何设置工作VPN在思科asa5505？先谢谢了。</p>
+        <p>接口VLAN1</p>
+        <p>如果里面</p>
+        <p>保安等级100</p>
+        <p>IP地址192.168.1.1 255.255.255.0</p>
+        <p>！</p>
+        <p>接口VLAN2</p>
+        <p>如果外面</p>
+        <p>保安等级0</p>
+        <p>IP地址xxx.yyy.zzz.218 255.255.255.252</p>
+        <p>！</p>
+        <p>接口VLAN3</p>
+        <p>如果DMZ</p>
+        <p>保安等级50</p>
+        <p>IP地址10.30.30.1 255.255.255.0</p>
+        <p>！</p>
+        <p>接口Ethernet0 / 0</p>
+        <p>指定访问2</p>
+        <p>！</p>
+        <p>接口Ethernet0 / 1</p>
+        <p>指定访问3</p>
+        <p>！</p>
+        <p>接口Ethernet0 / 2</p>
+        <p>！</p>
+        <p>接口Ethernet0 / 3</p>
+        <p>！</p>
+        <p>接口Ethernet0 / 4</p>
+        <p>！</p>
+        <p>接口Ethernet0 / 5</p>
+        <p>！</p>
+        <p>接口Ethernet0 / 6</p>
+        <p>！</p>
+        <p>接口Ethernet0 / 7</p>
+        <p>！</p>
+        <p>被动FTP模式</p>
+        <p>DNS服务器组defaultdns</p>
+        <p>域名example.com</p>
+        <p>同样的安全通行证之间的接口</p>
+        <p>同样的安全通行证的内界面</p>
+        <p>对象组的协议dm_inline_protocol_1</p>
+        <p>ICMP协议对象</p>
+        <p>ICMP协议对象</p>
+        <p>111扩展访问列表允许ICMP任何</p>
+        <p>访问列表的扩展允许任何IP 111</p>
+        <p>访问列表111扩展允许TCP任何</p>
+        <p>111扩展访问列表允许UDP任何</p>
+        <p>访问列表out_to_dmz扩展允许任何主机的TCP xxx.yyy.zzz.218情商WWW</p>
+        <p>访问列表out_to_dmz扩展允许任何主机的TCP xxx.yyy.zzz.218情商HTTPS</p>
+        <p>访问列表out_to_dmz扩展允许任何主机的TCP xxx.yyy.zzz.218情商FTP</p>
+        <p>访问列表out_to_dmz扩展允许任何主机的TCP xxx.yyy.zzz.218情商FTP数据</p>
+        <p>访问列表out_to_dmz扩展允许任何主机的TCP xxx.yyy.zzz.218 EQ 3389</p>
+        <p>访问列表out_to_dmz扩展允许任何主机的TCP xxx.yyy.zzz.218情商登录</p>
+        <p>访问列表out_to_dmz扩展允许任何主机的TCP xxx.yyy.zzz.218范围10000 10100</p>
+        <p>访问列表out_to_dmz扩展允许任何主机的TCP xxx.yyy.zzz.218情商NNTP</p>
+        <p>访问列表out_to_dmz扩展允许对象组dm_inline_protocol_1任何主机xxx.yyy.zzz.218</p>
+        <p>访问列表out_to_dmz扩展允许UDP任何主机xxx.yyy.zzz.218情商ISAKMP</p>
+        <p>访问列表out_to_dmz扩展允许UDP任何主机xxx.yyy.zzz.218 EQ 1701</p>
+        <p>inside_nat0_outbound扩展允许IP访问列表的任何192.168.147.192 255.255.255.224</p>
+        <p>传呼机线24</p>
+        <p>日志安全信息</p>
+        <p>MTU在1500</p>
+        <p>MTU以外1500</p>
+        <p>MTU DMZ 1500</p>
+        <p>当地的游泳池clientvpnpool IP 192.168.147.225-192.168.147.250面膜255.255.255.0</p>
+        <p>没有故障</p>
+        <p>监控界面里面</p>
+        <p>监控界面之外</p>
+        <p>监控界面的DMZ</p>
+        <p>ICMP不可达速率限制1突发尺寸1</p>
+        <p>即：/ asdm-524.bin图像磁盘0</p>
+        <p>即使没有历史</p>
+        <p>ARP超时14400</p>
+        <p>NAT控制</p>
+        <p>全球（外）1接口</p>
+        <p>全球（DMZ）1 10.30.30.31-10.30.30.199</p>
+        <p>NAT（内部）0的访问列表inside_nat0_outbound</p>
+        <p>NAT（内部）1 0.0.0.0 0.0.0.0</p>
+        <p>静态（DMZ，外）接口10.30.30.30掩码255.255.255.255</p>
+        <p>访问组111在接口里面</p>
+        <p>在接口的外部访问组out_to_dmz</p>
+        <p>111组接口访问DMZ</p>
+        <p>外面0.0.0.0 0.0.0.0 xxx.yyy.zzz.217 1路线</p>
+        <p>超时的xlate 3:00:00</p>
+        <p>超时连接1:00:00半封闭的0:10:00 UDP 0:02:00 ICMP 0:00:02</p>
+        <p>超时SUNRPC 0:10:00 H323 0:05:00 h225 1:00:00 MGCP 0:05:00 MGCP拍0:05:00</p>
+        <p>超时的SIP 0:30:00 sip_media 0:02:00 SIP邀请0:03:00 SIP断开0:02:00</p>
+        <p>超时的SIP临时媒体0:02:00 uauth 0:05:00绝对</p>
+        <p>auto_config外部IP地址</p>
+        <p>！</p>
+        <p>IP地址的地址192.168.1.50-192.168.1.100里面</p>
+        <p>DNS 8.8.8.8 8.8.4.4接口内的IP地址</p>
+        <p>36000接口内的IP地址租约</p>
+        <p>ping_timeout 1000接口内的IP地址</p>
+        <p>使内部IP地址</p>
+        <p>加密IPSec变换集trans_esp_3des_md5 esp-3des esp-md5-hmac</p>
+        <p>加密IPSec变换集trans_esp_3des_md5运输方式</p>
+        <p>加密的IPSec ESP ESP变换集esp-des-sha DES沙HMAC</p>
+        <p>加密IPSec变换集esp-3des-sha esp-3des ESP沙HMAC</p>
+        <p>加密的IPSec ESP DES esp-md5-hmac esp-des-md5变换集</p>
+        <p>加密IPSec变换集esp-3des-md5 esp-3des esp-md5-hmac</p>
+        <p>加密IPSec变换集trans_esp_aes_sha esp-aes-256 ESP沙HMAC</p>
+        <p>加密IPSec变换集trans_esp_aes_sha运输方式</p>
+        <p>加密IPSec变换集tunn_esp_aes_sha esp-aes-256 ESP沙HMAC</p>
+        <p>加密IPSec变换集tunn_esp_3des_sha esp-3des ESP沙HMAC</p>
+        <p>加密IPSec变换集trans_esp_3des_sha esp-3des ESP沙HMAC</p>
+        <p>加密IPSec变换集trans_esp_3des_sha运输方式</p>
+        <p>加密动态地图outside_dyn_map 20组PFS 1</p>
+        <p>加密动态地图outside_dyn_map 20集集trans_esp_3des_sha变换</p>
+        <p>图65535密码outside_map IPSec ISAKMP动态outside_dyn_map</p>
+        <p>密码地图outside_map界面之外</p>
+        <p>它使外面的密码</p>
+        <p>密码ISAKMP策略10</p>
+        <p>预共享认证</p>
+        <p>加密算法</p>
+        <p>哈希沙</p>
+        <p>1组</p>
+        <p>86400时间</p>
+        <p>密码协议的NAT穿越30</p>
+        <p>WEBVPN</p>
+        <p>端口444</p>
+        <p>使内</p>
+        <p>使外</p>
+        <p>使DMZ</p>
+        <p>字符编码的Unicode</p>
+        <p>隧道组列表使</p>
+        <p>组策略defaultragroup内部</p>
+        <p>组策略defaultragroup属性</p>
+        <p>DNS服务器8.8.8.8 8.8.4.4价值</p>
+        <p>IPSec VPN隧道协议L2TP</p>
+        <p>用户名密码user_name 3Z + 8x3ab2bzisepd2vroqg = = NT加密权限15</p>
+        <p>用户名user_name属性</p>
+        <p>IPSec VPN隧道协议L2TP</p>
+        <p>隧道群defaultragroup一般属性</p>
+        <p>地址池clientvpnpool</p>
+        <p>授权服务器组的地方</p>
+        <p>默认组策略defaultragroup</p>
+        <p>IPSec隧道群defaultragroup属性</p>
+        <p>预共享密钥*</p>
+        <p>隧道群defaultragroup PPP属性</p>
+        <p>认证ms-chap-v2</p>
+        <p>！</p>
+        <p>！</p>
+        <p>特权命令3级模式执行效能</p>
+        <p>特权命令3级模式执行Ping命令</p>
+        <p>特权命令3级模式exec命令的人</p>
+        <p>特权命令3级模式exec命令记录</p>
+        <p>特权命令3级模式执行故障转移</p>
+        <p>特权EXEC命令显示级别5模式运行配置</p>
+        <p>特权EXEC命令重新显示3级模式</p>
+        <p>特权EXEC命令模式显示3级模式</p>
+        <p>显示级别3的模式特权EXEC命令防火墙</p>
+        <p>特权EXEC命令界面显示3级模式</p>
+        <p>特权EXEC命令时钟显示3级模式</p>
+        <p>显示级别3的模式特权EXEC命令DNS主机</p>
+        <p>显示级别3的模式特权EXEC命令访问列表</p>
+        <p>显示级别3的模式特权EXEC命令记录</p>
+        <p>显示级别3的模式特权EXEC命令IP</p>
+        <p>显示级别3的模式特权EXEC命令切换</p>
+        <p>显示级别3的模式特权EXEC命令即</p>
+        <p>显示级别3的模式特权EXEC命令ARP</p>
+        <p>显示级别3的模式特权EXEC命令路径</p>
+        <p>显示级别3的模式特权EXEC命令OSPF</p>
+        <p>显示级别3的模式特权EXEC命令AAA服务器</p>
+        <p>显示级别3的模式特权EXEC命令AAA</p>
+        <p>显示级别3的模式特权EXEC命令密码</p>
+        <p>显示级别3的模式特权EXEC命令VPN sessiondb</p>
+        <p>显示级别3的模式特权EXEC命令SSH</p>
+        <p>显示级别3的模式特权EXEC命令IP地址</p>
+        <p>显示级别3的模式特权EXEC命令VPN</p>
+        <p>显示级别3的模式特权EXEC命令块</p>
+        <p>显示级别3的模式特权EXEC命令uauth</p>
+        <p>特权模式显示3级配置命令接口</p>
+        <p>特权模式配置命令时钟显示级别3</p>
+        <p>特权模式显示3级配置命令访问列表</p>
+        <p>特权模式配置命令记录显示级别3</p>
+        <p>特权3级模式显示IP配置命令</p>
+        <p>特权模式显示3级配置命令切换</p>
+        <p>特权模式显示5级配置命令即</p>
+        <p>特权模式显示3级配置命令ARP</p>
+        <p>特权模式显示3级配置命令的路径</p>
+        <p>特权模式显示3级AAA服务器配置命令</p>
+        <p>特权模式显示3级配置命令AAA</p>
+        <p>特权模式显示3级配置命令密码</p>
+        <p>特权模式命令SSH配置显示级别3</p>
+        <p>特权模式命令显示级别3配置IP地址</p>
+        <p>特权模式显示5级配置命令特权</p>
+        <p>明确的3级模式的特权EXEC命令DNS主机</p>
+        <p>3级的特权EXEC命令日志模式清晰</p>
+        <p>明确的3级模式的特权EXEC命令ARP</p>
+        <p>明确的3级模式的特权EXEC命令AAA服务器</p>
+        <p>3级的特权EXEC命令加密模式清晰</p>
+        <p>特权命令3级模式配置命令切换</p>
+        <p>权限明确3级模式配置命令记录</p>
+        <p>权限明确3级模式配置命令ARP</p>
+        <p>特权模式命令清除3级配置密码</p>
+        <p>权限明确3级模式配置命令AAA服务器</p>
+        <p>提示主机上下文</p>
+        <p>我不认为你的防火墙配置，使它在你的帖子。你可以将配置文件？应该在你的IP地址的命令有几部分，如集团政策和隧道群是直接相关的VPN。</p>
+        <p>同时，在使用Windows VPN客户端是可能的，使用anyconnect或Cisco IPSec客户者优先。你可以同时管理的客户比手动配置Windows VPN在每个远程客户更容易。</p> 
+       </div> 
+      </div> 
+      <div class="clearfix pt10"> 
+       <div class="bdsharebuttonbox" data-tag="share_2"> 
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信" style="margin-left:10px;"></a> 
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博" style="margin-left:10px;"></a> 
+        <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间" style="margin-left:10px;"></a> 
+       </div> 
+       <a href="javascript:;" class="btn3 editSummary" name="editSummary">更新摘要</a> 
+      </div> 
+     </div> 
+     <div class="comment"> 
+      <h4 class="title"><span id="commentNum">0</span>个评论</h4> 
+      <div class="commentEdit"> 
+       <textarea class="commentArea" name="editComment"></textarea> 
+       <p class="clearfix pt10"> <a href="javascript:;" class="btn3 commentSubmit" id="postComment"><span class="loading" style="display:none">发表评论中</span><span id="saveComment">评论</span></a> </p> 
+      </div> 
+      <ul class="commentList" name="commentList"> 
+      </ul> 
+     </div> 
+    </div> 
+    <!-- left end --> 
+    <!-- right begin --> 
+    <div class="span4 pb30 pt25"> 
+     <div class="sidebar"> 
+      <h3 class="bhTitle2">相关主题</h3> 
+      <ul class="topicAbout"> 
+      </ul> 
+     </div> 
+    </div> 
+    <!-- right end --> 
+   </div> 
+  </div> 
+  <div class="footer"> 
+   <div class="container pb20"> 
+    <div class="row"> 
+     <div class="span8"> 
+      <p><span class="pr20">Copyright &copy; 2014 yebohe.cn</span><a href="/about/" target="_blank">关于我们</a> | <a href="/disclaimer/" target="_blank">免责声明</a><a href="http://www.yebohe.cn/forse/index.html" target="_blank" style="color:white">列表</a></p> 
+      <p>京ICP备12049030号-2</p> 
+     </div> 
+     <div class="span4 imgWeixin">
+      <img src="http://7d9ptt.com1.z0.glb.clouddn.com/img/common/weixin.jpg" width="80" />
+     </div> 
+    </div> 
+   </div> 
+  </div> 
+  <a href="javascript:;" class="feedback"><span class="arrow"></span><span class="stick"></span><span class="txt">回到<br />顶部</span></a> 
+  <script type="text/javascript">
+var userSource = "no";
+_hmt.push(['_setCustomVar', 1, 'user_source', userSource, 3]);
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F8140f4d96f8560bda8c0dc0a54a262c0' type='text/javascript'%3E%3C/script%3E"));
+
+var lastEventCategory = "";
+</script> 
+  <script type="text/javascript" src="http://7d9ptt.com1.z0.glb.clouddn.com/js/library/jquery/jquery-1.10.2.min.js?v=1"></script> 
+  <script type="text/javascript" src="http://7d9ptt.com1.z0.glb.clouddn.com/js/library/bootstrap/js/bootstrap.min.js?v=1"></script> 
+  <script type="text/javascript">
+    var configData={
+        'articleId': "052f8ca96121274a1163e428b8824444",
+    };
+</script> 
+  <script type="text/javascript" src="http://7d9ptt.com1.z0.glb.clouddn.com/js/library/seajs/sea.js"></script> 
+  <script>
+    seajs.config({
+      // Sea.js 的基础路径
+      base: "http://7d9ptt.com1.z0.glb.clouddn.com/js/",
+      // 路径配置
+	  paths: {
+	    'jquery_plugin': 'library/jquery/plugin',
+	    'jqueryui': 'library/jqueryui',
+	    'css':'http://7d9ptt.com1.z0.glb.clouddn.com/css'
+	  },
+      // 映射配置
+      map: [
+        [ /^(.*\.(?:css|js))(.*)$/i, '$1?v=20141029' ]
+      ],
+      // 调试模式
+      debug: false,
+      // 文件编码
+      charset: 'utf-8'
+    });
+    //$(document).ready(function(){
+    	seajs.use('page/article/article');
+    //});
+</script> 
+  <script>
+window._bd_share_config={
+        "common":{
+            "bdText":"如何设置L2TP VPN IPSec安全设备/对思科asa5505？",
+            
+            "bdStyle":"1",
+            "bdSnsKey":{
+                "tsina":"4242338950",
+                "tqq":"101160084"
+            },
+            "wbUid":"5295093133"
+        },
+        "share":[{
+            "tag":"share_1",
+            "bdSize":"16"
+        },{
+            "tag":"share_2",
+            "bdSize":"32"
+        }]
+    };
+    with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script> 
+  <div id="YOUDAO_SELECTOR_WRAPPER" style="display:none; margin:0; border:0; padding:0; width:320px; height:240px;"></div> 
+  <script type="text/javascript" src="http://fanyi.youdao.com/openapi.do?keyfrom=yebohe&amp;key=734534890&amp;type=selector&amp;version=1.2&amp;translate=on" charset="utf-8"></script>   
+ </body>
+</html>

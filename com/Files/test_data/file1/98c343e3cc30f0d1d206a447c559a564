@@ -1,0 +1,572 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+    <meta charset="UTF-8">
+    <meta name="keywords" content="远大礼品,学生奖品,免费抽奖,免费秒杀,礼品兑换，星星兑换,兑换实物,小学生礼物,远大网,K12教育,远大小状元,师生家长互动平台">
+    <meta name="description" content="星星礼品屋是远大小状元（k12china.com）的一个免费兑换礼物的平台，学生在完成老师布置的网上作业或移动端作业,就可以获得丰富的奖励,从而提高学生积极性！一起做作业 www.k12china.com">
+    <title>星星礼品屋｜远大小状元 远大电子作业 -xx.k12china.com</title>
+    <link rel="stylesheet" href="web/css/style.css">
+    <script src="web/js/jquery-1.11.2.js"></script>
+    <script type="text/javascript" src="html/jq/jq-login-kc-v2.7.min.js"></script>	
+    <script type="text/javascript" src="html/jq/login-code-v2.js"></script>
+    <script type="text/javascript" src="html/jq/jquery.cookie.js"></script>
+	<script type="text/javascript" src="login/login-common-v5.js"></script>
+    <script src="web/js/Pop.min.js"></script>
+    <script src="web/js/ZeroClipboard.min.js"></script>
+    <script src="web/js/lottery.min.js"></script>
+    <script src="web/js/common.js"></script>
+    <script src="http://qzonestyle.gtimg.cn/qzone/app/qzlike/qzopensl.js#jsdate=20111201" charset="utf-8"></script>
+	<script src="http://connect.qq.com/widget/loader/loader.js" widget="shareqq" charset="utf-8"></script><script widget="shareqq" charset="utf-8" src="http://pub.idqqimg.com/qconn/widget/loader/shareqq.js?t=20121127"></script>
+    <!--[if IE 6]> 
+    <script src="../js/DD_belatedPNG.js"></script>
+    <![endif]--> 
+<script type="text/javascript">
+(function($){
+	$(function(){
+		var pop = new Pop();
+			    	YdLogin.remoteCheck();
+		var _interval = null; 
+		ZeroClipboard.setMoviePath( 'web/js/ZeroClipboard.swf' );
+		ue.copy({ 
+		        btnId : "btn_copy", 
+		        txtId : 'yaoqing_link', 
+		        container : $(".lottery-invite")[0], 
+		        success : function(){
+		        	if(isLogin()){
+		        		 clearTimeout(_interval); 
+				         $('.copy-tips').show(); 
+				         _interval = setTimeout(function(){$('.copy-tips').hide();},2000); 
+		        	}
+		        }
+		 }); 
+		function isLogin(){
+			var isLogin = false;
+			$.ajax({
+				type:'post',
+				dataType:'json',
+			    data:{},
+			    url:'index.html?method=check_login',
+			    async:false,
+			    success:function(obj){
+			    	if(obj != undefined){
+			    	    isLogin = obj.success;	
+			    	}
+			    },
+			    error:function(){
+			    	alert("程序异常");
+			    }
+			});
+			if(isLogin==false){
+				pop.showbox({box:'.nologin',shadeOut:true});
+				return;
+			}
+			return true;
+		}
+		
+		var url = $('#yaoqing_link').val();
+		$('.lottery-share').on('click','a',function(){
+			if(url == undefined || url ==""){
+				pop.showbox({box:'.nologin',shadeOut:true});
+				return false;
+			}
+			else{
+				var p = {
+						url: url,
+						showcount:'0',					/*是否显示分享总数,显示：'1'，不显示：'0' */
+						desc:'我刚刚参加了#远大小状元-星星大抽奖#！大额星星，各种实物礼品，更有iPad Mini等你来哦！  ',				/*默认分享理由(可选)*/
+						summary:'我刚刚参加了#远大小状元-星星大抽奖#！大额星星，各种实物礼品，更有iPad Mini等你来哦！ ',					/*分享摘要(可选)*/
+						title:'星星礼品屋大抽奖',				/*分享标题(可选)*/
+						site:'http://www.k12china.com',/*分享来源 如：腾讯网(可选)*/
+						pics:'http://lpw.k12china.com/web/img/share.jpg', 						/*分享图片的路径(可选)*/
+						style:'201',
+						width:39,
+						height:39
+					};
+					var s = [];
+					for(var i in p){
+						s.push(i + '=' + encodeURIComponent(p[i]||''));
+					}
+					
+					var href = href='http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?' + s.join('&');
+					$('.by-qzone').attr('href', href);
+					var p1 = {
+							url: url, /*获取URL，可加上来自分享到QQ标识，方便统计*/
+							desc:'我刚刚参加了#远大小状元-星星大抽奖#！大额星星，各种实物礼品，更有iPad Mini等你来哦！  ',				/*默认分享理由(可选)*/
+							title:'星星礼品屋大抽奖', /*分享标题(可选)*/
+							summary:'我刚刚参加了#远大小状元-星星大抽奖#！大额星星，各种实物礼品，更有iPad Mini等你来哦！ ',					/*分享摘要(可选)*/
+							pics:'http://lpw.k12china.com/web/img/share.jpg', /*分享图片(可选)*/
+							flash: '', /*视频地址(可选)*/
+							site:'http://www.k12china.com', /*分享来源(可选) 如：QQ分享*/
+							style:'201',
+							width:32,
+							height:32
+					};
+					var s1 = [];
+					for(var i in p1){
+						s1.push(i + '=' + encodeURIComponent(p1[i]||''));
+					}
+					var href1='http://connect.qq.com/widget/shareqq/index.html?' + s1.join('&');
+					$('.by-qq').attr('href', href1);
+			}
+		});
+		
+		$('.to_login').click(function(e){
+			e.preventDefault();
+			var login_url = $(this).data("logurl");
+			var url = window.location;
+			url = encodeURIComponent(url);
+			window.location.href=login_url+url;
+		});
+		
+		$('#con_info').click(function(){
+		 	var isLogin = false;
+		 	$.ajax({
+				type:'post',
+				dataType:'json',
+			    data:{},
+			    url:'index.html?method=check_login',
+			    async:false,
+			    success:function(obj){
+			    	if(obj != undefined){
+			    	    isLogin = obj.success;	
+			    	}
+			    },
+			    error:function(){
+			    	alert("程序异常");
+			    }
+			});
+		 	if(isLogin==false){
+				pop.showbox({box:'.nologin',shadeOut:true});
+				return;
+			}else{
+				window.location.href="index.html?method=getMyInfo"
+			}
+		});
+	})
+	
+})(jQuery)
+
+
+</script><script src="http://tajs.qq.com/qc.php?dm=xx.k12china.com" type="text/javascript" charset="utf-8"></script></head>
+
+<body>
+    
+    <!-- start 顶部 -->
+<script type="text/javascript" src="html/jq/jq-login-kc-v2.7.min.js"></script>	
+<script type="text/javascript" src="html/jq/login-code-v2.js"></script>
+<script type="text/javascript" src="html/jq/jquery.cookie.js"></script>
+<script type="text/javascript" src="login/login-common-v5.js"></script>
+  
+    <!-- start 顶部 -->
+    <div class="top">
+        <div class="top-main">
+            <a href="http://www.k12china.com/index.html">
+            <div class="logo push-left"></div>
+            </a>
+            <div class="user push-right">
+                          </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <!--  end  顶部 -->
+
+    <!--  end  顶部 -->
+
+    <div class="container">
+        <!-- start 头部 -->
+        <div class="header">
+            <div class="header-main">
+ 
+                <div class="nav">
+                    <a href="index.html" class="nav1 ">兑换首页</a>
+                    <a href="lottery.html" class="nav2 active">星星抽奖</a> 
+                    <a href="#" class="nav3 " id="con_info">我的兑换</a>
+                    <a href="question.html" class="nav4 push-right ">兑换常见问题？</a>
+                    <div class="clear"></div>
+                </div>
+    			 <div class="header-text">
+                    <span class="h-text1"></span><span class="h-text2">27.5	
+</span><span class="h-text3">份礼品</span>
+                    <div class="clear"></div>
+                </div>            </div>
+        </div>
+        <!--  end  头部 -->
+        
+
+        <!-- start 主体 -->
+        <div class="contenter">
+            <!-- 公告 -->
+            <div class="announcement">
+                <div class="announcement-main scrolltext-main">
+                    <div class="scrolltext-line">
+                      	公告：
+		                       	    <a href="" target="_blank">12、1、2月兑换的奖品，已全部寄送至学校，请有兑换礼物的同学们注意老师的派发通知哟！	
+</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 抽奖 -->
+            <div class="lottery">
+                <!-- 左 -->
+                <div class="lottery-left">
+                    <div class="left-headline">
+                        <h1>今天有<span id="cj_total">183</span>人次参与星星抽奖。</h1>
+                        <!-- 滚动中奖（效果待做） -->
+                        <div class="awards-info">
+	                        <div class="awards-list scrolltext-main" style="margin-top: -30px; ">
+		                             
+		                             
+		                             
+		                             
+		                             
+	                        <div class="scrolltext-line">
+		                                <span class="name">陈心萍</span>抽到了<span class="jpname">5个星星</span>2017-04-01
+		                             </div><div class="scrolltext-line">
+		                                <span class="name">黄祺</span>抽到了<span class="jpname">10个星星</span>2017-04-01
+		                             </div><div class="scrolltext-line">
+		                                <span class="name">彭恩杰</span>抽到了<span class="jpname">5个星星</span>2017-04-01
+		                             </div><div class="scrolltext-line">
+		                                <span class="name">曾昭悦</span>抽到了<span class="jpname">5个星星</span>2017-04-01
+		                             </div><div class="scrolltext-line">
+		                                <span class="name">罗梓烯</span>抽到了<span class="jpname">5个星星</span>2017-04-01
+		                             </div></div>
+	                    </div>
+                        <div class="clear"></div>
+                    </div>
+
+                    <!-- 抽奖区 -->
+                    <div class="lottery-area">
+                        <div class="cjzp">
+                            <div class="cj-operation">
+                                <div class="cj-tip">
+                                    <p>获得免费抽奖：<span id="cj_free">0</span>次</p>
+                                    <p>每日星星抽奖：<span id="cj_count">0</span>次（每次<span>3</span>颗星星）</p>
+                                </div>
+                                <a href="#nogo" class="xxbtn xxbtn-lg xxbtn-red btn-cj able">马上抽奖</a>
+                            </div>
+                            
+                            <!-- 抽奖过程中的遮罩层 -->
+                            <div class="cjOverlay"></div>
+
+                            <div class="jiangpin-wrap">
+                            
+	                                 <div class="jp jp1" id="gift1">
+	                                     <div class="jpimg">
+	                                        <img src="resource/temp/1.png" alt="">
+	                                    </div>
+	                                    	<span class="jpname">继续努力</span>
+	                                   		<span class="jpoverlay"></span>
+	                                  </div>
+	                                 <div class="jp jp2" id="lottery482">
+	                                     <div class="jpimg">
+	                                        <img src="resource/20170110102310_5634.jpg" alt="">
+	                                    </div>
+	                                    	<span class="jpname">不锈钢筷勺两件套</span>
+	                                   		<span class="jpoverlay"></span>
+	                                  </div>
+	                                 <div class="jp jp3" id="gift2">
+	                                     <div class="jpimg">
+	                                        <img src="resource/temp/2.png" alt="">
+	                                    </div>
+	                                    	<span class="jpname">1个星星</span>
+	                                   		<span class="jpoverlay"></span>
+	                                  </div>
+	                                 <div class="jp jp4" id="lottery473">
+	                                     <div class="jpimg">
+	                                        <img src="resource/20170104095502_4162.jpg" alt="">
+	                                    </div>
+	                                    	<span class="jpname">龙猫存钱罐</span>
+	                                   		<span class="jpoverlay"></span>
+	                                  </div>
+	                                 <div class="jp jp5" id="gift3">
+	                                     <div class="jpimg">
+	                                        <img src="resource/temp/3.png" alt="">
+	                                    </div>
+	                                    	<span class="jpname">3个星星</span>
+	                                   		<span class="jpoverlay"></span>
+	                                  </div>
+	                                 <div class="jp jp6" id="lottery471">
+	                                     <div class="jpimg">
+	                                        <img src="resource/20170104095400_6917.jpg" alt="">
+	                                    </div>
+	                                    	<span class="jpname">五角星许愿瓶</span>
+	                                   		<span class="jpoverlay"></span>
+	                                  </div>
+	                                 <div class="jp jp7" id="gift4">
+	                                     <div class="jpimg">
+	                                        <img src="resource/temp/4.png" alt="">
+	                                    </div>
+	                                    	<span class="jpname">5个星星</span>
+	                                   		<span class="jpoverlay"></span>
+	                                  </div>
+	                                 <div class="jp jp8" id="lottery470">
+	                                     <div class="jpimg">
+	                                        <img src="resource/20170104095329_7222.jpg" alt="">
+	                                    </div>
+	                                    	<span class="jpname">侏罗纪恐龙积木</span>
+	                                   		<span class="jpoverlay"></span>
+	                                  </div>
+	                                 <div class="jp jp9" id="gift5">
+	                                     <div class="jpimg">
+	                                        <img src="resource/temp/5.png" alt="">
+	                                    </div>
+	                                    	<span class="jpname">10个星星</span>
+	                                   		<span class="jpoverlay"></span>
+	                                  </div>
+	                                 <div class="jp jp10" id="gift7">
+	                                     <div class="jpimg">
+	                                        <img src="resource/temp/7.png" alt="">
+	                                    </div>
+	                                  </div>
+	                                 <div class="jp jp11" id="gift6">
+	                                     <div class="jpimg">
+	                                        <img src="resource/temp/6.png" alt="">
+	                                    </div>
+	                                    	<span class="jpname">50个星星</span>
+	                                   		<span class="jpoverlay"></span>
+	                                  </div>
+	                                 <div class="jp jp12" id="lottery469">
+	                                     <div class="jpimg">
+	                                        <img src="resource/20170104095123_5342.jpg" alt="">
+	                                    </div>
+	                                    	<span class="jpname">泰迪熊公仔</span>
+	                                   		<span class="jpoverlay"></span>
+	                                  </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右 -->
+                <div class="lottery-right">
+                    <div class="right-headline">
+                        <span class="label-cjrecord">抽奖记录</span>
+                        <a href="index.html?method=getMyInfo&amp;type=2" class="btn btn-sm ">查看全部记录&gt;&gt;</a>
+                    </div>
+                    <div class="lottery-info">
+                        <!-- 抽奖记录 -->
+                        <div class="lottery-cjrecord">
+                        
+                              	<!-- 如果当前没有抽中奖品 -->
+	                            <div class="no-prize">你当前没有抽中奖品</div>
+
+                            <!-- 有奖品（最多显示最近的3条记录） -->
+                     
+                        </div>
+                        
+                        <!-- 抽奖规则 -->
+                        <div class="lottery-rules">
+                            <h4>抽奖说明：</h4>
+                            <p>1.每天有5次星星抽奖机会，抽奖机会每次需扣除<span class="highlight">3</span>颗星星。</p>
+                            <p>2.您也可以将活动链接分享给好友，每邀请一位好友完成一次抽奖，即可获得一次抽奖机会。（多分享多获得）</p>
+                        </div>
+
+                        <!-- 邀请好友 -->
+                        <div class="lottery-invite">
+                            <h4>邀请好友</h4>
+                            <p>邀请好友即可获得免费抽奖机会！</p>
+                            <input id="yaoqing_link" type="text" readonly="readonly" value="">
+                            <a href="javascript:void(0);" class="btn-copy" id="btn_copy" data-clipboard-target="yaoqing_link">复制</a>
+                            <div class="clear"></div>
+                            <div class="copy-tips">复制成功</div>
+                        <div style="position: absolute; left: 188px; top: 66px; width: 50px; height: 26px; z-index: 100000; " id="ZeroClipboard_hold1"><embed id="ZeroClipboardMovie_1" src="web/js/ZeroClipboard.swf" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="50" height="26" name="ZeroClipboardMovie_1" align="middle" allowscriptaccess="always" allowfullscreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id=1&amp;width=50&amp;height=26" wmode="transparent"></div></div>
+                        <div class="lottery-share">分享到：
+                            <a href="#" class="by-qq" target="_blank"></a>
+                            <!-- 
+                            <a href="#" class="by-weixin"></a>
+                               -->
+                            <a href="#" class="by-qzone" target="_blank"></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            
+
+
+            <div class="copyright">
+                <p>版权所有：广州远大信息发展有限公司 Copyright©1999-2017</p>
+            </div>
+              </div>
+        <!--  end   主体 -->
+
+        <!-- start 底部 -->
+        <div class="footer"></div>
+        <!--  end  底部 -->
+    </div>
+
+    
+    <!-- start 弹出窗 -->
+    <div class="pop-wrap">
+        <!-- 遮罩层(必须) -->
+        <div class="pop-shade"></div>
+
+
+        <!-- 没得到奖品 pop-choujiang1 -->
+        <div class="pop pop-choujiang pop-choujiang1">
+            <div class="pop-head"> 
+                <p class="pop-title">抽奖信息</p>
+                <a href="javascript:;" class="btn-close"></a>
+            </div>
+
+            <div class="pop-main">
+                <div class="choujiang-main">
+                    <!-- 没得到奖品 nowin -->
+                    <div class="choujiang-nowins">
+                        <p>不要灰心，奖品还有很多哦~ </p>
+                        <div class="btn-wrap">
+                            <a href="#" class="xxbtn xxbtn-red  keep_click">继续抽奖</a>
+                            <a href="#" class="xxbtn xxbtn-normal pop-close">关闭</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 抽中了奖品 pop-choujiang2 -->
+        <div class="pop pop-choujiang pop-choujiang2">
+            <div class="pop-head"> 
+                <p class="pop-title">抽奖信息</p>
+                <a href="javascript:;" class="btn-close"></a>              
+            </div>
+
+            <div class="pop-main">
+                <div class="choujiang-main">
+                    <!-- 抽中了奖品 -->
+                    <div class="choujiang-getwins">
+                        <div class="wins-tip">恭喜你获得了</div>
+                        <div class="wins-tip"><span class="wins-name">“10个星星”</span>礼品</div>
+                        <e id="tip_free">
+                        	<p>接下去每次抽奖消耗<span class="highlight">0</span>颗星星</p>
+                        </e>
+                        
+                        <div class="btn-wrap">
+                            <a href="#" class="xxbtn xxbtn-red xxbtn-lg keep_click">我知道了，继续抽奖</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 星星余额不足 pop-choujiang3 -->
+        <div class="pop pop-choujiang pop-choujiang3">
+            <div class="pop-head"> 
+                <p class="pop-title">抽奖信息</p>
+                <a href="javascript:;" class="btn-close"></a>               
+            </div>
+
+            <div class="pop-main">
+                <div class="choujiang-main">
+                    <!-- 星星余额不足 noxings -->
+                    <div class="choujiang-noxings">
+                        <p>星星余额不足，无法进行抽奖</p>
+                        <div class="btn-wrap">
+                            <a href="http://www.k12china.com/index.html" class="xxbtn xxbtn-red xxbtn-lg">获得更多星星</a> 
+                            <a href="#" class="xxbtn xxbtn-normal pop-close">关闭</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 邀请得到的抽奖次数用完 pop-choujiang4 -->
+        <div class="pop pop-choujiang pop-choujiang4">
+            <div class="pop-head"> 
+                <p class="pop-title">抽奖信息</p>
+                <a href="javascript:;" class="btn-close"></a>              
+            </div>
+
+            <div class="pop-main">
+                <div class="choujiang-main">
+                    <!-- 没有邀请次数 -->
+                    <div class="choujiang-noinvate">
+                        <h1>邀请次数用完了</h1>
+                        <p>接下去每次抽奖消耗<span class="highlight">3</span>颗星星</p>
+                        <div class="btn-wrap">
+                            <a href="#" class="xxbtn xxbtn-red xxbtn-lg keep_click">我知道了，继续抽奖</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 今天的抽奖次数用完 pop-choujiang5 -->
+        <div class="pop pop-choujiang pop-choujiang5">
+            <div class="pop-head"> 
+                <p class="pop-title">抽奖信息</p>
+                <a href="javascript:;" class="btn-close"></a>              
+            </div>
+
+            <div class="pop-main">
+                <div class="choujiang-main">
+                    <!-- 没有抽奖次数 -->
+                    <div class="choujiang-notimes">
+                        <h1>今天的抽奖次数用完了~</h1>
+                        <p>明天再来呗！</p>
+                        <div class="btn-wrap">
+                            <a href="#" class="xxbtn xxbtn-red xxbtn-lg pop-close">知道了</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+     <!-- 信息提醒  -->
+ 		<div class="pop pop-normal tip">
+            <div class="pop-head"> 
+                <p class="pop-title">提示</p>
+                <a href="javascript:;" class="btn-close"></a>
+            </div>
+
+            <div class="pop-main">
+                <div class="normal-main">
+                    <p> </p>
+                    <div class="btn-wrap">
+                        <a href="#" class="xxbtn xxbtn-red pop-close">我知道了</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+		<div class="pop pop-normal lotteryTip">
+            <div class="pop-head"> 
+                <p class="pop-title">提示</p>
+                <a href="javascript:;" class="btn-close"></a>
+            </div>
+
+            <div class="pop-main">
+                <div class="normal-main">
+                    <div id="div_tip"></div>
+                    <div class="btn-wrap">
+                        <a href="#" class="xxbtn xxbtn-red pop-close">我知道了</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    <!-- 登录弹窗  -->
+      <div class="pop pop-normal nologin">
+         <div class="pop-head"> 
+             <p class="pop-title">提示</p>
+             <a href="javascript:;" class="btn-close"></a>
+         </div>
+         <div class="pop-main">
+             <div class="normal-main">
+                 <p>您还没有登录，是否跳转到登录界面?</p>
+                 <div class="btn-wrap">
+                     <a href="#" class="xxbtn xxbtn-red to_login" data-logurl="http://www.k12china.com/index.html?redirecturi=">确定</a>
+                     <a href="#" class="xxbtn xxbtn-normal  pop-close">取消</a>
+                 </div>
+             </div>
+         </div>
+     </div>
+
+
+    </div>
+
+
+    
+    <!--  end  弹出窗 -->
+
+
+</body></html>

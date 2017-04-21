@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<title>注册</title>
+<link type="text/css" href="http://plainreg.sdo.com/public/css/base_register.css" rel="stylesheet">
+<link rel="stylesheet" href="http://plainreg.sdo.com/public/css/register.min.css">
+<script src="http://static.sdg-china.com/yxzm/js/ac.js"></script><script type="text/javascript" src="http://plainreg.sdo.com/public/js/jquery182.js?v=2017031302"></script>
+<script type="text/javascript" src="http://plainreg.sdo.com/public/js/registerCore.js?v=2017031302"></script>
+<link rel="Shortcut Icon" href="http://plainreg.sdo.com/public/images/favicon.ico">
+<script>document.domain="sdo.com";</script>
+<!--[if IE 6]>
+    <script src="http://plainreg.sdo.com/public/js/DD_belatedPNG_0.0.8a-min.js?v=2017031302"></script>
+    <script>DD_belatedPNG.fix('.pngfix'); </script>
+<![endif]-->
+</head>
+<body>
+<!--弹出层-->
+<div class="popup" id="popup_downAPP" style="display:none;">
+	<div class="popup_main">
+		<a class="close_popup" href="javascript:closeDownAPP();">X</a>
+		<iframe id="iframe_downapp" scrolling="no" frameborder="0" allowtransparency="true" src="http://txz.sdo.com/txz_reg/"></iframe>
+	</div>
+</div>
+<!--/弹出层-->
+<!--弹出层2添加一些文字-->
+<div class="popup" id="showAppOk" style="display:none;">
+	<div class="popup_main">
+		<a class="close_popup" href="javascript:closeAppOk();">X</a>
+		<div class="ext_txt">您的手机可以通过安装注册，根据手机选择下载</div>
+		<iframe id="iframe_downappok" scrolling="no" frameborder="0" width="804" height="525" allowtransparency="true" src="http://txz.sdo.com/txz_reg/"></iframe>
+	</div>
+</div>
+<!--/弹出层-->
+
+<!-- header -->
+<div class="header">
+	<a class="new_logo" href="http://www.sdo.com/"></a>
+	<h3>一个账号，尽情玩转<strong>盛大游戏！</strong></h3>
+</div>
+<!-- /header -->
+
+<script>
+	$.CONFIGS = {
+        url_reg: "https://reguser.sdo.com",
+        url_login: "https://cas.sdo.com",
+        url_fenhong: "http://reg.178.sdo.com/RegPTConsumer.ashx",
+        base_url:"http://register.sdo.com",
+        serviceUrl: "http://www.sdo.com"
+	}
+	var regDomain = "http://register.sdo.com";//"http://dev.newregister.sdo.com:8008";
+    var requestId = "";
+    var appId = "";
+    var areaId = "";
+    var actId = -1;
+    var needShowActFrame = 0;
+    var curResultType = "";
+    var username = "";
+    //cookie字段
+    var cookie_bindphone = requestId + "-bindphone";
+    var cookie_reginfo = requestId + "-reginfo";
+    var cookie_fenhong = requestId + "-fenhong";
+</script>
+
+<div class="main">
+	<!-- mod_success -->
+	<div class="mod_success">
+		<h3>
+			<i class="icon_suc"></i>恭喜您！注册成功
+		</h3>
+		<p>
+			请牢记您的盛大游戏通行证账号：<span></span>
+		</p>
+		<a href="javascript:void(0);" id="btnBack" class="ui_btn ui_btn_red">返回之前网站</a>
+		<span class="countdown" style="line-height: 30px;font-size: 12px;margin-top: 10px;display: block;">点击上方按钮，返回注册前访问网站www.sdo.com</span>
+	</div>
+	<!-- /mod_success -->
+</div>
+
+<div id="mask" style="display: none; "></div>
+<div id="pop_BindPhone"></div>
+<div id="pop_RegInfo"></div>
+<div id="pop_FenHong"></div>
+<div id="popup_call_act" class="popup" style="height: 50px; width: 0px; margin: -25px 0px 0px; display: none; ">
+	<div class="popup_main">
+		<h2></h2>
+		<a href="javascript:closeActPop()" class="close_popup">X</a>
+	</div>
+</div>
+
+<script type="text/javascript" src="http://plainreg.sdo.com/public/js/sdolog_result.js"></script>
+<script>
+
+
+function showRegInfo(){
+	var divHtml = $("#pop_RegInfo").html();
+	if(!divHtml){
+		$.ajax({
+	        url:regDomain + "/register/partialreginfo",
+	        success: function(html){
+	        	divHtml = html
+				$("#pop_RegInfo").html(divHtml);
+	        	$("#pop_RegInfo").show();
+	        	initMask();
+	        },
+	        dataType:"html" 
+		})
+	}
+	else{
+    	$("#pop_RegInfo").show();
+    	initMask();
+	}
+	SDOLog_Click("Result_click_RegInfo");
+}
+
+function closeRegInfoFrame()
+{
+	$("#pop_RegInfo, #mask").hide();
+}
+
+function showActPop(){
+	$("#popup_call_act").show();
+	initMask();
+}
+
+function closeActPop(){
+	$("#popup_call_act, #mask").hide();
+}
+function showFenHong(){
+	var divHtml = $("#pop_FenHong").html();
+	if(!divHtml){
+	       $.ajax({
+		        url:regDomain + "/register/partialfenhong",
+		        success: function(html){
+		        	divHtml = html
+					$("#pop_FenHong").html(divHtml);
+		        	$("#pop_FenHong").show();
+		        	initMask();
+		        },
+		        dataType:"html" 
+			})
+	}
+	else{
+		$("#pop_FenHong").show();
+		initMask();
+	}
+	SDOLog_Click("Result_click_FenHong");
+}
+
+function closeFenHongFrame()
+{
+	$("#pop_FenHong, #mask").hide();
+}
+
+function returnToAppUrl(url)
+{
+	SDOLog_Click("Result_click_backSite");
+			window.top.location.href = url;
+	}
+
+$("#btnBack").bind("click", function(e){
+	e.preventDefault();
+	returnToAppUrl("http://www.sdo.com");
+});
+
+function initMask(){
+	$("#mask").css({
+		width : $(document).width(),
+		height : $(document).height()
+	}).show();
+}
+
+function initData(){
+	var gotoUrl = "http://www.sdo.com";
+	var lastUrl = gotoUrl;
+	var index1 = gotoUrl.indexOf("http://");
+	if(index1 == 0){
+		lastUrl = gotoUrl.substring(7);
+	}
+	else{
+		var index2 = gotoUrl.indexOf("https://");
+		if(index2 == 0){
+			lastUrl = gotoUrl.substring(8);
+		}
+	}
+	var index=lastUrl.indexOf("/"); 
+	if(index > 0){
+		lastUrl.substring(0,index);
+	}
+	$(".countdown").text("点击上方按钮，返回注册前访问网站" + lastUrl);
+
+	if(needShowActFrame == 1){
+		showActPop();
+	}
+	else{
+		closeActPop();
+	}
+}
+initData();
+
+</script>
+
+<!-- footer -->
+<div class="footer">
+    <p class="company">上海数龙科技有限公司&nbsp;&nbsp;&nbsp;&nbsp;版权所有</p>
+    <div class="footer_c">
+        <div class="logo"></div>
+        <div class="copy_box">
+            <div class="cy_box">
+                <div class="f_2">
+                    <a href="http://sh.cyberpolice.cn/infoCategoryListAction.do?act=initjpg" class="f_2_a f_2_1" target="_blank"></a>
+                    <a href="http://www.sgs.gov.cn/lz/licenseLink.do?method=licenceView&amp;entyId=20111011140737765" target="_blank" class="f_2_a f_2_2"></a>
+                    <a href="http://www.shjbzx.cn/" target="_blank" class="f_2_a f_2_3"></a>
+                    <a href="http://kf.sdo.com/jiazhang/html/index.html" target="_blank" class="f_2_a f_2_4"></a>
+                    <a href="//i.sdo.com/report" target="_blank" class="f_3_a independent_report"></a>
+                </div>
+                <div class="f_1">
+                    <span class="f_1_a">互联网出版许可证 ： 新出网证（沪）字026号</span>
+                    <span class="f_1_d">增值电信业务经营许可证：<a href="http://www.sdo.com/shenzhan" target="_blank">沪 B2-20100008</a></span>
+                    <span class="f_1_b">网络文化经营许可证：<a href="http://www.sdo.com/shenzhan" target="_blank">沪网文[2014]0749-179号</a></span>
+                    <span class="f_1_e">沪ICP备14052292号-2</span>
+                    <span class="f_1_c">上海数龙科技有限公司&nbsp;&nbsp;&nbsp;&nbsp;版权所有</span>
+                    
+                </div>
+            </div> 
+            <p style="color: #888;text-align: left;font-family:'宋体'">盛大游戏®商标是上海盛大网络发展有限公司拥有且授权给上海数龙科技有限公司使用的注册商标。<br>上海数龙科技有限公司对其运营行为独立承担全部责任。<br>
+            <span style="color:#ffb161;">适龄提示：适合12岁以上使用</span>
+            </p>
+        </div>       
+    </div>
+</div>
+<!-- /footer -->
+
+<iframe src="http://adrs.sdo.com/ADRefererSystem/reg.html" width="0" height="0" style="display:none;"></iframe>
+
+<script type="text/javascript" src="http://plainreg.sdo.com/public/js/sdolog.js?v=2017031302"></script>
+<script type="text/javascript" src="http://spread.sdo.com/static/js/compressed/spread-1.0.0.min.js?_t=20130826001"></script>
+<script type="text/javascript">
+	var site_id = '20131996';
+    $(document).ready(function () {
+    	try { spread.init(site_id); } catch (e) { }
+	});
+ </script>
+	<script type="text/javascript">
+		(function(d, s) {
+		  window.config ={
+		  bw_enabled:false,
+		  bw_base:"http://static.sdg-china.com/yxzm/pic/",
+		  siteid:"SDG-08196-01"
+			};
+		   var js =d.createElement(s);
+		   var sc = d.getElementsByTagName(s)[0];
+		   js.src="http://static.sdg-china.com/yxzm/js/ac.js";
+		   sc.parentNode.insertBefore(js, sc);
+		}(document, "script"));
+
+	</script> 
+</body></html>

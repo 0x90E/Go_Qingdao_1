@@ -1,0 +1,621 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">
+    <title>请通过验证</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#submit_btn").bind("click", function(){
+                $.ajaxSetup({
+                     beforeSend: function(xhr, settings) {
+                         function getCookie(name) {
+                             var cookieValue = null;
+                             if (document.cookie && document.cookie != '') {
+                                 var cookies = document.cookie.split(';');
+                                 for (var i = 0; i < cookies.length; i++) {
+                                     var cookie = jQuery.trim(cookies[i]);
+                                     // Does this cookie string begin with the name we want?
+                                     if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                                         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                         break;
+                                     }
+                                 }
+                             }
+                             return cookieValue;
+                         }
+                         if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                             // Only send the token to relative URLs i.e. locally.
+                             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+                         }
+                     }
+                });
+            });
+
+            
+//             var process =100;
+//             var canvas=document.getElementById("c");
+//             var width = canvas.width;
+//             canvas.height = width;
+//             var context = canvas.getContext('2d');
+//             context.clearRect(0, 0, width, width);
+//             context.beginPath();
+//             context.moveTo(width/2, width/2);
+//             context.arc(width/2, width/2, width/2, 0, Math.PI * 2, false);
+//             context.closePath();
+//             context.fillStyle = '#ddd';
+//             context.fill();
+//             context.beginPath();
+//             context.moveTo(width/2, width/2);
+//             context.arc(width/2, width/2,width/2,1.5*Math.PI, Math.PI * 2 * process / 100+1.5*Math.PI);
+//             context.closePath();
+//             context.fillStyle = '#009bae';
+//             context.fill();
+//             context.beginPath();
+//             context.moveTo(width/2, width/2);
+//             context.arc(width/2, width/2, width/2-(width/50), 0, Math.PI * 2);
+//             context.closePath();
+//             context.fillStyle = '#f3f3f3';
+//             context.fill();
+
+
+//             var img=new Image();
+//             img.src="";
+//             img.onload = function(){
+//                 context.drawImage(img,width/11.25,width/11.25,width-(width/5.625),width-(width/5.625));
+//             }
+           // $(".gt_holder").find(".gt_slider").css('display','none');
+            
+            
+        });
+    </script>
+
+<style>
+    body{
+        font-family: 'Microsoft YaHei',Arial,sans-serif;
+        background-color: #fdfdfd;
+    }
+    
+    #captcha {
+    	margin-bottom: 20px
+    }
+    
+    .mainv2_container .top{
+        height: 68px;
+        width:100%;
+        background-color: rgb(46, 46, 46);
+        position: relative;
+    }
+    
+    .mainv2_container .top .right{
+        width:310px;
+        height: 68px;
+        background-color: rgb(22, 22, 22);
+        display: inline-block;
+        position: absolute;
+        right: 0;
+        top:0;
+        font-size: 12px;
+        color:#828282;
+        text-align: center;
+        padding-top: 20px;
+    }
+    .mainv2_container .hover_title span{
+        margin-right: 10px;
+    }
+    .mainv2_container .right .hover_title{
+        display: inline-block;
+        /* position: relative; */
+        cursor:pointer;
+    }
+    .mainv2_container .hover_title .line{
+        color:#2e2e2e;
+    }
+    .mainv2_container .top .right .hover_title .title:hover{
+        color:#aaa;
+    }
+    .mainv2_container .top .right .hover_title .abs{
+        position: absolute;
+        top:41px;
+        /* left: 50%; */ 
+        /* transform: translate(-50%, 0); */
+
+    }
+    .mainv2_container .hover_title .abs .text{
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 3px;
+        margin: 0;
+        font-size:12px;
+        color:#aaa;
+    }
+    .mainv2_container .abs .zhuanti{
+        width:150px;
+        background-color: #fff;
+        margin-right: 10px;
+    }
+    .mainv2_container .abs .zhuanti span{
+        color:#5b5b5b;
+        padding: 5px;
+        display: block;
+
+    }
+    .mainv2_container .abs .zhuanti a {
+        color:#aaa;
+    }
+    .mainv2_container .abs .zhuanti a:hover {
+        text-decoration: none;
+        color:#d5d5d5;
+    }
+    .right img{
+        padding: 0;
+    }
+    .mainv2_container .top .right .hover_title .abs img{
+        padding: 0;
+    }
+    .mainv2_container .abs_zhuanti{
+        position: absolute;
+        top: 48px;
+        right: 0;
+        width: 130px;
+        padding: 10px;
+        background-color: #4d4d4d;
+        color: #aaa;
+    }
+    .mainv2_container .abs_zhuanti hr{
+        margin-top:12px;
+        margin-bottom:12px;
+        border-top:1px solid #6d6d6d;
+        
+    }
+    .mainv2_container .abs_zhuanti a{
+        display:inline-block;
+        font-size:12px;
+        color:#aaa;
+    }
+    .mainv2_container .abs_zhuanti a:hover{
+        text-decoration:none;
+        color:#d5d5d5;
+    }
+    #download{
+        display: none;
+    }
+    #weichat{
+        display: none;
+    }
+    #zhuanti{
+        display: none;
+    }
+    .inner_contact_us {
+        text-align: center;
+        heigth: 30px;
+        background-color: #f8f8f8;
+        color:#666;
+    }
+
+    .inner_contact_us p {
+        height: 30px;
+        font-size: 14px;
+        color: #4d4d4d;
+        line-height: 30px;
+        margin: 0;
+    }
+
+    .inner_contact_us p .fa {
+        margin-right: 8px;
+    }
+    .mobile_title{
+        font-size: 24px;
+        color:#666;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+    }
+    .email{
+        text-align: center;
+        margin-bottom: 40px;
+        color:#232323;
+        font-size: 16px;
+        font-family: Arial Regular;
+    }
+    .email span{
+        color:#438fc7;
+    }
+    #submit-button{
+        background-image: none;
+        background-color: #44a7dd;
+        height: 54px;
+        width: 265px;
+        border:none;
+    }
+
+    #submit-button:hover{
+        background-color: #67c9e5;
+    }
+    #title{
+        margin-top: 100px;
+        margin-bottom: 30px;
+        color:#333;
+    }
+    .box2{
+        display: inline-block;
+        vertical-align: top;
+    }
+    .box2 .p1{
+        font-size: 16px;
+        color:#000;
+        margin-bottom: 10px;
+    }
+    .box2 .p2{
+        font-size: 15px;
+        font-weight: 600;
+        color:#333;
+        margin-bottom: 30px;
+    }
+    .mac{
+        display: inline-block;
+        margin-right: 40px;
+    }
+    .content{
+        margin-left: auto;
+        margin-right: auto;
+        width: 740px;
+        padding-top: 140px;
+    }
+    .box2 .gt_widget{
+        /*display: none;*/
+        position: relative;
+    }
+    .box2 .gt_holder .gt_bottom{
+        background-image: none;
+        background-position: unset;
+        height: 16px;
+        background-color: #ccc;
+        
+    }
+    .box2 .gt_holder .gt_bottom a{
+        display: none;
+    }
+    .box2 .gt_holder .gt_bottom a:first-child{
+        display: block;
+        position: absolute;
+        right: 6px;
+        bottom: 23px;
+        color: #fff;
+    }
+    .box2 .gt_holder .gt_box_holder{
+        background-color: #ebf0ef;
+        background-image: none;
+        background-position: unset;
+    }
+    .box2 .gt_holder .gt_bottom{
+        background-color: #ebf0ef;
+        background-image: none;
+        background-position: unset;
+        height: 16px;    
+    }
+    .box2 .gt_holder .gt_holder_top{
+        background-color: #ebf0ef;
+        background-image: none;
+        background-position: unset;
+    }
+    .box2 .gt_holder .gt_slider{
+        background-image: none;
+        background-position:1000px,0;
+        background-color: #ebf0ef;
+        border-radius: 100px;
+        height: 38px;
+        border:1px solid #cad3d7;
+        margin-top: 5px;
+    }
+    .box2 .gt_holder .gt_slider_knob{
+        top:-4px;
+    }
+    .box2 .gt_holder .gt_guide_tip{
+        line-height: 34px !important;
+    }
+    .foot{
+        width:740px;
+        padding-bottom: 32px;
+        font-size: 14px;
+        border-bottom: 1px dashed #ddd;
+        margin-right: auto;
+        margin-left: auto;
+        text-align: center;
+        color:#636363;
+        margin-top:108px;
+
+    }
+    .foot hr{
+    	width:310px;
+    	border-top:1px dashed #c0bfbf;
+    	display: inline-block;
+    	vertical-align: middle;
+    }
+    .foot2{
+    	margin-top:38px;
+    }
+    .foot2 .text{
+    	text-align: center;
+    	font-size: 12px;
+    }
+    .foot2 .text a{
+        color:#636363;
+        display: inline-block;
+        margin-right: 16px;
+    }
+    .foot2 .text a:hover{
+        color:#000;
+        text-decoration: none;
+        cursor:pointer;
+    }
+    .foot2 .text span{
+        color:#636363;
+        display: inline-block;
+        margin-right: 16px;
+    }
+    .foot2 .ff{
+    	margin-top: 12px;
+	    font-size: 12px;
+	    text-align: center;
+	    color:#636363;
+    }
+    @media(max-width :400px){
+        .mainv2_container{
+            display: none;
+        }
+        #title{
+            font-size: 17px;
+        }
+        .inner_contact_us{
+            display: block;
+        }
+        .mobile_title{
+            display: block;
+        }
+        .email{
+            font-size: 13px;
+        }
+        .mac{
+        	display: none
+        }
+        .p2{
+        	width: 290px;
+        }
+        .foot{
+        	display: none;
+        }
+        .content{
+        	width: 300px;
+        	padding-top: 40px;
+        }
+
+    }
+    @media(min-width: 400px){
+        .mainv2_container{
+            display: block;
+        }
+        #title{
+            font-size: 22px;
+        }
+        .inner_contact_us{
+            display: none;
+        }
+        .mobile_title{
+            display: none;
+        }
+    }
+    </style>
+    <script>
+        
+        $(document).ready(function(){
+          $("#downloadTitle").mouseover(function(){
+             $("#download").css('display','block');
+          });
+          $("#downloadTitle").mouseleave(function(){
+             $("#download").css('display','none');
+          });
+          $("#weichatTitle").mouseover(function(){
+             $("#weichat").css('display','block');
+          });
+          $("#weichatTitle").mouseleave(function(){
+             $("#weichat").css('display','none');
+          });
+          $("#zhuantiTitle").mouseover(function(){
+             $("#zhuanti").css('display','block');
+          });
+          $("#zhuantiMain").mouseleave(function(){
+             $("#zhuanti").css('display','none');
+          });
+          
+        });
+    </script>
+<script charset="UTF-8" async="" src="http://api.geetest.com/gettype.php?gt=f5c10f395211c77e386566112c6abf21&amp;callback=geetest_1491059416436"></script></head>
+<body>
+<!-- <div class="inner_contact_us container" id="company_inner_contact">
+    <p><i class="fa fa-envelope-o"></i>更强企业查询，请联系bd@jindidata.com</p>
+</div> -->
+<div class="mobile_title">天眼查</div>
+<div class="mainv2_container">
+    <div class="top">
+        <img style="padding-top: 16px; padding-left: 100px;" src="http://cache.tianyancha.com/wap/images/logo_v2.png" alt="">
+        <div class="right">
+        <div style="position:relative;">
+            <div class="hover_title">
+                <span ng-click="toVip();" class="title" id="downloadTitle"><i class="fa fa-mobile fa-lg"></i>&nbsp;专业版APP</span>
+                <span class="line">|</span>
+                <div class="abs" ng-if="AppShow" style="left:0;" id="download">
+                    <img src="http://cache.tianyancha.com/wap/images/download2.png" alt="">
+                    <span class="text">扫码下载APP</span>
+                </div>
+            </div>
+            <div class="hover_title" style="position:relative;">
+                <span class="title" id="weichatTitle">
+                    <i class="fa fa-qrcode fa-lg"></i>&nbsp;微信公众号</span>
+                <span class="line">|</span>
+                <div class="abs" ng-if="weixinShow" style="left:-15px;" id="weichat">
+                    <img src="http://cache.tianyancha.com/wap/images/about-us2.png" alt="">
+                    <span class="text">扫码关注我们</span>
+                </div>
+            </div>
+            <div class="hover_title" style="height:51px;" id="zhuantiMain">
+                <span class="title" id="zhuantiTitle"><i class="fa fa-fire lg"></i>&nbsp;专题榜</span>
+                <div class="abs_zhuanti" ng-if="zhuanti" style="right:0;" id="zhuanti">
+                    <div class="zhuanti" style="cursor: pointer">
+                        <span><a href="http://tianyancha.com/news/meibang">美邦掌门人周成建摊上大事了！</a></span>
+                        <hr>
+                        <span><a href="http://tianyancha.com/news/wanbao">天眼查之万宝大战！</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+    <div class="container">
+    <!-- <div class="row">
+        <div class="col-md-12" style="color:#666;margin-bottom:20px;">
+            <div class="center" id="title">您的访问疑似过于频繁，请拖动滑块完成验证</div>
+        </div>
+        <div class="col-md-6 col-md-offset-3">
+            <div class="box">
+            <form method="post" action="{% url 'captcha:checkGtCaptcha' %}">
+                {% csrf_token %}
+
+                    <div id="captcha"></div>
+                    <div >
+                        <input type="hidden" name="return_url" id="return_url" value="{{ return_url }}">
+                        <div >
+                            <button id="submit-button" class="btn btn-block btn-info">提交</button>
+                        </div>
+
+
+                    <script src="http://static.geetest.com/static/tools/gt.js"></script>
+                    <script>
+                        var handler = function (captchaObj) {
+                             // 将验证码加到id为captcha的元素里
+                             captchaObj.appendTo("#captcha");
+                         };
+                        $.ajax({
+                            // 获取id，challenge，success（是否启用failback）
+                            url: "{% url 'captcha:genGtCaptcha' %}",
+                            type: "get",
+                            dataType: "json", // 使用jsonp格式
+                            success: function (data) {
+                                // 使用initGeetest接口
+                                // 参数1：配置参数，与创建Geetest实例时接受的参数一致
+                                // 参数2：回调，回调的第一个参数验证码对象，之后可以使用它做appendTo之类的事件
+                                initGeetest({
+                                    gt: data.gt,
+                                    challenge: data.challenge,
+                                    product: "embed", // 产品形式
+                                    offline: !data.success
+                                }, handler);
+                            }
+                        });
+                    </script>
+                    </div>
+                </form>
+                </div>
+            <div>
+                <label id="check_msg"></label>
+            </div>
+            <div class="email">
+            <div>如果你是天眼查抓取爱好者</div>
+            <div>请将简历发送至:<span>hr@jindidata.com</span></div>
+            </div>
+        </div> -->
+    
+        <div class="content">
+            <div class="mac">
+                <img src="http://cache.tianyancha.com/wap/images/err_mac.png" alt="">
+            </div>
+            <div class="box2">
+                <div class="p1">用户您好：</div>
+                <div class="p2">为确认本次访问为正常用户行为，请您协助验证。</div>
+                <form style="width:300px;" method="post" action="checkGtCaptcha">
+               
+
+                        <div id="captcha"></div>
+                        <div style="padding-left:15px;">
+                            <input type="hidden" name="return_url" id="return_url" value="http://m.tianyancha.com/search/p2">
+                            <input type="hidden" name="rnd" id="rnd" value="v3wN-hUEe6TH7jrz_8g8zQ==">
+                            <div>
+                                <button id="submit-button" class="btn btn-block btn-info">提交</button>
+                            </div>
+
+
+                        <script src="http://static.geetest.com/static/tools/gt.js"></script>
+                        <script>
+                        	var print = function(){
+                        		//console.log($("#captcha").find(".gt_widget"));
+        //                 		var test = document.getElementsByClassName("gt_widget");
+        //                 		console.log(test);
+								// $("#captcha").bind('click',function(){
+								// 	console.log("click");
+								// })
+                        	}
+                            var handler = function (captchaObj) {
+                                 // 将验证码加到id为captcha的元素里
+                                 captchaObj.appendTo("#captcha");
+                                 print();
+                             };
+                            $.ajax({
+                                // 获取id，challenge，success（是否启用failback）
+                                url: "getGtCaptcha?t="+new Date().getTime(),
+                                type: "get",
+                                cache:false,
+                                dataType: "json", // 使用jsonp格式
+                                success: function (data) {
+                                    // 使用initGeetest接口
+                                    // 参数1：配置参数，与创建Geetest实例时接受的参数一致
+                                    // 参数2：回调，回调的第一个参数验证码对象，之后可以使用它做appendTo之类的事件
+                                    initGeetest({
+                                        gt: data.gt,
+                                        challenge: data.challenge,
+                                        product: "embed", // 产品形式
+                                        offline: !data.success
+                                    }, handler);
+                                }
+                            });
+                        </script>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+       
+        <div class="foot">
+	         <div style="vertical-align: middle; margin-bottom:20px; color:c0bfbf;">
+	        	<hr style="margin-right:16px;"> ABOUT US <hr style="margin-left:16px;">
+	        </div>
+            <span style="font-size:14px; margin-right:36px;"><i></i>天眼查用户交流群：<span style="font-size:16px;">253738484</span></span>
+            <span style="font-size:14px;"><i></i>商务合作：<span style="font-size:16px;">bd@jindidata.com</span></span>
+        </div>
+        <div class="foot2">
+	        <div class="text">
+	            <a href="http://www.tianyancha.com/property/1" target="_blank">关于我们</a>
+	            <span>|</span>
+	            <a href="http://www.tianyancha.com/property/2">服务协议</a>
+	            <span>|</span>
+	            <a href="http://www.tianyancha.com/property/3">版权申明</a>
+	            <span>|</span>
+	            <a href="http://www.tianyancha.com/property/4">意见反馈</a>
+	        </div>
+	        <div class="ff" style="margin-top:12px;">@2015 JINDIDATA 京ICP备14061319号－2</div>    
+        </div>
+
+
+
+
+
+</body></html>

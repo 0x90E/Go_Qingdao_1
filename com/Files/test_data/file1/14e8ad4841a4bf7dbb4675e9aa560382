@@ -1,0 +1,624 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><script id="_jqjsp0" async="" src="http://apply.bjhjyd.gov.cn/apply/zczx/index.html?_1491056165680="></script>
+<link href="http://www.bjhjyd.gov.cn/templates/default/www/css/maincss.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" async="" src="http://www.google-analytics.com/ga.js"></script><script src="http://www.bjhjyd.gov.cn/templates/default/www/js/XTXSuite.js" type="text/javascript"></script>
+<script src="http://www.bjhjyd.gov.cn/templates/default/www/js/jquery/jquery.js" type="text/javascript"></script>
+<script src="http://www.bjhjyd.gov.cn/templates/default/www/js/jquery/jquery.jsonp.js" type="text/javascript"></script>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<title>北京市小客车指标管理信息系统</title>
+<script>
+$(function(){ 
+	
+		var loc = document.location.href;
+	if(loc.indexOf("message") > 0){
+		var hh = loc.substring(loc.indexOf("message"));
+		if(hh.indexOf("&") > 0)
+			hh = hh.substring(8,hh.indexOf("&"));
+		else
+			hh = hh.substring(8);
+		alert(decodeURIComponent(hh));
+		window.location.search="";
+		}
+		
+	$.jsonp({
+        url:"http://apply.bjhjyd.gov.cn/apply/zczx/index.html",
+        callback:"mycallback",                          
+        success:function(data){
+        	$("#zczx").empty();
+        	$.each(data,function(i,n){
+			var dl=$("<dl><dd></dd><dt></dt></dl>");
+			$("#zczx").append(dl);
+			var a=$("<a>",{
+				href:"#none",
+				html:n.name+"："+n.question,
+				click:function(){
+					$("#zczx .question").hide();
+					$(this).parent().parent().next().show();
+				}
+			})			
+			dl.find("dd").append(a);
+        	var question=$("<div>",{"class":"question"});
+        	$("#zczx").append(question);
+        	question.append($("<span>",{
+        		html:"“"+n.name+"”的问题 （"+n.questionTime+"）：</span>"
+        	}));
+        	question.append($("<div>",{
+        		html:n.question
+        		}));
+        	question.append($("<span>",{
+        		html:"问题回复 （"+n.answerTime+"）："
+        		}));
+        	question.append($("<div>",{html:n.answer.replace("\\n","<br>")}));
+        	});
+        	
+        },
+        error:function(d,msg,t){
+               // alert("请稍候重试");
+        }
+	});
+	
+	
+	$(document).click(function(e){
+		if($(e.target).parents("#zczx").size()==0){
+			$("#zczx .question").hide();
+		}else if($(e.target).parents(".question").size()==0&&$(e.target).is("a")==false){
+			$("#zczx .question").hide();
+		}
+	});
+	
+	
+	$(":radio[name='serviceType']").click(function(){
+		if($(this).val()==1){
+			$("#serviceUserTypeSelect").hide();
+			$("#userTypeSelect").change();
+			$("#userTypeSelect").show();
+		}else{
+			$("#userTypeSelect").hide();
+			$("#serviceUserTypeSelect").change();
+			$("#serviceUserTypeSelect").show();
+		}
+	});
+	
+	
+	$("#serviceUserTypeSelect").change(function(){
+		$("#pinLi").hide();
+		$("#pwdLi").show();
+		if($(this).val()==0){
+			$("#personLi").show();
+			$("#unitLi").hide();
+			$("#userType").val("3");
+		}else {
+			unitSelected();
+			$("#userType").val(4);
+		}
+	});
+	
+	$("#userTypeSelect").change(function(){
+		if($(this).val()==0){
+			$("#userType").val("0");
+			$("#personLi").show();
+			$("#unitLi").hide();
+			$("#pwdLi").show();
+			$("#pinLi").hide();
+		}else if($(this).val()==1){
+			$("#userType").val("1");
+			unitSelected();
+		}else{
+			$("#userType").val("2");
+			unitSelected();
+		}
+		
+	});
+	
+	
+	function  unitSelected(){
+		//如果选的是企业，增加证书项
+		if($("#userType").val()==1){
+			$("#unitLoginTypeSelect").html('<option value="0">手机号</option><option value="1">机构代码</option><option value="2">证书</option>');
+		}else{
+			$("#unitLoginTypeSelect").html('<option value="0">手机号</option><option value="1">机构代码</option>');			
+		}
+		$("#unitLoginTypeSelect").val(0);
+		$("#unitLi").show();
+		$("#personLi").hide();
+		$("#unitLoginTypeSelect").change();
+	}
+	
+	$("#unitLoginTypeSelect").change(function(){
+		$("#pwdLi,#pinLi").hide();
+		$("#unitUserName :input").hide();
+		if($(this).val()==0){
+			$("#unitMobile").show();
+			$("#pwdLi").show();
+		}else if($(this).val()==1){
+			$("#orgCode").show();
+			$("#pwdLi").show();
+		}else{
+			$("#certList").show();	
+			$("#pinLi").show();
+		}
+	});
+	
+	SetUserCertList("loginForm.certList");
+	
+	$(":radio[name='serviceType']:eq(0)").click();
+	
+	
+	$("#validCode").keydown(function(evt){
+		switch(evt.keyCode){
+			case 13:
+				checkSubmit();
+				return false;
+			default:
+			return;
+		} 
+	});
+	
+	
+	$("#password").val("");
+	$("#personMobile").focusin(function(){
+		$(this).css({color:"#555555"});
+		if($(this).val()=="没有手机号的用编码代替"){
+			$(this).val("");			
+		}
+	});
+	$("#personMobile").focusout(function(){
+		if($(this).val()==""){
+		    $(this).css({color:"#CCCCCC"});
+			$(this).val("没有手机号的用编码代替");			
+		}
+	});
+	
+	
+	var i=0;
+	$("#getValidCode").click(function(){
+		i++;
+		if(i>10){
+			alert("刷新验证码太频繁了！")
+			return;
+		}
+	    $(this).html("<img   src='http://apply.bjhjyd.gov.cn/apply/validCodeImage.html?ee="+i+"'/>");
+	});
+	
+	$("#validCode").keyup(function(){
+		var c=$(this).val();
+		if(c.length!=4){
+			$("#checkResult").html("");
+			return;
+		}
+		$.jsonp({
+	        url:"http://apply.bjhjyd.gov.cn/apply/checkValidCode.html?validCode="+c,
+	        callback:"mycallback",                          
+	        success:function(data){
+	        	  if(data.result=="true"){
+	        		   $("#checkResult").removeClass("checkFalse").addClass("checkTrue");
+				     	$("#checkResult").html('<img src="http://www.bjhjyd.gov.cn/templates/default/www/images/note_yes.gif" />');
+				   }else{
+					   $("#checkResult").removeClass("checkTrue").addClass("checkFalse");
+				    	$("#checkResult").html('<img src="http://www.bjhjyd.gov.cn/templates/default/www/images/note_no.gif" />');
+				    	$("#getValidCode").click();
+				   }
+	        },
+	        error:function(d,msg,t){
+	               // alert("请稍候重试");
+	        }
+		});
+	});
+	$("#getValidCode").click();
+		 
+});
+
+function checkSubmit(){
+	if($("#userType").val()==0||$("#userType").val()==3){
+		if(!$("#personMobile").val()){
+			alert('手机不能为空');
+			return false;
+		}
+	}else{
+		if($("#unitLoginTypeSelect").val()==0){
+			if(!$("#unitMobile").val()){
+				alert('手机不能为空');
+				return false;
+			}
+			$("#orgCode").val("");
+		}else if($("#unitLoginTypeSelect").val()==1){
+			if(!$("#orgCode").val()){
+				alert('机构代码不能为空');
+				return false;
+			}
+			$("#unitMobile").val("");
+		}else if($("#unitLoginTypeSelect").val()==2){
+			if(!$("#pin").val()){
+				alert('请选择证书');
+				return false;
+			}
+		}else {
+			alert('错误');
+			return false;
+		}
+		
+	}
+	if($("#userType").val()==1&&$("#unitLoginTypeSelect").val()==2){
+		if(!$("#pin").val()){
+			alert('证书口令不能为空');
+			return false;
+		}
+	}else if(!$("#password").val()){
+		alert('密码不能为空');
+		return false;
+	}
+	if(!$("#validCode").val()){
+		alert('验证码不能为空');
+		return false;
+	}
+	if($("#checkResult").hasClass("checkFalse")){
+		alert('验证码错误');
+		return false;
+	}
+	var userType=$("#userType").val();
+	if(userType=='0'){
+		$("form").attr("action","http://apply.bjhjyd.gov.cn/apply/user/person/login.html");
+		$("#loginForm").submit();
+	}else if(userType=='1'){
+		if($("#unitLoginTypeSelect").val()==2){
+			$.jsonp({
+		        url:"http://apply.bjhjyd.gov.cn/apply/user/enterprise/serverCert.html",
+		        callback:"mycallback",                          
+		        success:function(serverCert){
+					strServerCert =serverCert.split(",")[0];
+					strServerRan = serverCert.split(",")[1];
+		        	strServerSignedData = serverCert.split(",")[2];
+		        	var ret = Login("loginForm", $("#certList").val(), $("#pin").val());
+					if (ret) {
+						$("#ranStr").val(strServerRan);
+						$("form").attr("action","http://apply.bjhjyd.gov.cn/apply/user/enterprise/certLogin.html");	
+						$("#loginForm").submit();
+					} else {
+						return false;
+					}
+		        },
+		        error:function(d,msg,t){
+		              alert("请稍候重试");
+		              return false;
+		        }
+			});
+		}else{
+			$("form").attr("action","http://apply.bjhjyd.gov.cn/apply/user/enterprise/login.html");		
+			$("#loginForm").submit();
+		}
+	}else if(userType=='2'){
+		$("form").attr("action","http://apply.bjhjyd.gov.cn/apply/user/org/login.html");
+		$("#loginForm").submit();
+	}else if(userType=='3'){
+		//营运个体
+		$("form").attr("action","http://apply.bjhjyd.gov.cn/apply/user/serviceCar/person/login.html");
+		$("#loginForm").submit();
+	}else if(userType=='4'){
+		//营运企业
+		$("form").attr("action","http://apply.bjhjyd.gov.cn/apply/user/serviceCar/login.html");
+		$("#loginForm").submit();
+	}else{
+		alert('错误');
+		return false;
+	}
+} 
+function forgetPasswd()
+{
+	var select=$("#userType").val();
+	if(select=='0'){
+		window.location.href ="http://apply.bjhjyd.gov.cn/apply/user/person/forgetPasswd.html";
+	}else if(select=='1'){
+		window.location.href ="http://apply.bjhjyd.gov.cn/apply/user/enterprise/forgetPasswd.html";
+	}else if(select=='2'){
+		window.location.href ="http://apply.bjhjyd.gov.cn/apply/user/org/forgetPasswd.html";
+	}else if(select=='3'){
+		window.location.href ="http://apply.bjhjyd.gov.cn/apply/user/serviceCar/servicePerson/forgetPasswd.html";
+	}else if(select=='4'){
+		window.location.href ="http://apply.bjhjyd.gov.cn/apply/user/serviceCar/forgetPasswd.html";
+	}else{
+	    alert('错误');
+	    return false;
+	}
+}
+</script>
+<style type="text/css">
+    #zczx{
+     margin-top:10px;
+    }
+	#zczx dd{
+		width: 436px;
+		overflow: hidden; /*自动隐藏文字*/ 
+		 text-overflow: ellipsis;/*文字隐藏后添加省略号*/  
+		   white-space: nowrap;/*强制不换行*/
+		   line-height:30px;
+		
+	}
+	#zczx .question{
+	background: none repeat scroll 0 0 white;
+    border: 3px solid #cccccc;
+    border-radius: 8px;
+    display: none;
+    font-size: 12px;
+    margin: 0;
+    min-height: 32px;
+    padding: 12px;
+    position: absolute;
+    top:1080px;
+    left:400px;
+    text-align: left;
+    width: 650px;
+    z-index: 1;
+    line-height: 22px
+    }
+    #zczx .question div{
+    	background: #CBFFC4;
+    	border: 1px solid #4DD07A;
+    }
+    #zczx .question span{
+    font-weight: bold;
+    line-height: 28px;
+    }
+
+  #fixedpc {
+		position:fixed;    	
+    	background:  url(http://www.bjhjyd.gov.cn/templates/default/www/images/fixedpc.gif) ;
+    	width:152px;
+    	height: 122px;
+    	top:160px;
+    	right: 10px;
+		    	
+    }
+</style>
+
+
+
+</head>
+
+<body>
+<!--top、bigpic、登录、流程 开始-->
+<div class="mainbg2">
+	<!--top 开始-->
+	<div id="top">
+		<div class="top_logo1"><a target="_blank" href="http://www.bjjtw.gov.cn"><img src="http://www.bjhjyd.gov.cn/templates/default/www/images/logo_xkc.png" alt="北京市小客车指标管理信息系统" border="0"></a></div>
+		<div class="top_logo2"><script type="text/javascript">document.write(unescape("%3Cspan id='_ideConac' %3E%3C/span%3E%3Cscript src='http://dcs.conac.cn/js/01/000/0000/60425721/CA010000000604257210004.js' type='text/javascript'%3E%3C/script%3E"));</script><span id="_ideConac"><a href="//bszs.conac.cn/sitename?method=show&amp;id=350B8407AE650F29E053022819ACE6CB" target="_blank"><img id="imgConac" vspace="0" hspace="0" border="0" src="//dcs.conac.cn/image/red.png" data-bd-imgshare-binded="1"></a></span><script src="http://dcs.conac.cn/js/01/000/0000/60425721/CA010000000604257210004.js" type="text/javascript"></script><span id="_ideConac"></span></div>
+		<div class="top_logo2"><a target="_blank" href="http://www.beijing.gov.cn/"><img src="http://www.bjhjyd.gov.cn/templates/default/www/images/logo_sdzc.png" alt="首都之窗" border="0"></a></div>
+		
+	</div>
+	<!--top 结束-->
+	
+	<!--bigpic、登录 开始-->
+	<div id="bigpic">
+		<div class="czlcsm"><img src="http://www.bjhjyd.gov.cn/templates/default/www/images/czlcsm.png" alt="操作流程说明">
+		</div>
+		
+		<div class="login">
+		<form id="loginForm" name="loginForm" action="apply.bjhjyd.gov.cn/apply/user/person/login.html" method="post">
+			<input id="userType" type="hidden" name="userType" value="0">
+			<input id="ranStr" type="hidden" name="ranStr">
+			<div class="login_1">
+				<ul>
+					<li>
+					<div class="float_left select">
+						<select id="userTypeSelect" name="userTypeSelect" style="">
+						  <option value="0">个人用户</option>
+						  <option value="1">企业用户</option>
+						  <option value="2">事业及其他</option>
+						</select>
+						<select id="serviceUserTypeSelect" name="serviceUserTypeSelect" style="display: none; ">
+						  <option value="0">个体用户</option>
+						  <option value="1">企业用户</option>
+						</select>
+					</div>
+					<div class="float_left">	
+						<input id="serviceType" name="serviceType" type="radio" value="1" checked="checked">非营运车
+						<input id="serviceType" name="serviceType" type="radio" value="0">营运车
+					</div>
+					</li>
+					<li id="personLi" style="">
+					
+					<div class="float_left">
+						手机号：<input id="personMobile" name="personMobile" type="text" style="width:155px;color:#CCCCCC" value="没有手机号的用编码代替">
+								<input type="hidden" id="loginType" name="loginType" value="mobile">
+					</div>
+					</li>
+					<li id="unitLi" style="display: none; ">
+						<div class="float_left select">
+							<select id="unitLoginTypeSelect" name="unitLoginTypeSelect">
+							  <option value="0">手机号</option>
+							  <option value="1">机构代码</option>
+							</select>
+						</div>	
+						<div id="unitUserName">
+							<input id="unitMobile" name="unitMobile" type="text" style="width:105px;">
+							<input id="orgCode" name="orgCode" type="text" style="width:105px;">
+							<select id="certList" name="certList" style="width:105px;"></select>
+						</div>	
+					</li>
+				    <li id="pwdLi" style="">
+					  密&nbsp;&nbsp;&nbsp;码：<input id="password" name="password" type="password" style="width:105px;">
+					<a href="#" class="link_white" onclick="forgetPasswd();" tabindex="-1">忘记密码</a>
+					</li>
+					<li id="pinLi" style="display: none; ">
+					  证书口令：<input id="pin" name="pin" type="password" style="width:105px;">
+					</li>
+					<li>
+						<div class="float_left">验证码：</div>
+						<div class="float_left"><input class="biaodan2" type="text" id="validCode" name="validCode" style="width:50px;"></div> 
+						<div class="float_left yzm"><label id="getValidCode" class="validCodeImg" title="单击刷新验证码"><img src="http://apply.bjhjyd.gov.cn/apply/validCodeImage.html?ee=1"></label></div>
+						<div class="float_left"><label id="checkResult"></label></div>
+					</li>
+				</ul>
+			</div>
+			</form>
+			<div class="login_2"><a href="#" onclick="checkSubmit();"></a>
+			</div>
+			<div class="login_4">
+			若还<span>未注册</span>，请点击下面按钮进行<span>注册</span>。<br>
+			<div style="color: #ff9a00;font-weight: bold;text-align: left;margin-top: 5px">温馨提示：2014年1月1日之前已经申请过摇号的，直接用“手机号+密码”登录，没有手机号的用申请编码代替。</div>
+			</div>
+			<div class="login_3"><a href="http://apply.bjhjyd.gov.cn/apply/user/register.html"></a>
+			</div>
+		</div>
+
+	</div><!--bigpic、登录 结束-->
+	
+</div>
+<!--top、bigpic、登录、流程 结束-->
+<div class="wrap" style="text-align: center">
+<a href="http://apply.bjhjyd.gov.cn/apply/propose/index.html" target="_blank" style="margin:0px 1px 0px 0px">
+<img border="0" alt="我为首都交通献良策-缓解交通拥堵市民意见建议征集" src="http://www.bjhjyd.gov.cn/templates/default/www/images/quick-1.gif">
+</a>
+<a href="http://ssxkc.cbex.com.cn/jcas/" style="margin:0px 2px" target="_blank">
+<img border="0" alt="北京法院京牌小客车司法处置平台" src="http://www.bjhjyd.gov.cn/templates/default/www/images/quick-2.gif">
+</a>
+<a href="http://www.bjhjyd.gov.cn/xwzz/2014423/1398240497445_1.html" style="margin:0px 2px" target="_blank">
+<img border="0" alt="新闻转载" src="http://www.bjhjyd.gov.cn/templates/default/www/images/quick-3.gif">
+</a>
+<a href="http://www.bjhjyd.gov.cn/jggb/201449/1397026371445_1.html" style="margin:0px 0px 0px 1px" target="_blank">
+<img border="0" alt="北京汽车指标" src="http://www.bjhjyd.gov.cn/templates/default/www/images/quick-4.gif">
+</a>
+
+</div>
+
+
+<!--信息发布 开始-->
+<div class=" wrap">
+	<!--信息发布标题 开始-->
+	<div class="line_gray1">	
+	</div>
+	<!--信息发布标题 结束-->
+	
+	<!--公布栏 办事指南内容 开始-->
+	<div class="content">
+		<!--公布栏 开始-->
+		<div class="content_w float_left border_r">
+			<img src="http://www.bjhjyd.gov.cn/templates/default/www/images/gbl.png" alt="公布栏">
+			<div class="content_list">
+				<dl>
+					<dd><a href="http://www.bjhjyd.gov.cn/jggb/2017226/1488076444166_1.html" target="_blank">北京市小客车单位新能源指标配置2017年第1期配置结果</a></dd>
+				<dt>（2017-02-26）</dt>	
+				</dl>
+				<dl>
+					<dd><a href="http://www.bjhjyd.gov.cn/jggb/2017226/1488076354777_1.html" target="_blank">北京市小客车单位普通指标配置2017年第1期配置结果</a></dd>
+				<dt>（2017-02-26）</dt>	
+				</dl>
+				<dl>
+					<dd><a href="http://www.bjhjyd.gov.cn/jggb/2017226/1488076209786_1.html" target="_blank">北京市小客车个人新能源指标配置2017年第1期配置结果</a></dd>
+				<dt>（2017-02-26）</dt>	
+				</dl>
+				<dl>
+					<dd><a href="http://www.bjhjyd.gov.cn/jggb/2017226/1488076070805_1.html" target="_blank">北京市小客车个人普通指标配置2017年第1期配置结果</a></dd>
+				<dt>（2017-02-26）</dt>	
+				</dl>
+				<dl>
+					<dd><a href="http://www.bjhjyd.gov.cn/jggb/2017225/1487981785491_1.html" target="_blank">关于对外公布2017年第1期小客车指标申请审核和配置工作有关事项通告</a></dd>
+				<dt>（2017-02-25）</dt>	
+				</dl>
+				<dl>
+					<dd><a href="http://www.bjhjyd.gov.cn/jggb/201729/1486602960533_1.html" target="_blank">小客车指标申请情况温馨提示</a></dd>
+				<dt>（2017-02-09）</dt>	
+				</dl>
+			</div>
+			<div class="margin_t10"><span class="more float_right"><a href="http://www.bjhjyd.gov.cn/jggb/index.html">更多</a></span></div>
+		</div><!--公布栏 结束-->
+		
+		<!--办事指南 开始-->
+		<div class="content_w  float_left">
+			<img src="http://www.bjhjyd.gov.cn/templates/default/www/images/bszn.png" alt="办事指南">
+			<div class="content_list">
+				<dl>
+					<dd><a href="http://www.bjhjyd.gov.cn/bszn/201131/1298968037540_1.html" target="_blank">小客车指标申请各区对外办公窗口</a></dd>
+				<dt>（2014-01-20）</dt>	
+				</dl>
+				<dl>
+					<dd><a href="http://www.bjhjyd.gov.cn/bszn/20131128/1385625116338_1.html" target="_blank">《北京市小客车数量调控暂行规定》实施细则（2013年修订）</a></dd>
+				<dt>（2013-11-29）</dt>	
+				</dl>
+				<dl>
+					<dd><a href="http://www.bjhjyd.gov.cn/bszn/2015330/1427699822432_1.html" target="_blank">各区窗口业务范围及所需材料</a></dd>
+				<dt>（2015-03-30）</dt>	
+				</dl>
+				<dl>
+					<dd><a href="http://www.bjhjyd.gov.cn/bszn/20131231/1388482774221_1.html" target="_blank">申请小客车指标办事指南（个人）</a></dd>
+				<dt>（2014-01-01）</dt>	
+				</dl>
+				<dl>
+					<dd><a href="http://www.bjhjyd.gov.cn/bszn/20131231/1388483213728_1.html" target="_blank">申请小客车指标办事指南（单位）</a></dd>
+				<dt>（2014-01-01）</dt>	
+				</dl>
+				<dl>
+					<dd><a href="http://www.bjhjyd.gov.cn/bszn/20131230/1388387353922_1.html" target="_blank">京牌小客车被盗抢指标工作办事指南</a></dd>
+				<dt>（2013-12-30）</dt>	
+				</dl>
+			</div>
+			<div class="margin_t10"><span class="more float_right"><a href="http://www.bjhjyd.gov.cn/bszn/index.html">更多</a></span></div>
+		</div><!--办事指南 结束-->
+		<div class="clearboth"></div>
+	</div><!--公布栏 办事指南内容 结束-->
+	
+	<div class="content"><div class="h5green"></div></div>
+	
+	<!--政策咨询 新闻转载内容 开始-->
+	<div class="content">
+		<!--政策咨询 开始-->
+		<div class="content_w float_left border_r">
+			<img src="http://www.bjhjyd.gov.cn/templates/default/www/images/zczx.png" alt="政策咨询">
+			<div class="content_list" id="zczx">
+			</div>
+			<div class="margin_t10"><span class="more float_right"><a href="http://apply.bjhjyd.gov.cn/apply/zczx/result.html">更多</a></span></div>
+		</div><!--政策咨询 结束-->
+		
+		<!--新闻转载 开始-->
+		<div class="content_w  float_left">
+			<img src="http://www.bjhjyd.gov.cn/templates/default/www/images/xwzz.png" alt="新闻转载">
+			<div class="content_list">
+				<dl>
+					<dd><a href="http://www.bjhjyd.gov.cn/xwzz/2016419/1461079964639_1.html" target="_blank">新能源汽车齐聚亚市，消费者盛赞试驾活动</a></dd>
+				<dt>（2015-04-17）</dt>	
+				</dl>
+				<dl>
+					<dd><a href="http://www.bjhjyd.gov.cn/xwzz/2016419/1461080154509_1.html" target="_blank">二中院对“借名或租牌买车风险”向社会作出提示</a></dd>
+				<dt>（2015-03-19）</dt>	
+				</dl>
+				<dl>
+					<dd><a href="http://www.bjhjyd.gov.cn/xwzz/2016419/1461080367526_1.html" target="_blank">买卖租赁购车指标被判无效</a></dd>
+				<dt>（2014-04-23）</dt>	
+				</dl>
+				<dl>
+					<dd><a href="http://www.bjhjyd.gov.cn/xwzz/2016419/1461080444541_1.html" target="_blank">“买卖”购车指标被骗17万</a></dd>
+				<dt>（2014-03-26）</dt>	
+				</dl>
+				<dl>
+					<dd><a href="http://news.cntv.cn/2013/11/28/VIDE1385624160276396.shtml" target="_blank">2014年小客车数量调控新政发布会</a></dd>
+				<dt>（2014-02-25）</dt>	
+				</dl>
+				<dl>
+					<dd><a href="http://www.chinanews.com/shipin/cnstv/2012/12-13/news142095.shtml?qq-pf-to=pcqq.c2c" target="_blank">小客车指标调控工作情况通报会</a></dd>
+				<dt>（2014-02-25）</dt>	
+				</dl>
+			</div>
+			<div class="margin_t10"><span class="more float_right"><a href="http://www.bjhjyd.gov.cn/xwzz/index.html">更多</a></span></div>
+		</div><!--新闻转载 结束-->
+		<div class="clearboth"></div>
+	</div><!--政策咨询 新闻转载内容 结束-->
+	<div class="content"><div class=" border_b"></div></div>
+</div>
+<!--信息发布 结束-->
+
+<!--foot 开始-->
+<div class=" foot1">
+</div>
+<div class=" foot2">版权所有：北京市小客车指标调控管理办公室<a target="_blank" href="http://www.miibeian.gov.cn/" style="margin-left:10px">京ICP备05031682号</a>  京公网安备11010602060067号
+</div>
+<!--foot 结束-->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-20452377-1']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body></html>

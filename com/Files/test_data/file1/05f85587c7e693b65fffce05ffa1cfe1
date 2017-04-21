@@ -1,0 +1,156 @@
+<html><head></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">/**
+ * Created by govo on 15/10/30.
+ */
+(function() {
+
+    var cdnRoot = "https://dxgl.res.qiukuixinxi.com/game_v1.9.26.1/".indexOf("{")==0? "" :"https://dxgl.res.qiukuixinxi.com/game_v1.9.26.1/";
+    var versionTag = "1.9.26.1_3112";
+
+
+
+    var CHANNEL_INCLUDE = {
+        'egret': {js:[
+            'https://api.egret-labs.org/games/www/static/egreth5sdk.js'
+        ]},
+        'haoteng': {
+            js:[
+            'http://h5.hortorgames.com/sdk/sdk_agent.min.js'
+            ]
+        },
+        'qzone': {
+            js:[
+                'https://qzonestyle.gtimg.cn/qzone/phone/m/v4/widget/mobile/jsbridge.js',
+                'https://qzonestyle.gtimg.cn/qzone/hybrid/app/gamebar/fusion/dist/aio.share.js',
+                'https://qzonestyle.gtimg.cn/qzone/mobilepage/gamesBar/common/pop_pay_tips.js'
+            ],
+            css:[
+                cdnRoot+'launcher/qzone/qzone.css'
+            ]
+        },
+        'qqbrowser': {js:[
+            'https://api.egret-labs.org/games/www/static/egreth5sdk.js'
+        ]},
+        '1758':{css:[
+            cdnRoot+'launcher/1758/css.css'
+        ]},
+        '49you':{js:[
+            cdnRoot+'launcher/49you/49youScript.js'
+            // 'http://gameplayh5.49you.com/js/49you.js'
+        ]},
+        'letian':{js:[
+            'https://qiukui.gz.1251285055.clb.myqcloud.com/sdk/qksdk.js'
+        ]},
+        'chubao':{js:[
+            'https://open.cootekservice.com/res/js/lib/ctk-1.0.0.js'
+        ]},
+        'eyl':{js:[
+            'https://h5game.qbao.com/thirdpart/js/?gameid=1791004',
+            'https://h5game.qbao.com/thirdpart/js/sdk_release.js'
+        ]},
+        'zoo':{js:[
+            'http://zoo.res.qincaigame.com/zoo.js'
+        ]}
+    };
+
+    function getQueryString(url_search) {
+        if (url_search == null) {
+            url_search = window.location.search;
+        }
+        var ret = {};
+        var regspt = /[?&amp;]/;
+        var parts = url_search.split(regspt);
+        for (var i = 0; i &lt; parts.length; ++i) {
+            var part = parts[i];
+            if (part != '') {
+                var assign = part.split('=');
+                var key = decodeURIComponent(assign[0]);
+                var val = decodeURIComponent(assign[1]);
+                ret[key] = val;
+            }
+        }
+        return ret;
+    }
+
+    function getChannelByPath(channelId) {
+        if(window.location.pathname.indexOf("/"+channelId+"/")==0){
+            return channelId;
+        }
+        return null;
+    }
+    function getChannel() {
+        var query = getQueryString();
+        if (query.channel) {
+            return query.channel;
+        }
+        return null;
+    }
+    function getBrowserType(){
+        var query = getQueryString();
+        if (query.browsertype) {
+            return query.browsertype;
+        }
+        return null;
+    }
+    window.getQueryString = getQueryString;
+    window.getChannel = getChannel;
+    window.getChannelByPath = getChannelByPath;
+
+    var browserType = getBrowserType();
+    var channel = getChannelByPath("egret") || getChannelByPath("haoteng") || getChannel() || "qzone";
+    console.log("channel:",channel);
+    console.log("browserType",browserType);
+
+
+    if(channel == "qqbrowser"){
+        var qqbrowserScript = null;
+        if(browserType == "general"){
+            qqbrowserScript = 'https://res.imtt.qq.com/html5game/api/js/qbh5-1.0.0-min.js';
+        }else{
+            qqbrowserScript = 'https://jsapi.qq.com/get?api=x5gameplayer.*';
+        }
+        var qqbHelperScript = cdnRoot+'launcher/qqbrowser/js/run.js?v='+versionTag;
+
+        CHANNEL_INCLUDE[channel].js.push(qqbrowserScript,qqbHelperScript);
+    }
+
+    function appendScript(src) {
+        var hm = document.createElement("script");
+        hm.src = src;
+        var s = document.getElementsByTagName("head")[0];
+        s.appendChild(hm);
+    }
+
+    function appendCss(src) {
+        var hm = document.createElement("style");
+        hm.setAttribute("rel","stylesheet");
+        hm.setAttribute("rel","stylesheet");
+        hm.setAttribute("href",src);
+        var s = document.getElementsByTagName("head")[0];
+        s.appendChild(hm);
+    }
+
+    if (channel &amp;&amp; CHANNEL_INCLUDE[channel]) {
+        var items = CHANNEL_INCLUDE[channel];
+        if(channel=="49you"){
+            var query = getQueryString();
+            if (items.js &amp;&amp; query.version49=="1") {
+                items.js.push("http://gameplay.49you.com/js/new_49you.js");
+            }else if(items.js){
+                items.js.push("http://gameplayh5.49you.com/js/49you.js");
+            }
+        }
+        if(items.js){
+            var js = items.js;
+            for (var i in js) {
+                appendScript(js[i]);
+            }
+        }
+        if(items.css){
+            var css = items.css;
+            for (var c in css) {
+                appendCss(css[c]);
+            }
+        }
+    }
+
+})();</pre></body></html>

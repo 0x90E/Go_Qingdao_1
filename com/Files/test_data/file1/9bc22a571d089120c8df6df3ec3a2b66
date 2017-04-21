@@ -1,0 +1,207 @@
+<!DOCTYPE html><html><head>
+    	<meta charset="utf-8">
+                <title>彩票-快速登录-166彩票官网</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta content="" name="Description">
+        <meta content="" name="Keywords">
+        <meta name="baidu-site-verification" content="bErb0i5wmE">
+        <link rel="stylesheet" href="//www.166cai.com/caipiaoimg/v1.1/styles/global.min.css?v=187">
+        <script src="//hm.baidu.com/hm.js?b3407c198af562ed4133afc4c88ca97a"></script><script src="//www.166cai.com/caipiaoimg/v1.1/js/jquery-1.8.3.min.js?v=187" type="text/javascript"></script>
+        <script src="//www.166cai.com/caipiaoimg/v1.1/js/base.min.js?v=187" type="text/javascript"></script>
+    </head>
+    <body>
+        <script type="text/javascript">
+        	var version = 'v1.1';
+        	var visitor = {userNickname:'未登录用户'};
+			window.easemobim = window.easemobim || {};
+			easemobim.config = {visitor: visitor};
+        </script>
+        <script src="//kefu.easemob.com/webim/easemob.js"></script>
+        <div class="fix-foot-wrap">
+<!--header begin-->
+<div class="header header-short">
+  <div class="wrap header-inner">
+    <div class="logo">
+    	<div class="logo-txt"><span class="logo-txt-name">166彩票</span></div>
+    	<a href="/" class="logo-img"><img src="//www.166cai.com/caipiaoimg/v1.1/img/logo/logo-166.png?v=187" width="280" height="70" alt="166彩票网"></a>
+    	<h1 class="header-title">欢迎登录</h1>
+    </div>
+    <div class="aside">
+    	<a href="javascript:;" onclick="easemobim.bind({tenantId: '38338'})" class="btn-specail online-service" target="_self"><i class="icon-font"></i>在线客服</a>
+    	<p class="telphone"><i class="icon-font"></i>客服热线：<em>400-690-6760</em></p>
+    </div>
+  </div>
+</div>
+
+<!--header end-->
+<div class="wrap_in l-concise l-concise-col">
+	<div class="l-concise-bd login">
+		<div class="l-concise-main">
+			<form class="form form-login">
+	<div class="form-item">
+		<label class="form-item-label" for="username">手机号/用户名：</label>
+		<div class="form-item-con">
+			<input class="form-item-ipt vcontent" id="username" name="username" type="text" autocomplete="off" value="">
+		</div>
+	</div>
+	<div class="form-item">
+		<label class="form-item-label" for="pword">密码：</label>
+		<div class="form-item-con">
+			<input class="form-item-ipt vcontent" id="pword" name="pword" data-encrypt="1" type="password" value="">
+			<a href="/safe/findPword" class="lnk-txt">忘记密码？</a>
+		</div>
+	</div>
+	<div class="form-item form-vcode vcode-img hide" id="captcha_area">
+		<label class="form-item-label" for="captcha_reg">验证码：</label>
+		<div class="form-item-con">
+			<input class="form-item-ipt vcontent" name="captcha" type="text" value=""><img id="captcha_reg" src="/mainajax/captcha?v=1491036477" width="68" height="30" alt=""><a class="lnk-txt" href="javascript:;" target="_self" id="change_captcha">换一张</a>
+		</div>
+	</div>
+	<div class="form-item">
+		<div class="form-item-con">
+			<div class="form-tip-bar form-tip hide">
+				<i class="icon-tip"></i>
+				<span class="form-tip-con"></span>
+				<s></s>
+			</div>
+		</div>
+	</div>
+	<div class="form-item btn-group">
+		<div class="form-item-con">
+			<a class="btn btn-main btn-register submit" href="javascript:;">立即登录</a>
+			<a href="/main/register" class="lnk-txt">立即注册</a>
+		</div>
+	</div>
+</form>
+		</div>
+		<div class="l-concise-side">
+        <img src="/uploads/banner/右侧banner.png" width="240" height="350" alt="你预约我护航">
+    </div>
+<input type="hidden" class="uid" name="type" value="0">
+<script>
+$(function(){
+    $('.btn-send').click(function(){
+        var uid = $('.uid').val();
+        var tel_num = $("#tel_num").val();
+        if(tel_num == ''){
+            $('.dl2msg-tips').html("请输入手机号码！");
+            return;
+        }else if(!(/^1[3-8]{1}\d{9}/.test(tel_num)) || tel_num.length != 11){
+            $('.dl2msg-tips').html("请输入正确手机号码！");
+            return;
+        }          
+        $.ajax({
+            type: "POST",
+            url: "/app_buy/sendSms",
+            data: {
+                'uid': uid,
+                'tel_num':tel_num
+                },
+            dataType: "json",
+            success: function (resp) {
+                if (resp.ok) {
+                    $('.dl2msg-tips').html("链接已发送，请注意查收！");              
+                }
+                else {
+                    $('.dl2msg-tips').html(resp.msg);
+                }
+            }
+        })
+    })
+});
+</script>	</div>
+</div>
+<script type="text/javascript">
+function showCaptche(flag)
+{
+	if(flag) {
+		$('#captcha_area').removeClass('hide');
+   	} else{
+   		$('#captcha_area').addClass('hide');
+	}
+}
+$(function(){
+	showCaptche($.cookie('needCaptcha'));
+	new cx.vform('.form-login', {
+		renderTip: 'renderTips',
+        submit: function(data) {
+            var self = this;
+            if(data.username == '' || data.pword == ''){
+            	self.renderTip('请输入用户名或密码', $('.form-tip-con'));
+                return false;
+            }
+            $.ajax({
+                type: 'post',
+                url:  '/mainajax/login',
+                data: data,
+                success: function(response) {
+                	showCaptche($.cookie('needCaptcha'));
+                	recaptcha_reg();
+                	if(response.code == 0){
+                        //登录成功
+                		location.href =  '/';
+                    }else{
+                        //登录失败
+                        if(response.code ==1){
+                        	self.renderTip('用户名或密码错误', $('.form-tip-con'));
+                        }else{
+                        	self.renderTip(response.msg, $('.form-tip-con'));
+                        }
+                    }
+                    $('input[name="captcha"]').val('');
+                }
+            });
+        }
+    });
+    
+    $('#change_captcha').on('click', function(){
+        recaptcha_reg();
+        return false;
+    });
+    showCaptche($.cookie('needCaptcha'));
+})
+</script><!--footer beigin-->
+	<!-- 为foot预留的一个空盒子 -->
+	<div class="fix-foot-short-box"></div>
+</div>
+<div class="footer footer-short">
+  <div class="copyright">
+    <div class="wrap_in">
+      <p>166彩票提醒：理性购彩，热爱公益  国家禁止彩票店向未满18周岁的未成年人售彩！</p>
+      版权所有 <em style="font-family: Tahoma;">©</em> 上海彩咖网络科技有限公司 <a target="_blank" href="http://www.miitbeian.gov.cn/" rel="nofollow">沪ICP备16011330号</a> 客服热线：400-690-6760
+    </div>
+  </div>
+</div>
+<div class="pop-mask hidden"></div>
+<!--footer end-->
+<script type="text/javascript" src="//www.166cai.com/caipiaoimg/v1.1/js/comm.min.js?v=187"></script>
+<script type="text/javascript" src="//www.166cai.com/caipiaoimg/v1.1/js/vform.min.js?v=187"></script>
+<script src="//www.166cai.com/caipiaoimg/v1.1/js/encrypt.min.js?v=187" type="text/javascript"></script>
+<script type="text/javascript">
+$(function(){
+	window.cx || (window.cx = {});
+	cx.pub_salt = 'Ic7mXFV24BaAlGviHapw+g==';
+	cx.rsa_encrypt = function( val ) {
+		var rsa_n = 'B31FD13CCDA7684626351A49159B9FDD';        
+		setMaxDigits(131);
+		var key = new RSAKeyPair("10001", '', rsa_n);
+		return encryptedString(key, val + '<PSALT>' + cx.pub_salt);
+	}
+});
+</script><!--<script type="text/javascript" 
+            src=""></script> -->
+     <script> 
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?b3407c198af562ed4133afc4c88ca97a";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+<!--[if IE 6]>
+<script src="/caipiaoimg/v1.1/js/DD_belatedPNG_0.0.8a-min.js"></script>
+<script>DD_belatedPNG.fix('.png_bg');</script>
+<![endif]-->
+
+</body></html>

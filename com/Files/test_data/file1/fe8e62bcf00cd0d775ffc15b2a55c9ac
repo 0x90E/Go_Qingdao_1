@@ -1,0 +1,695 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN">
+ <head> 
+  <meta name="baidu_union_verify" content="c33aaefb2b88394cfd14acda440be218" /> 
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+  <title>javascript中查看元素事件函数的一些技巧 | 极客宅</title> 
+  <meta name="description" content="javascript中查看元素事件函数的一些技巧" /> 
+  <meta name="keywords" content="Java" /> 
+  <link rel="stylesheet" href="http://itongblognew.qiniudn.com/wp-content/themes/HotNewspro/style.css" type="text/css" media="screen" /> 
+  <link rel="stylesheet" href="http://itongblognew.qiniudn.com/wp-content/themes/HotNewspro/css/css.css" /> 
+  <link rel="stylesheet" href="http://itongblognew.qiniudn.com/wp-content/themes/HotNewspro/css/highlight.css" /> 
+  <link rel="stylesheet" href="http://itongblognew.qiniudn.com/wp-content/themes/HotNewspro/css/img.css" /> 
+  <link rel="pingback" href="http://www.51itong.net/xmlrpc.php" /> 
+  <link rel="shortcut icon" href="http://itongblognew.qiniudn.com/wp-content/themes/HotNewspro/images/favicon.ico" /> 
+  <script type="text/javascript" src="http://itongblognew.qiniudn.com/wp-content/themes/HotNewspro/js/jquery.min.js"></script> 
+  <link rel="alternate" type="application/rss+xml" title="极客宅 &raquo; Feed" href="http://www.51itong.net/feed" /> 
+  <link rel="alternate" type="application/rss+xml" title="极客宅 &raquo; Comments Feed" href="http://www.51itong.net/comments/feed" /> 
+  <link rel="alternate" type="application/rss+xml" title="极客宅 &raquo; javascript中查看元素事件函数的一些技巧 Comments Feed" href="http://www.51itong.net/javascript-1532.html/feed" /> 
+  <script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"http:\/\/s.w.org\/images\/core\/emoji\/72x72\/","ext":".png","source":{"concatemoji":"http:\/\/www.51itong.net\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.3.1"}};
+			!function(a,b,c){function d(a){var c=b.createElement("canvas"),d=c.getContext&&c.getContext("2d");return d&&d.fillText?(d.textBaseline="top",d.font="600 32px Arial","flag"===a?(d.fillText(String.fromCharCode(55356,56812,55356,56807),0,0),c.toDataURL().length>3e3):(d.fillText(String.fromCharCode(55357,56835),0,0),0!==d.getImageData(16,16,1,1).data[0])):!1}function e(a){var c=b.createElement("script");c.src=a,c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g;c.supports={simple:d("simple"),flag:d("flag")},c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.simple&&c.supports.flag||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script> 
+  <style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style> 
+  <script type="text/javascript">
+var duoshuoQuery = {"short_name":"51itong","sso":{"login":"http:\/\/www.51itong.net\/wp-login.php?action=duoshuo_login","logout":"http:\/\/www.51itong.net\/wp-login.php?action=logout&_wpnonce=626e5ee42b"},"theme":"default","stylePatch":"wordpress\/HotNews_Pro"};
+duoshuoQuery.sso.login += '&redirect_to=' + encodeURIComponent(window.location.href);
+duoshuoQuery.sso.logout += '&redirect_to=' + encodeURIComponent(window.location.href);
+</script> 
+  <script type="text/javascript" src="http://static.duoshuo.com/embed.js" charset="UTF-8" async="async"></script> 
+  <link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.51itong.net/xmlrpc.php?rsd" /> 
+  <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://itongblognew.qiniudn.com/wp-includes/wlwmanifest.xml" /> 
+  <link rel="prev" title="JAVA设计模式之代理模式" href="http://www.51itong.net/java-1531.html" /> 
+  <link rel="next" title="linux登录档（日志）相关简介" href="http://www.51itong.net/linux-1533.html" /> 
+  <meta name="generator" content="WordPress 4.3.1" /> 
+  <link rel="canonical" href="http://www.51itong.net/javascript-1532.html" /> 
+  <link rel="shortlink" href="http://www.51itong.net/?p=1532" /> 
+  <link type="text/css" rel="stylesheet" href="http://itongblognew.qiniudn.com/wp-content/plugins/syntax-highlighter-with-add-button-in-editor/styles/shCoreDefault.css" /> 
+  <link href="http://itongblognew.qiniudn.com/wp-content/themes/HotNewspro/styles/5-green.css" rel="stylesheet" type="text/css" /> 
+  <script type="text/javascript" src="http://itongblognew.qiniudn.com/wp-content/themes/HotNewspro/comments-ajax.js"></script> 
+  <script type="text/javascript" src="http://itongblognew.qiniudn.com/wp-content/themes/HotNewspro/js/reply.js"></script> 
+  <script type="text/javascript" src="http://itongblognew.qiniudn.com/wp-content/themes/HotNewspro/js/custom.js"></script> 
+  <script type="text/javascript" src="http://itongblognew.qiniudn.com/wp-content/themes/HotNewspro/js/superfish.js"></script> 
+  <script type="text/javascript" src="http://itongblognew.qiniudn.com/wp-content/themes/HotNewspro/js/mousewheel.js"></script> 
+  <script type="text/javascript" src="http://itongblognew.qiniudn.com/wp-content/themes/HotNewspro/js/fancybox.js"></script> 
+  <script type="text/javascript">
+	$(document).ready(function() {
+
+		$("a[rel=example_group]").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'titlePosition' 	: 'over',
+			'titleFormat'		: function(title, currentArray, currentIndex, currentOpts) {
+				return '<span id="fancybox-title-over">共 ' + currentArray.length + ' 张图片，当前第 ' + (currentIndex + 1) +' 张 '+ (title.length ? ' &nbsp; ' + title : '') + '</span>';
+			}
+		});
+
+		$("#various").fancybox({
+			'padding'			: 0,
+			'autoScale'			: false,
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none'
+		});
+		$("#load").fancybox({
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none'
+		});
+	});
+</script>
+  <script type="text/javascript">
+$(function () {
+$('.thumbnail img,.thumbnail_t img,.box_comment img,#slideshow img,.cat_ico,.cat_name,.r_comments img,.v_content_list img').hover(
+function() {$(this).fadeTo("fast", 0.5);},
+function() {$(this).fadeTo("fast", 1);
+});
+});
+</script> 
+  <script type="text/javascript">
+    /*300*250-视窗-itblog*/
+var cpro_id = "u2175691";
+</script> 
+  <script src="http://cpro.baidustatic.com/cpro/ui/f.js" type="text/javascript"></script> 
+  <!-- PNG --> 
+  <!--[if lt IE 7]>
+<script type="text/javascript" src="http://itongblognew.qiniudn.com/wp-content/themes/HotNewspro/js/pngfix.js"></script>
+<script type="text/javascript">
+DD_belatedPNG.fix('.boxCaption,.top_box,.logo,.reply,.imgcat,.banner img,#fancybox-left-ico,#fancybox-right-ico,#fancybox-close');
+</script>
+<![endif]--> 
+  <!-- 图片延迟加载 --> 
+  <script type="text/javascript" src="http://itongblognew.qiniudn.com/wp-content/themes/HotNewspro/js/lazyload.js"></script> 
+  <script type="text/javascript">
+	$(function() {          
+    	$(".entry_box img,.entry_box_h img,#entry img,.entry_b img").lazyload({
+            effect:"fadeIn",
+			failurelimit : 30
+          });
+    	});
+</script>
+  <!-- IE6菜单 --> 
+  <script type="text/javascript"><!--//--><![CDATA[//><!--
+sfHover = function() {
+	if (!document.getElementsByTagName) return false;
+	var sfEls = document.getElementById("menu").getElementsByTagName("li");
+
+	for (var i=0; i<sfEls.length; i++) {
+		sfEls[i].onmouseover=function() {
+			this.className+=" sfhover";
+		}
+		sfEls[i].onmouseout=function() {
+			this.className=this.className.replace(new RegExp(" sfhover\\b"), "");
+		}
+	}	
+	var sfEls = document.getElementById("topnav").getElementsByTagName("li");
+	for (var i=0; i<sfEls.length; i++) {
+		sfEls[i].onmouseover=function() {
+			this.className+=" sfhover";
+		}
+	}
+}
+if (window.attachEvent) window.attachEvent("onload", sfHover);
+//--><!]]></script> 
+  <!-- 预加载 --> 
+  <link rel="prefetch" href="http://www.51itong.net" /> 
+  <link rel="prerender" href="http://www.51itong.net" /> 
+ </head> 
+ <body class="single single-post postid-1532 single-format-standard"> 
+  <div id="wrapper"> 
+   <div id="top"> 
+    <div id="topnav"> 
+     <div class="left_top "> 
+      <div class="home_h">
+       <a href="http://www.51itong.net" title="首  页" class="home_h"></a>
+      </div> 
+      <div class="menu-%e7%9b%ae%e5%bd%95%e8%8f%9c%e5%8d%95-container">
+       <ul id="menu-%e7%9b%ae%e5%bd%95%e8%8f%9c%e5%8d%95" class="menu">
+        <li id="menu-item-477" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-477"><a href="http://www.51itong.net/category/programing">编程语言</a> 
+         <ul class="sub-menu"> 
+          <li id="menu-item-478" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-478"><a href="http://www.51itong.net/category/programing/csharp">C#</a></li> 
+          <li id="menu-item-479" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-479"><a href="http://www.51itong.net/category/programing/c">C++</a></li> 
+          <li id="menu-item-480" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-480"><a href="http://www.51itong.net/category/programing/java">Java</a></li> 
+          <li id="menu-item-481" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-481"><a href="http://www.51itong.net/category/programing/objective-c">Objective-C</a></li> 
+          <li id="menu-item-482" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-482"><a href="http://www.51itong.net/category/programing/python">Python</a></li> 
+          <li id="menu-item-483" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-483"><a href="http://www.51itong.net/category/programing/scala">Scala</a></li> 
+         </ul> </li> 
+        <li id="menu-item-434" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor menu-item-has-children menu-item-434"><a href="http://www.51itong.net/category/web">Web开发</a> 
+         <ul class="sub-menu"> 
+          <li id="menu-item-435" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-435"><a href="http://www.51itong.net/category/web/net">.Net</a></li> 
+          <li id="menu-item-436" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-436"><a href="http://www.51itong.net/category/web/apache">Apache</a></li> 
+          <li id="menu-item-437" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-437"><a href="http://www.51itong.net/category/web/j2ee">J2EE</a></li> 
+          <li id="menu-item-438" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-438"><a href="http://www.51itong.net/category/web/php">PHP</a></li> 
+          <li id="menu-item-439" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-439"><a href="http://www.51itong.net/category/web/tomcat">web服务器</a></li> 
+          <li id="menu-item-440" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-440"><a href="http://www.51itong.net/category/web/front-web">前端开发</a></li> 
+         </ul> </li> 
+        <li id="menu-item-457" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-457"><a href="http://www.51itong.net/category/db">数据库</a> 
+         <ul class="sub-menu"> 
+          <li id="menu-item-458" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-458"><a href="http://www.51itong.net/category/db/db2">DB2</a></li> 
+          <li id="menu-item-459" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-459"><a href="http://www.51itong.net/category/db/mysql">MySql</a></li> 
+          <li id="menu-item-460" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-460"><a href="http://www.51itong.net/category/db/oracle">Oracle</a></li> 
+          <li id="menu-item-461" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-461"><a href="http://www.51itong.net/category/db/postgresql">PostgreSQL</a></li> 
+          <li id="menu-item-462" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-462"><a href="http://www.51itong.net/category/db/sqlite">Sqlite</a></li> 
+          <li id="menu-item-463" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-463"><a href="http://www.51itong.net/category/db/sqlserver">SqlServer</a></li> 
+          <li id="menu-item-464" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-464"><a href="http://www.51itong.net/category/db/sybase">Sybase</a></li> 
+         </ul> </li> 
+        <li id="menu-item-441" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-441"><a href="http://www.51itong.net/category/cloud">云计算</a> 
+         <ul class="sub-menu"> 
+          <li id="menu-item-442" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-442"><a href="http://www.51itong.net/category/cloud/hadoop">Hadoop</a></li> 
+          <li id="menu-item-443" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-443"><a href="http://www.51itong.net/category/cloud/sina-cloud">新浪云</a></li> 
+          <li id="menu-item-444" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-444"><a href="http://www.51itong.net/category/cloud/baidu-cloud">百度云</a></li> 
+         </ul> </li> 
+        <li id="menu-item-446" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-446"><a href="http://www.51itong.net/category/big-data">大数据</a> 
+         <ul class="sub-menu"> 
+          <li id="menu-item-447" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-447"><a href="http://www.51itong.net/category/big-data/bigtable">BigTable</a></li> 
+          <li id="menu-item-448" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-448"><a href="http://www.51itong.net/category/big-data/hbase">HBase</a></li> 
+          <li id="menu-item-449" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-449"><a href="http://www.51itong.net/category/big-data/mongodb">MongoDB</a></li> 
+          <li id="menu-item-450" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-450"><a href="http://www.51itong.net/category/big-data/redis">Redis</a></li> 
+          <li id="menu-item-451" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-451"><a href="http://www.51itong.net/category/big-data/spark">Spark</a></li> 
+          <li id="menu-item-452" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-452"><a href="http://www.51itong.net/category/big-data/data-mining">数据挖掘</a></li> 
+         </ul> </li> 
+        <li id="menu-item-469" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-469"><a href="http://www.51itong.net/category/mobile">移动开发</a> 
+         <ul class="sub-menu"> 
+          <li id="menu-item-470" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-470"><a href="http://www.51itong.net/category/mobile/android">Android</a></li> 
+          <li id="menu-item-471" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-471"><a href="http://www.51itong.net/category/mobile/ios">IOS</a></li> 
+          <li id="menu-item-472" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-472"><a href="http://www.51itong.net/category/mobile/winphone">Winphone</a></li> 
+         </ul> </li> 
+        <li id="menu-item-473" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-473"><a href="http://www.51itong.net/category/system">系统运维</a> 
+         <ul class="sub-menu"> 
+          <li id="menu-item-474" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-474"><a href="http://www.51itong.net/category/system/linux">Linux</a></li> 
+          <li id="menu-item-475" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-475"><a href="http://www.51itong.net/category/system/windows">Windows</a></li> 
+          <li id="menu-item-476" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-476"><a href="http://www.51itong.net/category/system/newwork">网络技术</a></li> 
+         </ul> </li> 
+        <li id="menu-item-466" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-466"><a href="http://www.51itong.net/category/manage">研发管理</a> 
+         <ul class="sub-menu"> 
+          <li id="menu-item-467" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-467"><a href="http://www.51itong.net/category/manage/arch">架构研究</a></li> 
+          <li id="menu-item-468" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-468"><a href="http://www.51itong.net/category/manage/design">设计模式</a></li> 
+         </ul> </li> 
+        <li id="menu-item-453" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-453"><a href="http://www.51itong.net/category/open-source">我爱开源</a> 
+         <ul class="sub-menu"> 
+          <li id="menu-item-454" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-454"><a href="http://www.51itong.net/category/open-source/drupal">Drupal</a></li> 
+          <li id="menu-item-455" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-455"><a href="http://www.51itong.net/category/open-source/liferay">Liferay</a></li> 
+          <li id="menu-item-456" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-456"><a href="http://www.51itong.net/category/open-source/wordpress">WordPress</a></li> 
+         </ul> </li> 
+       </ul>
+      </div> 
+     </div> 
+     <!-- end: left_top --> 
+     <div id="searchbar"> 
+      <form method="get" id="searchform" action="http://www.51itong.net/"> 
+       <input type="text" name="s" id="s" class="swap_value" /> 
+       <input type="image" src="http://itongblognew.qiniudn.com/wp-content/themes/HotNewspro/images/go.gif" id="go" alt="Search" title="搜索" /> 
+      </form> 
+     </div> 
+     <!-- end: searchbar --> 
+    </div> 
+    <!-- end: topnav --> 
+   </div> 
+   <!-- end: top --> 
+   <div id="header"> 
+    <div class="header_c"> 
+     <div class="login_t">
+      <a id="showbtn" onclick="showid('smallLay');">登录</a> 
+      <div id="smallLay"> 
+       <div id="smallLay_box"> 
+        <!-- if not logged --> 
+        <form action="http://www.51itong.net/wp-login.php?redirect_to=http%3A%2F%2Fwww.51itong.net%2Fjavascript-1532.html" method="post" id="loginform"> 
+         <div class="loginblock"> 
+          <p class="login"><input type="text" name="log" id="log" size="" tabindex="11" /></p> 
+          <p class="password"><input type="password" name="pwd" id="pwd" size="" tabindex="12" /></p> 
+          <p class="lefted"><button value="Submit" id="submit_t" type="submit" tabindex="13">登&nbsp;录</button></p> 
+         </div> 
+         <input type="hidden" name="redirect_to" value="/javascript-1532.html" /> 
+         <input type="checkbox" name="rememberme" id="modlogn_remember" value="yes" checked="checked" alt="Remember Me" />下次自动登录 
+        </form> 
+        <!-- end if not logged --> 
+       </div> 
+      </div> 
+     </div> 
+     <div class="time"> 
+      <script type="text/javascript">
+today=new Date();
+var day; var date; var hello;
+hour=new Date().getHours()
+if(hour < 6)hello='  凌晨好! '
+else if(hour < 9)hello=' 早上好! '
+else if(hour < 12)hello=' 上午好! '
+else if(hour < 14)hello=' 中午好! '
+else if(hour < 17)hello=' 下午好! '
+else if(hour < 19)hello=' 傍晚好! '
+else if(hour < 22)hello=' 晚上好! '
+else {hello='夜深了! '}
+var webUrl = webUrl;
+document.write(' '+hello);
+</script> 
+      <span id="localtime"> <script type="text/javascript">
+today=new Date(); var tdate,tday, x,year; var x = new Array("星期日", "星期一", "星期二", "星期三", "星期四", "星期五","星期六");
+var MSIE=navigator.userAgent.indexOf("MSIE");
+if(MSIE != -1)
+year =(today.getFullYear());
+else
+year = (today.getYear()+1900);
+tdate= year+ "年" + (today.getMonth() + 1 ) + "月" + today.getDate() + "日" + " " + x[today.getDay()];
+document.write(tdate);
+</script> </span> 
+     </div> 
+     <h1 class="site_title"><a href="http://www.51itong.net">极客宅</a></h1> 
+     <h2 class="site_description">Geeker的编程技术博客</h2> 
+    </div> 
+    <div class="clear"></div> 
+    <!-- end: header_c --> 
+   </div> 
+   <!-- end: header --> 
+   <!-- header_image --> 
+   <div class="banner"> 
+   </div> 
+   <!-- end:header_image --> 
+   <!-- scroll --> 
+   <ul class="scroll"> 
+    <li class="sct"> <a href="#">&nbsp;&nbsp;&nbsp;</a> 
+     <div>
+      <a class="scroll_t">返回顶部</a>
+     </div> </li> 
+    <li class="scc"> <a href="#">&nbsp;&nbsp;&nbsp;</a> 
+     <div>
+      <a class="scroll_c">查看留言</a>
+     </div> </li> 
+    <li class="scb"> <a href="#">&nbsp;&nbsp;&nbsp;</a> 
+     <div>
+      <a class="scroll_b">转到底部</a>
+     </div> </li> 
+   </ul>
+   <script type="text/javascript">
+    function doZoom(size) {
+        var zoom = document.all ? document.all['entry'] : document.getElementById('entry');
+        zoom.style.fontSize = size + 'px';
+    }
+</script> 
+   <div id="content"> 
+    <!-- menu --> 
+    <div id="map"> 
+     <div class="browse">
+      现在的位置: 
+      <a title="返回首页" href="http://www.51itong.net/">首页</a> &gt; 
+      <a href="http://www.51itong.net/category/web">Web开发</a> &gt; 
+      <a href="http://www.51itong.net/category/web/front-web" rel="category tag">前端开发</a> &gt; 正文
+     </div> 
+     <div id="feed">
+      <a href="http://www.51itong.net/feed" title="RSS">RSS</a>
+     </div> 
+    </div> 
+    <!-- end: menu --> 
+    <div class="entry_box_s"> 
+     <div class="context"> 
+      <div class="context_t"> 
+       <span class="prev"><a href="http://www.51itong.net/jquery-ajax-1523.html" rel="prev">上篇</a></span> 
+       <span class="next"><a href="http://www.51itong.net/html-1595.html" rel="next">下篇</a></span> 
+      </div> 
+     </div> 
+     <div class="entry_title_box"> 
+      <!-- 分类图标 --> 
+      <div class="ico"></div> 
+      <!-- end: 分类图标 --> 
+      <h2 class="entry_title">javascript中查看元素事件函数的一些技巧</h2> 
+      <div class="archive_info"> 
+       <span class="date">2015年01月11日</span> 
+       <span class="category"> ⁄ <a href="http://www.51itong.net/category/web/front-web" rel="category tag">前端开发</a></span> ⁄ 共 1903字 ⁄ 字号 
+       <span class="font"><a href="javascript:doZoom(12)">小</a> <a href="javascript:doZoom(13)">中</a> <a href="javascript:doZoom(18)">大</a></span> 
+       <span class="comment"> ⁄ <a href="http://www.51itong.net/javascript-1532.html#respond" class="ds-thread-count" data-thread-key="1532">暂无评论</a></span> 
+       <span class="edit"></span> 
+      </div> 
+     </div> 
+     <!-- end: entry_title_box --> 
+     <div class="entry"> 
+      <div id="entry"> 
+       <div class="ad_r" tabindex="-1"> 
+        <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> 
+        <!-- itblog-article --> 
+        <ins class="adsbygoogle" style="display:inline-block;width:300px;height:250px" data-ad-client="ca-pub-9460629317209118" data-ad-slot="8685408585"></ins> 
+        <script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+       </div> 
+       <p>在分析一些网页的时候，经常会发现点击某个按钮会触发某个动作，当页面比较复杂，包含的js文件又多，这时候要找到这段触发函数的代码写在哪里就比较困难。比如，在某个html页面中，发现如下一个按钮，点击后会使得页面元素有变化。但是并未看到onclick事件，那说明该事件可能是通过javascript中的addEventListener方法绑定的（IE不支持该方法，使用的是attachEvent，不理解为微软何非要和W3C标准对着干）。例如下面的代码：</p> 
+       <pre class="brush:js ">&lt;input&nbsp;type=&quot;button&quot;&nbsp;value=&quot;输入&quot;&nbsp;id=&quot;btn1&quot;&nbsp;name=&quot;n_btn1&quot;/&gt;&lt;label&nbsp;id=&quot;lbl&quot;&gt;&lt;/label&gt;&lt;br&nbsp;/&gt;
+&lt;script&nbsp;type=&quot;text/javascript&quot;&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;document.getElementById(&quot;btn1&quot;).addEventListener(&quot;click&quot;,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;function&nbsp;()&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;alert(&quot;OK&quot;);
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;});
+&nbsp;&nbsp;&lt;/script&gt;</pre> 
+       <p>要看到btn1绑定的事件，可以通过chrome的事件监听实现。如下截图：</p> 
+       <p><a target="_blank"><img style="background-image:none;border-bottom:0px;border-left:0px;margin:0px;padding-left:0px;padding-right:0px;border-top:0px;border-right:0px;padding-top:0px;" title="clipboard" border="0" alt="clipboard" src="http://itongblognew.qiniudn.com/img/1420938308814.jpg" height="258" /></a></p> 
+       <p>此外，可以通过命令，查看绑定的方法，在Chrome中的命令行方法，getEventListeners(object)获得，如下：</p> 
+       <p><a target="_blank"><img style="background-image:none;border-bottom:0px;border-left:0px;margin:0px;padding-left:0px;padding-right:0px;border-top:0px;border-right:0px;padding-top:0px;" title="clipboard[1]" border="0" alt="clipboard[1]" src="http://itongblognew.qiniudn.com/img/1420938308973.jpg" height="185" /></a></p> 
+       <p>注意：getEventListeners方法是谷歌提供的供调试的命令行，并不是标准的javascript函数，只可以在chrome中的控制台中运行，与之类似的命令行还有很多，可以参考：</p> 
+       <p><a href="https://developer.chrome.com/devtools/docs/commandline-api" target="_blank">https://developer.chrome.com/devtools/docs/commandline-api</a>（需翻墙）。</p> 
+       <p>此外，在控制台的listener中，只能显示函数的第一行，如果你写的函数是多行的，那就需要把命令打全了：</p> 
+       <p>getEventListeners(document.getElementById(&quot;btn1&quot;)).click[0].listener</p> 
+       <p>console会把函数的全部都打印出来。</p> 
+       <p>如果该段代码使用jquery绑定的，使用这种方法就会有点问题，比如，还是上面的代码，但是绑定方式如下：</p> 
+       <pre class="brush:js ">&nbsp;&nbsp;&nbsp;&nbsp;$(function&nbsp;()&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$(&quot;#btn1&quot;).click(function&nbsp;()&nbsp;{&nbsp;alert('OK2')&nbsp;});
+&nbsp;&nbsp;&nbsp;&nbsp;});</pre> 
+       <p>通过jquery的click方法绑定了一个方法，结果发现listenerBody指向到了jquery的代码上去了，如下图：</p> 
+       <p><a target="_blank"><img style="background-image:none;border-bottom:0px;border-left:0px;margin:0px;padding-left:0px;padding-right:0px;border-top:0px;border-right:0px;padding-top:0px;" title="clipboard[2]" border="0" alt="clipboard[2]" src="http://itongblognew.qiniudn.com/img/1420938309032.jpg" height="274" /></a></p> 
+       <p>这也正说明了，Jquery对于事件的绑定重新的定义了一套方法，所以此处看到的是Jquery的代码。</p> 
+       <p>幸运的是，在jquery中，我们可以使用jQuery._data(element, &quot;events&quot;)方法,关于这个方法的文档很少，官方文档在这里<a target="_blank">http://blog.jquery.com/2011/11/08/building-a-slimmer-jquery/</a>，提及到该方法时一个内部方法，记录了所有元素的事件。Stackoverflow上有一个文章介绍了这个方法和Jquery.data的区别，地址<a target="_blank">http://stackoverflow.com/questions/7788353/whats-the-difference-between-jquery-data-and-jquery-data-underscore-data</a>。</p> 
+       <p>此处，我们只需要知道这个方法可以用来实现我们的目的——查看元素所绑定的事件。我们只需在chrome的控制台里输入如下代码：</p> 
+       <pre class="brush:js ">$._data($(&quot;#btn1&quot;)[0],&nbsp;'events');</pre> 
+       <p>注意，该方法的参数是DOM对象，不是jquery对象。因此需要加一个[0]来转成DOM对象。具体如下图：</p> 
+       <p><a target="_blank"><img style="background-image:none;border-bottom:0px;border-left:0px;margin:0px;padding-left:0px;padding-right:0px;border-top:0px;border-right:0px;padding-top:0px;" title="clipboard[3]" border="0" alt="clipboard[3]" src="http://itongblognew.qiniudn.com/img/1420938309433.jpg" height="439" /></a></p> 
+       <p>我们在handler这个节点下，终于看到了该元素所绑定的事件了。</p> 
+       <p>事实上，这个方法，可以写在js代码中，并且handler的值其实就是一个function，比如在代码中如下的写法：</p> 
+       <pre class="brush:js ">var&nbsp;p&nbsp;=&nbsp;$._data($('#btn1')[0],&nbsp;'events').click[0].handler;
+alert(typeof&nbsp;(p));
+p();</pre> 
+       <p><a target="_blank"><img style="background-image:none;border-bottom:0px;border-left:0px;margin:0px;padding-left:0px;padding-right:0px;border-top:0px;border-right:0px;padding-top:0px;" title="clipboard[4]" border="0" alt="clipboard[4]" src="http://itongblognew.qiniudn.com/img/1420938309523.jpg" height="155" /></a></p> 
+       <p><a target="_blank"><img style="background-image:none;border-bottom:0px;border-left:0px;padding-left:0px;padding-right:0px;border-top:0px;border-right:0px;padding-top:0px;" title="clipboard[5]" border="0" alt="clipboard[5]" src="http://itongblognew.qiniudn.com/img/1420938309557.jpg" height="187" /></a></p> 
+       <p>可以看到弹出的类型就是p的类型就是function，并且可以直接调用p。</p> 
+       <p>通过上面所说的方法，在分析复杂页面的时候，很容易找到事件的源头，跟踪代码，提高效率。</p> 
+       <p> From：http://cnn237111.blog.51cto.com/2359144/1601687</p> 
+      </div> 
+     </div> 
+     <div class="back_b"> 
+      <a href="javascript:void(0);" onclick="history.back();">返回</a> 
+     </div> 
+     <div class="clear"></div> 
+     <!-- end: entry --> 
+     <i class="lt"></i> 
+     <i class="rt"></i> 
+    </div> 
+    <div class="entry_sb"> 
+     <i class="lb"></i> 
+     <i class="rb"></i> 
+    </div> 
+    <!-- ad --> 
+    <div class="ad_h"> 
+     <div class="ad_h_c"> 
+      <p align="center"><script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> 
+       <!-- itblog-728 --> <ins class="adsbygoogle" style="display:inline-block;width:728px;height:90px" data-ad-client="ca-pub-9460629317209118" data-ad-slot="8511715786"></ins> <script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></p> 
+      <div class="clear"></div> 
+     </div> 
+     <i class="lt"></i> 
+     <i class="rt"></i> 
+    </div> 
+    <div class="entry_box_b"> 
+     <i class="lb"></i> 
+     <i class="rb"></i> 
+    </div> 
+    <div class="context_b">
+      【上篇】
+     <a href="http://www.51itong.net/java-1531.html" rel="prev">JAVA设计模式之代理模式</a>
+     <br />【下篇】
+     <a href="http://www.51itong.net/linux-1533.html" rel="next">linux登录档（日志）相关简介</a> 
+     <i class="lt"></i> 
+     <i class="rt"></i> 
+     <i class="lb"></i> 
+     <i class="rb"></i> 
+    </div> 
+    <!-- relatedposts --> 
+    <div class="entry_b"> 
+     <div class="relatedposts"> 
+      <h4>您可能还会对这些文章感兴趣！</h4> 
+      <ol> 
+       <li><a href="http://www.51itong.net/spring-6-ioc-23438.html">《Spring技术内幕》学习笔记6——IoC容器的高级特性</a></li> 
+       <li><a href="http://www.51itong.net/google-cnzz-51la-js-23436.html">社会化统计工具分享之Google分析、cnzz、51la、百度统</a></li> 
+       <li><a href="http://www.51itong.net/4-android-23433.html">4种必须知道的Android屏幕自适应解决方案</a></li> 
+       <li><a href="http://www.51itong.net/4-android-23434.html">4种必须知道的Android屏幕自适应解决方案</a></li> 
+       <li><a href="http://www.51itong.net/4-android-23432.html">4种必须知道的Android屏幕自适应解决方案</a></li> 
+       <li><a href="http://www.51itong.net/android-23429.html">Android 屏幕适配方案（百分比）</a></li> 
+       <li><a href="http://www.51itong.net/scalerstalk-3-23426.html">ScalersTalk成长会机器学习小组-深度学习第3次学习笔</a></li> 
+       <li><a href="http://www.51itong.net/cgaffinetransform-23424.html">CGAffineTransform 放射变换</a></li> 
+      </ol> 
+     </div> 
+     <div class="related_img"> 
+      <div class="related_img_box"> 
+       <div class="thumbnail_t"> 
+       </div> 
+       <!-- 截图 --> 
+       <div class="thumbnail"> 
+        <a href="http://www.51itong.net/swift-22414.html" rel="bookmark" title="哈希表——swift字典的实现原理"> <img class="home-thumb" src="http://itongblognew.qiniudn.com/wp-content/themes/HotNewspro/images/random/9.jpg" width="140px" height="100px" alt="哈希表——swift字典的实现原理" /> </a> 
+       </div> 
+      </div> 
+      <div class="related_img_box"> 
+       <div class="thumbnail_t"> 
+       </div> 
+       <!-- 截图 --> 
+       <div class="thumbnail"> 
+        <a href="http://www.51itong.net/android-31-intent-18464.html" rel="bookmark" title="阅读《Android 从入门到精通》（31）——Intent"> <img class="home-thumb" src="http://itongblognew.qiniudn.com/img/1458101155029.png" width="140px" height="100px" alt="阅读《Android 从入门到精通》（31）——Intent" /> </a> 
+       </div> 
+      </div> 
+      <div class="related_img_box"> 
+       <div class="thumbnail_t"> 
+       </div> 
+       <!-- 截图 --> 
+       <div class="thumbnail"> 
+        <a href="http://www.51itong.net/nginx-proxy-pass-setcookie-4818.html" rel="bookmark" title="nginx proxy_pass配置及关于setcookie的一点说明"> <img class="home-thumb" src="http://itongblognew.qiniudn.com/wp-content/themes/HotNewspro/images/random/16.jpg" width="140px" height="100px" alt="nginx proxy_pass配置及关于setcookie的一点说明" /> </a> 
+       </div> 
+      </div> 
+      <div class="related_img_box"> 
+       <div class="thumbnail_t"> 
+       </div> 
+       <!-- 截图 --> 
+       <div class="thumbnail"> 
+        <a href="http://www.51itong.net/socket-14-unix-9410.html" rel="bookmark" title="Socket编程实践(14) –UNIX域协议"> <img class="home-thumb" src="http://itongblognew.qiniudn.com/img/1426348273766.png" width="140px" height="100px" alt="Socket编程实践(14) –UNIX域协议" /> </a> 
+       </div> 
+      </div> 
+     </div> 
+     <div class="clear"></div> 
+     <i class="lt"></i> 
+     <i class="rt"></i> 
+    </div> 
+    <div class="entry_sb"> 
+     <i class="lb"></i> 
+     <i class="rb"></i> 
+    </div> 
+    <!-- end: relatedposts --> 
+    <!-- entrymeta --> 
+    <div class="entrymeta"> 
+     <div class="authorbio"> 
+      <div class="author_pic"> 
+       <img alt="" src="http://gravatar.duoshuo.com/avatar/0d0d847569eb01bfb001c791ae75fe48?s=48&amp;d=mm&amp;r=g" srcset="http://gravatar.duoshuo.com/avatar/0d0d847569eb01bfb001c791ae75fe48?s=96&amp;d=mm&amp;r=g 2x" class="avatar avatar-48 photo" height="48" width="48" /> 
+      </div> 
+      <div class="clear"></div> 
+      <div class="author_text"> 
+       <h4>作者: <span><a href="http://www.51itong.net/author/51itong-net" title="Posts by gaotong tong" rel="author">gaotong tong</a></span></h4> 
+      </div> 
+     </div> 
+     <span class="spostinfo"> 
+      <ul> 
+       <li>该日志由 gaotong tong 于2 years前发表在<a href="http://www.51itong.net/category/web/front-web" rel="category tag">前端开发</a>分类下，最后更新于 2015年01月11日.</li> 
+       <li>转载请注明: <a href="http://www.51itong.net/javascript-1532.html" rel="bookmark" title="本文固定链接 http://www.51itong.net/javascript-1532.html">javascript中查看元素事件函数的一些技巧 | 极客宅</a><a href="#" onclick="copy_code('http://www.51itong.net/javascript-1532.html'); return false;"> +复制链接</a></li> 
+       <li class="content_tag">关键字: <a href="http://www.51itong.net/tag/java" rel="tag">Java</a></li> 
+      </ul> </span> 
+     <i class="lt"></i> 
+     <i class="rt"></i> 
+     <div class="clear"></div> 
+    </div> 
+    <div class="entry_sb"> 
+     <i class="lb"></i> 
+     <i class="rb"></i> 
+    </div> 
+    <!-- end: entrymeta --> 
+    <div class="ct"></div> 
+    <a name="comments"></a> 
+    <div class="ds-thread" data-thread-key="1532" data-author-key="3" data-title="javascript中查看元素事件函数的一些技巧" data-url="http://www.51itong.net/javascript-1532.html"></div> 
+    <script type="text/javascript">
+	if (typeof DUOSHUO !== 'undefined')
+		DUOSHUO.EmbedThread('.ds-thread');
+</script> 
+    <div id="ds-ssr"> 
+     <ol id="commentlist"> 
+     </ol> 
+    </div> 
+   </div> 
+   <!-- end: content --> 
+   <div id="sidebar"> 
+    <div class="widget"> 
+    </div> 
+    <div class="widget"> 
+     <h3>Tags</h3>
+     <div class="box">
+      <div class="tagcloud">
+       <a href="http://www.51itong.net/tag/android" class="tag-link-101" title="1 topic" style="color:#d0a27c;font-size: 8pt;;">Android</a> 
+       <a href="http://www.51itong.net/tag/apache" class="tag-link-22" title="1,910 topics" style="color:#c18950;font-size: 19.306233062331pt;;">Apache</a> 
+       <a href="http://www.51itong.net/tag/c" class="tag-link-12" title="5,748 topics" style="color:#9c8e95;font-size: 21.127371273713pt;;">C++</a> 
+       <a href="http://www.51itong.net/tag/css" class="tag-link-58" title="1,226 topics" style="color:#8f87d2;font-size: 18.585365853659pt;;">CSS</a> 
+       <a href="http://www.51itong.net/tag/eclipse" class="tag-link-71" title="1,533 topics" style="color:#bcbcf1;font-size: 18.964769647696pt;;">Eclipse</a> 
+       <a href="http://www.51itong.net/tag/git" class="tag-link-75" title="2,732 topics" style="color:#eac6f3;font-size: 19.913279132791pt;;">git</a> 
+       <a href="http://www.51itong.net/tag/google" class="tag-link-52" title="2,243 topics" style="color:#7192e7;font-size: 19.571815718157pt;;">Google</a> 
+       <a href="http://www.51itong.net/tag/hadoop" class="tag-link-104" title="6 topics" style="color:#d6572d;font-size: 10.086720867209pt;;">Hadoop</a> 
+       <a href="http://www.51itong.net/tag/hibernate" class="tag-link-44" title="497 topics" style="color:#6e509e;font-size: 17.105691056911pt;;">Hibernate</a> 
+       <a href="http://www.51itong.net/tag/java" class="tag-link-1" title="9,782 topics" style="color:#f46eb6;font-size: 22pt;;">Java</a> 
+       <a href="http://www.51itong.net/tag/jboss" class="tag-link-76" title="104 topics" style="color:#d8b644;font-size: 14.525745257453pt;;">jboss</a> 
+       <a href="http://www.51itong.net/tag/jvm" class="tag-link-59" title="1 topic" style="color:#52b770;font-size: 8pt;;">JVM</a> 
+       <a href="http://www.51itong.net/tag/liferay" class="tag-link-100" title="5 topics" style="color:#ea8c69;font-size: 9.8211382113821pt;;">Liferay</a> 
+       <a href="http://www.51itong.net/tag/linux" class="tag-link-37" title="4,194 topics" style="color:#e1a76a;font-size: 20.59620596206pt;;">Linux</a> 
+       <a href="http://www.51itong.net/tag/microsoft" class="tag-link-53" title="2,479 topics" style="color:#c72c87;font-size: 19.723577235772pt;;">Microsoft</a> 
+       <a href="http://www.51itong.net/tag/mysql" class="tag-link-29" title="1,810 topics" style="color:#9c7655;font-size: 19.230352303523pt;;">MySql</a> 
+       <a href="http://www.51itong.net/tag/r" class="tag-link-72" title="24 topics" style="color:#225a94;font-size: 12.173441734417pt;;">R语言</a> 
+       <a href="http://www.51itong.net/tag/shell" class="tag-link-46" title="1,355 topics" style="color:#afc307;font-size: 18.737127371274pt;;">Shell脚本</a> 
+       <a href="http://www.51itong.net/tag/spring" class="tag-link-70" title="1,251 topics" style="color:#7c342f;font-size: 18.623306233062pt;;">Spring</a> 
+       <a href="http://www.51itong.net/tag/ssh" class="tag-link-69" title="1,240 topics" style="color:#700b4f;font-size: 18.585365853659pt;;">SSH</a> 
+       <a href="http://www.51itong.net/tag/svn" class="tag-link-74" title="434 topics" style="color:#e2b5a2;font-size: 16.878048780488pt;;">svn</a> 
+       <a href="http://www.51itong.net/tag/ubuntu" class="tag-link-60" title="482 topics" style="color:#30fe6b;font-size: 17.029810298103pt;;">Ubuntu</a> 
+       <a href="http://www.51itong.net/tag/wordpress" class="tag-link-103" title="1 topic" style="color:#61808d;font-size: 8pt;;">WordPress</a> 
+       <a href="http://www.51itong.net/tag/artificial-intellegence" class="tag-link-68" title="71 topics" style="color:#c2ec1b;font-size: 13.918699186992pt;;">人工智能</a> 
+       <a href="http://www.51itong.net/tag/classification" class="tag-link-73" title="44 topics" style="color:#ce7b4a;font-size: 13.121951219512pt;;">分类算法</a> 
+       <a href="http://www.51itong.net/tag/%e5%a4%9a%e7%ba%bf%e7%a8%8b" class="tag-link-57" title="1,180 topics" style="color:#556219;font-size: 18.509485094851pt;;">多线程</a> 
+       <a href="http://www.51itong.net/tag/machine-learning" class="tag-link-67" title="311 topics" style="color:#21092f;font-size: 16.308943089431pt;;">机器学习</a> 
+       <a href="http://www.51itong.net/tag/regexp" class="tag-link-48" title="987 topics" style="color:#f099bb;font-size: 18.205962059621pt;;">正则表达式</a> 
+       <a href="http://www.51itong.net/tag/%e7%88%ac%e8%99%ab" class="tag-link-54" title="174 topics" style="color:#287d91;font-size: 15.360433604336pt;;">爬虫</a> 
+       <a href="http://www.51itong.net/tag/iot" class="tag-link-47" title="469 topics" style="color:#72a7f3;font-size: 16.991869918699pt;;">物联网</a> 
+       <a href="http://www.51itong.net/tag/alg" class="tag-link-78" title="4,206 topics" style="color:#690dd2;font-size: 20.59620596206pt;;">算法</a> 
+       <a href="http://www.51itong.net/tag/designpattern" class="tag-link-55" title="755 topics" style="color:#f9200e;font-size: 17.788617886179pt;;">设计模式</a>
+      </div> 
+     </div> 
+     <div class="box-bottom"> 
+      <i class="lb"></i> 
+      <i class="rb"></i> 
+     </div>
+     <div class="ad"> 
+      <div class="ads"> 
+       <div class="box_top"> 
+        <i class="rt"></i> 
+        <i class="lt"></i> 
+       </div> 
+       <div class="ads_c">
+        <p align="center"><script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> 
+         <!-- 视频广告-300 --> <ins class="adsbygoogle" style="display:inline-block;width:300px;height:250px" data-ad-client="ca-pub-9460629317209118" data-ad-slot="1917144586"></ins> <script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></p> 
+        <div class="clear"></div> 
+       </div> 
+       <div class="box-bottom"> 
+        <i class="lb"></i> 
+        <i class="rb"></i> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div class="random_r"> 
+     <h3>同分类最新文章
+      <!--  --></h3> 
+     <div class="box_r"> 
+      <ul> 
+       <li><a href="http://www.51itong.net/html5-webworker-23416.html">html5 多线程处理webWorker</a></li> 
+       <li><a href="http://www.51itong.net/javascript-23410.html">JavaScript总结</a></li> 
+       <li><a href="http://www.51itong.net/javascript-item15-prototype-23407.html">JavaScript学习–Item15 pr</a></li> 
+       <li><a href="http://www.51itong.net/javascript-item19-execution-context-23403.html">JavaScript学习–Item19 执</a></li> 
+       <li><a href="http://www.51itong.net/javascript-item21-this-23401.html">JavaScript学习–Item21 漂</a></li> 
+      </ul> 
+      <div class="clear"></div> 
+     </div> 
+     <div class="box-bottom"> 
+      <i class="lb"></i> 
+      <i class="rb"></i> 
+     </div> 
+    </div> 
+    <div class="widget"> 
+    </div> 
+    <div class="widget"> 
+    </div> 
+    <div class="clear"></div> 
+   </div>
+   <div class="clear"></div> 
+   <div class="footer_top"> 
+    <div id="menu"> 
+     <ul id="cat-nav" class="nav"> 
+      <li class="page_item page-item-2"><a href="http://www.51itong.net/about">关于极客宅-代码改变世界</a></li> 
+     </ul> 
+    </div> 
+    <h2 class="blogtitle"> <a href="http://www.51itong.net/" title="极客宅">返回首页</a></h2> 
+    <big class="lt"></big> 
+    <big class="rt"></big> 
+   </div> 
+   <!-- 页脚 --> 
+   <div class="footer_bottom_a">
+     Copyright &copy; 2010-2016 极客宅&nbsp;&nbsp;保留所有权利. &nbsp;&nbsp;Theme by Robin 
+    <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000164676'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s96.cnzz.com/z_stat.php%3Fid%3D1000164676' type='text/javascript'%3E%3C/script%3E"));</script> 
+    <big class="lb"></big> 
+    <big class="rb"></big> 
+   </div> 
+   <!-- 首页页脚 --> 
+   <div class="clear"></div> 
+  </div> 
+  <script type="text/javascript" src="http://itongblognew.qiniudn.com/wp-content/plugins/syntax-highlighter-with-add-button-in-editor/scripts/shCore.js"></script> 
+  <script type="text/javascript" src="http://itongblognew.qiniudn.com/wp-content/plugins/syntax-highlighter-with-add-button-in-editor/scripts/shAutoloader.js"></script> 
+  <script type="text/javascript">
+    function path()
+    {
+      var args = arguments,
+          result = []
+          ;
+      for(var i = 0; i < args.length; i++)
+          result.push(args[i].replace('@', 'http://itongblognew.qiniudn.com/wp-content/plugins/syntax-highlighter-with-add-button-in-editor/scripts/'));
+      return result
+    };
+    SyntaxHighlighter.autoloader.apply(null, path(
+      'applescript            @shBrushAppleScript.js',
+      'actionscript3 as3      @shBrushAS3.js',
+      'bash shell             @shBrushBash.js',
+      'coldfusion cf          @shBrushColdFusion.js',
+      'cpp c                  @shBrushCpp.js',
+      'c# c-sharp csharp      @shBrushCSharp.js',
+      'css                    @shBrushCss.js',
+      'delphi pascal          @shBrushDelphi.js',
+      'diff patch pas         @shBrushDiff.js',
+      'erl erlang             @shBrushErlang.js',
+      'groovy                 @shBrushGroovy.js',
+      'java                   @shBrushJava.js',
+      'jfx javafx             @shBrushJavaFX.js',
+      'js jscript javascript  @shBrushJScript.js',
+      'perl pl                @shBrushPerl.js',
+      'php                    @shBrushPhp.js',
+      'text plain             @shBrushPlain.js',
+      'ps                     @shBrushPowerShell.js',
+      'py python              @shBrushPython.js',
+      'ruby rails ror rb      @shBrushRuby.js',
+      'sass scss              @shBrushSass.js',
+      'scala                  @shBrushScala.js',
+      'sql                    @shBrushSql.js',
+      'vb vbnet               @shBrushVb.js',
+      'xml xhtml xslt html    @shBrushXml.js',
+      'other                  @shBrushOther.js'
+    ));
+    SyntaxHighlighter.defaults['auto-links'] = false;
+    SyntaxHighlighter.defaults['collapse'] = false;
+    SyntaxHighlighter.defaults['first-line'] = 1;
+    SyntaxHighlighter.defaults['gutter'] = true;
+    SyntaxHighlighter.defaults['smart-tabs'] = true;
+    SyntaxHighlighter.defaults['tab-size'] = 4;
+    SyntaxHighlighter.defaults['toolbar'] = true;
+    SyntaxHighlighter.config.tagName = "pre";
+	SyntaxHighlighter.config.clipboardSwf = 'http://itongblognew.qiniudn.com/wp-content/plugins/syntax-highlighter-with-add-button-in-editor/scripts/clipboard.swf';
+    SyntaxHighlighter.all();
+    </script>  
+  <!-- Dynamic page generated in 0.647 seconds. --> 
+  <!-- Cached page generated by WP-Super-Cache on 2017-03-29 05:14:00 --> 
+  <!-- super cache -->
+ </body>
+</html>

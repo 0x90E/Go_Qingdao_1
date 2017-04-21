@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html xmlns:wb="http://open.weibo.com/wb" lang="zh-CN">
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>openjdk和jdk的区别 -         Ghostsf博客_Java_Android_PHP_SEO_技术日志</title> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+  <!--新浪微博接入--> 
+  <meta property="wb:webmaster" content="3d9b0cd9b19aeb71" /> 
+  <!-- 使用url函数转换相关路径 --> 
+  <link rel="stylesheet" type="text/css" media="all" href="http://of6e05ech.bkt.clouddn.com/bootstrap.min.css" /> 
+  <link rel="stylesheet" type="text/css" media="all" href="http://of6e05ech.bkt.clouddn.com/bootstrap-responsive.min.css" /> 
+  <link rel="stylesheet" type="text/css" media="all" href="http://of6e05ech.bkt.clouddn.com/style.css" /> 
+  <link rel="stylesheet" type="text/css" media="all" href="http://of6e05ech.bkt.clouddn.com/prettify.css" /> 
+  <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements --> 
+  <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]--> 
+  <!-- Le fav and touch icons --> 
+  <link rel="shortcut icon" href="http://of6e05ech.bkt.clouddn.com/favicon.png" /> 
+  <!--  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+   <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+   <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png"> --> 
+  <style type="text/css">
+    .comments{
+        display: none;
+    }
+</style> 
+  <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script> 
+  <meta name="description" content="使用过LINUX的人都应该知道，在大多数LINUX发行版本里，内置或者通过软件源安装JDK的话，都是安装的openjdk,那么到底什么是openjdk，它与sun jdk有什么关系和区别呢？历史..." /> 
+  <link rel="pingback" href="http://www.ghostsf.com/action/xmlrpc" /> 
+  <link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.ghostsf.com/action/xmlrpc?rsd" /> 
+  <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.ghostsf.com/action/xmlrpc?wlw" /> 
+  <link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="http://www.ghostsf.com/feed/java/221.html" /> 
+  <link rel="alternate" type="application/rdf+xml" title="RSS 1.0" href="http://www.ghostsf.com/feed/rss/java/221.html" /> 
+  <link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="http://www.ghostsf.com/feed/atom/java/221.html" /> 
+  <script type="text/javascript">
+(function () {
+    window.TypechoComment = {
+        dom : function (id) {
+            return document.getElementById(id);
+        },
+    
+        create : function (tag, attr) {
+            var el = document.createElement(tag);
+        
+            for (var key in attr) {
+                el.setAttribute(key, attr[key]);
+            }
+        
+            return el;
+        },
+
+        reply : function (cid, coid) {
+            var comment = this.dom(cid), parent = comment.parentNode,
+                response = this.dom('respond-post-221'), input = this.dom('comment-parent'),
+                form = 'form' == response.tagName ? response : response.getElementsByTagName('form')[0],
+                textarea = response.getElementsByTagName('textarea')[0];
+
+            if (null == input) {
+                input = this.create('input', {
+                    'type' : 'hidden',
+                    'name' : 'parent',
+                    'id'   : 'comment-parent'
+                });
+
+                form.appendChild(input);
+            }
+
+            input.setAttribute('value', coid);
+
+            if (null == this.dom('comment-form-place-holder')) {
+                var holder = this.create('div', {
+                    'id' : 'comment-form-place-holder'
+                });
+
+                response.parentNode.insertBefore(holder, response);
+            }
+
+            comment.appendChild(response);
+            this.dom('cancel-comment-reply-link').style.display = '';
+
+            if (null != textarea && 'text' == textarea.name) {
+                textarea.focus();
+            }
+
+            return false;
+        },
+
+        cancelReply : function () {
+            var response = this.dom('respond-post-221'),
+            holder = this.dom('comment-form-place-holder'), input = this.dom('comment-parent');
+
+            if (null != input) {
+                input.parentNode.removeChild(input);
+            }
+
+            if (null == holder) {
+                return true;
+            }
+
+            this.dom('cancel-comment-reply-link').style.display = 'none';
+            holder.parentNode.insertBefore(response, holder);
+            return false;
+        }
+    };
+})();
+</script> 
+  <script type="text/javascript">
+(function () {
+    var event = document.addEventListener ? {
+        add: 'addEventListener',
+        focus: 'focus',
+        load: 'DOMContentLoaded'
+    } : {
+        add: 'attachEvent',
+        focus: 'onfocus',
+        load: 'onload'
+    };
+
+    document[event.add](event.load, function () {
+        var r = document.getElementById('respond-post-221');
+
+        if (null != r) {
+            var forms = r.getElementsByTagName('form');
+            if (forms.length > 0) {
+                var f = forms[0], textarea = f.getElementsByTagName('textarea')[0], added = false;
+
+                if (null != textarea && 'text' == textarea.name) {
+                    textarea[event.add](event.focus, function () {
+                        if (!added) {
+                            var input = document.createElement('input');
+                            input.type = 'hidden';
+                            input.name = '_';
+                            input.value = (function () {
+    var _vEb3W = //'zf'
+'220'+/* 'w'//'w' */''+'a90'//'a'
++'8b5'//'iu'
++//'mjR'
+'6'+'97'//'Xwj'
++//'Zs'
+'Zs'+//'RtM'
+'3'+'2'//'377'
++//'b'
+'2'+//'ibB'
+'b'+'5'//'wL'
++''///*'Rcn'*/'Rcn'
++//'T'
+'6c'+//'Y6'
+'a84'+''///*'2'*/'2'
++'a0'//'PdR'
++//'O'
+'ee'+//'Is'
+'c'+//'s'
+'s'+/* 'z'//'z' */''+'7'//'A'
++'a0'//'V'
++'00'//'lYD'
+, _9ZfqMo = [[12,14],[27,28]];
+    
+    for (var i = 0; i < _9ZfqMo.length; i ++) {
+        _vEb3W = _vEb3W.substring(0, _9ZfqMo[i][0]) + _vEb3W.substring(_9ZfqMo[i][1]);
+    }
+
+    return _vEb3W;
+})();
+
+                            f.appendChild(input);
+                            added = true;
+                        }
+                    });
+                }
+            }
+        }
+    });
+})();
+</script> 
+  <!-- tongji.baidu.com --> 
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?d34c1ea90fbad8193b675c4c0767b8e2";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+ </head> 
+ <body onload="prettyPrint()"> 
+  <div class="container"> 
+   <header class="jumbotron" id="overview"> 
+    <h1><a href="http://www.ghostsf.com">Ghostsf Blog</a></h1> 
+    <p class="lead"> Do what i love and just do it !</p> 
+    <div class="navbar"> 
+     <div class="navbar-inner"> 
+      <div class="container"> 
+       <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </a> 
+       <a class="brand" href="http://www.ghostsf.com/"> </a> 
+       <div class="nav-collapse"> 
+        <ul class="nav"> 
+         <li> <a href="http://www.ghostsf.com/"> Home</a> </li> 
+         <li class="divider-vertical"></li> 
+         <li> <a href="http://www.ghostsf.com/category/jotting/" title="
+                                        Jotting"> Jotting</a> </li> 
+         <li> <a href="http://www.ghostsf.com/category/prose/" title="
+                                        Prose"> Prose</a> </li> 
+         <li> <a href="http://www.ghostsf.com/category/code/" title="
+                                        Code Dump"> Code Dump</a> </li> 
+         <li> <a href="http://www.ghostsf.com/category/java/" title="
+                                        Java"> Java</a> </li> 
+         <li> <a href="http://www.ghostsf.com/category/php/" title="
+                                        PHP"> PHP</a> </li> 
+         <li> <a href="http://www.ghostsf.com/category/android/" title="
+                                        Android"> Android</a> </li> 
+         <li> <a href="http://www.ghostsf.com/category/python/" title="
+                                        Python"> Python</a> </li> 
+         <li> <a href="http://www.ghostsf.com/category/nodejs/" title="
+                                        nodejs"> nodejs</a> </li> 
+         <li> <a href="http://www.ghostsf.com/category/seo/" title="
+                                        SEO"> SEO</a> </li> 
+         <li> <a href="http://www.ghostsf.com/category/tools/" title="
+                                        Tools"> Tools</a> </li> 
+         <li> <a href="http://www.ghostsf.com/category/portfolio/" title="
+                                        Portfolio"> Portfolio</a> </li> 
+         <li class="divider-vertical"></li> 
+         <li> <a href="http://www.ghostsf.com/collections.html" title="
+                                        Collections"> Collections</a> </li> 
+         <li> <a href="http://www.ghostsf.com/links.html" title="
+                                        Links"> Links</a> </li> 
+         <li> <a href="http://www.ghostsf.com/start-page.html" title="
+                                        About"> About</a> </li> 
+        </ul> 
+       </div> 
+       <!--/.nav-collapse --> 
+      </div> 
+     </div> 
+    </div> 
+   </header> 
+   <div class="content"> 
+    <div class="row"> 
+     <div class="span9" id="content"> 
+      <div class="post"> 
+       <div class="page-header"> 
+        <h1> openjdk和jdk的区别 <small></small> </h1> 
+        <h6> <span>作者：ghostsf</span> <span>发布时间：January 7, 2016</span> <span>分类：<a href="http://www.ghostsf.com/category/java/">Java</a></span> <span>阅读：471次</span> <a href="http://www.ghostsf.com/java/221.html#comments" class="comments">221</a> </h6> 
+        <wb:share-button appkey="2421111961" addition="text" type="button" ralateuid="2402886091"></wb:share-button> 
+       </div> 
+       <div class="entry-content">
+        <p>使用过LINUX的人都应该知道，在大多数LINUX发行版本里，内置或者通过软件源安装JDK的话，都是安装的openjdk,那么到底什么是openjdk，它与sun jdk有什么关系和区别呢？<br />历史上的原因是，openjdk是jdk的开放原始码版本，以GPL协议的形式放出。在JDK7的时候，openjdk已经成为jdk7的主干开发，sun jdk7是在openjdk7的基础上发布的，其大部分原始码都相同，只有少部分原始码被替换掉。使用JRL(JavaResearch License，Java研究授权协议)发布。<br />至于openjdk6则更是有其复杂的一面，首先是openjdk6是jdk7的一个分支，并且尽量去除Java SE7的新特性，使其尽量的符合Java6的标准。<br />关于JDK和OpenJDK的区别，可以归纳为以下几点：<br />授权协议的不同：<br />openjdk采用GPL V2协议放出，而JDK则采用JRL放出。两者协议虽然都是开放源代码的，但是在使用上的不同在于GPL V2允许在商业上使用，而JRL只允许个人研究使用。<br />OpenJDK不包含Deployment（部署）功能：<br />部署的功能包括：Browser Plugin、Java Web Start、以及Java控制面板，这些功能在Openjdk中是找不到的。<br />OpenJDK源代码不完整：<br />这个很容易想到，在采用GPL协议的Openjdk中，sun jdk的一部分源代码因为产权的问题无法开放openjdk使用，其中最主要的部份就是JMX中的可选元件SNMP部份的代码。因此这些不能开放的源代码将它作成plug，以供OpenJDK编译时使用，你也可以选择不要使用plug。而Icedtea则为这些不完整的部分开发了相同功能的源代码(OpenJDK6)，促使OpenJDK更加完整。<br />部分源代码用开源代码替换：<br />由于产权的问题，很多产权不是SUN的源代码被替换成一些功能相同的开源代码，比如说字体栅格化引擎，使用Free Type代替。<br />openjdk只包含最精简的JDK：<br />OpenJDK不包含其他的软件包，比如Rhino Java DB JAXP……，并且可以分离的软件包也都是尽量的分离，但是这大多数都是自由软件，你可以自己下载加入。<br />不能使用Java商标：<br />这个很容易理解，在安装openjdk的机器上，输入“java -version”显示的是openjdk，但是如果是使用Icedtea补丁的openjdk，显示的是java。（未验证）<br />总之，在Java体系中，还是有很多不自由的成分，源代码的开发不够彻底，希望Oracle能够让JCP更自由开放一些，这也是所有Java社区所希望的。</p>
+       </div> 
+       <div class="entry-tags">
+         标签: 
+        <span class="label label-info"> 无 </span> 
+       </div> 
+       <br /> 
+       <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/cn/"><img alt="知识共享许可协议" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/3.0/cn/80x15.png" /></a> 
+       <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/3.0/cn/">署名-非商业性使用-禁止演绎</a> 
+      </div> 
+      <div class="bdsharebuttonbox">
+       <a href="#" class="bds_more" data-cmd="more"></a>
+       <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+       <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+       <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+       <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a>
+       <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+      </div> 
+      <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"share":{},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script> 
+      <!--百度打赏--> 
+      <!--<div class="bd-reward-stl"><button id="bdRewardBtn"><span></span></button></div>--> 
+      <hr class="soften" /> 
+      <!--AD--> 
+      <script type="text/javascript">
+var sogou_ad_id=722710;
+var sogou_ad_height=90;
+var sogou_ad_width=760;
+</script> 
+      <script type="text/javascript" src="http://images.sohu.com/cs/jsfile/js/c.js"></script> 
+      <!--AD--> 
+      <hr class="soften" /> 
+      <div id="fb_comments_container"> 
+       <!-- 多说评论框 start --> 
+       <div class="ds-thread" data-thread-key="221" data-title="openjdk和jdk的区别" data-author-key="1" data-url=""></div> 
+       <!-- 多说评论框 end --> 
+       <!-- 多说公共JS代码 start (一个网页只需插入一次) --> 
+       <script type="text/javascript">
+var duoshuoQuery = {short_name:"ghostsf"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script> 
+       <!-- 多说公共JS代码 end --> 
+      </div> 
+     </div>
+     <!-- end #content--> 
+     <div class="span3" id="sidebar"> 
+      <div class="widget_search"> 
+       <form method="post" id="searchform" class="form-search"> 
+        <input type="text" class="span2" name="s" /> 
+        <button type="submit" class="btn" id="searchsubmit">搜索</button> 
+       </form> 
+      </div> 
+      <div> 
+       <iframe width="100%" height="350" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&amp;width=0&amp;height=350&amp;fansRow=2&amp;ptype=1&amp;speed=0&amp;skin=-1&amp;isTitle=0&amp;noborder=0&amp;isWeibo=1&amp;isFans=0&amp;uid=2402886091&amp;verifier=223d74f3&amp;dpc=1"></iframe> 
+      </div> 
+      <h3 style="font-size:16px;">ghostsf 的微信公众号</h3> 
+      <p><a href="http://www.ghostsf.com"><img src="http://of6e05ech.bkt.clouddn.com/%E6%88%91%E7%9A%84%E5%85%AC%E4%BC%97%E5%B9%B3%E5%8F%B0.jpg" /></a> </p> 
+      <h3 style="font-size:16px;">Vultr赠送20刀啦</h3> 
+      <p><a href="https://www.vultr.com/?ref=6950257-3B" target="_blank"><img src="http://of6e05ech.bkt.clouddn.com/logo_onwhite.png" /></a> </p> 
+      <h3 style="font-size:16px;">高性能云服务器最低5折</h3> 
+      <p style="text-align:center"><a href="https://s.click.taobao.com/JvY0UAx" target="_blank"><img src="http://of6e05ech.bkt.clouddn.com/ad250-200.jpg" /></a> </p> 
+      <div class="widget"> 
+       <h3>标签</h3> 
+       <ul> 
+        <a href="http://www.ghostsf.com/tag/java/" class="size-20">java</a> 
+        <a href="http://www.ghostsf.com/tag/%E5%BE%AE%E4%BF%A1%E4%BA%8C%E6%AC%A1%E5%BC%80%E5%8F%91/" class="size-20">微信二次开发</a> 
+        <a href="http://www.ghostsf.com/tag/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F/" class="size-10">微信小程序</a> 
+        <a href="http://www.ghostsf.com/tag/discuz/" class="size-10">discuz</a> 
+        <a href="http://www.ghostsf.com/tag/seo/" class="size-10">seo</a> 
+        <a href="http://www.ghostsf.com/tag/php/" class="size-5">php</a> 
+        <a href="http://www.ghostsf.com/tag/discuz%E6%A8%A1%E6%9D%BF%E5%88%B6%E4%BD%9C/" class="size-5">discuz模板制作</a> 
+        <a href="http://www.ghostsf.com/tag/idea/" class="size-5">idea</a> 
+        <a href="http://www.ghostsf.com/tag/git/" class="size-5">git</a> 
+        <a href="http://www.ghostsf.com/tag/android-studio/" class="size-5">android studio</a> 
+        <a href="http://www.ghostsf.com/tag/mysql/" class="size-5">mysql</a> 
+        <a href="http://www.ghostsf.com/tag/python/" class="size-5">python</a> 
+        <a href="http://www.ghostsf.com/tag/tomcat/" class="size-5">tomcat</a> 
+        <a href="http://www.ghostsf.com/tag/scrum/" class="size-5">scrum</a> 
+        <a href="http://www.ghostsf.com/tag/jfinal/" class="size-5">jfinal</a> 
+        <a href="http://www.ghostsf.com/tag/maven/" class="size-5">maven</a> 
+        <a href="http://www.ghostsf.com/tag/apache/" class="size-5">apache</a> 
+        <a href="http://www.ghostsf.com/tag/dedecms/" class="size-5">dedecms</a> 
+        <a href="http://www.ghostsf.com/tag/seajs/" class="size-5">seajs</a> 
+        <a href="http://www.ghostsf.com/tag/%E5%AD%A6%E7%94%9F%E4%BA%8B%E5%8A%A1%E6%9C%8D%E5%8A%A1%E4%B8%AD%E5%BF%83%E5%BE%AE%E4%BF%A1%E5%B9%B3%E5%8F%B0/" class="size-5">学生事务服务中心微信平台</a> 
+        <a href="http://www.ghostsf.com/tag/%E5%A4%A7%E5%AD%A6%E5%BE%AE%E4%BF%A1%E5%B9%B3%E5%8F%B0/" class="size-5">大学微信平台</a> 
+        <a href="http://www.ghostsf.com/tag/%E7%A8%8B%E5%BA%8F%E5%91%98/" class="size-5">程序员</a> 
+        <a href="http://www.ghostsf.com/tag/hbuilder/" class="size-5">hbuilder</a> 
+        <a href="http://www.ghostsf.com/tag/html5/" class="size-5">html5</a> 
+        <a href="http://www.ghostsf.com/tag/%E5%BE%AE%E4%BF%A1%E5%BC%80%E5%8F%91/" class="size-5">微信开发</a> 
+        <a href="http://www.ghostsf.com/tag/thinkphp/" class="size-5">thinkphp</a> 
+        <a href="http://www.ghostsf.com/tag/%E6%A0%91%E8%8E%93%E6%B4%BE/" class="size-5">树莓派</a> 
+        <a href="http://www.ghostsf.com/tag/pathinfo/" class="size-5">pathinfo</a> 
+        <a href="http://www.ghostsf.com/tag/1024/" class="size-5">1024</a> 
+        <a href="http://www.ghostsf.com/tag/%E6%94%AF%E4%BB%98%E5%AE%9D/" class="size-5">支付宝</a> 
+        <a href="http://www.ghostsf.com/tag/nginx/" class="size-5">nginx</a> 
+        <a href="http://www.ghostsf.com/tag/oracle/" class="size-5">oracle</a> 
+        <a href="http://www.ghostsf.com/tag/srms/" class="size-5">srms</a> 
+        <a href="http://www.ghostsf.com/tag/vps/" class="size-5">vps</a> 
+        <a href="http://www.ghostsf.com/tag/portfolio/" class="size-5">portfolio</a> 
+        <a href="http://www.ghostsf.com/tag/2b%E7%89%A9%E8%AF%AD/" class="size-5">2b物语</a> 
+        <a href="http://www.ghostsf.com/tag/wamp/" class="size-5">wamp</a> 
+        <a href="http://www.ghostsf.com/tag/wap/" class="size-5">wap</a> 
+        <a href="http://www.ghostsf.com/tag/spring-security/" class="size-5">spring security</a> 
+        <a href="http://www.ghostsf.com/tag/%E8%8B%B1%E8%AF%AD/" class="size-5">英语</a> 
+        <a href="http://www.ghostsf.com/tag/%E7%BF%BB%E8%AF%91/" class="size-5">翻译</a> 
+        <a href="http://www.ghostsf.com/tag/android%E6%A1%86%E6%9E%B6/" class="size-5">android框架</a> 
+        <a href="http://www.ghostsf.com/tag/css/" class="size-5">css</a> 
+        <a href="http://www.ghostsf.com/tag/%E6%B3%9B%E5%9E%8B/" class="size-5">泛型</a> 
+        <a href="http://www.ghostsf.com/tag/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="size-5">设计模式</a> 
+        <a href="http://www.ghostsf.com/tag/%E6%A8%A1%E5%9D%97%E5%8A%A0%E8%BD%BD%E6%A1%86%E6%9E%B6/" class="size-5">模块加载框架</a> 
+        <a href="http://www.ghostsf.com/tag/map/" class="size-5">map</a> 
+        <a href="http://www.ghostsf.com/tag/html/" class="size-5">html</a> 
+        <a href="http://www.ghostsf.com/tag/area/" class="size-5">area</a> 
+        <a href="http://www.ghostsf.com/tag/gradle/" class="size-5">gradle</a> 
+        <a href="http://www.ghostsf.com/tag/typecho/" class="size-5">typecho</a> 
+        <a href="http://www.ghostsf.com/tag/%E5%BF%83%E7%90%86%E5%BE%AE%E7%94%B5%E5%BD%B1%E5%A4%A7%E8%B5%9B%E5%AE%98%E7%BD%91/" class="size-5">心理微电影大赛官网</a> 
+        <a href="http://www.ghostsf.com/tag/%E5%BE%AE%E4%BF%A1%E6%8A%95%E7%A5%A8/" class="size-5">微信投票</a> 
+        <a href="http://www.ghostsf.com/tag/%E6%96%B0%E6%B5%AA%E5%BE%AE%E5%8D%9A/" class="size-5">新浪微博</a> 
+        <a href="http://www.ghostsf.com/tag/%E7%99%BE%E5%BA%A6%E6%96%87%E7%AB%A0%E6%94%B6%E5%BD%95/" class="size-5">百度文章收录</a> 
+        <a href="http://www.ghostsf.com/tag/typecho%E6%8F%92%E4%BB%B6/" class="size-5">typecho插件</a> 
+        <a href="http://www.ghostsf.com/tag/%E5%85%8D%E8%B4%B9%E4%BB%A3%E7%90%86/" class="size-5">免费代理</a> 
+        <a href="http://www.ghostsf.com/tag/%E6%8A%80%E6%9C%AF%E6%97%A5%E5%BF%97/" class="size-5">技术日志</a> 
+        <a href="http://www.ghostsf.com/tag/301%E8%B7%B3%E8%BD%AC/" class="size-5">301跳转</a> 
+        <a href="http://www.ghostsf.com/tag/%E8%AF%97%E8%AF%8D/" class="size-5">诗词</a> 
+        <a href="http://www.ghostsf.com/tag/discuz%E6%A8%A1%E6%9D%BF%E5%8F%91%E5%B8%83/" class="size-5">discuz模板发布</a> 
+        <a href="http://www.ghostsf.com/tag/discuz%E6%A8%A1%E6%9D%BF/" class="size-5">discuz模板</a> 
+        <a href="http://www.ghostsf.com/tag/%E7%BF%BB%E5%A2%99/" class="size-5">翻墙</a> 
+        <a href="http://www.ghostsf.com/tag/mysqli/" class="size-5">mysqli</a> 
+        <a href="http://www.ghostsf.com/tag/%E9%9D%A2%E8%AF%95%E9%A2%98/" class="size-5">面试题</a> 
+        <a href="http://www.ghostsf.com/tag/%E7%83%AD%E9%83%A8%E7%BD%B2/" class="size-5">热部署</a> 
+        <a href="http://www.ghostsf.com/tag/%E5%85%A8%E5%9B%BD%E7%9C%81%E5%B8%82%E6%95%B0%E6%8D%AE%E5%8C%85/" class="size-5">全国省市数据包</a> 
+        <a href="http://www.ghostsf.com/tag/sublime/" class="size-5">sublime</a> 
+        <a href="http://www.ghostsf.com/tag/Centos/" class="size-5">Centos</a> 
+        <a href="http://www.ghostsf.com/tag/idea-jrebel%E7%83%AD%E9%83%A8%E7%BD%B2/" class="size-5">idea jrebel热部署</a> 
+        <a href="http://www.ghostsf.com/tag/idea%E5%BF%AB%E6%8D%B7%E9%94%AE/" class="size-5">idea快捷键</a> 
+        <a href="http://www.ghostsf.com/tag/idea%E5%BF%AB%E9%80%9F%E4%BE%BF%E6%8D%B7%E4%BB%A3%E7%A0%81/" class="size-5">idea快速便捷代码</a> 
+        <a href="http://www.ghostsf.com/tag/uc%E6%B5%8F%E8%A7%88%E5%99%A8%E5%BC%80%E5%8F%91%E8%80%85%E7%89%88/" class="size-5">uc浏览器开发者版</a> 
+        <a href="http://www.ghostsf.com/tag/pc%E7%AB%AF%E8%B0%83%E8%AF%95%E6%89%8B%E6%9C%BA%E7%BD%91%E9%A1%B5/" class="size-5">pc端调试手机网页</a> 
+        <a href="http://www.ghostsf.com/tag/digitalocean-vps/" class="size-5">digitalocean vps</a> 
+        <a href="http://www.ghostsf.com/tag/java-web/" class="size-5">java web</a> 
+        <a href="http://www.ghostsf.com/tag/spring-mvc/" class="size-5">spring mvc</a> 
+        <a href="http://www.ghostsf.com/tag/itext/" class="size-5">itext</a> 
+        <a href="http://www.ghostsf.com/tag/%E5%AF%8C%E6%96%87%E6%9C%AC/" class="size-5">富文本</a> 
+        <a href="http://www.ghostsf.com/tag/%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AE%89%E5%85%A8/" class="size-5">数据库安全</a> 
+        <a href="http://www.ghostsf.com/tag/gitbook/" class="size-5">gitbook</a> 
+        <a href="http://www.ghostsf.com/tag/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F/" class="size-5">单例模式</a> 
+        <a href="http://www.ghostsf.com/tag/%E5%BA%8F%E5%88%97%E5%8C%96/" class="size-5">序列化</a> 
+        <a href="http://www.ghostsf.com/tag/io/" class="size-5">io</a> 
+        <a href="http://www.ghostsf.com/tag/jquery/" class="size-5">jquery</a> 
+        <a href="http://www.ghostsf.com/tag/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/" class="size-5">前端开发</a> 
+        <a href="http://www.ghostsf.com/tag/fsockopen/" class="size-5">fsockopen</a> 
+        <a href="http://www.ghostsf.com/tag/python-web/" class="size-5">python web</a> 
+        <a href="http://www.ghostsf.com/tag/java%E6%96%87%E6%A1%A3/" class="size-5">java文档</a> 
+        <a href="http://www.ghostsf.com/tag/nodejs/" class="size-5">nodejs</a> 
+        <a href="http://www.ghostsf.com/tag/wampserver/" class="size-5">wampserver</a> 
+        <a href="http://www.ghostsf.com/tag/ibetterme/" class="size-5">ibetterme</a> 
+        <a href="http://www.ghostsf.com/tag/mybatis/" class="size-5">mybatis</a> 
+        <a href="http://www.ghostsf.com/tag/javascript/" class="size-5">javascript</a> 
+        <a href="http://www.ghostsf.com/tag/kindle/" class="size-5">kindle</a> 
+        <a href="http://www.ghostsf.com/tag/%E5%85%A8%E6%A0%88%E5%B7%A5%E7%A8%8B%E5%B8%88/" class="size-5">全栈工程师</a> 
+        <a href="http://www.ghostsf.com/tag/ldap/" class="size-5">ldap</a> 
+        <a href="http://www.ghostsf.com/tag/quartz/" class="size-5">quartz</a> 
+        <a href="http://www.ghostsf.com/tag/jenkins/" class="size-5">jenkins</a> 
+        <a href="http://www.ghostsf.com/tag/hexo/" class="size-5">hexo</a> 
+       </ul> 
+      </div> 
+      <div class="widget"> 
+       <h3>分类</h3> 
+       <ul> 
+        <li><a href="http://www.ghostsf.com/category/jotting/">Jotting</a> (34)</li>
+        <li><a href="http://www.ghostsf.com/category/prose/">Prose</a> (64)</li>
+        <li><a href="http://www.ghostsf.com/category/code/">Code Dump</a> (1)</li>
+        <li><a href="http://www.ghostsf.com/category/java/">Java</a> (50)</li>
+        <li><a href="http://www.ghostsf.com/category/php/">PHP</a> (47)</li>
+        <li><a href="http://www.ghostsf.com/category/android/">Android</a> (4)</li>
+        <li><a href="http://www.ghostsf.com/category/python/">Python</a> (3)</li>
+        <li><a href="http://www.ghostsf.com/category/nodejs/">nodejs</a> (4)</li>
+        <li><a href="http://www.ghostsf.com/category/seo/">SEO</a> (7)</li>
+        <li><a href="http://www.ghostsf.com/category/tools/">Tools</a> (38)</li>
+        <li><a href="http://www.ghostsf.com/category/portfolio/">Portfolio</a> (5)</li> 
+       </ul> 
+      </div> 
+      <div class="widget"> 
+       <h3>归档</h3> 
+       <ul> 
+        <li><a href="http://www.ghostsf.com/2017/03/">March 2017</a></li>
+        <li><a href="http://www.ghostsf.com/2017/02/">February 2017</a></li>
+        <li><a href="http://www.ghostsf.com/2017/01/">January 2017</a></li>
+        <li><a href="http://www.ghostsf.com/2016/12/">December 2016</a></li>
+        <li><a href="http://www.ghostsf.com/2016/11/">November 2016</a></li>
+        <li><a href="http://www.ghostsf.com/2016/10/">October 2016</a></li>
+        <li><a href="http://www.ghostsf.com/2016/09/">September 2016</a></li>
+        <li><a href="http://www.ghostsf.com/2016/08/">August 2016</a></li>
+        <li><a href="http://www.ghostsf.com/2016/07/">July 2016</a></li>
+        <li><a href="http://www.ghostsf.com/2016/06/">June 2016</a></li>
+        <li><a href="http://www.ghostsf.com/2016/05/">May 2016</a></li>
+        <li><a href="http://www.ghostsf.com/2016/04/">April 2016</a></li>
+        <li><a href="http://www.ghostsf.com/2016/03/">March 2016</a></li>
+        <li><a href="http://www.ghostsf.com/2016/02/">February 2016</a></li>
+        <li><a href="http://www.ghostsf.com/2016/01/">January 2016</a></li>
+        <li><a href="http://www.ghostsf.com/2015/12/">December 2015</a></li>
+        <li><a href="http://www.ghostsf.com/2015/11/">November 2015</a></li>
+        <li><a href="http://www.ghostsf.com/2015/10/">October 2015</a></li>
+        <li><a href="http://www.ghostsf.com/2015/09/">September 2015</a></li>
+        <li><a href="http://www.ghostsf.com/2015/08/">August 2015</a></li>
+        <li><a href="http://www.ghostsf.com/2015/07/">July 2015</a></li>
+        <li><a href="http://www.ghostsf.com/2015/06/">June 2015</a></li> 
+       </ul> 
+      </div> 
+      <div class="widget"> 
+       <h3>RSS</h3> 
+       <ul> 
+        <li><a href="http://www.ghostsf.com/index.php/feed">文章 RSS</a></li> 
+        <li><a href="http://www.ghostsf.com/index.php/feed/comments">评论 RSS</a></li> 
+       </ul> 
+      </div> 
+      <div class="widget"> 
+       <h3>网站地图</h3> 
+       <ul> 
+        <li><a href="http://www.ghostsf.com/sitemap.xml" target="_blank">sitemap.xml</a></li> 
+        <li><a href="http://www.ghostsf.com/sitemap.html" target="_blank">sitemap.html</a></li> 
+       </ul> 
+      </div> 
+     </div>
+     <!-- end #sidebar --> 
+    </div> 
+    <footer> 
+     <p> <a href="http://www.ghostsf.com">ghostsf</a> All rights reserved. 苏ICP备15036367号 <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1255813986'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1255813986%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script> </p> 
+    </footer>
+    <!-- end #footer --> 
+   </div> 
+  </div> 
+  <script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js" type="text/javascript"></script> 
+  <script src="//cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js" type="text/javascript"></script> 
+  <script src="http://of6e05ech.bkt.clouddn.com/prettify.js"></script> 
+  <script type="text/javascript">
+
+    // fix navbar on scroll
+
+    var $win = $(window)
+
+      , $nav = $('.navbar')
+
+      , navTop = $('.navbar').length && $('.navbar').offset().top - 10
+
+      , isFixed = 0
+
+
+
+    processScroll()
+
+
+
+    $win.on('scroll', processScroll)
+
+
+
+    function processScroll() {
+
+      var i, scrollTop = $win.scrollTop()
+
+      if (scrollTop >= navTop && !isFixed) {
+
+        isFixed = 1
+
+        $nav.addClass('navbar-fixed-top')
+
+      } else if (scrollTop <= navTop && isFixed) {
+
+        isFixed = 0
+
+        $nav.removeClass('navbar-fixed-top')
+
+      }
+
+    }
+
+    
+
+    $('.page-navigator li:not(:has(a))').html('<a>...</a>');
+
+    $('.page-navigator .current').addClass('active');
+
+    
+
+    $('pre').addClass('prettyprint linenums');
+
+    $('.entry-content a').attr('target','_blank');
+
+</script> 
+  <script type="text/javascript">
+
+$(document).ready(function() {
+
+            loadDuoshuoConut("comments", "ghostsf");
+
+        });
+
+
+
+
+
+    //类名，二级域名
+
+function loadDuoshuoConut(classname,sld) {
+
+    
+
+    if (classname == "" || sld == "" || classname ==null || sld ==null )return;
+
+    //选择类
+
+    var countObj = $("." + classname);
+
+    if(countObj.length == 0)return;
+
+    
+
+    var Objkey = '';//这个是用来装载所有key拼接的字符串
+
+    var ObjMap = new Array();//这个是用来存放对应key键和值得数组，类似map的数据结构
+
+    countObj.each(function(i) {
+
+        var key = $(this).text();//查找对象的text，然后作为键名
+
+        if(key!=''){
+
+            Objkey += key + ",";//如果text不为空字符串，也就是data-thread-key是存在，就加入查询的字符串中
+
+        }
+
+        else{
+
+            key =  'error'+i;//为空也至少给个键名
+
+        }
+
+        ObjMap[key] = new Object();
+
+        ObjMap[key].obj = $(this);
+
+        ObjMap[key].count = 0; //初始化为0条数据   
+
+    });
+
+    //好了使用getJSON查询把，因为是跨域访问，就只能用JSONP。
+
+    $.getJSON("http://api.duoshuo.com/threads/counts.jsonp?short_name=" + sld + "&threads=" + Objkey + "&callback=?", function(data) {
+
+         var vv='';//调试用的变量无关紧要
+
+         //循环遍历，如果键名和返回的数据中的thread_key能对应就赋值条数
+
+        $.each(data.response, function(i, item) {
+
+            if (ObjMap[item.thread_key] != "undefined" && ObjMap[item.thread_key] != null) {
+
+                ObjMap[item.thread_key].count = item.comments;
+
+            }
+
+            vv += item.thread_key + "|" + item.comments + "<>";
+
+        });
+
+        //alert(vv);
+
+        //遍历全部Map的数据，打印条数
+
+        for (i in ObjMap) {
+
+            ObjMap[i].obj.text("评论："+ObjMap[i].count+"条");//注意哦，这里可以自己随意加字了，ObjMap[i].count是数字，其他的随意啦啦啦
+
+        }
+
+        countObj.css("display", "inline-block");//原本是隐藏的，现在可以改为显示了
+
+    });
+
+    delete ObjMap;
+
+}
+
+</script> 
+  <!--百度站内搜索--> 
+  <!--
+<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=644517958756559312' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();</script>
+--> 
+  <!--百度打赏--> 
+  <!--<script type="text/javascript" src="https://zz.bdstatic.com/zzdashang/js/bd-zz-reward.js"></script>-->  
+ </body>
+</html>

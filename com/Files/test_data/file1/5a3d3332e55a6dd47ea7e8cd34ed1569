@@ -1,0 +1,145 @@
+<!DOCTYPE html><html><head>
+	    <meta charset="utf-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta name="apple-mobile-web-app-title" content="中联航航空">
+		<!-- 添加到主屏后的标题-->
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<!-- 全屏-->
+		<meta name="apple-mobile-web-app-status-bar-style" content="default">
+		<!-- 状态栏-->
+		<meta http-equiv="Pragma" content="no-cache">
+		<script type="text/javascript" src="/sso/scripts/h5/zepto.min.js"></script>
+		<script type="text/javascript" src="/sso/scripts/h5/login.js"></script>
+		<!-- 弹窗需要的js-->
+		<script type="text/javascript" src="/sso/scripts/h5/layer.js"></script><link href="https://account.flycua.com/sso/scripts/h5/../../styles/common/layer.css" type="text/css" rel="styleSheet" id="layermcss">
+		<!-- 弹窗需要的js-->
+		<script type="text/javascript" src="/sso/scripts/h5/function.inc.js"></script> 
+		<link rel="stylesheet" type="text/css" href="/sso/styles/h5/common.css">
+		<link rel="stylesheet" type="text/css" href="/sso/styles/h5/login.css">
+		<!-- 弹窗需要的css-->
+		<link rel="stylesheet" type="text/css" href="/sso/styles/h5/layer.css">
+		<title>中联航单点登录</title>
+		<script type="text/javascript">
+			var contextPath = "/sso";
+			var error = "";
+			var loginType = "";
+			
+			$(document).ready(function() {
+				window.addEventListener("pagehide", function() {
+					unloading();
+				}, false);
+			});
+		</script>
+		<script type="text/javascript">var _trc_=_trc_||{}, _prm_=_prm_||{};</script>
+<script type="text/javascript" src="https://trac.imarvelous.cn/v1/tracking/2174.js" async=""></script></head>
+	<body>
+		<!--  ==========  -->
+		<!--  = 页面头部 =  -->
+		<!--  ==========  -->
+		<div class="header">
+			<div class="back" onclick="javascript:window.history.back();"></div>
+			<div class="home" onclick="javascript:window.location.replace('http://m.flycua.com/h5/home.html')"></div>
+			会员登录
+		</div>
+		<!--  ==========  -->
+		<!--  = 内容区 =  -->
+		<!--  ==========  -->
+		<div class="tabs-type">
+			<ul>
+				<li><a class="tabs-type-item hover normal" href="javascript:void(0);">普通登录</a></li>
+				<li><a class="tabs-type-item phonemes" href="javascript:void(0);">手机动态密码登录</a></li>
+			</ul>
+		</div>
+		<!--  ==========  -->
+		<!--  = 普通登录=  -->
+		<!--  ==========  -->
+		<div class="login-item-wrap">
+			<form id="normalLoginForm" name="normalLoginForm" method="post" action="/sso/login.htm">
+				<div class="normal-login">
+					<div class="login-user-Wrap">
+						<span class="login-input-tip">登录名：</span>
+						<span class="login-input-info"><input type="text" id="loginUser" name="loginUser" placeholder="用户名\手机号" onkeydown="return quickQueryCust(event);"></span>
+					</div>
+					<div class="login-user-Wrap">
+						<span class="login-input-tip">登录密码：</span>
+						<span class="login-input-info"><input type="password" id="password" name="password" placeholder="6-20位字母、数字和字符" onkeydown="return quickQueryCust(event);"></span>
+					</div>
+	
+		
+					<div class="login-user-Wrap">
+							<span class="login-input-tip">验证码：</span>
+							<span class="login-input-info" style="width:2.0rem;"><input type="text" id="verifyCode" name="verifyCode" placeholder="输入验证码" style="width:2.0rem;" onkeydown="return quickQueryCust(event);"></span>
+							<span class="login-input-info" style="width:2.0rem;"><input type="image" id="vlidateImage" src="/sso/chineseVerifyCode.images" alt="点击刷新" onclick="javascript:changeVlidateImage(event);return false;" style="width:150px;"></span>
+					</div>
+		
+		
+	
+			
+					<div class="login-user-btn-wrap">
+						<a class="login-user-btn" href="javascript:void(0);" onclick="javascript:submitNormalForm();_prm_['eventId']=663;_trc_.sendCl(this);">登录</a>
+					</div>
+					<div class="login-user-register-findPassword">
+						<div class="login-user-register">
+							<a href="http://m.flycua.com/h5/register/list.html?returnUrl=http://m.flycua.com/h5/user/index.html" onclick="_prm_['eventId']=664;_trc_.sendCl(this);">立即注册</a>
+						</div>
+						<div class="login-user-findPassword">
+							<a href="http://m.flycua.com/h5/getPassword/loginRegister/getPassword_1.html">忘记密码？</a>
+						</div>
+					</div>
+				</div>
+			</form>
+			<!--  ==========  -->
+			<!--  = 手机验证码动态登录 =  -->
+			<!--  ==========  -->
+			<form id="randomPasswordLoginForm" name="randomPasswordLoginForm" method="post" action="/sso/randomPasswordLogin.htm">
+			<div class="telphone-login" style="display: none;">
+				<div class="login-user-Wrap">
+					<span class="login-input-tip">手机号码：</span>
+					<span class="login-input-info"><input type="text" id="mobile" name="mobile" placeholder="请输入已注册的手机号码"></span>
+				</div>
+				<div class="login-user-Wrap no-bottomBorder">
+					<div class="telCodeTip">
+						<span>动态密码将以短信方式</span><br>
+						<span>发送到您的手机上，请注意查看！</span>
+					</div>
+					<a id="sendRandomPassword" href="javascript:void(0);" class="getTelCodeBtn" onclick="javascript:sendRandomPassword();">获取动态密码</a>
+				</div>
+				<div class="login-user-Wrap changeHeihgt" style="display: none;">
+					<span class="login-input-tip">动态密码：</span>
+					<span class="phoneCodeInputWrap">
+						<input type="text" id="randomPassword" name="randomPassword" placeholder="请输入动态密码">
+					</span>
+					<a id="sendPasswordWaitTime" href="javascript:void(0);" class="getTelCodeBtn changeBacColor">60S后重新输入</a>
+				</div>
+				<div class="login-user-btn-wrap bottomGap">
+					<a class="login-user-btn" href="javascript:void(0);" onclick="javascript:submitRandomPasswordForm();_prm_['eventId']=663;_trc_.sendCl(this);">登录</a>
+					<div class="login-user-register-findPassword">
+						<div class="login-user-register">
+							<a href="http://m.flycua.com/h5/register/list.html?returnUrl=http://m.flycua.com/h5/user/index.html" onclick="_prm_['eventId']=664;_trc_.sendCl(this);">立即注册</a>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			</form>
+		</div>
+		<!--  = 底部版权 =  -->
+		<div class="fillingWrap resetBottom"></div>
+		<div class="cua-container-footer-nav pos-bottom foot-nav-pos">
+			<div class="cua-container-footer-item item-nav">
+				<ul>
+					<li><a href="http://m.flycua.com/h5/home.html"><img src="/sso/images/h5//homepage.png" alt=""> 首页</a></li>
+					<li><a href="http://m.flycua.com/h5/home/notice.html"><img src="/sso/images/h5//wifi.png"> 新闻</a></li>
+					<li class="Microphone"><a href="http://m.flycua.com/h5/home/onlineService.html"><img src="/sso/images/h5/Microphone.png"> 24H客服</a></li>
+					<li><a href="http://m.flycua.com/h5/user/index.html"><img src="/sso/images/h5/mine.png"> 我的联航</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="cua-container-footer-nav copyrightBac pos-bottom foot-copyright-pos">
+			<div class="cua-container-footer-item item-copyright">
+				© Copyright 2010 中国联合航空有限公司 京ICP备05075559号
+			</div>
+		</div>		 
+		<script type="text/javascript" src="http://trac.imarvelous.cn/tracking.js?2c47b0adabe26f26327790f6149d8784"></script>
+	
+</body></html>

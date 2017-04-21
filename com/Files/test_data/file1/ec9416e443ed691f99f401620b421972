@@ -1,0 +1,67 @@
+<!DOCTYPE html><html><head><meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>国付宝收银台 - 订单</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+
+	<link rel="stylesheet" href="/static/css/innsbruck.css">
+	<link rel="stylesheet" href="/static/js/gopay/mobile/gopayUtil.css">
+	<script src="/static/js/zepto.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="/static/js/jqt.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+		var jQT = new $.jQT({
+			preloadImages : []
+		});
+	//	$(function(){
+	//		$(".redButton").click(function() {
+	//			window.close();
+	//		});
+	//	});
+		
+	</script>
+	<script type="text/javascript">
+	var ctx = '';
+	function retMerchart() {
+		if($("#isWeb").val() == 'y'){
+			window.location.href = ctx + "/redirect/BankPayCallback.shtml?orderId=" + $("#orderId").val();
+		}else{
+			window.location.href="/mobile/pay/retMerchart.shtml";
+		}
+	}
+</script>
+</head>
+<body>
+<div id="jqt" class="supports3d touchscroll portrait">
+	<div id="home" class="current">
+	<header class="toolbar">
+	<h1>
+		<img src="/static/img/mobile/logo.png" alt="国付宝">
+	</h1>
+</header>
+	<section class="scroll">
+		<div id="infoMessage">
+			<div class="marginB10 icon-ctr-1">
+				<span class="iconFail"><span>支付失败,请返回商户重新发起</span></span>
+				</div>
+			<small class="marginB10">
+				</small>
+			<button type="button" class="redButton" onclick="retMerchart();">返回商户</button>
+			</div>
+	</section><footer class="newft"> 版权所有 @ 2016 国付宝信息科技有限公司 </footer>
+<script>
+$(function(){
+
+	$(window).resize(function() {
+		var outHeight= document.querySelector('.innerbd').clientHeight,
+		inHeight=document.querySelector('.innerbd').scrollHeight;
+		
+		if(outHeight<inHeight){
+			$('footer').addClass('pos_r');
+		}
+		
+	});
+});
+</script></div></div>
+
+<input id="isWeb" type="hidden" value="">
+<input id="orderId" type="hidden" value="">
+
+</body></html>

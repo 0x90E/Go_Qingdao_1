@@ -1,0 +1,198 @@
+<html><head>
+    
+
+
+
+
+
+<link href="/app/resources/css/base.css" rel="stylesheet" type="text/css">
+<link href="/app/resources/css/common.css" rel="stylesheet" type="text/css">
+<link href="/app/resources/css/button.css" rel="stylesheet" type="text/css">
+<link href="/app/resources/css/pop.css" rel="stylesheet" type="text/css">
+<link href="/app/resources/css/other.css" rel="stylesheet" type="text/css">
+<link href="/app/resources/js/plugins/zTree-3.5/zTreeStyle.css" rel="stylesheet" type="text/css">
+<link href="/app/resources/css/icon/ionicons.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="/app/resources/css/module.css">
+<script type="text/javascript" src="/app/resources/js/common/select.js"></script>
+<script type="text/javascript" src="/app/resources/js/jquery/jquery-1.9.1.js"></script>
+
+<script type="text/javascript" src="/app/resources/js/common/jquery-checkbox.min.js"></script>
+<script type="text/javascript" src="/app/resources/js/common/jquery.common.js"></script>
+<script type="text/javascript" src="/app/resources/js/jquery/jquery.tmpl.js"></script>
+<script type="text/javascript" src="/app/resources/js/pages/com/extension.js"></script>
+<script type="text/javascript" src="/app/resources/js/pages/com/httpClient.js"></script>
+<script type="text/javascript" src="/app/resources/js/pages/com/msgbox.js"></script>
+<script type="text/javascript" src="/app/resources/js/pages/com/loading.js"></script>
+<script type="text/javascript" src="/app/resources/js/pages/com/dialogbox.js"></script>
+<script type="text/javascript" src="/app/resources/js/pages/com/constVar.js"></script>
+<script type="text/javascript" src="/app/resources/js/jquery/jquery.tmpl.js"></script>
+<script type="text/javascript" src="/app/resources/js/pages/com/pagination.js"></script>
+<script type="text/javascript" src="/app/resources/js/plugins/zTree-3.5/jquery.ztree.core.min.js"></script>
+<script type="text/javascript" src="/app/resources/js/plugins/zTree-3.5/jquery.ztree.excheck.min.js"></script>
+<script type="text/javascript" src="/app/resources/js/plugins/zTree-3.5/jquery.ztree.exedit.min.js"></script>
+<script type="text/javascript" src="/app/resources/js/plugins/laydate/laydate.js"></script><link type="text/css" rel="stylesheet" href="http://mzsy.isay365.com/app/resources/js/plugins/laydate/need/laydate.css"><link type="text/css" rel="stylesheet" href="http://mzsy.isay365.com/app/resources/js/plugins/laydate/skins/default/laydate.css" id="LayDateSkin">
+<script type="text/javascript" src="/app/resources/js/pages/com/areaTree.js"></script>
+<script type="text/javascript" src="/app/resources/js/pages/com/area.js"></script>
+<script type="text/javascript">
+    window.BASE_URL = '/app';
+    window.SUFFIXES = '.action';
+</script>
+
+<!--全局基础对象定义-->
+<script type="text/javascript">
+    var msgBox = null;
+    var loading = null;
+    var dialogBox = null;
+    var constVar = null;
+
+    $(document).ready(function () {
+        msgBox = new MsgBox();
+        msgBox.initial();
+
+        loading = new Loading();
+        loading.initial();
+
+        dialogBox = new DialogBox();
+        dialogBox.initial();
+
+        constVar = new ConstVar();
+        //解决jquery-temp模板标签和jsp冲突的问题，用@代替$
+        $.fn.tpl = function (data) {
+            $.template('template', $(this).html().replace(/@/g, "$"));
+            return $.tmpl('template', data);
+        }
+
+        //外部定义的方法，用于回调
+        if (pageLoadedCallBack) {
+            pageLoadedCallBack();
+        }
+
+        //模拟placeHolder
+        simPlaceHolder();
+    });
+
+    //跳转到登录页
+    function redirectLogin(type){
+        var loginUrl = String.format("{0}/user/login{1}", window.BASE_URL, window.SUFFIXES);
+        if(type == 'parent'){
+            parent.dialogBox.hide();
+            parent.location.href = loginUrl;
+        }else {
+            window.location.href = loginUrl;
+        }
+    }
+    //提示错误信息或跳转到登陆页面
+    function showMsgOrLongin(flag,status,msg, target){
+        if(flag === undefined || status === 0 || status === '0'){
+            redirectLogin(target);
+        }else if(msg){
+            msgBox.show(msg, null, 1)
+        }
+    }
+</script>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+    <title>畅言双语APP下载页</title>
+    <link rel="stylesheet" type="text/css" href="/app/resources/static/css/base.css">
+    <link rel="stylesheet" type="text/css" href="/app/resources/static/css/download.css">
+<style>
+    #main{
+        display:none;
+    }
+    #weixin{
+        display:none;
+    }
+    .weixin_0{
+        color:#555;
+        padding:10px;
+    }
+    .weixin_arrow{
+        position:absolute;
+        right:30px;
+        top:10px;
+    }
+    .weixin_1{
+        font-size:1.5em;
+        position:absolute;
+        left:30px;
+        top: 60px;
+    }
+    .weixin_2{
+        margin-top:20px;
+        font-size:1.5em;
+        position:absolute;
+        left:30px;
+        top:74px;
+    }
+</style></head>
+
+    <body class="download-bg">
+        <div id="main" style="display: block; ">
+            <p class="title">
+                <img src="/app/resources/static/img/img.png">
+            </p>
+            <a href="http://download.mzsy.isay365.com/download/mzsy/mzsy.apk" class="download-btn">
+                <img src="/app/resources/static/img/btn.png">
+            </a>
+            <p class="tips">备注：目前仅提供安卓客户端下载</p>
+        </div>
+        <div id="weixin">
+            <div class="weixin_0">由于微信不支持APP下载,请按提示操作</div>
+            <div class="weixin_arrow"><img src="/app/resources/static/img/weixin-arrow.png"></div>
+            <div class="weixin_1">1. 点击</div>
+            <div id="step2" class="weixin_2">2. 在Safari中打开</div>
+        </div>
+    
+
+<script>
+    function is_weixin(){
+        var ua = navigator.userAgent.toLowerCase();
+        if(ua.match(/MicroMessenger/i)=="micromessenger") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    var browser={
+        versions:function(){
+            var u = navigator.userAgent, app = navigator.appVersion;
+            return {
+                trident: u.indexOf('Trident') > -1,
+                presto: u.indexOf('Presto') > -1,
+                webKit: u.indexOf('AppleWebKit') > -1,
+                gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1,
+                mobile: !!u.match(/AppleWebKit.*Mobile.*/),
+                ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/),
+                android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1,
+                iPhone: u.indexOf('iPhone') > -1 ,
+                iPad: u.indexOf('iPad') > -1,
+                webApp: u.indexOf('Safari') == -1
+            }
+        }(),
+        language:(navigator.browserLanguage || navigator.language).toLowerCase()
+    };
+
+    function init(){
+        if(is_weixin()){
+            //weixin为提示使用浏览器打开的div
+            document.getElementById("weixin").style.display="block";
+            if(browser.versions.ios || browser.versions.iPhone || browser.versions.iPad){
+                document.getElementById("step2").innerHTML="2. 在Safari中打开";
+            }else{
+                document.getElementById("step2").innerHTML="2. 在浏览器中打开";
+            }
+        }else{
+            //下载页div
+            document.getElementById("main").style.display="block";
+        }
+    }
+    init();
+</script>
+
+<div id="popbg" class="popmask" style="display:none;z-index: 2"></div><div id="popMain" class="popbox w400" style="display:none;z-index: 5">                 <div class="clearfix popboxtab">                 <div class="poptit">消息</div>                 <div class="popclose"><input id="closePop" type="button" value="" class="btn-popclose"></div>                 </div>                 <div class="popmain">                 <div id="popInfo" class="popinfo"></div>                 </div>                 <div class="popboxbot"><input id="surePop" type="button" value="确定" class="btn-deepblue">                <input id="canclePop" type="button" value="取消" class="btn-deepgray"></div>                 </div><div id="loadingbg" class="popmask" style="display:none"></div><div id="loadingMain" style="display:none;z-index:10;" class="loading"></div><div id="dialogbg" class="popmask" style="display:none;z-index: 2"></div><div id="dialogMain" class="popbox w600" style="display:none;z-index: 5">                <div class="clearfix popboxtab">                <div class="poptit" id="dialogTitle"></div>                <div class="popclose"><input id="closeDialog" type="button" value="" class="btn-popclose"></div>                </div>                <iframe id="dialogFrame" width="100%" height="300px" frameborder="0" scrolling="no" src=""></iframe></div></body></html>

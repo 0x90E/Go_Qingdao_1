@@ -4,6 +4,9 @@
 import httplib
 from bs4 import BeautifulSoup
 
+# https://www.anquan.org/
+# http://icp.chinaz.com
+
 class ChinazQuery:
     def __init__(self):
         self.soup = None
@@ -24,22 +27,18 @@ class ChinazQuery:
         method_list = []
         self._do_query("whois.chinaz.com", target_url, method_list)
 
-
-
     def _do_query(self, chinaz_website, target_url, method_list):
         conn = httplib.HTTPConnection(chinaz_website)
         conn.request("GET", "/" + target_url)
         res = conn.getresponse()
         if res.status != 200:
-            print "eroor: %s %s " %(res.status, res.reason)
             return 
         data = res.read()
         self.soup = BeautifulSoup(data)
-        print(self.soup.prettify())
+        # print(self.soup.prettify())
         
         for method in method_list:
             method()
-
 
     def _get_global_rank(self):
         for tag_h4 in self.soup.find_all('h4'):
@@ -47,7 +46,6 @@ class ChinazQuery:
                 if u"没有全球综合排名" in tag_h4.get_text():
                     return 0
                 else:
-                    print tag_h4
                     tag_ems = tag_h4.find_all('em')
                     return int(tag_ems[1].get_text() )
                 break
@@ -59,7 +57,6 @@ class ChinazQuery:
         self._get_website_info(u"收录日期")
         # 没有记录
 
-
     def _get_website_introduction(self):
         self._get_website_info(u"网站简介")
         # 该站点还没有向ALEXA提交任何介绍信息。
@@ -67,7 +64,6 @@ class ChinazQuery:
     def _get_dir_categorization(self):
         self._get_website_info(u"所属目录")
         # 该站未被亚马逊分类目录收录
-        
 
     def _get_access_speed(self):
         self._get_website_info(u"访问速度")
@@ -90,6 +86,4 @@ class ChinazQuery:
                 for tag_li in tag_ul.find_all('li'):
                     for tag_span in tag_li.findChildren("span"):
                         if keyword in tag_span.get_text():
-                            print tag_li.get_text().split(u"：")[1]
                             return tag_li.get_text().split(u"：")[1]
-                  

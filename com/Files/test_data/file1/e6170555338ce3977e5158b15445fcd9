@@ -1,0 +1,272 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+
+
+
+
+
+
+
+
+
+
+<script src="//hm.baidu.com/hm.js?b96077938c0f85beb78644c1c07dc3e5"></script><script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?b96077938c0f85beb78644c1c07dc3e5";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+	<title>福建青年之声</title>
+	
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-store">
+<meta http-equiv="Expires" content="0">
+<!--  <link rel="stylesheet" type="text/css" href="/resources/admin/style/themes/default/easyui.css"/>
+<link rel="stylesheet" type="text/css" href="/resources/admin/style/themes/icon.css"/>-->
+<link rel="stylesheet" type="text/css" href="/resources/admin/style/page2.css">
+<script type="text/javascript" src="/resources/admin/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="/resources/admin/common/js/common.js"></script>
+<script type="text/javascript" src="/resources/admin/common/js/commonUtils.js"></script>
+<script type="text/javascript" src="/resources/admin/common/js/general.js"></script>
+<script type="text/javascript" src="/resources/admin/common/js/util.js"></script>
+<!--<script type="text/javascript" src="/resources/admin/jquery/jquery.easyui.min.js"></script>  -->
+<script type="text/javascript" src="/resources/admin/jquery/jquery.json-2.2.min.js"></script>
+<script type="text/javascript" src="/resources/admin/jquery/jquery.pagination2.js"></script>
+<script type="text/javascript" src="/resources/admin/jquery/jquery.form.min.js"></script>
+<script type="text/javascript" src="/resources/admin/jquery/validator/formValidator.js"></script>
+<script type="text/javascript" src="/resources/admin/jquery/validator/formValidatorRegex.js"></script>
+<link type="text/css" rel="stylesheet" href="/resources/tools/scs_alert/css/plug.css">
+<script type="text/javascript" src="/resources/admin/common/js/idcard.js"></script>
+<script type="text/javascript" src="/resources/admin/common/js/validateFrm.js"></script>
+<script type="text/javascript" src="/resources/admin/js/zzsc.js"></script>
+<script language="javascript" src="/resources/admin/js/lang.js"></script> 
+<!--[if IE 6]>
+<script type="text/javascript" src="/resources/tools/scs_alert/js/iepngfix_tilebg.js"></script>
+<![endif]-->
+<script type="text/javascript" src="/resources/tools/scs_alert/js/scscms.js"></script>
+<!-- $.fnShowWindow_max(url); -->	
+<script type="text/javascript" src="/resources/tools/window_open/iss.core.js"></script>
+<script type="text/javascript">
+	$.ajaxSetup({
+		contentType : "application/x-www-form-urlencoded;charset=utf-8",
+		complete : function(xhr, textStatus) {
+			//session timeout
+			if (xhr.status == 911) {
+				//如果超时就处理 ，指定要跳转的页面   
+	           top.mainFrame.scs_alert('对不起，登录超时，请重新登录','warn',function(){
+	           		top.location.href = pcs.common.path + '/login';
+	           });
+			}
+		}
+	});
+	function startUpload(){
+		scs_alert("努力上传中，请稍候...","loading");
+	}
+</script>
+	
+<link rel="stylesheet" type="text/css" href="/resources/style/css.css">
+<link rel="stylesheet" type="text/css" href="/resources/admin/jquery/validator/style/validator.css">
+
+	<script type="text/javascript" src="/resources/js/nav.js"></script>
+	<script src="/resources/js/hd.js" type="text/javascript"></script>
+	<script type="text/javascript" src="/resources/js/scroll.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		 getNewsList();
+	});
+
+	function getNewsList(){		
+		var url = pcs.common.path + '/web/news/list';
+		url += "?date="+new Date()		
+		   +"&current="+$('#current').val();
+		var pagePanel='#newspager';
+		var result='#newsList';
+		var totalPanel='#newstotalRows';
+		var pageSize=8;
+		var defaultHtml='<li style="background-image:none;"><em style="text-align: center;width:100%">没有搜索到您要查询的数据...</em></li>';
+		pcs.common.changePage(url,pageSize,result,fn_getnewsList,pagePanel,defaultHtml,totalPanel);
+	}
+	function fn_getnewsList(obj,result,i){		 
+		  var str='<h2><span>'+obj.pubDate+'</span><a href="/news/new.jsp?id='+obj.pkNews+'" target="_blank">'+obj.title+'</a></h2>';
+		$(result).append(str);	
+	}
+	
+	</script>
+
+</head>
+<body>
+<!--nav 开始 -->
+
+
+
+
+
+
+
+
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			//queryFzdh();
+		});
+		
+		function queryFzdh(){
+			var url= pcs.common.path + "/queryTopListByStatusType";
+			$.post(url,
+			{
+				STATUS_TYPE:'T_QNZS_CHILD_CHILD_ID'
+			}, 
+			function(data){
+				if (data.success) {
+					var str = '';
+				    $.each(data.rs,function(i,objP){		
+				   	   str += '<div class="nav_li">'+
+									'<div class="nav_li_l">'+objP.statusName+'</div>'+
+									'<div class="nav_li_r">';
+							$.each(objP.childList,function(j,objC){
+								if(j==0){
+									str += '<a href="javascript:switchChild(\''+objC.statusCode+'\')">'+objC.statusName+'</a>';
+								}else{
+									str += '┊<a href="javascript:switchChild(\''+objC.statusCode+'\')">'+objC.statusName+'</a>';
+								}
+							});		
+							str += '</div>';
+						str += '</div>';
+				    }); 
+				    $('.subnav').html(str);
+				} else {
+					scs_alert(data.errmsg,'error');
+				}
+			}, 'json');
+		}
+		
+		function switchChild(childId){
+			var url= pcs.common.path + "/web/child/getInfo";
+			$.post(url,
+			{
+				id:childId
+			}, 
+			function(data){
+				if (data.success) {
+					var obj = data.rs;
+					if(obj==null || obj==undefined){
+						scs_alert('该站点还未配置','error');
+						return;
+					}
+					alert(obj.childUrl);
+					location.href = obj.childUrl;
+					
+				} else {
+					scs_alert(data.errmsg,'error');
+				}
+			}, 'json');
+		}
+	</script>
+		
+	
+
+<div id="top_bg">
+<div class="top">
+
+	<div id="b">
+
+<div id="daohang">
+    <div class="tab dropdown"><a target="#">[分站导航]</a>
+	  <ul class="subnav">
+       <div class="nav_li">
+            <a href="http://fz.fj.qnzs.youth.cn" target="_blank">福州团市委</a>┊
+            <a href="http://xm.fj.qnzs.youth.cn" target="_blank">厦门团市委</a>┊
+            <a href="http://pt.fj.qnzs.youth.cn" target="_blank">莆田团市委</a>┊
+            <a href="http://qz.fj.qnzs.youth.cn" target="_blank">泉州团市委</a>┊
+            <a href="http://zz.fj.qnzs.youth.cn" target="_blank">漳州团市委</a>┊
+            <a href="http://ly.fj.qnzs.youth.cn" target="_blank">龙岩团市委</a>┊
+            <a href="http://sm.fj.qnzs.youth.cn" target="_blank">三明团市委</a>┊
+            <a href="http://np.fj.qnzs.youth.cn" target="_blank">南平团市委</a>┊
+            <a href="http://nd.fj.qnzs.youth.cn" target="_blank">宁德团市委</a>┊
+            <a href="http://gl.fz.fj.qnzs.youth.cn" target="_blank">鼓楼团区委</a>┊
+            <a href="http://fq.fz.fj.qnzs.youth.cn" target="_blank">福清团区委</a>┊
+            <a href="http://cl.fz.fj.qnzs.youth.cn" target="_blank">长乐团区委</a>┊
+            <a href="http://jc.nd.fj.qnzs.youth.cn" target="_blank">蕉城团区委</a>┊
+            <a href="http://gt.nd.fj.qnzs.youth.cn" target="_blank">古田团县委</a>┊
+            <a href="http://pn.nd.fj.qnzs.youth.cn" target="_blank">屏南团县委</a>┊
+            <a href="http://xl.ly.fj.qnzs.youth.cn" target="_blank">新罗团区委</a>┊
+            <a href="http://wp.ly.fj.qnzs.youth.cn" target="_blank">武平团县委</a>┊
+            <a href="http://ct.ly.fj.qnzs.youth.cn" target="_blank">长汀团县委</a>┊
+            <a href="http://sw.np.fj.qnzs.youth.cn" target="_blank">邵武团县委</a>┊
+            <a href="http://sc.np.fj.qnzs.youth.cn" target="_blank">顺昌团县委</a>┊
+            <a href="http://xy.pt.fj.qnzs.youth.cn" target="_blank">秀屿团区委</a>┊
+            <a href="http://lc.pt.fj.qnzs.youth.cn" target="_blank">荔城团区委</a>┊
+            <a href="http://yx.sm.fj.qnzs.youth.cn" target="_blank">尤溪团县委</a>┊
+            <a href="http://dt.sm.fj.qnzs.youth.cn" target="_blank">大田团县委</a>┊
+            <a href="http://nh.sm.fj.qnzs.youth.cn" target="_blank">宁化团县委</a>┊
+            <a href="http://jj.qz.fj.qnzs.youth.cn" target="_blank">晋江团区委</a>┊
+            <a href="http://lc.qz.fj.qnzs.youth.cn" target="_blank">鲤城团区委</a>┊
+            <a href="http://ax.qz.fj.qnzs.youth.cn" target="_blank">安溪团县委</a>┊
+            <a href="http://zp.zz.fj.qnzs.youth.cn" target="_blank">漳浦团县委</a>┊
+            <a href="http://ds.zz.fj.qnzs.youth.cn" target="_blank">东山团县委</a>┊
+            <a href="http://lh.zz.fj.qnzs.youth.cn" target="_blank">龙海团市委</a>┊
+            <a href="http://hc.xm.fj.qnzs.youth.cn" target="_blank">海沧团区委</a>┊
+            <a href="http://jm.xm.fj.qnzs.youth.cn" target="_blank">集美团区委</a>┊
+            <a href="http://xy.fj.qnzs.youth.cn" target="_blank">兴业银行团委</a>┊
+            <a href="http://xh.fj.qnzs.youth.cn" target="_blank">厦门航空公司团委</a>┊<br>
+            <a href="http://gjdw.fj.qnzs.youth.cn" target="_blank">国家电网福建省电力有限公司团委</a>┊
+		</div>
+	  </ul>
+  </div>
+  </div>
+<!--代码结束-->
+
+</div>
+    <div class="left">
+    <a href="/index_new.jsp">首&nbsp;页</a>
+    <!--  <a href="/bmqy.jsp">八闽青音</a>
+     <a href="http://fj.qnzs.youth.cn/" target="_blank">心互动</a>-->
+    <!--  
+    <a href="/hsll.jsp">回声嘹亮</a>
+    -->
+    <a href="/qchd.jsp">青彩活动</a>
+   <!--  <a  href="void(0);">青年服务</a>
+    <a   href="void(0);">青年调查</a>  
+    <a href="http://zyz.fjcyl.com/" target="_blank">青志愿</a>
+    -->
+    <a href="http://fj101.org/" target="_blank">福建101</a>
+    <a href="http://ydf.fjcyl.com/" target="_blank">青公益</a>
+   <!--  <a href="http://fj.qnzs.youth.cn/" target="_blank">心互动</a> -->
+    <!--   <a href="http://sns.qnzs.youth.cn/index/show/id/612367" target="_blank">春节说吧</a>-->
+    <a href="http://data.fjcyl.com/" target="_blank">福建数字共青团</a>
+	<a href="http://fj.qnzs.youth.cn/" target="_blank">福建青年之声</a>
+    </div>
+    
+    <div class="right" style="display:none">
+    
+    
+	  	<strong style="padding-right:10px;">UP通行证</strong><a href="http://txz.fjcyl.com/?encReturnUrl=http%3A%2F%2Fwww.fjcyl.com%2F&amp;encSystemId=110002">注册</a>　|　<a href="https://passport.fjcyl.com/cas/login?service=http://www.fjcyl.com/index.jsp">登录</a>
+	   
+    </div>
+    
+</div>
+</div>
+
+<!--nav 结束 -->
+<input type="hidden" id="current" value="">
+<!--news 开始 -->
+<div class="news2">
+  <h1><img src="/resources/image/bt6.png" width="150" height="41"><br>
+  <img src="/resources/image/bkt4.gif" width="1202" height="22">  </h1>
+  <div id="newsList"><img src="http://www.fjcyl.com/resources/admin/common/images/loader.gif"></div>
+</div>
+<!--news 结束 --> 
+ <!--分页部分开始-->
+     <div class="tnt_pagination" id="newspager"></div><div id="newstotalRows" style="display:none"></div>   
+  <!--分页部分结束-->
+<div class="clear"></div>
+
+<div class="copyright">版权所有 Copyright 2015 共青团福建省委 闽ICP备14012617号-4</div>
+
+
+</body></html>

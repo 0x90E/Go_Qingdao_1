@@ -1,0 +1,37 @@
+<html><head></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">$(function () {
+    var data;
+    var myScript = document.getElementById('kwCounterJs');
+
+    var queryString = myScript.src.replace(/^[^\?]+\??/, '');
+
+    var params = parseQuery(queryString);
+    function parseQuery(query) {
+        var Params = new Object();
+        if (!query) return Params;
+        var Pairs = query.split(/[;&amp;]/);
+        for (var i = 0; i &lt; Pairs.length; i++) {
+            var KeyVal = Pairs[i].split('=');
+            if (!KeyVal || KeyVal.length != 2) continue;
+            var key = unescape(KeyVal[0]);
+            var val = unescape(KeyVal[1]);
+            val = val.replace(/\+/g, ' ');
+            Params[key] = val;
+        }
+        return Params;
+    }
+    data = {
+        'r': 'counter/kwcount',
+        'ua': navigator.userAgent || '',
+        'uid': params.u || '',
+        'kw': params.kw || '',
+        'type': params.type || '',
+
+    };
+    return $.ajax('http://counter.dataoke.com/index.php', {
+        data: data,
+        dataType: 'jsonp',
+        async: false
+    });
+});
+
+</pre></body></html>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" /> 
+  <meta name="format-detection" content="telephone=no" /> 
+  <meta name="keywords" content="" /> 
+  <meta name="description" content="" /> 
+  <meta name="apple-mobile-web-app-title" content="" /> 
+  <meta name="apple-mobile-web-app-capable" content="yes" /> 
+  <title></title> 
+  <script type="text/javascript" src="/Public_new/js/rem.js"></script> 
+  <link rel="stylesheet" href="/Public_new/css/reset.css" /> 
+  <link rel="stylesheet" type="text/css" href="/Public_new/iconfont/iconfont.css" /> 
+  <!--循环加载页面css--> 
+  <link rel="stylesheet" href="/Public_new/css/common.css?v=1490731997" /> 
+  <script type="text/javascript" src="/Public/js/jquery.js"></script> 
+  <!--script type="text/javascript" src="/Public_new/js/header.js"></script--> 
+  <script type="text/javascript" src="/Public/js/tool/store.js"></script>
+  <!--作用于个人中心的"登录/注册"按钮--> 
+  <style>
+			.gl-header{z-index:999;}
+			.sharecon{ border-radius:4px; width:280px;}
+			.sharecon p:nth-child(1){border-radius:4px 4px 0 0;}
+			.sharecon div a,.hovera a{padding:0; font-size:13px; background:none; margin:12px 0 0 10px; display:block; float:left; width:70px; height:70px; overflow:hidden; text-align:center;}
+			.hovera a{ z-index:1002;}
+			.sharecon div a p{ padding:3px 0 5px 0}
+			.sharecon div{ padding:4px 15px 12px 15px;}
+			.hovera{ position:absolute; width:100%; top:40px; z-index:2000;}
+			.bmDetail{border-bottom:1px dotted #ccc;padding-bottom:10px;display:block;width:100%;margin-bottom:3px;color:#808080;overflow:hidden;white-space:nowrap; text-overflow:ellipsis;  -o-text-overflow: ellipsis;}
+			.yAppDown{background:rgba(95,100,110,.65);width:100%;height:40px;position:absolute;top:0px;font-size:12px;line-height:38px;color:#fff;z-index:99;}
+			.yDownLink{float:right;width:80px;text-align:center;color:#fff;background:rgba(240,85,61,.65);height:40px;text-decoration:none;}
+			.yAppClose{padding:13px 10px;height:16px;line-height:16px;}
+			.scroll_ou{overflow:hidden;}
+			body{font:0.7rem Microsoft yahei,Arial,Verdana,simsun !important;}
+			.gl-header-logo img{vertical-align:top !important;}
+			.page_loading {
+				background: rgba(0, 0, 0, 0) url("/Public/images/page_loading.gif") no-repeat scroll center center;
+				display: block;
+				height: 25px;
+				margin: 5px auto;
+				width: 100px;
+			}
+			.gl-header-search-cont{z-index:10000;}
+			.gl-header-search-ul_no {border-top: 0px !important; margin-top: 0rem !important;}
+			.pt45{padding-top:40px;}		</style> 
+  <script>
+	$(function(){
+		if($(".gl-header").css("display") == 'none'){
+			$(".pt45").removeClass("pt45");
+		}
+		
+	})
+		
+	</script>
+ </head>  
+ <body style="background-color:#fff;"> 
+  <!--公共隐藏域 start--> 
+  <input type="hidden" id="downAppURL" value="/index.php?m=home&amp;c=render&amp;a=index&amp;city=wx" />
+  <!--app下载地址--> 
+  <input type="hidden" id="api_key" value="windows" />
+  <!--设备类型--> 
+  <input type="hidden" id="comefrom" value="" />
+  <!--访问来源--> 
+  <input type="hidden" id="is_weixin_agent" value="" />
+  <!--是否微信--> 
+  <input type="hidden" name="city" value="wx" id="city" />
+  <!--当前城市--> 
+  <input type="hidden" name="header_name" value="" id="header_name" />
+  <!--当前标题--> 
+  <input type="hidden" id="getlogincodeurl" value="/index.php?m=home&amp;c=usercenter&amp;a=getlogincode&amp;city=wx" />
+  <!--获取登录验证码--> 
+  <input type="hidden" id="h_loginurl" value="/index.php?m=home&amp;c=usercenter&amp;a=checkquicklogin&amp;city=wx" /> 
+  <!--登录地址--> 
+  <input type="hidden" id="login" value="http://mtt.house365.com/wx/usercenter/login/" />
+  <!--登录页面跳转地址--> 
+  <input type="hidden" id="logoutURL" value="/index.php?m=home&amp;c=usercenter&amp;a=logout&amp;city=wx" /> 
+  <!--退出登录地址--> 
+  <input type="hidden" id="searchThinkUrl" value="" />
+  <!--搜索联想查询地址--> 
+  <input type="hidden" id="searchThinkkey" value="" />
+  <!--搜索联想存储键值--> 
+  <input type="hidden" id="header_type" value="" />
+  <!--头部导航类型--> 
+  <input type="hidden" id="iswxheadershow" value="" />
+  <!--微信头部导航自定义开关--> 
+  <!--公共隐藏域 end--> 
+  <!--详情页导航--> 
+  <header class="gl-header"> 
+   <div class="gl-header-cont clearfix"> 
+    <a href="http://mtt.house365.com/" class="gl-header-logo"><img src="/Public_new/images/logo.png" width="100%" height="100%" alt="365淘房" /></a> 
+    <h1></h1> 
+    <p class="gl-header-right"> <i class="iconfont icon-mulu" id="h_mulu"></i> </p>
+   </div> 
+  </header> 
+  <div class="gl-header-popup"></div> 
+  <div class="gl-header-dialog"> 
+   <div class="gl-header-pop"> 
+    <!--未登录--> 
+    <form action="" id="login_box" method="post"> 
+     <div class="gl-header-login clearfix"> 
+      <i class="iconfont icon-shouji"></i> 
+      <i class="iconfont icon-close1"></i> 
+      <input type="tel" class="gl-header-inp gl-header-inp-tel" name="h_loginphone" id="h_loginphone" placeholder="手机号" maxlength="11" /> 
+     </div> 
+     <div class="gl-header-login clearfix"> 
+      <i class="iconfont icon-yanzhengma"></i> 
+      <input type="text" name="h_login_code" id="h_login_code" class="gl-header-inp small" placeholder="验证码" /> 
+      <span type="text" id="h_telcode" class="gl-header-code" readonly="readonly" value="获取验证码" style="line-height:1.5rem;"></span>获取验证码 
+     </div> 
+     <p class="gl-header-info-error visibility">*手机号或验证码错误</p> 
+     <input type="button" class="gl-header-btn-login" value="登录" /> 
+    </form> 
+    <div class="gl-header-text-login clearfix"> 
+     <a href="/wx/usercenter/register/">立即注册</a> 
+     <a href="/wx/usercenter/login/?log_type=1" class="gl-header-pwd-login">密码登陆</a> 
+    </div> 
+    <!--未登录 end--> 
+    <!--登录后--> 
+    <div class="gl-header-loginOn" style="display:none;"> 
+     <img src="/Public_new/images/img_head@2x.png" class="gl-header-userimg" alt="" /> 
+     <h5></h5> 
+    </div> 
+    <div class="gl-header-center clearfix" style="display:none;"> 
+     <a href="/wx/usercenter/">用户中心</a> 
+     <a href="javascript:logout();">退出登录</a> 
+    </div> 
+    <!--登录后 end--> 
+    <div class="gl-header-navbar"> 
+     <div class="gl-header-line"></div> 
+     <span>导 航</span> 
+    </div> 
+    <form action="" method="post"> 
+     <div class="gl-header-login bor-gray clearfix" onclick="window.location.href='/wx/search/';return false;"> 
+      <i class="iconfont icon-search"></i> 
+      <input type="text" class="gl-header-inp" placeholder="搜索" /> 
+     </div> 
+    </form> 
+    <dl class="gl-header-dl clearfix"> 
+     <dt>
+      <a href="/">首 页</a>
+     </dt> 
+    </dl> 
+    <div class="gl-header-download clearfix"> 
+     <a href="/index.php?m=Home&amp;c=Render&amp;a=index&amp;city=wx&amp;load=1"> <p class="gl-header-app"><i class="iconfont icon-xiazai"></i></p> <h6>下载APP</h6> </a> 
+     <a href="/wx/usercenter/feedback/"> <p class="gl-header-yijian"><i class="iconfont icon-yijian"></i></p> <h6>意见反馈</h6> </a> 
+    </div> 
+   </div> 
+  </div> 
+  <!--公用js--> 
+  <script type="text/javascript" src="/Public_new/js/tool.js"></script> 
+  <script type="text/javascript" src="/Public_new/js/common.js"></script> 
+  <link rel="stylesheet" href="/Public/css/common.css" /> 
+  <link href="/Public/css/renthouse/default_tip.css" rel="stylesheet" type="text/css" /> 
+  <style>
+        .pt45{padding-top: 0px;}
+        .center i{ display:block}
+        .center{  position:fixed; width:100%; display:block;top:22%}
+      /*  p{color:#8a8a8a;font-size:22px;line-height:35px;text-align: left;margin-left:130px;}
+        p.one{margin-left:100px;font-size:18px;text-align: left;}*/
+    </style> 
+  <script>
+$(function(){
+	$(".gl-header-cont h1").text('页面未找到');
+})
+</script> 
+  <div class=""> 
+   <div class="default_tip_wrapper"> 
+    <img src="/Public/images/renthouse/default_tip2.jpg" width="181" class="default_tip1_img" /> 
+    <p class="tip1">对不起！页面未找到</p> 
+    <p class="tip2"><b id="wait">3</b>秒后将返回首页</p> 
+    <a href="/" class="turn_index owio">返回首页</a> 
+   </div> 
+  </div> 
+  <script>
+(function(){
+//no_record();
+var wait = document.getElementById('wait');
+var interval = setInterval(function(){
+	var time = --wait.innerHTML;
+	if(time <= 0) {
+		location.href = '/';
+		clearInterval(interval);
+	};
+}, 1000);
+})();
+$.extend({       
+urlGet:function()
+{
+    var aQuery = window.location.href.split("?");  //取得Get参数
+    var aGET = new Array();
+    if(aQuery.length > 1)
+    {
+        var aBuf = aQuery[1].split("&");
+        for(var i=0, iLoop = aBuf.length; i<iLoop; i++)
+        {
+            var aTmp = aBuf[i].split("=");  //分离key与Value
+            aGET[aTmp[0]] = aTmp[1];
+        }
+     }
+     return aGET;
+ }
+})
+var GET = $.urlGet(); //获取URL的Get参数
+var city = !GET['city'] || GET['city']=='null' || GET['city']=='undefined' ? 'nj' : GET['city']; //取得id的值
+</script> 
+  <!-- footer start --> 
+  <style>
+.bot_size{width:100%;}
+.input[type="submit"],
+input[type="reset"],
+input[type="button"],
+button {
+    -webkit-appearance: none;
+}
+
+.clearfix:before, .clearfix:after {
+    content: '.';
+    display: block;
+    visibility: hidden;
+    font-size: 0;
+    line-height: 0;
+    width: 0;
+    height: 0
+}
+
+.clearfix:after {
+    clear: both
+}
+
+.clearfix {
+    zoom: 1
+}
+
+body {
+    height: 100%;
+    background: #fff;
+    position: relative;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.fl {
+    float: left
+}
+
+.fr {
+    float: right
+}
+
+.bg_grey2 {
+    background: #f5f5f5;
+}
+
+.bot_size {
+    width: 100%;
+}
+
+.dl_bot_op_wrap {
+    background: #fff;
+    width: 100%;
+    height: 159px;
+    background-size: 120%;
+    color: #d2d2d2;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.dl_bot_op {
+    width: 88%;
+    padding: 17px 0 17px 0;
+    margin: 0 auto;
+    border-bottom: 1px solid #5b5b5b;
+    border-top: 1px solid #5b5b5b;
+}
+
+.dl_bot_op li {
+    text-align: center;
+    width: 25%;
+}
+
+.dl_bot_op li .icon {
+    width: 20px;
+    height: 20px;
+    display: block;
+    margin: 0 auto 14px auto;
+
+}
+
+.dl_bot_op li a {
+    display: block;
+    color: #404040;
+}
+
+.dl_bot_op_wrap .bot_tit {
+    color: #999;
+    font-size: 12px;
+    text-align: center;
+    margin-top: 15px;
+
+}
+.public_footer_160705 .bot_tit {
+  color: #999;
+  font-size: 12px;
+  text-align: center;
+  padding: 12px 0;
+}
+
+.default_tip_bot {
+  text-align: center;
+  padding: 14px 0;
+  font-size: 12px;
+  background: #fff;
+}
+.default_tip_bot .focus {
+  background: #f3f3f3;
+  width: 16%;
+  text-align: center;
+  padding: 2px 0;
+  display: inline-block;
+  margin-right: 2%;
+  color: #404040;
+}
+.default_tip_bot .last_no_pad {
+  margin-right: 0;
+}
+ </style> 
+  <div class="bot_size"> 
+  </div> 
+  <script>
+ if(city != 'nj' && city != 'hf'){
+	$('.public_footer_160705').addClass('dl_bot_op_wrap').removeClass('public_footer_160705');
+	$('.default_tip_bot').hide();
+ }
+ 
+ function cityurl(url,type){
+	if(type == 1)
+		url = '/'+city+url;
+	else
+		url += '&city='+city;
+	
+	window.location.href=url;
+ }
+ 
+ </script>  
+ </body>
+</html>

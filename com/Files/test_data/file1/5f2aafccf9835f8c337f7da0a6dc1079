@@ -1,0 +1,1393 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+ <head id="Head">
+  <title>
+	成功搭建OpenVpn服务器 - 李珍宝的blog - IT博客
+</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta id="metaKeywords" name="keywords" content="成功搭建OpenVpn服务器" />
+  <link id="MainCss" type="text/css" rel="stylesheet" href="http://www.cnitblog.com/Skins/BlackSun/style.css" />
+  <link id="RSSLink" title="RSS" type="application/rss+xml" rel="alternate" href="http://www.cnitblog.com/lizhenbao/rss.aspx" />
+ </head> 
+ <body> 
+  <form name="Form1" method="post" action="18356.html" id="Form1"> 
+   <input type="hidden" name="__VIEWSTATE" id="
+__VIEWSTATE" value="" /> 
+   <script language="JavaScript">
+									function ctlent(evt,id)
+											{
+												if(evt.ctrlKey && evt.keyCode == 13)
+												{	
+													try
+													{
+														TempSave(id);
+													}
+													catch(ex)
+													{
+													}
+													finally
+													{
+													    __doPostBack('AjaxHolder$PostComment$btnSubmit','')
+													}
+												}
+		
+												}</script> 
+   <script language="JavaScript">function SetReplyAuhor(author){document.getElementById('AjaxHolder_PostComment_tbComment').value+="@"+author+"\n";document.getElementById('AjaxHolder_PostComment_tbComment').focus();return false}</script> 
+   <script src="/ScriptResource.axd?d=-BecoVNwDVCZ4TW3gB_ZzPWfgjCQ_C64O4hNc3pweA4UGq0B-lWFnUMMAtqURN0AZF_f7fxk9s5U1gsq0foUhwHdXezBbn_OgCN5EL300MOu7Jb-c7WU_a2OCK01&amp;t=634979433755186250" type="text/javascript"></script> 
+   <div id="top"> 
+    <div> 
+     <table class="HeaderTitles"> 
+      <tbody>
+       <tr> 
+        <td> <h1 class="HeaderTitle"><a id="Header1_HeaderTitle" class="HeaderMainTitle" href="http://www.cnitblog.com/lizhenbao/">李珍宝的blog</a></h1> <p id="tagline">李珍宝的BLOG</p> </td> 
+       </tr> 
+      </tbody>
+     </table> 
+    </div> 
+    <div> 
+     <table id="HeaderBar" class="HeaderBar"> 
+      <tbody>
+       <tr> 
+        <td class="HeaderBarTab" nowrap=""> &nbsp; <a id="Header1_MyLinks1_HomeLink" href="http://www.cnitblog.com/">IT博客</a>&nbsp;:: <a id="Header1_MyLinks1_MyHomeLink" href="http://www.cnitblog.com/lizhenbao/">首页</a>&nbsp;:: <a id="Header1_MyLinks1_ContactLink" accesskey="9" href="http://www.cnitblog.com/lizhenbao/contact.aspx?id=1">联系</a>&nbsp;:: <a id="Header1_MyLinks1_Syndication" href="http://www.cnitblog.com/lizhenbao/Rss.aspx">聚合</a> <a id="Header1_MyLinks1_XMLLink" class="XMLLink" href="http://www.cnitblog.com/lizhenbao/Rss.aspx"><img src="http://www.cnitblog.com/images/xml.gif" border="0" /></a>&nbsp;:: <a id="Header1_MyLinks1_Admin" href="http://www.cnitblog.com/lizhenbao/admin/EditPosts.aspx">管理</a> </td> 
+        <td class="HeaderBarTabBack" nowrap="" width="100%"> 
+         <table class="BlogStatsBar"> 
+          <tbody>
+           <tr> 
+            <td width="100%"> </td> 
+            <td class="BlogStatsBar" nowrap=""> &nbsp; 51 Posts&nbsp;:: 1 Stories :: 160 Comments :: 0 Trackbacks </td> 
+           </tr> 
+          </tbody>
+         </table> </td> 
+       </tr> 
+      </tbody>
+     </table> 
+    </div> 
+   </div> 
+   <table id="maintable"> 
+    <tbody>
+     <tr>
+      <td id="leftmenu" style="display:none"> <h3>常用链接</h3> 
+       <ul> 
+        <li><a id="SingleColumn1_ctl01_repeaterLinks_ctl01_lnkLinkItem" href="http://www.cnitblog.com/lizhenbao/MyPosts.html">我的随笔</a></li> 
+        <li><a id="SingleColumn1_ctl01_repeaterLinks_ctl02_lnkLinkItem" href="http://www.cnitblog.com/lizhenbao/MyComments.html">我的评论</a></li> 
+        <li><a id="SingleColumn1_ctl01_repeaterLinks_ctl03_lnkLinkItem" href="http://www.cnitblog.com/lizhenbao/OtherPosts.html">我参与的随笔</a></li> 
+       </ul> <h3>留言簿<span style="font-size:11px;font-weight:normal;">(16)</span></h3> 
+       <ul> 
+        <li> <a id="SingleColumn1__3c41e74_lnkMessages" href="http://www.cnitblog.com/lizhenbao/Contact.aspx?id=1">给我留言</a> </li>
+        <li> <a id="SingleColumn1__3c41e74_lnkPublicMsgView" href="http://www.cnitblog.com/lizhenbao/default.aspx?opt=msg">查看公开留言</a> </li>
+        <li> <a id="SingleColumn1__3c41e74_lnkPrivateMsgView" href="http://www.cnitblog.com/lizhenbao/admin/MyMessages.aspx">查看私人留言</a> </li> 
+       </ul> <h3>我参与的团队</h3> 
+       <div class="RecentComment"> 
+       </div> 
+       <div class="mainMenuBackground"> 
+        <h3>随笔分类<span style="font-size:11px;font-weight:normal">(47)</span></h3> 
+        <ul> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl01_Link" href="http://www.cnitblog.com/lizhenbao/category/762.html">软件(47)</a> <span style="width:10px"> <a id="SingleColumn1_Categories_CatList_ctl00_LinkList_ctl01_RssLink" title="Subscribe to 软件(47)" href="http://www.cnitblog.com/lizhenbao/category/762.html/rss"><img title="Subscribe to 软件(47)" src="/Skins/BlackSun/Images/xmlsmall.gif" alt="rss" border="0" /></a> </span> </li> 
+        </ul> 
+        <h3>随笔档案<span style="font-size:11px;font-weight:normal">(51)</span></h3> 
+        <ul> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl01_Link" href="http://www.cnitblog.com/lizhenbao/archive/2011/07.html">2011年7月 (1)</a> <span style="width:10px"> </span> </li> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl02_Link" href="http://www.cnitblog.com/lizhenbao/archive/2010/12.html">2010年12月 (1)</a> <span style="width:10px"> </span> </li> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl03_Link" href="http://www.cnitblog.com/lizhenbao/archive/2010/06.html">2010年6月 (1)</a> <span style="width:10px"> </span> </li> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl04_Link" href="http://www.cnitblog.com/lizhenbao/archive/2010/02.html">2010年2月 (1)</a> <span style="width:10px"> </span> </li> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl05_Link" href="http://www.cnitblog.com/lizhenbao/archive/2010/01.html">2010年1月 (1)</a> <span style="width:10px"> </span> </li> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl06_Link" href="http://www.cnitblog.com/lizhenbao/archive/2009/05.html">2009年5月 (1)</a> <span style="width:10px"> </span> </li> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl07_Link" href="http://www.cnitblog.com/lizhenbao/archive/2008/10.html">2008年10月 (1)</a> <span style="width:10px"> </span> </li> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl08_Link" href="http://www.cnitblog.com/lizhenbao/archive/2008/09.html">2008年9月 (1)</a> <span style="width:10px"> </span> </li> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl09_Link" href="http://www.cnitblog.com/lizhenbao/archive/2008/06.html">2008年6月 (1)</a> <span style="width:10px"> </span> </li> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl10_Link" href="http://www.cnitblog.com/lizhenbao/archive/2008/01.html">2008年1月 (1)</a> <span style="width:10px"> </span> </li> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl11_Link" href="http://www.cnitblog.com/lizhenbao/archive/2007/12.html">2007年12月 (2)</a> <span style="width:10px"> </span> </li> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl12_Link" href="http://www.cnitblog.com/lizhenbao/archive/2007/09.html">2007年9月 (1)</a> <span style="width:10px"> </span> </li> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl13_Link" href="http://www.cnitblog.com/lizhenbao/archive/2007/08.html">2007年8月 (2)</a> <span style="width:10px"> </span> </li> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl14_Link" href="http://www.cnitblog.com/lizhenbao/archive/2007/07.html">2007年7月 (3)</a> <span style="width:10px"> </span> </li> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl15_Link" href="http://www.cnitblog.com/lizhenbao/archive/2007/06.html">2007年6月 (2)</a> <span style="width:10px"> </span> </li> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl16_Link" href="http://www.cnitblog.com/lizhenbao/archive/2007/03.html">2007年3月 (3)</a> <span style="width:10px"> </span> </li> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl17_Link" href="http://www.cnitblog.com/lizhenbao/archive/2006/12.html">2006年12月 (1)</a> <span style="width:10px"> </span> </li> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl18_Link" href="http://www.cnitblog.com/lizhenbao/archive/2006/11.html">2006年11月 (2)</a> <span style="width:10px"> </span> </li> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl19_Link" href="http://www.cnitblog.com/lizhenbao/archive/2006/10.html">2006年10月 (10)</a> <span style="width:10px"> </span> </li> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl20_Link" href="http://www.cnitblog.com/lizhenbao/archive/2006/09.html">2006年9月 (4)</a> <span style="width:10px"> </span> </li> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl21_Link" href="http://www.cnitblog.com/lizhenbao/archive/2006/04.html">2006年4月 (1)</a> <span style="width:10px"> </span> </li> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl22_Link" href="http://www.cnitblog.com/lizhenbao/archive/2006/02.html">2006年2月 (1)</a> <span style="width:10px"> </span> </li> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl23_Link" href="http://www.cnitblog.com/lizhenbao/archive/2005/12.html">2005年12月 (2)</a> <span style="width:10px"> </span> </li> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl24_Link" href="http://www.cnitblog.com/lizhenbao/archive/2005/11.html">2005年11月 (3)</a> <span style="width:10px"> </span> </li> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl25_Link" href="http://www.cnitblog.com/lizhenbao/archive/2005/10.html">2005年10月 (1)</a> <span style="width:10px"> </span> </li> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl01_LinkList_ctl26_Link" href="http://www.cnitblog.com/lizhenbao/archive/2005/09.html">2005年9月 (3)</a> <span style="width:10px"> </span> </li> 
+        </ul> 
+        <h3>文章分类<span style="font-size:11px;font-weight:normal">(2)</span></h3> 
+        <ul> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl02_LinkList_ctl01_Link" href="http://www.cnitblog.com/lizhenbao/category/691.html">软件(2)</a> <span style="width:10px"> <a id="SingleColumn1_Categories_CatList_ctl02_LinkList_ctl01_RssLink" title="Subscribe to 软件(2)" href="http://www.cnitblog.com/lizhenbao/category/691.html/rss"><img title="Subscribe to 软件(2)" src="/Skins/BlackSun/Images/xmlsmall.gif" alt="rss" border="0" /></a> </span> </li> 
+        </ul> 
+        <h3>文章档案<span style="font-size:11px;font-weight:normal">(1)</span></h3> 
+        <ul> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl03_LinkList_ctl01_Link" href="http://www.cnitblog.com/lizhenbao/archives/2005/08.html">2005年8月 (1)</a> <span style="width:10px"> </span> </li> 
+        </ul> 
+        <h3>相册</h3> 
+        <ul> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl04_LinkList_ctl01_Link" href="http://www.cnitblog.com/lizhenbao/gallery/3780.html">贴图</a> <span style="width:10px"> </span> </li> 
+        </ul> 
+        <h3>连接</h3> 
+        <ul> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl05_LinkList_ctl01_Link" href="http://shop35239625.taobao.com/" target="_blank">妹妹的淘宝店</a> <span style="width:10px"> </span> </li> 
+         <li class="menuItemList"> <a id="SingleColumn1_Categories_CatList_ctl05_LinkList_ctl02_Link" href="http://shop35500314.taobao.com/" target="_blank">蜗牛壳小店</a> <span style="width:10px"> </span> </li> 
+        </ul> 
+       </div> <h3>最新随笔</h3> 
+       <div class="RecentComment"> 
+        <ul style="word-break:break-all"> 
+         <li><a id="SingleColumn1__19f9e8f_RecentPostsList_ctl00_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2011/07/14/74692.html">1.&nbsp;成功解决64位Windows Server 2008 R2服务器和32位Windows Xp客户端之间打印机共享</a></li> 
+         <li><a id="SingleColumn1__19f9e8f_RecentPostsList_ctl01_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2010/12/29/72540.html">2.&nbsp;利用路由器远程开启并访问家中电脑</a></li> 
+         <li><a id="SingleColumn1__19f9e8f_RecentPostsList_ctl02_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2010/06/20/66868.html">3.&nbsp;用一台无线路由器连接宽带视界（iTV、IPTV）和电脑</a></li> 
+         <li><a id="SingleColumn1__19f9e8f_RecentPostsList_ctl03_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2010/02/21/64330.html">4.&nbsp;何时使用多线程？</a></li> 
+         <li><a id="SingleColumn1__19f9e8f_RecentPostsList_ctl04_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2010/01/21/63899.html">5.&nbsp;C++类的成员函数中使用静态变量的陷阱</a></li> 
+         <li><a id="SingleColumn1__19f9e8f_RecentPostsList_ctl05_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2009/05/14/57221.html">6.&nbsp;关于SSL、非对称加解密算法、SSH、证书</a></li> 
+         <li><a id="SingleColumn1__19f9e8f_RecentPostsList_ctl06_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2008/10/22/50554.html">7.&nbsp;可以打印测试页，不能打印word文档和IE页面的临时解决办法。</a></li> 
+         <li><a id="SingleColumn1__19f9e8f_RecentPostsList_ctl07_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2008/09/12/49027.html">8.&nbsp;常见电磁波波长</a></li> 
+         <li><a id="SingleColumn1__19f9e8f_RecentPostsList_ctl08_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2008/06/28/46073.html">9.&nbsp;单反画幅尺寸</a></li> 
+         <li><a id="SingleColumn1__19f9e8f_RecentPostsList_ctl09_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2008/01/30/39483.html">10.&nbsp;常见视频光盘（VCD SVCD KVCD DVD）采用算法及分辨率</a></li> 
+        </ul> 
+       </div> <script language="JavaScript">
+function SearchGoogle(key,evt,site)
+		{
+			if(evt.keyCode==13 || evt.keyCode==0 || evt.type =='click')
+			{
+				key.focus();
+				var keystr = encodeURIComponent(key.value);
+				url = "http://www.google.com/search?q=";
+				url = url+keystr;
+				url += "&ie=UTF-8&oe=GB2312&hl=zh-CN&domains="+site+"&sitesearch="+site;
+				window.location=url;
+				return false;
+			}
+		}
+</script> <h3>搜索</h3> 
+       <ul> 
+        <li> </li>
+        <li><input style="WIDTH: 130px" type="text" name="q" id="q" onkeydown="return SearchGoogle(document.getElementById('q'),event,'www.cnitblog.com/lizhenbao')" />&nbsp;<input onclick="SearchGoogle(document.getElementById('q'),event,'www.cnitblog.com/lizhenbao')" type="button" value="搜索" name="sa" /> </li> 
+       </ul> <h3>积分与排名</h3> 
+       <ul> 
+        <li> 积分 - 165943 </li>
+        <li> 排名 - 27 </li> 
+       </ul> <h3>最新随笔</h3> 
+       <div class="RecentComment"> 
+        <ul style="word-break:break-all"> 
+         <li><a id="SingleColumn1__19f9e8f_RecentPostsList_ctl00_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2011/07/14/74692.html">1.&nbsp;成功解决64位Windows Server 2008 R2服务器和32位Windows Xp客户端之间打印机共享</a></li> 
+         <li><a id="SingleColumn1__19f9e8f_RecentPostsList_ctl01_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2010/12/29/72540.html">2.&nbsp;利用路由器远程开启并访问家中电脑</a></li> 
+         <li><a id="SingleColumn1__19f9e8f_RecentPostsList_ctl02_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2010/06/20/66868.html">3.&nbsp;用一台无线路由器连接宽带视界（iTV、IPTV）和电脑</a></li> 
+         <li><a id="SingleColumn1__19f9e8f_RecentPostsList_ctl03_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2010/02/21/64330.html">4.&nbsp;何时使用多线程？</a></li> 
+         <li><a id="SingleColumn1__19f9e8f_RecentPostsList_ctl04_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2010/01/21/63899.html">5.&nbsp;C++类的成员函数中使用静态变量的陷阱</a></li> 
+         <li><a id="SingleColumn1__19f9e8f_RecentPostsList_ctl05_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2009/05/14/57221.html">6.&nbsp;关于SSL、非对称加解密算法、SSH、证书</a></li> 
+         <li><a id="SingleColumn1__19f9e8f_RecentPostsList_ctl06_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2008/10/22/50554.html">7.&nbsp;可以打印测试页，不能打印word文档和IE页面的临时解决办法。</a></li> 
+         <li><a id="SingleColumn1__19f9e8f_RecentPostsList_ctl07_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2008/09/12/49027.html">8.&nbsp;常见电磁波波长</a></li> 
+         <li><a id="SingleColumn1__19f9e8f_RecentPostsList_ctl08_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2008/06/28/46073.html">9.&nbsp;单反画幅尺寸</a></li> 
+         <li><a id="SingleColumn1__19f9e8f_RecentPostsList_ctl09_RecentPostsList2_ctl00_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2008/01/30/39483.html">10.&nbsp;常见视频光盘（VCD SVCD KVCD DVD）采用算法及分辨率</a></li> 
+        </ul> 
+       </div> <h3>最新评论 <a id="SingleColumn1__2b02033_RSSHyperlink1" href="http://www.cnitblog.com/lizhenbao/CommentsRSS.aspx"><img src="/images/xml.gif" border="0" /></a></h3> 
+       <div class="RecentComment"> 
+        <ul> 
+         <li style="word-break:break-all"> <a id="SingleColumn1__2b02033_CommentList_ctl01_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2015/02/03/29741.html#89977">1.&nbsp;re: 立即检查windows更新的命令</a> </li> 
+         <li style="word-break:break-all"> 更新HUAWEI </li> 
+         <li style="text-align:right;margin-right:4px"> --唐南</li> 
+         <li style="word-break:break-all"> <a id="SingleColumn1__2b02033_CommentList_ctl02_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2015/02/03/29741.html#89976">2.&nbsp;re: 立即检查windows更新的命令</a> </li> 
+         <li style="word-break:break-all"> 更新 </li> 
+         <li style="text-align:right;margin-right:4px"> --唐南</li> 
+         <li style="word-break:break-all"> <a id="SingleColumn1__2b02033_CommentList_ctl03_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2014/12/01/50554.html#89873">3.&nbsp;re: 可以打印测试页，不能打印word文档和IE页面的临时解决办法。端口也是USB001</a> </li> 
+         <li style="word-break:break-all"> 请给予帮助解决 </li> 
+         <li style="text-align:right;margin-right:4px"> --HL2240</li> 
+         <li style="word-break:break-all"> <a id="SingleColumn1__2b02033_CommentList_ctl04_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2013/05/25/29741.html#87531">4.&nbsp;re: 立即检查windows更新的命令</a> </li> 
+         <li style="word-break:break-all"> 不好 </li> 
+         <li style="text-align:right;margin-right:4px"> --任玉军</li> 
+         <li style="word-break:break-all"> <a id="SingleColumn1__2b02033_CommentList_ctl05_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2013/03/23/66868.html#87145">5.&nbsp;re: 用一台无线路由器连接宽带视界（iTV、IPTV）和电脑</a> </li> 
+         <li style="word-break:break-all"> 有一个路由器就行了，2兆网速就好用<br /><br /> </li> 
+         <li style="text-align:right;margin-right:4px"> --老师</li> 
+        </ul> 
+       </div> <h3>阅读排行榜</h3> 
+       <div class="RecentComment"> 
+        <ul style="word-break:break-all"> 
+         <li> <a id="SingleColumn1__2fd743a_TopList_ctl01_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2006/10/24/18356.aspx">1.&nbsp;成功搭建OpenVpn服务器(36215)</a> </li> 
+         <li> <a id="SingleColumn1__2fd743a_TopList_ctl02_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2005/11/16/4566.aspx">2.&nbsp;文件格式转换 AUTOCAD转JPG DWG转JPG DXF转JPG(23494)</a> </li> 
+         <li> <a id="SingleColumn1__2fd743a_TopList_ctl03_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2010/06/20/66868.aspx">3.&nbsp;用一台无线路由器连接宽带视界（iTV、IPTV）和电脑(16234)</a> </li> 
+         <li> <a id="SingleColumn1__2fd743a_TopList_ctl04_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2008/10/22/50554.aspx">4.&nbsp;可以打印测试页，不能打印word文档和IE页面的临时解决办法。(9319)</a> </li> 
+         <li> <a id="SingleColumn1__2fd743a_TopList_ctl05_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2011/07/14/74692.aspx">5.&nbsp;成功解决64位Windows Server 2008 R2服务器和32位Windows Xp客户端之间打印机共享(7065)</a> </li> 
+        </ul> 
+       </div> <h3>评论排行榜</h3> 
+       <div class="RecentComment"> 
+        <ul style="word-break:break-all"> 
+         <li> <a id="SingleColumn1__1645d3c_TopList_ctl01_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2006/10/24/18356.aspx">1.&nbsp;成功搭建OpenVpn服务器(50)</a> </li> 
+         <li> <a id="SingleColumn1__1645d3c_TopList_ctl02_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2010/06/20/66868.aspx">2.&nbsp;用一台无线路由器连接宽带视界（iTV、IPTV）和电脑(22)</a> </li> 
+         <li> <a id="SingleColumn1__1645d3c_TopList_ctl03_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2006/09/28/17428.aspx">3.&nbsp;MapGuide OpenSource 使用中的几个问题的解决(10)</a> </li> 
+         <li> <a id="SingleColumn1__1645d3c_TopList_ctl04_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2006/10/13/17925.aspx">4.&nbsp;提供GMAIL邀请(8)</a> </li> 
+         <li> <a id="SingleColumn1__1645d3c_TopList_ctl05_Hyperlink1" href="http://www.cnitblog.com/lizhenbao/archive/2006/10/25/18374.aspx">5.&nbsp;如果你有移动包月cmwap上网卡，但你用了cmnet(7)</a> </li> 
+        </ul> 
+       </div> </td>
+      <td id="main"> 
+       <div class="post"> 
+        <div class="postTitle"> 
+         <a id="viewpost1_TitleUrl" href="http://www.cnitblog.com/lizhenbao/archive/2006/10/24/18356.html">成功搭建OpenVpn服务器</a> 
+        </div> 
+        <div class="postText"> 
+         <p>由于是gprs包月上网，只能cmwap，所以很多限制，连symantec杀毒软件也升级不了，所以只好想办法突破。用OpenVpn是一个不错的办法，不过速度不怎么样，可能因为我做的OpenVpn服务器是电信IP的缘故。<br />现将搭建OpenVpn的过程记录如下：<br /><br />一、OpenVpn服务器端配置过程<br />修改&nbsp; OpenVPN\easy-rsa\vars.bat.sample</p> 
+         <p>set KEY_COUNTRY=CN<br />set KEY_PROVINCE=AnHui<br />set KEY_CITY=HeFei<br />set KEY_ORG=lizhenbao<br />set <a href="mailto:KEY_EMAIL=aa@aa.com">KEY_EMAIL=aa@aa.com</a></p> 
+         <p><br />打开 cmd或command进入 OpenVPN\easy-rsa，运行以下命令</p> 
+         <p>init-config</p> 
+         <p>vars</p> 
+         <p>clean-all</p> 
+         <p>build-ca&nbsp; **这个命令用于创建根证书<br />Country Name (2 letter code) [CN]:<br />State or Province Name (full name) [AnHui]:<br />Locality Name (eg, city) [HeFei]:<br />Organization Name (eg, company) [lizhenbao]:<br />Organizational Unit Name (eg, section) []:<br />Common Name (eg, your name or your server's hostname) []:rootcr<br />Email Address [aaa@aa.com]:</p> 
+         <p>build-dh</p> 
+         <p>build-key-server server&nbsp; **创建服务器证书，server为机器名<br />Country Name (2 letter code) [CN]:<br />State or Province Name (full name) [AnHui]:<br />Locality Name (eg, city) [HeFei]:<br />Organization Name (eg, company) [lizhenbao]:<br />Organizational Unit Name (eg, section) []:<br />Common Name (eg, your name or your server's hostname) []:server<br />Email Address [lizhenbao@gmail.com]:<br />Please enter the following 'extra' attributes<br />to be sent with your certificate request<br />A challenge password []:password<br />An optional company name []:</p> 
+         <p><br />build-key client&nbsp; **创建客户端证书，client为用户名<br />Country Name (2 letter code) [CN]:<br />State or Province Name (full name) [AnHui]:<br />Locality Name (eg, city) [HeFei]:<br />Organization Name (eg, company) [lizhenbao]:<br />Organizational Unit Name (eg, section) []:<br />Common Name (eg, your name or your server's hostname) []:client<br />Email Address [lizhenbao@gmail.com]:<br />Please enter the following 'extra' attributes<br />to be sent with your certificate request<br />A challenge password []:password<br />An optional company name []:</p> 
+         <p>openvpn --genkey --secret keys/ta.key</p> 
+         <p>将ca.crt,dh1024.pem,server.crt,server.key,ta.key复制到 OpenVPN\config目录下</p> 
+         <p><br />拷贝server.ovpn到config目录下，修改后，用OpenVPN GUI启动服务器</p> 至此OpenVpn服务器配置成功。如果想要OpenVpn服务器自动启动，则找到OpenVpn服务，将其启动方式设置为“自动”。 
+         <p>&nbsp;</p> 
+         <p><br />二、OpenVpn 客户端配置过程<br />将ca.crt client.crt client.key ta.key复制到 OpenVPN\config目录下</p> 
+         <p>拷贝client.ovpn到config目录下，修改后，用OpenVPN GUI启动客户端</p> 
+         <p>&nbsp;</p> 
+         <p>三、Openvpn 服务器端发放证书方法<br />启动cmd或command<br />进入easy-rsa目录<br />vars<br />build-key username&nbsp; **其中username为用户名&nbsp; ，注意各证书的Common Name不能相同(<a href="http://www.cnitblog.com/lizhenbao">http://www.cnitblog.com/lizhenbao</a>)</p> 
+         <p>&nbsp;<br /></p> 
+         <p><br />为方便需要的朋友，将配置文件放到网络供下载。下载地址 <a href="http://www.bibidu.com/fileview-302845.html">http://www.bibidu.com/fileview-302845.html</a>&nbsp;</p> 
+        </div> 
+        <div class="postfoot">
+          posted on 2006-10-24 18:39 
+         <a href="http://www.cnitblog.com/lizhenbao/">李珍宝</a> 阅读(36215) 
+         <a href="#Post">评论(50)</a> &nbsp;
+         <a href="http://www.cnitblog.com/lizhenbao/admin/EditPosts.aspx?postid=18356">编辑</a>&nbsp;
+         <a href="http://www.cnitblog.com/lizhenbao/AddToFavorite.aspx?id=18356">收藏</a> 
+         <a href="http://www.cnitblog.com/lizhenbao/services/trackbacks/18356.aspx">引用</a> 所属分类: 
+         <a href="http://www.cnitblog.com/lizhenbao/category/762.html">软件</a> 
+        </div> 
+       </div> <img src="http://www.cnitblog.com/lizhenbao/aggbug/18356.html?webview=1" width="1" height="1" /> 
+       <!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/">
+<rdf:Description
+rdf:about="http://www.cnitblog.com/lizhenbao/archive/2006/10/24/18356.html"
+dc:identifier="http://www.cnitblog.com/lizhenbao/archive/2006/10/24/18356.html"
+dc:title="成功搭建OpenVpn服务器"
+trackback:ping="http://www.cnitblog.com/lizhenbao/services/trackbacks/18356.aspx" />
+</rdf:RDF>
+--> 
+       <div id="AjaxHolder_UpdatePanel1"> 
+        <a name="pagedcomment"></a> 
+        <a name="feedback"></a> 
+        <div id="comments"> 
+         <h3>Feedback</h3> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#18449">#</a>&nbsp;
+           <a name="18449"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2006-10-26 16:20 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl00_NameLink" href="http://www.dellnb.cn/" target="_blank">戴尔网站</a> 
+          </div> 
+          <div class="postText">
+            试试，支持&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;戴尔网站&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e6%88%b4%e5%b0%94%e7%bd%91%e7%ab%99" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl00_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl00$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl00_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#18718">#</a>&nbsp;
+           <a name="18718"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2006-11-01 15:49 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl01_NameLink" href="http://www.cnitblog.com/jdlwjl/" target="_blank">小辉</a> 
+          </div> 
+          <div class="postText">
+            请教： 
+           <br />基本情况: 
+           <br />VPN服务器:采用公司局域网内的一台电脑作为VPN服务器(不是局域网的主机哦),公司局域网内的电脑是由主机分配IP,自动获得，不过该台作为VPN服务器的主机已设定获得固定IP。 
+           <br />客户端机:笔记本 
+           <br />CLINET.OVPN如下： 
+           <br />client 
+           <br />;dev tap 
+           <br />dev tun 
+           <br />;dev-node MyTap 
+           <br />;proto tcp 
+           <br />proto udp 
+           <br />remote 192.168.*.* 1194 #隐去具体IP 
+           <br />;remote 192.168.*.* 1194 #隐去具体IP 
+           <br />;remote-random 
+           <br />resolv-retry infinite 
+           <br />nobind 
+           <br />;user nobody 
+           <br />;group nobody 
+           <br />persist-key 
+           <br />persist-tun 
+           <br />;http-proxy-retry # retry on connection failures 
+           <br />;http-proxy [proxy server] [proxy port #] 
+           <br />;mute-replay-warnings 
+           <br />ca ca.crt 
+           <br />cert client.crt 
+           <br />key client.key 
+           <br />;ns-cert-type server 
+           <br />;tls-auth ta.key 1 
+           <br />;cipher x 
+           <br />comp-lzo 
+           <br />verb 3 
+           <br />;mute 20 
+           <br />测试过程:用笔记本接入宽带（与VPN服务器处同一局域网），连接服务器成功，并获得IP:10.8.0.6. 可把宽带接入断开，采用手机（诺记的）WAP拔号连接，却连接不上； 
+           <br />提示如下： 
+           <br /> 
+           <br /> 
+           <br />Wed Nov 01 12:38:41 2006 OpenVPN 2.0.5 Win32-MinGW [SSL] [LZO] built on Nov 2 2005 
+           <br />Wed Nov 01 12:38:41 2006 IMPORTANT: OpenVPN's default port number is now 1194, based on an official port number assignment by IANA. OpenVPN 2.0-beta16 and earlier used 5000 as the default port. 
+           <br />Wed Nov 01 12:38:41 2006 WARNING: No server certificate verification method has been enabled. See 
+           <a target="_new" href="http://openvpn.net/howto.html#mitm">http://openvpn.net/howto.html#mitm</a> for more info. 
+           <br />Wed Nov 01 12:38:41 2006 LZO compression initialized 
+           <br />Wed Nov 01 12:38:41 2006 Control Channel MTU parms [ L:1542 D:138 EF:38 EB:0 ET:0 EL:0 ] 
+           <br />Wed Nov 01 12:38:41 2006 Data Channel MTU parms [ L:1542 D:1450 EF:42 EB:135 ET:0 EL:0 AF:3/1 ] 
+           <br />Wed Nov 01 12:38:41 2006 Local Options hash (VER=V4): '41690919' 
+           <br />Wed Nov 01 12:38:41 2006 Expected Remote Options hash (VER=V4): '530fdded' 
+           <br />Wed Nov 01 12:38:41 2006 UDPv4 link local: [undef] 
+           <br />Wed Nov 01 12:38:41 2006 UDPv4 link remote: 192.168.0.9:1194 
+           <br />Wed Nov 01 12:39:41 2006 TLS Error: TLS key negotiation failed to occur within 60 seconds (check your network connectivity) 
+           <br />Wed Nov 01 12:39:41 2006 TLS Error: TLS handshake failed 
+           <br />Wed Nov 01 12:39:41 2006 TCP/UDP: Closing socket 
+           <br />Wed Nov 01 12:39:41 2006 SIGUSR1[soft,tls-error] received, process restarting 
+           <br />Wed Nov 01 12:39:41 2006 Restart pause, 2 second(s) 
+           <br />请帮忙，感激不尽 
+           <br /> 
+           <br />有没有可能是主机局域网主机服务器的防火墙设置的问题&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;小辉&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e5%b0%8f%e8%be%89" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl01_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl01$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl01_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#18839">#</a>&nbsp;
+           <a name="18839"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2006-11-05 10:37 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl02_NameLink" href="http://www.cnitblog.com/lizhenbao/" target="_blank">李珍宝</a> 
+          </div> 
+          <div class="postText">
+            192.168.*.* 是保留IP地址，只能用于局域网，在Internet上是不可见的。 
+           <br />你的OpenVpn服务器要有一个公网IP才行。&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;李珍宝&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e6%9d%8e%e7%8f%8d%e5%ae%9d" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl02_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl02$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl02_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#21321">#</a>&nbsp;
+           <a name="21321"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2006-12-30 06:55 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl03_NameLink" target="_blank">翰</a> 
+          </div> 
+          <div class="postText">
+            这样做是不是笔记本在野外可以用cmwap和自己家里的电脑做隧道上网?家里电脑是个虚拟路由? 
+           <br />这样做可以饶过移动的那个10.0.0.172?&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;翰&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e7%bf%b0" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl03_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl03$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl03_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#21326">#</a>&nbsp;
+           <a name="21326"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2006-12-30 08:27 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl04_NameLink" href="http://www.cnitblog.com/lizhenbao/" target="_blank">李珍宝</a> 
+          </div> 
+          <div class="postText">
+            如果是用GPRS的CMWAP接入点上网，不能绕过10.0.0.172，数据还是通过这个网关出去。 
+           <br />家里电脑有公网IP的话，可以连到家里电脑，只是GPRS速度比较慢，恐怕不实用。&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;李珍宝&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e6%9d%8e%e7%8f%8d%e5%ae%9d" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl04_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl04$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl04_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#21527">#</a>&nbsp;
+           <a name="21527"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2007-01-05 04:59 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl05_NameLink" target="_blank">一般帅</a> 
+          </div> 
+          <div class="postText">
+            你好，我的服务器也是这样，用一个网段的机器连能上，但是用WAP拨号就会报tcp port read failed on recv(): connection reset by peer一直都连不上，但是我用具有公网IP的电脑连也能连上，也就是说我的服务器是架设成功的，是不是移动有限制？&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;一般帅&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e4%b8%80%e8%88%ac%e5%b8%85" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl05_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl05$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl05_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#21528">#</a>&nbsp;
+           <a name="21528"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2007-01-05 08:31 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl06_NameLink" href="http://www.cnitblog.com/lizhenbao/" target="_blank">李珍宝</a> 
+          </div> 
+          <div class="postText">
+            是的，可能是移动的限制。可以试试用“乾坤大挪移”这个软件。&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;李珍宝&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e6%9d%8e%e7%8f%8d%e5%ae%9d" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl06_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl06$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl06_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#25681">#</a>&nbsp;
+           <a name="25681"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2007-04-13 13:47 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl07_NameLink" target="_blank">yoky</a> 
+          </div> 
+          <div class="postText">
+            你好，我按你的方法服务器端连接不上，好像提示什么DH 什么错误！！我的服务器是Win2K服务器版，双网卡，一块连接内网，一块连接外网，内网通过NAT可以访问外网，没有开启DHCP服务。&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;yoky&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=yoky" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl07_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl07$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl07_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#25683">#</a>&nbsp;
+           <a name="25683"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2007-04-13 14:14 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl08_NameLink" href="http://www.cnitblog.com/lizhenbao/" target="_blank">李珍宝</a> 
+          </div> 
+          <div class="postText">
+            把具体的错误贴上来看看。&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;李珍宝&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e6%9d%8e%e7%8f%8d%e5%ae%9d" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl08_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl08$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl08_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#26445">#</a>&nbsp;
+           <a name="26445"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2007-04-30 11:11 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl09_NameLink" target="_blank">vpn Fan</a> 
+          </div> 
+          <div class="postText">
+            按楼主的方法安装成功！在创建客户端证书文件的时候成功创建了客户端证书client.src,但发现输入的时候输入错误了几个选项，想重新创建这个证书的时候，创建不成功并提示： 
+           <br />Certificate is to be certified until Apr 27 03:05:2 
+           <br />Sign the certificate? [y/n]:y 
+           <br />failed to update database 
+           <br />TXT_DB error number 2 
+           <br />找不到 C:\Program Files\OpenVPN\easy-rsa\keys\*.old 
+           <br /> 
+           <br />请楼主指点下如何删除一个客户端证书，重新创建呢 ？&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;vpn Fan&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=vpn+Fan" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl09_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl09$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl09_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#26765">#</a>&nbsp;
+           <a name="26765"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2007-05-09 08:34 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl10_NameLink" href="http://www.cnitblog.com/lizhenbao/" target="_blank">李珍宝</a> 
+          </div> 
+          <div class="postText">
+            把原有的证书文件先删除了再创建试试。&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;李珍宝&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e6%9d%8e%e7%8f%8d%e5%ae%9d" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl10_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl10$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl10_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#28658">#</a>&nbsp;
+           <a name="28658"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2007-06-18 11:16 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl11_NameLink" target="_blank">VPN</a> 
+          </div> 
+          <div class="postText">
+            你好!我想请教下有关openvpn 的问题: 
+           <br /> 我的网络环境是:内部有两个子网分别为:192.168.33.0/24和192.168.34.0/24,外部通过一个ADSL连接上网,两个子网通过一台双网卡的装有linux做路由的笔记本连接,其中192.168.33.0/24子网直接连接到一个路由器再通过MODEM连接internet. 
+           <br /> 我的openvpn服务器端装在IP地址为192.168.33.61装有win2003系统的电脑上,openvpn客户端装在IP地址为192.168.34.50的电脑上.连接上openvpn时服务器端的虚拟IP地址为10.8.0.1、客户端的虚拟IP地址为10.8.0.6 。并且客户端与服务器端能够正常通过openvpn连接。 
+           <br /> 
+           <br />现在的问题是：如何在 openvpn服务器端做端口映射实现两个功能：1、使得其它网络上的用户要想与openvpn客户端的电脑通信时只需要连接到openvpn服务器的电脑，然后openvpn服务就会进行端口映射把网络上的用户所发的信息通过openvpn转发给openvpn客户端的电脑。2、而openvpn客户端的电脑与其它网络通信时，也是先通过openvpn连接到openvpn服务器端的电脑，然后openvpn服务器再把客户端的通信信息转发出去。 
+           <br /> 
+           <br /> 请问如何才能实现这种功能？谢谢！&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;VPN&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=VPN" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl11_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl11$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl11_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#28660">#</a>&nbsp;
+           <a name="28660"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2007-06-18 11:26 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl12_NameLink" href="http://www.cnitblog.com/lizhenbao/" target="_blank">李珍宝</a> 
+          </div> 
+          <div class="postText">
+            没理解你的意思。 
+           <br />1、用了openvpn，所有客户端都在一个网段，可以随意通讯。 
+           <br />2、如果想要在windows平台进行端口映射，可以用PortMap或porttunnel软件。 
+           <br />&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;李珍宝&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e6%9d%8e%e7%8f%8d%e5%ae%9d" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl12_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl12$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl12_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#28665">#</a>&nbsp;
+           <a name="28665"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2007-06-18 12:18 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl13_NameLink" target="_blank">VPN</a> 
+          </div> 
+          <div class="postText">
+            我的其它网络上的用户并不是openvpn客户端，是其它internet上的用户。&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;VPN&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=VPN" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl13_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl13$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl13_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#28673">#</a>&nbsp;
+           <a name="28673"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2007-06-18 15:12 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl14_NameLink" href="http://www.cnitblog.com/lizhenbao/" target="_blank">李珍宝</a> 
+          </div> 
+          <div class="postText">
+            你的OpenVPN装在内网，外部Internet连不进来。&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;李珍宝&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e6%9d%8e%e7%8f%8d%e5%ae%9d" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl14_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl14$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl14_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#28729">#</a>&nbsp;
+           <a name="28729"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2007-06-19 09:20 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl15_NameLink" target="_blank">VPN</a> 
+          </div> 
+          <div class="postText">
+            可以吧....我在连接MODEM的那个路由器上做端口映射到openvpn服务器上不就行了?&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;VPN&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=VPN" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl15_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl15$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl15_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#28743">#</a>&nbsp;
+           <a name="28743"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2007-06-19 11:31 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl16_NameLink" href="http://www.cnitblog.com/lizhenbao/" target="_blank">李珍宝</a> 
+          </div> 
+          <div class="postText">
+            做端口映射可以。&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;李珍宝&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e6%9d%8e%e7%8f%8d%e5%ae%9d" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl16_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl16$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl16_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#28745">#</a>&nbsp;
+           <a name="28745"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2007-06-19 14:36 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl17_NameLink" target="_blank">VPN</a> 
+          </div> 
+          <div class="postText">
+            嗯，知道．．．在路由器上做端口映射到openvpn服务器上，然后openvpn服务器就把进来的对应的数据包通过vpn转到openvpn客户机上．我不知道在openvpn服务器上如何实现把对应的数据包通过vpn转到openvpn客户机？ 
+           <br /> 
+           <br />我上面提的问题主要就是在这里，请问如何实现呢？&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;VPN&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=VPN" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl17_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl17$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl17_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#28767">#</a>&nbsp;
+           <a name="28767"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2007-06-19 17:57 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl18_NameLink" href="http://www.cnitblog.com/lizhenbao/" target="_blank">李珍宝</a> 
+          </div> 
+          <div class="postText">
+            在OpenVPN服务器上装端口映射软件，映射到指定的VPN客户端机器。&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;李珍宝&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e6%9d%8e%e7%8f%8d%e5%ae%9d" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl18_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl18$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl18_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#28771">#</a>&nbsp;
+           <a name="28771"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2007-06-19 19:25 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl19_NameLink" target="_blank">VPN</a> 
+          </div> 
+          <div class="postText">
+            好的．．我试试．． 
+           <br />谢谢啦&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;VPN&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=VPN" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl19_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl19$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl19_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器[未登录]" href="/lizhenbao/archive/2008/01/22/18356.html#29911">#</a>&nbsp;
+           <a name="29911"></a>re: 成功搭建OpenVpn服务器[未登录] 
+           <span> 2007-07-16 16:28 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl20_NameLink" target="_blank">呵呵</a> 
+          </div> 
+          <div class="postText">
+            你好 我是个菜鸟 有点小问题想请教一下 
+           <br />就是我按照上面的一步一步下来 
+           <br />到了 build-hd 这步 输入后就 就不会跳出下面的那些了 
+           <br />我想问问这要怎么弄 谢谢了 &nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;呵呵&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e5%91%b5%e5%91%b5" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl20_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl20$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl20_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#29912">#</a>&nbsp;
+           <a name="29912"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2007-07-16 16:39 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl21_NameLink" href="http://www.cnitblog.com/lizhenbao/" target="_blank">李珍宝</a> 
+          </div> 
+          <div class="postText">
+            下面的 build-key-server server 也是要输入的。&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;李珍宝&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e6%9d%8e%e7%8f%8d%e5%ae%9d" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl21_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl21$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl21_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器[未登录]" href="/lizhenbao/archive/2008/01/22/18356.html#29960">#</a>&nbsp;
+           <a name="29960"></a>re: 成功搭建OpenVpn服务器[未登录] 
+           <span> 2007-07-17 10:40 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl22_NameLink" target="_blank">呵呵</a> 
+          </div> 
+          <div class="postText">
+            你好 我就是输入 build-hd后，就不会跳出下面的那些了呀。 
+           <br />您有MSN或者QQ吗 方便在上面指点1.2吗&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;呵呵&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e5%91%b5%e5%91%b5" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl22_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl22$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl22_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#29962">#</a>&nbsp;
+           <a name="29962"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2007-07-17 10:42 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl23_NameLink" href="http://www.cnitblog.com/lizhenbao/" target="_blank">李珍宝</a> 
+          </div> 
+          <div class="postText">
+            可以通过email联系我。 lizhenbao at gmail.com，at用@代替&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;李珍宝&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e6%9d%8e%e7%8f%8d%e5%ae%9d" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl23_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl23$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl23_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器[未登录]" href="/lizhenbao/archive/2008/01/22/18356.html#29980">#</a>&nbsp;
+           <a name="29980"></a>re: 成功搭建OpenVpn服务器[未登录] 
+           <span> 2007-07-17 11:04 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl24_NameLink" target="_blank">呵呵</a> 
+          </div> 
+          <div class="postText">
+            我已经把截图发到你的信箱里了 
+           <br />麻烦你帮我看看 
+           <br />谢谢了哦&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;呵呵&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e5%91%b5%e5%91%b5" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl24_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl24$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl24_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#32184">#</a>&nbsp;
+           <a name="32184"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2007-08-22 11:43 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl25_NameLink" target="_blank">Obea</a> 
+          </div> 
+          <div class="postText">
+            我运行build-ca.bat 这一步 
+           <br />提示 'openssl' 不是内部或外部命令，也不是可运行的程序或批处理文件。 
+           <br />这个问题怎么解决 还有 大建vpn服务器是不是必须要这一步&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;Obea&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=Obea" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl25_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl25$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl25_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#32185">#</a>&nbsp;
+           <a name="32185"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2007-08-22 12:13 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl26_NameLink" href="http://www.cnitblog.com/lizhenbao/" target="_blank">李珍宝</a> 
+          </div> 
+          <div class="postText">
+            在运行命令时，先要进入 OpenVPN\easy-rsa 目录。 
+           <br />&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;李珍宝&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e6%9d%8e%e7%8f%8d%e5%ae%9d" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl26_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl26$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl26_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#35399">#</a>&nbsp;
+           <a name="35399"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2007-10-26 15:01 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl27_NameLink" target="_blank">海中鱼</a> 
+          </div> 
+          <div class="postText">
+            能留个msn什么的即时联系方式啊 
+           <br />lvdong_7683@163.com&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;海中鱼&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e6%b5%b7%e4%b8%ad%e9%b1%bc" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl27_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl27$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl27_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#39050">#</a>&nbsp;
+           <a name="39050"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2008-01-19 13:32 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl28_NameLink" target="_blank">user</a> 
+          </div> 
+          <div class="postText">
+            我编写的server.opvn 怎么总是出错 
+           <br />如果有可能，加我QQ：1519957，以便请教，谢谢&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;user&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=user" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl28_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl28$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl28_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#39173">#</a>&nbsp;
+           <a name="39173"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2008-01-22 10:10 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl29_NameLink" href="http://www.cnitblog.com/lizhenbao/" target="_blank">李珍宝</a> 
+          </div> 
+          <div class="postText">
+            已共享我的配置文件，请到 
+           <a target="_new" href="http://www.bibidu.com/fileview-302845.html">http://www.bibidu.com/fileview-302845.html</a> 下载。&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;李珍宝&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e6%9d%8e%e7%8f%8d%e5%ae%9d" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl29_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl29$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl29_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#39455">#</a>&nbsp;
+           <a name="39455"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2008-01-29 23:34 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl30_NameLink" target="_blank">Joey</a> 
+          </div> 
+          <div class="postText">
+            你好，刚开始用openvpn，你的帖子对我有非常大的帮助 
+           <br />按照你的配制方法，我成功的使我本本连到了公司的openvpn 服务器上，但有以下两个问题，想请教： 
+           <br /> 
+           <br />1： 在基本上完全没有更改你题共的配置文件下，我笔记本得到了 169.254.254.6 这个ip，同时gateway变成 169.254.254.5，可是，事实上我根本无法ping 到169.254.254.5 这个网关，服务器本身的ip显示为169.254.254.1 
+           <br /> 
+           <br />2: 这台服务器只有一张网卡，拥有一个固定的真实IP地址，我该如何使我的笔记本通过连到openvpn后，实现通过openvpn服务器上网浏览？是不是还需要作一些网络设定？ 
+           <br />请指教，谢谢&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;Joey&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=Joey" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl30_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl30$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl30_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#39468">#</a>&nbsp;
+           <a name="39468"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2008-01-30 09:30 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl31_NameLink" href="http://www.cnitblog.com/lizhenbao/" target="_blank">李珍宝</a> 
+          </div> 
+          <div class="postText">
+            要想客户端能正常上网，需要服务器端开启透明代理，客户端得到的路由、DNS都正确。 
+           <br />服务器端的透明代理可以用sygate软件。 
+           <br />客户端连接上以后，用 route print 看一下默认网关是否正确 
+           <br />用ipconfig /all 看一下DNS是否正确 
+           <br /> 
+           <br />server.ovpn文件中有一行 
+           <br />push &quot;dhcp-option DNS 10.138.8.104&quot; 
+           <br />是我这边的网络环境，在你那边不适用，需要注释掉或根据实际情况修改。 
+           <br /> 
+           <br />ping不通网关，可能是服务器装了防火墙。&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;李珍宝&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e6%9d%8e%e7%8f%8d%e5%ae%9d" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl31_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl31$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl31_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#39486">#</a>&nbsp;
+           <a name="39486"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2008-01-30 18:59 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl32_NameLink" target="_blank">Joey</a> 
+          </div> 
+          <div class="postText">
+            问题已经解决，需要在 remote and routing 里把物理网卡和虚拟网卡NAT起来 
+           <br />不过，还是谢谢你的帮助 ^^&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;Joey&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=Joey" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl32_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl32$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl32_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#52549">#</a>&nbsp;
+           <a name="52549"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2008-12-11 23:04 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl33_NameLink" target="_blank">JTCJH</a> 
+          </div> 
+          <div class="postText">
+            我在配置openvpn的过程中遇到了一些问题，麻烦能帮助我解决，谢谢。 
+           <br /> 
+           <br />　　系统为windows，公网服务器Ip为119.127.202.10，能24 小时上网，外网也能访问它。我把它设置为openvpn服务器。但119.127.202.2 ---- 119.127.202.8 为公司内部服务器，不能上互联网，只能在局域网内访问，外网也不能访问它们。我需要将这些服务器设置为家在单位外的职工能回家访问。内网ip段10.1.121.0----10.1.121.255为空闲网段，他们能在内网随意访问这些服务器，因此，我将虚拟ip设置为10.1.121。 
+           <br /> 
+           <br />　　我配置的Server.cvpn如下 
+           <br /> 
+           <br />port 443 
+           <br />proto tcp-server 
+           <br />dev tap 
+           <br />server 10.1.121.0 255.255.255.0 
+           <br />push &quot;route 0.0.0.0 0.0.0.0&quot; 
+           <br />keepalive 20 180 
+           <br />ca &quot;C:\\Program Files\\OPENVPN\\config\\ca.crt&quot; 
+           <br />cert &quot;C:\\Program Files\\OPENVPN\\config\\server.crt&quot; 
+           <br />key &quot;C:\\Program Files\\OPENVPN\\config\\server.key&quot; 
+           <br />dh &quot;C:\\Program Files\\OPENVPN\\config\\dh1024.pem&quot; 
+           <br />push &quot;redirect-gateway def1&quot; 
+           <br /> 
+           <br />mode server 
+           <br />tls-server 
+           <br />status &quot;C:\\OPENVPN\\log\\openvpn-status.log&quot; 
+           <br />comp-lzo 
+           <br />verb 4 
+           <br /> 
+           <br /> 
+           <br />　　我配置的client.ovpn如下 
+           <br /> 
+           <br /> 
+           <br /> 
+           <br />client 
+           <br />dev tap 
+           <br />proto tcp-client 
+           <br />remote 119.127.202.10 443 
+           <br /> 
+           <br />resolv-retry infinite 
+           <br />nobind 
+           <br /> 
+           <br />mute-replay-warnings 
+           <br /> 
+           <br />ca &quot;C:\\Program Files\\OPENVPN\\KEY\\ca.crt&quot; 
+           <br /> 
+           <br />cert &quot;C:\\Program Files\\OPENVPN\\KEY\\cjh.crt&quot; 
+           <br /> 
+           <br />key &quot;C:\\Program Files\\OPENVPN\\KEY\\cjh.key&quot; 
+           <br /> 
+           <br />comp-lzo 
+           <br /> 
+           <br />verb 4 
+           <br /> 
+           <br />status openvpn-status.log 
+           <br /> 
+           <br /> 
+           <br />　　配置以后，在外网运行client.ovpn能成功获取ip10.1.121. ，也能ping通10.1.121.1，也能访问10.1.121.1上所有资源（也就是119.127.202.10 上的资源），但不能访问其他服务器119.127.202.2 ---- 119.127.202.8 上的任何资源。并且在客户端运行期间只能访问
+           <a target="_new" href="http://10.1.121.1">http://10.1.121.1</a> 上的资源，不能访问其他任何互联网资源，包括
+           <a target="_new" href="http://119.127.202.10">http://119.127.202.10</a> 。 
+           <br /> 
+           <br />　　不知是什么原因，安装的是openvpn-2.1_rc15-install.exe程序。 
+           <br /> 
+           <br />　　望能给予我帮助。 
+           <br /> 
+           <br />　　再次表示感谢！　 
+           <br />&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;JTCJH&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=JTCJH" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl33_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl33$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl33_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#52654">#</a>&nbsp;
+           <a name="52654"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2008-12-16 08:46 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl34_NameLink" href="http://www.cnitblog.com/lizhenbao/" target="_blank">李珍宝</a> 
+          </div> 
+          <div class="postText">
+            很久不弄了，早忘了。 
+           <br />push &quot;route 0.0.0.0 0.0.0.0&quot; 这一句可能有问题。 
+           <br /> 
+           <br />另外，可以参考本贴往上数4楼和2楼Joey网友的解决办法，联系一下他。 
+           <br />“问题已经解决，需要在 remote and routing 里把物理网卡和虚拟网卡NAT起来 
+           <br />不过，还是谢谢你的帮助”&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;李珍宝&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e6%9d%8e%e7%8f%8d%e5%ae%9d" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl34_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl34$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl34_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器[未登录]" href="/lizhenbao/archive/2008/01/22/18356.html#54860">#</a>&nbsp;
+           <a name="54860"></a>re: 成功搭建OpenVpn服务器[未登录] 
+           <span> 2009-02-24 22:57 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl35_NameLink" href="http://www.phpcoding.cn" target="_blank">阿超</a> 
+          </div> 
+          <div class="postText">
+            对于OPENVPN的安装配置及局域网如何免费获取公网IP，可参考以下文章：
+           <br />
+           <a target="_new" href="http://www.phpcoding.cn/2009/02/24/vpn好帮手-hotspot-shield-launchvpn好帮手-hotspot-shield-launch/">http://www.phpcoding.cn/2009/02/24/vpn好帮手-hotspot-shield-launchvpn好帮手-hotspot-shield-launch/</a>
+           <br />
+           <br />&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;阿超&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e9%98%bf%e8%b6%85" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl35_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl35$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl35_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#58775">#</a>&nbsp;
+           <a name="58775"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2009-05-26 10:03 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl36_NameLink" target="_blank">我</a> 
+          </div> 
+          <div class="postText">
+            自己架设VPN服务器错误,不知道，该整么办！ 
+           <br />cannot load DH parameters from C:\Program: error:0906D06CEM 
+           <br />&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;我&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e6%88%91" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl36_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl36$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl36_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#58776">#</a>&nbsp;
+           <a name="58776"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2009-05-26 10:08 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl37_NameLink" href="http://www.cnitblog.com/lizhenbao/" target="_blank">李珍宝</a> 
+          </div> 
+          <div class="postText">
+            楼上的可能是目录中有空格的问题。&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;李珍宝&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e6%9d%8e%e7%8f%8d%e5%ae%9d" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl37_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl37$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl37_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#58777">#</a>&nbsp;
+           <a name="58777"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2009-05-26 10:24 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl38_NameLink" target="_blank">我</a> 
+          </div> 
+          <div class="postText">
+            老大！哪个目录有空格！我都弄了一天了！能不能弄个视频教程！谢谢！&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;我&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e6%88%91" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl38_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl38$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl38_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#58784">#</a>&nbsp;
+           <a name="58784"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2009-05-26 12:48 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl39_NameLink" href="http://www.cnitblog.com/lizhenbao/" target="_blank">李珍宝</a> 
+          </div> 
+          <div class="postText">
+            cannot load DH parameters from C:\Program: error:0906D06CEM&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;李珍宝&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e6%9d%8e%e7%8f%8d%e5%ae%9d" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl39_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl39$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl39_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#58791">#</a>&nbsp;
+           <a name="58791"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2009-05-26 16:41 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl40_NameLink" target="_blank">weijiang008</a> 
+          </div> 
+          <div class="postText">
+            安装OPENVPN服务器的问题！ 
+           <br />安装在默认目录没有问题可以启动OPENＶＰＮ软件，照网上的配置方法，出现以上错误！软件安装在c盘下，出现如图的错误， 不能启动启动OPENＶＰＮ软件！ 
+           <br />
+           <a target="_new" href="http://www.51wuxian.com/bbs/thread-57526-1.html">http://www.51wuxian.com/bbs/thread-57526-1.html</a> 
+           <br />郁闷！求楼主弄个视频教程！&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;weijiang008&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=weijiang008" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl40_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl40$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl40_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#58851">#</a>&nbsp;
+           <a name="58851"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2009-05-27 09:10 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl41_NameLink" target="_blank">我</a> 
+          </div> 
+          <div class="postText">
+            谢谢！已经解决了！安装必须在默认路径！KEY文件夹及文件，不要放在默认路径里，配置server.opvn和client.opvn文件里路径也要跟改！&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;我&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=%e6%88%91" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl41_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl41$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl41_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#59578">#</a>&nbsp;
+           <a name="59578"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2009-06-24 06:38 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl42_NameLink" target="_blank">kill</a> 
+          </div> 
+          <div class="postText">
+            启动openvpn gui后提示 connecting to server has failed 
+           <br />Tue Jun 23 20:33:54 2009 OpenVPN 2.1_rc18 i686-pc-mingw32 [SSL] [LZO2] [PKCS11] built on Jun 7 2009 
+           <br />Tue Jun 23 20:33:54 2009 NOTE: your local LAN uses the extremely common subnet address 192.168.0.x or 192.168.1.x. Be aware that this might create routing conflicts if you connect to the VPN server from public locations such as internet cafes that use the same subnet. 
+           <br />Tue Jun 23 20:33:54 2009 NOTE: OpenVPN 2.1 requires '--script-security 2' or higher to call user-defined scripts or executables 
+           <br />Tue Jun 23 20:33:54 2009 Diffie-Hellman initialized with 1024 bit key 
+           <br />Tue Jun 23 20:33:54 2009 Cannot load certificate file server.crt: error:02001002:system library:fopen:No such file or directory: error:20074002:BIO routines:FILE_CTRL:system lib: error:140AD002:SSL routines:SSL_CTX_use_certificate_file:system lib 
+           <br />Tue Jun 23 20:33:54 2009 Exiting 
+           <br />望赐教&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;kill&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=kill" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl42_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl42$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl42_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#60154">#</a>&nbsp;
+           <a name="60154"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2009-07-16 21:06 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl43_NameLink" target="_blank">Rinkey</a> 
+          </div> 
+          <div class="postText">
+            Thu Jul 16 21:00:23 2009 us=902837 client/202.127.207.101:11566 MULTI: bad source address from client [202.127.207.101], packet dropped 
+           <br />链接的时候提示这个问题，client链接后可以正常上网，但是访问不到内网。内网在 服务器开启OpenVPN后 就PING不通外网。怎么解决？ 
+           <br />邮件：limling2002@yahoo.com.cn&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;Rinkey&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=Rinkey" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl43_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl43$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl43_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#63724">#</a>&nbsp;
+           <a name="63724"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2010-01-13 10:59 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl44_NameLink" target="_blank">haoshaolin</a> 
+          </div> 
+          <div class="postText">
+            你好 ！ 我想用自己的电脑测试openvpn－gui
+           <br />客户端 服务端用自己电脑！但不知道怎么配置ovpn文件
+           <br />请教&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;haoshaolin&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=haoshaolin" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl44_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl44$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl44_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#65109">#</a>&nbsp;
+           <a name="65109"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2010-04-06 12:55 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl45_NameLink" href="http://www.topdissertations.com" target="_blank">dissertation writing service</a> 
+          </div> 
+          <div class="postText">
+            The extra buy thesis is wanted by people in the whole world but everytime I require the dissertation service or entirely length of dissertation just like this good topic. &nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;dissertation writing service&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=dissertation+writing+service" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl45_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl45$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl45_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: essay writers" href="/lizhenbao/archive/2008/01/22/18356.html#68755">#</a>&nbsp;
+           <a name="68755"></a>essay writers 
+           <span> 2010-09-10 02:10 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl46_NameLink" href="http://www.genuinewriting.com" target="_blank">vikojhons@gmail.com</a> 
+          </div> 
+          <div class="postText">
+            I admit, I have not been on this webpage in a long time... however it was another joy to see It is such an important topic and ignored by so many, even professionals. I thank you to help making people more aware of possible issues.
+           <br />
+           <br />&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;vikojhons@gmail.com&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=vikojhons%40gmail.com" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl46_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl46$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl46_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#68757">#</a>&nbsp;
+           <a name="68757"></a>re: 成功搭建OpenVpn服务器 
+           <span> 2010-09-10 11:26 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl47_NameLink" href="http://www.mecosplay.com" target="_blank">cosplay</a> 
+          </div> 
+          <div class="postText">
+            The extra buy thesis is wanted by people in the whole world but everytime I require the dissertation service or entirely length of dissertation just like this good topic[url=
+           <a target="_new" href="http://www.weddingsale.ca">http://www.weddingsale.ca</a>]evening dresses[/url]&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;cosplay&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=cosplay" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl47_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl47$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl47_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+         <div class="post"> 
+          <div class="postTitle"> 
+           <a title="permalink: re: 成功搭建OpenVpn服务器" href="/lizhenbao/archive/2008/01/22/18356.html#86942">#</a>&nbsp;
+           <a name="86942"></a>re: 成功搭建OpenVpn服务器
+           <a name="Post"></a> 
+           <span> 2013-01-25 15:04 </span> 
+           <a id="AjaxHolder_Comments_CommentList_ctl48_NameLink" target="_blank">die</a> 
+          </div> 
+          <div class="postText">
+            下载地址 
+           <a target="_new" href="http://www.bibidu.com/fileview-302845.html">http://www.bibidu.com/fileview-302845.html</a> 建议大家别下载，是exe文件，不可信。&nbsp;&nbsp;
+           <a onclick="return SetReplyAuhor(&quot;die&quot;)" href="/lizhenbao/archive/2008/01/22/18356.html#post">回复</a>&nbsp;&nbsp;
+           <a title="查看该作者发表过的评论" href="http://www.cnitblog.com/comment?author=die" target="_blank">更多评论</a> 
+           <br /> 
+           <a id="AjaxHolder_Comments_CommentList_ctl48_DeleteLink" href="javascript:__doPostBack('AjaxHolder$Comments$CommentList$ctl48$DeleteLink','')"></a>&nbsp;&nbsp;
+           <a id="AjaxHolder_Comments_CommentList_ctl48_EditLink"></a> 
+          </div> 
+         </div> 
+         <br /> 
+        </div>
+        <div id="AjaxHolder_Comments_divRefreshComments" style="text-align:right;margin-right:10px;margin-bottom:5px;font-size:12px;">
+         <a id="AjaxHolder_Comments_refreshList" href="javascript:__doPostBack('AjaxHolder$Comments$refreshList','')">刷新评论列表</a>
+        </div> 
+        <style>
+td { font-size: 12px }
+.commentTextBox 
+{ 
+    font-family : Verdana; 
+    font-size: 13px;
+ }
+</style> 
+        <!--Beging Temp Save--> 
+        <style>.userData { BEHAVIOR: url(#default#userdata) }
+	</style> 
+        <div class="userData" id="CommentsPersistDiv"></div> 
+        <script type="text/javascript">
+function pageLoad()
+{
+    Sys.WebForms.PageRequestManager.getInstance().add_initializeRequest(handleInitializeRequest);
+    //Sys.WebForms.PageRequestManager.getInstance().add_endRequest(handleEndRequest);
+}
+
+function handleInitializeRequest(sender, args)
+{
+    var prm = Sys.WebForms.PageRequestManager.getInstance();
+    var eid = args.get_postBackElement().id;
+    if (eid.indexOf("DeleteLink")>0) 
+    {
+       args.get_postBackElement().innerHTML = "<font color='red'>正在删除...</font>";         
+    }    
+    if (eid.indexOf("btnSubmit")>0) 
+    {
+       document.getElementById("AjaxHolder_PostComment_ltSubmitMsg").innerHTML="正在提交...";
+       document.getElementById("AjaxHolder_PostComment_btnSubmit").disabled = true;
+       
+    }    
+   
+}	
+
+function TempSave(ElementID)
+{
+	try
+	{
+	CommentsPersistDiv.setAttribute("CommentContent",document.getElementById(ElementID).value);
+	CommentsPersistDiv.save("CommentXMLStore");
+	}
+	catch(ex)
+	{
+	}
+	
+}
+function Restore(ElementID)
+{
+	CommentsPersistDiv.load("CommentXMLStore");
+	document.getElementById(ElementID).value=CommentsPersistDiv.getAttribute("CommentContent");
+}	
+			
+			
+</script> 
+        <!--Ene TempSave--> 
+        <span>
+         <div class="commentform">
+          只有注册用户
+          <a href="http://www.cnitblog.com/login.aspx?ReturnUrl=/lizhenbao/archive/2008/01/22/18356.html">登录</a>后才能发表评论。
+         </div></span> 
+       </div> </td>
+     </tr> 
+    </tbody>
+   </table> 
+   <p id="footer"> Copyright @ 李珍宝<br /> Powered by: <a href="http://scottwater.com/blog" target="_blank">.Text</a> and <a href="http://asp.net" target="_blank">ASP.NET</a> <br /> Theme by: <a href="http://www.DotNetMonster.com" target="_blank">.NET Monster</a> </p> 
+   <script type="text/javascript">
+//<![CDATA[
+Sys.Application.initialize();
+//]]>
+</script> 
+  </form> 
+  <script type="text/javascript" src="/script/ShowHidden.js"></script> 
+  <div> 
+   <script type="text/javascript">
+	var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+	document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script> 
+   <script type="text/javascript">
+	try {
+	var pageTracker = _gat._getTracker("UA-476124-12");
+	pageTracker._trackPageview();
+	} catch(err) {}</script> 
+  </div>   
+ </body>
+</html>

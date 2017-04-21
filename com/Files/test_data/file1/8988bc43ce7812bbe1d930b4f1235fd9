@@ -1,0 +1,123 @@
+<!DOCTYPE html><html style=" background-color:white;"><head>
+    <title>搜房帮</title>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="robots" content="index,archive,follow">
+    <script type="text/javascript" src="//cdnn.soufunimg.com/img/secondhouse/image/magentnew/scripts/jquery-1.8.2.min.Fixed.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdns.soufunimg.com/img1/secondhouse/image/wapagent/styles/store1111.css">
+    <script type="text/javascript">
+        function MsgShow(msg, func, flag) {
+            $(".buy_lend_tip").html(msg);
+            $(".buy_lend_tip").fadeIn("fast", function () {
+                if (func) {
+                    if (!flag) {
+                        func();
+                    }
+                    else {
+                        DaoJi(4, msg, func);
+                    }
+                }
+                else {
+                    setTimeout("MsgHide()", 2000);
+                }
+            });
+        }
+        function MsgHide() {
+            $(".buy_lend_tip").fadeOut("fast", function () { });
+        }
+        function DaoJi(i, msg, func) {
+            $(".buy_lend_tip").html(msg + i);
+            i--;
+            if (i >= 0) {
+                setTimeout(function () { DaoJi(i, msg, func); }, "1000");
+            }
+            else {
+                func();
+            }
+        }
+    </script>
+    
+</head>
+<body>
+    <style>
+        .buy_lend_tip { display: none; position: absolute; width: 75%; border-spacing: 0 0; border-collapse: separate; border-collapse: separate !important; box-sizing: border-box !important; box-sizing: border-box; overflow: hidden; padding: 12px; text-align: center; left: 12.5%; top: 30%; margin-top: -25px; color: #fff; font-size: 14px; z-index: 10; background: rgba(0,0,0,0.7); border-radius: 10px; text-align: center; }
+    </style>
+    
+
+<script type="text/javascript">
+    var postFlag = 0;
+    $(function () {
+        var ruleMsg = '';
+        if (ruleMsg && ruleMsg.indexOf("解除") != -1) {
+            if(confirm(ruleMsg)){
+                $.post('/wapagent/Bind/UpdateBind', { openId: '' }, function (res) {
+                    if (!res.status=="success") {
+                        alert(res.msg);
+                    }
+                    else {
+                        alert(res.msg);
+                        location.href = res.backUrl;
+                    }
+                }, "json");//end post
+            }
+        }
+       
+    })
+    function postclick() {
+        if (postFlag == 1) {
+            return false;
+        } else {
+
+            postFlag = 1;
+            var uid = encodeURI($("#txtUserName").val());
+            var password = $("#txtPassword").val();
+            var form = document.getElementById("bindForm");
+            var backurl = $("#backurl").val();
+            var loginUrl = 'https://passport.fang.com/login.api?Uid=' + uid + '&Pwd=' + password + '&Service=esf-agent-wap';
+            var oldAction = form.action;
+            var oldtarget = form.target;
+
+            form.action = loginUrl;
+            form.method = "post";
+            form.target = "loginFrame";
+            form.submit();
+
+            $("#backurl").val(backurl);
+            form.action = oldAction;
+            form.target = oldtarget;
+
+
+        }
+    }
+</script>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<link rel="stylesheet" type="text/css" href="//static.soufunimg.com/esf/sfb/wapagent/styles_new/WeChat/index.css">   
+<meta content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,initial-scale=1.0" name="viewport">
+<meta name="format-detection" content="telephone=no, email=no"> 
+
+<div style="background-color:white">
+<div class="Bindaccount">
+<p>绑定搜房帮账号，您可登录微信即时掌握账户动态！</p>
+<form id="bindForm" method="post" action="/WapAgent/Bind/Bind">
+<div class="massage"><span>账户名</span><input id="txtUserName" name="txtUserName" value="" placeholder="用户名/电子邮箱/手机号码"></div>
+<div class="massage"><span>密 &nbsp;&nbsp;码</span><input id="txtPassword" name="txtPassword" value="" type="password" placeholder="请输入密码"></div>
+    <p style="color:#ff3d3d;">
+ </p>
+<input class="btupub" type="button" onclick="postclick();" value="登录">
+    <input type="hidden" name="backurl" id="backurl" value="http://b.agent.fang.com/wapagent/bind/bindwithhttps?openid=&amp;sceneID=&amp;ticket=&amp;redirect=">
+    <input type="hidden" name="hiddenOpenId" id="hiddenOpenId" value="">
+    <iframe name="loginFrame" id="loginFrame" style="display: none;" width="0" height="0"></iframe>
+</form>
+<p class="help-text"><a class="fl" href="Login/Forget/?openId=&amp;Source=3&amp;BackUrl=">忘记密码</a><a class="fr" href="Login/Register?openId=&amp;Source=3&amp;BackUrl=">立即注册</a></p>
+
+
+</div>
+</div>
+
+
+    
+
+
+
+</body></html>
