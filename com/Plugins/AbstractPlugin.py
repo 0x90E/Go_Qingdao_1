@@ -3,8 +3,12 @@
 
 from abc import abstractmethod, ABCMeta
 
+
 class AbstractPlugin:
     _metaclass__ = ABCMeta
+    R_LEGITIMATE = '0'
+    R_SUSPICIOUS = '1'
+    R_PHISHING = '2'
 
     def __init__(self, feature_name):
         self.feature_name = feature_name

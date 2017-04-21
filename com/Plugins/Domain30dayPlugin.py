@@ -43,19 +43,25 @@ class Domain30dayPlugin(AbstractPlugin):
                     features.append(0)
                 break
             """
-            while True:
-                finish, reg_timestamp = get_domain_regday(domain)
-                if finish is False:
-                    print('[%s] whois err. %s, try...' % (self.feature_name, domain))
-                    continue
-                if reg_timestamp is None:
-                    print('[%s] No Registration Data. %s' % (self.feature_name, domain))
+
+            if trusted_domain(domain):
+                features.append('0')
+            else:
+                while True:
+                    finish, reg_timestamp = get_domain_regday(domain)
+                    if finish is False:
+                        print('[%s] whois err. %s, try...' % (self.feature_name, domain))
+                        continue
+                    if reg_timestamp is None:
+                        features.append(self.R_LEGITIMATE)
+                        print('[%s] No Registration Data. %s' % (self.feature_name, domain))
+                        break
+
+                    if (time.time() - reg_timestamp) < 30 * 86400:
+                        # < 30day
+                        features.append(self.R_PHISHING)
+                    else:
+                        features.append(self.R_LEGITIMATE)
                     break
-                if (time.time() - reg_timestamp) < 30 * 86400:
-                    # < 30day
-                    features.append(1)
-                else:
-                    features.append(0)
-                break
 
         return Series(features)

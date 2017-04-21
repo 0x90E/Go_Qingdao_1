@@ -4,6 +4,7 @@ import socket
 import urlparse
 from com.Common.Other import *
 
+
 def read_html(url):
     content = read_cache(url)
     if content:

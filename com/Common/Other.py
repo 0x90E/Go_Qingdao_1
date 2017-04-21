@@ -32,6 +32,13 @@ def write_cache(id, content):
         return False
 
 
+def trusted_domain(domain):
+    r = domain[-7:].lower()
+    if r == '.edu.cn' or r == '.gov.cn':
+        return True
+    return False
+
+
 # return: finish, timestamp
 def get_domain_regday(domain):
     if domain == 'downza.cn':
@@ -44,14 +51,17 @@ def get_domain_regday(domain):
         write_cache(domain, content)
 
     # type1 '2003-10-10'
-    list_pattern = ['(?<=Registration\ Date\: )(\d{4}\-\d{1,2}\-\d{1,2})',
-                    '(?<=Creation Date: )(\d{4}\-\d{1,2}\-\d{1,2})',
-                    '(?<=Registration\ Time\: )(\d{4}\-\d{1,2}\-\d{1,2})'
+    list_pattern = ['(?<=Registration\ Date\:)(( ?)\d{4}\-\d{1,2}\-\d{1,2})',
+                    '(?<=Creation Date:)(( ?)\d{4}\-\d{1,2}\-\d{1,2})',
+                    '(?<=Registration\ Time\:)(( ?)\d{4}\-\d{1,2}\-\d{1,2})',
+                    '(?<=Record created on)(( ?)\d{4}\-\d{1,2}\-\d{1,2})',
+                    '(?<=RegDate:)(( *)\d{4}\-\d{1,2}\-\d{1,2})'
                     ]
     str_reg_date = None
     for pattern in list_pattern:
         try:
             str_reg_date = re.search(pattern, content).group()
+            str_reg_date = str_reg_date.strip()
             break
         except:
             pass
@@ -63,21 +73,31 @@ def get_domain_regday(domain):
 
     # type2: '21-apr-2003'
     try:
-        pattern = '(?<=Creation Date: )(\d{1,2}-[a-zA-Z]{3,4}-\d{4})'
+        pattern = '(?<=Creation Date:)(( ?)\d{1,2}-[a-zA-Z]{3,4}-\d{4})'
         str_reg_date = re.search(pattern, content).group()
+        str_reg_date = str_reg_date.strip()
         reg_time = time.strptime(str_reg_date, '%d-%b-%Y')
         reg_timestamp = time.mktime((reg_time.tm_year, reg_time.tm_mon, reg_time.tm_mday, 0, 0, 0, 0, 0, 0))
         return True, reg_timestamp
     except:
-        return True, None
+        pass
 
-
-
+    # type3: '14-04-2001'
+    try:
+        pattern = '(?<=Domain Name Commencement Date:)(( ?)\d{1,2}-\d{1,2}-\d{4})'
+        str_reg_date = re.search(pattern, content).group()
+        str_reg_date = str_reg_date.strip()
+        reg_time = time.strptime(str_reg_date, '%d-%m-%Y')
+        reg_timestamp = time.mktime((reg_time.tm_year, reg_time.tm_mon, reg_time.tm_mday, 0, 0, 0, 0, 0, 0))
+        return True, reg_timestamp
+    except:
+        pass
+    return True, None
 
 
 def whois(domain):
     retcode, out, err = exec_cmd('whois %s' % domain)
-    if out:
+    if out and out.find('Queried interval is too short.') == -1 and out.find('Timeout') == -1:
         return out
     return None
 
@@ -97,3 +117,13 @@ def exec_cmd(cmdline, cwd=None, stdout=subprocess.PIPE, stderr=subprocess.PIPE):
     if err:
         error = err.decode()
     return subp.returncode, normal, error
+
+
+def read_file(path):
+    try:
+        file = open(path, 'r')
+        data = file.read()
+        file.close()
+        return data
+    except:
+        return None

@@ -15,7 +15,6 @@ class DomainNumberPlugin(AbstractPlugin):
         features = []
         for url in simple_data:
             url_info = parse_url(url)
-            domain = url_info.netloc
             list_domain = re.findall('((?=(http://|https://|=|/)*)(([a-z0-9\-_]+?\.)*?)([a-z0-9\-_]+?)'
                                      '(\.biz|\.com|\.edu|\.gov|\.info|\.int|\.mil|\.name|\.net|\.org|\.pro|\.xxx|'
                                      '\.aero|\.cat|\.coop|\.jobs|\.museum|\.travel|\.mobi|\.asia|\.tel|\.arpa|\.root|'
