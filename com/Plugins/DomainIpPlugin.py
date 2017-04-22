@@ -15,7 +15,7 @@ class DomainIpPlugin(AbstractPlugin):
         features = []
         for url in simple_data:
             url_info = parse_url(url)
-            domain = url_info.netloc
+            domain = url_info.netloc.split(':')[0]
             ipv4 = re.match('^(\d{0,255})\.(\d{0,255})\.(\d{0,255})\.(\d{0,255})$', domain)
             ipv6 = re.match('^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|'
                             '(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|'
