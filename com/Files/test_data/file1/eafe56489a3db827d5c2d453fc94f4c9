@@ -1,0 +1,137 @@
+<!DOCTYPE html><html lang="zh-CN"><head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>会计人员信息查询</title>
+<meta name="HandheldFriendly" content="True">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/css/images/favicon.ico">
+<link rel="stylesheet" href="/js/cxd/bootstrap.min.css">
+<link rel="stylesheet" href="/js/cxd/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="/js/cxd/screen.css">
+</head>
+<body class="home-template">
+	
+
+
+
+
+
+<header class="main-header" style="background: url(/js/cxd/topbg.png) center no-repeat;height:170px;">
+</header>
+<nav class="main-navigation" style="padding-bottom: 20px;background-color: #fff;margin-bottom: 0px;border-bottom: none;">
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="navbar-header">
+					<span class="nav-toggle-button collapsed" data-toggle="collapse" data-target="#main-menu"> <span class="sr-only"></span> <i class="fa fa-bars"></i>
+					</span>
+				</div>
+				<div class="collapse navbar-collapse" id="main-menu">
+<!-- 					<ul class="menu"> -->
+<!-- 						<li role="presentation" class="nav-current"><a -->
+
+<!-- 					</ul> -->
+				</div>
+			</div>
+		</div>
+	</div>
+</nav>
+	<section class="content-wrap" style="background-color: #fff;">
+		<div class="container">
+			<div class="row" style="margin: 0 auto;">
+				<article class="col-md-5 sidebar" style="margin: 0 auto;float: none;">
+					<div class="widget">
+						<h4 class="title" style="margin-bottom: 10px;">
+							<i class="fa fa-leanpub" aria-hidden="true"></i> 会计人员信息查询
+						</h4>
+						<div class="content ">
+							<form id="loginForm" action="/ZJAccountantManager/index.html" method="post">
+								<div class="form-group">
+									<label for="sidcard"><i class="fa fa-credit-card" aria-hidden="true"></i> 身份证</label> <input type="text" class="form-control" onkeypress="isNum(event)" onkeyup="value=value.replace(/[^0-9\x\X]/g,'')" name="sidcard" placeholder="身份证">
+								</div>
+								<div class="form-group">
+									<label for="sidcard"><i class="fa fa-user" aria-hidden="true"></i> 会计证条型码(二维码)：</label> <input type="text" class="form-control" name="sbarcode" placeholder="会计证条型码(二维码)">
+								</div>
+								<div class="form-group">
+									<label for="yanzhenma"><i class="fa fa-user" aria-hidden="true"></i> 验证码</label> <input type="text" class="form-control" name="patcha" style="width: 50%;" placeholder="验证码"> <img src="/front/login/pcrimg.html" style="width: 150px; float: right; margin-top: -40px; height: 40px;" id="pcr" onclick="reImg()" alt="点击刷新验证码">
+								</div>
+								<div class="form-group">
+									1、身份证号和会计证条型码必须同时输入<br>2、输入的数字都应为英文,半角状态
+								</div>
+								<button class="btn btn-info btn-block" onclick="checkData();" type="button">
+									<span style="letter-spacing: 20px;">查询</span>
+								</button>
+							</form>
+
+							<label id="errormsg" style="color: red;"></label>
+						</div>
+					</div>
+				</article>
+				
+
+
+			</div>
+		</div>
+	</section>
+	
+
+
+
+
+
+<div class="post-content footer">
+   	<div class="foot" style="">
+<!--    		<p>(c) 2006-2016 浙江省财政厅</p> -->
+<!--    		<p>地址：杭州市环城西路37号  邮编：310006  电话：0571-87055714  传真：0571-87057608</p> -->
+<!--         <p>网站域名：<a href="http://www.tdjxjy.com" style="color: #9B9B9B;">http://www.xxx.com</a></p> -->
+<!--         <p>技术支持:浙江天顿信息科技有限公司&nbsp;&nbsp;电话:0571-87803322 </p> -->
+<!--         <p>推荐使用IE 9.0版本以上,Chrome等浏览器</p> -->
+<!--         <p>隐私保护&nbsp;&nbsp;版权声明 </p> -->
+<p align="center">(C)2006-2007 浙江省财政厅 版权所有 备案序号:<a href="http://www.miibeian.gov.cn/">浙ICP备06051979号</a> <a href="http://www.zjczt.gov.cn/ysbh/6606.htm" target="_blank">隐私保护</a> <a href="http://www.zjczt.gov.cn/bqsm/6605.htm" target="_blank">版权声明</a><br>地址：杭州市环城西路37号 邮编：310012&nbsp; 传真：0571-87057608 
+      <br>门户网站域名：<a href="http://www.zjczt.gov.cn/" target="_blank">http://www.zjczt.gov.cn/</a> 中文域名：浙江省财政厅.中国 
+      通用网址：浙江省财政厅<br>技术支持:浙江天顿信息科技有限公司 <br></p>
+    </div>
+</div>
+<a href="#" id="back-to-top"><i class="fa fa-angle-up"></i></a>
+<script src="/js/cxd/jquery.min.js"></script>
+<script src="/js/cxd/bootstrap.min.js"></script>
+<script src="/js/cxd/main.js"></script>
+
+	<script type="text/javascript">
+		$(function() {
+		});
+		function checkData() {
+			var sidcard = document.getElementsByName('sidcard')[0].value;
+			var sname = document.getElementsByName('sbarcode')[0].value;
+			var patcha = document.getElementsByName('patcha')[0].value;
+			if (sidcard == '') {
+				document.getElementById('errormsg').innerHTML = '身份证不能为空';
+			} else if (sname == '') {
+				document.getElementById('errormsg').innerHTML = '姓名不能为空';
+			} else if (patcha == '') {
+				document.getElementById('errormsg').innerHTML = '验证码不能为空';
+			} else {
+				$('#loginForm').submit();
+			}
+		}
+		function isNum(e) {
+			var k = window.event ? e.keyCode : e.which;
+			var idstr = document.getElementsByName('sidcard')[0].value;
+			if ((((k >= 48) && (k <= 57)) || k == 120 || k == 88)
+					&& !(idstr.length < 18)) {
+				if (window.event) {
+					window.event.returnValue = false;
+				} else {
+					e.preventDefault();
+				}
+			}
+		}
+		function reImg() {
+			var img = document.getElementById("pcr");
+			img.src = "/front/login/pcrimg.html?rnd=" + Math.random();
+		}
+	</script>
+
+
+</body></html>

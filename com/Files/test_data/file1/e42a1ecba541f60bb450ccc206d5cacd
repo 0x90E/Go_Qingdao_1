@@ -1,0 +1,191 @@
+<!DOCTYPE html><html><head>
+<title>登录</title>
+<meta name="Keywords" content="会员，VIP会员，第三方快速登录">
+<meta name="Description" content="登录中文书城享受最体贴的阅读服务">
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="format-detection" content="telephone=no">
+<meta name="format-detection" content="address=no;email=no">
+<meta property="qc:admins" content="14416622673163056367535274771661300">
+
+<link href="http://img.zwkanshu.com/css/style.css?v=1121" type="text/css" rel="stylesheet">
+<script src="//hm.baidu.com/hm.js?d3a69bde0c513dc29f82d2f573aaceff"></script><script src="http://img.zwkanshu.com/js/zepto.min.js"></script>
+<script>
+var channelId=3674;
+var processNumb=0;
+var smsProcess = null;
+function getSms(){
+	var lbDescription=$("#lbDescription");
+	var tbPhoneNumber=$("[name=phoneNumber]");
+	var btGetSmsPassword = $("#btGetSmsPassword");
+	var pn = tbPhoneNumber.val();
+	if(pn==="" || pn==null){
+		lbDescription.text("请输入您的手机号");
+		return;
+	}
+	var postData = {phonenumber:pn};
+	var gurl = "/user/login_getsms.aspx";
+	$.post(gurl,postData,function(res){
+		var rsc = $.parseJSON(res);
+		var rscs = rsc.statuscode.status;
+		var rscd = rsc.statuscode.description;
+		if(rscs<0){
+			lbDescription.text(rscd);
+		}else{
+			processNumb=60;
+			lbDescription.text("验证码已经发送到您的手机上，请注意查收");
+			smsProcess = setInterval(function(){
+				var btGetSmsPassword = $("#btGetSmsPassword");
+				processNumb--;
+				if(processNumb>0){
+					btGetSmsPassword.addClass("bt_disable");
+					btGetSmsPassword.text("剩余"+processNumb+"秒");
+				}else{
+					processNumb=0;
+					clearInterval(smsProcess);
+					btGetSmsPassword.removeClass("bt_disable");
+					btGetSmsPassword.text("获取短信验证码");
+				}
+			},1000);
+		}	
+	});
+};
+(Zepto)(function($){
+	var jumpUrl="http://2345sjzsh5.ikanshu.cn/book/60360651/2251.html";
+	var userAgent=navigator.userAgent.toLowerCase();
+	var host = location.host;
+	var uiLoginBar=$("#uiLoginBar");
+	
+
+	var lbDescription=$("#lbDescription");
+	var tbPhoneNumber=$("[name=phonenumber]");
+	var btGetSmsPassword = $("#btGetSmsPassword");
+	btGetSmsPassword.on("click",function(e){
+		if(processNumb<=0){
+			getSms();
+		}
+	});
+});
+</script>
+<style>
+.bt_form_getsms{display:block;margin-left:5px;padding:0 10px;height:34px;border:1px solid #69c;border-radius:4px;font-size:14px;line-height:34px;text-align:center;color:#69c;overflow:hidden;}
+.bt_disable{border-color:#ccc;color:#ccc;}
+</style>
+</head>
+<body>
+<div class="head-bar zw_box">
+  <a href="http://2345sjzsh5.ikanshu.cn/book/60360651/2251.html" class="back"></a>
+  <p class="zw_flex">登录</p>
+  <a href="/default.aspx" class="home" name="logo"></a>
+</div>
+<div id="uiLoginBar" class="wrap mt40">
+  <div class="form-wrap">
+      <div class="mt30 zw_tc">
+        <p class="mt10 zw_f12 red" id="lbDescription"></p>
+      </div>
+      <form method="post" action="login.aspx?url=http%3a%2f%2f2345sjzsh5.ikanshu.cn%2fbook%2f60360651%2f2251.html">
+        <div class="ui_field">
+          <div><span class="title">手机号</span></div><div class="input zw_flex"><input type="text" name="phoneNumber" placeholder="请输入您的手机号" value=""></div><div id="btGetSmsPassword" class="bt_form_getsms">获取验证码</div>
+        </div>
+        <div class="ui_field">
+          <div><span class="title">验证码</span></div><div class="input zw_flex"><input type="password" name="smsPassword" placeholder="短信验证码" value=""></div>
+        </div>
+        <div class="mt30 zw_tc">
+          <input type="submit" value="登录" class="zw_btn mr30 zw_blue_btn">
+        </div>
+	<div class="ui_field">
+	  <div><a href="login_account.aspx?url=http%3a%2f%2f2345sjzsh5.ikanshu.cn%2fbook%2f60360651%2f2251.html" class="blue">★使用帐号密码进行登录</a></div>
+	</div>
+      </form>
+  </div>
+  <div class="ui_morelogin"><span class="title">其他第三方登录</span></div>
+  <div class="ui_morelogin_list">
+    <a href="/user/login_qq.aspx?url=http%3a%2f%2f2345sjzsh5.ikanshu.cn%2fbook%2f60360651%2f2251.html"><span class="ic_qqlogin">QQ登录</span></a>
+    <a href="/user/login_wxpay.aspx?url=http%3a%2f%2f2345sjzsh5.ikanshu.cn%2fbook%2f60360651%2f2251.html"><span class="ic_weixinlogin">微信登录</span></a>
+    
+    <a href="/user/login_taobao.aspx?url=http%3a%2f%2f2345sjzsh5.ikanshu.cn%2fbook%2f60360651%2f2251.html"><span class="ic_taobaologin">淘宝登录</span></a>
+    
+  </div>
+</div>
+<div class="footer-top zw_box">
+  <p class="zw_flex"><a href="/default.aspx"><span>首页</span></a>&gt;<a href="default.aspx"><span>个人中心</span></a>&gt;<a href="login.aspx"><span>登录</span></a></p>
+  <a href="#top"><b>回顶部</b></a>
+</div>
+
+  <div class="footer">
+    <nav class="zw_nav"><a href="/default.aspx?ikscnid=3674"><span>首页</span></a><a href="/chat/default.aspx"><span>聊天</span></a><a href="/category.aspx"><span>分类</span></a><a href="/paihang.aspx"><span>排行</span></a><a href="/searchbook.aspx"><span>搜索</span></a><a href="/user/mybookmark.aspx"><span>书架</span></a></nav>
+    <div class="f-help zw_tc">
+      
+      <a href="/help/default.aspx"><span>帮助中心</span></a>|<a href="/help/contractus.aspx"><span>联系客服</span></a>|<a href="/help/postquestion.aspx?url=http%3a%2f%2f2345sjzsh5.ikanshu.cn%2fuser%2flogin.aspx%3furl%3dhttp%3a%2f%2f2345sjzsh5.ikanshu.cn%2fbook%2f60360651%2f2251.html"><span>反馈意见</span></a>
+    </div>
+  </div>
+  
+  <div class="f-download zw_tc">
+    
+    <a href="http://res.ikanshu.cn/211/apk/3675.apk"><span>安卓客户端下载</span></a>
+    
+  </div>
+  
+  <div class="ui_copyright">
+    <span>Copyright © 2014-2016 m.cread.com All Rights Reserved</span><br>
+    <span>京ICP证010590号 京ICP备09030667号-7</span><br>
+    <span>新出网许（京）字045号</span><img src="http://m.cread.com/user/user_transfer.aspx?channelid=3674&amp;checkcode=&amp;sessionid=&amp;userid=0&amp;username=170402025233933379986000&amp;sign=cf41710d22773be1f1baf59ad7a35b54" alt="cread" width="0" height="0"><br>
+    <span>北京市公安局备案号码:11010102000012</span>
+    <img src="http://log.zwkanshu.com/h5log.aspx?channelid=3674&amp;username=170402025233933379986000&amp;userid=0&amp;userip=101.199.108.57&amp;localpath=%2fuser%2flogin.aspx" alt="cread" width="0" height="0">
+    <img src="http://zlog.ikanshu.cn/log.js?cnid=3674&amp;uid=0&amp;umeng=170402025233933379986000&amp;other=http%3a%2f%2f2345sjzsh5.ikanshu.cn%2fuser%2flogin.aspx%3furl%3dhttp%3a%2f%2f2345sjzsh5.ikanshu.cn%2fbook%2f60360651%2f2251.html&amp;appname=H5" alt="cread" width="0" height="0">
+  </div>
+  <!--浮动菜单开始-->
+  <div class="ui_floatmenu" style="display: block; " id="uiFloatMenu">
+    
+    <div class="bt_menu"><a onclick="javascript:window.scroll(0,0);" class="gotop"></a></div>
+  </div>
+  <script>
+  (function(){
+	var ui=document.getElementById("uiFloatMenu");
+	if(!ui)return;
+	//ui.style.cssText="display:block;position:fixed;right:10px;bottom:240px;width:320px;border:2px solid #f00;overflow:hidden;";
+	var wh=0,bh=0,sh=0;
+	var itv=setInterval(function(){
+		sh=window.pageYOffset||document.documentElement.scrollTop||document.body.scrollTop;
+		bh=document.documentElement.clientHeight;
+		if(sh>=bh){ui.style.display="block";}else{ui.style.display="none";}
+	},500);	
+  })();
+  </script>
+  <!--浮动菜单结束-->
+  
+<script>
+(function(){
+	var nowUrl=window.location.href.toLowerCase();
+	var backUrl;
+	if(nowUrl.indexOf("jslogin")!=-1){
+		return;
+	}else{
+		if(nowUrl.indexOf("?")!=-1){
+			backUrl=nowUrl+"&jslogin=1";
+		}else{
+			backUrl=nowUrl+"?jslogin=1";
+		}
+	}
+	var userAgent=navigator.userAgent.toLowerCase();
+	if(userAgent.indexOf("micromessenger")!=-1){
+		//微信登录
+		var lurl="/user/login_weixin.aspx?url="+encodeURIComponent(backUrl);
+		window.location.href=lurl;
+		return;
+	}
+})();
+</script>
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?d3a69bde0c513dc29f82d2f573aaceff";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+  
+
+</body></html>

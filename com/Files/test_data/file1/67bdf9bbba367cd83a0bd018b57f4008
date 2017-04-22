@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head>
+	
+
+<script language="javascript" src="/cjcx/resource/js/processbar.js" type="text/javascript"></script>
+<script language="javascript" src="/cjcx/resource/js/util.js" type="text/javascript"></script>
+<script src="/cjcx/resource/js/Globals.jsp"></script>
+<script language="javascript" type="text/javascript" src="/cjcx/resource/js/jquery_ajax.js"></script>
+<script language="javascript" type="text/javascript" src="/cjcx/resource/js/jquery-1.2.3.js"></script>
+<script type="text/javascript">var jQuery=$;</script>
+<script language="javascript" src="/cjcx/resource/js/formvalid.js" type="text/javascript"></script>
+<script type="text/javascript">
+	document.onkeydown=hback;
+	window.onhelp=returnFalse;
+//	document.oncontextmenu=returnValueFalse;
+	
+	try
+	{
+		window.onresize = "";
+		//隐藏左侧菜单区的覆盖层、top区覆盖层
+		hideLeftFrameDiv();
+	}
+	catch(ee)
+	{
+	}
+</script>
+
+
+	<script type="text/javascript" src="/cjcx/resource/js/valididcard.js"></script>
+	<title>成绩查询</title>
+	<link href="/cjcx/resource/css/style_logon.css" rel="stylesheet" type="text/css">
+
+
+	<script language="javascript" type="text/javascript">
+	function page_init()
+   	{
+		
+		
+	}
+
+    /** 查询 */
+	function onLogin(fm)
+	{
+		
+    	var num = document.getElementById("num").value;
+		if(num ==null || num ==""){
+			alert("考号不能为空");
+			return;
+		}
+		
+		var cardNo = document.getElementById("cardNo").value;
+
+		if(cardNo==null || cardNo ==""){
+			alert("身份证号不能为空");
+			return;
+		}
+		
+		var name = document.getElementById("name").value;
+		if(name ==null || name ==""){
+			alert("姓名不能为空");
+			return;
+		}
+     	document.getElementById("num").readonly = "true";
+     	document.getElementById("cardNo").setAttribute("readonly", "true");
+     	document.getElementById("name").setAttribute("readonly", "true");
+    	
+    	var pars = "num=" + num + "&cardNo=" + cardNo + "&name=" + name;
+    	
+    	document.forms[0].action="/cjcx/A1A101Action.do?method=onSearch&"+pars;
+    	document.forms[0].submit();
+
+	}
+	
+	/** 重置 */
+	function onCreate()
+	{
+		var num = document.getElementById("num");
+		var cardNo = document.getElementById("cardNo");
+		var name = document.getElementById("name");
+		num.value = "";
+		cardNo.value = "";
+		name.value = "";
+		document.getElementById("resultPosition").value = "";
+/* 		document.getElementById("resultSub1").value = "";
+		document.getElementById("resultSub2").value = ""; */
+		document.getElementById("resultTest").value = "";
+		num.removeAttribute("readonly");
+		cardNo.removeAttribute("readonly");
+		name.removeAttribute("readonly");
+	}
+	
+	
+	</script>
+</head>
+<body onload="page_init();">
+<form name="A1A101Form" method="post" action="/cjcx/A1A101Action.do;jsessionid=863CE4C5E9C6C96665DE2BD12DF0A260?method=doInit" enctype="multipart/form-data">
+
+<table id="Table1" cellspacing="0" cellpadding="4" width="600" align="center" border="0">
+	<tbody><tr>
+		<td align="left">
+		
+	</td>
+	</tr>
+</tbody></table>
+<div class="content">
+
+    &lt;
+  	    <table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0">
+  <tbody><tr>
+    <td width="20%"></td>
+    <td width="30%"></td>
+    <td width="20%"></td>
+    <td width="30%" height="90"></td>
+  </tr> 
+  <tr>
+    <td width="20%" style="font-weight:bold; color:red;">&nbsp;&nbsp;&nbsp;录入查询条件</td>
+    <td width="30%">
+    </td><td width="20%" style="font-weight:bold; color:red;">&nbsp;&nbsp;&nbsp;查询结果</td>
+    <td width="30%"></td>
+  </tr>
+  <tr>
+    <td width="20%" style="font-weight:bold;">&nbsp;&nbsp;&nbsp;考号(末四位)</td>
+    <td width="30%">
+    <input type="text" name="num" maxlength="20" size="20" value="" isfocused="false" onkeydown="javascript:try{if(13 == window.event.keyCode){window.event.keyCode=9;}}catch(e){}" onblur="if(!checkSpeChar(this)){return false;}changeStyle(this);" class="MyText" id="num" required="true" msg="考号不能为空！" withlimit="true"><font class="mustFlag">*</font>
+<!--     <input type="text" style="width:130px;" name="bkxh" id="bkxh" maxlength="20" class="MyText"/></td>  --></td>
+    <td width="20%" style="font-weight:bold;">&nbsp;&nbsp;&nbsp;报考岗位序号</td>
+    <td width="30%">
+    <input type="text" name="resultPosition" size="20" value="" isfocused="false" onkeydown="javascript:try{if(13 == window.event.keyCode){window.event.keyCode=9;}}catch(e){}" onblur="if(!checkSpeChar(this)){return false;}changeStyle(this);" disabled="disabled" readonly="readonly" id="resultPosition" withlimit="true">
+<!--     <input type="text" style="width:130px" name="gwxh" readonly="readonly" id="gwxh" maxlength="20" class="MyText"/></td>    -->
+  	</td>
+  </tr>
+ <tr>
+    <td width="20%" style="font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;身份证号</td>
+    <td width="30%">
+    <input type="text" name="cardNo" maxlength="18" size="20" value="" isfocused="false" onkeydown="javascript:try{if(13 == window.event.keyCode){window.event.keyCode=9;}}catch(e){}" onblur="if(!checkSpeChar(this)){return false;}changeStyle(this);if(!verifyEnglishNum(this)){return false;}checkCard()" class="MyText" id="cardNo" required="true" msg="身份证号不能为空！" withlimit="true" mask="englishnum" style="ime-mode:disabled;"><font class="mustFlag">*</font>
+<!--     <input type="text" style="width:130px" name="sfzh" id="sfzh" maxlength="20" class="MyText"/></td>  --></td>
+   
+  </tr>
+  <tr>
+    <td width="20%" style="font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;姓名</td>
+    <td width="30%">
+    <input type="text" name="name" maxlength="10" size="20" value="" isfocused="false" onkeydown="javascript:try{if(13 == window.event.keyCode){window.event.keyCode=9;}}catch(e){}" onblur="if(!checkSpeChar(this)){return false;}changeStyle(this);if(!verifyChinese(this)){return false;}" class="MyText" id="name" required="true" msg="姓名不能为空！" withlimit="true" mask="chinese"><font class="mustFlag">*</font>
+<!--     <input type="text" style="width:130px" name="xm" id="xm" maxlength="20" class="MyText"/></td>  --></td><td width="20%" style="font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;笔试成绩</td>
+    <td width="30%">
+    <input type="text" name="resultTest" size="20" value="" isfocused="false" onkeydown="javascript:try{if(13 == window.event.keyCode){window.event.keyCode=9;}}catch(e){}" onblur="if(!checkSpeChar(this)){return false;}changeStyle(this);" disabled="disabled" readonly="readonly" id="resultTest" withlimit="true">
+<!--     <input type="text" style="width:130px" name="bs" readonly="readonly" id="bs" maxlength="20" class="MyText" /></td>    -->
+  	</td>
+  </tr>
+  <tr>
+    <td width="20%"> &nbsp;&nbsp;<input id="id" value="查询" type="button" class="MyButton" onclick="onLogin(this.form);"></td>
+	<td width="30%">&nbsp;&nbsp;&nbsp;&nbsp;<input id="zc" value="重置" type="button" class="MyButton" onclick="onCreate();"></td> 
+
+  </tr>
+ 
+<!--   <tr> -->
+<!--     <td height="25">&nbsp;&nbsp;&nbsp;密&nbsp;&nbsp;码</td> -->
+<!--     <td height="25" colspan="2"><input type="password" name="passwd" id="passwd" maxlength="18" class="MyText"/></td> -->
+<!--   </tr> -->
+<!--   <tr> -->
+<!--     <td height="15" colspan="3"></td> -->
+<!--   </tr> -->
+<!--   <tr> -->
+<!--     <td height="25">&nbsp;&nbsp;&nbsp;验证码</td> -->
+<!--     <td width="17%" height="25"><input type="text" name="yzm" id="yzm" maxlength="12" class="MyText" style="width:80px;"/></td> -->
+<!--     <td width="24%"><img id="imgid" align="middle" border="1" -->
+
+
+<!--   </tr> -->
+<!--   <tr> -->
+<!--     <td height="15" colspan="3"></td> -->
+<!--   </tr> -->
+<!--   <tr> -->
+<!--     <td height="25"> <input id="id"  value="登录" type="button" class="MyButton" onClick="onLogin();" /></td> -->
+<!--     <td height="25"><input id="zc"  value="注册" type="button" class="MyButton" onClick="onCreate();" /></td> -->
+<!--   </tr> -->
+   <tr> 
+     <td height="125" width="100%" colspan="4">
+     <br><br><span style="color:black;font-weight:lighter; ; ; font-size:small; ; font-family:Microsoft Yahei;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;笔试成绩查询说明：<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1、查询笔试成绩须输入考生的真实姓名、身份证号及考号的末四位数；<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、笔试成绩显示为“-1”的为考试科目涂错考生，显示为“-2”的为准考证号码涂错考生，显示为“-3”的为缺考考生。&nbsp;咨询电话：（0411）39052224。&nbsp;
+ 	</span></td> 
+  </tr> 
+  </tbody></table>
+
+</div>
+
+</form>
+
+
+</body></html>

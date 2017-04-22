@@ -1,0 +1,145 @@
+<!DOCTYPE html><html><head>
+  <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, width=device-width">
+  <link rel="apple-touch-icon" href="/coremail/ipad/assets/xm_index/touch_ico.png">
+  <title>酒钢集团邮件系统</title>
+  
+  <script type="text/javascript">
+    <!--
+
+    var errorUidPwd = null;
+    var errorOther = null;
+    var focusInput = 'password';
+
+    function fSaveCookie()
+    {
+      var sUser = encodeURIComponent(fTrim($("username").value));
+      var sPass = fTrim($("password").value);
+      if (sUser == "") {
+        alert("用户名未输入");
+        $("username").focus();
+        return false;
+      }
+
+      if (sPass == "") {
+        alert("密码未输入");
+        $("password").focus();
+        return false;
+      }
+      if ($("chkRemember").checked) {
+        document.cookie = "iphone_user=" + sUser + ";expires=" + new Date(2099, 12, 31).toGMTString()
+                + ";path=/";
+      }
+    }
+    function onLoad() {
+        fSetUser();
+        if (errorUidPwd || errorOther) {
+            alert(errorUidPwd || errorOther);
+            $(focusInput || "password").focus();
+        }
+
+        document.getElementById('sltLang').value = "zh_CN";
+    }
+    function fSetUser()
+    {
+      $("username").value = $("username").value || getCookie("iphone_user") || "";
+    }
+    function $(sId)
+    {
+      return document.getElementById(sId);
+    }
+    function fTrim(str)
+    {
+      return str.replace(/(^\s*)|(\s*$)/g, "");
+    }
+    function getCookie(name)
+    {
+      var search = name + "="
+      if (document.cookie.length > 0) {
+        offset = document.cookie.indexOf(search)
+        if (offset != -1) {
+          offset += search.length
+          end = document.cookie.indexOf(";", offset)
+          if (end == -1) end = document.cookie.length;
+          return decodeURIComponent(document.cookie.substring(offset, end))
+        }
+        else return ""
+      }
+    }
+
+    function submitSendVerifyCellCode(){
+       var form = $("loginForm");
+       var hiddenInput = document.getElementsByName("action:sendVerifyCellCode")[0];
+       if (hiddenInput) {
+           hiddenInput.disabled = false;
+           document.getElementById("verifyCellCode").value = "";
+           form.submit();
+       }
+   }
+
+    function changeLang(sLocal) {
+        var inputLocale = document.getElementById('iptLocale');
+        if ( null != inputLocale ) {
+            inputLocale.value = sLocal;
+        }
+    }
+    //-->
+  </script>
+  <link href="/coremail/xphone/assets/login.css" rel="stylesheet" type="text/css">
+  <style type="text/css">
+  </style>
+  <script>
+    // for IE
+    document.createElement('header');
+    document.createElement('footer');
+  </script>
+</head>
+<body onload="onLoad();">
+<div class="page">
+        <div class="mod mod-logo">
+            <img src="/coremail/xphone/assets/logo/logo.png" alt="coremail logo">
+        </div>
+
+        <div class="mod mod-login">
+            <form id="loginForm" method="post" action="index.jsp" onsubmit="return fSaveCookie();">
+                <input type="hidden" name="service" value="PHONE">
+                <input type="hidden" id="iptLocale" name="locale" value="zh_CN">
+                <input type="hidden" name="destURL" value="/coremail/xphone/main.jsp">
+                <div class="iptBox">
+                    <div class="item"><label class="lb">用户名： </label><input type="text" name="uid" id="username" value=""></div>
+                    <div class="item"><label class="lb">密&nbsp;&nbsp;&nbsp;&nbsp;码：</label><input type="password" name="password" id="password" value=""></div>
+                    <div class="item">
+                        <label class="lb">语&nbsp;&nbsp;&nbsp;&nbsp;言：</label>
+                        <select name="lang" id="sltLang" onchange="changeLang(this.value);">
+                            <option value="zh_CN">简体中文</option>
+                            <option value="zh_TW">繁體中文</option>
+                            <option value="en_US">English</option>
+                        </select>
+                    </div>
+                    
+                    
+                    
+                    <div class="item" style="display: none;">
+                        <label class="c"><input type="checkbox" id="chkRemember" checked="checked">
+                            记住用户名</label>
+                    </div>
+                </div>
+
+                <div class="submit">
+                    <button name="action:login" type="submit" class="loginBtn">登  录</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="mod mod-footer">
+        <p><strong>
+            手机智能版
+            
+            
+            &nbsp;|&nbsp;
+            <a href="../index.jsp?nodetect=true">电脑版</a>
+        </strong></p>
+        <p><span class="copyright">版权所有：酒泉钢铁（集团）有限责任公司</span></p>
+    </div>
+
+
+</body></html>

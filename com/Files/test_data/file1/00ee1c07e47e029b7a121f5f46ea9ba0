@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <meta http-equiv="X-UA-Compatible" content="IE=11,IE=10,IE=9,IE=8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" /> 
+  <meta http-equiv="Cache-Control" content="no-siteapp" /> 
+  <title>CentOS 6下PPTP+L2TP/IPSec VPN一键安装脚本-王超博客</title> 
+  <link rel="dns-prefetch" href="//s.w.org" /> 
+  <link rel="alternate" type="application/rss+xml" title="王超博客 &raquo; CentOS 6下PPTP+L2TP/IPSec VPN一键安装脚本评论Feed" href="http://www.wangchao.info/841.html/feed" /> 
+  <script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.2.1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.2.1\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/www.wangchao.info\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.7.2"}};
+			!function(a,b,c){function d(a){var b,c,d,e,f=String.fromCharCode;if(!k||!k.fillText)return!1;switch(k.clearRect(0,0,j.width,j.height),k.textBaseline="top",k.font="600 32px Arial",a){case"flag":return k.fillText(f(55356,56826,55356,56819),0,0),!(j.toDataURL().length<3e3)&&(k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57331,65039,8205,55356,57096),0,0),b=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57331,55356,57096),0,0),c=j.toDataURL(),b!==c);case"emoji4":return k.fillText(f(55357,56425,55356,57341,8205,55357,56507),0,0),d=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55357,56425,55356,57341,55357,56507),0,0),e=j.toDataURL(),d!==e}return!1}function e(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g,h,i,j=b.createElement("canvas"),k=j.getContext&&j.getContext("2d");for(i=Array("flag","emoji4"),c.supports={everything:!0,everythingExceptFlag:!0},h=0;h<i.length;h++)c.supports[i[h]]=d(i[h]),c.supports.everything=c.supports.everything&&c.supports[i[h]],"flag"!==i[h]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[i[h]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script> 
+  <style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style> 
+  <link rel="stylesheet" id="main-css" href="http://www.wangchao.info/wp-content/themes/wangchao/style.css?ver=4.1" type="text/css" media="all" /> 
+  <link rel="stylesheet" id="codecolorer-css" href="http://www.wangchao.info/wp-content/plugins/codecolorer/codecolorer.css?ver=0.9.9" type="text/css" media="screen" /> 
+  <script type="text/javascript" src="http://www.wangchao.info/wp-content/themes/wangchao/js/jquery.js?ver=4.1"></script> 
+  <link rel="https://api.w.org/" href="http://www.wangchao.info/wp-json/" /> 
+  <link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.wangchao.info/xmlrpc.php?rsd" /> 
+  <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.wangchao.info/wp-includes/wlwmanifest.xml" /> 
+  <link rel="prev" title="VMware Pro 12.5.2官方版下载及激活密钥" href="http://www.wangchao.info/835.html" /> 
+  <link rel="next" title="论工信部封杀VPN" href="http://www.wangchao.info/856.html" /> 
+  <link rel="canonical" href="http://www.wangchao.info/841.html" /> 
+  <link rel="shortlink" href="http://www.wangchao.info/?p=841" /> 
+  <link rel="alternate" type="application/json+oembed" href="http://www.wangchao.info/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.wangchao.info%2F841.html" /> 
+  <link rel="alternate" type="text/xml+oembed" href="http://www.wangchao.info/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.wangchao.info%2F841.html&amp;format=xml" /> 
+  <style>a:hover, a:focus,.post-like.actived,.excerpt h2 a:hover,.user-welcome strong,.article-title a:hover,#comments b,.text-muted a:hover,.relates a:hover,.archives .item:hover h3,.linkcat h2,.sticky a:hover,.article-content a:hover,.nav li.current-menu-item > a, .nav li.current-menu-parent > a, .nav li.current_page_item > a, .nav li.current-posa,.article-meta a:hover{color:#379be9;}.logo a,.article-tags a,.search-form .btn,#bdcs .bdcs-search-form-submit,.widget_tags_inner a:hover:hover,.focusmo a:hover h4,.tagslist .tagname:hover,.pagination ul > li.next-page > a{background-color:#379be9;}.label-important,.badge-important{background-color:#379be9;}.label-important .label-arrow,.badge-important .label-arrow{border-left-color:#379be9;}.title strong{border-bottom-color:#379be9;}#submit{background: #379be9;border-right: 2px solid #379be9;border-bottom: 2px solid #379be9;}</style>
+  <meta name="keywords" content="PPTP,L2TP,IPSec,VPN,PPTP一键安装脚本,L2TP一键安装脚本,VPN搭建" /> 
+  <meta name="description" content="找了挺久才找到这两个一键安装脚本，这两个脚本可以同时安装pptp和L2TP/IPSec VPN。 一、 L2TP/IPSec vpn一键安装脚本 运行下面的命令" /> 
+  <link rel="shortcut icon" href="http://www.wangchao.info/favicon.ico" /> 
+  <!--[if lt IE 9]><script src="http://www.wangchao.info/wp-content/themes/wangchao/js/html5.js"></script><![endif]--> 
+ </head> 
+ <body class="post-template-default single single-post postid-841 single-format-standard search_not ui-c3"> 
+  <section class="container"> 
+   <header class="header"> 
+    <div class="logo">
+     <a href="http://www.wangchao.info" title="王超博客-前端开发_国外VPS_Web服务器搭建_个人博客_个人网站">王超博客</a>
+    </div> 
+    <ul class="nav">
+     <li id="menu-item-8" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-8"><a href="http://www.wangchao.info">首页</a></li> 
+     <li id="menu-item-844" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-844"><a href="http://www.wangchao.info/start">互联网创业</a></li> 
+     <li id="menu-item-845" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-845"><a href="http://www.wangchao.info/it">科技资讯</a></li> 
+     <li id="menu-item-34" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor menu-item-has-children menu-item-34"><a href="http://www.wangchao.info/server">服务器运维</a> 
+      <ul class="sub-menu"> 
+       <li id="menu-item-625" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-625"><a href="http://www.wangchao.info/server/vps">VPS</a></li> 
+       <li id="menu-item-624" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-624"><a href="http://www.wangchao.info/server/linux">Linux</a></li> 
+       <li id="menu-item-626" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-626"><a href="http://www.wangchao.info/server/windows">Windows</a></li> 
+      </ul> </li> 
+     <li id="menu-item-303" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-303"><a href="http://www.wangchao.info/web">Web开发</a> 
+      <ul class="sub-menu"> 
+       <li id="menu-item-29" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-29"><a href="http://www.wangchao.info/web/html">前端</a></li> 
+       <li id="menu-item-830" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-830"><a href="http://www.wangchao.info/web/php">PHP</a></li> 
+       <li id="menu-item-305" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-305"><a href="http://www.wangchao.info/web/asp">ASP</a></li> 
+       <li id="menu-item-28" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-28"><a href="http://www.wangchao.info/web/cms">CMS</a></li> 
+      </ul> </li> 
+     <li id="menu-item-627" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-627"><a href="http://www.wangchao.info/database">数据库</a> 
+      <ul class="sub-menu"> 
+       <li id="menu-item-628" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-628"><a href="http://www.wangchao.info/database/mysql">MySQL</a></li> 
+       <li id="menu-item-629" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-629"><a href="http://www.wangchao.info/database/sqlserver">SQL Server</a></li> 
+      </ul> </li> 
+     <li id="menu-item-21" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-21"><a href="http://www.wangchao.info/download">软件下载</a></li> 
+    </ul> 
+    <form method="get" class="search-form" action="http://www.wangchao.info/">
+     <input class="form-control" name="s" type="text" placeholder="输入关键字" value="" />
+     <input class="btn" type="submit" value="搜索" />
+    </form> 
+    <span class="glyphicon glyphicon-search m-search"></span> 
+    <div class="feeds"> 
+    </div> 
+    <div class="slinks"> 
+     <a href="/about" title="关于博主">关于博主</a>|
+     <a href="/contact" title="联系博主">联系博主</a> 
+    </div> 
+   </header> 
+   <div class="content-wrap"> 
+    <div class="content"> 
+     <header class="article-header"> 
+      <h1 class="article-title"><a href="http://www.wangchao.info/841.html">CentOS 6下PPTP+L2TP/IPSec VPN一键安装脚本</a></h1> 
+      <ul class="article-meta"> 
+       <li>wangchao 发布于 2017-01-31</li> 
+       <li>分类：<a href="http://www.wangchao.info/server/linux" rel="category tag">Linux</a></li> 
+       <li><span class="post-views">阅读(200)</span></li> 
+       <li>评论(0)</li> 
+       <li></li> 
+      </ul> 
+     </header> 
+     <div class="ads ads-content ads-post">
+      <script type="text/javascript">
+    /*640*60 创建于 2016/7/12*/
+    var cpro_id = "u2701042";
+</script> 
+      <script type="text/javascript" src="http://cpro.baidustatic.com/cpro/ui/c.js"></script>
+     </div> 
+     <article class="article-content"> 
+      <p>找了挺久才找到这两个一键安装脚本，这两个脚本可以同时安装pptp和L2TP/IPSec VPN。</p> 
+      <h2 id="一-l2tpipsec-vpn一键安装脚本">一、 L2TP/IPSec vpn一键安装脚本</h2> 
+      <p>运行下面的命令</p> 
+      <pre>wget --no-check-certificate https://raw.githubusercontent.com/teddysun/across/master/l2tp.sh
+chmod +x l2tp.sh
+./l2tp.sh</pre> 
+      <p>全默认回车就行，全自动安装，如果没有问题，那就成功安装了L2TP/IPSec</p> 
+      <h2 id="二pptp-vpn一键安装脚本">二、pptp vpn一键安装脚本</h2> 
+      <p>运行下面命令</p> 
+      <pre>wget http://mirrors.linuxeye.com/scripts/vpn_centos.sh
+chmod +x ./vpn_centos.sh
+./vpn_centos.sh</pre> 
+      <p>这里这个脚本我在CentOS 6中安装完全没问题。</p> 
+      <h2 id="三添加vpn登陆账号">三、添加vpn登陆账号</h2> 
+      <p>在/etc/ppp/chap-secrets里添加和删除vpn账号，比如我添加一个账号：</p> 
+      <pre>veaxen * 123 *</pre> 
+      <p>这样就可以使用veaxen这个账号进行登陆了，密码是123，可选用pptp登陆也可以选用用L2TP/IPSec登陆。第二中登陆方式可能还需要与共享秘钥(PSK)，这个可以在/etc/ipsec.secrets里增加或者修改。</p> 
+      <p class="post-copyright">未经允许不得转载：<a href="http://www.wangchao.info">王超博客</a> &raquo; <a href="http://www.wangchao.info/841.html">CentOS 6下PPTP+L2TP/IPSec VPN一键安装脚本</a></p> 
+     </article> 
+     <div class="article-social"> 
+      <a href="javascript:;" class="action action-like" data-pid="841" data-event="like"><i class="glyphicon glyphicon-thumbs-up"></i>赞 (<span>0</span>)</a> 
+     </div> 
+     <div class="action-share bdsharebuttonbox">
+       分享到：
+      <a class="bds_qzone" data-cmd="qzone"></a>
+      <a class="bds_tsina" data-cmd="tsina"></a>
+      <a class="bds_weixin" data-cmd="weixin"></a>
+      <a class="bds_tqq" data-cmd="tqq"></a>
+      <a class="bds_sqq" data-cmd="sqq"></a>
+      <a class="bds_bdhome" data-cmd="bdhome"></a>
+      <a class="bds_tqf" data-cmd="tqf"></a>
+      <a class="bds_renren" data-cmd="renren"></a>
+      <a class="bds_diandian" data-cmd="diandian"></a>
+      <a class="bds_youdao" data-cmd="youdao"></a>
+      <a class="bds_ty" data-cmd="ty"></a>
+      <a class="bds_kaixin001" data-cmd="kaixin001"></a>
+      <a class="bds_taobao" data-cmd="taobao"></a>
+      <a class="bds_douban" data-cmd="douban"></a>
+      <a class="bds_fbook" data-cmd="fbook"></a>
+      <a class="bds_twi" data-cmd="twi"></a>
+      <a class="bds_mail" data-cmd="mail"></a>
+      <a class="bds_copy" data-cmd="copy"></a>
+      <a class="bds_more" data-cmd="more">更多</a> (
+      <a class="bds_count" data-cmd="count"></a>) 
+     </div> 
+     <div class="article-tags">
+       标签：
+      <a href="http://www.wangchao.info/tag/l2tp" rel="tag">L2TP</a>
+      <a href="http://www.wangchao.info/tag/pptp" rel="tag">PPTP</a>
+      <a href="http://www.wangchao.info/tag/vpn" rel="tag">VPN</a>
+      <a href="http://www.wangchao.info/tag/kxsw" rel="tag">科学上网</a> 
+     </div> 
+     <nav class="article-nav"> 
+      <span class="article-nav-prev">上一篇<br /><a href="http://www.wangchao.info/835.html" rel="prev">VMware Pro 12.5.2官方版下载及激活密钥</a></span> 
+      <span class="article-nav-next">下一篇<br /><a href="http://www.wangchao.info/856.html" rel="next">论工信部封杀VPN</a></span> 
+     </nav> 
+     <div class="relates relates-model-thumb">
+      <h3 class="title"><strong>相关推荐</strong></h3>
+      <ul>
+       <li><a target="_blank" href="http://www.wangchao.info/860.html"><img data-original="http://www.wangchao.info/wp-content/uploads/2017/01/82_1204_e7e0f7a9054b893-150x150.jpg" class="thumb" />工信部回应VPN新规：办公用途不受影响</a></li>
+       <li><a target="_blank" href="http://www.wangchao.info/856.html"><img data-original="http://www.wangchao.info/wp-content/uploads/2017/01/4570_1-150x150.jpg" class="thumb" />论工信部封杀VPN</a></li>
+       <li><a target="_blank" href="http://www.wangchao.info/748.html"><img data-original="http://www.wangchao.info/wp-content/uploads/2016/09/ss1-150x150.jpg" class="thumb" />Shadowsocks（SS）科学上网服务器搭建及多用户配置使用</a></li>
+       <li><a target="_blank" href="http://www.wangchao.info/240.html"><img data-original="http://www.wangchao.info/wp-content/uploads/2014/12/fuwuqi-150x150.jpg" class="thumb" />Windows Server 2003服务器VPN搭建完美图文教程</a></li>
+       <li><a target="_blank" href="http://www.wangchao.info/797.html"><span><img data-original="http://www.wangchao.info/wp-content/themes/wangchao/images/thumbnail.png" class="thumb" /></span>Nginx设置301重定向的方法</a></li>
+       <li><a target="_blank" href="http://www.wangchao.info/746.html"><span><img data-original="http://www.wangchao.info/wp-content/themes/wangchao/images/thumbnail.png" class="thumb" /></span>完美解决nginx No input file specified.</a></li>
+       <li><a target="_blank" href="http://www.wangchao.info/744.html"><span><img data-original="http://www.wangchao.info/wp-content/themes/wangchao/images/thumbnail.png" class="thumb" /></span>DirectAdmin新建用户提示无法指定用户配额的解决方法</a></li>
+       <li><a target="_blank" href="http://www.wangchao.info/732.html"><img data-original="http://www.wangchao.info/wp-content/uploads/2016/08/DirectAdmin_install-150x150.png" class="thumb" />DirectAdmin 1.44.3开心版安装记录</a></li>
+      </ul>
+     </div> 
+     <h3 class="title" id="comments"> 
+      <div class="text-muted pull-right"> 
+      </div> <strong>评论 <b> 0 </b></strong> </h3> 
+     <div id="respond" class="no_webshot"> 
+      <form action="http://www.wangchao.info/wp-comments-post.php" method="post" id="commentform"> 
+       <div class="comt-title"> 
+        <div class="comt-avatar"> 
+         <img data-original="https://secure.gravatar.com/avatar/" class="avatar avatar-100" height="100" width="100" /> 
+        </div> 
+        <div class="comt-author"> 
+        </div> 
+        <a id="cancel-comment-reply-link" href="javascript:;">取消</a> 
+       </div> 
+       <div class="comt"> 
+        <div class="comt-box"> 
+         <textarea placeholder="你的评论可以一针见血" class="input-block-level comt-area" name="comment" id="comment" cols="100%" rows="3" tabindex="1" onkeydown="if(event.ctrlKey&amp;&amp;event.keyCode==13){document.getElementById('submit').click();return false};"></textarea> 
+         <div class="comt-ctrl"> 
+          <div class="comt-tips">
+           <input type="hidden" name="comment_post_ID" value="841" id="comment_post_ID" /> 
+           <input type="hidden" name="comment_parent" id="comment_parent" value="0" /> 
+           <label for="comment_mail_notify" class="checkbox inline hide" style="padding-top:0"><input type="checkbox" name="comment_mail_notify" id="comment_mail_notify" value="comment_mail_notify" checked="checked" />有人回复时邮件通知我</label>
+          </div> 
+          <button type="submit" name="submit" id="submit" tabindex="5"><i class="icon-ok-circle icon-white icon12"></i> 提交评论</button> 
+          <!-- <span data-type="comment-insert-smilie" class="muted comt-smilie"><i class="icon-thumbs-up icon12"></i> 表情</span> --> 
+         </div> 
+        </div> 
+        <div class="comt-comterinfo" id="comment-author-info"> 
+         <ul> 
+          <li class="form-inline"><label class="hide" for="author">昵称</label><input class="ipt" type="text" name="author" id="author" value="" tabindex="2" placeholder="昵称" /><span class="text-muted">昵称 (必填)</span></li> 
+          <li class="form-inline"><label class="hide" for="email">邮箱</label><input class="ipt" type="text" name="email" id="email" value="" tabindex="3" placeholder="邮箱" /><span class="text-muted">邮箱 (必填)</span></li> 
+          <li class="form-inline"><label class="hide" for="url">网址</label><input class="ipt" type="text" name="url" id="url" value="" tabindex="4" placeholder="网址" /><span class="text-muted">网址</span></li> 
+         </ul> 
+        </div> 
+       </div> 
+      </form> 
+     </div> 
+    </div> 
+   </div> 
+   <aside class="sidebar"> 
+    <div class="widget widget_searchbox">
+     <h3 class="title"><strong>搜索</strong></h3>
+     <form method="get" class="search-form" action="http://www.wangchao.info/">
+      <input class="form-control" name="s" type="text" placeholder="输入关键字" value="" />
+      <input class="btn" type="submit" value="搜索" />
+     </form>
+    </div>
+    <div class="widget widget_ads">
+     <div class="widget_ads_inner">
+      <a href="http://www.wangchao.info/ads/Go_linode.html" target="_blank"><img src="http://www.wangchao.info/wp-content/uploads/2016/07/300x250.jpg" /></a>
+     </div>
+    </div>
+    <div class="widget widget_postlist">
+     <h3 class="title"><strong>随机推荐</strong></h3>
+     <ul class="items-01"> 
+      <li><a target="_blank" href="http://www.wangchao.info/504.html"><span class="thumbnail"><img data-original="http://www.wangchao.info/wp-content/uploads/2015/01/html-150x150.png" class="thumb" /></span><span class="text">button onClick 实现页面跳转</span><span class="text-muted post-views">阅读(419)</span></a></li> 
+      <li><a target="_blank" href="http://www.wangchao.info/453.html"><span class="thumbnail"><img data-original="http://www.wangchao.info/wp-content/uploads/2015/05/weijibaike-150x150.png" class="thumb" /></span><span class="text">中文维基百科再次被屏蔽</span><span class="text-muted post-views">阅读(632)</span></a></li> 
+      <li><a target="_blank" href="http://www.wangchao.info/601.html"><span class="thumbnail"><img data-original="http://www.wangchao.info/wp-content/uploads/2016/01/cy-150x150.jpg" class="thumb" /></span><span class="text">BAT为我们制造了什么样的创业机会？</span><span class="text-muted post-views">阅读(381)</span></a></li> 
+      <li><a target="_blank" href="http://www.wangchao.info/579.html"><span class="thumbnail"><img data-original="http://www.wangchao.info/wp-content/uploads/2015/12/1630-150x150.jpg" class="thumb" /></span><span class="text">恐慌：微商造就了“伪创业”迷局</span><span class="text-muted post-views">阅读(271)</span></a></li> 
+      <li><a target="_blank" href="http://www.wangchao.info/800.html"><span class="thumbnail"><img data-original="http://www.wangchao.info/wp-content/uploads/2017/01/1-150x150.jpg" class="thumb" /></span><span class="text">Linode KVM VPS安装Windows系统方法</span><span class="text-muted post-views">阅读(460)</span></a></li> 
+      <li><a target="_blank" href="http://www.wangchao.info/640.html"><span class="thumbnail"><img data-original="http://www.wangchao.info/wp-content/uploads/2016/07/201607087809_924-150x150.jpg" class="thumb" /></span><span class="text">网站博客广告盈利的新思路</span><span class="text-muted post-views">阅读(152)</span></a></li> 
+     </ul>
+    </div>
+    <div class="widget widget_ads">
+     <div class="widget_ads_inner">
+      <script type="text/javascript">
+    /*300*250 创建于 2016/7/12*/
+    var cpro_id = "u2701037";
+</script> 
+      <script type="text/javascript" src="http://cpro.baidustatic.com/cpro/ui/c.js"></script>
+     </div>
+    </div>
+    <div class="widget widget_tags">
+     <h3 class="title"><strong>标签云</strong></h3>
+     <ul class="widget_tags_inner">
+      <li><a title="33个话题" href="http://www.wangchao.info/tag/server">服务器</a></li>
+      <li><a title="33个话题" href="http://www.wangchao.info/tag/cloudhost">云服务器</a></li>
+      <li><a title="25个话题" href="http://www.wangchao.info/tag/linux">Linux</a></li>
+      <li><a title="16个话题" href="http://www.wangchao.info/tag/cms">CMS</a></li>
+      <li><a title="11个话题" href="http://www.wangchao.info/tag/wordpress">WordPress</a></li>
+      <li><a title="11个话题" href="http://www.wangchao.info/tag/vps">VPS</a></li>
+      <li><a title="10个话题" href="http://www.wangchao.info/tag/start">创业</a></li>
+      <li><a title="7个话题" href="http://www.wangchao.info/tag/weishang">微商</a></li>
+      <li><a title="7个话题" href="http://www.wangchao.info/tag/nginx">Nginx</a></li>
+      <li><a title="6个话题" href="http://www.wangchao.info/tag/html">前端</a></li>
+      <li><a title="6个话题" href="http://www.wangchao.info/tag/marketing">营销</a></li>
+      <li><a title="5个话题" href="http://www.wangchao.info/tag/google">Google</a></li>
+      <li><a title="5个话题" href="http://www.wangchao.info/tag/sousuo">搜索引擎</a></li>
+      <li><a title="5个话题" href="http://www.wangchao.info/tag/linode">Linode</a></li>
+      <li><a title="5个话题" href="http://www.wangchao.info/tag/vpn">VPN</a></li>
+      <li><a title="5个话题" href="http://www.wangchao.info/tag/lnmp">LNMP</a></li>
+      <li><a title="5个话题" href="http://www.wangchao.info/tag/baidu">百度</a></li>
+      <li><a title="5个话题" href="http://www.wangchao.info/tag/yy">YY</a></li>
+      <li><a title="4个话题" href="http://www.wangchao.info/tag/domain">域名</a></li>
+      <li><a title="4个话题" href="http://www.wangchao.info/tag/php">PHP</a></li>
+      <li><a title="4个话题" href="http://www.wangchao.info/tag/database">数据库</a></li>
+      <li><a title="4个话题" href="http://www.wangchao.info/tag/seo">SEO</a></li>
+      <li><a title="4个话题" href="http://www.wangchao.info/tag/operate">运营</a></li>
+      <li><a title="4个话题" href="http://www.wangchao.info/tag/wangzhuan">网赚</a></li>
+     </ul>
+    </div>
+   </aside>
+   <footer class="footer">
+     &copy; 2017 
+    <a href="http://www.wangchao.info">王超博客</a> &nbsp; 蒙ICP备11004305号-4 &nbsp; 本站采用 
+    <a href="http://www.wangchao.info/tag/wordpress">WordPress</a> 系统搭建 &nbsp; 
+    <a href="http://www.wangchao.info/sitemap.xml">网站地图</a> 
+    <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1253778556'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1253778556' type='text/javascript'%3E%3C/script%3E"));</script>
+   </footer> 
+  </section> 
+  <script>
+window.jui = {
+	uri: 'http://www.wangchao.info/wp-content/themes/wangchao',
+	roll: '1 2',
+	ajaxpager: '0'
+}
+</script> 
+  <script type="text/javascript" src="http://www.wangchao.info/wp-content/themes/wangchao/js/bootstrap.js?ver=4.1"></script> 
+  <script type="text/javascript" src="http://www.wangchao.info/wp-content/themes/wangchao/js/custom.js?ver=4.1"></script> 
+  <script type="text/javascript" src="http://www.wangchao.info/wp-includes/js/wp-embed.min.js?ver=4.7.2"></script>  
+ </body>
+</html>

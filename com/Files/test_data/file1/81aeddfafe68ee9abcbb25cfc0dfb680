@@ -1,0 +1,157 @@
+<!DOCTYPE html><html><head>
+	<title></title>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache">
+	<link rel="stylesheet" type="text/css" href="./styles/base.css">
+	<style type="text/css">
+		.m-items {
+			width: 96%;
+			margin: 0 auto;
+		}
+		img.top_img{
+			width:100%;
+			display: block;
+		}
+		.m-btn{
+			padding:.2em 0;
+		}
+		.m-btn span{
+			width:49%;
+			display: block;
+			background-color:#ED6D00;
+			color:#fff;
+			line-height: 2em;
+			font-size: .32em;
+			text-align:center;
+		}
+		.m-btn span.discount{
+			float:left;
+		}
+		.m-btn span.convenient{
+			float:right;
+		}
+		.m-btn span img{
+			width:1.2em;
+			height:1.2em;
+			display:inline-block;
+			vertical-align:text-top;
+		}
+		.m-desc{
+			background-color:#fff;
+			min-height:100px;
+			padding-bottom:.35em;
+			padding-top:.35em;
+		}
+		.m-desc > * {
+			width: 90%;
+		}
+		.m-desc table {
+			width:90%!important;
+			margin:0 auto;
+		}
+		.m-desc img{
+			width:90%!important;
+			height:auto!important;
+		}
+		.m-desc table *{
+			font-size: .55em;
+		}
+		.m-desc h1,.m-desc h2,.m-desc h3,.m-desc h4,.m-desc h5{
+			font-weight: bold;
+			font-size: .28em;
+			width:90%;
+			line-height: 1em;
+			padding: 1.2em 0 0.5em 0;
+			border-bottom:1px solid #ccc;
+			margin:0 0 .5em 5%;
+		}
+		.m-desc p{
+			font-size:.17em;
+			color:#999;
+			width:90%;
+			margin:0 auto;
+			line-height:1.3em;
+		}
+		.m-desc img{
+			max-width: 100%;
+		}
+		.m-order{
+			width:100%;
+			background-color:#ED6D00;
+			color:#fff;
+			text-align:center;
+			margin:.7em 0 1em 0;
+			line-height: 2em;
+			font-size: .32em;
+		}
+	</style>
+</head>
+<body>
+	<header class="clearfix header-bg">
+		<div>
+			<div></div>
+		</div>
+		<div>
+			<img src="./images/logo.png" class="logo">
+			<em class="login" id="goLogin"></em>
+		</div>
+	</header>
+	
+	<div class="m-items clearfix">
+		<img class="top_img" src="images/2.jpg">
+		<!--
+        <div class="m-btn clearfix">
+        	<span class="discount"><img src="images/pig.png" />&nbsp;&nbsp;最优惠</span>
+            <span class="convenient"><img src="images/mini-heart.png" />&nbsp;&nbsp;最省心</span>
+        </div>
+		-->
+        <div class="m-desc" id="content">
+        </div>
+        <div class="m-order" id="placeOrder">我要下单</div>
+	</div>
+	
+	<footer>
+		<p><img src="./images/link.png" class="link"></p>
+		<div class="clearfix">
+			<div></div>
+			<div></div>
+			<p>Copyright&nbsp;©&nbsp;2014-2025&nbsp;安能物流.&nbsp;&nbsp;<br>All rights reserved.&nbsp;&nbsp;沪ICP备10212032号</p>
+		</div>
+	</footer>
+	<script type="text/javascript" src="./scripts/jquery-1.7.1.min.js"></script>
+	<script type="text/javascript" src="./scripts/crossDomainAjax.js"></script>
+	<script type="text/javascript" src="./scripts/TouchSlide.js"></script>
+	<script type="text/javascript" src="./scripts/json.js"></script>
+	<script type="text/javascript" src="./scripts/repair.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			function getQueryString(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+				var r = window.location.search.substr(1).match(reg);
+				if (r != null) return unescape(r[2]); return null;
+			}
+			$.corssDomain(
+				$.extend({
+					url:'/HtmlHttp/htmlHttpService',
+					data:{params:'{"htmlId":"'+getQueryString('id')+'"}'},
+					dataType:'JSON',
+					success:function(d){
+						$('#content').html(d.htmlContent);
+					}
+				},
+				proxyConfig)
+			);
+			$('#placeOrder').click(function(){
+				location.href='/place-order.html';
+			});
+		});
+	</script>
+
+
+</body></html>

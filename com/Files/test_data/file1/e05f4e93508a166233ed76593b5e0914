@@ -1,0 +1,405 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>嘉立创ERP系统-用户端登陆 </title>
+<link href="/css/login.css?v=87" rel="stylesheet">
+<script src="/system/js/md5.js" type="text/javascript"></script>
+<script src="/client/jQuery/jquery-1.3.2.min.js?v=2" type="text/javascript"></script>
+<script src="/system/js/function.js?v=81" type="text/javascript"></script>
+
+<script type="text/javascript">
+	
+	function plugin0()
+	{
+	    return document.getElementById('plugin0');
+	}
+	plugin = plugin0;
+	function addEvent(obj, name, func)
+	{
+	    if (obj.attachEvent) {
+	        obj.attachEvent("on"+name, func);
+	    } else {
+	        obj.addEventListener(name, func, false); 
+	    }
+	}
+	
+	function setRemPasswordValue(obj){
+		var his_rem_passowrd_flag = document.getElementById("his_rem_passowrd_flag").value;
+		if(!obj.checked && his_rem_passowrd_flag =='yes' ){	
+			document.getElementById("oldPassword").value = "";
+			document.getElementById("his_rem_passowrd_flag").value = "";
+		}
+	}
+	function clearHisRemPassdowrFlag(){
+		document.getElementById("his_rem_passowrd_flag").value = "";
+	}
+	function validateUser(){
+		
+		if(validateData()){
+			
+			loginForm.target='fram_work_Main';
+			
+			var remPasswordFlag = document.getElementById("remPasswordFlag");
+			var his_rem_passowrd_flag = document.getElementById("his_rem_passowrd_flag").value;
+			
+			var oldPassword = loginForm.oldPassword.value ;
+			
+			if(!remPasswordFlag.checked || his_rem_passowrd_flag == ''){
+				oldPassword = hex_md5(oldPassword);
+			}
+			
+			loginForm.password.value = oldPassword ;
+
+			openMainWindow(loginForm.target);
+			
+			// 截屏软件是否有效
+			if(plugin().valid){
+
+				 var iRet = plugin().IsCanLogin();
+				 $("#monitorStatus").val(iRet);
+            }
+	
+			loginForm.submit();
+		}
+	}
+	function validateData(){
+
+		if(document.getElementById("account_id").value==''){
+			alert('请输入登录帐号');
+			return false;
+		}
+
+		if(document.getElementById("old_password_id").value==''){
+			alert('请输入密码');
+			return false;
+		}
+
+		if(document.getElementById("j_code").value==''){
+			alert('请输入验证码');
+			return false;
+		}
+		
+		return true;
+	}
+    function openMainWindow(strTarget){
+    	
+        var iWidth =1024-10,iHeight=768-30;
+		if (window.screen) {
+			iWidth = screen.availWidth-10;
+			iHeight = screen.availHeight-30;
+		}
+
+        var strFeatures = 'top=0,left=0,height='+iHeight+',width='+iWidth+',menubar=no,status=yes,scrollbars=no,resizable=yes';
+        var objWin= window.open('',strTarget,strFeatures);
+       	objWin.focus();
+        if(objWin != self){
+             CloseWin();
+        }
+    }
+	function CloseWin() {
+
+		var ua=navigator.userAgent;
+		var ie=navigator.appName=="Microsoft Internet Explorer"?true:false;
+		
+		if(ie){
+		    var IEversion=parseFloat(ua.substring(ua.indexOf("MSIE ")+5,ua.indexOf(";",ua.indexOf("MSIE "))));
+		 	if(IEversion< 5.5) {
+			    closes.Click();
+			} else {
+			    window.opener =null;
+			    window.close();
+		    }
+		} else {
+			window.close();
+		}
+	}
+	function tips(){
+		var isLoginError= 'null';
+		if('yes'== isLoginError){
+			alert('用户名或者密码错误，请重新输入');
+			document.getElementById("old_password_id").value="";
+			document.getElementById("old_password_id").select();
+			return ;
+		}
+		var isBinCpuError= 'null';
+		if('yes'== isBinCpuError){
+			alert('非法登录');
+			document.getElementById("old_password_id").value="";
+			document.getElementById("old_password_id").select();
+			return ;
+		}
+		var isBinMacError= 'null';
+		if('yes'== isBinMacError){
+			alert('非法登录');
+			document.getElementById("old_password_id").value="";
+			document.getElementById("old_password_id").select();
+			return ;
+		}
+		var ismonitorStatusError= 'null';
+		if('yes'== ismonitorStatusError){
+			alert('您必须开启截屏软件客户端程序后，才能登录系统。');
+			document.getElementById("old_password_id").value="";
+			document.getElementById("old_password_id").select();
+			return ;
+		}
+		var isForbidden= 'null';
+		if('yes'==isForbidden){
+			alert('该帐号尚未开通');
+			return ;
+		}
+		var isBadCode='null';
+		if('badcode'==isBadCode){
+			alert('验证码错误');
+			return ;
+		}	
+	}
+	function  resetValue(){
+		document.getElementById("old_password_id").value="";
+		document.getElementById("account_id").value="";
+	}
+	function document.onkeydown(){
+
+		if (event.keyCode == 13){
+			
+			validateUser();
+		}
+	}
+	
+	// 初始化
+	$(function(){
+
+		// 窗口改变事件
+		$(window).resize(adjustWindow);
+		
+		// 调整登录框位置
+		var winHeight = getInnerSize().height, divHeight = $(".erp_dlzt_nr").height();
+		
+		$(".erp_dlzt_nr").css("padding-top", ((winHeight - divHeight) / 2) + "px");
+	});
+	
+	// 调整窗口
+	function adjustWindow(){
+		
+		if($("#macWrap:visible").length == 1){
+
+			// 调整遮罩层的高宽
+			var macMaskDiv = $("#macMaskDiv");
+			macMaskDiv.height($(document).height());
+			macMaskDiv.width($("#macWrap").width());
+
+			// 调整内容层的边距
+			var macMainDiv = $("#macMainDiv");
+			var vheight =  300 ;
+			
+			macMainDiv.get(0).style.top = vheight + "px";
+			macMainDiv.get(0).style.left = (macMaskDiv.width() / 2 - macMainDiv.width() / 2) + "px";
+		}
+	}
+	
+	// 调整版本更新窗口
+	function adjustWindowBrowser(){
+		
+		if($("#browserPluginDiv:visible").length == 1){
+
+			// 调整遮罩层的高宽
+			var macMaskDiv = $("#browser_div");
+			macMaskDiv.height($(document).height());
+			macMaskDiv.width($("#browserPluginDiv").width());
+
+			// 调整内容层的边距
+			var macMainDiv = $("#browser_plugin");
+			var vheight =  32 ;
+			
+			macMainDiv.get(0).style.top = vheight + "%";
+			macMainDiv.get(0).style.left = (macMaskDiv.width() / 2 - macMainDiv.width() / 2) + "px";
+		}
+	}
+	
+	// 嘉立创浏览器插件
+	var jclplugin = null;
+	
+	function pluginLoaded() {
+
+    	jclplugin = document.getElementById('jlcplugin');
+    	
+		if(jclplugin){
+			
+			var challenge = "10989213y428zc";
+			
+        	var macAddrList = jclplugin.getMacAddressIdentifiers(challenge);
+			
+			$("#macAddress").val(macAddrList.join(";"));
+			
+			// 检查版本更新
+			var nowVersion = jclplugin.version;
+			
+			var newVersion = document.getElementById("browserVersion").value; //获取当前最新版本号
+			
+			if(compareVersion(nowVersion, newVersion) < 0){
+				
+            	$("#versionSpan").html("最新版 V"+newVersion+"，请及时升级！");
+            	$("#browser_Version").html("V"+newVersion);
+            	$("#browserPluginDiv").show();
+            	adjustWindowBrowser();
+            }
+		}
+    }
+	
+	// 比较插件版本号
+    function compareVersion(ver1, ver2){
+    	var verNums1 = ver1.split(".");
+    	var verNums2 = ver2.split(".");
+    	for(var i=0;i<verNums1.length;i++){
+    		var num1 = parseInt(verNums1[i]);
+    		var num2 = parseInt(verNums2[i]);
+    		if(num1 < num2){
+    			return -1;
+    		}else if(num1 > num2){
+    			return 1;
+    		}
+    	}
+    	return 0;
+    }
+	
+	// 获取本机网卡地址
+	function obtailMacAddress(){
+		
+		if(jclplugin){
+			
+			$("#macWrap").show();
+			
+			adjustWindow();
+			
+			var macAddrList = jclplugin.getMacAddress();
+			
+			$("#macListDiv").empty();
+			
+			$.each(macAddrList, function(i, v){
+				
+				$("#macListDiv").append("<p>网卡地址" + (i + 1) + "：<a>" + v + "</a></p>");
+			});
+		}
+		else{
+			
+			alert("请先下载并安装“嘉立创浏览器插件”后刷新页面再试");
+		}
+	}
+	function obtailMacAddressCopy(){
+		
+		var macAddrList = jclplugin.getMacAddress();
+		
+		copyToClipboard(macAddrList.join(";"));
+		
+		alert("已成功复制到剪贴板");
+	}
+	function obtailMacAddressClose(){
+		
+		$("#macWrap").hide();
+	}
+	
+	//关闭
+	function closeDiv(){
+		
+		$("#browserPluginDiv").hide();
+	}
+
+</script>
+</head>
+
+<body onload="tips()">
+<object id="plugin0" type="application/x-jlcmonitorplugin" width="0" height="0">
+    <param name="onload" value="pluginLoaded">
+</object>
+<form name="loginForm" method="post" action="/loginAction.action">
+	<input type="hidden" name="struts.token.name" value="token">
+<input type="hidden" name="token" value="BUBRB1KFWEYM28R0NAKH13XPPN4RIPQJ">
+	<input type="hidden" name="password">
+ 	
+    <input type="hidden" id="macAddress" name="macAddress">
+    <input type="hidden" name="monitorStatus" id="monitorStatus">
+    <input type="hidden" id="his_rem_passowrd_flag" value="">
+    
+    <input type="hidden" id="browserVersion" value="1.0.0.0">
+	
+	<div class="erp_dlzt">
+		<div class="erp_dlzt_nr">
+	    	<div class="erp_dlzt_nr1"><img src="/component/images/erp_dlbt.jpg"></div>
+	        <div class="erp_dlzt_nr2">
+	        	<div class="erp_dlzt_nr2left">
+	            	<ul>
+	                	<li>
+	                		<label class="erp_dlzt_nr2left1"><img src="/component/images/erp_dltb.gif"></label>
+	                		<div class="erp_dlzt_nr2left2">
+	                			<input type="text" id="account_id" name="account" value="">
+	                		</div>
+	                	</li>
+	                    <li>
+	                    	<label class="erp_dlzt_nr2left1"><img src="/component/images/erp_dltb1.gif"></label>
+	                    	<div class="erp_dlzt_nr2left2">
+	                    		<input type="password" id="old_password_id" name="oldPassword" value="" onchange="clearHisRemPassdowrFlag();">
+	                    	</div>
+	                    </li>
+	                    <li style="margin-bottom:10px;">
+	                    	<label class="erp_dlzt_label2">验证码:</label>
+	                    	<div class="erp_dlzt_nr2left3">
+	                    		<input type="text" id="j_code" name="j_code" maxlength="4">
+	                    	</div>
+	                    	<div class="erp_dlzt-labelimg">
+	                    		<img border="1" src="/ImageCode?timeStamp=1491036256777" alt="验证码" align="top" width="60" hspace="0" height="25">
+	                    	</div>
+	                    </li>	
+	                    <li style="margin-bottom:0px;">
+	                    	<input type="checkbox" id="remPasswordFlag" name="remPasswordFlag" value="yes" class="erp_dlzt_nr2left4" onclick="setRemPasswordValue(this)">记住密码
+	                    </li>
+	                </ul>
+	                <div class="erp_dlzt_nr2left5">
+	                	<input type="button" value="登 录" onclick="validateUser();">
+	                	<input type="button" value="重 置" onclick="resetValue();">
+	                </div>
+	            </div>
+	            <div class="erp_dlzt_nr2right">
+	            	<dl>
+	                	<dt>绑定电脑用户登录说明（其他用户不用看）</dt>
+	                    <dd>1、如是绑定电脑的用户，请下载并安装“嘉立创浏览器插件”。<a href="http://www.sz-jlc.com/download/jlc_plugin/JlcPluginSetup.exe">点此下载</a><span id="versionSpan" style="color: red; margin-left: 10px; font-weight: bold;"></span></dd>
+						<dd>2、安装了“嘉立创浏览器插件”之后，请点击此按钮：<a href="javascript:obtailMacAddress();">获取本机网卡地址</a>，并将获取到的网卡地址提交给系统管理员</dd>
+						<dd>3、系统管理员设置后，即可正常登录</dd>
+	                </dl>
+	            </div>
+	            <div class="clear"></div>
+	        </div>
+	        <div class="erp_dlzt_nr3">
+	        	<input type="button" onclick="window.location.href='/sys_admin.jsp';" style="cursor: pointer;">
+	        	Copyright 版权所有：深圳嘉立创科技发展有限公司
+	       	</div>
+	    </div>
+	</div>
+
+</form>
+
+<div id="macWrap" style="display: none; width: 100%;">
+	<div id="macMaskDiv" style="z-index: 99999; position: absolute; filter: progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=25,finishOpacity=75);BACKGROUND: #777; WIDTH: 100%; HEIGHT: 100%; TOP: 0px; LEFT: 0px; opacity: 0.6;"></div>
+	<div id="macMainDiv" style="position: absolute; z-index: 999999;" class="erp_dltcck">
+		<div class="erp_dltcck_bt">本机网卡地址：</div>
+	    <div id="macListDiv" class="erp_dltcck_nr"></div>
+	    <div class="erp_dltcck_an"><input type="button" class="erp_dltcck_an1" value="复制到剪贴板" onclick="obtailMacAddressCopy();">
+	    	<input type="button" class="erp_dltcck_an2" value="关 闭" onclick="obtailMacAddressClose();">
+	    </div>
+	</div>
+</div>
+
+<div id="browserPluginDiv" style="display: none; width: 100%;">
+	<!-- 遮罩层 -->
+	<div id="browser_div" style="z-index: 1000; position: absolute; filter: progid:DXImageTransform.Microsoft.Alpha(style=0, opacity=25, finishOpacity=75); BACKGROUND: #777; WIDTH: 99.9%; HEIGHT:700px; TOP: 0px; LEFT: 0px; opacity: 0.6;"></div>
+	<div id="browser_plugin" class="bbsj_zt" style="background-color:white; z-index:9999; position: absolute; top:100px;">
+		<div class="bbsj_zt1"><a href="#" onclick="closeDiv();"><img src="/images/bbsj_t2.gif"></a></div>
+	    <div class="bbsj_zt2">
+	    	<p style="color:#f00; font-size:16px;">软件升级提示：</p>
+	        <p>您的嘉立创浏览器插件版本过低，请升级到&nbsp;<span id="browser_Version"></span>版本&nbsp;&nbsp;<a href="http://www.sz-jlc.com/download/jlc_plugin/JlcPluginSetup.exe">点击下载升级</a></p>
+	    </div>
+	</div>
+</div>
+
+<object id="jlcplugin" type="application/x-jlcplugin" width="0" height="0">
+    <param name="onload" value="pluginLoaded">
+</object>
+
+
+
+</body></html>

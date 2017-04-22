@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <title>百度云 网盘-苍井空色欲迷墙的分享资源</title> 
+  <meta name="description" content="百度云 网盘-苍井空色欲迷墙的分享-网盘盒子分享" /> 
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+  <link href="/css/common.css?_v=1.102" rel="stylesheet" /> 
+  <meta name="viewport" content="user-scalable=yes, initial-scale=1.0, width=device-width user-scalable=no" /> 
+  <script src="/js/jquery-1.11.1.min.js"></script> 
+  <link rel="icon" href="/image/favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="/image/favicon.ico" type="image/x-icon" />
+ </head> 
+ <body> 
+  <div class="main"> 
+   <!-- header --> 
+   <div class="header"> 
+    <div style="font-size: 42px;font-weight:bold; color: #278c03;width: 50%;">
+      网盘盒子分享 
+    </div> 
+    <div class="menu-div "> 
+     <ul id="menu" class="menu"> 
+      <li><a href="/index.jsp">首页</a></li> 
+      <li><a href="/ziyuan.jsp">全部资源</a></li> 
+      <!-- 
+				<li><a href="/index.jsp">首页</a></li>
+				<li><a href="/ziyuan.jsp?type=1">网盘资源</a></li>
+				<li><a href="/bt.jsp?type=2">BT资源</a></li>
+				<li>
+					<a href="/chat.jsp">讨论区</a>
+				</li>
+			
+				<li>
+					<a href="zhuitu.jsp">阅焚</a>
+				</li>
+				<li><a href="/pan">搜索</a></li>
+				<li>
+					<a href="mingxing.jsp">明星</a>
+				</li>
+				 --> 
+      <li><a class="login_a" href="javascript:">登录/注册</a></li> 
+      <!-- 
+			<li>
+				<div class="bdsharebuttonbox" style="width: 50px;float: right;">
+					<a href="#" class="bds_weixin" data-cmd="weixin" title="点击查看当前网页的二维码" 
+					style="display: inline;margin: 0px;background-image: url(/image/er.png); background-position:0px 0px;background-size:15px 15px;  " 
+						></a>
+				</div>
+			</li>
+			 --> 
+      <li style="float: right;"><a href="/feedback.jsp">&gt;&gt;反馈&lt;&lt;</a></li> 
+     </ul> 
+     <!-- 
+		<div class="bdsharebuttonbox" style="width: 50px;float: left;">
+			<a href="#" class="bds_more" data-cmd="more"></a> <a href="#"
+				class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+		</div>
+		 --> 
+    </div> 
+    <input type="hidden" id="loginUserId" value="" /> 
+   </div> 
+   <div id="mask"></div> 
+   <script> 
+$("#mask").on('click',function( ){
+	$(".biz-window").hide();
+	$("#mask").hide();
+});
+function mask(){
+	$("#mask").css("height",$(document).height()); 
+	$("#mask").show();
+}
+function unmask(){
+	$("#mask").hide();
+}
+</script> 
+   <!-- 留言弹出 --> 
+   <div id="login_window" class="window biz-window"> 
+    <!-- 
+			<ul id="qq-login"  class="box menu" style="float: right;  " >
+				<li>
+					<a id="basic_menu"  href="javascript:">使用QQ快捷登录</a>
+				</li>
+			</ul>
+			
+			<div id="qq-login-div" style="width: 100%;text-align: center;padding: 20px;" class="box">
+				<a href="https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101171952&redirect_uri=http://www.webhezi.com/qqcallback&state=test">
+					<img alt="QQ登录" src="/image/qq-login.jpg" style="width: 15%;"/>
+				</a>
+			</div>
+			 --> 
+    <ul id="basic-login" class="box menu" style="float: right;  "> 
+     <li> <a href="javascript:">普通登录</a> </li> 
+    </ul> 
+    <div id="basic-login-div" class="box settings"> 
+     <div class="setting"> 
+      <span class="title" style="">我的登录名:</span> 
+      <div class="detail"> 
+       <input id="name" type="text" value="" /> 
+      </div> 
+     </div> 
+     <div class="setting"> 
+      <span class="title" style="">密码:</span> 
+      <div class="detail"> 
+       <input id="psd" type="password" /> 
+      </div> 
+     </div> 
+     <div class="btns" style="float: right;width: auto;padding: 20px 10px 10px 0px;"> 
+      <a id="login-commit" class="btn" href="#">登录</a> 
+     </div> 
+    </div> 
+   </div> 
+   <script>
+//点击留言链接
+$(".main").on('click',".login_a",function(){ //biz-block-a
+	$("#login_window").show();
+	mask();
+});
+$("#basic-login").on('click',function(e){
+	$("#qq-login-div").hide();
+	$("#basic-login-div").show();
+});
+$("#qq-login").on('click',function(e){
+	$("#qq-login-div").show();
+	$("#basic-login-div").hide();
+});
+
+$("#login-commit").on('click',function(){
+ 	 if(!$('#name').val()){
+ 		 alert("请填写登录名");
+ 		 return;
+ 	 }
+ 	 if(!$('#psd').val()){
+ 		 alert("请填写密码");
+ 		 return;
+ 	 }
+ 	 else{
+ 		 $.ajax( { url : '/api/user/login', method : "POST",
+ 				data : {
+ 					loginname: $('#name').val(),
+ 					password:$('#psd').val()
+ 				}
+ 			}).success(
+ 				function(resObj) {
+ 					if(resObj.code == 200 ){
+ 						location = 'index.jsp?_v=1.102';
+ 						return;
+ 					}
+					else if(resObj.code == 400 ){
+						alert(resObj.data);
+					}
+ 					 
+ 			}).error( function(res) { alert('系统过于繁忙，请稍后再试' );  });
+ 	 }
+ });
+</script> 
+   <!-- 
+<script>
+	window._bd_share_config = {
+		"common" : {
+			"bdSnsKey" :
+
+			{},
+			"bdText" : "",
+			"bdMini" : "2",
+			"bdMiniList" : false,
+			"bdPic" : "",
+			"bdStyle" : "2",
+			"bdSize" : "16"
+		},
+		"share" : {}
+	};
+	with (document)
+		0
+
+		[(getElementsByTagName('head')[0] || body).appendChild(createElement
+
+		('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='
+				+ ~(-new Date () / 36e5)];
+</script>
+--> 
+   <div class="page-left" style=" "> 
+    <div class="box post-detail"> 
+     <div class="post-detail-title" style="width: auto;float: left;">
+      资 源 : 百度云 网盘-苍井空色欲迷墙的分享 
+     </div> 
+     <div class="post-detail-nickName">
+      发 布 人 : 
+      <a target="_blank" href="user-post.jsp?id=2">百度云资源</a> 
+     </div> 
+     <div class="post-detail-nickName">
+      资源类型 : 百度云 
+     </div> 
+     <div class="post-detail-nickName">
+      需资源豆 : 0 
+     </div> 
+     <div class="post-detail-createDate">
+      发布时间 : 2016-04-01 00:00
+     </div> 
+     <!-- 
+		<div id="link-div">
+			<a  id="post-detail-show"  class="btn" href="javascript:">查看资源</a>
+			<a class="btn" href="http://pan.baidu.com/share/home?uk=860174667&view=follow" target="_blank">打开链接</a>
+		</div> 
+		 --> 
+     <div class="operation-inline-big"> 
+      <a class="biz-zan" data-user-id="2" data-post-id="298027" href="javascript:">赞 | </a> 
+      <a class="biz-jubao_a" data-user-id="2" data-post-id="298027" href="javascript:">举报得豆</a> 
+     </div> 
+    </div> 
+    <!-- 
+	<div id="post-ref" style="display: none;">
+	  	<iframe  src="http://pan.baidu.com/share/home?uk=860174667&view=follow"  
+			frameborder="0" scrolling="yes" width="100%" height="500px;" 
+			style=""
+			onload=" " >
+		</iframe>
+	</div>	
+	 --> 
+    <div class="box"> 
+     <div class="menu-link"> 
+      <a style="font-weight: bold; " href="#">资源</a> 
+     </div> 
+     <div class="post-inline" style="height:auto;padding-top:5px;padding-bottom:5px;  "> 
+      <div class="resource"> 
+       <a href="http://pan.baidu.com/share/home?uk=860174667&amp;view=follow" target="_blank">百度云 网盘-苍井空色欲迷墙的分享</a> 
+      </div> 
+     </div> 
+    </div> 
+    <div class="box"> 
+     <div class="reply-title">
+      评论 : 
+     </div> 
+     <div class="reply-add"> 
+      <textarea id="reply_content" placeholder="评论资源（5字以上有奖）"></textarea> 
+      <a id="reply_btn" class="btn" href="javascript:">发送</a> 
+     </div> 
+    </div> 
+    <div class="box"> 
+     <div class="menu-link"> 
+      <a style="font-weight: bold; " href="user-post.jsp?id=2">该用户发布的其他资源</a> 
+     </div> 
+     <div class="post-inline" style="height:auto;padding-top:5px;padding-bottom:5px;  "> 
+      <div class="resource"> 
+       <a class="biz-checkZiyuandou" data-ziyuandou="1" href="/post/669566" target="_blank">郑州成功财经学院上网认证客户端.exe_免费高速下载|百度[百度云][1豆]</a> 
+      </div> 
+      <div class="date"> 
+       <span>2017-02-18</span> 
+      </div> 
+     </div> 
+     <div class="post-inline" style="height:auto;padding-top:5px;padding-bottom:5px;  "> 
+      <div class="resource"> 
+       <a class="biz-checkZiyuandou" data-ziyuandou="0" href="/post/250185" target="_blank">百度云 网盘-大桥未久无码的分享</a> 
+      </div> 
+      <div class="date"> 
+       <span>2016-04-01</span> 
+      </div> 
+     </div> 
+     <div class="post-inline" style="height:auto;padding-top:5px;padding-bottom:5px;  "> 
+      <div class="resource"> 
+       <a class="biz-checkZiyuandou" data-ziyuandou="0" href="/post/572867" target="_blank">百度云 网盘-daanlala的分享</a> 
+      </div> 
+      <div class="date"> 
+       <span>2016-08-18</span> 
+      </div> 
+     </div> 
+     <div class="post-inline" style="height:auto;padding-top:5px;padding-bottom:5px;  "> 
+      <div class="resource"> 
+       <a class="biz-checkZiyuandou" data-ziyuandou="1" href="/post/666027" target="_blank">百度网盘 好友邀请[百度云][1豆]</a> 
+      </div> 
+      <div class="date"> 
+       <span>2017-01-17</span> 
+      </div> 
+     </div> 
+     <div class="post-inline" style="height:auto;padding-top:5px;padding-bottom:5px;  "> 
+      <div class="resource"> 
+       <a class="biz-checkZiyuandou" data-ziyuandou="0" href="/post/581348" target="_blank">百度云 网盘-开卷缮坦的分享</a> 
+      </div> 
+      <div class="date"> 
+       <span>2016-08-30</span> 
+      </div> 
+     </div> 
+     <div class="post-inline" style="height:auto;padding-top:5px;padding-bottom:5px;  "> 
+      <div class="resource"> 
+       <a class="biz-checkZiyuandou" data-ziyuandou="1" href="/post/607705" target="_blank">百度云 网盘-开卷缮坦的分享[1豆]</a> 
+      </div> 
+      <div class="date"> 
+       <span>2016-09-28</span> 
+      </div> 
+     </div> 
+    </div> 
+    <div id="biz-recommend" class="box" style="font-size: 13px;color: #333;"> 
+     <br /> 
+     <p>喜欢，就推荐一下吧 <span style="font-weight: bold;font-size: 10px;">^_^</span> </p> 
+     <br /> 
+     <span style="font-weight: bold;">推荐奖励：</span> 
+     <br /> 
+     <br /> 
+     <p>推荐的网页被任何人打开，即可获得打开次数<span class="score-add">10倍</span>的资源豆！</p> 
+     <p>如:推荐的网页被30人打开，即可获得<span class="score-add">300</span>个资源豆</p> 
+     <br /> 
+     <span style="font-weight: bold;">方法一: 点击下边图标，推荐当前网页 </span> 
+     <br /> 
+     <div class="bdsharebuttonbox" data-tag="share_1" style=" width: 100%;"> 
+      <a href="#" class="bds_more" data-cmd="more"></a> 
+      <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a> 
+      <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a> 
+      <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a> 
+     </div> 
+     <br />
+     <br />
+     <br />
+     <br /> 
+     <span style="font-weight: bold;">方法二: 直接复制链接至QQ、贴吧、微博等 </span> 
+     <br />
+     <br /> 
+     <div style="width: 100%; "> 
+      <input id="link" value="http://www.webhezi.com" style="width: 75%;float: left;height: 34px;font-size: 12px;border-color: #aaa;" /> 
+      <a id="copy-commit" class="btn" href="javascript:" style="float: right;width: auto;border-radius: 5px;">复制链接</a> 
+     </div> 
+     <br />
+     <br />
+     <br /> 
+     <br /> 
+     <br /> 
+    </div> 
+    <script>
+				var shareUrl = window.location.href;
+				if(shareUrl.indexOf('personal-')>0){
+					shareUrl = "http://www.webhezi.com/ziyuan.jsp?recflagwbhz=1&uid="+$("#loginUserId").val();
+				}
+				else if(shareUrl.indexOf('?')>0){//有？
+					shareUrl = shareUrl + "&recflagwbhz=1&uid="+$('#loginUserId').val();
+				}
+				else{
+					shareUrl = shareUrl + "?recflagwbhz=1&uid="+$('#loginUserId').val();
+				}
+				 
+				document.getElementById("link").value =  shareUrl;
+				
+				var shareTitle = document.title;
+				/*
+				if(shareUrl.indexOf('post')>0){//资源详情页
+					shareTitle = document.title ;
+				}
+				else if(shareUrl.indexOf('pan')>0 ||shareUrl.indexOf('search')>0 ){//资源搜索页
+					shareTitle = document.title ;
+				}
+				else{
+					if(Math.random()>0.5){
+						shareTitle = "盒子分享-分享各种电影、动漫等资源" ;		
+					}
+					else{
+						shareTitle = "盒子分享-分享各种电影、动漫等资源" ;	
+					}
+				}
+				*/
+				//shareUrl = shareUrl + "&"+shareTitle;
+				
+					window._bd_share_config = {
+						common : {
+							bdText : shareTitle,	
+							bdDesc : shareTitle,	
+							bdUrl : shareUrl, 	
+							bdPic : ''
+						},
+						share : [{
+							"bdSize" : 24
+						}] 
+					}
+					with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+			</script> 
+    <script>
+			document.getElementById("copy-commit").onclick = function(){
+				document.getElementById("link").select(); // 选择对象
+				document.execCommand("Copy"); // 执行浏览器复制命令
+			};
+			
+			$("#biz-recommend").on('click',"a", function(e){
+				//trace
+				$.ajax( { url : '/api/traceEvent/create', method : "POST",
+						data : { code:208,url:window.location.href   }// 
+					}) ;
+			});
+			
+			</script> 
+   </div> 
+   <div class="page-right"> 
+    <div class="box personal"> 
+     <div class="head-info"> 
+      <div class="head"> 
+       <a href="/user-post.jsp?id=2"> <img alt="百度云资源" src="http://www.webhezi.com/image/head-baiduyun.png" style="width: 60px;height: 60px;" /> </a> 
+      </div> 
+      <div class="info"> 
+       <div class="name"> 
+        <a title="百度云资源" href="/user-post.jsp?id=2">百度云资源</a> 
+       </div> 
+       <div class="name"> 
+        <a style="font-size:12px; display: inline;padding: 6px 8px 6px 8px;background: #45a3ff;color: #fff;border-radius: 5px;" title="等级8，经验值18174，点击进入等级技能说明页" href="/manual-level.jsp">等级<span style="font-size: 15px;font-weight: bold;padding: 5px 2px 3px 2px;">8</span> </a> 
+       </div> 
+      </div> 
+     </div> 
+     <div id="descrip">
+       简介 : 各种 
+     </div> 
+     <div class="interactive"> 
+      <a class="btn biz-guanzhu" data-user-id="2" href="javascript:">关注</a> 
+      <a class="btn biz-message_a" data-user-id="2" href="javascript:">留言</a> 
+      <a class="btn biz-jubao_a" data-user-id="2" style="background-color: #e60;" href="javascript:">举报</a> 
+     </div> 
+    </div> 
+    <div class="box hotKeywords" style=""> 
+     <div class="label">
+      最热标签
+     </div> 
+     <ul class=""> 
+      <li> <a target="_blank" href="/pan/%E5%AF%84%E7%94%9F%E5%85%BD">寄生兽</a> </li> 
+      <li> <a target="_blank" href="/pan/%E8%90%9D%E8%8E%89">萝莉</a> </li> 
+      <li> <a target="_blank" href="/pan/%E9%AC%BC%E7%88%B6">鬼父</a> </li> 
+      <li> <a target="_blank" href="/pan/%E5%88%80%E5%89%91%E7%A5%9E%E5%9F%9F">刀剑神域</a> </li> 
+      <li> <a target="_blank" href="/pan/%E6%97%A5%E6%9C%AC">日本</a> </li> 
+      <li> <a target="_blank" href="/pan/%E5%B9%BC">幼</a> </li> 
+      <li> <a target="_blank" href="/pan/%E6%96%AF%E5%B7%B4%E8%BE%BE%E5%85%8B%E6%96%AF">斯巴达克斯</a> </li> 
+      <li> <a target="_blank" href="/pan/%E9%87%8C%E7%95%AA">里番</a> </li> 
+      <li> <a target="_blank" href="/pan/%E7%A7%8D%E5%AD%90">种子</a> </li> 
+      <li> <a target="_blank" href="/pan/%E9%92%99%E7%89%87">钙片</a> </li> 
+      <li> <a target="_blank" href="/pan/%E7%94%9C%E6%80%A7%E6%B6%A9%E7%88%B1">甜性涩爱</a> </li> 
+      <li> <a target="_blank" href="/pan/%E8%89%B3%E6%AF%8D">艳母</a> </li> 
+      <li> <a target="_blank" href="/pan/%E7%A6%8F%E5%88%A9">福利</a> </li> 
+      <li> <a target="_blank" href="/pan/%E5%A6%96%E7%B2%BE%E7%9A%84%E6%97%8B%E5%BE%8B">妖精的旋律</a> </li> 
+      <li> <a target="_blank" href="/pan/%E6%AD%A3%E5%A4%AA">正太</a> </li> 
+      <li> <a target="_blank" href="/pan/%E6%9C%AC%E5%AD%90">本子</a> </li> 
+      <li> <a target="_blank" href="/pan/%E7%94%9F%E5%8C%96%E5%8D%B1%E6%9C%BA">生化危机</a> </li> 
+      <li> <a target="_blank" href="/pan/%E5%B0%8F%E5%AD%A6%E7%94%9F">小学生</a> </li> 
+      <li> <a target="_blank" href="/pan/%E7%94%9F%E5%8C%96%E5%8D%B1%E6%9C%BA6">生化危机6</a> </li> 
+      <li> <a target="_blank" href="/pan/%E4%B8%9C%E4%BA%AC%E9%A3%9F%E5%B0%B8%E9%AC%BC">东京食尸鬼</a> </li> 
+      <li> <a target="_blank" href="/pan/%E6%96%97%E7%A0%B4%E8%8B%8D%E7%A9%B9">斗破苍穹</a> </li> 
+      <li> <a target="_blank" href="/pan/%E8%82%89">肉</a> </li> 
+      <li> <a target="_blank" href="/pan/%E9%87%91%E5%88%9A%E7%8B%BC">金刚狼</a> </li> 
+      <li> <a target="_blank" href="/pan/%E9%87%91%E5%88%9A%E7%8B%BC3">金刚狼3</a> </li> 
+      <li> <a target="_blank" href="/pan/%E8%BF%9B%E5%87%BB%E7%9A%84%E5%B7%A8%E4%BA%BA">进击的巨人</a> </li> 
+      <li> <a target="_blank" href="/pan/%E5%A4%A7%E9%97%B9%E5%A4%A9%E7%AB%BA">大闹天竺</a> </li> 
+      <li> <a target="_blank" href="/pan/%E4%B9%98%E9%A3%8E%E7%A0%B4%E6%B5%AA">乘风破浪</a> </li> 
+      <li> <a target="_blank" href="/pan/%E8%A5%BF%E6%B8%B8%E4%BC%8F%E5%A6%96%E7%AF%87">西游伏妖篇</a> </li> 
+      <li> <a target="_blank" href="/pan/%E8%80%81%E5%8F%8B%E8%AE%B0">老友记</a> </li> 
+      <li> <a target="_blank" href="/pan/%E4%BD%A0%E7%9A%84%E5%90%8D%E5%AD%97">你的名字</a> </li> 
+      <li> <a target="_blank" href="/pan/%E6%97%A5%E5%9C%A8%E6%A0%A1%E5%9B%AD">日在校园</a> </li> 
+      <li> <a target="_blank" href="/pan/%E6%97%A0%E4%BF%AE">无修</a> </li> 
+      <li> <a target="_blank" href="/pan/%E6%B5%B7%E8%B4%BC%E7%8E%8B">海贼王</a> </li> 
+      <li> <a target="_blank" href="/pan/%E4%B8%89%E7%94%9F%E4%B8%89%E4%B8%96%E5%8D%81%E9%87%8C%E6%A1%83%E8%8A%B1">三生三世十里桃花</a> </li> 
+      <li> <a target="_blank" href="/pan/%E5%8A%9F%E5%A4%AB%E7%91%9C%E4%BC%BD">功夫瑜伽</a> </li> 
+      <li> <a target="_blank" href="/pan/%E4%B8%9C%E4%BA%AC%E9%A3%9F%E5%B0%B8%E9%AC%BC%E7%AC%AC%E4%B8%89%E5%AD%A3">东京食尸鬼第三季</a> </li> 
+      <li> <a target="_blank" href="/pan/%E7%BC%98%E4%B9%8B%E7%A9%BA">缘之空</a> </li> 
+      <li> <a target="_blank" href="/pan/%E9%95%BF%E5%9F%8E">长城</a> </li> 
+      <li> <a target="_blank" href="/pan/%E6%81%B6%E9%AD%94%E9%AB%98%E6%A0%A1">恶魔高校</a> </li> 
+      <li> <a target="_blank" href="/pan/rmvb">rmvb</a> </li> 
+     </ul> 
+     <div style="clear:both"></div> 
+     <div class="operation-inline"> 
+      <a target="_blank" href="/keywords-all.jsp">查看全部</a> 
+     </div> 
+    </div> 
+    <!-- 广告 --> 
+    <div class="box " style="padding: 0px;"> 
+     <div> 
+      <!-- 
+					<img width="100%" height="100%" alt="" src="https://img.alicdn.com/bao/uploaded/i1/TB1nopqLXXXXXa7XpXXXXXXXXXX_!!0-item_pic.jpg_430x430q90.jpg">
+					<script type="text/javascript">
+				        document.write('<a style="display:none!important" id="tanx-a-mm_41911274_8730892_56862446"></a>');
+				        tanx_s = document.createElement("script");
+				        tanx_s.type = "text/javascript";
+				        tanx_s.charset = "gbk";
+				        tanx_s.id = "tanx-s-mm_41911274_8730892_56862446";
+				        tanx_s.async = true;
+				        tanx_s.src = "http://p.tanx.com/ex?i=mm_41911274_8730892_56862446";
+				        tanx_h = document.getElementsByTagName("head")[0];
+				        if(tanx_h)tanx_h.insertBefore(tanx_s,tanx_h.firstChild);
+				</script>
+					 --> 
+      <script type="text/javascript">
+					    /*250*250 创建于 2016/6/28*/
+					    var cpro_id = "u2687693";
+					</script> 
+      <script type="text/javascript" src="http://cpro.baidustatic.com/cpro/ui/c.js"></script> 
+     </div> 
+    </div> 
+    <!-- 系统推荐用户 --> 
+    <div class="box heads"> 
+     <div class="label">
+      推荐专题
+     </div> 
+     <div class="  head" style=" "> 
+      <a target="_blank" href="/user-post.jsp?id=5"><img alt="电影" title="电影" src="http://www.webhezi.com/image/head-dianying.png" style=" " /></a> 
+     </div> 
+     <div class="  head" style=" "> 
+      <a target="_blank" href="/user-post.jsp?id=4"><img alt="美剧百度云" title="美剧百度云" src="http://www.webhezi.com/image/head-meiju.png" style=" " /></a> 
+     </div> 
+     <div class="  head" style=" "> 
+      <a target="_blank" href="/user-post.jsp?id=10"><img alt="动漫多多" title="动漫多多" src="http://www.webhezi.com/image/head-dongman.png" style=" " /></a> 
+     </div> 
+     <div class="  head" style=" "> 
+      <a target="_blank" href="/user-post.jsp?id=2"><img alt="百度网盘" title="百度网盘" src="http://www.webhezi.com/image/head-baiduyun.png" style=" " /></a> 
+     </div> 
+     <div class="  head" style=" "> 
+      <a target="_blank" href="/user-post.jsp?id=3"><img alt="动漫资源" title="动漫资源" src="http://www.webhezi.com/image/head-dongman2.png" style=" " /></a> 
+     </div> 
+     <div class="  head" style=" "> 
+      <a target="_blank" href="/user-post.jsp?id=8"><img alt="小说百度云" title="小说百度云" src="http://www.webhezi.com/image/head-xiaoshuo.png" style=" " /></a> 
+     </div> 
+     <div class="  head" style=" "> 
+      <a target="_blank" href="/user-post.jsp?id=16"><img alt="电子书" title="电子书" src="http://www.webhezi.com/image/head-ebook.png" style=" " /></a> 
+     </div> 
+    </div> 
+    <!-- 
+				<script type="text/javascript"> 
+				     /*电脑侧边栏 250 250*/ 
+				     var cpro_id = "u2602256";
+				</script>
+				<script src="http://cpro.baidustatic.com/cpro/ui/c.js" type="text/javascript"></script>
+			 --> 
+   </div> 
+   <div class="out-link"> 
+    <a target="_blank" style=" " href="http://pan.baidu.com/">百度云</a> 
+    <a target="_blank" style=" " href="http://so.baiduyun.me/">百度网盘搜索</a> 
+    <a target="_blank" style=" " href="http://www.wangpansou.cn/">网盘搜</a> 
+    <a target="_blank" style=" " href="http://www.pansou.com/">PanSou盘搜</a> 
+    <a target="_blank" style=" " href="http://www.bdyunso.com/">百度云搜</a> 
+    <a target="_blank" style=" " href="http://www.panbaidu.net/">盘百度</a> 
+    <a target="_blank" style=" " href="http://wowenda.com/">百度网盘之家</a> 
+    <a target="_blank" style=" " href="http://www.friok.com/">百度网盘资源</a> 
+    <a target="_blank" style=" " href="http://www.sobaidupan.com/">搜百度盘</a> 
+    <a target="_blank" style=" " href="http://www.iqiyi.com/dongman/">爱奇艺动漫</a> 
+    <a target="_blank" style=" " href="http://www.bilibili.com/">哔哩哔哩</a> 
+    <a target="_blank" style=" " href="http://www.acfun.tv/">AcFun</a> 
+    <a target="_blank" style=" " href="http://rrmj.tv/">人人美剧</a> 
+    <a target="_blank" style=" " href="http://www.ttmeiju.com/">天天美剧</a> 
+    <a target="_blank" style=" " href="http://www.u17.com/">有妖气</a> 
+   </div> 
+   <!-- footer --> 
+   <div style="width: 100%"> 
+    <div class="footer-msg">
+      @2014-2017 网盘盒子分享 
+    </div> 
+   </div> 
+   <div style="display: none;"> 
+    <script>
+		var _hmt = _hmt || [];
+		(function() {
+		  var hm = document.createElement("script");
+		  hm.src = "//hm.baidu.com/hm.js?636881ce9fd7d5c3c52ce8dfc9fdb9d1";
+		  var s = document.getElementsByTagName("script")[0]; 
+		  s.parentNode.insertBefore(hm, s);
+		})();
+		</script> 
+    <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1257838059'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1257838059' type='text/javascript'%3E%3C/script%3E"));</script> 
+   </div> 
+   <!--<script src="js/jquery.toast.min.js"></script> --> 
+   <!-- <script src="js/ajaxupload.3.6.js"></script> --> 
+   <script src="/js/common.js?_v=1.102"></script> 
+   <div id="mask"></div> 
+   <script> 
+$("#mask").on('click',function( ){
+	$(".biz-window").hide();
+	$("#mask").hide();
+});
+function mask(){
+	$("#mask").css("height",$(document).height()); 
+	$("#mask").show();
+}
+function unmask(){
+	$("#mask").hide();
+}
+</script> 
+   <!-- 留言弹出 --> 
+   <div id="message_window" class="window biz-window"> 
+    <div class="title"> 
+     <p>留言</p> 
+     <a href="javascript:" class="close biz-cancel"> <span>X</span></a> 
+    </div> 
+    <textarea id="biz_message_comment" placeholder="给TA留言吧.."></textarea> 
+    <div class="btns"> 
+     <a id="biz-message-ok" class="btn biz-ok">确定</a> 
+     <a class="btn biz-cancel btn-cancel">取消</a> 
+    </div> 
+   </div> 
+   <script defer="defer">
+//点取消
+$("#message_window .biz-cancel").on('click',function( ){
+	$("#message_window textarea").val('');
+	$("#message_window").hide();
+	unmask();
+});
+
+//点击留言链接
+var messageData='';
+$(".biz-message_a").on('click',function(){ 
+	$("#message_window").show();
+	$("#message_window textarea").focus();
+	mask();
+	//点击留言 缓存数据
+	messageData= {toUserId: $(this).attr("data-user-id"), postId:$(this).attr("data-post-id") };
+});
+//提交 留言
+$("#biz-message-ok").on('click',function(){
+	$("#message_window").hide();
+	unmask();
+	
+	messageData.msg= $("#biz_message_comment").val();
+	
+	
+	 $.ajax( { url : '/api/user/message/create', method : "POST",
+			data : messageData
+		})
+		.success(function(resObj) { 
+			if(resObj.code == 200 ){
+				$("#message_window textarea").val('');
+			}
+			alert(resObj.data);
+		})
+		.error( function(res) { alert('系统过于繁忙，请稍后再试' );  });
+});
+</script> 
+   <!-- 举报资源弹出 --> 
+   <div id="jubao_window" class="window biz-window"> 
+    <div class="title"> 
+     <p>举报</p> 
+     <a href="javascript:" class="close biz-cancel"> <span>X</span></a> 
+    </div> 
+    <textarea id="biz_jubao_comment" placeholder="举报 h资源、失效资源，成功后奖励10资源豆"></textarea> 
+    <div class="btns"> 
+     <a id="biz-jubao-ok" class="btn biz-ok">确定</a> 
+     <a class="btn biz-cancel btn-cancel">取消</a> 
+    </div> 
+   </div> 
+   <script defer="defer">
+//点击举报链接 弹出追窗口
+var jubaoData='';
+$(".biz-jubao_a").on('click',function(){ //点击追 缓存数据
+	$("#jubao_window").show();
+	$("#jubao_window textarea").focus();
+	mask();
+	jubaoData= {toUserId: $(this).attr("data-user-id"),postId: $(this).attr("data-post-id") };
+
+});
+//提交 
+$("#biz-jubao-ok").on('click',function(){
+	
+	$("#jubao_window").hide();
+	unmask();
+	
+	jubaoData.comment= $("#biz_jubao_comment").val();
+	$("#biz_jubao_comment textarea").val('');
+	
+	 $.ajax( { url : '/api/user/jubao/create', method : "POST",
+			data : jubaoData
+		})
+		.success(function(resObj) { alert(resObj.data); })
+		.error( function(res) { alert('系统过于繁忙，请稍后再试' );  });
+});
+$("#jubao_window .biz-cancel").on('click',function( ){
+	$("#jubao_window textarea").val('');
+	$("#jubao_window").hide();
+	unmask();
+});
+ 
+</script> 
+  </div> 
+  <script type="text/javascript">
+$("#post-detail-show").on('click',function(){
+	$("#post-ref").toggle();
+});
+
+$(".biz-guanzhu").on('click',function(){
+  	
+	 $.ajax( { url : '/api/user/follow/create', method : "POST",
+			data : { toUserId: $(this).attr("data-user-id")   }
+		})
+		.success(function(resObj) {
+//			if(resObj.code == 500 ){
+//				window.location.href="login.jsp";
+//			}
+			alert(resObj.data );
+		})
+		.error( function(res) { alert('系统过于繁忙，请稍后再试' );  });
+});
+$(".biz-zan").on('click',function(){
+  	
+	 $.ajax( { url : '/api/user/zhui/create', method : "POST",
+			data : { postUserId: $(this).attr("data-user-id"),postId: $(this).attr("data-post-id")   }
+		})
+		.success(function(resObj) {
+//			if(resObj.code == 500 ){
+//				window.location.href="login.jsp";
+//			}
+			alert(resObj.data); 
+		})
+		.error( function(res) { alert('系统过于繁忙，请稍后再试' );  });
+});
+$("#reply_btn").on('click',function(){
+	
+	 $.ajax( { url : '/api/user/message/create', method : "POST",
+			data :  {toUserId: '2'
+					, postId:'298027'
+					,msg:$("#reply_content").val()}
+		})
+		.success(function(resObj) {
+			if(resObj.code == 200 ){
+				$("#reply_content").val('');
+				location.reload();
+			}
+//			if(resObj.code == 500 ){
+//				window.location.href="login.jsp";
+//			}
+			else{
+				alert(resObj.data);	
+			}
+			 
+		})
+		.error( function(res) { alert('系统过于繁忙，请稍后再试' );  });
+});
+
+$("#link-div").on('click',function(){
+	$(".operation-inline-big a").css("font-size","18px");
+});
+
+var openTime =  Date.parse(new Date());
+$( document ).ready(function() {
+	//$.ajax( { url : '/api/common/post/traceOpen', method : "POST",
+	//	data :  { id:'298027' }
+	//});
+});
+
+$(window).bind('beforeunload',function(){
+	$.ajax( { url : '/api/common/post/traceOpen', method : "POST",
+		data :  { id:'298027', openTime: Date.parse(new Date())-openTime,url:window.location.href }
+	});
+});
+
+</script>  
+ </body>
+</html>

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+  <meta charset="UTF-8" /> 
+  <meta http-equiv="X-UA-Compatible" content="IE=10,IE=9,IE=8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" /> 
+  <title>调试hadoop程序时应注意的地方 - 云计算 - IT问道</title> 
+  <meta name="keywords" content="IT问道，软件开发技术问答，面试题，移动开发问题，网站架构技术" /> 
+  <meta name="msvalidate.01" content="268EA0F20BE84A284A0B04F80F8AC9E3" /> 
+  <meta name="360_ssp_verify" content="d031d93aef9e27c50999841ce761f46f" /> 
+  <meta name="description" content="不用命令行调试hadoop程序时候应该注意的地方。" /> 
+  <link rel="icon" href="/images/favicon.ico" mce_href="favicon.ico" type="image/x-icon" /> 
+  <link rel="shortcut icon" href="/images/favicon.ico" mce_href="favicon.ico" type="image/x-icon" /> 
+  <script>
+        window._deel = {name: 'IT问道',url: '', ajaxpager: '', commenton: 0, roll: [5,]}
+    </script> 
+  <link rel="stylesheet" id="style-css" href="/css/stylenew.css" type="text/css" media="all" /> 
+  <script type="text/javascript" src="/js/jquery.min.js"></script> 
+  <script type="text/javascript" src="/js/jquery.js"></script> 
+  <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?fddd3fc14c6c5084e4a6a4e1214e0383";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script> 
+  <script type="text/javascript" src="/js/jquery.lazyload.js"></script> 
+  <!--[if lt IE 9]><!--<script src="/js/html5.js"></script>-->
+  <!--[endif]----> 
+ </head> 
+ <body class="home blog"> 
+  <header id="masthead" class="site-header"> 
+   <div id="nav-header"> 
+    <div id="top-menu"> 
+     <div id="top-menu_1"> 
+      <span class="nav-search"><i class="fa fa-search"></i></span> 
+      <span class="nav-search_1"><a href="javascript:void(0);"><i class="fa fa-navicon"></i></a></span> 
+      <hgroup class="logo-site"> 
+       <h1 class="site-title"> <a href="http://www.itwendao.com"><img src="/images/logonew.png" alt="IT问道" /></a></h1> 
+      </hgroup> 
+      <div id="site-nav-wrap"> 
+       <nav id="site-nav" class="main-nav"> 
+        <div> 
+         <ul class="down-menu nav-menu"> 
+          <li id="menu-item-23" class="menu-item menu-item-type-custom menu-item-object-custom  menu-item-home menu-item-23"><a href="http://www.itwendao.com">首页</a></li> 
+          <li class="menu-item menu-item-type-taxonomy menu-item-object-category  menu-item-10"><a href="/interview/">面试题</a></li> 
+          <li class="menu-item menu-item-type-taxonomy menu-item-object-category  menu-item-11"><a href="/codelife/">程序人生</a></li> 
+          <li class="menu-item menu-item-type-taxonomy menu-item-object-category  menu-item-12"><a href="/opensource/">开源代码库</a></li> 
+          <li class="menu-item menu-item-type-taxonomy menu-item-object-category  menu-item-13"><a href="/more/">关于</a></li> 
+         </ul> 
+        </div> 
+       </nav> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+   <nav> 
+    <ul class="nav_sj" id="nav-search_1"> 
+     <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-23"><a href="">首页</a></li> 
+     <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-10"><a href="/interview/">面试题</a></li> 
+     <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-11"><a href="/codelife/">程序人生</a></li> 
+     <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-12"><a href="/opensource/">开源代码库</a></li> 
+     <li class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-13"><a href="/more/">关于</a></li> 
+    </ul> 
+   </nav> 
+   <div class="main-nav-sub"> 
+    <div class="central"> 
+     <ul> 
+      <li class=""><a href="/interview/">大话面试</a></li> 
+      <li class=""><a href="/interview/android/">Android试题</a></li> 
+      <li class=""><a href="/interview/ios/">IOS试题</a></li> 
+      <li class=""><a href="/interview/java/">Java试题</a></li> 
+      <li class=""><a href="/interview/web/">前端试题</a></li> 
+      <li class=""><a href="/interview/Jiagou/">架构师试题</a></li> 
+      <li class=""><a href="/interview/python/">Python试题</a></li> 
+      <li class=""><a href="/interview/dotnet/">.NET试题</a></li> 
+      <li class=""><a href="/interview/php/">PHP试题</a></li> 
+      <li class=""><a href="/interview/algorithm/">算法试题</a></li> 
+      <li class=""><a href="/interview/cpp/">C++试题</a></li> 
+      <li class=""><a href="/interview/base/">计算机基础试题</a></li> 
+     </ul> 
+    </div> 
+   </div> 
+  </header> 
+  <div id="search-main"> 
+   <div id="searchbar"> 
+    <script type="text/javascript">(function(){
+                document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));
+                var bdcs = document.createElement('script');
+                bdcs.type = 'text/javascript';
+                bdcs.async = true;
+                bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=6715120765284361828' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);
+                var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();
+            </script> 
+   </div> 
+   <div class="clear"></div> 
+  </div> 
+  <section class="container"> 
+   <div class="speedbar"> 
+   </div> 
+   <div class="content-wrap"> 
+    <div class="content"> 
+     <div class="breadcrumbs">
+      <a title="返回首页" href="http://www.itwendao.com"><i class="fa fa-home"></i></a> 
+      <small>&gt;</small> 
+      <a href="/cloud/">云计算</a> 
+      <small>&gt;</small> 
+      <span class="muted">调试hadoop程序时应注意的地方</span>
+     </div> 
+     <header class="article-header"> 
+      <h1 class="article-title"><a href="/article/detail/205335.html">调试hadoop程序时应注意的地方</a> </h1> 
+      <div class="meta"> 
+       <span id="mute-category" class="muted"><i class="fa fa-list-alt"></i><a href="/cloud/"> 云计算</a></span> 
+       <span class="muted"><i class="fa fa-user"></i> 来源:<a href="http://blog.csdn.net/qq_21003657/article/details/53914536" target="_blank" rel="nofollow">qq_21003657</a></span> 
+       <time class="muted"><i class="fa fa-clock-o"></i> 2016-12-28 22:25 </time> 
+       <span class="muted"><i class="fa fa-eye"></i> 19℃</span> 
+       <span class="muted"><i class="fa fa-comments-o"></i> <a href="/article/detail/205335.html#ds-thread"> 0评论</a></span>
+      </div> 
+     </header> 
+     <article class="article-content"> 
+      <div id="article_content" class="article_content"> 
+       <p>博主刚开始学hadoop，有很多不懂得地方，也走了很多误区，hadoop有3种模式，单机模式，伪分布，分布式，想在idea或者elipse中看到你写的程序运行状况，只能在单机模式下，因为在伪分布和全分布模式下数据不是存储在本地硬盘中，而是在HDFS中。</p> 
+       <p>将伪分布式模式转换单机模式的方法，就是将配置文件中的core-site.xml中的配置项移除。</p> 
+      </div> 
+      <div class="article-social"> 
+       <div class="bdsharebuttonbox">
+        <a href="#" class="bds_more" data-cmd="more"></a>
+        <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+        <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+        <a href="#" class="bds_renren" data-cmd="renren" title="分享到人人网"></a>
+        <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+       </div> 
+       <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","weixin","tsina","tqq","renren","tieba"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script> 
+      </div> 
+     </article> 
+     <footer class="article-footer"> 
+     </footer> 
+     <!--推荐开始--> 
+     <nav class="article-nav"> 
+      <script type="text/javascript">var jd_union_unid="262770481",jd_ad_ids="507:6",jd_union_pid="CLzO/qSLKxCxnqZ9GgAgtP3FiwIqAA==";var jd_width=728;var jd_height=90;var jd_union_euid="";var p="BhUHVRtdFQUbNwpfBkgyTUMIRmtKRk9aZV8ETVxNNwpfBkgyVUwdZB4WVFllUnkpEwphBCgZM3RHcgtZK18SAhMBVhtZFDIRAFYdXRQHGwdlKwRRX083HnVaJV1WWggrWxALEwJdE1sVAhQCVStaJTIi";</script>
+      <script type="text/javascript" charset="utf-8" src="//u.x.jd.com/static/js/auto.js"></script> 
+     </nav> 
+     <!--推荐结束--> 
+     <div class="related_top"> 
+      <div class="related_posts"> 
+       <ul class="relates"> 
+        <h2>相关推荐</h2> 
+        <li> <a target="_blank" href="/article/detail/292755.html" title="Map/Reduce实现表的自连接"> <i class="fa fa-circle-thin"></i> Map/Reduce实现表的自连接</a> </li> 
+        <li> <a target="_blank" href="/article/detail/282926.html" title="Map/Reduce二次排序与分组分区用法"> <i class="fa fa-circle-thin"></i> Map/Reduce二次排序与分组分区用法</a> </li> 
+        <li> <a target="_blank" href="/article/detail/282904.html" title="Map/Reduce 求TopK"> <i class="fa fa-circle-thin"></i> Map/Reduce 求TopK</a> </li> 
+        <li> <a target="_blank" href="/article/detail/280769.html" title="编写Map/reudce的前置工作"> <i class="fa fa-circle-thin"></i> 编写Map/reudce的前置工作</a> </li> 
+        <li> <a target="_blank" href="/article/detail/368539.html" title="hadoop大数据平台手动搭建-hbase"> <i class="fa fa-circle-thin"></i> hadoop大数据平台手动搭建-hbase</a> </li> 
+        <li> <a target="_blank" href="/article/detail/368255.html" title="Hadoop集群搭建"> <i class="fa fa-circle-thin"></i> Hadoop集群搭建</a> </li> 
+        <li> <a target="_blank" href="/article/detail/367903.html" title="《Hadoop权威指南》第一章初始Hadoop"> <i class="fa fa-circle-thin"></i> 《Hadoop权威指南》第一章初始Hadoop</a> </li> 
+        <li> <a target="_blank" href="/article/detail/367835.html" title="hadoop学习问题日记"> <i class="fa fa-circle-thin"></i> hadoop学习问题日记</a> </li> 
+        <li> <a target="_blank" href="/article/detail/367820.html" title="Hadoop学习总结（3）——Hadoop伪分布式环境搭建"> <i class="fa fa-circle-thin"></i> Hadoop学习总结（3）——Hadoop伪分布式环境搭建</a> </li> 
+        <li> <a target="_blank" href="/article/detail/367816.html" title="Hadoop"> <i class="fa fa-circle-thin"></i> Hadoop</a> </li> 
+        <li> <a target="_blank" href="/article/detail/367351.html" title="初识Hadoop"> <i class="fa fa-circle-thin"></i> 初识Hadoop</a> </li> 
+        <li> <a target="_blank" href="/article/detail/367133.html" title="Hadoop节点的磁盘RAID"> <i class="fa fa-circle-thin"></i> Hadoop节点的磁盘RAID</a> </li> 
+        <li> <a target="_blank" href="/article/detail/367107.html" title="Hadoop2.5 的HA配置遇到的错误及解决办法"> <i class="fa fa-circle-thin"></i> Hadoop2.5 的HA配置遇到的错误及解决办法</a> </li> 
+       </ul> 
+      </div> 
+     </div> 
+     <!-- 多说评论框 start --> 
+     <!-- 多说公共JS代码 end --> 
+     <!--PC版--> 
+     <div id="SOHUCS" sid="205335"></div> 
+     <script charset="utf-8" type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js"></script> 
+     <script type="text/javascript">
+                window.changyan.api.config({
+                    appid: 'cysUrEee9',
+                    conf: 'prod_9bb0a9a7629e8ad9278744c810eaddf3'
+                });
+            </script> 
+    </div> 
+   </div> 
+   <aside class="sidebar"> 
+    <div class="widget widget_umucenter form-inline"> 
+     <div class="title"> 
+      <h2> 
+       <sapn class="title_span">
+        精选源码分享
+       </sapn> </h2> 
+     </div> 
+     <li> <span class="local-account"><a data-sign="0" target="_blank" href="/opensource/android/" class="btn btn-primary user-login"><i class="fa fa-android"></i>安卓源码</a></span> <span class="other-sign"><a class="qqlogin btn" target="_blank" href="/opensource/ios/"><i class="fa fa-apple"></i><span>IOS源码</span></a></span> <span class="other-sign"><a class="weibologin btn" target="_blank" href="/opensource/html5/"><i class="fa fa-html5"></i><span>H5源码</span></a></span> </li> 
+    </div> 
+    <div class="widget d_banner"> 
+     <div class="d_banner_inner"> 
+      <script type="text/javascript">var jd_union_unid="262770481",jd_ad_ids="512:6",jd_union_pid="CIKwy6SLKxCxnqZ9GgAg3+rGiwIqAA==";var jd_width=336;var jd_height=280;var jd_union_euid="";var p="BhUHVRtSFQURNwpfBkgyTUMIRmtKRk9aZV8ETVxNNwpfBkgyQFoJfyVpYGtnAVsIYmlQcghkPnxfcgtZK18SAhMBVhtZFDIRAFYdXRQHGwdlKwRRX083HnVaJV1WWggrWxALEwJdElgTAREDXStaJTIi";</script>
+      <script type="text/javascript" charset="utf-8" src="//u.x.jd.com/static/js/auto.js"></script> 
+     </div> 
+    </div> 
+    <div class="widget d_postlist"> 
+     <div class="title"> 
+      <h2> 
+       <sapn class="title_span">
+        热门推荐
+       </sapn> </h2> 
+     </div> 
+     <ul> 
+      <li> <a href="/article/detail/81734.html" target="_blank" title="HBase1.2.4使用Java API创建和删除Table示例程序"> <span class="text">HBase1.2.4使用Java API创建和删除Table示例程序</span> <span class="muted">2016-11-20 22:30</span> <span class="muted_1">319次浏览</span> </a> </li> 
+      <li> <a href="/article/detail/67200.html" target="_blank" title="CentOS7使用本地库(Local Repository)安装Ambari-2.4.1和HDP-2.5.0"> <span class="text">CentOS7使用本地库(Local Repository)安装Ambari-2.4.1和HDP-2.5.0</span> <span class="muted">2016-11-15 12:32</span> <span class="muted_1">238次浏览</span> </a> </li> 
+      <li> <a href="/article/detail/182665.html" target="_blank" title="nginx upstream的分配方式"> <span class="text">nginx upstream的分配方式</span> <span class="muted">2016-12-21 22:04</span> <span class="muted_1">226次浏览</span> </a> </li> 
+      <li> <a href="/article/detail/67969.html" target="_blank" title="大数据(架构师)面试系列（5）"> <span class="text">大数据(架构师)面试系列（5）</span> <span class="muted">2016-11-16 21:13</span> <span class="muted_1">221次浏览</span> </a> </li> 
+      <li> <a href="/article/detail/151833.html" target="_blank" title="Docker容器时区设置及时间同步"> <span class="text">Docker容器时区设置及时间同步</span> <span class="muted">2016-12-14 00:49</span> <span class="muted_1">214次浏览</span> </a> </li> 
+      <li> <a href="/article/detail/104556.html" target="_blank" title="TensorFlow与TensorLayer"> <span class="text">TensorFlow与TensorLayer</span> <span class="muted">2016-11-26 09:31</span> <span class="muted_1">201次浏览</span> </a> </li> 
+      <li> <a href="/article/detail/223682.html" target="_blank" title="Elasticsearch5.20 快速入门 并安装elasticsearch-head插件"> <span class="text">Elasticsearch5.20 快速入门 并安装elasticsearch-head插件</span> <span class="muted">2017-02-12 18:46</span> <span class="muted_1">170次浏览</span> </a> </li> 
+      <li> <a href="/article/detail/15.html" target="_blank" title="容器云平台使用体验：数人云Crane"> <span class="text">容器云平台使用体验：数人云Crane</span> <span class="muted">2016-09-13 21:19</span> <span class="muted_1">170次浏览</span> </a> </li> 
+      <li> <a href="/article/detail/56502.html" target="_blank" title="QEMU QoS特性及原理分析和Librbd QoS定义"> <span class="text">QEMU QoS特性及原理分析和Librbd QoS定义</span> <span class="muted">2016-10-25 02:00</span> <span class="muted_1">166次浏览</span> </a> </li> 
+     </ul> 
+    </div> 
+    <div class="widget widget_categories">
+     <div class="title">
+      <h2>
+       <sapn class="title_span">
+        分类目录
+       </sapn></h2>
+     </div> 
+     <ul> 
+      <li class="cat-item cat-item-3"><a href="/mobile">移动开发</a> </li> 
+      <li class="cat-item cat-item-3"><a href="/web">Web前端</a> </li> 
+      <li class="cat-item cat-item-3"><a href="/architect">架构师</a> </li> 
+      <li class="cat-item cat-item-3"><a href="/code">编程语言</a> </li> 
+      <li class="cat-item cat-item-3"><a href="/internet">互联网</a> </li> 
+      <li class="cat-item cat-item-3"><a href="/database">数据库</a> </li> 
+      <li class="cat-item cat-item-3"><a href="/system">系统运维</a> </li> 
+      <li class="cat-item cat-item-3"><a href="/cloud">云计算</a> </li> 
+      <li class="cat-item cat-item-3"><a href="/softmanager">项目管理</a> </li> 
+      <li class="cat-item cat-item-3"><a href="/other">综合</a> </li> 
+     </ul> 
+    </div> 
+    <div class="widget d_tag"> 
+     <div class="title"> 
+      <h2> 
+       <sapn class="title_span">
+        热门标签
+       </sapn> <a class="btn" target="_blank" href="/tag/">更多标签</a> </h2> 
+     </div> 
+     <div class="d_tags"> 
+      <a title="" href="javascript:void(0)" data-original-title="0个话题">ios(0)</a> 
+      <a title="" href="javascript:void(0)" data-original-title="0个话题">swift(0)</a> 
+      <a title="" href="javascript:void(0)" data-original-title="0个话题">android(0)</a> 
+      <a title="" href="javascript:void(0)" data-original-title="0个话题">python(0)</a> 
+      <a title="" href="javascript:void(0)" data-original-title="0个话题">java(0)</a> 
+      <a title="" href="javascript:void(0)" data-original-title="0个话题">php(0)</a> 
+      <a title="" href="javascript:void(0)" data-original-title="0个话题">html5(0)</a> 
+      <a title="" href="javascript:void(0)" data-original-title="0个话题">mysql(0)</a> 
+      <a title="" href="javascript:void(0)" data-original-title="0个话题">redis(0)</a> 
+      <a title="" href="javascript:void(0)" data-original-title="0个话题">javascript(0)</a> 
+      <a title="" href="javascript:void(0)" data-original-title="0个话题">jquery(0)</a> 
+      <a title="" href="javascript:void(0)" data-original-title="0个话题">linux(0)</a> 
+     </div> 
+    </div> 
+    <div class="widget d_postlist"> 
+     <div class="title"> 
+      <h2> 
+       <sapn class="title_span">
+        热门评论
+       </sapn> </h2> 
+     </div> 
+     <ul> 
+      <li> <a href="/article/detail/368474.html" target="_blank" title="Hive2.1.1源码编译"> <span class="text">Hive2.1.1源码编译</span> <span class="muted">2017-03-28 17:59</span> <span class="muted_1">0个评论</span> </a> </li> 
+      <li> <a href="/article/detail/368467.html" target="_blank" title="MADlib---indatabase的可扩展数据库分析的开源库"> <span class="text">MADlib---indatabase的可扩展数据库分析的开源库</span> <span class="muted">2017-03-28 17:59</span> <span class="muted_1">0个评论</span> </a> </li> 
+      <li> <a href="/article/detail/368460.html" target="_blank" title="spark集群模式类型"> <span class="text">spark集群模式类型</span> <span class="muted">2017-03-28 17:59</span> <span class="muted_1">0个评论</span> </a> </li> 
+      <li> <a href="/article/detail/368452.html" target="_blank" title="spark-client和spark-cluster详解"> <span class="text">spark-client和spark-cluster详解</span> <span class="muted">2017-03-28 17:59</span> <span class="muted_1">0个评论</span> </a> </li> 
+      <li> <a href="/article/detail/368442.html" target="_blank" title="Sqoop2安装配置"> <span class="text">Sqoop2安装配置</span> <span class="muted">2017-03-28 17:59</span> <span class="muted_1">0个评论</span> </a> </li> 
+      <li> <a href="/article/detail/368435.html" target="_blank" title="Linux常用命令 linux的命令操作"> <span class="text">Linux常用命令 linux的命令操作</span> <span class="muted">2017-03-28 17:59</span> <span class="muted_1">0个评论</span> </a> </li> 
+      <li> <a href="/article/detail/368430.html" target="_blank" title="云栖大会：ZStack联手阿里云为用户带来无缝的混合云体验"> <span class="text">云栖大会：ZStack联手阿里云为用户带来无缝的混合云体验</span> <span class="muted">2017-03-28 17:59</span> <span class="muted_1">0个评论</span> </a> </li> 
+      <li> <a href="/article/detail/368423.html" target="_blank" title="Lucene几个分词技术的比较"> <span class="text">Lucene几个分词技术的比较</span> <span class="muted">2017-03-28 17:59</span> <span class="muted_1">0个评论</span> </a> </li> 
+      <li> <a href="/article/detail/368416.html" target="_blank" title="Hbase 中 创建不存在的表总报异常：table already exists"> <span class="text">Hbase 中 创建不存在的表总报异常：table already exists</span> <span class="muted">2017-03-28 17:59</span> <span class="muted_1">0个评论</span> </a> </li> 
+     </ul> 
+    </div> 
+    <!--评论开始--> 
+    <!--评论结束--> 
+    <!--订阅开始--> 
+    <!--订阅结束--> 
+    <!--友情链接--> 
+    <div class="widget widget_text"> 
+     <div class="title"> 
+      <h2> 
+       <sapn class="title_span">
+        友情链接
+       </sapn> </h2> 
+     </div> 
+     <div class="textwidget"> 
+      <div class="d_tags_1"> 
+       <a target="_blank" href="http://www.itwendao.com/">IT问道</a> 
+      </div> 
+     </div> 
+    </div> 
+    <!--友情结束--> 
+   </aside>
+  </section> 
+  <script type="text/javascript">
+    var username = "zhangyufeng0126";
+    var _blogger = username;
+    var blog_address = "http://blog.csdn.net/zhangyufeng0126";
+    var static_host = "http://static.blog.csdn.net";
+    var currentUserName = "";
+</script> 
+  <script type="text/javascript" src="/js/newBlog.js"></script> 
+  <link rel="stylesheet" id="style-css" href="/css/mark_down.css" type="text/css" media="all" /> 
+  <link rel="stylesheet" id="style-css" href="/css/csdn_default.css" type="text/css" media="all" /> 
+  <script>
+    (function(){
+        var src = (document.location.protocol == "http:") ? "http://js.passport.qihucdn.com/11.0.1.js?8d851cb6f7ad6c0a38dcdd4179a37a92":"https://jspassport.ssl.qhimg.com/11.0.1.js?8d851cb6f7ad6c0a38dcdd4179a37a92";
+        document.write('<script src="' + src + '" id="sozz"><\/script>');
+    })();
+</script> 
+  <script type="text/javascript">
+
+
+        jQuery(document).ready(function ($) {
+            $("img").lazyload();
+        });
+//        $(function() {
+//            $("open-img").lazyload();
+//        });
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+
+    </script> 
+  <footer class="footer"> 
+   <div class="footer-inner"> 
+    <p> </p> 
+    <p> 版权所有 &copy; IT问道网 2016 粤ICP备16049987号-1 </p> 
+    <p> </p> 
+   </div> 
+  </footer>
+ </body>
+</html>

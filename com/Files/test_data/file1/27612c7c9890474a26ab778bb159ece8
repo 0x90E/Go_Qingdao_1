@@ -1,0 +1,932 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+    <title>个人中心--我的活动--网络投票</title>
+    <link rel="stylesheet" type="text/css" href="../../uploadFile/css/nav.css">
+    <link rel="stylesheet" type="text/css" href="../../uploadFile/css/center.css">
+
+    <script src="//hm.baidu.com/hm.js?6e6a21ac721ad5ac65adeec4a6406ed8"></script><script src="../../uploadFile/Scripts/jquery-1.4.2.min.js" type="text/javascript"></script>
+
+</head>
+<body>
+    <form id="form1" action="/qhmu/Activities/NetworkVoting" method="post">
+    <!-- 顶部 -->
+    
+
+<script type="text/javascript">
+    $(document).ready(
+    function(){
+    
+    $.ajax({//获取站内信未读条数
+        url:"../../"+school_web_url+"/Index/GetMessageCount",
+        dataType:"text",
+        async:false,
+        success:function(data){
+        //if(Number(data)>0){
+        $("#spanMessageCount").html("(" + data + ")")
+        //}
+        },
+        error:function(data){
+        }
+        
+    })
+    }
+    )
+
+</script>
+
+<table border="0" cellpadding="0" cellspacing="0" width="1311" align="center" class="nav">
+    <tbody><tr>
+        <td width="155">
+        </td>
+        <td height="30" align="left" bgcolor="3C85BC">
+            <a class="color_102" href="http://www.enetedu.com/">&nbsp;&nbsp;返回网培中心</a>
+        </td>
+        <td align="right" bgcolor="3C85BC">
+            
+            <span class="shuxian"><a class="color_102" href="/Index/Login">登录</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="color_102" href="/qhmu/Index/Register">注册</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="color_102" href="/qhmu/Forum/Index?newSearchFlag=true">论坛</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a class="color_102" href="/qhmu/SchoolNotice/HelpList?newSearchFlag=true&amp;notice_type=9">帮助</a></span>
+            
+        </td>
+        <td width="156">
+        </td>
+    </tr>
+</tbody></table>
+<script type="text/javascript">
+  function addFavorite() {  
+            var thisURL = document.URL;  
+            var favURL = "http://" + getHost(thisURL);  
+            if (document.all) {  
+                window.external.addFavorite(favURL, "全国高校教师网络培训中心");  
+            } else {  
+                window.sidebar.addPanel('全国高校教师网络培训中心', favURL, "");  
+            }  
+            return false;  
+        }  
+        function SetHome(obj) {  
+            var vrl = "http://" + getHost(document.URL);  
+            try {  
+                obj.style.behavior = 'url(#default#homepage)'; obj.setHomePage(vrl);  
+            }  
+            catch (e) {  
+                if (window.netscape) {
+                    try {  
+                        netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");  
+                    }  
+                    catch (e) {  
+                        alert("此操作被浏览器拒绝！\n请在浏览器地址栏输入“about:config”并回车\n然后将[signed.applets.codebase_principal_support]设置为'true'");  
+                    }  
+                    var prefs = Components.classes['@@mozilla.org/preferences-service;1'].getService(Components.interfaces.nsIPrefBranch);  
+                    prefs.setCharPref('browser.startup.homepage', vrl);  
+                }  
+            }  
+        } 
+         var getHost = function (url) {  
+            var host = "null";  
+            if (typeof url == "undefined" || null == url)  
+                url = window.location.href;  
+            var regex = /.*\:\/\/([^\/]*).*/;  
+            var match = url.match(regex);  
+            if (typeof match != "undefined" && null != match)  
+                host = match[1];  
+            return host;  
+        }  
+</script>
+
+
+    <!-- 导航 -->
+    
+        <table border="0" cellpadding="0" cellspacing="0" width="1311" align="center" class="nav" height="96">
+            <tbody><tr width="100%" height="100%" align="center">
+                <td width="100%" height="100%">
+                    <img height="109px" src="http://resfile.enetedu.com/uploadFile/schooladmin/201511251607241840.jpg">
+                </td>
+            </tr>
+        </tbody></table>
+    
+    
+<!-- 导航 -->
+<table border="0" cellpadding="0" cellspacing="0" width="1312" align="center" height="47" class="nav">
+    <tbody><tr class="">
+        <td width="154" align="center" height="62">
+        </td>
+        <td width="208" align="center" height="62" class="td_nav_bg_1 top " id="td_nav_bg">
+            <img src="../../uploadFile/indeximages/nav_log_1.jpg" class="tu"><a class="text_2" href="/qhmu/Index/Index">院校首页</a><span class="Triangle_con1 show t"></span>
+        </td>
+        <td width="223" align="center" height="62" class="td_nav_bg_7 top" id="td_nav_bg">
+            <img src="../../uploadFile/images140317/pcenter.gif" class="tu"><a class="text_2" href="/qhmu/SchoolMyCourse/Index" target="_self">个人中心</a><span class="Triangle_con1 hide"></span>
+        </td>
+        <td width="725" align="center" height="62">
+        </td>
+    </tr>
+</tbody></table>
+<!-- 导航 end-->
+<script type="text/javascript">
+    $(function() {
+        $('.top').click(function() {
+            $(this).parent().find('td').find('.Triangle_con').removeClass('show').removeClass('t').addClass('hide');
+            $(this).find('.Triangle_con').removeClass('hide').addClass('show').addClass('t');
+        });
+        $('.top').hover(function() {
+            if ($(this).find('span').attr('class').indexOf('hide') > 0) {
+                $(this).find('.hide').removeClass('hide').addClass('show');
+            }
+        }, function() {
+            if ($(this).find('span').attr('class').indexOf('t') < 0) {
+                $(this).find('.show').removeClass('show').addClass('hide');
+            }
+        });
+    });
+</script>
+    <!-- 导航 end-->
+    <table cellpadding="0" cellspacing="0" border="0">
+        <tbody><tr>
+            <td width="100%" height="20">
+            </td>
+        </tr>
+    </tbody></table>
+    <table class="nav" border="0" cellpadding="0" cellspacing="0" width="1311" align="center">
+        <tbody><tr>
+            <td width="155">
+            </td>
+            <td valign="top">
+                <!-- 导航 -->
+                <table id="menu" border="0" cellpadding="0" cellspacing="0" align="left">
+    <tbody><tr class="bg">
+        <td colspan="2">
+        </td>
+    </tr>
+    <tr height="38">
+        <td style="border-bottom: 1px solid #DDDDDD;">
+        
+            <a href="/qhmu/SchoolMyCourse/Index" target="_self">
+                <span style="width:35px;">
+                <img src="../../uploadFile/images140317/1.gif" style="margin-left: 8px; margin-right: 5px; " width="17" height="13"></span>个人中心首页</a>
+        </td>
+    </tr>
+    <tr height="38">
+        <td style="border-bottom: 1px solid #DDDDDD;">
+            <a href="/qhmu/SchoolMyCourse/Index" target="_self">
+                <span style="width:32px;">
+                <img src="../../uploadFile/images140317/2.gif" style="margin-left: 8px; margin-right: 5px;" width="13" height="13">
+                </span>
+                我的培训课程
+            </a>
+        </td>
+    </tr>
+    <tr height="38">
+        <td style="border-bottom: 1px solid #DDDDDD;">
+            <a href="/qhmu/SchoolCourse/PerPublicList" target="_self">
+                <span style="width:40px;">
+                <img src="../../uploadFile/images140317/3.gif" style="margin-left: 8px; margin-right: 5px;" width="13" height="13">
+                </span>
+                网培公开课
+            </a>
+        </td>
+    </tr>
+    
+    <tr height="38">
+        <td style="border-bottom: 1px solid #DDDDDD;">
+            <a href="/qhmu/SchoolCourse/JCZTList" target="_self">
+                <span style="width:32px;">
+                <img src="../../uploadFile/images140317/4.gif" style="margin-left: 8px; margin-right: 5px;" width="13" height="13">
+                </span>
+               公开选修专题
+            </a>
+        </td>
+    </tr>
+    <tr height="38">
+        <td style="border-bottom: 1px solid #DDDDDD;">
+            <a href="/qhmu/Activities/Index" target="_self">
+                <span style="width:32px;">
+                <img src="../../uploadFile/images140317/5.gif" style="margin-left: 8px; margin-right: 5px;" width="13" height="13">
+                </span>
+                我的活动
+            </a>
+        </td>
+    </tr>
+    
+    <tr height="38">
+        <td style="border-bottom: 1px solid #DDDDDD;">
+            <a href="/qhmu/HomeWork/Index" target="_self">
+                <span style="width:32px;">
+                <img src="../../uploadFile/images140317/6.gif" style="margin-left: 8px; margin-right: 5px;" width="13" height="13">
+                </span>
+                我的作业
+            </a>
+        </td>
+    </tr>
+    <tr height="38">
+        <td style="border-bottom: 1px solid #DDDDDD;">
+            <a href="/qhmu/Credit/CreditIndex" target="_self">
+                <span style="width:32px;">
+                <img src="../../uploadFile/images140317/7.gif" style="margin-left: 8px; margin-right: 5px;" width="13" height="13">
+                </span>
+                学分与证书打印
+            </a>
+        </td>
+    </tr>
+    <tr height="38">
+        <td style="border-bottom: 1px solid #DDDDDD;">
+            <a href="/qhmu/Request/List" target="_self">
+                <span style="width:32px;">
+                <img src="../../uploadFile/images140317/8.gif" style="margin-left: 8px; margin-right: 5px;" width="13" height="13">
+                </span>   
+                继续教育学分申报
+            </a>
+        </td>
+    </tr>
+    <tr height="38">
+        <td style="border-bottom: 1px solid #DDDDDD;">
+            <a href="/qhmu/Topic/Index" target="_self">
+                <span style="width:32px;">
+                <img src="../../uploadFile/images140317/9.gif" style="margin-left: 8px; margin-right: 5px;" width="13" height="13">
+                </span>
+                我的提问
+            </a>
+        </td>
+    </tr>
+    <tr height="38">
+        <td style="border-bottom: 1px solid #DDDDDD;">
+            <a href="/qhmu/PrivateMessage/Index" target="_self">
+                <span style="width:32px;">
+                <img src="../../uploadFile/images140317/10.gif" style="margin-left: 8px; margin-right: 5px;" width="13" height="13">
+                </span>
+                站内短消息
+            </a>
+        </td>
+    </tr>
+    <tr height="38">
+        <td style="border-bottom: 1px solid #DDDDDD;">
+            <a href="/qhmu/SchoolMyCourse/InfoForInfo" target="_self">
+                <span style="width:32px;">
+                <img src="../../uploadFile/images140317/11.gif" style="margin-left: 8px; margin-right: 5px;" width="13" height="13">
+                </span>
+                个人资料修改
+            </a>
+        </td>
+    </tr>
+    <tr height="38">
+        <td style="border-bottom: 1px solid #DDDDDD;">
+            <a href="/qhmu/Index/Loginout" target="_self">
+                <span style="width:32px;">
+                <img src="../../uploadFile/images140317/13.gif" style="margin-left: 8px; margin-right: 5px;" width="13" height="13">
+                </span>
+                退出
+            </a>
+        </td>
+    </tr>
+    <tr height="41">
+        <td style="border-bottom: 1px solid #DDDDDD;">
+        </td>
+    </tr>
+</tbody></table>
+
+                <!-- 导航 end-->
+            </td>
+            <td width="7">
+            </td>
+            <td valign="top">
+                <!--右侧内容-->
+                <table cellpadding="0" cellspacing="0" width="789">
+                    <tbody><tr height="36">
+                        <td style="width:82px;" align="center" class="ac_bg">
+    <a href="/qhmu/Activities/LiveIndex" target="_self" class="actext_3">网络直播</a>
+</td>
+<td style="width:7px;">
+</td>
+<td style="width:82px;" class="ac_bg1" align="center">
+    <a href="/qhmu/Activities/Questionnaire" target="_self" class="actext_3">调查问卷</a>
+</td>
+<td style="width:7px;">
+</td>
+<td style="width:82px;" class="ac_bg" align="center">
+    <a href="/qhmu/Activities/ThemeDiscussion" target="_self" class="actext_3">主题讨论</a>
+</td>
+<td style="width:7px;">
+</td>
+<!--
+<td style="width:109px;" class="ac_bg1">
+    <a href="/Activities/WorkShow" target="_self" class="actext_3">作品展示</a>
+</td>
+-->
+<td style="width:82px;" class="ac_bg1" align="center">
+    <a href="/qhmu/Activities/CoursewareMatch" target="_self" class="actext_3">课件大赛</a>
+</td>
+
+<td style="width:7px;">
+</td>
+<td style="width:82px;" class="ac_bg" align="center">
+    <a href="/qhmu/Activities/PrizEssay" target="_self" class="actext_3">有奖征文</a>
+</td>
+<td style="width:7px;">
+</td>
+<td style="width:82px;" class="ac_bg1" align="center">
+    <a href="/qhmu/Activities/ResourceSharing" target="_self" class="actext_3">资源分享</a>
+</td>
+<td style="width:7px;">
+</td>
+<td style="width:82px;" class="ac_bg" align="center">
+    <a href="/qhmu/Activities/NetworkVoting" target="_self" class="actext_3">网络投票</a>
+</td>
+<td style="width:7px;">
+</td>
+<td style="width:82px;" class="ac_bg1" align="center">
+    <a href="/qhmu/Activities/TeacherGroup" target="_self" class="actext_3">高师社群</a>
+</td>
+<td style="width:7px;">
+</td>
+<td style="width:82px;" class="ac_bg" align="center">
+    <a href="/qhmu/Activities/HomeworkComment" target="_self" class="actext_3">作业互评</a>
+</td>
+<td style="width:7px;">
+</td>
+<td style="width:82px;" class="ac_bg1" align="center">
+    <a href="/qhmu/Activities/CoachQuestion" target="_self" class="actext_3">辅导答疑</a>
+</td>
+
+                    </tr>
+                    <tr height="20">
+                    </tr>
+                    </tbody></table>
+                    <table cellpadding="0" cellspacing="0" width="789">
+                    <tbody><tr height="60">
+                        <td colspan="17" style="border: 1px solid #DDDDDD;">
+                            <span class="keyword">输入活动主题或关键字：</span><span><input id="priztitle" type="text" value="" name="title" style="height: 30px;" maxlength="12" size="49" class="input_style_search"></span>
+                            <span style="width: 45px; height: 25px;">
+                                <input name="search1" type="button" style="background: url(../../uploadFile/images140317/search.gif);
+                                    width: 48px; height: 25px; border: 0px; background-repeat: no-repeat; cursor: pointer;" value="" onclick="window.location.href='/qhmu/Activities/NetworkVoting?title='+encodeURI(document.getElementById('priztitle').value)"></span>
+                        </td>
+                    </tr>
+                    <tr height="10">
+                    </tr>
+                    <tr height="44" bgcolor="F5F5F5">
+                        <td class="bottom_line right_line left_line top_line" style="text-align: left" colspan="14">
+                            <span class="course">正在进行的网络投票</span>
+                        </td>
+                         <td class="bottom_line right_line left_line top_line" style="text-align: center" colspan="3">
+                            <span class="course"><a href="/qhmu/Activities/AddNetworkVoting" class="searchtopic">发起网络投票</a></span>
+                        </td>
+                    </tr>
+                    
+                    <tr height="100">
+                        <td width="13%" class="left_line" colspan="2">
+                            <!--<img width="105" height="85" src="http://resfile.enetedu.com/uploadFile/Data/official/upload/default_small.jpg" class="searchimg">-->
+                            <img width="105" height="85" src="../../uploadFile/images140317/Activity.png" class="searchimg">
+                        </td>
+                        <td width="66%" class="bottom_line" colspan="12">
+                            <table>
+                                <tbody><tr>
+                                    <td class="searchtopic1">
+                                        <a target="_blank" href="/qhmu/Activities/NetworkVotingDetail?id=15075" class="searchtopic">
+                                            大学教师课堂授课是否要每节课点名，要求学生必到？</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="startime">开始时间：2015年06月01日</span><span class="endtime">截止时间：2120年06月30日</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="sponsor">发起人：</span><span class="sponsorname">朱懿</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                         
+                                        <img src="../../uploadFile/images140317/ongoing.gif">
+                                        
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                        </td>
+                        <td width="21%" class="right_line" style="text-align: right; margin-right: 10px;" colspan="3">
+                            <span class="numberpeople">参加人数：989人</span>
+                            
+                            <a target="_blank" href="/qhmu/Activities/NetworkVotingDetail?id=15075" class="canyu">
+                                <img src="../../uploadFile/images140317/canyu.gif"></a>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr height="100">
+                        <td width="13%" class="left_line" colspan="2">
+                            <!--<img width="105" height="85" src="http://resfile.enetedu.com/uploadFile/Data/official/upload/default_small.jpg" class="searchimg">-->
+                            <img width="105" height="85" src="../../uploadFile/images140317/Activity.png" class="searchimg">
+                        </td>
+                        <td width="66%" class="bottom_line" colspan="12">
+                            <table>
+                                <tbody><tr>
+                                    <td class="searchtopic1">
+                                        <a target="_blank" href="/qhmu/Activities/NetworkVotingDetail?id=14764" class="searchtopic">
+                                            补考是否应该给学生划范围？</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="startime">开始时间：2015年02月26日</span><span class="endtime">截止时间：2120年04月01日</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="sponsor">发起人：</span><span class="sponsorname">许子刚</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                         
+                                        <img src="../../uploadFile/images140317/ongoing.gif">
+                                        
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                        </td>
+                        <td width="21%" class="right_line" style="text-align: right; margin-right: 10px;" colspan="3">
+                            <span class="numberpeople">参加人数：47137人</span>
+                            
+                            <a target="_blank" href="/qhmu/Activities/NetworkVotingDetail?id=14764" class="canyu">
+                                <img src="../../uploadFile/images140317/canyu.gif"></a>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr height="100">
+                        <td width="13%" class="left_line" colspan="2">
+                            <!--<img width="105" height="85" src="http://resfile.enetedu.com/uploadFile/Data/official/upload/default_small.jpg" class="searchimg">-->
+                            <img width="105" height="85" src="../../uploadFile/images140317/Activity.png" class="searchimg">
+                        </td>
+                        <td width="66%" class="bottom_line" colspan="12">
+                            <table>
+                                <tbody><tr>
+                                    <td class="searchtopic1">
+                                        <a target="_blank" href="/qhmu/Activities/NetworkVotingDetail?id=15419" class="searchtopic">
+                                            中西方教育方式相比，哪个更具优势(好)？</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="startime">开始时间：2015年09月10日</span><span class="endtime">截止时间：2068年09月10日</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="sponsor">发起人：</span><span class="sponsorname">黄超</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                         
+                                        <img src="../../uploadFile/images140317/ongoing.gif">
+                                        
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                        </td>
+                        <td width="21%" class="right_line" style="text-align: right; margin-right: 10px;" colspan="3">
+                            <span class="numberpeople">参加人数：794人</span>
+                            
+                            <a target="_blank" href="/qhmu/Activities/NetworkVotingDetail?id=15419" class="canyu">
+                                <img src="../../uploadFile/images140317/canyu.gif"></a>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr height="100">
+                        <td width="13%" class="left_line" colspan="2">
+                            <!--<img width="105" height="85" src="http://resfile.enetedu.com/uploadFile/Data/official/upload/default_small.jpg" class="searchimg">-->
+                            <img width="105" height="85" src="../../uploadFile/images140317/Activity.png" class="searchimg">
+                        </td>
+                        <td width="66%" class="bottom_line" colspan="12">
+                            <table>
+                                <tbody><tr>
+                                    <td class="searchtopic1">
+                                        <a target="_blank" href="/qhmu/Activities/NetworkVotingDetail?id=18184" class="searchtopic">
+                                            青年教师被安排一门从未学过的课程时，是该接收还是拒绝？</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="startime">开始时间：2016年06月27日</span><span class="endtime">截止时间：2026年06月27日</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="sponsor">发起人：</span><span class="sponsorname">杨海陆</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                         
+                                        <img src="../../uploadFile/images140317/ongoing.gif">
+                                        
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                        </td>
+                        <td width="21%" class="right_line" style="text-align: right; margin-right: 10px;" colspan="3">
+                            <span class="numberpeople">参加人数：826人</span>
+                            
+                            <a target="_blank" href="/qhmu/Activities/NetworkVotingDetail?id=18184" class="canyu">
+                                <img src="../../uploadFile/images140317/canyu.gif"></a>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr height="100">
+                        <td width="13%" class="left_line" colspan="2">
+                            <!--<img width="105" height="85" src="http://resfile.enetedu.com/uploadFile/Data/official/upload/default_small.jpg" class="searchimg">-->
+                            <img width="105" height="85" src="../../uploadFile/images140317/Activity.png" class="searchimg">
+                        </td>
+                        <td width="66%" class="bottom_line" colspan="12">
+                            <table>
+                                <tbody><tr>
+                                    <td class="searchtopic1">
+                                        <a target="_blank" href="/qhmu/Activities/NetworkVotingDetail?id=12494" class="searchtopic">
+                                            教学质量的提高应该是教师引导为主还是学生自我学习意识的主导为主</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="startime">开始时间：2014年07月31日</span><span class="endtime">截止时间：2021年07月16日</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="sponsor">发起人：</span><span class="sponsorname">王正万</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                         
+                                        <img src="../../uploadFile/images140317/ongoing.gif">
+                                        
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                        </td>
+                        <td width="21%" class="right_line" style="text-align: right; margin-right: 10px;" colspan="3">
+                            <span class="numberpeople">参加人数：42802人</span>
+                            
+                            <a target="_blank" href="/qhmu/Activities/NetworkVotingDetail?id=12494" class="canyu">
+                                <img src="../../uploadFile/images140317/canyu.gif"></a>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr height="100">
+                        <td width="13%" class="left_line" colspan="2">
+                            <!--<img width="105" height="85" src="http://resfile.enetedu.com/uploadFile/Data/official/upload/default_small.jpg" class="searchimg">-->
+                            <img width="105" height="85" src="../../uploadFile/images140317/Activity.png" class="searchimg">
+                        </td>
+                        <td width="66%" class="bottom_line" colspan="12">
+                            <table>
+                                <tbody><tr>
+                                    <td class="searchtopic1">
+                                        <a target="_blank" href="/qhmu/Activities/NetworkVotingDetail?id=15432" class="searchtopic">
+                                            英语语音</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="startime">开始时间：2015年09月16日</span><span class="endtime">截止时间：2020年09月16日</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="sponsor">发起人：</span><span class="sponsorname">孔桂英</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                         
+                                        <img src="../../uploadFile/images140317/ongoing.gif">
+                                        
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                        </td>
+                        <td width="21%" class="right_line" style="text-align: right; margin-right: 10px;" colspan="3">
+                            <span class="numberpeople">参加人数：664人</span>
+                            
+                            <a target="_blank" href="/qhmu/Activities/NetworkVotingDetail?id=15432" class="canyu">
+                                <img src="../../uploadFile/images140317/canyu.gif"></a>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr height="100">
+                        <td width="13%" class="left_line" colspan="2">
+                            <!--<img width="105" height="85" src="http://resfile.enetedu.com/uploadFile/Data/official/upload/default_small.jpg" class="searchimg">-->
+                            <img width="105" height="85" src="../../uploadFile/images140317/Activity.png" class="searchimg">
+                        </td>
+                        <td width="66%" class="bottom_line" colspan="12">
+                            <table>
+                                <tbody><tr>
+                                    <td class="searchtopic1">
+                                        <a target="_blank" href="/qhmu/Activities/NetworkVotingDetail?id=15026" class="searchtopic">
+                                            公共选修课和专业课之间的关系</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="startime">开始时间：2015年05月21日</span><span class="endtime">截止时间：2020年05月31日</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="sponsor">发起人：</span><span class="sponsorname">李兴芬</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                         
+                                        <img src="../../uploadFile/images140317/ongoing.gif">
+                                        
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                        </td>
+                        <td width="21%" class="right_line" style="text-align: right; margin-right: 10px;" colspan="3">
+                            <span class="numberpeople">参加人数：32585人</span>
+                            
+                            <a target="_blank" href="/qhmu/Activities/NetworkVotingDetail?id=15026" class="canyu">
+                                <img src="../../uploadFile/images140317/canyu.gif"></a>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr height="100">
+                        <td width="13%" class="left_line" colspan="2">
+                            <!--<img width="105" height="85" src="http://resfile.enetedu.com/uploadFile/Data/official/upload/default_small.jpg" class="searchimg">-->
+                            <img width="105" height="85" src="../../uploadFile/images140317/Activity.png" class="searchimg">
+                        </td>
+                        <td width="66%" class="bottom_line" colspan="12">
+                            <table>
+                                <tbody><tr>
+                                    <td class="searchtopic1">
+                                        <a target="_blank" href="/qhmu/Activities/NetworkVotingDetail?id=16662" class="searchtopic">
+                                            你认为网培课程对个人教学有帮助吗?</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="startime">开始时间：2016年03月17日</span><span class="endtime">截止时间：2020年03月17日</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="sponsor">发起人：</span><span class="sponsorname">李怀强</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                         
+                                        <img src="../../uploadFile/images140317/ongoing.gif">
+                                        
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                        </td>
+                        <td width="21%" class="right_line" style="text-align: right; margin-right: 10px;" colspan="3">
+                            <span class="numberpeople">参加人数：18375人</span>
+                            
+                            <a target="_blank" href="/qhmu/Activities/NetworkVotingDetail?id=16662" class="canyu">
+                                <img src="../../uploadFile/images140317/canyu.gif"></a>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr height="100">
+                        <td width="13%" class="left_line" colspan="2">
+                            <!--<img width="105" height="85" src="" class="searchimg">-->
+                            <img width="105" height="85" src="../../uploadFile/images140317/Activity.png" class="searchimg">
+                        </td>
+                        <td width="66%" class="bottom_line" colspan="12">
+                            <table>
+                                <tbody><tr>
+                                    <td class="searchtopic1">
+                                        <a target="_blank" href="/qhmu/Activities/NetworkVotingDetail?id=20529" class="searchtopic">
+                                            选拔领导的方案</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="startime">开始时间：2016年11月21日</span><span class="endtime">截止时间：2019年11月21日</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="sponsor">发起人：</span><span class="sponsorname">孙淑艳</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                         
+                                        <img src="../../uploadFile/images140317/ongoing.gif">
+                                        
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                        </td>
+                        <td width="21%" class="right_line" style="text-align: right; margin-right: 10px;" colspan="3">
+                            <span class="numberpeople">参加人数：5751人</span>
+                            
+                            <a target="_blank" href="/qhmu/Activities/NetworkVotingDetail?id=20529" class="canyu">
+                                <img src="../../uploadFile/images140317/canyu.gif"></a>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr height="100">
+                        <td width="13%" class="left_line" colspan="2">
+                            <!--<img width="105" height="85" src="" class="searchimg">-->
+                            <img width="105" height="85" src="../../uploadFile/images140317/Activity.png" class="searchimg">
+                        </td>
+                        <td width="66%" class="bottom_line" colspan="12">
+                            <table>
+                                <tbody><tr>
+                                    <td class="searchtopic1">
+                                        <a target="_blank" href="/qhmu/Activities/NetworkVotingDetail?id=21894" class="searchtopic">
+                                            在教学时间有限的情况下，高职专业学生理论课与实践课哪个占更大的比重？</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="startime">开始时间：2017年02月14日</span><span class="endtime">截止时间：2019年05月14日</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span class="sponsor">发起人：</span><span class="sponsorname">解晓莉</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                         
+                                        <img src="../../uploadFile/images140317/ongoing.gif">
+                                        
+                                    </td>
+                                </tr>
+                            </tbody></table>
+                        </td>
+                        <td width="21%" class="right_line" style="text-align: right; margin-right: 10px;" colspan="3">
+                            <span class="numberpeople">参加人数：2489人</span>
+                            
+                            <a target="_blank" href="/qhmu/Activities/NetworkVotingDetail?id=21894" class="canyu">
+                                <img src="../../uploadFile/images140317/canyu.gif"></a>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr height="50">
+                        <td class="left_line" style="border-right: 1px solid #DDDDDD;" align="center" colspan="17">
+                            <div class="nextPage"><nobr><span class="disabled">&lt;  上一页</span><span class="currentNext">1</span><a href="javaScript:document.forms[0].intPageNo.value='2';goPage()">2</a><a href="javaScript:document.forms[0].intPageNo.value='3';goPage()">3</a><a href="javaScript:document.forms[0].intPageNo.value='4';goPage()">4</a><a href="javaScript:document.forms[0].intPageNo.value='5';goPage()">5</a><a href="javaScript:document.forms[0].intPageNo.value='6';goPage()">6</a><a href="javaScript:document.forms[0].intPageNo.value='7';goPage()">7</a>...<a href="javaScript:document.forms[0].intPageNo.value='11';goPage()">11</a><a href="javaScript:document.forms[0].intPageNo.value='12';goPage()">12</a> <a href="javaScript:document.forms[0].intPageNo.value='2';goPage()">下一页  &gt;</a> 共 119 条 第 1/12 页 <select name="intPageNo" onchange="goPage()"><option value="1" selected="">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select><script language="javascript">
+function goPage()
+{ var obj=document.forms[0].intPageNo.value;
+if(obj==null || obj.length==0){ alert('请输入页码!');document.forms[0].intPageNo.focus();return;}
+if(isNaN(obj) || parseInt(obj)<1){ alert('请输入正确的页码,必须为正整数!');document.forms[0].intPageNo.focus();return;}
+ if(parseInt(obj)>parseInt(12)){document.forms[0].intPageNo.value=12;obj=document.forms[0].intPageNo.value;}
+ var url=document.forms[0].action;
+ if(url.indexOf('?')>-1){url+='&';}else{url+='?';} url+='intPageNo='+obj;
+ document.forms[0].action=url;
+ document.forms[0].submit();}
+</script></nobr></div>
+
+
+                        </td>
+                    </tr>
+                </tbody></table>
+            </td>
+            <td width="154">
+            </td>
+        </tr>
+    </tbody></table>
+    
+    <table cellpadding="0" cellspacing="0" border="0">
+        <tbody><tr>
+            <td width="100%" height="40">
+            </td>
+        </tr>
+    </tbody></table>
+    <!-- foot -->
+    
+<script type="text/javascript">
+function friendUrlChange(urlType)
+{
+    if(urlType=="2")
+    {
+        if($("#innerHref option:selected").val()!="")
+        {
+            //window.location.href=$("#innerHref option:selected").val();
+             window.open($("#innerHref option:selected").val());
+        }
+       
+    }
+    else if(urlType=="3")
+    {
+        if($("#outerHref option:selected").val()!="")
+        {
+            //window.open($("#outerHref option:selected").val());
+             window.location.href=$("#innerHref option:selected").val();
+             window.open($("#outerHref option:selected").val());
+        }
+    }
+}
+</script>
+<table height="125px" cellpadding="0" cellspacing="0" align="center" bgcolor="FFFFFF" id="footer" class="nav" width="100%" style="border:none;width:1008px;">
+    <tbody><tr height="2px">
+   
+        <td height="2px" width="10%" style="background-color: #F1AB3C">
+        </td>
+        <td width="10%" style="background-color: #2C8ED7">
+        </td>
+        <td width="10%" style="background-color: #6FC24E">
+        </td>
+        <td width="10%" style="background-color: #EF980B">
+        </td>
+        <td width="10%" style="background-color: #2B8FD7">
+        </td>
+        <td width="10%" style="background-color: #6FC24F">
+        </td>
+        <td width="10%" style="background-color: #EF980B">
+        </td>
+        
+    </tr>
+    <tr height="120px" style="background-color: #1F6EBD">
+    <td width="155" bgcolor="eeeeee">
+            </td>
+        <td height="120px" colspan="7">
+            <table height="120px" cellpadding="0" cellspacing="0" class="nav" style="width:1008px;">
+                <tbody><tr style="background-color: #1F6EBD">
+                
+                    <td width="30%" align="center">
+                        <img src="../../uploadFile/images/logo2.gif">
+                    </td>
+                    <td>
+                    
+                        <table height="80px" cellpadding="0" cellspacing="0" width="100%">
+                            <tbody><tr>
+                                <td class="footer1" align="middle">
+                                
+                                    
+
+                                    
+                             
+                                    <a href="/qhmu/Index/Introduce">咨询中心</a>&nbsp;|&nbsp;
+                                    <a href="/qhmu/Index/Announcement">网站声明</a>|&nbsp;
+                                    <a href="/qhmu/SchoolNotice/HelpList?newSearchFlag=true&amp;notice_type=9">帮助</a>&nbsp;
+                                </td>
+                            </tr>
+                            
+                                                        
+                            <tr>
+                                <td class="footer2" align="center">
+                                    教师咨询电话：400-6699-800&nbsp;&nbsp;&nbsp;&nbsp;客服EMAIL：peixun@enetedu.com&nbsp;&nbsp;&nbsp;&nbsp;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="footer3" align="center">
+                                    地址：北京市西城区德外大街4号全国高校教师网络培训中心&nbsp;&nbsp;
+                                   
+                                   
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="footer3" align="center">
+                                  
+                                    2015&nbsp;Copyright © 版权所有：教育部全国高校教师网络培训中心&nbsp;&nbsp;&nbsp;
+                                </td>
+                            </tr>
+                        </tbody></table>
+                    </td>
+                </tr>
+            </tbody></table>
+        </td>
+        <td width="155" bgcolor="#eeeeee">
+            </td>
+    </tr>
+</tbody></table>
+
+
+<script>
+window.status="完成";
+
+</script>
+
+
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?6e6a21ac721ad5ac65adeec4a6406ed8";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+    <!-- foot end-->
+    </form>
+
+
+</body></html>

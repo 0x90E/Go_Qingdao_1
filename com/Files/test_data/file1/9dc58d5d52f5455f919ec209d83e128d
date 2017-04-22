@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=gb2312" /> 
+  <title>读懂Swift 2.0中字符串设计思路的改变 - 51CTO.COM</title> 
+  <meta name="description" content="Swift提供了一种高性能的，兼容Unicode编码的String实现作为标准库的一部分。在Swift2中，String类型不再遵守CollectionType协议。在以前，String类型是字符的一个集合，类似于数组。现在，String类型通过一个characters属性来提供一个字符的集合。" /> 
+  <meta name="keywords" content="swift,2.0,字符串,设计思路,改变" /> 
+  <base target="_blank" /> 
+  <link rel="stylesheet" type="text/css" href="http://static4.51cto.com/51cto/cms/2016/css/article_head.css?v=0.1" /> 
+  <link rel="stylesheet" type="text/css" href="http://static1.51cto.com/51cto/cms/2016/css/article_layout.css?v=2.15" /> 
+  <script type="text/javascript" src="http://static1.51cto.com/libs/jquery/1.8.3/jquery.min.js"></script> 
+  <script type="text/javascript" src="http://static3.51cto.com//51cto/cms/bdtj/mdsa.js"></script> 
+ </head> 
+ <body> 
+  <!-- 导航 开始--> 
+  <!-- top start --> 
+  <div class="home-top" id="topx"> 
+   <div class="w1001 cent"> 
+    <div class="pdr10 fl">
+     中国领先的IT技术网站
+    </div> 
+    <div class="pdr10 fl">
+     |
+    </div> 
+    <div class="pdr10 fl"> 
+     <div class="subweb">
+      <span class="trans">51CTO旗下网站</span>
+      <i></i> 
+      <!--旗下网站--> 
+      <div class="subweb-list"> 
+       <a href="http://www.51cto.com" target="_blank">51CTO.com</a> 
+       <a href="http://cio.51cto.com" target="_blank">CIOage.com</a> 
+       <a href="http://www.watchstor.com" target="_blank">WatchStor.com</a> 
+       <a href="http://www.hc3i.cn" target="_blank">HC3i.cn</a> 
+      </div> 
+      <!--旗下网站--> 
+     </div> 
+    </div> 
+    <div class="pdr10 fl">
+     |
+    </div> 
+    <div class="pdr10 fl">
+     <a href="http://www.51cto.com/about/map.htm" target="_blank">地图</a>
+    </div> 
+    <div class="top-r"> 
+     <div id="login_status" style="text-align:right;" class="login"> 
+     </div> 
+    </div> 
+   </div> 
+  </div> 
+  <!-- top end --> 
+  <!-- 导航 结束--> 
+  <!-- 频道导航 --> 
+  <div class="top_bg"> 
+   <div class="wrap"> 
+    <div id="tonglanad" class="left"></div> 
+    <div id="list4" class="right" style="position:relative;"> 
+     <ul> 
+      <li id="wordlinkad1"></li> 
+      <li id="wordlinkad2"></li> 
+      <li id="wordlinkad3"></li> 
+      <li id="wordlinkad4"></li> 
+     </ul> 
+     <div style="right: 0px; width: 24px; height: 14px; z-index: 12; position: absolute; background: transparent url('http://s5.51cto.com/wyfs02/M00/86/BB/wKiom1fI4nWStYqXAAAEoZQn6vs942.png') repeat scroll 0% 0%; bottom: 2px;"></div> 
+    </div> 
+   </div> 
+   <div class="nav"> 
+    <a href="http://www.51cto.com" class="logo"><img src="http://static4.51cto.com/51cto/cms/2016/images/nr_logo.png?v=0.1" alt="" /></a> 
+    <ul> 
+     <li><a href="http://mdsa.51cto.com" class="active">MDSA频道</a></li> 
+     <li><a href="http://mdsa.51cto.com/">首页</a></li> 
+     <li><a href="http://mdsa.51cto.com/list/news/1674">开发资讯</a></li> 
+     <li><a href="http://mdsa.51cto.com/list/news/1675">源码下载</a></li> 
+     <li><a href="http://mdsa.51cto.com/list/document">文档库</a></li> 
+     <li><a href="http://mdsa.51cto.com/services">开发者服务</a></li> 
+     <li><a href="http://mdsa.51cto.com/list/activity">活动中心</a></li> 
+    </ul> 
+    <div class="nav-rsear"> 
+     <form method="post" action="http://www.51cto.com/php/search.php" name="searchform" target="_blank"> 
+      <input name="keyword" id="q" type="text" placeholder="输入您要搜索的内容" class="sear-1" /> 
+      <input name="" type="submit" value="" class="sear-2" /> 
+     </form> 
+    </div> 
+   </div> 
+  </div> 
+  <!-- 频道导航结束 --> 
+  <div class="main"> 
+   <!-- 左侧内容 --> 
+   <div class="main_left"> 
+    <div class="wznr"> 
+     <h2>读懂Swift 2.0中字符串设计思路的改变</h2> 
+     <p>Swift提供了一种高性能的，兼容Unicode编码的String实现作为标准库的一部分。在Swift2中，String类型不再遵守CollectionType协议。在以前，String类型是字符的一个集合，类似于数组。现在，String类型通过一个characters属性来提供一个字符的集合。</p> 
+     <dl> 
+      <dt>
+       <span>作者：yake_099</span>
+       <span>来源：<a href="https://developer.apple.com/swift/blog/?id=30" target="_blank">苹果开发者中心</a></span>|
+       <em>2015-08-25 10:25</em>
+      </dt> 
+      <dd> 
+       <div class="left" style="padding-right: 10px"> 
+        <a href="javascript:favorBox('open');" title="一键收藏，随时查看，分享好友！" target="_self" class="bds_more1">&nbsp;收藏</a> 
+       </div> 
+       <div class="bdsharebuttonbox left" data-tag="share_2"> 
+        <a href="javascript:;" class="bds_more" data-cmd="more">&nbsp;&nbsp;分享</a> 
+       </div> 
+      </dd> 
+     </dl> 
+    </div> 
+    <div class="zwnr"> 
+     <h2><a href="#" target="_blank"></a></h2> 
+     <p style="text-align: center;"><img src="http://s2.51cto.com/wyfs02/M02/81/51/wKioL1dFzODi6w9LAACU78EN5lw200.jpg-wh_651x-s_2686671380.jpg" title="1440405209297757.jpg" alt="2015-01-20-Ideass.jpg" /></p> 
+     <p>Swift提供了一种高性能的，兼容Unicode编码的String实现作为标准库的一部分。在Swift2中，String类型不再遵守CollectionType协议。在以前，String类型是字符的一个集合，类似于数组。现在，String类型通过一个characters属性来提供一个字符的集合。</p> 
+     <p>为什么会有这样的变化呢？虽然模拟一个字符串作为字符的集合看起来非常自然，但是String类型与真正的集合类如Array、Set以及Dictionnary等类型表现得完全不同。这是一直都存在的，但是由于Swift2中增加了协议扩展，这些不同就使得很有必要做些基本改变。</p> 
+     <p>不同于部分的总和</p> 
+     <p>当你在集合中添加一个元素时，你希望集合中包含那个元素。也就是说，当你给一个数组增加一个值，这个数组就包含了那个值。这同样适用于Dictionary和Set。无论如何，当你给字符串拼接一个组合标记字符（combing mark character）时，字符串本身的内容就改变了。</p> 
+     <p>比如字符串cafe，它包含了四个字符：c，a，f ，e:</p> 
+     <pre>
+      <ol class="dp-j">
+       <li class="alt"><span><span>var&nbsp;letters:&nbsp;[Character]&nbsp;=&nbsp;[</span><span class="string">&quot;c&quot;</span><span>,&nbsp;</span><span class="string">&quot;a&quot;</span><span>,&nbsp;</span><span class="string">&quot;f&quot;</span><span>,&nbsp;</span><span class="string">&quot;e&quot;</span><span>]&nbsp;</span></span></li>
+       <li><span>var&nbsp;string:&nbsp;String&nbsp;=&nbsp;String(letters)&nbsp;</span></li>
+       <li class="alt"><span>&nbsp;&nbsp;</span></li>
+       <li><span>print(letters.count)&nbsp;<span class="comment">//&nbsp;4</span><span>&nbsp;</span></span></li>
+       <li class="alt"><span>print(string)&nbsp;<span class="comment">//&nbsp;cafe</span><span>&nbsp;</span></span></li>
+       <li><span>print(string.characters.count)&nbsp;<span class="comment">//&nbsp;4</span><span>&nbsp;</span></span></li>
+      </ol></pre> 
+     <p>如果你在字符串后面拼接了组合重音符号U+0301 &nbsp;? ,字符串仍然有四个字符，但是最后的字符现在是&eacute;：</p> 
+     <pre>
+      <ol class="dp-j">
+       <li class="alt"><span><span>let&nbsp;acuteAccent:&nbsp;Character&nbsp;=&nbsp;</span><span class="string">&quot;\u{0301}&quot;</span><span>&nbsp;</span><span class="comment">//&nbsp;′&nbsp;COMBINING&nbsp;ACUTE&nbsp;ACCENT'&nbsp;(U+0301)</span><span>&nbsp;</span></span></li>
+       <li><span>&nbsp;&nbsp;</span></li>
+       <li class="alt"><span>string.append(acuteAccent)&nbsp;</span></li>
+       <li><span>print(string.characters.count)&nbsp;<span class="comment">//&nbsp;4</span><span>&nbsp;</span></span></li>
+       <li class="alt"><span>print(string.characters.last!)&nbsp;<span class="comment">//&nbsp;&eacute;</span><span>&nbsp;</span></span></li>
+      </ol></pre> 
+     <p>字符串的characters属性不包含原始的小写字母 e，它也不包含刚刚拼接的重音符号?，字符串现在是一个带着重音符号的小写字母&eacute;：</p> 
+     <pre>
+      <ol class="dp-j">
+       <li class="alt"><span><span>string.characters.contains(</span><span class="string">&quot;e&quot;</span><span>)&nbsp;</span><span class="comment">//&nbsp;false</span><span>&nbsp;</span></span></li>
+       <li><span>string.characters.contains(<span class="string">&quot;?&quot;</span><span>)&nbsp;</span><span class="comment">//&nbsp;false</span><span>&nbsp;</span></span></li>
+       <li class="alt"><span>string.characters.contains(<span class="string">&quot;&eacute;&quot;</span><span>)&nbsp;</span><span class="comment">//&nbsp;true</span><span>&nbsp;</span></span></li>
+      </ol></pre> 
+     <p>如果你想要将字符串像其他集合类型那样看待，这种结果很令人惊讶，就像你在一个集合中添加了UIColor.redColor()和UIColor.greenColor(),但是集合会报告它自己包含了一个UIColor.yellowColor()</p> 
+     <p>通过字符内容判断</p> 
+     <p>字符串与集合之间另一个不同是它们处理“相等”的方式。</p> 
+     <ul> 
+      <li> <p>只有在两个数组的元素个数相同，并且在每一个对应索引位置的元素也相等时两个数组才是相等的。</p> </li> 
+      <li> <p>只有在两个集合的元素个数相同，并且第一个集合中包含的元素，第二个集合也包括时两个集合才相等。</p> </li> 
+      <li> <p>两个字典只有在有相同的键值对时才相等。</p> </li> 
+     </ul> 
+     <p>然而，String类型的相等建立在标准相等的基础上。如果两个字符串有相同的语义和外观，即使它们实际上是用不同的Unicode码构成的，它们也是标准相等的。</p> 
+     <p>考虑韩国的书写系统，包含了24个字母，或者叫Jamo，包含了单个的辅音和元音。当写出时这些字母就组成每个音节对应的字符。例如，字符<img src="http://s2.51cto.com/wyfs02/M02/81/51/wKioL1dFzOGDW3rlAAADnhJlUpY408.jpg-s_1808313378.jpg" title="1440403339496185.jpg" alt="13.jpg" /><img src="http://s4.51cto.com/wyfs02/M02/81/53/wKiom1dFy-yA3PTfAAADnhJlUpY141.jpg-s_4030683522.jpg" title="1440403344786164.jpg" alt="13.jpg" />&nbsp;([ga])是由字母<img src="http://s1.51cto.com/wyfs02/M01/81/53/wKiom1dFy-3C7cTKAAADRnC--dI023.jpg-s_1094098810.jpg" title="1440403402246967.jpg" alt="14.jpg" />&nbsp;([g])和<img src="http://s5.51cto.com/wyfs02/M01/81/51/wKioL1dFzOLwj1fnAAADVpsQraI775.jpg-s_3122900788.jpg" title="1440403407461564.jpg" alt="15.jpg" />[a]构成的。在Swift中，无论字符串是由分解的还是组合的字符构成的，都被认为是相等的。</p> 
+     <p style="text-align: center;"><img src="http://s5.51cto.com/wyfs02/M01/81/51/wKioL1dFzOPBpz2MAAAgy1OxN0A100.jpg-s_7862540.jpg" title="1440403513164120.jpg" alt="16.jpg" /></p> 
+     <p>这种行为再一次与Swift中的集合类型区别开来。这很令人惊讶就像是数组中的值<img src="http://s4.51cto.com/wyfs02/M00/81/51/wKioL1dFzOOxircZAAAVAt6ddl8296.jpg-s_3958972086.jpg" title="1440404334397505.png" alt="images.png" />和<img src="http://s2.51cto.com/wyfs02/M02/81/53/wKiom1dFy_CQRvB8AABOXFnnhFU473.jpg-s_1284837181.jpg" title="1440403735761666.png" alt="salmon-149372_640.png" />被认为和<img src="http://s3.51cto.com/wyfs02/M02/81/53/wKiom1dFy_Cylgf9AAAS2uKu4E4257.jpg-s_1445788912.jpg" title="1440404093371658.jpg" alt="234728-13121619123590.jpg" />相等。</p> 
+     <p>取决于你的视角</p> 
+     <p>字符串不是集合。但是它们确实也提供了许多遵守CollectionType协议的views：</p> 
+     <p>characters是Character类型值的集合，或者扩展字形群集（<a href="https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/Strings/Articles/stringsClusters.html" target="_blank">extended grapheme clusters</a>）</p> 
+     <p>unicodeScalars是Unicode量值的集合（<a href="http://www.unicode.org/glossary/#unicode_scalar_value" target="_blank">Unicode scalar values</a>）</p> 
+     <p>utf8是UTF-8编码单元的集合（<a href="http://www.unicode.org/glossary/#UTF_8" target="_blank">UTF-8</a>）</p> 
+     <p>utf16是UTF-16编码单元的集合（<a href="http://www.unicode.org/glossary/#UTF_16" target="_blank">UTF-16</a>）</p> 
+     <p>让我们来看之前单词 “caf&eacute;”的例子，由几个单独的字符[ c, a, f, e ] 和 [ ? ]构成，下面是多种字符串的Views中所包含的内容：</p> 
+     <p style="text-align: center;"><img src="http://s4.51cto.com/wyfs02/M01/81/53/wKiom1dFy_GSfx92AABN1fhBdWs748.jpg-wh_600x-s_1303685752.jpg" title="1440404178371569.jpg" alt="QQ截图20150824161609.jpg" /></p> 
+     <p>characters属性将文字分段为扩展字形群集，差不多接近用户看到的字符（在这个例子中指c, a, f, 和 &eacute;）。由于字符串必须对整个字符串中的每一个位置(称为码位(code point))进行迭代以确定字符的边界，因此取得这个属性的时间复杂度是线性的 O(n)。当处理包含了人类可读文本的字符串，以及上层的本地敏感的Unicode计算程序时，例如用到的localizedStandardCompare(_:)方法和localizedLowercaseString 属性，都需要将字符逐字进行处理。</p> 
+     <p>unicodeScalars属性提供了存储在字符串中的量值，如果原始的字符串是通过字符&eacute;而不是e + ?创建的，这就会通过unicodeScalar属性表示出来。当你对数据进行底层操作的时候使用这个API。</p> 
+     <p>utf8和utf16属性对应地提供了它们所代表的代码点（code points），这些值与字符串被转化时写入一个文件中的实际字节数是相一致的，并且来自一种特定的编码方式。</p> 
+     <p>UTF-8 编码单元(code units)被许多 POSIX 的字符串处理 API 所使用，而 UTF-16 编码单元(code units)则始终被用于表示 Cocoa 和 Cocoa Touch中的字符串长度和偏移量。</p> 
+     <p>如果想了解更多 Swift 中关于字符和字符串的信息，请看<a href="https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/Swift_Programming_Language/StringsAndCharacters.html#//apple_ref/doc/uid/TP40014097-CH7-ID285" target="_blank">The Swift Programming Language</a>和&nbsp;<a href="https://developer.apple.com/library/prerelease/ios//documentation/Swift/Reference/Swift_String_Structure/index.html#//apple_ref/swift/struct/s:SS" target="_blank">The Swift Standard Library Reference</a>.</p>
+     <p>【编辑推荐】</p>
+     <div>
+      <ol>
+       <li><a href="http://mdsa.51cto.com/art/201508/487353.htm" target="_blank">不要用子类！Swift的核心是面向协议</a></li>
+       <li><a href="http://mdsa.51cto.com/art/201508/487655.htm" target="_blank">怎样在swift中创建一个CocoaPods</a></li>
+       <li><a href="http://mdsa.51cto.com/art/201508/487662.htm" target="_blank">25个细致微妙的扁平化2.0风格设计</a></li>
+       <li><a href="http://mdsa.51cto.com/art/201508/487796.htm" target="_blank">swift跑马灯</a></li>
+       <li><a href="http://mdsa.51cto.com/art/201508/488951.htm" target="_blank">真的要靠VR改变世界？</a></li>
+      </ol>
+     </div>
+     <div align="right">
+      【责任编辑：
+      <a class="ln" href="mailto:niming@51cto.com">倪明</a> TEL：（010）68476606】
+     </div>
+     <br /> 
+     <a href="###" class="dzdz zhan" target="_self">点赞 <span>0</span></a> 
+    </div> 
+    <div class="share5"> 
+     <ul> 
+      <li><a href="http://www.51cto.com/php/search.php?keyword=swift" target="_blank" class="underline">swift</a>&nbsp;&nbsp;<a href="http://www.51cto.com/php/search.php?keyword=2.0" target="_blank" class="underline">2.0</a>&nbsp;&nbsp;<a href="http://www.51cto.com/php/search.php?keyword=%D7%D6%B7%FB%B4%AE" target="_blank" class="underline">字符串</a>&nbsp;&nbsp;<a href="http://www.51cto.com/php/search.php?keyword=%C9%E8%BC%C6%CB%BC%C2%B7" target="_blank" class="underline">设计思路</a>&nbsp;&nbsp;<a href="http://www.51cto.com/php/search.php?keyword=%B8%C4%B1%E4" target="_blank" class="underline">改变</a></li> 
+     </ul> 
+     <dl> 
+      <dt>
+       <em>分享:</em> 
+       <div class="bdsharebuttonbox" data-tag="share_1"> 
+        <a class="wb" data-cmd="tsina"></a> 
+        <a class="wx" data-cmd="weixin"></a> 
+        <a class="more" data-cmd="more"></a> 
+       </div> 
+      </dt> 
+      <script type="text/javascript">
+    window._bd_share_config = {
+        common : {
+            bdText : document.title
+        },
+        share : [{
+            "bdSize" : 16,
+        }]
+    }
+    with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script> 
+      <!-- Baidu Button END --> 
+     </dl> 
+    </div> 
+    <div class="nrdp comment"> 
+     <div class="comment center"> 
+      <div class="inner center" id="cmscmt_iframe"></div> 
+     </div> 
+     <script type="text/javascript" id="UYScript" src="http://comment.51cto.com/static/js/api_js/iframe_cmt.js" async=""></script> 
+    </div> 
+    <div class="dzk"> 
+     <dl>
+      <dt class="show">
+       大家都在看
+      </dt>
+      <dt>
+       猜你喜欢
+      </dt>
+     </dl> 
+     <div> 
+      <ul> 
+       <li class="show"> 
+        <div class="djdzk" id="djdzk"> 
+        </div> </li> 
+       <li> 
+        <div class="djdzk" id="cnxh"> 
+        </div> </li> 
+      </ul> 
+     </div> 
+    </div> 
+   </div> 
+   <!-- 文章左侧结束 --> 
+   <!-- 文章右侧 --> 
+   <div class="wrap_right"> 
+    <div></div> 
+    <div class="mtgg m30">
+     <script type="text/javascript" src="http://image.51cto.com/ad/art/hzh/ad.js"></script>
+    </div> 
+    <div></div> 
+    <div class="bjtj m30"> 
+     <h2><span>编辑推荐</span></h2> 
+     <dl>
+      <dt>
+       头条
+      </dt>
+      <dd>
+       <a href="http://mdsa.51cto.com/art/201703/535605.htm" title="【有奖讨论】挨踢部落话题交流活动">【有奖讨论】挨踢部落话题交流活动</a>
+      </dd>
+     </dl>
+     <dl>
+      <dt>
+       原创
+      </dt>
+      <dd>
+       <a href="http://mdsa.51cto.com/art/201702/531587.htm" title="Google要逆天！Google Wear 2.0 最新离线AI技术解析">Google要逆天！Google Wear 2.0 最新离线AI技术解析</a>
+      </dd>
+     </dl>
+     <dl>
+      <dt>
+       头条
+      </dt>
+      <dd>
+       <a href="http://zhuanlan.51cto.com/art/201701/528372.htm" title="基于React与Vue后，移动开源项目Weex如何定义未来">基于React与Vue后，移动开源项目Weex如何定义未来</a>
+      </dd>
+     </dl>
+     <dl>
+      <dt>
+       头条
+      </dt>
+      <dd>
+       <a href="http://mdsa.51cto.com/art/201610/520258.htm" title="国内网盘的关停让用户操碎了心 下一个风口在哪">国内网盘的关停让用户操碎了心 下一个风口在哪</a>
+      </dd>
+     </dl>
+     <dl>
+      <dt>
+       头条
+      </dt>
+      <dd>
+       <a href="http://mdsa.51cto.com/art/201610/519750.htm" title="APM从入门到放弃：可用性监控体系和优化手段的剖析">APM从入门到放弃：可用性监控体系和优化手段的剖析</a>
+      </dd>
+     </dl> 
+    </div> 
+    <div></div> 
+    <div class="news m30"> 
+     <dl>
+      <dt class="show">
+       24H热文
+      </dt>
+      <dt>
+       一周话题
+      </dt>
+      <dt>
+       本月最赞
+      </dt>
+     </dl> 
+     <ul>
+      <li class="show"><a href="http://mdsa.51cto.com/art/201504/474814.htm" title="突如其来的Visual" studio="" code为何这么热门？大牛来给你深度剖析！="">突如其来的Visual Studio Code为何这么热门？大牛来给你深度剖析！</a><a href="http://zhuanlan.51cto.com/art/201703/535756.htm" title="微服务时代" 怎么看华为软件开发云实现devops落地="">微服务时代 怎么看华为软件开发云实现DevOps落地</a><a href="http://mdsa.51cto.com/art/201412/460555.htm" title="Hybrid" app开发者一定不要错过的框架和工具="">Hybrid App开发者一定不要错过的框架和工具</a><a href="http://mdsa.51cto.com/art/201605/510598.htm" title="你讨厌百度，翻墙上Google就能解决一切问题？">你讨厌百度，翻墙上Google就能解决一切问题？</a><a href="http://mdsa.51cto.com/art/201503/469038.htm" title="30秒让你加速Android" studio="" radle构建="">30秒让你加速Android Studio/Gradle构建</a><a href="http://mdsa.51cto.com/art/201508/489882.htm" title="Android" m新的运行时权限开发者需要知道的一切="">Android M新的运行时权限开发者需要知道的一切</a><a href="http://mdsa.51cto.com/art/201703/534814.htm" title="《态牛-Tech" neo="" 3月刊：人工智能与移动》全新改版上线="">《态牛-Tech Neo 3月刊：人工智能与移动》全新改版上线</a><a href="http://mdsa.51cto.com/art/201703/535605.htm" title="【有奖讨论】挨踢部落话题交流活动">【有奖讨论】挨踢部落话题交流活动</a></li>
+      <li><a href="http://mdsa.51cto.com/art/201504/474814.htm" title="突如其来的Visual" studio="" code为何这么热门？大牛来给你深度剖析！="">突如其来的Visual Studio Code为何这么热门？大牛来给你深度剖析！</a><a href="http://mdsa.51cto.com/art/201412/460555.htm" title="Hybrid" app开发者一定不要错过的框架和工具="">Hybrid App开发者一定不要错过的框架和工具</a><a href="http://mdsa.51cto.com/art/201703/534814.htm" title="《态牛-Tech" neo="" 3月刊：人工智能与移动》全新改版上线="">《态牛-Tech Neo 3月刊：人工智能与移动》全新改版上线</a><a href="http://mdsa.51cto.com/art/201605/510598.htm" title="你讨厌百度，翻墙上Google就能解决一切问题？">你讨厌百度，翻墙上Google就能解决一切问题？</a><a href="http://mdsa.51cto.com/art/201503/469038.htm" title="30秒让你加速Android" studio="" radle构建="">30秒让你加速Android Studio/Gradle构建</a><a href="http://mdsa.51cto.com/art/201703/535558.htm" title="挨踢部落故事汇(13):扬长避短入行Oracle开发">挨踢部落故事汇(13):扬长避短入行Oracle开发</a><a href="http://mdsa.51cto.com/art/201508/489882.htm" title="Android" m新的运行时权限开发者需要知道的一切="">Android M新的运行时权限开发者需要知道的一切</a><a href="http://mdsa.51cto.com/art/201410/455556.htm" title="十大技巧优化Android" app性能="">十大技巧优化Android App性能</a></li>
+      <li><a href="http://mdsa.51cto.com/art/201504/474814.htm" title="突如其来的Visual" studio="" code为何这么热门？大牛来给你深度剖析！="">突如其来的Visual Studio Code为何这么热门？大牛来给你深度剖析！</a><a href="http://mdsa.51cto.com/art/201412/460555.htm" title="Hybrid" app开发者一定不要错过的框架和工具="">Hybrid App开发者一定不要错过的框架和工具</a><a href="http://zhuanlan.51cto.com/art/201702/531587.htm" title="Google要逆天！Google" wear="" 2.0="" 最新离线ai技术解析="">Google要逆天！Google Wear 2.0 最新离线AI技术解析</a><a href="http://mdsa.51cto.com/art/201503/469038.htm" title="30秒让你加速Android" studio="" radle构建="">30秒让你加速Android Studio/Gradle构建</a><a href="http://mdsa.51cto.com/art/201605/510598.htm" title="你讨厌百度，翻墙上Google就能解决一切问题？">你讨厌百度，翻墙上Google就能解决一切问题？</a><a href="http://mdsa.51cto.com/art/201508/489882.htm" title="Android" m新的运行时权限开发者需要知道的一切="">Android M新的运行时权限开发者需要知道的一切</a><a href="http://mdsa.51cto.com/art/201703/534076.htm" title="挨踢部落管理员招募令">挨踢部落管理员招募令</a><a href="http://mdsa.51cto.com/art/201703/534814.htm" title="《态牛-Tech" neo="" 3月刊：人工智能与移动》全新改版上线="">《态牛-Tech Neo 3月刊：人工智能与移动》全新改版上线</a></li>
+     </ul> 
+    </div> 
+    <div>
+     <div class="areaAd mt5" id="ad_1"></div> 
+     <div style="display:none"> 
+      <span id="ad1"> <script type="text/javascript"><!--//<![CDATA[
+var m3_u = (location.protocol=='https:'?'https://gg.51cto.com/www/delivery/ajs.php':'http://gg3.51cto.com/www/delivery/ajs.php');
+var m3_r = Math.floor(Math.random()*99999999999);
+if (!document.MAX_used) document.MAX_used = ',';
+document.write ("<scr"+"ipt type='text/javascript' src='"+m3_u);
+document.write ("?zoneid=693");
+document.write ('&amp;cb=' + m3_r);
+if (document.MAX_used != ',') document.write ("&amp;exclude=" + document.MAX_used);
+document.write (document.charset ? '&amp;charset='+document.charset : (document.characterSet ? '&amp;charset='+document.characterSet : ''));
+document.write ("&amp;loc=" + escape(window.location));
+if (document.referrer) document.write ("&amp;referer=" + escape(document.referrer));
+if (document.context) document.write ("&context=" + escape(document.context));
+if (document.mmm_fo) document.write ("&amp;mmm_fo=1");
+document.write ("'><\/scr"+"ipt>");
+//]]>--></script>
+       <noscript>
+        <a href="//gg2.51cto.com/www/delivery/ck.php?n=ae95ac07&amp;cb=INSERT_RANDOM_NUMBER_HERE" target="_blank"><img src="//gg.51cto.com/www/delivery/avw.php?zoneid=693&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=ae95ac07" border="0" alt="" /></a>
+       </noscript> </span> 
+     </div> 
+     <script>
+    document.getElementById('ad_1').innerHTML = document.getElementById('ad1').innerHTML;
+</script>
+    </div> 
+    <div class="spkc m30"> 
+     <h2><span>视频课程</span><a href="http://edu.51cto.com/">+更多</a></h2> 
+     <dl> 
+      <dt>
+       <a href="http://edu.51cto.com/course/course_id-6143.html"><img src="http://i1.51cto.com/images/201605/238e06f03776c93dceb504a64e74f82b24bb30.jpg" title="UI引擎入门到实战开发视频课程" alt="UI引擎入门到实战开发视频课程" width="100px" height="80px" /></a>
+       <span></span>
+      </dt> 
+      <dd> 
+       <h3><a href="http://edu.51cto.com/course/course_id-6143.html" target="_blank" title="UI引擎入门到实战开发视频课程">UI引擎入门到实战开发视频课程</a></h3> 
+       <h4><span class="fl">讲师：<em><a href="http://edu.51cto.com/lecturer/user_id-10892124.html" target="_blank">刘火树</a></em></span><span class="fr"><em>5</em>人学习过</span></h4> 
+      </dd> 
+     </dl> 
+     <dl> 
+      <dt>
+       <a href="http://edu.51cto.com/course/course_id-6141.html"><img src="http://i1.51cto.com/images/201605/212957f179c1a451cc8686b3bec129623563ad.jpg" title="C#语言知识系统学习视频课程" alt="C#语言知识系统学习视频课程" width="100px" height="80px" /></a>
+       <span></span>
+      </dt> 
+      <dd> 
+       <h3><a href="http://edu.51cto.com/course/course_id-6141.html" target="_blank" title="C#语言知识系统学习视频课程">C#语言知识系统学习视频课程</a></h3> 
+       <h4><span class="fl">讲师：<em><a href="http://edu.51cto.com/lecturer/user_id-3990033.html" target="_blank">刘建萍</a></em></span><span class="fr"><em>30</em>人学习过</span></h4> 
+      </dd> 
+     </dl> 
+     <dl> 
+      <dt>
+       <a href="http://edu.51cto.com/course/course_id-6138.html"><img src="http://i1.51cto.com/images/201605/c1479ba68c7beb9834530125ec9ebd3d884e5c.png" title="专家解读计算机网络原理视频课程2.0版（上）" alt="专家解读计算机网络原理视频课程2.0版（上）" width="100px" height="80px" /></a>
+       <span></span>
+      </dt> 
+      <dd> 
+       <h3><a href="http://edu.51cto.com/course/course_id-6138.html" target="_blank" title="专家解读计算机网络原理视频课程2.0版（上）">专家解读计算机网络原理视频课程2.0版（上）</a></h3> 
+       <h4><span class="fl">讲师：<em><a href="http://edu.51cto.com/lecturer/user_id-55153.html" target="_blank">王达</a></em></span><span class="fr"><em>5</em>人学习过</span></h4> 
+      </dd> 
+     </dl> 
+    </div> 
+    <div></div> 
+    <div class="rmzw m30"> 
+     <h2><span>热门职位</span><a href="http://gaozhao.51cto.com/">+更多</a></h2> 
+     <div id="rmzw"></div> 
+    </div> 
+    <div></div> 
+    <div class="zxzt m30"> 
+     <h2><span>最新专题</span><a href="http://mdsa.51cto.com/speclist/1674">+更多</a></h2> 
+     <dl> 
+      <dt>
+       <a href="http://cloud.51cto.com/art/201605/511628.htm" title="公有云频频受疑  黄金时代是否已大势已去？"><img src="http://s1.51cto.com/wyfs02/M00/80/EE/wKioL1dFH0WhXkKTAADkd_csSOU280.jpg-wh_100x70-s_4187064414.jpg" alt="公有云频频受疑  黄金时代是否已大势已去？" title="公有云频频受疑  黄金时代是否已大势已去？" /></a>
+      </dt> 
+      <dd> 
+       <a href="http://cloud.51cto.com/art/201605/511628.htm" title="公有云频频受疑  黄金时代是否已大势已去？">公有云频频受疑 黄金时代是否已大势已去？</a> 
+       <h3><a href="http://www.51cto.com/php/search.php?keyword=%D4%C6%BC%C6%CB%E3">云计算</a></h3> 
+      </dd> 
+     </dl>
+     <dl> 
+      <dt>
+       <a href="http://book.51cto.com/art/201605/511533.htm" title="淘宝网店推广策略和工具大全（第2版）"><img src="http://s4.51cto.com/wyfs02/M02/80/62/wKiom1c-5YyylbMrAAAnIj1gPLY670.gif-wh_100x70-s_4196023238.gif" alt="淘宝网店推广策略和工具大全（第2版）" title="淘宝网店推广策略和工具大全（第2版）" /></a>
+      </dt> 
+      <dd> 
+       <a href="http://book.51cto.com/art/201605/511533.htm" title="淘宝网店推广策略和工具大全（第2版）">淘宝网店推广策略和工具大全（第2版）</a> 
+       <h3><a href="http://www.51cto.com/php/search.php?keyword=%CC%D4%B1%A6%CD%F8%B5%EA%CD%C6%B9%E3">淘宝网店推广</a></h3> 
+      </dd> 
+     </dl>
+     <dl> 
+      <dt>
+       <a href="http://book.51cto.com/art/201605/511528.htm" title="谁说菜鸟不会数据分析（入门篇）（纪念版）"><img src="http://s4.51cto.com/wyfs02/M01/80/5F/wKioL1c-4b_zBu8FAAAjWW13kg8045.gif-wh_100x70-s_2884938834.gif" alt="谁说菜鸟不会数据分析（入门篇）（纪念版）" title="谁说菜鸟不会数据分析（入门篇）（纪念版）" /></a>
+      </dt> 
+      <dd> 
+       <a href="http://book.51cto.com/art/201605/511528.htm" title="谁说菜鸟不会数据分析（入门篇）（纪念版）">谁说菜鸟不会数据分析（入门篇）（纪念版）</a> 
+       <h3><a href="http://www.51cto.com/php/search.php?keyword=%CA%FD%BE%DD%B7%D6%CE%F6">数据分析</a></h3> 
+      </dd> 
+     </dl>
+     <dl> 
+      <dt>
+       <a href="http://book.51cto.com/art/201605/511523.htm" title="谁说菜鸟不会数据分析（工具篇）（纪念版）"><img src="http://s4.51cto.com/wyfs02/M00/80/62/wKiom1c-3xjASx9ZAAAf_G3NjFs611.gif-wh_100x70-s_3181025381.gif" alt="谁说菜鸟不会数据分析（工具篇）（纪念版）" title="谁说菜鸟不会数据分析（工具篇）（纪念版）" /></a>
+      </dt> 
+      <dd> 
+       <a href="http://book.51cto.com/art/201605/511523.htm" title="谁说菜鸟不会数据分析（工具篇）（纪念版）">谁说菜鸟不会数据分析（工具篇）（纪念版）</a> 
+       <h3><a href="http://www.51cto.com/php/search.php?keyword=%CA%FD%BE%DD%B7%D6%CE%F6">数据分析</a></h3> 
+      </dd> 
+     </dl> 
+    </div> 
+    <div></div> 
+    <div id="jcpl"></div> 
+    <div></div> 
+    <div class="news m30"> 
+     <dl>
+      <dt class="show">
+       精选博文
+      </dt>
+      <dt>
+       论坛热帖
+      </dt>
+      <dt>
+       下载排行
+      </dt>
+     </dl> 
+     <div> 
+      <ul> 
+       <li class="show"> <a href="http://520mm.blog.51cto.com/1254073/325643/" target="_blank" title="爱情，真的那么奢侈吗？">爱情，真的那么奢侈吗？</a><a href="http://yunli.blog.51cto.com/831344/325623/" target="_blank" title="软件质量保证需要系统性的方法论">软件质量保证需要系统性的方法论</a><a href="http://dnsdhcp.blog.51cto.com/1280638/325615/" target="_blank" title="中国温和的圈地运动">中国温和的圈地运动</a><a href="http://devbean.blog.51cto.com/448512/325581/" target="_blank" title="Qt核心剖析：信息隐藏(1)">Qt核心剖析：信息隐藏(1)</a><a href="http://guojuanjun.blog.51cto.com/277646/325580/" target="_blank" title="oracle仅部分记录建立索引的方法">oracle仅部分记录建立索引的方法</a> </li> 
+       <li> <a href="http://bbs.51cto.com/thread-1375239-1.html" target="_blank" title="Part01 - （图文）NSX系列之NSX概念与安装前准备">Part01 - （图文）NSX系列之NSX概念</a><a href="http://bbs.51cto.com/thread-1375585-1.html" target="_blank" title="Part02 - （图文）NSX系列之NSX试验环境准备与部署NSX Manager">Part02 - （图文）NSX系列之NSX试验</a><a href="http://bbs.51cto.com/thread-1376068-1.html" target="_blank" title="【项目实战案例分享】ASA Failover ActiveActive 双HSRP 实现双ISP切换">【项目实战案例分享】ASA Failover A</a><a href="http://bbs.51cto.com/thread-1376527-1.html" target="_blank" title="求翻译，被列入黑名单CBL 清除不了">求翻译，被列入黑名单CBL 清除不了</a><a href="http://bbs.51cto.com/thread-1376655-1.html" target="_blank" title="记录一次linux线上服务器被黑事件">记录一次linux线上服务器被黑事件</a> </li> 
+       <li> <a href="http://down.51cto.com/data/413405/" target="_blank" title="项目管理过程总结表">项目管理过程总结表</a><a href="http://down.51cto.com/data/413404/" target="_blank" title="信息系统概论">信息系统概论</a><a href="http://down.51cto.com/data/413403/" target="_blank" title="nginx实战源代码">nginx实战源代码</a><a href="http://down.51cto.com/data/413401/" target="_blank" title="《构建高可用Linux服务器》第5章脚本.zip">《构建高可用Linux服务器》第5章脚本</a><a href="http://down.51cto.com/data/413400/" target="_blank" title="ipsecvpn详解机器配置">ipsecvpn详解机器配置</a> </li> 
+      </ul> 
+     </div> 
+    </div> 
+    <div></div> 
+    <div class="ds m30"> 
+     <h2><span>读 书 </span><a href="http://book.51cto.com/">+更多</a></h2> 
+     <dl> 
+      <dt>
+       <a href="http://book.51cto.com/art/200801/63463.htm" title="J2EE开发全程实录"><img src="http://new.51cto.com/files/uploadimg/20080102/141009232.gif" width="98px" height="144px" /></a>
+      </dt> 
+      <dd>
+       <h3><a href="http://book.51cto.com/art/200801/63463.htm" title="J2EE开发全程实录">J2EE开发全程实录</a></h3> J2EE是目前企业级软件开发的首选平台。本书从架构的角度讲解了一个完整的J2EE系统的搭建。内容包括：正则表达式、JSP、Swing、XML等技术在... 
+      </dd> 
+     </dl> 
+    </div> 
+    <div></div> 
+    <div class="dydy"> 
+     <dl> 
+      <dt>
+       <img src="http://static1.51cto.com/51cto/cms/2016/images/dydy.jpg" alt="" />
+      </dt> 
+      <dd> 
+       <h3>订阅51CTO邮刊</h3> 
+       <h4><a href="http://news.51cto.com/col/1323/">点击这里查看样刊</a></h4> 
+       <a href="http://home.51cto.com/index.php?s=/Subscribe"><img src="http://static4.51cto.com/51cto/cms/2016/images/ljdy.jpg" alt="订阅51CTO邮刊" /></a> 
+      </dd> 
+     </dl> 
+    </div> 
+    <div></div> 
+   </div> 
+   <!-- 文章右侧结束 --> 
+  </div> 
+  <div class="footer_nav"> 
+   <div class="wrap"> 
+    <h2>51CTO旗下网站：</h2> 
+    <a href="http://www.51cto.com">领先的IT技术网站 51CTO</a>|
+    <a href="http://www.watchstor.com">领先的中文存储媒体 WatchStor</a>| 
+    <a href="http://cio.51cto.com">中国首个CIO网站 CIOage </a>|
+    <a href="http://www.hc3i.cn">中国首家数字医疗网站 HC3i</a> 
+   </div> 
+  </div> 
+  <div id="ft">
+   <div id="foot" align="center">
+    <script src="http://images.51cto.com/images/copy_right/copy_right.js?v=0.1"></script>
+   </div>
+  </div> 
+  <div class="clk">
+   <a class="ewm" href="###" target="_self"><img src="http://s4.51cto.com/wyfs02/M00/8E/36/wKiom1i404qSx_3WAABda67jNEU905.jpg" style="display: none;" /></a>
+   <a class="yjk" href="#comment" target="_self"></a>
+   <a class="topx" href="#topx" target="_self"></a>
+  </div> 
+  <script>
+    $(function(){
+        var host = window.location.host;
+        document.getElementById('cnxh').style.display = '';
+    });
+    var $$ = function(func){
+        if (document.addEventListener) {
+            window.addEventListener("load", func, false);
+        }
+        else if (document.attachEvent) {
+            window.attachEvent("onload", func);
+        }
+    };
+
+    $$(function(){
+        show();
+    });
+    var show = function(){
+        var aa = $('#cmscmt_iframe dl').html();
+        setTimeout(function(){
+            $("[data-track]").live("click", function() {
+                if (aa.indexOf('uid') > -1) {
+                    var label = $(this).data("track") + '-login';
+                } else {
+                    var label = $(this).data("track") + '-not-login';
+                }console.log(label);
+                window._hmt && window._hmt.push(['_trackEvent', label, 'click']);
+
+            });
+        }, 3000);
+    }
+
+</script> 
+  <script src="http://logs.51cto.com/rizhi/count/count.js"></script> 
+  <!-- 悬浮广告 --> 
+  <!--end--> 
+  <!-- 学院广告位 --> 
+  <div id="edu_adver"> 
+   <div class="aderbox"> 
+    <span class="educlose">&times;</span> 
+    <a href="http://edu.51cto.com/px/train/94?qizhi"><img src="http://s1.51cto.com/wyfs02/M02/8F/27/wKiom1jU2pmD-vepAABGqQEPiWM860.jpg" width="100" height="300" alt="Python实战培训" title="Python实战培训" /></a> 
+   </div> 
+  </div> 
+  <style type="text/css">
+    #edu_adver{position:fixed; top:240px; left:50%; margin-left:-623px; width:100px; height:300px; border:1px solid #c4c4c6;}
+    #edu_adver .aderbox{position:relative;}
+    #edu_adver  .educlose{position:absolute; right:6px; top:6px; background:#655c4d; color:#fff; font-size:12px;  display:inline-block; width:13px; height:13px; text-align:center; line-height:13px; cursor:pointer;}
+</style> 
+  <script>
+    $('#edu_adver .educlose').click(function () {
+        $("#edu_adver").hide();
+    });
+</script> 
+  <script>
+$(function(){
+var str = '<div class="fl zxf_showBox" style="padding-right: 10px;position:relative;"> ' +
+        '<a href="###" title=" " target="_self" class="z_bds_more">&nbsp;移动端</a> <div class="navcodebox clearfix">'+
+        '<div class="ico"></div>'+
+        '<span> <img src="http://s3.51cto.com/wyfs02/M00/8E/36/wKiom1i40HrjHqnUAAAc34XQy9o111.jpg" width="105" height="107"> <p>51CTO官方大本营</p> </span>'+
+        '<span> <img src="http://s5.51cto.com/wyfs02/M02/8E/33/wKioL1i40HrAObC6AAAcvPVCCV0975.jpg" width="105" height="107"> <p>51CTO微站服务号</p> </span>'+
+        '<span><img src="http://s3.51cto.com/wyfs02/M00/8E/33/wKioL1i40HrQZy_TAAAcDOkrRAE327.jpg" width="107" height="107"> <p>51CTO学院客户端</p> </span></div> </div>';
+    $(".wznr dd").prepend(str);
+    $('.zxf_showBox').hover(function(){
+        $(this).find('.navcodebox').show();
+    },function(){
+        $(this).find('.navcodebox').hide();
+    })
+});
+</script> 
+  <script type="text/javascript">var artid = 489313</script> 
+  <script src="http://home.51cto.com/index.php?s=/Index/getLoginStatus2015/reback/http%253A%252F%252Fmdsa.51cto.com%252Fart%252F201508%252F489313.htm" charset="utf-8"></script> 
+  <script type="text/javascript" src="http://static4.51cto.com/51cto/cms/2016/js/article.js?v=1.0"></script> 
+  <script type="text/javascript" src="http://static5.51cto.com/51cto/cms/2016/js/article_ajax.js?v=2.1"></script> 
+  <script src="http://other.51cto.com/php/count.php?view=yes&amp;artID=489313" type="text/javascript"></script> 
+  <script type="text/javascript" src="http://home.51cto.com/apps/favorite/Tpl/default/Public/js/favorbox.js"></script> 
+  <!--  一大波JS来袭 --> 
+  <div id="MyMoveAd" style="display:none"> 
+   <span id="pinglun"><script type="text/javascript" src="http://other.51cto.com/php/getArtCount.php?artid=489313&amp;type=all"></script></span> 
+   <span id="tonglan"><script type="text/javascript" src="http://image.51cto.com/ad/art/tonglan/ad.js"></script></span> 
+   <span id="wordlink_1"><script src="http://image.51cto.com/ad/art/wordlink/wordlink1.js"></script></span> 
+   <span id="wordlink_2"><script src="http://image.51cto.com/ad/art/wordlink/wordlink2.js"></script></span> 
+   <span id="wordlink_3"><script src="http://image.51cto.com/ad/art/wordlink/wordlink3.js"></script></span> 
+   <span id="wordlink_4"><script src="http://image.51cto.com/ad/art/wordlink/wordlink4.js"></script></span> 
+   <span id="wordlink"><script src="http://image.51cto.com/ad/art/wordlink/ad.js"></script></span> 
+  </div> 
+  <script type="text/javascript">
+var thistid=489313;
+//收藏按钮
+var favor_url = 'http://mdsa.51cto.com/art/201508/489313.htm';
+var favor_title = '读懂Swift 2.0中字符串设计思路的改变';  
+document.getElementById('tonglanad').innerHTML=document.getElementById('tonglan').innerHTML;
+</script> 
+  <!-- 结束 -->   
+ </body>
+</html>

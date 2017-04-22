@@ -1,0 +1,721 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+  <title>最全的Android源码目录结构详解</title> 
+  <meta name="keywords" content="代码分析,android,嵌入式学习" /> 
+  <meta name="description" content="www.forwhat.cn Android 2.1 |-- Makefile ..." /> 
+  <meta name="generator" content="emlog" /> 
+  <link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.forwhat.cn/xmlrpc.php?rsd" /> 
+  <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.forwhat.cn/wlwmanifest.xml" /> 
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.forwhat.cn/rss.php" /> 
+  <link href="http://www.forwhat.cn/content/templates/default/main.css" rel="stylesheet" type="text/css" /> 
+  <link href="http://www.forwhat.cn/admin/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" /> 
+  <script src="http://www.forwhat.cn/admin/editor/plugins/code/prettify.js" type="text/javascript"></script> 
+  <script src="http://www.forwhat.cn/include/lib/js/common_tpl.js" type="text/javascript"></script> 
+  <!--[if IE 6]>
+<script src="http://www.forwhat.cn/content/templates/default/iefix.js" type="text/javascript"></script>
+<![endif]--> 
+ </head> 
+ <body> 
+  <script type="text/javascript">
+    /* 创建于 2015-01-01*/
+var cpro_id = "u1886650";
+</script> 
+  <script src="http://cpro.baidustatic.com/cpro/ui/cnw.js" type="text/javascript"></script> 
+  <div id="wrap"> 
+   <div id="header"> 
+    <h1><a href="http://www.forwhat.cn/">程序员玩耍的小窝</a></h1> 
+    <h3>for what ? for my wife and my son; for my father and my mother; for my life and my dream.</h3> 
+   </div> 
+   <div id="nav"> 
+    <ul class="bar"> 
+     <li class="item common"> <a href="http://www.forwhat.cn/">首页</a> </li> 
+     <li class="item common"> <a href="http://www.forwhat.cn/admin">登录</a> </li> 
+    </ul> 
+   </div>
+   <div id="content"> 
+    <div id="contentleft"> 
+     <h2>最全的Android源码目录结构详解</h2> 
+     <p class="date">作者：<a href="http://www.forwhat.cn/author/2">fly</a> 发布于：2015-12-26 15:51 分类：<a href="http://www.forwhat.cn/sort/1">android</a> </p> 
+     <p> <a href="http://www.forwhat.cn">www.forwhat.cn</a> </p> 
+     <p> Android 2.1 </p> 
+     <p> |-- Makefile </p> 
+     <p> |-- bionic &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（bionic C库） </p> 
+     <p> |-- bootable &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（启动引导相关代码） </p> 
+     <p> |-- build &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（存放系统编译规则及generic等基础开发包配置） </p> 
+     <p> |-- cts &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（Android兼容性测试套件标准） </p> 
+     <p> |-- dalvik &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（dalvik JAVA虚拟机） </p> 
+     <p> |-- development &nbsp; &nbsp; &nbsp; &nbsp;（应用程序开发相关） </p> 
+     <p> |-- external &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（android使用的一些开源的模组） </p> 
+     <p> |-- frameworks &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（核心框架——java及C++语言） </p> 
+     <p> |-- hardware &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（部分厂家开源的硬解适配层HAL代码） </p> 
+     <p> |-- out &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（编译完成后的代码输出与此目录） </p> 
+     <p> |-- packages &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（应用程序包） </p> 
+     <p> |-- prebuilt &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（x86和arm架构下预编译的一些资源） </p> 
+     <p> |-- sdk &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（sdk及模拟器） </p> 
+     <p> |-- system &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（底层文件系统库、应用及组件——C语言） </p> 
+     <p> `-- vendor &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（厂商定制代码） </p> 
+     <p> <br /> </p> 
+     <p> bionic 目录 </p> 
+     <p> |-- libc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（C库） </p> 
+     <p> | &nbsp; |-- arch-arm &nbsp; &nbsp; &nbsp; &nbsp;（ARM架构，包含系统调用汇编实现） </p> 
+     <p> | &nbsp; |-- arch-x86 &nbsp; &nbsp; &nbsp; &nbsp;（x86架构，包含系统调用汇编实现） </p> 
+     <p> | &nbsp; |-- bionic &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（由C实现的功能，架构无关） </p> 
+     <p> | &nbsp; |-- docs &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（文档） </p> 
+     <p> | &nbsp; |-- include &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（头文件） </p> 
+     <p> | &nbsp; |-- inet &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（？inet相关，具体作用不明） </p> 
+     <p> | &nbsp; |-- kernel &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（Linux内核中的一些头文件） </p> 
+     <p> | &nbsp; |-- netbsd &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（？nesbsd系统相关，具体作用不明） </p> 
+     <p> | &nbsp; |-- private &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（？一些私有的头文件） </p> 
+     <p> | &nbsp; |-- stdio &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（stdio实现） </p> 
+     <p> | &nbsp; |-- stdlib &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（stdlib实现） </p> 
+     <p> | &nbsp; |-- string &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（string函数实现） </p> 
+     <p> | &nbsp; |-- tools &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（几个工具） </p> 
+     <p> | &nbsp; |-- tzcode &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（时区相关代码） </p> 
+     <p> | &nbsp; |-- unistd &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（unistd实现） </p> 
+     <p> | &nbsp; `-- zoneinfo &nbsp; &nbsp; &nbsp; &nbsp;（时区信息） </p> 
+     <p> |-- libdl &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（libdl实现，dl是动态链接，提供访问动态链接库的功能） </p> 
+     <p> |-- libm &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（libm数学库的实现，） </p> 
+     <p> | &nbsp; |-- alpha &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（apaha架构） </p> 
+     <p> | &nbsp; |-- amd64 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（amd64架构） </p> 
+     <p> | &nbsp; |-- arm &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（arm架构） </p> 
+     <p> | &nbsp; |-- bsdsrc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（？bsd的源码） </p> 
+     <p> | &nbsp; |-- i386 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（i386架构） </p> 
+     <p> | &nbsp; |-- i387 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（i387架构？） </p> 
+     <p> | &nbsp; |-- ia64 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（ia64架构） </p> 
+     <p> | &nbsp; |-- include &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（头文件） </p> 
+     <p> | &nbsp; |-- man &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（数学函数，后缀名为.3，一些为freeBSD的库文件） </p> 
+     <p> | &nbsp; |-- powerpc &nbsp; &nbsp; &nbsp; &nbsp;（powerpc架构） </p> 
+     <p> | &nbsp; |-- sparc64 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（sparc64架构） </p> 
+     <p> | &nbsp; `-- src &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（源代码） </p> 
+     <p> |-- libstdc++ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（libstdc++ C++实现库） </p> 
+     <p> | &nbsp; |-- include &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（头文件） </p> 
+     <p> | &nbsp; `-- src &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（源码） </p> 
+     <p> |-- libthread_db &nbsp; &nbsp; &nbsp; &nbsp;（多线程程序的调试器库） </p> 
+     <p> | &nbsp; `-- include &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（头文件） </p> 
+     <p> `-- linker &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（动态链接器） </p> 
+     <p> `-- arch &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（支持arm和x86两种架构） </p> 
+     <p> <br /> </p> 
+     <p> bootable 目录 </p> 
+     <p> . </p> 
+     <p> |-- bootloader &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（适合各种bootloader的通用代码） </p> 
+     <p> | &nbsp; `-- legacy &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（估计不能直接使用，可以参考） </p> 
+     <p> | &nbsp; &nbsp; &nbsp; |-- arch_armv6 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（V6架构，几个简单的汇编文件） </p> 
+     <p> | &nbsp; &nbsp; &nbsp; |-- arch_msm7k &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（高通7k处理器架构的几个基本驱动） </p> 
+     <p> | &nbsp; &nbsp; &nbsp; |-- include &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（通用头文件和高通7k架构头文件） </p> 
+     <p> | &nbsp; &nbsp; &nbsp; |-- libboot &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（启动库，都写得很简单） </p> 
+     <p> | &nbsp; &nbsp; &nbsp; |-- libc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（一些常用的c函数） </p> 
+     <p> | &nbsp; &nbsp; &nbsp; |-- nandwrite &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（nandwirte函数实现） </p> 
+     <p> | &nbsp; &nbsp; &nbsp; `-- usbloader &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（usbloader实现） </p> 
+     <p> |-- diskinstaller &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（android镜像打包器，x86可生产iso） </p> 
+     <p> `-- recovery &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（系统恢复相关） </p> 
+     <p> &nbsp; &nbsp;|-- edify &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（升级脚本使用的edify脚本语言） </p> 
+     <p> &nbsp; &nbsp;|-- etc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（init.rc恢复脚本） </p> 
+     <p> &nbsp; &nbsp;|-- minui &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（一个简单的UI） </p> 
+     <p> &nbsp; &nbsp;|-- minzip &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（一个简单的压缩工具） </p> 
+     <p> &nbsp; &nbsp;|-- mtdutils &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（mtd工具） </p> 
+     <p> &nbsp; &nbsp;|-- res &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（资源） </p> 
+     <p> &nbsp; &nbsp;| &nbsp; `-- images &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（一些图片） </p> 
+     <p> &nbsp; &nbsp;|-- tools &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（工具） </p> 
+     <p> &nbsp; &nbsp;| &nbsp; `-- ota &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（OTA Over The Air Updates升级工具） </p> 
+     <p> `-- updater &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（升级器） </p> 
+     <p> <br /> </p> 
+     <p> build目录 </p> 
+     <p> . </p> 
+     <p> |-- core &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（核心编译规则） </p> 
+     <p> |-- history &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（历史记录） </p> 
+     <p> |-- libs &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </p> 
+     <p> | &nbsp; `-- host &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（主机端库，有android “cp”功能替换） </p> 
+     <p> |-- target &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（目标机编译对象） </p> 
+     <p> | &nbsp; |-- board &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（开发平台） </p> 
+     <p> | &nbsp; | &nbsp; |-- emulator &nbsp; &nbsp; &nbsp; &nbsp;（模拟器） </p> 
+     <p> | &nbsp; | &nbsp; |-- generic &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（通用） </p> 
+     <p> | &nbsp; | &nbsp; |-- idea6410 &nbsp; &nbsp; &nbsp; &nbsp;（自己添加的） </p> 
+     <p> | &nbsp; | &nbsp; `-- sim &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（最简单） </p> 
+     <p> | &nbsp; `-- product &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（开发平台对应的编译规则） </p> 
+     <p> | &nbsp; &nbsp; &nbsp; `-- security &nbsp; &nbsp; &nbsp; &nbsp;（密钥相关） </p> 
+     <p> `-- tools &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（编译中主机使用的工具及脚本） </p> 
+     <p> &nbsp; &nbsp;|-- acp &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（Android &quot;acp&quot; Command） </p> 
+     <p> &nbsp; &nbsp;|-- apicheck &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（api检查工具） </p> 
+     <p> &nbsp; &nbsp;|-- applypatch &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（补丁工具） </p> 
+     <p> &nbsp; &nbsp;|-- apriori &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（预链接工具） </p> 
+     <p> &nbsp; &nbsp;|-- atree &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（tree工具） </p> 
+     <p> &nbsp; &nbsp;|-- bin2asm &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（bin转换为asm工具） </p> 
+     <p> &nbsp; &nbsp;|-- check_prereq &nbsp; &nbsp; &nbsp; &nbsp;（检查编译时间戳工具） </p> 
+     <p> &nbsp; &nbsp;|-- dexpreopt &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（模拟器相关工具，具体功能不明） </p> 
+     <p> &nbsp; &nbsp;|-- droiddoc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（？作用不明，java语言，网上有人说和JDK5有关） </p> 
+     <p> &nbsp; &nbsp;|-- fs_config &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（This program takes a list of files and directories） </p> 
+     <p> &nbsp; &nbsp;|-- fs_get_stats &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（获取文件系统状态） </p> 
+     <p> &nbsp; &nbsp;|-- iself &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（判断是否ELF格式） </p> 
+     <p> &nbsp; &nbsp;|-- isprelinked &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（判断是否prelinked） </p> 
+     <p> &nbsp; &nbsp;|-- kcm &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（按键相关） </p> 
+     <p> &nbsp; &nbsp;|-- lsd &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（List symbol dependencies） </p> 
+     <p> &nbsp; &nbsp;|-- releasetools &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（生成镜像的工具及脚本） </p> 
+     <p> &nbsp; &nbsp;|-- rgb2565 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（rgb转换为565） </p> 
+     <p> &nbsp; &nbsp;|-- signapk &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（apk签名工具） </p> 
+     <p> &nbsp; &nbsp;|-- soslim &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（strip工具） </p> 
+     <p> `-- zipalign &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（zip archive alignment tool） </p> 
+     <p> <br /> </p> 
+     <p> dalvik目录 dalvik虚拟机 </p> 
+     <p> . </p> 
+     <p> |-- dalvikvm &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（main.c的目录） </p> 
+     <p> |-- dexdump &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（dex反汇编） </p> 
+     <p> |-- dexlist &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（List all methods in all concrete classes in a DEX file.） </p> 
+     <p> |-- dexopt &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（预验证与优化） </p> 
+     <p> |-- docs &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（文档） </p> 
+     <p> |-- dvz &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（和zygote相关的一个命令） </p> 
+     <p> |-- dx &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（dx工具，将多个java转换为dex） </p> 
+     <p> |-- hit &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（？java语言写成） </p> 
+     <p> |-- libcore &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（核心库） </p> 
+     <p> |-- libcore-disabled &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（？禁用的库） </p> 
+     <p> |-- libdex &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（dex的库） </p> 
+     <p> |-- libnativehelper &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（Support functions for Android's class libraries） </p> 
+     <p> |-- tests &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（测试代码） </p> 
+     <p> |-- tools &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（工具） </p> 
+     <p> `-- vm &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（虚拟机实现） </p> 
+     <p> <br /> </p> 
+     <p> development 目录 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（开发者需要的一些例程及工具） </p> 
+     <p> |-- apps &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（一些核心应用程序） </p> 
+     <p> | &nbsp; |-- BluetoothDebug &nbsp; &nbsp; &nbsp; &nbsp;（蓝牙调试程序） </p> 
+     <p> | &nbsp; |-- CustomLocale &nbsp; &nbsp; &nbsp; &nbsp;（自定义区域设置） </p> 
+     <p> | &nbsp; |-- Development &nbsp; &nbsp; &nbsp; &nbsp;（开发） </p> 
+     <p> | &nbsp; |-- Fallback &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（和语言相关的一个程序） </p> 
+     <p> | &nbsp; |-- FontLab &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（字库） </p> 
+     <p> | &nbsp; |-- GestureBuilder &nbsp; &nbsp; &nbsp; &nbsp;（手势动作） </p> 
+     <p> | &nbsp; |-- NinePatchLab &nbsp; &nbsp; &nbsp; &nbsp;（？） </p> 
+     <p> | &nbsp; |-- OBJViewer &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（OBJ查看器） </p> 
+     <p> | &nbsp; |-- SdkSetup &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（SDK安装器） </p> 
+     <p> | &nbsp; |-- SpareParts &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（高级设置） </p> 
+     <p> | &nbsp; |-- Term &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（远程登录） </p> 
+     <p> | &nbsp; `-- launchperf &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（？） </p> 
+     <p> |-- build &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（编译脚本模板） </p> 
+     <p> |-- cmds &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（有个monkey工具） </p> 
+     <p> |-- data &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（配置数据） </p> 
+     <p> |-- docs &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（文档） </p> 
+     <p> |-- host &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（主机端USB驱动等） </p> 
+     <p> |-- ide &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（集成开发环境） </p> 
+     <p> |-- ndk &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（本地开发套件——c语言开发套件） </p> 
+     <p> |-- pdk &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（Plug Development Kit） </p> 
+     <p> |-- samples &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（例程） </p> 
+     <p> | &nbsp; |-- AliasActivity &nbsp; &nbsp; &nbsp; &nbsp;（？） </p> 
+     <p> | &nbsp; |-- ApiDemos &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（API演示程序） </p> 
+     <p> | &nbsp; |-- BluetoothChat &nbsp; &nbsp; &nbsp; &nbsp;（蓝牙聊天） </p> 
+     <p> | &nbsp; |-- BrowserPlugin &nbsp; &nbsp; &nbsp; &nbsp;（浏览器插件） </p> 
+     <p> | &nbsp; |-- BusinessCard &nbsp; &nbsp; &nbsp; &nbsp;（商业卡） </p> 
+     <p> | &nbsp; |-- Compass &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（指南针） </p> 
+     <p> | &nbsp; |-- ContactManager &nbsp; &nbsp; &nbsp; &nbsp;（联系人管理器） </p> 
+     <p> | &nbsp; |-- CubeLiveWallpaper &nbsp; &nbsp; &nbsp; &nbsp;（动态壁纸的一个简单例程） </p> 
+     <p> | &nbsp; |-- FixedGridLayout &nbsp; &nbsp; &nbsp; &nbsp;（像是布局） </p> 
+     <p> | &nbsp; |-- GlobalTime &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（全球时间） </p> 
+     <p> | &nbsp; |-- HelloActivity &nbsp; &nbsp; &nbsp; &nbsp;（Hello） </p> 
+     <p> | &nbsp; |-- Home &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（Home） </p> 
+     <p> | &nbsp; |-- JetBoy &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（jetBoy游戏） </p> 
+     <p> | &nbsp; |-- LunarLander &nbsp; &nbsp; &nbsp; &nbsp;（貌似又是一个游戏） </p> 
+     <p> | &nbsp; |-- MailSync &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（邮件同步） </p> 
+     <p> | &nbsp; |-- MultiResolution &nbsp; &nbsp; &nbsp; &nbsp;（多分辨率） </p> 
+     <p> | &nbsp; |-- MySampleRss &nbsp; &nbsp; &nbsp; &nbsp;（RSS） </p> 
+     <p> | &nbsp; |-- NotePad &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（记事本） </p> 
+     <p> | &nbsp; |-- RSSReader &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（RSS阅读器） </p> 
+     <p> | &nbsp; |-- SearchableDictionary &nbsp; &nbsp; &nbsp; &nbsp;（目录搜索） </p> 
+     <p> | &nbsp; |-- SimpleJNI &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（JNI例程） </p> 
+     <p> | &nbsp; |-- SkeletonApp &nbsp; &nbsp; &nbsp; &nbsp;（空壳APP） </p> 
+     <p> | &nbsp; |-- Snake &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（snake程序） </p> 
+     <p> | &nbsp; |-- SoftKeyboard &nbsp; &nbsp; &nbsp; &nbsp;（软键盘） </p> 
+     <p> | &nbsp; |-- Wiktionary &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（？维基） </p> 
+     <p> | &nbsp; `-- WiktionarySimple（？维基例程） </p> 
+     <p> |-- scripts &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（脚本） </p> 
+     <p> |-- sdk &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（sdk配置） </p> 
+     <p> |-- simulator &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（？模拟器） </p> 
+     <p> |-- testrunner &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（？测试用） </p> 
+     <p> `-- tools &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（一些工具） </p> 
+     <p> <br /> </p> 
+     <p> external 目录 </p> 
+     <p> . </p> 
+     <p> |-- aes &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（AES加密） </p> 
+     <p> |-- apache-http &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（网页服务器） </p> 
+     <p> |-- astl &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（ASTL (Android STL) is a slimmed-down version of the regular C++ STL.） </p> 
+     <p> |-- bison &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（自动生成语法分析器，将无关文法转换成C、C++） </p> 
+     <p> |-- blktrace &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（blktrace is a block layer IO tracing mechanism） </p> 
+     <p> |-- bluetooth &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（蓝牙相关、协议栈） </p> 
+     <p> |-- bsdiff &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（diff工具） </p> 
+     <p> |-- bzip2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（压缩工具） </p> 
+     <p> |-- clearsilver &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（html模板系统） </p> 
+     <p> |-- dbus &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（低延时、低开销、高可用性的IPC机制） </p> 
+     <p> |-- dhcpcd &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（DHCP服务） </p> 
+     <p> |-- dosfstools &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（DOS文件系统工具） </p> 
+     <p> |-- dropbear &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（SSH2的server） </p> 
+     <p> |-- e2fsprogs &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（EXT2文件系统工具） </p> 
+     <p> |-- elfcopy &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（复制ELF的工具） </p> 
+     <p> |-- elfutils &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（ELF工具） </p> 
+     <p> |-- embunit &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（Embedded Unit Project） </p> 
+     <p> |-- emma &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（java代码覆盖率统计工具） </p> 
+     <p> |-- esd &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（Enlightened Sound Daemon，将多种音频流混合在一个设备上播放） </p> 
+     <p> |-- expat &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（Expat is a stream-oriented XML parser.） </p> 
+     <p> |-- fdlibm &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（FDLIBM (Freely Distributable LIBM)） </p> 
+     <p> |-- freetype &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（字体） </p> 
+     <p> |-- fsck_msdos &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（dos文件系统检查工具） </p> 
+     <p> |-- gdata &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（google的无线数据相关） </p> 
+     <p> |-- genext2fs &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（genext2fs generates an ext2 filesystem as a normal (non-root) user） </p> 
+     <p> |-- giflib &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（gif库） </p> 
+     <p> |-- googleclient &nbsp; &nbsp; &nbsp; &nbsp;（google用户库） </p> 
+     <p> |-- grub &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（This is GNU GRUB, the GRand Unified Bootloader.） </p> 
+     <p> |-- gtest &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（Google C++ Testing Framework） </p> 
+     <p> |-- icu4c &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（ICU(International Component for Unicode)在C/C++下的版本） </p> 
+     <p> |-- ipsec-tools &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（This package provides a way to use the native IPsec functionality ） </p> 
+     <p> |-- iptables &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（防火墙） </p> 
+     <p> |-- jdiff &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（generate a report describing the difference between two public Java APIs.） </p> 
+     <p> |-- jhead &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（jpeg头部信息工具） </p> 
+     <p> |-- jpeg &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（jpeg库） </p> 
+     <p> |-- junit &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（JUnit是一个Java语言的单元测试框架） </p> 
+     <p> |-- kernel-headers &nbsp; &nbsp; &nbsp; &nbsp;（内核的一些头文件） </p> 
+     <p> |-- libffi &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（libffi is a foreign function interface library.） </p> 
+     <p> |-- libpcap &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（网络数据包捕获函数） </p> 
+     <p> |-- libpng &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（png库） </p> 
+     <p> |-- libxml2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（xml解析库） </p> 
+     <p> |-- mtpd &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（一个命令） </p> 
+     <p> |-- netcat &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（simple Unix utility which reads and writes dataacross network connections） </p> 
+     <p> |-- netperf &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（网络性能测量工具） </p> 
+     <p> |-- neven &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（看代码和JNI相关） </p> 
+     <p> |-- opencore &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（多媒体框架） </p> 
+     <p> |-- openssl &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（SSL加密相关） </p> 
+     <p> |-- openvpn &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（VPN开源库） </p> 
+     <p> |-- oprofile &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（OProfile是Linux内核支持的一种性能分析机制。） </p> 
+     <p> |-- ping &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（ping命令） </p> 
+     <p> |-- ppp &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（pppd拨号命令，好像还没有chat） </p> 
+     <p> |-- proguard &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（Java class file shrinker, optimizer, obfuscator, and preverifier） </p> 
+     <p> |-- protobuf &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（a flexible, efficient, automated mechanism for serializing structured data） </p> 
+     <p> |-- qemu &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（arm模拟器） </p> 
+     <p> |-- safe-iop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（functions for performing safe integer operations ） </p> 
+     <p> |-- skia &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（skia图形引擎） </p> 
+     <p> |-- sonivox &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（sole MIDI solution for Google Android Mobile Phone Platform） </p> 
+     <p> |-- speex &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（Speex编/解码API的使用(libspeex)） </p> 
+     <p> |-- sqlite &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（数据库） </p> 
+     <p> |-- srec &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（Nuance 公司提供的开源连续非特定人语音识别） </p> 
+     <p> |-- strace &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（trace工具） </p> 
+     <p> |-- svox &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（Embedded Text-to-Speech） </p> 
+     <p> |-- tagsoup &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（TagSoup是一个Java开发符合SAX的HTML解析器） </p> 
+     <p> |-- tcpdump &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（抓TCP包的软件） </p> 
+     <p> |-- tesseract &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（Tesseract Open Source OCR Engine.） </p> 
+     <p> |-- tinyxml &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（TinyXml is a simple, small, C++ XML parser） </p> 
+     <p> |-- tremor &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（I stream and file decoder provides an embeddable,integer-only library） </p> 
+     <p> |-- webkit &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（浏览器核心） </p> 
+     <p> |-- wpa_supplicant &nbsp; &nbsp; &nbsp; &nbsp;（无线网卡管理） </p> 
+     <p> |-- xmlwriter &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（XML 编辑工具） </p> 
+     <p> |-- yaffs2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（yaffs文件系统） </p> 
+     <p> `-- zlib &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（a general purpose data compression library） </p> 
+     <p> <br /> </p> 
+     <p> frameworks 目录 &nbsp; &nbsp; &nbsp; &nbsp;（核心框架——java及C++语言） </p> 
+     <p> . </p> 
+     <p> |-- base &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（基本内容） </p> 
+     <p> | &nbsp; |-- api &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（？都是xml文件，定义了java的api？） </p> 
+     <p> | &nbsp; |-- awt &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（AWT库） </p> 
+     <p> | &nbsp; |-- build &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（空的） </p> 
+     <p> | &nbsp; |-- camera &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（摄像头服务程序库） </p> 
+     <p> | &nbsp; |-- cmds &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（重要命令：am、app_proce等） </p> 
+     <p> | &nbsp; |-- core &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（核心库） </p> 
+     <p> | &nbsp; |-- data &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（字体和声音等数据文件） </p> 
+     <p> | &nbsp; |-- docs &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（文档） </p> 
+     <p> | &nbsp; |-- graphics &nbsp; &nbsp; &nbsp; &nbsp;（图形相关） </p> 
+     <p> | &nbsp; |-- include &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（头文件） </p> 
+     <p> | &nbsp; |-- keystore &nbsp; &nbsp; &nbsp; &nbsp;（和数据签名证书相关） </p> 
+     <p> | &nbsp; |-- libs &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（库） </p> 
+     <p> | &nbsp; |-- location &nbsp; &nbsp; &nbsp; &nbsp;（地区库） </p> 
+     <p> | &nbsp; |-- media &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（媒体相关库） </p> 
+     <p> | &nbsp; |-- obex &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（蓝牙传输库） </p> 
+     <p> | &nbsp; |-- opengl &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（2D-3D加速库） </p> 
+     <p> | &nbsp; |-- packages &nbsp; &nbsp; &nbsp; &nbsp;（设置、TTS、VPN程序） </p> 
+     <p> | &nbsp; |-- sax &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（XML解析器） </p> 
+     <p> | &nbsp; |-- services &nbsp; &nbsp; &nbsp; &nbsp;（各种服务程序） </p> 
+     <p> | &nbsp; |-- telephony &nbsp; &nbsp; &nbsp; &nbsp;（电话通讯管理） </p> 
+     <p> | &nbsp; |-- test-runner &nbsp; &nbsp; &nbsp; &nbsp;（测试工具相关） </p> 
+     <p> | &nbsp; |-- tests &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（各种测试） </p> 
+     <p> | &nbsp; |-- tools &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（一些叫不上名的工具） </p> 
+     <p> | &nbsp; |-- vpn &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（VPN） </p> 
+     <p> | &nbsp; `-- wifi &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（无线网络） </p> 
+     <p> |-- opt &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（可选部分） </p> 
+     <p> | &nbsp; |-- com.google.android &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（有个framework.jar） </p> 
+     <p> | &nbsp; |-- com.google.android.googlelogin &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（有个client.jar） </p> 
+     <p> | &nbsp; `-- emoji &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（standard message elements） </p> 
+     <p> `-- policies &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（Product policies are operating system directions aimed at specific uses） </p> 
+     <p> &nbsp; &nbsp;`-- base &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </p> 
+     <p> &nbsp; &nbsp; &nbsp; &nbsp;|-- mid &nbsp; &nbsp; &nbsp; &nbsp;（MID设备） </p> 
+     <p> &nbsp; &nbsp; &nbsp; &nbsp;`-- phone &nbsp; &nbsp; &nbsp; &nbsp;（手机类设备，一般用这个） </p> 
+     <p> <br /> </p> 
+     <p> hardware 目录 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（部分厂家开源的硬解适配层HAL代码） </p> 
+     <p> |-- broadcom &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（博通公司） </p> 
+     <p> | &nbsp; `-- wlan &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（无线网卡） </p> 
+     <p> |-- libhardware &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（硬件库） </p> 
+     <p> | &nbsp; |-- include &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（头文件） </p> 
+     <p> | &nbsp; `-- modules &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（Default (and possibly architecture dependents) HAL modules） </p> 
+     <p> | &nbsp; &nbsp; &nbsp; |-- gralloc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（gralloc显示相关） </p> 
+     <p> | &nbsp; &nbsp; &nbsp; `-- overlay &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（Skeleton for the &quot;overlay&quot; HAL module.） </p> 
+     <p> |-- libhardware_legacy &nbsp; &nbsp; &nbsp; &nbsp;（旧的硬件库） </p> 
+     <p> | &nbsp; |-- flashlight &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（背光） </p> 
+     <p> | &nbsp; |-- gps &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（GPS） </p> 
+     <p> | &nbsp; |-- include &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（头文件） </p> 
+     <p> | &nbsp; |-- mount &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（旧的挂载器） </p> 
+     <p> | &nbsp; |-- power &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（电源） </p> 
+     <p> | &nbsp; |-- qemu &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（模拟器） </p> 
+     <p> | &nbsp; |-- qemu_tracing &nbsp; &nbsp; &nbsp; &nbsp;（模拟器跟踪） </p> 
+     <p> | &nbsp; |-- tests &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（测试） </p> 
+     <p> | &nbsp; |-- uevent &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（uevent） </p> 
+     <p> | &nbsp; |-- vibrator &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（震动） </p> 
+     <p> | &nbsp; `-- wifi &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（无线） </p> 
+     <p> |-- msm7k &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（高通7k处理器开源抽象层） </p> 
+     <p> | &nbsp; |-- boot &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（启动） </p> 
+     <p> | &nbsp; |-- libaudio &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（声音库） </p> 
+     <p> | &nbsp; |-- libaudio-qsd8k &nbsp; &nbsp; &nbsp; &nbsp;（qsd8k的声音相关库） </p> 
+     <p> | &nbsp; |-- libcamera &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（摄像头库） </p> 
+     <p> | &nbsp; |-- libcopybit &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（copybit库） </p> 
+     <p> | &nbsp; |-- libgralloc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（gralloc库） </p> 
+     <p> | &nbsp; |-- libgralloc-qsd8k &nbsp; &nbsp; &nbsp; &nbsp;（qsd8k的gralloc库） </p> 
+     <p> | &nbsp; |-- liblights &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（背光库） </p> 
+     <p> | &nbsp; `-- librpc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（RPC库） </p> 
+     <p> |-- ril &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（无线电抽象层） </p> 
+     <p> | &nbsp; |-- include &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（头文件） </p> 
+     <p> | &nbsp; |-- libril &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（库） </p> 
+     <p> | &nbsp; |-- reference-cdma-sms &nbsp; &nbsp; &nbsp; &nbsp;（cdma短信参考） </p> 
+     <p> | &nbsp; |-- reference-ril &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（ril参考） </p> 
+     <p> | &nbsp; `-- rild &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（ril后台服务程序） </p> 
+     <p> `-- ti &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（ti公司开源HAL） </p> 
+     <p> &nbsp; &nbsp;|-- omap3 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（omap3处理器） </p> 
+     <p> &nbsp; &nbsp;| &nbsp; |-- dspbridge &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（DSP桥） </p> 
+     <p> &nbsp; &nbsp;| &nbsp; |-- libopencorehw &nbsp; &nbsp; &nbsp; &nbsp;（opencore硬件库） </p> 
+     <p> &nbsp; &nbsp;| &nbsp; |-- liboverlay &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（overlay硬件库） </p> 
+     <p> &nbsp; &nbsp;| &nbsp; |-- libstagefrighthw &nbsp; &nbsp; &nbsp; &nbsp;（stagefright硬件库） </p> 
+     <p> &nbsp; &nbsp;| &nbsp; `-- omx &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（omx组件） </p> 
+     <p> &nbsp; &nbsp;`-- wlan &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（无线网卡） </p> 
+     <p> <br /> </p> 
+     <p> packages 目录 </p> 
+     <p> . </p> 
+     <p> |-- apps &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（应用程序库） </p> 
+     <p> | &nbsp; |-- AlarmClock &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（闹钟） </p> 
+     <p> | &nbsp; |-- Bluetooth &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（蓝牙） </p> 
+     <p> | &nbsp; |-- Browser &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（浏览器） </p> 
+     <p> | &nbsp; |-- Calculator &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（计算器） </p> 
+     <p> | &nbsp; |-- Calendar &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（日历） </p> 
+     <p> | &nbsp; |-- Camera &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; （相机） </p> 
+     <p> | &nbsp; |-- CertInstaller &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（在Android中安装数字签名，被调用） </p> 
+     <p> | &nbsp; |-- Contacts &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（拨号(调用)、联系人、通话记录） </p> 
+     <p> | &nbsp; |-- DeskClock &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（桌面时钟） </p> 
+     <p> | &nbsp; |-- Email &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（Email） </p> 
+     <p> | &nbsp; |-- Gallery &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（相册，和Camera类似，多了列表） </p> 
+     <p> | &nbsp; |-- Gallery3D &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（？3D相册） </p> 
+     <p> | &nbsp; |-- GlobalSearch &nbsp; &nbsp; &nbsp; &nbsp;（为google搜索服务，提供底层应用） </p> 
+     <p> | &nbsp; |-- GoogleSearch &nbsp; &nbsp; &nbsp; &nbsp;（google搜索） </p> 
+     <p> | &nbsp; |-- HTMLViewer &nbsp; &nbsp; &nbsp; &nbsp;（浏览器附属界面，被浏览器应用调用，同时提供存储记录功能） </p> 
+     <p> | &nbsp; |-- IM &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（即时通讯，为手机提供信号发送、接收、通信的服务） </p> 
+     <p> | &nbsp; |-- Launcher &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（登陆启动项，显示图片框架等等图形界面） </p> 
+     <p> | &nbsp; |-- Launcher2 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（登陆启动项，负责应用的调用） </p> 
+     <p> | &nbsp; |-- Mms &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（？彩信业务） </p> 
+     <p> | &nbsp; |-- Music &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（音乐播放器） </p> 
+     <p> | &nbsp; |-- PackageInstaller &nbsp; &nbsp; &nbsp; &nbsp;（安装、卸载程序的响应） </p> 
+     <p> | &nbsp; |-- Phone &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（电话拨号程序） </p> 
+     <p> | &nbsp; |-- Provision &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（预设应用的状态，使能应用） </p> 
+     <p> | &nbsp; |-- Settings &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（开机设定，包括电量、蓝牙、设备信息、界面、wifi等） </p> 
+     <p> | &nbsp; |-- SoundRecorder &nbsp; &nbsp; &nbsp; &nbsp;（录音机，可计算存储所需空间和时间） </p> 
+     <p> | &nbsp; |-- Stk &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; （接收和发送短信） </p> 
+     <p> | &nbsp; |-- Sync &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（空） &nbsp; -------○1 </p> 
+     <p> | &nbsp; |-- Updater &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（空） </p> 
+     <p> | &nbsp; `-- VoiceDialer &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（语音识别通话） </p> 
+     <p> |-- inputmethods &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（输入法） </p> 
+     <p> | &nbsp; |-- LatinIME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（拉丁文输入法） </p> 
+     <p> | &nbsp; |-- OpenWnn &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（OpenWnn输入法） </p> 
+     <p> | &nbsp; `-- PinyinIME &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（拼音输入法） </p> 
+     <p> |-- providers &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（提供器，提供应用程序、界面所需的数据） </p> 
+     <p> | &nbsp; |-- ApplicationsProvider &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（应用程序提供器，提供应用程序启动项、更新等） </p> 
+     <p> | &nbsp; |-- CalendarProvider &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（日历提供器） </p> 
+     <p> | &nbsp; |-- ContactsProvider &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（联系人提供器） </p> 
+     <p> | &nbsp; |-- DownloadProvider &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（下载管理提供器） </p> 
+     <p> | &nbsp; |-- DrmProvider &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（创建和更新数据库时调用） </p> 
+     <p> | &nbsp; |-- GoogleContactsProvider &nbsp; &nbsp; &nbsp; &nbsp;（联系人提供器的子类，用以同步联系人） </p> 
+     <p> | &nbsp; |-- GoogleSubscribedFeedsProvider（设置信息提供器） </p> 
+     <p> | &nbsp; |-- ImProvider &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（空） </p> 
+     <p> | &nbsp; |-- ManagementProvider &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（空） </p> 
+     <p> | &nbsp; |-- MediaProvider &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（媒体提供器，提供存储数据） </p> 
+     <p> | &nbsp; |-- TelephonyProvider &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（彩信提供器） </p> 
+     <p> | &nbsp; |-- UserDictionaryProvider &nbsp; &nbsp; &nbsp; &nbsp;（用户字典提供器，提供用户常用字字典） </p> 
+     <p> | &nbsp; `-- WebSearchProvider &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（空） </p> 
+     <p> |-- services &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; </p> 
+     <p> | &nbsp; |-- EasService &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（空） </p> 
+     <p> | &nbsp; `-- LockAndWipe &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（空） </p> 
+     <p> `-- wallpapers &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（墙纸） </p> 
+     <p> &nbsp; &nbsp;|-- Basic &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（基本墙纸，系统内置墙纸） </p> 
+     <p> &nbsp; &nbsp;|-- LivePicker &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（选择动态壁纸） </p> 
+     <p> &nbsp; &nbsp;|-- MagicSmoke &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（壁纸特殊效果） </p> 
+     <p> &nbsp; &nbsp;`-- MusicVisualization &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（音乐可视化，图形随音乐而变化） </p> 
+     <p> <br /> </p> 
+     <p> ○1里面有一个隐藏的.git文件夹，内容都是一样的，没有有意义的代码，config看似乎是一个下载程序，因此认为这些文件夹下没有实质东西。 </p> 
+     <p> <br /> </p> 
+     <p> prebuilt 目录 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（x86和arm架构下预编译的一些资源） </p> 
+     <p> . </p> 
+     <p> |-- android-arm &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（arm-android相关） </p> 
+     <p> | &nbsp; |-- gdbserver &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（gdb调试器） </p> 
+     <p> | &nbsp; `-- kernel &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（模拟的arm内核） </p> 
+     <p> |-- android-x86 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（x86-android相关） </p> 
+     <p> | &nbsp; `-- kernel &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（空的） </p> 
+     <p> |-- common &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（通用编译好的代码，应该是java的） </p> 
+     <p> |-- darwin-x86 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（drawin x86平台） </p> 
+     <p> | &nbsp; `-- toolchain &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（工具链） </p> 
+     <p> | &nbsp; &nbsp; &nbsp; |-- arm-eabi-4.2.1 &nbsp; &nbsp; &nbsp; &nbsp; </p> 
+     <p> | &nbsp; &nbsp; &nbsp; |-- arm-eabi-4.3.1 &nbsp; &nbsp; &nbsp; &nbsp; </p> 
+     <p> | &nbsp; &nbsp; &nbsp; `-- arm-eabi-4.4.0 &nbsp; &nbsp; &nbsp; &nbsp; </p> 
+     <p> |-- darwin-x86_64 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（drawin x86 64bit平台） </p> 
+     <p> |-- linux-x86 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（linux x86平台） </p> 
+     <p> | &nbsp; `-- toolchain &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（工具链，我们应该主要用这个） </p> 
+     <p> | &nbsp; &nbsp; &nbsp; |-- arm-eabi-4.2.1 &nbsp; &nbsp; &nbsp; &nbsp; </p> 
+     <p> | &nbsp; &nbsp; &nbsp; |-- arm-eabi-4.3.1 &nbsp; &nbsp; &nbsp; &nbsp; </p> 
+     <p> | &nbsp; &nbsp; &nbsp; |-- arm-eabi-4.4.0 &nbsp; &nbsp; &nbsp; &nbsp; </p> 
+     <p> | &nbsp; &nbsp; &nbsp; `-- i686-unknown-linux-gnu-4.2.1 &nbsp; &nbsp; &nbsp; &nbsp;（x86版编译器） </p> 
+     <p> |-- linux-x86_64 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（linux x86 64bit平台） </p> 
+     <p> |-- windows &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（windows平台） </p> 
+     <p> `-- windows-x86_64 &nbsp; &nbsp; &nbsp; &nbsp;（64bit windows平台） </p> 
+     <p> system 目录 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（底层文件系统库、应用及组件——C语言） </p> 
+     <p> . </p> 
+     <p> |-- Bluetooth &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（蓝牙相关） </p> 
+     <p> |-- core &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（系统核心工具盒接口） </p> 
+     <p> | &nbsp; |-- adb &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（adb调试工具） </p> 
+     <p> | &nbsp; |-- cpio &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（cpio工具，创建img） </p> 
+     <p> | &nbsp; |-- debuggerd &nbsp; &nbsp; &nbsp; &nbsp;（调试工具） </p> 
+     <p> | &nbsp; |-- fastboot &nbsp; &nbsp; &nbsp; &nbsp;（快速启动相关） </p> 
+     <p> | &nbsp; |-- include &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（系统接口头文件） </p> 
+     <p> | &nbsp; |-- init &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（init程序源代码） </p> 
+     <p> | &nbsp; |-- libacc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（轻量级C编译器） </p> 
+     <p> | &nbsp; |-- libctest &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（libc测试相关） </p> 
+     <p> | &nbsp; |-- libcutils &nbsp; &nbsp; &nbsp; &nbsp;（libc工具） </p> 
+     <p> | &nbsp; |-- liblog &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（log库） </p> 
+     <p> | &nbsp; |-- libmincrypt &nbsp; &nbsp; &nbsp; &nbsp;（加密库） </p> 
+     <p> | &nbsp; |-- libnetutils &nbsp; &nbsp; &nbsp; &nbsp;（网络工具库） </p> 
+     <p> | &nbsp; |-- libpixelflinger &nbsp; &nbsp; &nbsp; &nbsp;（图形处理库） </p> 
+     <p> | &nbsp; |-- libsysutils &nbsp; &nbsp; &nbsp; &nbsp;（系统工具库） </p> 
+     <p> | &nbsp; |-- libzipfile &nbsp; &nbsp; &nbsp; &nbsp;（zip库） </p> 
+     <p> | &nbsp; |-- logcat &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（查看log工具） </p> 
+     <p> | &nbsp; |-- logwrapper &nbsp; &nbsp; &nbsp; &nbsp;（log封装工具） </p> 
+     <p> | &nbsp; |-- mkbootimg &nbsp; &nbsp; &nbsp; &nbsp;（制作启动boot.img的工具盒脚本） </p> 
+     <p> | &nbsp; |-- netcfg &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（网络配置netcfg源码） </p> 
+     <p> | &nbsp; |-- nexus &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（google最新手机的代码） </p> 
+     <p> | &nbsp; |-- rootdir &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（rootfs，包含一些etc下的脚本和配置） </p> 
+     <p> | &nbsp; |-- sh &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（shell代码） </p> 
+     <p> | &nbsp; |-- toolbox &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（toolbox，类似busybox的工具集） </p> 
+     <p> | &nbsp; `-- vold &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（SD卡管理器） </p> 
+     <p> |-- extras &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（额外工具） </p> 
+     <p> | &nbsp; |-- latencytop &nbsp; &nbsp; &nbsp; &nbsp;（a tool for software developers ，identifying system latency happen） </p> 
+     <p> | &nbsp; |-- libpagemap &nbsp; &nbsp; &nbsp; &nbsp;（pagemap库） </p> 
+     <p> | &nbsp; |-- librank &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（Java Library Ranking System库） </p> 
+     <p> | &nbsp; |-- procmem &nbsp; &nbsp; &nbsp; &nbsp;（pagemap相关） </p> 
+     <p> | &nbsp; |-- procrank &nbsp; &nbsp; &nbsp; &nbsp;（Java Library Ranking System相关） </p> 
+     <p> | &nbsp; |-- showmap &nbsp; &nbsp; &nbsp; &nbsp;（showmap工具） </p> 
+     <p> | &nbsp; |-- showslab &nbsp; &nbsp; &nbsp; &nbsp;（showslab工具） </p> 
+     <p> | &nbsp; |-- sound &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（声音相关） </p> 
+     <p> | &nbsp; |-- su &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（su命令源码） </p> 
+     <p> | &nbsp; |-- tests &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（一些测试工具） </p> 
+     <p> | &nbsp; `-- timeinfo &nbsp; &nbsp; &nbsp; &nbsp;（时区相关） </p> 
+     <p> `-- wlan &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（无线相关） </p> 
+     <p> &nbsp; &nbsp;`-- ti &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（ti网卡相关工具及库） </p> 
+     <p> <br /> </p> 
+     <p> <br /> </p> 
+     <p> vendor 目录 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（厂家定制内容） </p> 
+     <p> <br /> </p> 
+     <p> |-- aosp &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（android open source project） </p> 
+     <p> | &nbsp; `-- products &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（一些板级规则） </p> 
+     <p> |-- htc &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（HTC公司） </p> 
+     <p> | &nbsp; |-- common-open &nbsp; &nbsp; &nbsp; &nbsp;（通用部分） </p> 
+     <p> | &nbsp; | &nbsp; `-- akmd &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（解压img用的工具） </p> 
+     <p> | &nbsp; |-- dream-open &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（G1开放部分） </p> 
+     <p> | &nbsp; |-- prebuilt-open &nbsp; &nbsp; &nbsp; &nbsp;（预编译开放部分） </p> 
+     <p> | &nbsp; `-- sapphire-open &nbsp; &nbsp; &nbsp; &nbsp;（sapphire这款型号开放内容） </p> 
+     <p> |-- pv-open &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（没东西） </p> 
+     <p> |-- qcom &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（里面基本是空的） </p> 
+     <p> `-- sample &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（google提供的样例） </p> 
+     <p> &nbsp; &nbsp;|-- apps &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（应用） </p> 
+     <p> &nbsp; &nbsp;| &nbsp; |-- client &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（用户） </p> 
+     <p> &nbsp; &nbsp;| &nbsp; `-- upgrade &nbsp; &nbsp; &nbsp; &nbsp;（升级） </p> 
+     <p> &nbsp; &nbsp;|-- frameworks &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（框架） </p> 
+     <p> &nbsp; &nbsp;| &nbsp; `-- PlatformLibrary &nbsp; &nbsp; &nbsp; &nbsp;（平台库） </p> 
+     <p> &nbsp; &nbsp;|-- products &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（产品） </p> 
+     <p> &nbsp; &nbsp;|-- sdk_addon &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（sdk添加部分） </p> 
+     <p> &nbsp; &nbsp;`-- skins &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;（皮肤） </p> 
+     <p> &nbsp; &nbsp; &nbsp; &nbsp;`-- WVGAMedDpi &nbsp; &nbsp; &nbsp; &nbsp;（WVGA适用的图片） </p> 
+     <p> &nbsp; </p> 
+     <p> &nbsp; </p> 
+     <p class="tag"></p> 
+     <div id="related_log" style="font-size:12px">
+      <p><b>相关日志：</b></p>
+      <p><a href="http://www.forwhat.cn/post-332.html">EVDO PhoneApp 异常</a></p>
+      <p><a href="http://www.forwhat.cn/post-331.html">Android 如何 永不休眠</a></p>
+      <p><a href="http://www.forwhat.cn/post-61.html">45个android实例源码分享</a></p>
+      <p><a href="http://www.forwhat.cn/post-45.html">android线程间通讯</a></p>
+      <p><a href="http://www.forwhat.cn/post-36.html">Android登陆界面排版代码</a></p>
+     </div> 
+     <div class="nextlog">
+       &laquo; 
+      <a href="http://www.forwhat.cn/post-390.html">vsftpd添加用户并限制目录（指定用户访问指定目录）</a> | 
+      <a href="http://www.forwhat.cn/post-388.html">linux c 操作串口</a>&raquo; 
+     </div> 
+     <a name="comments"></a> 
+     <p class="comment-header"><b>评论：</b></p> 
+     <div class="comment" id="comment-3111"> 
+      <a name="3111"></a> 
+      <div class="avatar">
+       <img src="http://www.gravatar.com/avatar/f14545627760b466121491792fc0c9ca?s=40&amp;d=mm&amp;r=g" />
+      </div> 
+      <div class="comment-info"> 
+       <b><a href="http://adoncn.com/" target="_blank">AdOnCn</a> </b>
+       <br />
+       <span class="comment-time">2015-12-30 18:40</span> 
+       <div class="comment-content">
+        很好！感谢！
+       </div> 
+       <div class="comment-reply">
+        <a href="#comment-3111" onclick="commentReply(3111,this)">回复</a>
+       </div> 
+      </div> 
+     </div> 
+     <div id="pagenavi"> 
+     </div> 
+     <div id="comment-place"> 
+      <div class="comment-post" id="comment-post"> 
+       <div class="cancel-reply" id="cancel-reply" style="display:none">
+        <a href="javascript:void(0);" onclick="cancelReply()">取消回复</a>
+       </div> 
+       <p class="comment-header"><b>发表评论：</b><a name="respond"></a></p> 
+       <form method="post" name="commentform" action="http://www.forwhat.cn/index.php?action=addcom" id="commentform"> 
+        <input type="hidden" name="gid" value="389" /> 
+        <p> <input type="text" name="comname" maxlength="49" value="" size="22" tabindex="1" /> <label for="author"><small>昵称</small></label> </p> 
+        <p> <input type="text" name="commail" maxlength="128" value="" size="22" tabindex="2" /> <label for="email"><small>邮件地址 (选填)</small></label> </p> 
+        <p> <input type="text" name="comurl" maxlength="128" value="" size="22" tabindex="3" /> <label for="url"><small>个人主页 (选填)</small></label> </p> 
+        <p><textarea name="comment" id="comment" rows="10" tabindex="4"></textarea></p> 
+        <p> <input type="submit" id="comment_submit" value="发表评论" tabindex="6" /></p> 
+        <input type="hidden" name="pid" id="comment-pid" value="0" size="22" tabindex="1" /> 
+       </form> 
+      </div> 
+     </div> 
+     <div style="clear:both;"></div> 
+    </div>
+    <!--end #contentleft--> ﻿
+    <ul id="sidebar"> 
+     <div id="adsence"> 
+      <script type="text/javascript">
+/*200*200，创建于2014-6-25*/
+var cpro_id = "u1598965";
+</script> 
+      <script src="http://cpro.baidustatic.com/cpro/ui/c.js" type="text/javascript"></script> 
+     </div> 
+     <li> <h3><span>搜索</span></h3> 
+      <ul id="logsearch"> 
+       <form name="keyform" method="get" action="http://www.forwhat.cn/index.php"> 
+        <input name="keyword" class="search" type="text" /> 
+       </form> 
+      </ul> </li> 
+     <li> <h3><span>日历</span></h3> 
+      <div id="calendar"> 
+      </div> <script>sendinfo('http://www.forwhat.cn/?action=cal','calendar');</script> </li> 
+     <li> <h3><span>分类</span></h3> 
+      <ul id="blogsort"> 
+       <li> <a href="http://www.forwhat.cn/sort/1">android(25)</a> <a href="http://www.forwhat.cn/rss.php?sort=1"><img src="http://www.forwhat.cn/content/templates/default/images/rss.png" alt="订阅该分类" /></a> </li>
+       <li> <a href="http://www.forwhat.cn/sort/2">discuz(19)</a> <a href="http://www.forwhat.cn/rss.php?sort=2"><img src="http://www.forwhat.cn/content/templates/default/images/rss.png" alt="订阅该分类" /></a> </li>
+       <li> <a href="http://www.forwhat.cn/sort/3">成长历程(115)</a> <a href="http://www.forwhat.cn/rss.php?sort=3"><img src="http://www.forwhat.cn/content/templates/default/images/rss.png" alt="订阅该分类" /></a> </li>
+       <li> <a href="http://www.forwhat.cn/sort/4">sqserverl数据库(1)</a> <a href="http://www.forwhat.cn/rss.php?sort=4"><img src="http://www.forwhat.cn/content/templates/default/images/rss.png" alt="订阅该分类" /></a> </li>
+       <li> <a href="http://www.forwhat.cn/sort/10">English(7)</a> <a href="http://www.forwhat.cn/rss.php?sort=10"><img src="http://www.forwhat.cn/content/templates/default/images/rss.png" alt="订阅该分类" /></a> </li>
+       <li> <a href="http://www.forwhat.cn/sort/6">嵌入式(106)</a> <a href="http://www.forwhat.cn/rss.php?sort=6"><img src="http://www.forwhat.cn/content/templates/default/images/rss.png" alt="订阅该分类" /></a> </li>
+       <li> <a href="http://www.forwhat.cn/sort/7">Linux(109)</a> <a href="http://www.forwhat.cn/rss.php?sort=7"><img src="http://www.forwhat.cn/content/templates/default/images/rss.png" alt="订阅该分类" /></a> </li>
+       <li> <a href="http://www.forwhat.cn/sort/9">Emlog(18)</a> <a href="http://www.forwhat.cn/rss.php?sort=9"><img src="http://www.forwhat.cn/content/templates/default/images/rss.png" alt="订阅该分类" /></a> </li>
+       <li> <a href="http://www.forwhat.cn/sort/11">3G(3)</a> <a href="http://www.forwhat.cn/rss.php?sort=11"><img src="http://www.forwhat.cn/content/templates/default/images/rss.png" alt="订阅该分类" /></a> </li>
+       <li> <a href="http://www.forwhat.cn/sort/12">GPRS(2)</a> <a href="http://www.forwhat.cn/rss.php?sort=12"><img src="http://www.forwhat.cn/content/templates/default/images/rss.png" alt="订阅该分类" /></a> </li>
+       <li> <a href="http://www.forwhat.cn/sort/13">NAudio(1)</a> <a href="http://www.forwhat.cn/rss.php?sort=13"><img src="http://www.forwhat.cn/content/templates/default/images/rss.png" alt="订阅该分类" /></a> </li>
+       <li> <a href="http://www.forwhat.cn/sort/doctor">医疗器械(1)</a> <a href="http://www.forwhat.cn/rss.php?sort=16"><img src="http://www.forwhat.cn/content/templates/default/images/rss.png" alt="订阅该分类" /></a> </li>
+       <li> <a href="http://www.forwhat.cn/sort/17">WPF(1)</a> <a href="http://www.forwhat.cn/rss.php?sort=17"><img src="http://www.forwhat.cn/content/templates/default/images/rss.png" alt="订阅该分类" /></a> </li>
+       <li> <a href="http://www.forwhat.cn/sort/sqlite3">SQLite3(3)</a> <a href="http://www.forwhat.cn/rss.php?sort=15"><img src="http://www.forwhat.cn/content/templates/default/images/rss.png" alt="订阅该分类" /></a> </li>
+       <li> <a href="http://www.forwhat.cn/sort/GB">国家标准(1)</a> <a href="http://www.forwhat.cn/rss.php?sort=14"><img src="http://www.forwhat.cn/content/templates/default/images/rss.png" alt="订阅该分类" /></a> </li>
+      </ul> </li> 
+     <li> <h3><span>存档</span></h3> 
+      <ul id="record"> 
+       <li><a href="http://www.forwhat.cn/record/201703">2017年3月(2)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201702">2017年2月(6)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201701">2017年1月(9)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201612">2016年12月(13)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201611">2016年11月(4)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201608">2016年8月(17)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201607">2016年7月(4)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201603">2016年3月(1)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201602">2016年2月(2)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201512">2015年12月(4)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201510">2015年10月(5)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201509">2015年9月(1)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201508">2015年8月(1)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201506">2015年6月(2)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201505">2015年5月(4)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201504">2015年4月(1)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201503">2015年3月(4)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201502">2015年2月(2)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201501">2015年1月(24)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201412">2014年12月(3)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201410">2014年10月(5)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201409">2014年9月(5)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201408">2014年8月(4)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201407">2014年7月(13)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201406">2014年6月(18)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201405">2014年5月(20)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201404">2014年4月(24)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201403">2014年3月(90)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201402">2014年2月(121)</a></li> 
+       <li><a href="http://www.forwhat.cn/record/201401">2014年1月(11)</a></li> 
+      </ul> </li> 
+     <li> <h3><span>最新评论</span></h3> 
+      <ul id="newcomment"> 
+       <li id="comment">qq <br /><a href="http://www.forwhat.cn/post-386.html#3142">哈</a></li> 
+       <li id="comment">AdOnCn <br /><a href="http://www.forwhat.cn/post-389.html#3111">很好！感谢！</a></li> 
+       <li id="comment">FlyLu <br /><a href="http://www.forwhat.cn/post-365.html#2928">fly您好，看到你写的文章很不错，也很佩...</a></li> 
+       <li id="comment">地铁诡事 <br /><a href="http://www.forwhat.cn/post-381.html#2760">[给力]</a></li> 
+       <li id="comment">婚嫁百科 <br /><a href="http://www.forwhat.cn/post-378.html#2734">如果有爱，如果有结局！</a></li> 
+       <li id="comment">安安博客 <br /><a href="http://www.forwhat.cn/post-380.html#2732">看不懂</a></li> 
+       <li id="comment">wys.me <br /><a href="http://www.forwhat.cn/post-118.html#2722">博主好，请教个问题哈。 怎么修改vis...</a></li> 
+       <li id="comment">知道91博客 <br /><a href="http://www.forwhat.cn/post-379.html#2721">哈哈，这个算是编程很基础很基础的了吧</a></li> 
+       <li id="comment">婚嫁百科 <br /><a href="http://www.forwhat.cn/post-370.html#2717">晕死，怎么都不会显示出来的啊</a></li> 
+       <li id="comment">小俊 <br /><a href="http://www.forwhat.cn/post-379.html#2716">看不懂</a></li> 
+      </ul> </li> 
+     <li> <h3><span>链接</span></h3> 
+      <ul id="link"> 
+       <li><a href="http://www.forwhat.cn" title="" target="_blank">程序员玩耍的小窝</a></li> 
+       <li><a href="http://www.cqshenjun.com" title="沈军的个人博客,分享电子商务专业大学毕业后，电商人的学习成长，电子商务学生工作就业，电商职业交流学习中遇到的各种问题的解决方法。" target="_blank">沈军博客</a></li> 
+       <li><a href="http://www.pengyaou.com" title="" target="_blank">彭亚欧个人博客</a></li> 
+       <li><a href="http://www.wowotech.net" title="" target="_blank">蜗窝科技</a></li> 
+       <li><a href="http://www.xiaovdiy.cn" title="" target="_blank">小V电子</a></li> 
+      </ul> </li> 
+     <li> <h3><span>随机文章</span></h3> 
+      <ul id="randlog"> 
+       <li><a href="http://www.forwhat.cn/post-368.html">linux c 定时器</a></li> 
+       <li><a href="http://www.forwhat.cn/post-313.html">写程序如何调试和排错</a></li> 
+       <li><a href="http://www.forwhat.cn/post-88.html">年龄只是人生标尺上的刻度</a></li> 
+       <li><a href="http://www.forwhat.cn/post-266.html">ARM汇编指令大全详解</a></li> 
+       <li><a href="http://www.forwhat.cn/post-331.html">Android 如何 永不休眠</a></li> 
+      </ul> </li> 
+     <div class="rss"> 
+      <a href="http://www.forwhat.cn/rss.php" title="RSS订阅"><img src="http://www.forwhat.cn/content/templates/default/images/rss.gif" alt="订阅Rss" /></a> 
+     </div> 
+     <script type="text/javascript">
+    /*160*600 创建于 2015-10-29*/
+    var cpro_id = "u2375286";
+</script> 
+     <script src="http://cpro.baidustatic.com/cpro/ui/c.js" type="text/javascript"></script> 
+    </ul>
+    <!--end #siderbar--> ﻿
+   </div>
+   <!--end #content--> 
+   <div style="clear:both;"></div> 
+   <div id="footerbar">
+     Powered by emlog 
+    <a href="http://www.miibeian.gov.cn" target="_blank"></a> 
+    <script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F9e00511cee76353e27abb8d3e7986fa1' type='text/javascript'%3E%3C/script%3E"));
+</script> 
+    <a href="http://www.forwhat.cn/sitemap.xml" rel="sitemap">sitemap</a>
+   </div>
+   <!--end #footerbar--> 
+  </div>
+  <!--end #wrap--> 
+  <script>prettyPrint();</script>  
+ </body>
+</html>

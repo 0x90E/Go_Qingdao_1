@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+
+<link type="text/css" rel="stylesheet" href="resources/css/login_yzm.css">
+
+
+<title>登录</title>
+<script src="/SKServer/resources/dwz/js/jquery-1.7.2.js" type="text/javascript"></script>
+<script src="/SKServer/resources/dwz/js/md5.js" type="text/javascript"></script>
+<script type="text/javascript">
+	function login() {
+		var	czydm = $("#czydm").val();
+		var yhkl = $.md5($("#yhkl").val());
+		if(czydm==""){
+			alert("用户名不能为空")
+			return;
+		}
+		if(yhkl==""){
+			alert("密码不能为空")
+			return;
+		}
+		var yzm = $("#yzm");
+		if(yzm.length>0&&yzm.val().length!=4){
+			alert("验证码输入长度有误");
+			return;
+		}
+		$.getJSON("/SKServer/sys/login.do",{czydm:czydm,yhkl:yhkl,czymc:yzm.val(),_:new Date().getTime()},function(json){
+			if(json.statusCode=="200"){
+				var pwdfzd = "";
+				if(pwdfzd){
+					var pwd = $("#yhkl").val();
+					var regexs = [/(?=.*[0-9])(?=.*[a-zA-Z]).{6,30}/,/(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{6,30}/];
+					regexs.push(/(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{6,30}/);
+					if(!regexs[pwdfzd-1].test(pwd)){
+						alert("验证通过，但您当前的登录口令不满足安全要求，请在登录系统后尽快修改！！");
+					}
+				}
+				if( json.czyxx.czydm=="admin"){
+					location.href="/SKServer/sys/adminIndex.do";
+				}else{
+					location.href="/SKServer/sys/index.do";
+				}
+			}else if(json.message.indexOf("验证码错误")!=-1){
+				alert(json.message);
+				$("#yzmpic").trigger("click");
+			} else {
+				alert(json.message);
+				$("#yzmpic").trigger("click");
+			}
+		})
+	}
+	$(function(){
+		if($.browser.version=="6.0"){
+			$("#czydm").css("margin-top","2px");
+			$("#yhkl").css("margin-top","-2px");
+			if(true){
+				$(".login_btn").css("margin-top","2px");
+			}else{
+				$(".login_btn").css("margin-top","-4px");
+			}
+			$("#yzmpic").css("margin-top","-4px")
+			$("#yzm").css("top","150px")
+		}
+		$("#yzmpic").click(function(){
+			var $this = $(this);
+			var src = $this.attr("src");
+			var _index = src.indexOf("?");
+			if(_index!=-1){
+				src = src.substring(0,_index);
+			}
+			src += ("?_="+new Date().getTime());
+			$this.attr("src",src);
+			$("#yzm").val("");
+		});
+	})
+	
+</script>
+</head>
+<body>
+	<div class="login_main">
+		<div class="login_top">
+			<div class="login_top_group">
+				<div class="login_logo"></div>
+				<div class="login_systemName"></div>
+			</div>
+		</div>
+		<div class="login_middle">
+			<div class="login_left"></div>
+			
+			
+			<div class="login_center">
+				<form onsubmit="login();return false" autocomplete="off">
+					<input id="czydm" class="login_inp login_user" style="height: 22px;">
+					<br>
+					<input id="yhkl" type="password" class="login_inp login_password" style="height: 22px;"> <br>
+					<img id="yzmpic" title="验证码" alt="验证码" src="sys/yzm.do">
+					<input id="yzm" name="czymc" class="login_inp" style="height: 22px;" maxlength="4"> <br>
+					<button class="login_btn" type="submit" value="">
+					</button>
+				</form>
+			</div>
+			
+			<div class="login_right"></div>
+		</div>
+		<div align="center">版本：v2.2.5.20161116</div>
+		<div class="footer">版权所有：&nbsp;&nbsp;&nbsp;&nbsp;国家信息安全工程技术研究中心 &nbsp;&nbsp;&nbsp;&nbsp;推荐使用IE6.0以上版本浏览器 1024x768以上分辨率</div>
+	</div>
+
+
+
+
+
+</body></html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html><html><head>
+<meta charset="utf-8">
+<meta name="description" content="">
+<meta name="keywords" content="">
+<title>　　　　　　　　　　　　　　　　　　　</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+<meta name="format-detection" content="telephone=no,email=no">
+<link type="text/css" rel="stylesheet" href="http://statics.9377s.com/style/ssxyl_m/land1/style.css?20170401183439">
+<script src="http://statics.9377s.com/js/ajax.js?20170401183439"></script>
+</head>
+<body>
+	<div class="container">
+		<a class="index select_url down_url apkurl" href="http://wvw.9377.cn/downloads.php?game=ssfml&amp;platform=3&amp;url=http%3A%2F%2Fdl.sy.9377.com%2Fssfml%2Fss_9377_sig_baidu_fml1.apk&amp;item=mini&amp;lm=baidu_fml1&amp;uid=&amp;keyword=&amp;imei=&amp;ad_param=25609ssyxfgldy&amp;mac=&amp;ext=MTQ0MzYsMywzMDE5NCwyODcxMSwwLCwwLDAsODg4OCwsYmR0Zy45Mzc3LmNvbQ=="></a>
+		<div class="top_head">
+			<div class="top_nav">
+				<img src="http://statics.9377s.com/images/ssxyl_m/land1/top_head.png?20170401183439" alt="" title="">
+			</div>
+		</div>
+		<div class="down_zone">
+			<img src="http://statics.9377s.com/images/ssxyl_m/land1/bg1.jpg?20170401183439" alt="" title="">
+		</div>
+		<div class="part">
+			<img src="http://statics.9377s.com/images/ssxyl_m/land1/bg2.jpg?20170401183439" alt="" title="">
+		</div>
+		<footer class="footer"><div class="__data__" data_id="__data__[8993]" page="article" postfix="article_55667" style="display: none; "><div></div><span>底部信息的内容</span></div><p>广州创思信息技术有限公司 文网文[2013]0235-085号</p>
+<p>备案号：粤ICP备10075466号-4 增值电信业务经营许可证粤B-20100584 联系电话(7x24)：020-37039849</p>
+<p>文化部网络游戏举报和联系电子邮箱：wlwh@vip.sina.com</p></footer>
+	</div>
+	<script type="text/javascript">
+var pack = 'http://dl.sy.9377.com/ssfml/ss_9377_sig_*.apk';
+var iospack = 'https://itunes.apple.com/cn/app/lie-yan-shou-you/id930799477?l=zh&ls=1&mt=8';
+var iosjbpack = 'http://dl.sy.9377.com/ly/ly_9377yy_*.ipa';
+var qrcode = 'http://bdtg.9377.com/baidu.php?id=6402';
+var game = 'ssfml';
+var iosgame = '';
+var iosjbgame = '';
+var default_chl = '';
+</script>
+	<script type="text/javascript">
+var lm = $_GET['ref'] || $_GET['lm'] || '';
+var packlm = $_GET['pack'] || lm;
+var uid = $_GET['uid'] || $_GET['referer_param'] || '';
+var keyword = $_GET['keyword'] || '';
+var ad_param = $_GET['ad_param'] || '';
+var imei = $_GET['imei'] || '';
+var mac = $_GET['mac'] || '';
+var ext = $_GET['ext'] || '';
+
+
+var regs = {
+	ios: [/iphone/i, /ipad/i, /ios/i],
+	'': [/android/i, /\s+adr\s+/i]
+};
+
+var devtype;
+for(var type in regs){
+	for(var i = 0; i < regs[type].length; i++){
+		if(regs[type][i].test(navigator.userAgent)){
+			devtype = type;
+			break;
+		}
+	}
+}
+
+$('.select_url').removeClass('apkurl').removeClass('iosurl').addClass(devtype == 'ios' ? 'iosurl' : 'apkurl');
+
+var vars = ['pack', 'iospack', 'iosjbpack'];
+for(var i in vars){
+	if(!window[vars[i]].indexOf('*')) continue;
+	
+	window[vars[i]] = window[vars[i]].replace('*', packlm);
+}
+
+var common = '&item=mini&lm='+ packlm +'&uid='+ uid +'&keyword='+ keyword +'&imei='+ imei +'&ad_param='+ ad_param +'&mac='+ mac +'&ext='+ ext;
+var apkurl = 'http://wvw.9377.cn/downloads.php?game='+ game +'&platform=3&url='+ encodeURIComponent(pack) + common;
+var iosurl = 'http://wvw.9377.cn/downloads.php?game='+ iosgame +'&platform=1&url='+ encodeURIComponent(iospack) + common;
+var iosjburl = 'http://wvw.9377.cn/downloads.php?game='+ iosjbgame +'&platform=2&url='+ encodeURIComponent(iosjbpack) + common;
+
+$('a.web').each(function(){
+	var url = $(this).attr('href');
+	var param = 'lm='+ lm +'&uid='+ uid +'&keyword='+ keyword;
+	url += (url.indexOf('?') == -1 ? '?' : '&') + param;
+	$(this).attr('href', url);
+});
+
+$('a.mobile').each(function(){
+	var url = $(this).attr('href');
+	var param = 'ref='+ packlm +'&uid='+ uid +'&keyword='+ keyword;
+	url += (url.indexOf('?') == -1 ? '?' : '&') + param;
+	$(this).attr('href', url);
+});
+$('.apkurl').click(function(){
+	if(!is_wechat){
+		window.location.href = apkurl;
+	}
+	return false; 
+}).attr('href', apkurl);
+$('.iosurl').attr('href', iospack).click(function(){
+	include(iosurl +'&stop=1');
+	var to = setTimeout(function(){
+		window.location.href = iospack;
+	}, 1500);
+});
+$('.iosjburl').attr('href', iosjburl);
+
+if(window['qrcode']){
+	if(/\/\d+\/?/.test(document.referrer)){
+		qrcode = document.referrer;
+	}else{
+		qrcode += '&lm='+ packlm +'&uid='+ uid +'&keyword='+ keyword +'&imei='+ imei +'&mac='+ mac +'&ad_param='+ ad_param +'&ref='+ packlm;
+	}
+	$('#code_img').attr('src', 'http://wvw.9377.cn/api/qrcode.php?code='+	encodeURIComponent(qrcode));
+}
+
+
+var is_wechat = /micromessenger/i.test(navigator.userAgent);
+if(!is_wechat && $_GET['forward']){
+	setTimeout(function(){
+		window.location.href = $_GET['forward'];
+	}, 2000);
+}
+
+var wechat_tip = document.createElement('div');
+wechat_tip.style.display = 'none';
+wechat_tip.innerHTML = '<img src="http://statics.9377s.com/images/tg/tip_wechat.png?20170401183439" width="100%"/>';
+document.body.appendChild(wechat_tip);
+$('.down_url').click(function(e){
+	if(!is_wechat) return true;
+	
+	var d = document.documentElement || document.body;
+	var w = d.scrollWidth, h = d.scrollHeight;
+	
+	var overlay = document.createElement('div');
+	var css = {
+		left: '0px',
+		width: w +'px',
+		top: '0px',
+		height: h + 'px',
+		position: 'absolute',
+		opacity: 0.7,
+		filter: 'alpha(opacity=70)',
+		backgroundColor: '#000000',
+		zIndex: 99998
+	};
+	for(var i in css){
+		overlay.style[i] = css[i];
+	}
+	document.body.appendChild(overlay);
+	
+	var css = {
+		width: '100%',
+		left: '0px',
+		top: '0px',
+		position: 'fixed',
+		display: '',
+		zIndex: 99999
+	};
+	for(var i in css){
+		wechat_tip.style[i] = css[i];
+	}
+	e.preventDefault();
+	return false;
+});
+
+function flash_title(){
+	document.title = flash_title.value ? flash_title.orig : new Array(document.title.length).join(String.fromCharCode(12288));
+	flash_title.value = !flash_title.value;
+}
+
+if($_GET['title']){
+	document.title = $_GET['title'];
+	flash_title.value = true;
+	flash_title.orig = document.title;
+
+	setInterval(flash_title, 700);
+}
+</script><div style="display: none; "><img src="http://statics.9377s.com/images/tg/tip_wechat.png?20170401183439" width="100%"></div>
+
+</body></html>

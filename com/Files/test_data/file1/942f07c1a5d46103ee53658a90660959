@@ -1,0 +1,1751 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta charset="GBK" /> 
+  <title>台风论坛入门教程——白话气象（上）/ 论坛教程/ 台风论坛 - Powered by phpwind</title> 
+  <meta http-equiv="X-UA-Compatible" content="chrome=1" /> 
+  <meta name="generator" content="phpwind v9.0 20130227" /> 
+  <meta name="description" content="期末考结束了，想搞点有意义的东西，写一篇教程吧……&amp;nbsp;新版白话气象 参见：" /> 
+  <meta name="keywords" content="台风论坛入门教程——白话气象（上）  台风论坛  期末考结束了，想搞点有意义的东西，写一篇教程吧……&amp;nbsp;新版白话气象 参见：" /> 
+  <link rel="stylesheet" href="http://bbs.typhoon.gov.cn/themes/site/default/css/dev/core.css?v=20130227" /> 
+  <link rel="stylesheet" href="http://bbs.typhoon.gov.cn/themes/site/default/css/dev/style.css?v=20130227" /> 
+  <!-- <base id="headbase" href="http://bbs.typhoon.gov.cn/" /> --> 
+  <script>
+//全局变量 Global Variables
+var GV = {
+	JS_ROOT : 'http://bbs.typhoon.gov.cn/res/js/dev/',										//js目录
+	JS_VERSION : '20130227',											//js版本号(不能带空格)
+	JS_EXTRES : 'http://bbs.typhoon.gov.cn/themes/extres',
+	TOKEN : '3c41f648f34231ee',	//token $.ajaxSetup data
+	U_CENTER : 'http://bbs.typhoon.gov.cn/index.php?m=space',		//用户空间(参数 : uid)
+	U_AVATAR_DEF : 'http://bbs.typhoon.gov.cn/res/images/face/face_small.jpg',					//默认小头像
+	U_ID : parseInt('0'),									//uid
+	REGION_CONFIG : '',														//地区数据
+	CREDIT_REWARD_JUDGE : '',			//是否积分奖励，空值:false, 1:true
+	URL : {
+		LOGIN : 'http://bbs.typhoon.gov.cn/index.php?m=u&c=login',										//登录地址
+		QUICK_LOGIN : 'http://bbs.typhoon.gov.cn/index.php?m=u&c=login&a=fast',								//快速登录
+		IMAGE_RES: 'http://bbs.typhoon.gov.cn/res/images',										//图片目录
+		CHECK_IMG : 'http://bbs.typhoon.gov.cn/index.php?m=u&c=login&a=showverify',							//验证码图片url，global.js引用
+		VARIFY : 'http://bbs.typhoon.gov.cn/index.php?m=verify&a=get',									//验证码html
+		VARIFY_CHECK : 'http://bbs.typhoon.gov.cn/index.php?m=verify&a=check',							//验证码html
+		HEAD_MSG : {
+			LIST : 'http://bbs.typhoon.gov.cn/index.php?m=message&c=notice&a=minilist'							//头部消息_列表
+		},
+		USER_CARD : 'http://bbs.typhoon.gov.cn/index.php?m=space&c=card',								//小名片(参数 : uid)
+		LIKE_FORWARDING : 'http://bbs.typhoon.gov.cn/index.php?c=post&a=doreply',							//喜欢转发(参数 : fid)
+		REGION : 'http://bbs.typhoon.gov.cn/index.php?m=misc&c=webData&a=area',									//地区数据
+		SCHOOL : 'http://bbs.typhoon.gov.cn/index.php?m=misc&c=webData&a=school',								//学校数据
+		EMOTIONS : "http://bbs.typhoon.gov.cn/index.php?m=emotion&type=bbs",					//表情数据
+		CRON_AJAX : '',											//计划任务 后端输出执行
+		FORUM_LIST : 'http://bbs.typhoon.gov.cn/index.php?c=forum&a=list',								//版块列表数据
+		CREDIT_REWARD_DATA : 'http://bbs.typhoon.gov.cn/index.php?m=u&a=showcredit',					//积分奖励 数据
+		AT_URL: 'http://bbs.typhoon.gov.cn/index.php?c=remind',									//@好友列表接口
+		TOPIC_TYPIC: 'http://bbs.typhoon.gov.cn/index.php?c=forum&a=topictype'							//主题分类
+	}
+};
+</script> 
+  <script src="http://bbs.typhoon.gov.cn/res/js/dev/wind.js?v=20130227"></script> 
+  <link href="http://bbs.typhoon.gov.cn/themes/site/default/css/dev/forum.css?v=20130227" rel="stylesheet" /> 
+  <link href="http://bbs.typhoon.gov.cn/res/css/editor_content.css?v=20130227" rel="stylesheet" /> 
+  <style>
+.aPre{
+	cursor:url(http://bbs.typhoon.gov.cn/themes/site/default/images/common/pre.cur),auto;
+}
+.aNext{
+	cursor:url(http://bbs.typhoon.gov.cn/themes/site/default/images/common/next.cur),auto;right:0;
+}
+</style> 
+ </head> 
+ <body> 
+  <style type="text/css">
+</style>
+  <div class="wrap"> 
+   <header class="header_wrap"> 
+    <div id="J_header" class="header cc"> 
+     <div class="logo"> 
+      <a href="http://bbs.typhoon.gov.cn"> <img src="http://bbs.typhoon.gov.cn/themes/site/default/images/logo.png" alt="台风论坛" /> </a> 
+     </div> 
+     <nav class="nav_wrap"> 
+      <div class="nav"> 
+       <ul> 
+        <li class="current"><a href="http://bbs.typhoon.gov.cn/">首页</a></li> 
+        <li class=""><a href="http://bbs.typhoon.gov.cn/index.php?m=bbs">论坛</a></li> 
+        <li class=""><a href="http://bbs.typhoon.gov.cn/index.php?m=bbs&amp;c=forumlist">版块</a></li> 
+        <li class=""><a href="http://bbs.typhoon.gov.cn/index.php?m=like&amp;c=like">喜欢</a></li> 
+        <li class=""><a href="http://bbs.typhoon.gov.cn/index.php?m=tag">话题</a></li> 
+        <li class=""><a href="http://bbs.typhoon.gov.cn/index.php?m=appcenter">应用</a></li> 
+       </ul> 
+      </div> 
+     </nav> 
+     <div class="header_search" role="search"> 
+      <form action="http://bbs.typhoon.gov.cn/index.php?m=search&amp;c=s" method="post"> 
+       <input type="text" id="s" aria-label="搜索关键词" accesskey="s" placeholder="搜索其实很简单" x-webkit-speech="" speech="" name="keyword" /> 
+       <button type="submit" aria-label="搜索"><span>搜索</span></button> 
+       <input type="hidden" name="csrf_token" value="3c41f648f34231ee" />
+       <input type="hidden" name="csrf_token" value="3c41f648f34231ee" />
+      </form> 
+     </div> 
+     <div class="header_login"> 
+      <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=u&amp;c=login">登录</a>
+      <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=u&amp;c=register">注册</a> 
+     </div> 
+    </div> 
+   </header> 
+   <div class="tac"> 
+   </div> 
+   <div class="main_wrap"> 
+    <div class="bread_crumb"> 
+     <a href="http://bbs.typhoon.gov.cn/" title="台风论坛" class="home">首页</a>
+     <em>&gt;</em>
+     <a href="http://bbs.typhoon.gov.cn/index.php?c=cate&amp;fid=72">新手专栏 Course for Beginners</a>
+     <em>&gt;</em>
+     <a href="http://bbs.typhoon.gov.cn/index.php?c=thread&amp;fid=74">论坛教程</a>
+     <em>&gt;</em>
+     <a href="http://bbs.typhoon.gov.cn/read.php?tid=42697&amp;fid=74">台风论坛入门教程——白话气象（上）</a> 
+    </div> 
+    <div id="app_test"></div> 
+    <div id="cloudwind_read_top"></div> 
+    <div class="read_pages_wrap cc"> 
+     <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?c=post&amp;a=reply&amp;tid=42697" data-referer="true" class="btn_replay J_qlogin_trigger">回复</a> 
+     <div class="pages" style="margin-right:3px;">
+      <a href="http://bbs.typhoon.gov.cn/index.php?c=thread&amp;fid=74&amp;page=1" class="pages_pre" rel="nofollow">&laquo; 返回列表</a>
+     </div> 
+     <div class="pages"> 
+      <strong>1</strong> 
+      <a href="http://bbs.typhoon.gov.cn/read.php?tid=42697&amp;fid=74&amp;page=2">2</a> 
+      <a href="http://bbs.typhoon.gov.cn/read.php?tid=42697&amp;fid=74&amp;page=3">3</a> 
+      <a href="http://bbs.typhoon.gov.cn/read.php?tid=42697&amp;fid=74&amp;page=4">4</a> 
+      <a href="http://bbs.typhoon.gov.cn/read.php?tid=42697&amp;fid=74&amp;page=8">...8</a> 
+      <a href="http://bbs.typhoon.gov.cn/read.php?tid=42697&amp;fid=74&amp;page=2" class="pages_next J_pages_next">下一页&nbsp;&raquo;</a> 
+     </div> 
+    </div> 
+    <input type="hidden" id="js-tid" value="$tid" /> 
+    <div class="read_page" id="J_posts_list"> 
+     <a name="0"></a> 
+     <div id="cloudwind_read_readfloor_0"></div> 
+     <div class="floor cc J_read_floor" id="read_0"> 
+      <table width="100%" style="table-layout:fixed;" class="floor_table"> 
+       <tbody>
+        <tr> 
+         <td rowspan="2" class="floor_left"> 
+          <div class="floor_info"> 
+           <!--头像--> 
+           <div class="face"> 
+            <a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=29286" class="J_user_card_show" data-uid="29286" target="_blank"><img src="http://bbs.typhoon.gov.cn/windid/attachment/avatar/000/02/92/29286_middle.jpg" class="J_avatar" data-type="middle" alt="小蜗牛风迷" /></a> 
+           </div> 
+           <!--用户名--> 
+           <div class="name"> 
+            <span class="man_unol" title="离线"></span>
+            <a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=29286" class="J_user_card_show mr5" data-uid="29286">小蜗牛风迷</a> 
+           </div> 
+           <!--等级--> 
+           <div class="level"> 
+            <div>
+             论坛版主-副热带高压
+            </div> 
+            <img src="http://bbs.typhoon.gov.cn/res/images/level/17.gif" alt="论坛版主-副热带高压" /> 
+           </div> 
+           <!--相关数据--> 
+           <ul class="cc integral"> 
+            <li><em>注册日期</em><span>2009-09-21</span></li> 
+            <li><em>最后登录</em><span>2017-03-27</span></li> 
+            <li><em>粉丝</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=fans&amp;uid=29286" target="_blank">270</a></li> 
+            <li><em>关注</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=follows&amp;uid=29286" target="_blank">59</a></li> 
+            <li><em>发帖数</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=thread&amp;uid=29286" target="_blank">9198</a></li> 
+            <li><em>来自</em><span title=""></span></li> 
+           </ul> 
+           <!--发私信加关注--> 
+           <div class="operate cc"> 
+            <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=my&amp;c=follow&amp;a=add&amp;uid=29286" data-uid="29286" class="follow J_read_follow J_qlogin_trigger">加关注</a> 
+            <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=message&amp;c=message&amp;a=pop&amp;username=%D0%A1%CE%CF%C5%A3%B7%E7%C3%D4" class="message J_send_msg_pop J_qlogin_trigger" data-name="小蜗牛风迷">写私信</a> 
+           </div> 
+           <!--广告位--> 
+           <!--信息栏结束--> 
+          </div> </td> 
+         <td class="box_wrap floor_right"> 
+          <div class="fl">
+           <div class="floor_arrow">
+            <em></em>
+            <span></span>
+           </div>
+          </div> 
+          <div class="floor_title cc"> 
+           <div class="post_num"> 
+            <span class="hits">阅读：<em>16570</em></span>
+            <span class="replies">回复：<em id="topicRepliesNum">79</em></span> 
+           </div> 
+           <h1 id="J_post_title">台风论坛入门教程——白话气象（上）</h1> 
+           <span class="floor_honor posts_icon"> <i class="icon_digest" title="精华"></i><i class="icon_topichot" title="热门"></i> </span> 
+          </div> 
+          <div class="c"></div> 
+          <div class="floor_top_tips cc"> 
+           <div style="position:relative;">
+            <span class="lou J_floor_copy" title="复制此楼地址" data-type="main" data-hash="read_0">楼主<sup>#</sup></span>
+           </div> 
+           <a href="javascript:;" class="more_down" id="J_read_moredown">更多</a> 
+           <div id="J_read_moredown_list" class="core_menu" style="display:none;"> 
+            <ul class="core_menu_list"> 
+             <li><a rel="nofollow" href="http://bbs.typhoon.gov.cn/read.php?tid=42697&amp;fid=74&amp;uid=29286">只看楼主</a></li> 
+             <li><a rel="nofollow" href="http://bbs.typhoon.gov.cn/read.php?tid=42697&amp;fid=74&amp;desc=1">倒序阅读</a></li> 
+            </ul> 
+           </div> 
+           <span class="fl">发布于：2011-06-24 18:13 </span> 
+          </div> 
+          <div id="J_read_main"> 
+           <div id="J_read_tag_wrap" class="read_tag_list"> 
+           </div> 
+           <!--=========话题编辑=========--> 
+           <div id="J_read_tag_edit" class="mb10 cc" style="display:none;"> 
+            <form id="J_read_tag_form" action="http://bbs.typhoon.gov.cn/index.php?m=tag&amp;a=editReadTag&amp;tid=42697" method="post"> 
+             <div class="user_select_input J_user_tag_wrap fl mr10"> 
+              <ul class="fl J_user_tag_ul"></ul> 
+              <input class="J_user_tag_input" data-name="tagnames[]" type="text" /> 
+             </div> 
+             <button id="J_read_tag_sub" class="btn btn_submit">保存</button> 
+             <input type="hidden" name="csrf_token" value="3c41f648f34231ee" />
+             <input type="hidden" name="csrf_token" value="3c41f648f34231ee" />
+            </form> 
+           </div> 
+           <div class="fr"> 
+            <!--开始右侧广告位--> 
+            <!--结束右侧广告位--> 
+           </div> 
+           <div class="editor_content">
+             期末考结束了，想搞点有意义的东西，写一篇教程吧…… 
+            <br />&nbsp;新版白话气象 参见：
+            <a href="http://bbs.typhoon.gov.cn/read.php?tid=65719&amp;fid=74 " target="_blank">http://bbs.typhoon.gov.cn/read.php?tid=65719&amp;fid=74</a> 
+           </div> 
+           <div class="edit_log">
+            [小蜗牛风迷于2015-06-14 08:49编辑了帖子]
+           </div> 
+          </div> </td> 
+        </tr> 
+        <tr> 
+         <td class="box_wrap floor_bottom" valign="bottom"> 
+          <div class="read_appbtn_wrap"> 
+           <a role="button" rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=like&amp;c=mylike&amp;a=doLike&amp;typeid=1&amp;fromid=42697" data-tid="42697" data-pid="0" data-fid="74" class="icon_read_like J_like_btn J_qlogin_trigger" data-role="main"> <span>喜欢</span><em class="J_like_count">32</em> </a> 
+           <style>
+/*评分按钮*/
+.read_appbtn_wrap{
+	height:30px;
+	padding:20px 0;
+	position:relative;
+}
+.icon_read_like{
+	margin:0;
+	position:absolute;
+	left:50%;
+	margin-left:-120px;
+}
+.icon_read_mark{
+	left:50%;
+	margin-left:5px;
+	position:absolute;
+	width:115px;
+	height:25px;
+	background:url(http://bbs.typhoon.gov.cn/themes/extres/mark/images/icon_read_mark.png) no-repeat;
+	display:block;
+	line-height:25px;
+	cursor:pointer;
+	overflow:hidden;
+}
+.icon_read_mark span{
+	float:left;
+	display:block;
+	width:0;
+	height:0;
+	overflow:hidden;
+	font:0/0 Arial;
+	padding:0;
+	margin:0;
+}
+.icon_read_mark em{
+	float:right;
+	width:47px;
+	height:25px;
+	color:#3982c2;
+	text-align:center;
+	font-weight:700;
+	text-indent:0;
+	overflow:hidden;
+	display:block;
+}
+.icon_read_mark:hover{
+	filter:alpha(opacity=90);
+	-moz-opacity:0.9;
+	opacity:0.9;
+	text-decoration:none;
+}
+</style> 
+           <a role="button" rel="nofollow" href="#" data-pid="0" data-uri="http://bbs.typhoon.gov.cn/index.php?m=app&amp;c=mark&amp;a=mark&amp;tid=42697&amp;pid=0&amp;app=mark" class="icon_read_mark J_plugin_read_mark" id=""><span>评分</span><em>0</em></a> 
+           <script>
+Wind.ready('global.js', function(){
+	Wind.js('http://bbs.typhoon.gov.cn/themes/extres/mark/js/mark.min.js?v=' + GV.JS_VERSION);
+});
+</script> 
+          </div> 
+          <div style="" id="J_read_like_list" class="read_like_list cc"> 
+           <h4 class="J_read_like_tit">最新喜欢：</h4> 
+           <a class="J_user_card_show" data-uid="103410" href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=103410"><img class="J_avatar" src="http://bbs.typhoon.gov.cn/windid/attachment/avatar/000/10/34/103410_middle.jpg" data-type="small" width="50" height="50" alt="可靠的熊熊熊熊" /><span title="可靠的熊熊熊熊">可靠的熊熊熊...</span></a> 
+           <a class="J_user_card_show" data-uid="102693" href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=102693"><img class="J_avatar" src="http://bbs.typhoon.gov.cn/windid/attachment/avatar/000/10/26/102693_middle.jpg" data-type="small" width="50" height="50" alt="junheicoffee" /><span title="junheicoffee">junhei...</span></a> 
+           <a class="J_user_card_show" data-uid="99419" href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=99419"><img class="J_avatar" src="http://bbs.typhoon.gov.cn/windid/attachment/avatar/000/09/94/99419_middle.jpg" data-type="small" width="50" height="50" alt="songy" /><span title="songy">songy</span></a> 
+           <a class="J_user_card_show" data-uid="101508" href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=101508"><img class="J_avatar" src="http://bbs.typhoon.gov.cn/windid/attachment/avatar/000/10/15/101508_middle.jpg" data-type="small" width="50" height="50" alt="西白岸" /><span title="西白岸">西白岸</span></a> 
+           <a class="J_user_card_show" data-uid="100807" href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=100807"><img class="J_avatar" src="http://bbs.typhoon.gov.cn/windid/attachment/avatar/000/10/08/100807_middle.jpg" data-type="small" width="50" height="50" alt="星夜の极光" /><span title="星夜の极光">星夜の极光</span></a> 
+           <a class="J_user_card_show" data-uid="100035" href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=100035"><img class="J_avatar" src="http://bbs.typhoon.gov.cn/windid/attachment/avatar/000/10/00/100035_middle.jpg" data-type="small" width="50" height="50" alt="ENSO" /><span title="ENSO">ENSO</span></a> 
+           <a class="J_user_card_show" data-uid="99223" href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=99223"><img class="J_avatar" src="http://bbs.typhoon.gov.cn/windid/attachment/avatar/000/09/92/99223_middle.jpg" data-type="small" width="50" height="50" alt="一个普通的气象爱好者" /><span title="一个普通的气象爱好者">一个普通的气...</span></a> 
+           <a class="J_user_card_show" data-uid="96762" href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=96762"><img class="J_avatar" src="http://bbs.typhoon.gov.cn/windid/attachment/avatar/000/09/67/96762_middle.jpg" data-type="small" width="50" height="50" alt="sanmartin" /><span title="sanmartin">sanmar...</span></a> 
+           <a class="J_user_card_show" data-uid="99207" href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=99207"><img class="J_avatar" src="http://bbs.typhoon.gov.cn/windid/attachment/avatar/000/09/92/99207_middle.jpg" data-type="small" width="50" height="50" alt="SpiderMan" /><span title="SpiderMan">Spider...</span></a> 
+           <a class="J_user_card_show" data-uid="96967" href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=96967"><img class="J_avatar" src="http://bbs.typhoon.gov.cn/windid/attachment/avatar/000/09/69/96967_middle.jpg" data-type="small" width="50" height="50" alt="pacificocean" /><span title="pacificocean">pacifi...</span></a> 
+          </div> 
+          <div id="app_read_floor_0"></div> 
+          <div id="cloudwind_read_content"></div> 
+          <div class="signature" style="max-height:130px;maxHeight:130px;">
+           <table width="100%">
+            <tbody>
+             <tr>
+              <td><a href="http://weibo.com/u/1666486042?s=6uyXnP " target="_blank"><img class="J_post_img" src="http://service.t.sina.com.cn/widget/qmd/1666486042/12a3bb11/1.png" border="0" onload="if(this.offsetWidth&gt;400 || this.offsetHeight&gt;400){if(this.offsetWidth/400 &gt; this.offsetHeight/400){this.width=400;}else{this.height=400;}}" style="max-width:400px;max-height:400px;" onclick="if(this.parentNode.tagName!='A'&amp;&amp;this.width&gt;screen.width-461) window.open(this.src);" /></a><br /><br />帖子中所引用图片的所有行政区界和预报数据均以官方为准，机构预报图片仅供交流学习之用。</td>
+             </tr>
+            </tbody>
+           </table>
+          </div> 
+          <div class="floor_bottom_tips cc"> 
+           <span class="fr"> </span> 
+           <a rel="nofollow" href="#floor_reply" data-hash="floor_reply" class="a_reply" id="J_readreply_main">回复</a> 
+          </div> 
+          <div style="display:none;" class="J_reply_wrap" id="J_reply_wrap_0">
+           <div class="pop_loading"></div>
+          </div> </td> 
+        </tr> 
+       </tbody>
+      </table> 
+     </div> 
+     <a name="1519516"></a> 
+     <div id="cloudwind_read_readfloor_1519516"></div> 
+     <div class="floor cc J_read_floor" id="read_1519516"> 
+      <table width="100%" style="table-layout:fixed;" class="floor_table"> 
+       <tbody>
+        <tr> 
+         <td rowspan="2" class="floor_left"> 
+          <div class="floor_info"> 
+           <!--头像--> 
+           <div class="face"> 
+            <a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=29286" class="J_user_card_show" data-uid="29286" target="_blank"><img src="http://bbs.typhoon.gov.cn/windid/attachment/avatar/000/02/92/29286_middle.jpg" class="J_avatar" data-type="middle" alt="小蜗牛风迷" /></a> 
+           </div> 
+           <!--用户名--> 
+           <div class="name"> 
+            <span class="man_unol" title="离线"></span>
+            <a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=29286" class="J_user_card_show mr5" data-uid="29286">小蜗牛风迷</a> 
+           </div> 
+           <!--等级--> 
+           <div class="level"> 
+            <div>
+             论坛版主-副热带高压
+            </div> 
+            <img src="http://bbs.typhoon.gov.cn/res/images/level/17.gif" alt="论坛版主-副热带高压" /> 
+           </div> 
+           <!--相关数据--> 
+           <ul class="cc integral"> 
+            <li><em>注册日期</em><span>2009-09-21</span></li> 
+            <li><em>最后登录</em><span>2017-03-27</span></li> 
+            <li><em>粉丝</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=fans&amp;uid=29286" target="_blank">270</a></li> 
+            <li><em>关注</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=follows&amp;uid=29286" target="_blank">59</a></li> 
+            <li><em>发帖数</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=thread&amp;uid=29286" target="_blank">9198</a></li> 
+            <li><em>来自</em><span title=""></span></li> 
+           </ul> 
+           <!--发私信加关注--> 
+           <div class="operate cc"> 
+            <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=my&amp;c=follow&amp;a=add&amp;uid=29286" data-uid="29286" class="follow J_read_follow J_qlogin_trigger">加关注</a> 
+            <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=message&amp;c=message&amp;a=pop&amp;username=%D0%A1%CE%CF%C5%A3%B7%E7%C3%D4" class="message J_send_msg_pop J_qlogin_trigger" data-name="小蜗牛风迷">写私信</a> 
+           </div> 
+           <!--广告位--> 
+           <!--信息栏结束--> 
+          </div> </td> 
+         <td class="box_wrap floor_right"> 
+          <div class="fl">
+           <div class="floor_arrow">
+            <em></em>
+            <span></span>
+           </div>
+          </div> 
+          <div class="c"></div> 
+          <div class="floor_top_tips cc"> 
+           <div style="position:relative;">
+            <span class="lou J_floor_copy" title="复制此楼地址" data-hash="read_1519516">1楼<sup>#</sup></span>
+           </div> 
+           <span class="fl">发布于：2011-06-24 18:19 </span> 
+          </div> 
+          <div id="J_read_main"> 
+           <div class="fr"> 
+            <!--开始右侧广告位--> 
+            <!--结束右侧广告位--> 
+           </div> 
+           <div class="editor_content"> 
+            <div class="inside_title">
+             第一课 关注气象
+            </div> 为什么要关注气象，为什么要关注台风，大家当然心知肚明。关注气象，我可以知道要不要带伞，要不要带太阳镜，天气热不热，是不适合去游泳等等。
+            <br />相信大家一定有过这样的经历：
+            <br />一个夏天，天气预报报的是多云，你兴高采烈的出游去，结果突然天气昏黑，听到几声雷声，倾盆大雨泼了下来，马上你成了落汤鸡咯……
+            <br />如果你住在东南沿海，你一定经历过台风，那时候如果是学生，就盼着挂橙色警报或红色预警，停业在家休息，看着外面风在左摇右晃，甚至被连根拔起。
+            <br />
+            <br />相信，无论你是听同事们推荐，还是自己搜索“台风预报”进到了台风论坛，我得告诉你，千万不要离开他。有了台风论坛的陪伴，有了你的气象知识，气象知识将带给你无穷的优势。
+            <br /> 
+           </div> 
+          </div> </td> 
+        </tr> 
+        <tr> 
+         <td class="box_wrap floor_bottom" valign="bottom"> 
+          <div id="app_read_floor_1"></div> 
+          <div class="signature" style="max-height:130px;maxHeight:130px;">
+           <table width="100%">
+            <tbody>
+             <tr>
+              <td><a href="http://weibo.com/u/1666486042?s=6uyXnP " target="_blank"><img class="J_post_img" src="http://service.t.sina.com.cn/widget/qmd/1666486042/12a3bb11/1.png" border="0" onload="if(this.offsetWidth&gt;400 || this.offsetHeight&gt;400){if(this.offsetWidth/400 &gt; this.offsetHeight/400){this.width=400;}else{this.height=400;}}" style="max-width:400px;max-height:400px;" onclick="if(this.parentNode.tagName!='A'&amp;&amp;this.width&gt;screen.width-461) window.open(this.src);" /></a><br /><br />帖子中所引用图片的所有行政区界和预报数据均以官方为准，机构预报图片仅供交流学习之用。</td>
+             </tr>
+            </tbody>
+           </table>
+          </div> 
+          <div class="floor_bottom_tips cc"> 
+           <span class="fr"> </span> 
+           <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?c=post&amp;a=fastreply&amp;tid=42697&amp;pid=1519516" data-pid="1519516" class="a_reply J_read_reply" data-topped="false">回复<span style="display:none">(0)</span></a> 
+           <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=like&amp;c=mylike&amp;a=doLike&amp;typeid=2&amp;fromid=1519516" data-tid="42697" data-pid="1519516" data-fid="74" class="a_like J_like_btn J_qlogin_trigger">喜欢</a>
+           <span style="">(<a class="J_like_user_btn a_like_num" data-pid="1519516" href="http://bbs.typhoon.gov.cn/index.php?m=like&amp;c=like&amp;a=getLast&amp;typeid=2&amp;fromid=1519516">1</a>)</span> &nbsp;&nbsp;&nbsp;&nbsp;
+           <a role="button" rel="nofollow" href="#" data-pid="1519516" data-uri="http://bbs.typhoon.gov.cn/index.php?m=app&amp;c=mark&amp;a=mark&amp;tid=42697&amp;pid=1519516&amp;app=mark" class="J_plugin_read_mark" id=""><span>评分</span></a> 
+           <script>
+Wind.ready('global.js', function(){
+	Wind.js('http://bbs.typhoon.gov.cn/themes/extres/mark/js/mark.min.js?v=' + GV.JS_VERSION);
+});
+</script> 
+          </div> 
+          <div style="display:none;" class="J_reply_wrap" id="J_reply_wrap_1519516">
+           <div class="pop_loading"></div>
+          </div> </td> 
+        </tr> 
+       </tbody>
+      </table> 
+     </div> 
+     <a name="1519523"></a> 
+     <div id="cloudwind_read_readfloor_1519523"></div> 
+     <div class="floor cc J_read_floor" id="read_1519523"> 
+      <table width="100%" style="table-layout:fixed;" class="floor_table"> 
+       <tbody>
+        <tr> 
+         <td rowspan="2" class="floor_left"> 
+          <div class="floor_info"> 
+           <!--头像--> 
+           <div class="face"> 
+            <a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=29286" class="J_user_card_show" data-uid="29286" target="_blank"><img src="http://bbs.typhoon.gov.cn/windid/attachment/avatar/000/02/92/29286_middle.jpg" class="J_avatar" data-type="middle" alt="小蜗牛风迷" /></a> 
+           </div> 
+           <!--用户名--> 
+           <div class="name"> 
+            <span class="man_unol" title="离线"></span>
+            <a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=29286" class="J_user_card_show mr5" data-uid="29286">小蜗牛风迷</a> 
+           </div> 
+           <!--等级--> 
+           <div class="level"> 
+            <div>
+             论坛版主-副热带高压
+            </div> 
+            <img src="http://bbs.typhoon.gov.cn/res/images/level/17.gif" alt="论坛版主-副热带高压" /> 
+           </div> 
+           <!--相关数据--> 
+           <ul class="cc integral"> 
+            <li><em>注册日期</em><span>2009-09-21</span></li> 
+            <li><em>最后登录</em><span>2017-03-27</span></li> 
+            <li><em>粉丝</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=fans&amp;uid=29286" target="_blank">270</a></li> 
+            <li><em>关注</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=follows&amp;uid=29286" target="_blank">59</a></li> 
+            <li><em>发帖数</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=thread&amp;uid=29286" target="_blank">9198</a></li> 
+            <li><em>来自</em><span title=""></span></li> 
+           </ul> 
+           <!--发私信加关注--> 
+           <div class="operate cc"> 
+            <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=my&amp;c=follow&amp;a=add&amp;uid=29286" data-uid="29286" class="follow J_read_follow J_qlogin_trigger">加关注</a> 
+            <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=message&amp;c=message&amp;a=pop&amp;username=%D0%A1%CE%CF%C5%A3%B7%E7%C3%D4" class="message J_send_msg_pop J_qlogin_trigger" data-name="小蜗牛风迷">写私信</a> 
+           </div> 
+           <!--广告位--> 
+           <!--信息栏结束--> 
+          </div> </td> 
+         <td class="box_wrap floor_right"> 
+          <div class="fl">
+           <div class="floor_arrow">
+            <em></em>
+            <span></span>
+           </div>
+          </div> 
+          <div class="c"></div> 
+          <div class="floor_top_tips cc"> 
+           <div style="position:relative;">
+            <span class="lou J_floor_copy" title="复制此楼地址" data-hash="read_1519523">2楼<sup>#</sup></span>
+           </div> 
+           <span class="fl">发布于：2011-06-24 18:24 </span> 
+          </div> 
+          <div id="J_read_main"> 
+           <div class="fr"> 
+            <!--开始右侧广告位--> 
+            <!--结束右侧广告位--> 
+           </div> 
+           <div class="editor_content"> 
+            <div class="inside_title">
+             第二课 从最基础的温度、降水说起
+            </div> 气象台不一定报的都是准确的。有时候我们想查查现在的温度，到哪儿查呢？
+            <br />
+            <a href="http://www.weather.gov.cn/publish/forecast/china.html " target="_blank">http://www.weather.gov.cn/publish/forecast/china.html</a>
+            <br />中央气象台提供了城市天气实况和城市天气预报。如何使用它呢？
+            <br />比如你住在广东广州，你可以在左上角，就是这里，输入：
+            <br />&nbsp;
+            <span id="J_att_301148"><span id="td_att_301148" class="J_attach_img_wrap single_img">
+              <div class="img_info J_img_info">
+               <p>图片：1.PNG</p>
+              </div><img class="J_post_img J_lazy" data-original="http://bbs.typhoon.gov.cn/attachment/thumb/Mon_1106/10_29286_e09223d5aeac57c.png" src="http://bbs.typhoon.gov.cn/res/images/blank.gif" border="0" onload="if(this.offsetWidth&gt;680)this.width=680;" style="max-width:680px;" title="鐐瑰嚮鏌ョ湅鍘熷浘" onclick="if(this.parentNode.tagName!='A') window.open('http://bbs.typhoon.gov.cn/attachment/Mon_1106/10_29286_e09223d5aeac57c.png');" /></span></span>
+            <br />你能看到这样一幅画面。
+            <br />&nbsp;
+            <span id="J_att_301149"><span id="td_att_301149" class="J_attach_img_wrap single_img">
+              <div class="img_info J_img_info">
+               <p>图片：2.PNG</p>
+              </div><img class="J_post_img J_lazy" data-original="http://bbs.typhoon.gov.cn/attachment/thumb/Mon_1106/10_29286_9e9ab0d9738ecd2.png" src="http://bbs.typhoon.gov.cn/res/images/blank.gif" border="0" onload="if(this.offsetWidth&gt;680)this.width=680;" style="max-width:680px;" title="鐐瑰嚮鏌ョ湅鍘熷浘" onclick="if(this.parentNode.tagName!='A') window.open('http://bbs.typhoon.gov.cn/attachment/Mon_1106/10_29286_9e9ab0d9738ecd2.png');" /></span></span>
+            <br />它告诉你现在的温度、湿度、风速，还特别贴心的告诉你当前的体感温度。一般来说，体感温度大于28℃就得穿短袖，体感温度小于10℃就很冷咯。中间部分告诉你未来3天的天气预报，对于你未来的生活很有作用。
+            <br />注意把页面往下拉，点击“雷达”。可以看到一幅图片。点进去吧……
+            <br />
+            <span id="J_att_301150"><span id="td_att_301150" class="J_attach_img_wrap single_img">
+              <div class="img_info J_img_info">
+               <p>图片：3.GIF</p>
+              </div><img class="J_post_img J_lazy" data-original="http://bbs.typhoon.gov.cn/attachment/Mon_1106/10_29286_8bd1334e7e7aa21.gif" src="http://bbs.typhoon.gov.cn/res/images/blank.gif" border="0" onload="if(this.offsetWidth&gt;680)this.width=680;" style="max-width:680px;" title="鐐瑰嚮鏌ョ湅鍘熷浘" onclick="if(this.parentNode.tagName!='A') window.open('http://bbs.typhoon.gov.cn/attachment/Mon_1106/10_29286_8bd1334e7e7aa21.gif');" /></span></span>
+            <br />点击“播放”按钮，播放的是近3个小时的雷达回波图。如果你看到空空荡荡的什么也没有，那就表明，及时乌云密布，也不会下雨咯……
+            <br />但是你如果看到像这样，你最好还是警惕一点，判断一下里边颜色块的移动方向（颜色块在气象学中称为回波）。
+            <br />
+            <b><span style="color:#ff0000 ">一般来说，如果颜色显示为绿色，则为小雨。黄色是中雨，橙色就是大雨。如果是一个个红色的话，那就是雷阵雨</span></b>。
+            <br />在上面这种情况下，广州以北的朋友就要注意了，因为画面左下角有一些红色色块，可能会带来雷阵雨。
+            <br /> 
+           </div> 
+          </div> </td> 
+        </tr> 
+        <tr> 
+         <td class="box_wrap floor_bottom" valign="bottom"> 
+          <div id="app_read_floor_2"></div> 
+          <div class="signature" style="max-height:130px;maxHeight:130px;">
+           <table width="100%">
+            <tbody>
+             <tr>
+              <td><a href="http://weibo.com/u/1666486042?s=6uyXnP " target="_blank"><img class="J_post_img" src="http://service.t.sina.com.cn/widget/qmd/1666486042/12a3bb11/1.png" border="0" onload="if(this.offsetWidth&gt;400 || this.offsetHeight&gt;400){if(this.offsetWidth/400 &gt; this.offsetHeight/400){this.width=400;}else{this.height=400;}}" style="max-width:400px;max-height:400px;" onclick="if(this.parentNode.tagName!='A'&amp;&amp;this.width&gt;screen.width-461) window.open(this.src);" /></a><br /><br />帖子中所引用图片的所有行政区界和预报数据均以官方为准，机构预报图片仅供交流学习之用。</td>
+             </tr>
+            </tbody>
+           </table>
+          </div> 
+          <div class="floor_bottom_tips cc"> 
+           <span class="fr"> </span> 
+           <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?c=post&amp;a=fastreply&amp;tid=42697&amp;pid=1519523" data-pid="1519523" class="a_reply J_read_reply" data-topped="false">回复<span style="">(2)</span></a> 
+           <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=like&amp;c=mylike&amp;a=doLike&amp;typeid=2&amp;fromid=1519523" data-tid="42697" data-pid="1519523" data-fid="74" class="a_like J_like_btn J_qlogin_trigger">喜欢</a>
+           <span style="">(<a class="J_like_user_btn a_like_num" data-pid="1519523" href="http://bbs.typhoon.gov.cn/index.php?m=like&amp;c=like&amp;a=getLast&amp;typeid=2&amp;fromid=1519523">3</a>)</span> &nbsp;&nbsp;&nbsp;&nbsp;
+           <a role="button" rel="nofollow" href="#" data-pid="1519523" data-uri="http://bbs.typhoon.gov.cn/index.php?m=app&amp;c=mark&amp;a=mark&amp;tid=42697&amp;pid=1519523&amp;app=mark" class="J_plugin_read_mark" id=""><span>评分</span></a> 
+           <script>
+Wind.ready('global.js', function(){
+	Wind.js('http://bbs.typhoon.gov.cn/themes/extres/mark/js/mark.min.js?v=' + GV.JS_VERSION);
+});
+</script> 
+          </div> 
+          <div style="display:none;" class="J_reply_wrap" id="J_reply_wrap_1519523">
+           <div class="pop_loading"></div>
+          </div> </td> 
+        </tr> 
+       </tbody>
+      </table> 
+     </div> 
+     <a name="1519569"></a> 
+     <div id="cloudwind_read_readfloor_1519569"></div> 
+     <div class="floor cc J_read_floor" id="read_1519569"> 
+      <table width="100%" style="table-layout:fixed;" class="floor_table"> 
+       <tbody>
+        <tr> 
+         <td rowspan="2" class="floor_left"> 
+          <div class="floor_info"> 
+           <!--头像--> 
+           <div class="face"> 
+            <a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=29286" class="J_user_card_show" data-uid="29286" target="_blank"><img src="http://bbs.typhoon.gov.cn/windid/attachment/avatar/000/02/92/29286_middle.jpg" class="J_avatar" data-type="middle" alt="小蜗牛风迷" /></a> 
+           </div> 
+           <!--用户名--> 
+           <div class="name"> 
+            <span class="man_unol" title="离线"></span>
+            <a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=29286" class="J_user_card_show mr5" data-uid="29286">小蜗牛风迷</a> 
+           </div> 
+           <!--等级--> 
+           <div class="level"> 
+            <div>
+             论坛版主-副热带高压
+            </div> 
+            <img src="http://bbs.typhoon.gov.cn/res/images/level/17.gif" alt="论坛版主-副热带高压" /> 
+           </div> 
+           <!--相关数据--> 
+           <ul class="cc integral"> 
+            <li><em>注册日期</em><span>2009-09-21</span></li> 
+            <li><em>最后登录</em><span>2017-03-27</span></li> 
+            <li><em>粉丝</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=fans&amp;uid=29286" target="_blank">270</a></li> 
+            <li><em>关注</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=follows&amp;uid=29286" target="_blank">59</a></li> 
+            <li><em>发帖数</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=thread&amp;uid=29286" target="_blank">9198</a></li> 
+            <li><em>来自</em><span title=""></span></li> 
+           </ul> 
+           <!--发私信加关注--> 
+           <div class="operate cc"> 
+            <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=my&amp;c=follow&amp;a=add&amp;uid=29286" data-uid="29286" class="follow J_read_follow J_qlogin_trigger">加关注</a> 
+            <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=message&amp;c=message&amp;a=pop&amp;username=%D0%A1%CE%CF%C5%A3%B7%E7%C3%D4" class="message J_send_msg_pop J_qlogin_trigger" data-name="小蜗牛风迷">写私信</a> 
+           </div> 
+           <!--广告位--> 
+           <!--信息栏结束--> 
+          </div> </td> 
+         <td class="box_wrap floor_right"> 
+          <div class="fl">
+           <div class="floor_arrow">
+            <em></em>
+            <span></span>
+           </div>
+          </div> 
+          <div class="c"></div> 
+          <div class="floor_top_tips cc"> 
+           <div style="position:relative;">
+            <span class="lou J_floor_copy" title="复制此楼地址" data-hash="read_1519569">3楼<sup>#</sup></span>
+           </div> 
+           <span class="fl">发布于：2011-06-24 18:56 </span> 
+          </div> 
+          <div id="J_read_main"> 
+           <div class="fr"> 
+            <!--开始右侧广告位--> 
+            <!--结束右侧广告位--> 
+           </div> 
+           <div class="editor_content"> 
+            <div class="inside_title">
+             第三课 在台风论坛讨论气象
+            </div> 要成为一名合格的气象迷，你需要知道以下基本概念：
+            <br />
+            <b>格林尼治标准时间（GMT/UTC/Z）</b>：你一定听说过本初子午线（0度经线）。格林尼治就在本初子午线上。你只需要记住，格林尼治时间推迟8个小时，就是北京时间（如UTC3:00=11:00）
+            <br />
+            <b>日最高最低气温：</b>一天中的最高温和最低温。最低温一般出现在日出前后，最高温一般出现在日落前2~3小时。
+            <b><br /><b>辐射降温：</b></b>这里指如果夜晚是晴天的情况下的降温。简单的说，晴天情况下，由于没有云层这“被子”的遮盖，降温速度就会相当快。因此我们一般说，阴天的夜晚要比晴天的夜晚温度高。你说：什么，晚上也有晴天阴天，我看到的天都是黑乎乎的。是的，你看得到，看不到，云层就在那儿，不离不弃……
+            <br />
+            <b>日平均气温（日均温）：</b>北京时间2时、8时、14时、20时当地的气温的平均值。日均温能基本反映全天冷热程度。也就是说，如果凌晨很冷，早上很热，那么日均温还是不会很高。
+            <br />
+            <b>吃下沉：</b>如果你们家在东南沿海的话，你一定经常出现这种情况。如当一个台风的外围扫到你家，但是又不是可以降雨的云团，你们地区的温度就会暴涨。如2011年6月25日的福州吃到了强热带风暴“米雷”的下沉气流，温度直接飙升到38.5℃。
+            <b><br />降水量：</b>在任意一个单位面积内降水的量。你可以拿任意一个标准的圆柱体装水，事实上就比较准确了。当然，我们还是需要看官方的降水量数据。
+            <br />&nbsp;
+            <br />说完了这些基本知识，我来教您如何关注天气。
+            <br />首先，官方的预报肯定不是最准的。这里我需要带您去几个相对较准的网站，它们是：
+            <br />&nbsp;
+            <br />&nbsp;天气在线（
+            <a href="http://www.t7online.com " target="_blank">http://www.t7online.com</a>）
+            <br />这个网站非常好，它既有天气的预报，又有天气的实况，对于新手来说，我们只需要关注预报。但如果想更积极地参与到天气讨论中，实况也是需要的。它告诉你昨天的天气情况，有没有雾，风又如何。
+            <br />
+            <span id="J_att_302182"><span id="td_att_302182" class="J_attach_img_wrap single_img">
+              <div class="img_info J_img_info">
+               <p>图片：1.PNG</p>
+              </div><img class="J_post_img J_lazy" data-original="http://bbs.typhoon.gov.cn/attachment/Mon_1106/10_29286_eff296282a863c3.png" src="http://bbs.typhoon.gov.cn/res/images/blank.gif" border="0" onload="if(this.offsetWidth&gt;680)this.width=680;" style="max-width:680px;" title="鐐瑰嚮鏌ョ湅鍘熷浘" onclick="if(this.parentNode.tagName!='A') window.open('http://bbs.typhoon.gov.cn/attachment/Mon_1106/10_29286_eff296282a863c3.png');" /></span></span>
+            <br />&nbsp;
+            <br />WeatherOnline（
+            <a href="http://www.weatheronline.co.uk/ " target="_blank">http://www.weatheronline.co.uk/</a>）
+            <br />如图，在框内输入你所在城市的拼音即可。注意的是：福州不能输入Fuzhou，因为那会变成“抚州”，福州应该输入的是Futschou。如果找不到的话，只能看天气在线了。
+            <br />
+            <span id="J_att_302183"><span id="td_att_302183" class="J_attach_img_wrap single_img">
+              <div class="img_info J_img_info">
+               <p>图片：2.PNG</p>
+              </div><img class="J_post_img J_lazy" data-original="http://bbs.typhoon.gov.cn/attachment/thumb/Mon_1106/10_29286_0203d750b6736a5.png" src="http://bbs.typhoon.gov.cn/res/images/blank.gif" border="0" onload="if(this.offsetWidth&gt;680)this.width=680;" style="max-width:680px;" title="鐐瑰嚮鏌ョ湅鍘熷浘" onclick="if(this.parentNode.tagName!='A') window.open('http://bbs.typhoon.gov.cn/attachment/Mon_1106/10_29286_0203d750b6736a5.png');" /></span></span>
+            <br />UnderGround（
+            <a href="http://www.wunderground.com/ " target="_blank">http://www.wunderground.com/</a>）
+            <br />比较有趣的是，这里的降水预报是以“降水概率”来呈现的，如果这样的话，50%以上你是必须要带伞的。这里20%~30%你就要参考其它机构了。
+            <br />
+            <span id="J_att_302184"><span id="td_att_302184" class="J_attach_img_wrap single_img">
+              <div class="img_info J_img_info">
+               <p>图片：3.PNG</p>
+              </div><img class="J_post_img J_lazy" data-original="http://bbs.typhoon.gov.cn/attachment/thumb/Mon_1106/10_29286_b1adf63be660002.png" src="http://bbs.typhoon.gov.cn/res/images/blank.gif" border="0" onload="if(this.offsetWidth&gt;680)this.width=680;" style="max-width:680px;" title="鐐瑰嚮鏌ョ湅鍘熷浘" onclick="if(this.parentNode.tagName!='A') window.open('http://bbs.typhoon.gov.cn/attachment/Mon_1106/10_29286_b1adf63be660002.png');" /></span></span>
+            <br />MyForecast（
+            <a href="http://www.myforecast.com/ " target="_blank">http://www.myforecast.com/</a>）
+            <br />
+            <span id="J_att_302185"><span id="td_att_302185" class="J_attach_img_wrap single_img">
+              <div class="img_info J_img_info">
+               <p>图片：4.PNG</p>
+              </div><img class="J_post_img J_lazy" data-original="http://bbs.typhoon.gov.cn/attachment/thumb/Mon_1106/10_29286_ceeac588d6b67f2.png" src="http://bbs.typhoon.gov.cn/res/images/blank.gif" border="0" onload="if(this.offsetWidth&gt;680)this.width=680;" style="max-width:680px;" title="鐐瑰嚮鏌ョ湅鍘熷浘" onclick="if(this.parentNode.tagName!='A') window.open('http://bbs.typhoon.gov.cn/attachment/Mon_1106/10_29286_ceeac588d6b67f2.png');" /></span></span>
+            <br />来了个全英文网站。这里举几个例子：
+            <br />More clouds than sun. 多云。
+            <br />Mostly Sunny 晴天
+            <br />Mostly Cloudy阴到多云
+            <br />Overcast 阴
+            <br />Drizzle/isolated tstorms 可以不用管，经常乱报
+            <br />Rain 中雨
+            <br />Heavy Rain 大雨
+            <br />Tons of rain 暴雨
+            <br />Foggy 雾
+            <br />Widely thunderstorm 雷暴
+            <br />Thunderstorm 雷阵雨
+            <br />Strong Thunderstorm 强雷阵雨
+            <br />&nbsp;
+            <br />差不多就这些够用了。
+            <br />&nbsp;
+            <br />其它我还没见到过。
+            <br />这几个基本上综合起来看就可以了，这是四个相对较准的网站，再加上气象台，你基本上能比较准的察觉到明天的天气情况。
+            <br />&nbsp;
+            <br />那么，如何参与台风论坛的讨论呢？方法很简单。
+            <br />在搜索框中输入“XX天气预报&quot;。如在广东广州，你可以试着输入“广东天气预报”即可。
+            <br />
+            <span id="J_att_302187"><span id="td_att_302187" class="J_attach_img_wrap single_img">
+              <div class="img_info J_img_info">
+               <p>图片：5.PNG</p>
+              </div><img class="J_post_img J_lazy" data-original="http://bbs.typhoon.gov.cn/attachment/thumb/Mon_1106/10_29286_0deed0d5b37c9a9.png" src="http://bbs.typhoon.gov.cn/res/images/blank.gif" border="0" onload="if(this.offsetWidth&gt;680)this.width=680;" style="max-width:680px;" title="鐐瑰嚮鏌ョ湅鍘熷浘" onclick="if(this.parentNode.tagName!='A') window.open('http://bbs.typhoon.gov.cn/attachment/Mon_1106/10_29286_0deed0d5b37c9a9.png');" /></span></span>
+            <br />看到第二个了吗？观赏一下，把这些预报帖上去就可以了。
+            <br />&nbsp;
+            <br />什么，这太无聊了吗？忽然外面狂风大作，降雨倾盆，原来是强热带风暴“米雷”来了。你迫切想要讨论一下，你可以输入“山东半岛天气实况”进行搜索，很快，你找到了下面这条：
+            <br />
+            <span id="J_att_302191"><span id="td_att_302191" class="J_attach_img_wrap single_img">
+              <div class="img_info J_img_info">
+               <p>图片：6.PNG</p>
+              </div><img class="J_post_img J_lazy" data-original="http://bbs.typhoon.gov.cn/attachment/thumb/Mon_1106/10_29286_57647bd46d92d54.png" src="http://bbs.typhoon.gov.cn/res/images/blank.gif" border="0" onload="if(this.offsetWidth&gt;680)this.width=680;" style="max-width:680px;" title="鐐瑰嚮鏌ョ湅鍘熷浘" onclick="if(this.parentNode.tagName!='A') window.open('http://bbs.typhoon.gov.cn/attachment/Mon_1106/10_29286_57647bd46d92d54.png');" /></span></span>
+            <br />点进去吧，有许多网友在讨论呢
+            <br />&nbsp;
+            <br />&nbsp;
+            <span id="J_att_302192"><span id="td_att_302192" class="J_attach_img_wrap single_img">
+              <div class="img_info J_img_info">
+               <p>图片：7.PNG</p>
+              </div><img class="J_post_img J_lazy" data-original="http://bbs.typhoon.gov.cn/attachment/thumb/Mon_1106/10_29286_eb5009431dc8be3.png" src="http://bbs.typhoon.gov.cn/res/images/blank.gif" border="0" onload="if(this.offsetWidth&gt;680)this.width=680;" style="max-width:680px;" title="鐐瑰嚮鏌ョ湅鍘熷浘" onclick="if(this.parentNode.tagName!='A') window.open('http://bbs.typhoon.gov.cn/attachment/Mon_1106/10_29286_eb5009431dc8be3.png');" /></span></span>
+            <br />赶快来讲讲你的亲身感受吧……
+            <br />如果你是“数据控”，你还得了解一下你所在城市的气象局，了解更多信息。
+            <br />这里推荐一个网站，佛山天气网：
+            <a href="http://2008.fs121.com/ " target="_blank">http://2008.fs121.com/</a>
+            <br />这个网站涵盖了你城市昨天和今天的实况以及最高、最低温，可以参考一下。
+            <br />
+            <br />想了解全国的气象资讯，在“实况预报”版有这两个帖子，是长期置顶的。如图：
+            <br />
+            <span id="J_att_305062"><span id="td_att_305062" class="J_attach_img_wrap single_img">
+              <div class="img_info J_img_info">
+               <p>图片：1.PNG</p>
+              </div><img class="J_post_img J_lazy" data-original="http://bbs.typhoon.gov.cn/attachment/thumb/Mon_1107/10_29286_cd4de392afa04a8.png" src="http://bbs.typhoon.gov.cn/res/images/blank.gif" border="0" onload="if(this.offsetWidth&gt;680)this.width=680;" style="max-width:680px;" title="鐐瑰嚮鏌ョ湅鍘熷浘" onclick="if(this.parentNode.tagName!='A') window.open('http://bbs.typhoon.gov.cn/attachment/Mon_1107/10_29286_cd4de392afa04a8.png');" /></span></span>
+            <br />如果你的城市雨下非常大，你收集到了一些数据，你可以发在第二贴“数据搜集专贴”里。如果你想了解过去几天全国都发生哪些事情，请看第一帖。
+            <br />&nbsp;
+            <br /> 
+           </div> 
+          </div> </td> 
+        </tr> 
+        <tr> 
+         <td class="box_wrap floor_bottom" valign="bottom"> 
+          <div id="app_read_floor_3"></div> 
+          <div class="signature" style="max-height:130px;maxHeight:130px;">
+           <table width="100%">
+            <tbody>
+             <tr>
+              <td><a href="http://weibo.com/u/1666486042?s=6uyXnP " target="_blank"><img class="J_post_img" src="http://service.t.sina.com.cn/widget/qmd/1666486042/12a3bb11/1.png" border="0" onload="if(this.offsetWidth&gt;400 || this.offsetHeight&gt;400){if(this.offsetWidth/400 &gt; this.offsetHeight/400){this.width=400;}else{this.height=400;}}" style="max-width:400px;max-height:400px;" onclick="if(this.parentNode.tagName!='A'&amp;&amp;this.width&gt;screen.width-461) window.open(this.src);" /></a><br /><br />帖子中所引用图片的所有行政区界和预报数据均以官方为准，机构预报图片仅供交流学习之用。</td>
+             </tr>
+            </tbody>
+           </table>
+          </div> 
+          <div class="floor_bottom_tips cc"> 
+           <span class="fr"> </span> 
+           <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?c=post&amp;a=fastreply&amp;tid=42697&amp;pid=1519569" data-pid="1519569" class="a_reply J_read_reply" data-topped="false">回复<span style="display:none">(0)</span></a> 
+           <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=like&amp;c=mylike&amp;a=doLike&amp;typeid=2&amp;fromid=1519569" data-tid="42697" data-pid="1519569" data-fid="74" class="a_like J_like_btn J_qlogin_trigger">喜欢</a>
+           <span style="">(<a class="J_like_user_btn a_like_num" data-pid="1519569" href="http://bbs.typhoon.gov.cn/index.php?m=like&amp;c=like&amp;a=getLast&amp;typeid=2&amp;fromid=1519569">1</a>)</span> &nbsp;&nbsp;&nbsp;&nbsp;
+           <a role="button" rel="nofollow" href="#" data-pid="1519569" data-uri="http://bbs.typhoon.gov.cn/index.php?m=app&amp;c=mark&amp;a=mark&amp;tid=42697&amp;pid=1519569&amp;app=mark" class="J_plugin_read_mark" id=""><span>评分</span></a> 
+           <script>
+Wind.ready('global.js', function(){
+	Wind.js('http://bbs.typhoon.gov.cn/themes/extres/mark/js/mark.min.js?v=' + GV.JS_VERSION);
+});
+</script> 
+          </div> 
+          <div style="display:none;" class="J_reply_wrap" id="J_reply_wrap_1519569">
+           <div class="pop_loading"></div>
+          </div> </td> 
+        </tr> 
+       </tbody>
+      </table> 
+     </div> 
+     <a name="1519572"></a> 
+     <div id="cloudwind_read_readfloor_1519572"></div> 
+     <div class="floor cc J_read_floor" id="read_1519572"> 
+      <table width="100%" style="table-layout:fixed;" class="floor_table"> 
+       <tbody>
+        <tr> 
+         <td rowspan="2" class="floor_left"> 
+          <div class="floor_info"> 
+           <!--头像--> 
+           <div class="face"> 
+            <a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=29286" class="J_user_card_show" data-uid="29286" target="_blank"><img src="http://bbs.typhoon.gov.cn/windid/attachment/avatar/000/02/92/29286_middle.jpg" class="J_avatar" data-type="middle" alt="小蜗牛风迷" /></a> 
+           </div> 
+           <!--用户名--> 
+           <div class="name"> 
+            <span class="man_unol" title="离线"></span>
+            <a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=29286" class="J_user_card_show mr5" data-uid="29286">小蜗牛风迷</a> 
+           </div> 
+           <!--等级--> 
+           <div class="level"> 
+            <div>
+             论坛版主-副热带高压
+            </div> 
+            <img src="http://bbs.typhoon.gov.cn/res/images/level/17.gif" alt="论坛版主-副热带高压" /> 
+           </div> 
+           <!--相关数据--> 
+           <ul class="cc integral"> 
+            <li><em>注册日期</em><span>2009-09-21</span></li> 
+            <li><em>最后登录</em><span>2017-03-27</span></li> 
+            <li><em>粉丝</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=fans&amp;uid=29286" target="_blank">270</a></li> 
+            <li><em>关注</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=follows&amp;uid=29286" target="_blank">59</a></li> 
+            <li><em>发帖数</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=thread&amp;uid=29286" target="_blank">9198</a></li> 
+            <li><em>来自</em><span title=""></span></li> 
+           </ul> 
+           <!--发私信加关注--> 
+           <div class="operate cc"> 
+            <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=my&amp;c=follow&amp;a=add&amp;uid=29286" data-uid="29286" class="follow J_read_follow J_qlogin_trigger">加关注</a> 
+            <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=message&amp;c=message&amp;a=pop&amp;username=%D0%A1%CE%CF%C5%A3%B7%E7%C3%D4" class="message J_send_msg_pop J_qlogin_trigger" data-name="小蜗牛风迷">写私信</a> 
+           </div> 
+           <!--广告位--> 
+           <!--信息栏结束--> 
+          </div> </td> 
+         <td class="box_wrap floor_right"> 
+          <div class="fl">
+           <div class="floor_arrow">
+            <em></em>
+            <span></span>
+           </div>
+          </div> 
+          <div class="c"></div> 
+          <div class="floor_top_tips cc"> 
+           <div style="position:relative;">
+            <span class="lou J_floor_copy" title="复制此楼地址" data-hash="read_1519572">4楼<sup>#</sup></span>
+           </div> 
+           <span class="fl">发布于：2011-06-24 18:56 </span> 
+          </div> 
+          <div id="J_read_main"> 
+           <div class="fr"> 
+            <!--开始右侧广告位--> 
+            <!--结束右侧广告位--> 
+           </div> 
+           <div class="editor_content"> 
+            <div class="inside_title">
+             第四课：台风理论知识
+            </div> 入门台风，当然要从“台风预报”版块说起。
+            <br />&nbsp;
+            <br />看到了吗，台风预报版的结构。
+            <br />你仍然需要了解一些专业名词，以便更好的入门。
+            <br />
+            <b>热带气旋：</b>即平常我们说的“台风”。但事实上，台风只是热带气旋的一个级别。热带气旋分为“热带低压”（TD），“热带风暴”（TS），“强热带风暴”（STS），“台风”（TY），“强台风”（STY），“超强台风”（Super TY）。要记住这些缩写。那么你可能会奇怪，“飓风”是什么呢？很多人可能会觉得，飓风是台风的加强版，其实不是，飓风也是热带气旋，只不过它的叫法有所不同。JTWC将热带气旋分为“热带低压”（TD），“热带风暴”（TS），1级（CAT1），2级（CAT2），3级（CAT3），4级（CAT4），5级（CAT5）。你可以了解一下
+            <a href="http://bbs.typhoon.gov.cn/read.php?tid=19181 " target="_blank">CAT1~5的风速是多少？</a>要注意的是，在任何一个温带和热带洋区都有能力生成热带气旋，不是只有在西太平洋和南海，还有整个印度洋，中东太平洋和北大西洋。南大西洋也会有，但环境太差一般不适合，一年最多一两个。
+            <br />这里需要掌握一下各个大风级别所对应的实况，不要看到树枝有一点摇动就说“这里刮超强台风了！”。
+            <br />
+            <blockquote class="blockquote cc">
+             <br />　 　 风级 &nbsp;6
+             <br />概况 &nbsp;强风
+             <br />陆地 &nbsp;大树枝摇动，电线呼呼有声，举伞有困难
+             <br />海岸 &nbsp;渔船加倍缩帆，捕鱼须注意危险
+             <br />相当风速（m/s） &nbsp;10.8-13.8
+             <br />　 　 风级 &nbsp;7
+             <br />概况 &nbsp;疾风
+             <br />陆地 &nbsp;大树摇动，迎风步行感觉不便
+             <br />海岸 &nbsp;渔船停息港中，去海外的下锚
+             <br />相当风速（m/s） &nbsp;13.9-17.1
+             <br />　 　 风级 &nbsp;8
+             <br />概况 &nbsp;大风
+             <br />陆地 &nbsp;树枝折断，迎风行走感觉阻力很大
+             <br />海岸 &nbsp;近港海船均停留不出
+             <br />相当风速（m/s） &nbsp;17.2-20.7
+             <br />　 　 风级 &nbsp;9
+             <br />概况 &nbsp;烈风
+             <br />陆地 &nbsp;烟囱及平房屋顶受到损坏（烟囱顶部及平顶摇动）
+             <br />海岸 &nbsp;汽船航行困难
+             <br />相当风速（m/s） &nbsp;20.8-24.4
+             <br />　 　 风级 &nbsp;10
+             <br />概况 &nbsp;狂风
+             <br />陆地 &nbsp;陆上少见，可拔树毁屋
+             <br />海岸 &nbsp;汽船航行颇危险
+             <br />相当风速（m/s） &nbsp;24.5-28.4
+             <br />　 　 风级 &nbsp;11
+             <br />概况 &nbsp;暴风
+             <br />陆地 &nbsp;陆上很少见，有则必受重大损毁
+             <br />海岸 &nbsp;汽船遇之极危险
+             <br />相当风速（m/s） &nbsp;28.5-32.6
+             <br />　 　 风级 &nbsp;12
+             <br />概况 &nbsp;飓风
+             <br />陆地 &nbsp;陆上绝少，其摧毁力极大
+             <br />海岸 &nbsp;海浪滔天
+             <br />相当风速（m/s） &nbsp;32.6以上
+             <br />
+            </blockquote>
+            <br />此外需要理性追风。这里有一则介绍资料：
+            <br />
+            <blockquote class="blockquote cc">
+             <br />阵风与平均风，现在的报道种多有错误，例如XX风力达到了12级，风力达到12级严格是指持续风速（10分钟平均），但实际上当地只是出现了12级的阵风，其实际风力只有8-10级。大多数人低估台风风力的破坏，12级的风力足够造成非常严重的破坏，甚至摧毁一些被认为安全的房子。为什么报道的12级风经过一般看起来都不严重，因为媒体把最大阵风12级夸大成12级大风经过。另外，真正的17级风是几乎不会在陆地上出现的。 
+             <br />
+            </blockquote>
+            <br />
+            <b>热带扰动：</b>热带气旋的雏形。也就是说，热带气旋不是像孙猴子一样凭空冒出的，而是云团形成热带扰动以后，进一步升级为热带低压。你可以了解一下：
+            <br />
+            <blockquote class="blockquote cc">
+             <br />热带扰动的是由JTWC (Joint Typhoon Warning Center 联合台风警报中心)编号的,是由数字90-99加上大洋区域之英文代号构成并&quot;循环使用&quot;的临时编号，例如西太的区域代号为w 
+             <br />所以西太热带扰动编号依次为 
+             <br />90w-&gt;91w-&gt;92w-&gt;93w-&gt;94w-&gt;95w-&gt;96w-&gt;97w-&gt;98w-&gt;99w-&gt;90w-&gt;91W... 
+             <br />如下一个编号已被使用着则跳过它取下一编号 例如新一个扰动出现，西太仍存在95w,97w,99w
+             <br />则新的扰动将编号为 ９０Ｗ 
+             <br />&nbsp;
+             <br />对其他大洋的编号
+             <b>也依据完全相同的原则</b>，只是不同的大洋
+             <b>后缀不同</b>。 &nbsp;
+             <br />西北太平洋——
+             <b>W</b> 
+             <br />中太平洋——
+             <b>C</b> 
+             <br />东北太平洋——
+             <b>E</b> 
+             <br />北大西洋——
+             <b>L</b> 
+             <br />孟加拉湾——
+             <b>B</b> 
+             <br />阿拉伯海——
+             <b>A</b> 
+             <br />南太平洋——
+             <b>P</b> 
+             <br />南印度洋——
+             <b>S</b> 
+             <br />南大西洋——
+             <b>Q</b>
+             <br />&nbsp;
+             <br />
+            </blockquote>
+            <br />&nbsp;
+            <br />&nbsp;
+            <br />那么JTWC又是什么呢？这里我要介绍几个机构：
+            <br />JMA：
+            <a href="http://www.jma.go.jp/en/typh/ " target="_blank">http://www.jma.go.jp/en/typh/</a>
+            <br />JMA是日本气象厅的简称，是西太平洋的王者，台风生不生成，给不给它名字，全是它说的算，它是西太平洋热带气旋的权威。它使用10分钟平均风速。
+            <br />
+            <blockquote class="blockquote cc">
+             <br />区域专责气象中心（RSMC）。世界气象组织在全球各个海域指定某个气象机构为该海域的区域专责气象中心。如NHC是世界气象组织指定的大西洋和东北太平洋的区域专责气象中心，JMA是世界气象组织指定的西北太平洋的区域专责气象中心。RSMC专责追踪和预测热带气旋的路径和特性，其发报一般具有权威性且负责命名。
+             <br />
+            </blockquote>
+            <br />&nbsp;
+            <br />JTWC：
+            <a href="http://www.usno.navy.mil/JTWC " target="_blank">http://www.usno.navy.mil/JTWC</a>
+            <br />
+            <i>JTWC</i>是“联合台风警报中心”的简称，预报准确性也很高，而且具有参考价值。值得注意的是，JTWC不同于JMA，它使用1分钟平均风速，这个风速已经接近阵风了。
+            <br />需要注意的是，这个网站可能进不去，你需要用代理服务器才行。百度搜索“在线代理”选择一个即可。
+            <br />&nbsp;
+            <br />CMA：
+            <a href="http://www.weather.gov.cn/ " target="_blank">http://www.weather.gov.cn/</a>
+            <br />CMA是“中国气象局”的简称，是我们国家的权威，它的网站是中文，所以比较好看一点。CMA使用2分钟平均风速
+            <br />&nbsp;
+            <br />在浏览上述网站的过程中，我们经常会用到一个单位：KTS（海里/小时）。换算过来1KTS大约是0.51m/s，把KTS数值乘上0.51就好咯！
+            <br />
+            <br />
+            <br />&nbsp;
+            <br />&nbsp;
+            <br />&nbsp;
+            <br />&nbsp;
+            <br />&nbsp; 
+           </div> 
+          </div> </td> 
+        </tr> 
+        <tr> 
+         <td class="box_wrap floor_bottom" valign="bottom"> 
+          <div id="app_read_floor_4"></div> 
+          <div class="signature" style="max-height:130px;maxHeight:130px;">
+           <table width="100%">
+            <tbody>
+             <tr>
+              <td><a href="http://weibo.com/u/1666486042?s=6uyXnP " target="_blank"><img class="J_post_img" src="http://service.t.sina.com.cn/widget/qmd/1666486042/12a3bb11/1.png" border="0" onload="if(this.offsetWidth&gt;400 || this.offsetHeight&gt;400){if(this.offsetWidth/400 &gt; this.offsetHeight/400){this.width=400;}else{this.height=400;}}" style="max-width:400px;max-height:400px;" onclick="if(this.parentNode.tagName!='A'&amp;&amp;this.width&gt;screen.width-461) window.open(this.src);" /></a><br /><br />帖子中所引用图片的所有行政区界和预报数据均以官方为准，机构预报图片仅供交流学习之用。</td>
+             </tr>
+            </tbody>
+           </table>
+          </div> 
+          <div class="floor_bottom_tips cc"> 
+           <span class="fr"> </span> 
+           <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?c=post&amp;a=fastreply&amp;tid=42697&amp;pid=1519572" data-pid="1519572" class="a_reply J_read_reply" data-topped="false">回复<span style="">(1)</span></a> 
+           <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=like&amp;c=mylike&amp;a=doLike&amp;typeid=2&amp;fromid=1519572" data-tid="42697" data-pid="1519572" data-fid="74" class="a_like J_like_btn J_qlogin_trigger">喜欢</a>
+           <span style="">(<a class="J_like_user_btn a_like_num" data-pid="1519572" href="http://bbs.typhoon.gov.cn/index.php?m=like&amp;c=like&amp;a=getLast&amp;typeid=2&amp;fromid=1519572">1</a>)</span> &nbsp;&nbsp;&nbsp;&nbsp;
+           <a role="button" rel="nofollow" href="#" data-pid="1519572" data-uri="http://bbs.typhoon.gov.cn/index.php?m=app&amp;c=mark&amp;a=mark&amp;tid=42697&amp;pid=1519572&amp;app=mark" class="J_plugin_read_mark" id=""><span>评分</span></a> 
+           <script>
+Wind.ready('global.js', function(){
+	Wind.js('http://bbs.typhoon.gov.cn/themes/extres/mark/js/mark.min.js?v=' + GV.JS_VERSION);
+});
+</script> 
+          </div> 
+          <div style="display:none;" class="J_reply_wrap" id="J_reply_wrap_1519572">
+           <div class="pop_loading"></div>
+          </div> </td> 
+        </tr> 
+       </tbody>
+      </table> 
+     </div> 
+     <a name="1519574"></a> 
+     <div id="cloudwind_read_readfloor_1519574"></div> 
+     <div class="floor cc J_read_floor" id="read_1519574"> 
+      <table width="100%" style="table-layout:fixed;" class="floor_table"> 
+       <tbody>
+        <tr> 
+         <td rowspan="2" class="floor_left"> 
+          <div class="floor_info"> 
+           <!--头像--> 
+           <div class="face"> 
+            <a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=29286" class="J_user_card_show" data-uid="29286" target="_blank"><img src="http://bbs.typhoon.gov.cn/windid/attachment/avatar/000/02/92/29286_middle.jpg" class="J_avatar" data-type="middle" alt="小蜗牛风迷" /></a> 
+           </div> 
+           <!--用户名--> 
+           <div class="name"> 
+            <span class="man_unol" title="离线"></span>
+            <a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=29286" class="J_user_card_show mr5" data-uid="29286">小蜗牛风迷</a> 
+           </div> 
+           <!--等级--> 
+           <div class="level"> 
+            <div>
+             论坛版主-副热带高压
+            </div> 
+            <img src="http://bbs.typhoon.gov.cn/res/images/level/17.gif" alt="论坛版主-副热带高压" /> 
+           </div> 
+           <!--相关数据--> 
+           <ul class="cc integral"> 
+            <li><em>注册日期</em><span>2009-09-21</span></li> 
+            <li><em>最后登录</em><span>2017-03-27</span></li> 
+            <li><em>粉丝</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=fans&amp;uid=29286" target="_blank">270</a></li> 
+            <li><em>关注</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=follows&amp;uid=29286" target="_blank">59</a></li> 
+            <li><em>发帖数</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=thread&amp;uid=29286" target="_blank">9198</a></li> 
+            <li><em>来自</em><span title=""></span></li> 
+           </ul> 
+           <!--发私信加关注--> 
+           <div class="operate cc"> 
+            <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=my&amp;c=follow&amp;a=add&amp;uid=29286" data-uid="29286" class="follow J_read_follow J_qlogin_trigger">加关注</a> 
+            <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=message&amp;c=message&amp;a=pop&amp;username=%D0%A1%CE%CF%C5%A3%B7%E7%C3%D4" class="message J_send_msg_pop J_qlogin_trigger" data-name="小蜗牛风迷">写私信</a> 
+           </div> 
+           <!--广告位--> 
+           <!--信息栏结束--> 
+          </div> </td> 
+         <td class="box_wrap floor_right"> 
+          <div class="fl">
+           <div class="floor_arrow">
+            <em></em>
+            <span></span>
+           </div>
+          </div> 
+          <div class="c"></div> 
+          <div class="floor_top_tips cc"> 
+           <div style="position:relative;">
+            <span class="lou J_floor_copy" title="复制此楼地址" data-hash="read_1519574">5楼<sup>#</sup></span>
+           </div> 
+           <span class="fl">发布于：2011-06-24 18:57 </span> 
+          </div> 
+          <div id="J_read_main"> 
+           <div class="fr"> 
+            <!--开始右侧广告位--> 
+            <!--结束右侧广告位--> 
+           </div> 
+           <div class="editor_content"> 
+            <div class="inside_title">
+             第五课：学会看台风所处环境
+            </div> 学完了痛苦的理论知识，现在要真正进入到讨论台风的视角当中了！
+            <br />首先你必须知道一些地理知识。这是早前一位版主制作的分区图，虽然是繁体版的，但是内地的朋友应该可以看得懂：
+            <br />
+            <img class="J_post_img J_lazy" data-original="http://bbs.typhoon.gov.cn/p_w_upload/Mon_0910/16_20953_43f08d5f2d87f70.jpg" src="http://bbs.typhoon.gov.cn/res/images/blank.gif" border="0" onload="if(this.offsetWidth&gt;680)this.width=680;" style="max-width:680px;" onclick="if(this.parentNode.tagName!='A'&amp;&amp;this.width&gt;screen.width-461) window.open(this.src);" />
+            <br />
+            <br />入门台风，你就需要一些链接资料，以下两个链接供你选择（动点私心吧，因为我自己写的，所以我更希望你用第一个链接）：
+            <br />
+            <a href="http://bbs.typhoon.gov.cn/read.php?tid=37541 " target="_blank">http://bbs.typhoon.gov.cn/read.php?tid=37541</a>
+            <br />
+            <a href="http://bbs.typhoon.gov.cn/read.php?tid=38922 " target="_blank">http://bbs.typhoon.gov.cn/read.php?tid=38922</a>
+            <br />
+            <b>什么是环境场？</b>
+            <br />现在人都说我们要在一个良好的环境中读书和学习，因此买了个大房子，天天给你好吃的，否则怕身体长不起来。台风也是一样的道理。
+            <br />热带气旋也处在一个环境中。
+            <span style="color:#ff0000 "><b>我们这里要接触到一些陌生的名词，但你记住综述即可：海温高，风切小，幅合高，辐散高，涡度高的环境利于热带气旋发展。有兴趣的话以后更深入一点，就可以看以下几则链接（说句实话，新手也看不懂）：</b></span>
+            <br />
+            <a href="http://bbs.typhoon.gov.cn/read.php?tid=42354 " target="_blank">风切是什么？</a>
+            <br />
+            <a href="http://bbs.typhoon.gov.cn/read.php?tid=24469 " target="_blank">幅合、辐散是什么？</a> 
+            <br />&nbsp;
+            <br />那么，这些图到哪儿去看呢？
+            <br />
+            <a href="http://tropic.ssec.wisc.edu/real-time/windmain.php?;basin=westpac;sat=wgms;prod=sht;zoom=;time= " target="_blank">http://tropic.ssec.wisc.edu/real-time/windmain.php?;basin=westpac;sat=wgms;prod=sht;zoom=;time=</a>
+            <br />你现在看到的是风切图，右边的图例给出提示，图例最下面的颜色表示风切最小，图例最上面的颜色表示风切最大。此外，上面的八个框可以任意点击，但最重要是以下几个框：
+            <br />
+            <span id="J_att_303187"><span id="td_att_303187" class="J_attach_img_wrap single_img">
+              <div class="img_info J_img_info">
+               <p>图片：2.PNG</p>
+              </div><img class="J_post_img J_lazy" data-original="http://bbs.typhoon.gov.cn/attachment/thumb/Mon_1106/10_29286_69d161125561390.png" src="http://bbs.typhoon.gov.cn/res/images/blank.gif" border="0" onload="if(this.offsetWidth&gt;680)this.width=680;" style="max-width:680px;" title="鐐瑰嚮鏌ョ湅鍘熷浘" onclick="if(this.parentNode.tagName!='A') window.open('http://bbs.typhoon.gov.cn/attachment/Mon_1106/10_29286_69d161125561390.png');" /></span></span>
+            <br />上面的网站还没有办法看到海温图，海温图推荐到这里来看：
+            <br />
+            <blockquote class="blockquote cc">
+             <br />全球海温图：
+             <a href="http://www.oceanweather.com/data/ " target="_blank">http://www.oceanweather.com/data/</a> 
+             <br />西太平洋海温图：
+             <a href="http://www.oceanweather.com/data/NPAC-Western/sst.html " target="_blank">http://www.oceanweather.com/data/NPAC-Western/sst.html</a> 
+             <br />南海海温图：
+             <a href="http://www.oceanweather.com/data/South-China-Sea/sst.html " target="_blank">http://www.oceanweather.com/data/South-China-Sea/sst.html</a> 
+             <br />
+            </blockquote>
+            <br />&nbsp;
+            <br />要观察一个热带气旋（简称TC），你还必须要知道一个网站，NRL：
+            <a href="http://199.9.2.143/TC.html " target="_blank">http://199.9.2.143/TC.html</a>
+            <br />这个网站提供了许多关于TC的云图。看到右下角就是目前存在的92W。看到它云系散乱，三天两头不会发展了。
+            <br />右上角有三个链接：
+            <br />
+            <b>红外云图（IR）</b>：不论白天夜晚都可以通过某种方法拍摄到，但清晰度较低。
+            <br />
+            <b>可见光云图（VIS）</b>：只有在当地的白天才能拍摄到，清晰度较高。
+            <br />
+            <b>水汽云图（VAPOR）</b>：把红外云图的白色弄成了黄色，其实和红外云图没啥两样，至少对新手是这样。
+            <br />
+            <span id="J_att_303195"><span id="td_att_303195" class="J_attach_img_wrap single_img">
+              <div class="img_info J_img_info">
+               <p>图片：3.PNG</p>
+              </div><img class="J_post_img J_lazy" data-original="http://bbs.typhoon.gov.cn/attachment/thumb/Mon_1106/10_29286_b5a5b5b8a7d1ccc.png" src="http://bbs.typhoon.gov.cn/res/images/blank.gif" border="0" onload="if(this.offsetWidth&gt;680)this.width=680;" style="max-width:680px;" title="鐐瑰嚮鏌ョ湅鍘熷浘" onclick="if(this.parentNode.tagName!='A') window.open('http://bbs.typhoon.gov.cn/attachment/Mon_1106/10_29286_b5a5b5b8a7d1ccc.png');" /></span></span>
+            <br />逐个点击试试看吧……
+            <br />
+            <b>西北太平洋热带扰动一般生成在3N~25N之间，极少数可活动在5S~35N之间。这主要原因是：<br />1.高纬热带扰动受到海温的限制</b>
+            <br />大家都知道，在我国纬度高的地区，温度是没有热带或者亚热带高的，在海上也是一样。前面综述所说，
+            <b>海温高的地区有利于热带气旋生长</b>。
+            <br />
+            <b>2.低纬度热带扰动受到发展限制</b>
+            <br />但是纬度低的地方不是海温很高吗？为什么不能发展呢？其原因在于，热带扰动在纬度低的地方
+            <b>转不起来</b>，也就难以发展。下面给一张2010年第十三号超强台风“鲇鱼”的动态云图，大家可以点击下载观看，看看扰动是如何发展起来的。
+            <br />
+            <a href="http://agora.ex.nii.ac.jp/digital-typhoon/animation/wnp/color/MPEG-1/201013.mpg " target="_blank">http://agora.ex.nii.ac.jp/digital-typhoon/animation/wnp/color/MPEG-1/201013.mpg</a>
+            <br />
+            <br />我们有一些朋友可能会注意到，有几张图片上，好像台风中间有一个洞，就像这样：
+            <br />
+            <span id="J_att_304742"><span id="td_att_304742" class="J_attach_img_wrap single_img">
+              <div class="img_info J_img_info">
+               <p>图片：1.PNG</p>
+              </div><img class="J_post_img J_lazy" data-original="http://bbs.typhoon.gov.cn/attachment/Mon_1107/10_29286_e54035f11b24c17.png" src="http://bbs.typhoon.gov.cn/res/images/blank.gif" border="0" onload="if(this.offsetWidth&gt;680)this.width=680;" style="max-width:680px;" title="鐐瑰嚮鏌ョ湅鍘熷浘" onclick="if(this.parentNode.tagName!='A') window.open('http://bbs.typhoon.gov.cn/attachment/Mon_1107/10_29286_e54035f11b24c17.png');" /></span></span>
+            <br />
+            <br />这叫“风眼”，简单之说，孙悟空在熔炉里炼成了火眼晶晶，台风也在高海温情况下睁开眼睛看世界。
+            <b>一般情况下，有着圆滑，完整的风眼的台风，都是很强的台风，中心最大风速一般能达到52米/秒以上。</b>
+            <br />&nbsp;
+            <br /> 
+           </div> 
+          </div> </td> 
+        </tr> 
+        <tr> 
+         <td class="box_wrap floor_bottom" valign="bottom"> 
+          <div id="app_read_floor_5"></div> 
+          <div class="signature" style="max-height:130px;maxHeight:130px;">
+           <table width="100%">
+            <tbody>
+             <tr>
+              <td><a href="http://weibo.com/u/1666486042?s=6uyXnP " target="_blank"><img class="J_post_img" src="http://service.t.sina.com.cn/widget/qmd/1666486042/12a3bb11/1.png" border="0" onload="if(this.offsetWidth&gt;400 || this.offsetHeight&gt;400){if(this.offsetWidth/400 &gt; this.offsetHeight/400){this.width=400;}else{this.height=400;}}" style="max-width:400px;max-height:400px;" onclick="if(this.parentNode.tagName!='A'&amp;&amp;this.width&gt;screen.width-461) window.open(this.src);" /></a><br /><br />帖子中所引用图片的所有行政区界和预报数据均以官方为准，机构预报图片仅供交流学习之用。</td>
+             </tr>
+            </tbody>
+           </table>
+          </div> 
+          <div class="floor_bottom_tips cc"> 
+           <span class="fr"> </span> 
+           <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?c=post&amp;a=fastreply&amp;tid=42697&amp;pid=1519574" data-pid="1519574" class="a_reply J_read_reply" data-topped="false">回复<span style="display:none">(0)</span></a> 
+           <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=like&amp;c=mylike&amp;a=doLike&amp;typeid=2&amp;fromid=1519574" data-tid="42697" data-pid="1519574" data-fid="74" class="a_like J_like_btn J_qlogin_trigger">喜欢</a>
+           <span style="display:none">(<a class="J_like_user_btn a_like_num" data-pid="1519574" href="http://bbs.typhoon.gov.cn/index.php?m=like&amp;c=like&amp;a=getLast&amp;typeid=2&amp;fromid=1519574">0</a>)</span> &nbsp;&nbsp;&nbsp;&nbsp;
+           <a role="button" rel="nofollow" href="#" data-pid="1519574" data-uri="http://bbs.typhoon.gov.cn/index.php?m=app&amp;c=mark&amp;a=mark&amp;tid=42697&amp;pid=1519574&amp;app=mark" class="J_plugin_read_mark" id=""><span>评分</span></a> 
+           <script>
+Wind.ready('global.js', function(){
+	Wind.js('http://bbs.typhoon.gov.cn/themes/extres/mark/js/mark.min.js?v=' + GV.JS_VERSION);
+});
+</script> 
+          </div> 
+          <div style="display:none;" class="J_reply_wrap" id="J_reply_wrap_1519574">
+           <div class="pop_loading"></div>
+          </div> </td> 
+        </tr> 
+       </tbody>
+      </table> 
+     </div> 
+     <a name="1519575"></a> 
+     <div id="cloudwind_read_readfloor_1519575"></div> 
+     <div class="floor cc J_read_floor" id="read_1519575"> 
+      <table width="100%" style="table-layout:fixed;" class="floor_table"> 
+       <tbody>
+        <tr> 
+         <td rowspan="2" class="floor_left"> 
+          <div class="floor_info"> 
+           <!--头像--> 
+           <div class="face"> 
+            <a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=29286" class="J_user_card_show" data-uid="29286" target="_blank"><img src="http://bbs.typhoon.gov.cn/windid/attachment/avatar/000/02/92/29286_middle.jpg" class="J_avatar" data-type="middle" alt="小蜗牛风迷" /></a> 
+           </div> 
+           <!--用户名--> 
+           <div class="name"> 
+            <span class="man_unol" title="离线"></span>
+            <a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=29286" class="J_user_card_show mr5" data-uid="29286">小蜗牛风迷</a> 
+           </div> 
+           <!--等级--> 
+           <div class="level"> 
+            <div>
+             论坛版主-副热带高压
+            </div> 
+            <img src="http://bbs.typhoon.gov.cn/res/images/level/17.gif" alt="论坛版主-副热带高压" /> 
+           </div> 
+           <!--相关数据--> 
+           <ul class="cc integral"> 
+            <li><em>注册日期</em><span>2009-09-21</span></li> 
+            <li><em>最后登录</em><span>2017-03-27</span></li> 
+            <li><em>粉丝</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=fans&amp;uid=29286" target="_blank">270</a></li> 
+            <li><em>关注</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=follows&amp;uid=29286" target="_blank">59</a></li> 
+            <li><em>发帖数</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=thread&amp;uid=29286" target="_blank">9198</a></li> 
+            <li><em>来自</em><span title=""></span></li> 
+           </ul> 
+           <!--发私信加关注--> 
+           <div class="operate cc"> 
+            <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=my&amp;c=follow&amp;a=add&amp;uid=29286" data-uid="29286" class="follow J_read_follow J_qlogin_trigger">加关注</a> 
+            <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=message&amp;c=message&amp;a=pop&amp;username=%D0%A1%CE%CF%C5%A3%B7%E7%C3%D4" class="message J_send_msg_pop J_qlogin_trigger" data-name="小蜗牛风迷">写私信</a> 
+           </div> 
+           <!--广告位--> 
+           <!--信息栏结束--> 
+          </div> </td> 
+         <td class="box_wrap floor_right"> 
+          <div class="fl">
+           <div class="floor_arrow">
+            <em></em>
+            <span></span>
+           </div>
+          </div> 
+          <div class="c"></div> 
+          <div class="floor_top_tips cc"> 
+           <div style="position:relative;">
+            <span class="lou J_floor_copy" title="复制此楼地址" data-hash="read_1519575">6楼<sup>#</sup></span>
+           </div> 
+           <span class="fl">发布于：2011-06-24 18:57 </span> 
+          </div> 
+          <div id="J_read_main"> 
+           <div class="fr"> 
+            <!--开始右侧广告位--> 
+            <!--结束右侧广告位--> 
+           </div> 
+           <div class="editor_content"> 
+            <div class="inside_title">
+             观看机构和数值的预报
+            </div> 我们新手最好不要自己预报，不然容易被认为是无意义的帖子（除非你是一位老手）。
+            <br />如何观看机构的预报呢？前文提到了我的天气资源集合帖。
+            <br />
+            <blockquote class="blockquote cc">
+             引用第1楼小蜗牛风迷于2010-12-02 13:04发表的 西太台风追击必备 :
+             <br />
+             <b>机构类</b>
+             <br />1.
+             <a href="http://www.weather.gov.cn/publish/typhoon/warning.htm " target="_blank">中央气象台</a> 
+             <a href="http://www.weather.gov.cn/publish/typhoon/probability-img.html " target="_blank">预报图</a> 
+             <a href="http://www.weather.gov.cn/publish/country/warning/typhoon.html " target="_blank">预警</a> 
+             <br />2.日本气象局[RSMC] 
+             <a href="http://www.jma.go.jp/en/typh/ " target="_blank">台风预报</a> 
+             <br />....... 
+             <a href="http://bbs.typhoon.gov.cn/job.php?action=topost;tid=37541;pid=1273199 " target="_blank"><img class="J_post_img J_lazy" data-original="" src="http://bbs.typhoon.gov.cn/res/images/blank.gif" border="0" onload="if(this.offsetWidth&gt;680)this.width=680;" style="max-width:680px;" onclick="if(this.parentNode.tagName!='A'&amp;&amp;this.width&gt;screen.width-461) window.open(this.src);" /></a>
+             <br />
+            </blockquote>
+            <br />在这些机构类的网址中一个个点进去，就能了解各个机构预报的路径了，这还需要多摸索。
+            <br />JTWC的路径一般呈这样子显示：
+            <br />
+            <span id="J_att_304743"><span id="td_att_304743" class="J_attach_img_wrap single_img">
+              <div class="img_info J_img_info">
+               <p>图片：11_29311_6a22548be1fbb5d.gif</p>
+              </div><img class="J_post_img J_lazy" data-original="http://bbs.typhoon.gov.cn/attachment/Mon_1107/10_29286_44acde921c65ed1.gif" src="http://bbs.typhoon.gov.cn/res/images/blank.gif" border="0" onload="if(this.offsetWidth&gt;680)this.width=680;" style="max-width:680px;" title="鐐瑰嚮鏌ョ湅鍘熷浘" onclick="if(this.parentNode.tagName!='A') window.open('http://bbs.typhoon.gov.cn/attachment/Mon_1107/10_29286_44acde921c65ed1.gif');" /></span></span>
+            <br />JMA的路径一般是这样显示：
+            <br />
+            <span id="J_att_304744"><span id="td_att_304744" class="J_attach_img_wrap single_img">
+              <div class="img_info J_img_info">
+               <p>图片：11_19904_a289cfdc4770e08.png</p>
+              </div><img class="J_post_img J_lazy" data-original="http://bbs.typhoon.gov.cn/attachment/Mon_1107/10_29286_e4fbf011d1cc667.png" src="http://bbs.typhoon.gov.cn/res/images/blank.gif" border="0" onload="if(this.offsetWidth&gt;680)this.width=680;" style="max-width:680px;" title="鐐瑰嚮鏌ョ湅鍘熷浘" onclick="if(this.parentNode.tagName!='A') window.open('http://bbs.typhoon.gov.cn/attachment/Mon_1107/10_29286_e4fbf011d1cc667.png');" /></span></span>
+            <br />其中JMA还要特别注意其旁边的报文，就像这样：
+            <br />STS 1105 (Meari) 
+            <br />Issued at 12:50 UTC, 25 June 2011 -&gt; 这行就是发报时间。
+            <br />&lt;Analyses at 25/12 UTC&gt; &nbsp;
+            <br />Scale Large &nbsp;
+            <br />Intensity - &nbsp;
+            <br />Center position N29&deg;00'(29.0&deg;) &nbsp;
+            <br />E123&deg;20'(123.3&deg;) &nbsp;-&gt;目前位置
+            <br />Direction and speed of movement N 25km/h(13kt) &nbsp;-&gt;过去移动速度和方向
+            <br />Central pressure 980hPa &nbsp;-&gt;气压
+            <br />Maximum sustained wind speed 30m/s(55kt) &nbsp;-&gt; 风速
+            <br />Maximum wind gust speed 40m/s(80kt) &nbsp;-&gt;阵风
+            <br />Area of 50kt winds or more E220km(120NM) &nbsp;
+            <br />W130km(70NM) &nbsp;-&gt;十级风圈
+            <br />Area of 30kt winds or more E750km(400NM) &nbsp;
+            <br />W390km(210NM) &nbsp;-&gt;七级风圈
+            <br />&nbsp;
+            <br />-----从这往下都是预报了，一般有三天-----
+            <br />&lt;Forecast for 26/00 UTC&gt; &nbsp;
+            <br />Intensity - &nbsp;
+            <br />Center position of probability circle N33&deg;05'(33.1&deg;) &nbsp;
+            <br />E123&deg;35'(123.6&deg;) &nbsp;
+            <br />Direction and speed of movement N 35km/h(20kt) &nbsp;
+            <br />Central pressure 985hPa &nbsp;
+            <br />Maximum sustained wind speed 25m/s(50kt) &nbsp;
+            <br />Maximum wind gust speed 35m/s(70kt) &nbsp;
+            <br />Radius of probability circle 90km(50NM) &nbsp;
+            <br />&nbsp;.....
+            <br />&nbsp;
+            <br />其它的都可以一个个点进去试验，但是就准确度来讲，这两个是最好的。中央气象台最近已经没有信心，只能给出48小时的预报，所以最好就是看这两个机构。
+            <br />当然如果想看各机构的所有路径叠加起来以确定它最有可能去哪儿的话，推荐这个网站：
+            <a href="http://asiatcforecast.co.cc/ " target="_blank">http://asiatcforecast.co.cc/</a>
+            <br />&nbsp;
+            <br />好了，讲完了机构的预报，再来将数值预报吧。什么是数值预报呢？
+            <br />
+            <b>数值预报就是计算机通过当前的环流形式自动计算出未来一段时间内洋面上的情况。</b>一般来讲，数值预报可以看“台风预报”版有个&quot;ECMWF：西太／北印数值预报自动更新暨非扰动云团专帖”，点进去就是了。1楼就有ECMWF这个数值机构对未来240小时的分析。图片是缩略版，要想看到详细的，应该要点击旁边的“PDF版”来进行下载
+            <br />我们举出一张来做个示范：
+            <br />
+            <img class="J_post_img J_lazy" data-original="http://bbs.typhoon.gov.cn/p_w_upload/Mon_1106/11_16880_e05fcdd70af08d9.jpg" src="http://bbs.typhoon.gov.cn/res/images/blank.gif" border="0" onload="if(this.offsetWidth&gt;680)this.width=680;" style="max-width:680px;" onclick="if(this.parentNode.tagName!='A'&amp;&amp;this.width&gt;screen.width-461) window.open(this.src);" />
+            <br />这张图就说明了，ECMWF认为，在某一时刻（可以看图片上方的标识）会有一个中心附近最大风力为27m/s的强热带风暴靠近粤东闽南地区。
+            <br />数值预报还要看这个网站。
+            <br />
+            <a href="http://www.emc.ncep.noaa.gov/gmb/tpm/emchurr/tcgen/ " target="_blank">http://www.emc.ncep.noaa.gov/gmb/tpm/emchurr/tcgen/</a>
+            <br />这个网站也是需要代理才能进入的，方法与前一样。
+            <br />你可能会看到这个图：
+            <br />
+            <img class="J_post_img J_lazy" data-original="http://bbs.typhoon.gov.cn/p_w_upload/Mon_1106/11_27105_9bdfe46b58aa378.gif" src="http://bbs.typhoon.gov.cn/res/images/blank.gif" border="0" onload="if(this.offsetWidth&gt;680)this.width=680;" style="max-width:680px;" onclick="if(this.parentNode.tagName!='A'&amp;&amp;this.width&gt;screen.width-461) window.open(this.src);" />
+            <br />这个图的意思就是，有4家机构认同菲律宾东南部会有热带气旋发展起来。
+            <br />&nbsp;
+            <br />在这里还需要提到两个专有名词：TCFA/GW
+            <br />所谓TCFA，就是JTWC认为该热带扰动很可能在24小时内发展为热带低压。所谓GW，就是JMA认为该热带低压很可能在24小时内发展为热带风暴。
+            <br />
+            <br /> 
+           </div> 
+          </div> </td> 
+        </tr> 
+        <tr> 
+         <td class="box_wrap floor_bottom" valign="bottom"> 
+          <div id="app_read_floor_6"></div> 
+          <div class="signature" style="max-height:130px;maxHeight:130px;">
+           <table width="100%">
+            <tbody>
+             <tr>
+              <td><a href="http://weibo.com/u/1666486042?s=6uyXnP " target="_blank"><img class="J_post_img" src="http://service.t.sina.com.cn/widget/qmd/1666486042/12a3bb11/1.png" border="0" onload="if(this.offsetWidth&gt;400 || this.offsetHeight&gt;400){if(this.offsetWidth/400 &gt; this.offsetHeight/400){this.width=400;}else{this.height=400;}}" style="max-width:400px;max-height:400px;" onclick="if(this.parentNode.tagName!='A'&amp;&amp;this.width&gt;screen.width-461) window.open(this.src);" /></a><br /><br />帖子中所引用图片的所有行政区界和预报数据均以官方为准，机构预报图片仅供交流学习之用。</td>
+             </tr>
+            </tbody>
+           </table>
+          </div> 
+          <div class="floor_bottom_tips cc"> 
+           <span class="fr"> </span> 
+           <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?c=post&amp;a=fastreply&amp;tid=42697&amp;pid=1519575" data-pid="1519575" class="a_reply J_read_reply" data-topped="false">回复<span style="display:none">(0)</span></a> 
+           <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=like&amp;c=mylike&amp;a=doLike&amp;typeid=2&amp;fromid=1519575" data-tid="42697" data-pid="1519575" data-fid="74" class="a_like J_like_btn J_qlogin_trigger">喜欢</a>
+           <span style="">(<a class="J_like_user_btn a_like_num" data-pid="1519575" href="http://bbs.typhoon.gov.cn/index.php?m=like&amp;c=like&amp;a=getLast&amp;typeid=2&amp;fromid=1519575">1</a>)</span> &nbsp;&nbsp;&nbsp;&nbsp;
+           <a role="button" rel="nofollow" href="#" data-pid="1519575" data-uri="http://bbs.typhoon.gov.cn/index.php?m=app&amp;c=mark&amp;a=mark&amp;tid=42697&amp;pid=1519575&amp;app=mark" class="J_plugin_read_mark" id=""><span>评分</span></a> 
+           <script>
+Wind.ready('global.js', function(){
+	Wind.js('http://bbs.typhoon.gov.cn/themes/extres/mark/js/mark.min.js?v=' + GV.JS_VERSION);
+});
+</script> 
+          </div> 
+          <div style="display:none;" class="J_reply_wrap" id="J_reply_wrap_1519575">
+           <div class="pop_loading"></div>
+          </div> </td> 
+        </tr> 
+       </tbody>
+      </table> 
+     </div> 
+     <a name="1520947"></a> 
+     <div id="cloudwind_read_readfloor_1520947"></div> 
+     <div class="floor cc J_read_floor" id="read_1520947"> 
+      <table width="100%" style="table-layout:fixed;" class="floor_table"> 
+       <tbody>
+        <tr> 
+         <td rowspan="2" class="floor_left"> 
+          <div class="floor_info"> 
+           <!--头像--> 
+           <div class="face"> 
+            <a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=29286" class="J_user_card_show" data-uid="29286" target="_blank"><img src="http://bbs.typhoon.gov.cn/windid/attachment/avatar/000/02/92/29286_middle.jpg" class="J_avatar" data-type="middle" alt="小蜗牛风迷" /></a> 
+           </div> 
+           <!--用户名--> 
+           <div class="name"> 
+            <span class="man_unol" title="离线"></span>
+            <a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=29286" class="J_user_card_show mr5" data-uid="29286">小蜗牛风迷</a> 
+           </div> 
+           <!--等级--> 
+           <div class="level"> 
+            <div>
+             论坛版主-副热带高压
+            </div> 
+            <img src="http://bbs.typhoon.gov.cn/res/images/level/17.gif" alt="论坛版主-副热带高压" /> 
+           </div> 
+           <!--相关数据--> 
+           <ul class="cc integral"> 
+            <li><em>注册日期</em><span>2009-09-21</span></li> 
+            <li><em>最后登录</em><span>2017-03-27</span></li> 
+            <li><em>粉丝</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=fans&amp;uid=29286" target="_blank">270</a></li> 
+            <li><em>关注</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=follows&amp;uid=29286" target="_blank">59</a></li> 
+            <li><em>发帖数</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=thread&amp;uid=29286" target="_blank">9198</a></li> 
+            <li><em>来自</em><span title=""></span></li> 
+           </ul> 
+           <!--发私信加关注--> 
+           <div class="operate cc"> 
+            <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=my&amp;c=follow&amp;a=add&amp;uid=29286" data-uid="29286" class="follow J_read_follow J_qlogin_trigger">加关注</a> 
+            <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=message&amp;c=message&amp;a=pop&amp;username=%D0%A1%CE%CF%C5%A3%B7%E7%C3%D4" class="message J_send_msg_pop J_qlogin_trigger" data-name="小蜗牛风迷">写私信</a> 
+           </div> 
+           <!--广告位--> 
+           <!--信息栏结束--> 
+          </div> </td> 
+         <td class="box_wrap floor_right"> 
+          <div class="fl">
+           <div class="floor_arrow">
+            <em></em>
+            <span></span>
+           </div>
+          </div> 
+          <div class="c"></div> 
+          <div class="floor_top_tips cc"> 
+           <div style="position:relative;">
+            <span class="lou J_floor_copy" title="复制此楼地址" data-hash="read_1520947">7楼<sup>#</sup></span>
+           </div> 
+           <span class="fl">发布于：2011-06-25 09:09 </span> 
+          </div> 
+          <div id="J_read_main"> 
+           <div class="fr"> 
+            <!--开始右侧广告位--> 
+            <!--结束右侧广告位--> 
+           </div> 
+           <div class="editor_content"> 
+            <div class="inside_title">
+             参与台风论坛关于台风的讨论
+            </div> 
+            <span style="color:#ff0000 ">参与台风论坛的讨论，你应注意以下原则：</span>
+            <br />1.不在“追击帖”内发无意义的盼风或弃风帖，也不允许发纯表情或纯感情帖。以下语言不允许的：
+            <br />“哈哈，台风要来福州了！太好了！”
+            <br />“完了。”
+            <br />“台风肯定会到温州！”
+            <br />“啊！台风真麻烦！”
+            <br />2.尽量不在“追击帖”里发布机构预报帖，应在“机构预报专贴”内发表。
+            <br />3.尽量不在“追击帖”里发布当地的实况，如果要发布自己的感受，应在“实况帖”里发表。以下语言在追击帖里是不被支持的：
+            <br />“雨好大！”
+            <br />“好凉爽啊！”
+            <br />“没有一点风。” 
+           </div> 
+          </div> </td> 
+        </tr> 
+        <tr> 
+         <td class="box_wrap floor_bottom" valign="bottom"> 
+          <div id="app_read_floor_7"></div> 
+          <div class="signature" style="max-height:130px;maxHeight:130px;">
+           <table width="100%">
+            <tbody>
+             <tr>
+              <td><a href="http://weibo.com/u/1666486042?s=6uyXnP " target="_blank"><img class="J_post_img" src="http://service.t.sina.com.cn/widget/qmd/1666486042/12a3bb11/1.png" border="0" onload="if(this.offsetWidth&gt;400 || this.offsetHeight&gt;400){if(this.offsetWidth/400 &gt; this.offsetHeight/400){this.width=400;}else{this.height=400;}}" style="max-width:400px;max-height:400px;" onclick="if(this.parentNode.tagName!='A'&amp;&amp;this.width&gt;screen.width-461) window.open(this.src);" /></a><br /><br />帖子中所引用图片的所有行政区界和预报数据均以官方为准，机构预报图片仅供交流学习之用。</td>
+             </tr>
+            </tbody>
+           </table>
+          </div> 
+          <div class="floor_bottom_tips cc"> 
+           <span class="fr"> </span> 
+           <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?c=post&amp;a=fastreply&amp;tid=42697&amp;pid=1520947" data-pid="1520947" class="a_reply J_read_reply" data-topped="false">回复<span style="display:none">(0)</span></a> 
+           <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=like&amp;c=mylike&amp;a=doLike&amp;typeid=2&amp;fromid=1520947" data-tid="42697" data-pid="1520947" data-fid="74" class="a_like J_like_btn J_qlogin_trigger">喜欢</a>
+           <span style="display:none">(<a class="J_like_user_btn a_like_num" data-pid="1520947" href="http://bbs.typhoon.gov.cn/index.php?m=like&amp;c=like&amp;a=getLast&amp;typeid=2&amp;fromid=1520947">0</a>)</span> &nbsp;&nbsp;&nbsp;&nbsp;
+           <a role="button" rel="nofollow" href="#" data-pid="1520947" data-uri="http://bbs.typhoon.gov.cn/index.php?m=app&amp;c=mark&amp;a=mark&amp;tid=42697&amp;pid=1520947&amp;app=mark" class="J_plugin_read_mark" id=""><span>评分</span></a> 
+           <script>
+Wind.ready('global.js', function(){
+	Wind.js('http://bbs.typhoon.gov.cn/themes/extres/mark/js/mark.min.js?v=' + GV.JS_VERSION);
+});
+</script> 
+          </div> 
+          <div style="display:none;" class="J_reply_wrap" id="J_reply_wrap_1520947">
+           <div class="pop_loading"></div>
+          </div> </td> 
+        </tr> 
+       </tbody>
+      </table> 
+     </div> 
+     <a name="1520949"></a> 
+     <div id="cloudwind_read_readfloor_1520949"></div> 
+     <div class="floor cc J_read_floor" id="read_1520949"> 
+      <table width="100%" style="table-layout:fixed;" class="floor_table"> 
+       <tbody>
+        <tr> 
+         <td rowspan="2" class="floor_left"> 
+          <div class="floor_info"> 
+           <!--头像--> 
+           <div class="face"> 
+            <a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=29286" class="J_user_card_show" data-uid="29286" target="_blank"><img src="http://bbs.typhoon.gov.cn/windid/attachment/avatar/000/02/92/29286_middle.jpg" class="J_avatar" data-type="middle" alt="小蜗牛风迷" /></a> 
+           </div> 
+           <!--用户名--> 
+           <div class="name"> 
+            <span class="man_unol" title="离线"></span>
+            <a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=29286" class="J_user_card_show mr5" data-uid="29286">小蜗牛风迷</a> 
+           </div> 
+           <!--等级--> 
+           <div class="level"> 
+            <div>
+             论坛版主-副热带高压
+            </div> 
+            <img src="http://bbs.typhoon.gov.cn/res/images/level/17.gif" alt="论坛版主-副热带高压" /> 
+           </div> 
+           <!--相关数据--> 
+           <ul class="cc integral"> 
+            <li><em>注册日期</em><span>2009-09-21</span></li> 
+            <li><em>最后登录</em><span>2017-03-27</span></li> 
+            <li><em>粉丝</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=fans&amp;uid=29286" target="_blank">270</a></li> 
+            <li><em>关注</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=follows&amp;uid=29286" target="_blank">59</a></li> 
+            <li><em>发帖数</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=thread&amp;uid=29286" target="_blank">9198</a></li> 
+            <li><em>来自</em><span title=""></span></li> 
+           </ul> 
+           <!--发私信加关注--> 
+           <div class="operate cc"> 
+            <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=my&amp;c=follow&amp;a=add&amp;uid=29286" data-uid="29286" class="follow J_read_follow J_qlogin_trigger">加关注</a> 
+            <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=message&amp;c=message&amp;a=pop&amp;username=%D0%A1%CE%CF%C5%A3%B7%E7%C3%D4" class="message J_send_msg_pop J_qlogin_trigger" data-name="小蜗牛风迷">写私信</a> 
+           </div> 
+           <!--广告位--> 
+           <!--信息栏结束--> 
+          </div> </td> 
+         <td class="box_wrap floor_right"> 
+          <div class="fl">
+           <div class="floor_arrow">
+            <em></em>
+            <span></span>
+           </div>
+          </div> 
+          <div class="c"></div> 
+          <div class="floor_top_tips cc"> 
+           <div style="position:relative;">
+            <span class="lou J_floor_copy" title="复制此楼地址" data-hash="read_1520949">8楼<sup>#</sup></span>
+           </div> 
+           <span class="fl">发布于：2011-06-25 09:09 </span> 
+          </div> 
+          <div id="J_read_main"> 
+           <div class="fr"> 
+            <!--开始右侧广告位--> 
+            <!--结束右侧广告位--> 
+           </div> 
+           <div class="editor_content"> 
+            <div class="inside_title">
+             Re:台风论坛入门教程——白话气象
+            </div> 占楼#8 
+           </div> 
+          </div> </td> 
+        </tr> 
+        <tr> 
+         <td class="box_wrap floor_bottom" valign="bottom"> 
+          <div id="app_read_floor_8"></div> 
+          <div class="signature" style="max-height:130px;maxHeight:130px;">
+           <table width="100%">
+            <tbody>
+             <tr>
+              <td><a href="http://weibo.com/u/1666486042?s=6uyXnP " target="_blank"><img class="J_post_img" src="http://service.t.sina.com.cn/widget/qmd/1666486042/12a3bb11/1.png" border="0" onload="if(this.offsetWidth&gt;400 || this.offsetHeight&gt;400){if(this.offsetWidth/400 &gt; this.offsetHeight/400){this.width=400;}else{this.height=400;}}" style="max-width:400px;max-height:400px;" onclick="if(this.parentNode.tagName!='A'&amp;&amp;this.width&gt;screen.width-461) window.open(this.src);" /></a><br /><br />帖子中所引用图片的所有行政区界和预报数据均以官方为准，机构预报图片仅供交流学习之用。</td>
+             </tr>
+            </tbody>
+           </table>
+          </div> 
+          <div class="floor_bottom_tips cc"> 
+           <span class="fr"> </span> 
+           <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?c=post&amp;a=fastreply&amp;tid=42697&amp;pid=1520949" data-pid="1520949" class="a_reply J_read_reply" data-topped="false">回复<span style="display:none">(0)</span></a> 
+           <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=like&amp;c=mylike&amp;a=doLike&amp;typeid=2&amp;fromid=1520949" data-tid="42697" data-pid="1520949" data-fid="74" class="a_like J_like_btn J_qlogin_trigger">喜欢</a>
+           <span style="">(<a class="J_like_user_btn a_like_num" data-pid="1520949" href="http://bbs.typhoon.gov.cn/index.php?m=like&amp;c=like&amp;a=getLast&amp;typeid=2&amp;fromid=1520949">1</a>)</span> &nbsp;&nbsp;&nbsp;&nbsp;
+           <a role="button" rel="nofollow" href="#" data-pid="1520949" data-uri="http://bbs.typhoon.gov.cn/index.php?m=app&amp;c=mark&amp;a=mark&amp;tid=42697&amp;pid=1520949&amp;app=mark" class="J_plugin_read_mark" id=""><span>评分</span></a> 
+           <script>
+Wind.ready('global.js', function(){
+	Wind.js('http://bbs.typhoon.gov.cn/themes/extres/mark/js/mark.min.js?v=' + GV.JS_VERSION);
+});
+</script> 
+          </div> 
+          <div style="display:none;" class="J_reply_wrap" id="J_reply_wrap_1520949">
+           <div class="pop_loading"></div>
+          </div> </td> 
+        </tr> 
+       </tbody>
+      </table> 
+     </div> 
+     <a name="1520959"></a> 
+     <div id="cloudwind_read_readfloor_1520959"></div> 
+     <div class="floor cc J_read_floor" id="read_1520959"> 
+      <table width="100%" style="table-layout:fixed;" class="floor_table"> 
+       <tbody>
+        <tr> 
+         <td rowspan="2" class="floor_left"> 
+          <div class="floor_info"> 
+           <!--头像--> 
+           <div class="face"> 
+            <a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=29286" class="J_user_card_show" data-uid="29286" target="_blank"><img src="http://bbs.typhoon.gov.cn/windid/attachment/avatar/000/02/92/29286_middle.jpg" class="J_avatar" data-type="middle" alt="小蜗牛风迷" /></a> 
+           </div> 
+           <!--用户名--> 
+           <div class="name"> 
+            <span class="man_unol" title="离线"></span>
+            <a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;uid=29286" class="J_user_card_show mr5" data-uid="29286">小蜗牛风迷</a> 
+           </div> 
+           <!--等级--> 
+           <div class="level"> 
+            <div>
+             论坛版主-副热带高压
+            </div> 
+            <img src="http://bbs.typhoon.gov.cn/res/images/level/17.gif" alt="论坛版主-副热带高压" /> 
+           </div> 
+           <!--相关数据--> 
+           <ul class="cc integral"> 
+            <li><em>注册日期</em><span>2009-09-21</span></li> 
+            <li><em>最后登录</em><span>2017-03-27</span></li> 
+            <li><em>粉丝</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=fans&amp;uid=29286" target="_blank">270</a></li> 
+            <li><em>关注</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=follows&amp;uid=29286" target="_blank">59</a></li> 
+            <li><em>发帖数</em><a href="http://bbs.typhoon.gov.cn/index.php?m=space&amp;c=thread&amp;uid=29286" target="_blank">9198</a></li> 
+            <li><em>来自</em><span title=""></span></li> 
+           </ul> 
+           <!--发私信加关注--> 
+           <div class="operate cc"> 
+            <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=my&amp;c=follow&amp;a=add&amp;uid=29286" data-uid="29286" class="follow J_read_follow J_qlogin_trigger">加关注</a> 
+            <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=message&amp;c=message&amp;a=pop&amp;username=%D0%A1%CE%CF%C5%A3%B7%E7%C3%D4" class="message J_send_msg_pop J_qlogin_trigger" data-name="小蜗牛风迷">写私信</a> 
+           </div> 
+           <!--广告位--> 
+           <!--信息栏结束--> 
+          </div> </td> 
+         <td class="box_wrap floor_right"> 
+          <div class="fl">
+           <div class="floor_arrow">
+            <em></em>
+            <span></span>
+           </div>
+          </div> 
+          <div class="c"></div> 
+          <div class="floor_top_tips cc"> 
+           <div style="position:relative;">
+            <span class="lou J_floor_copy" title="复制此楼地址" data-hash="read_1520959">9楼<sup>#</sup></span>
+           </div> 
+           <span class="fl">发布于：2011-06-25 09:11 </span> 
+          </div> 
+          <div id="J_read_main"> 
+           <div class="fr"> 
+            <!--开始右侧广告位--> 
+            <!--结束右侧广告位--> 
+           </div> 
+           <div class="editor_content">
+             占楼#9 
+           </div> 
+          </div> </td> 
+        </tr> 
+        <tr> 
+         <td class="box_wrap floor_bottom" valign="bottom"> 
+          <div id="app_read_floor_9"></div> 
+          <div class="signature" style="max-height:130px;maxHeight:130px;">
+           <table width="100%">
+            <tbody>
+             <tr>
+              <td><a href="http://weibo.com/u/1666486042?s=6uyXnP " target="_blank"><img class="J_post_img" src="http://service.t.sina.com.cn/widget/qmd/1666486042/12a3bb11/1.png" border="0" onload="if(this.offsetWidth&gt;400 || this.offsetHeight&gt;400){if(this.offsetWidth/400 &gt; this.offsetHeight/400){this.width=400;}else{this.height=400;}}" style="max-width:400px;max-height:400px;" onclick="if(this.parentNode.tagName!='A'&amp;&amp;this.width&gt;screen.width-461) window.open(this.src);" /></a><br /><br />帖子中所引用图片的所有行政区界和预报数据均以官方为准，机构预报图片仅供交流学习之用。</td>
+             </tr>
+            </tbody>
+           </table>
+          </div> 
+          <div class="floor_bottom_tips cc"> 
+           <span class="fr"> </span> 
+           <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?c=post&amp;a=fastreply&amp;tid=42697&amp;pid=1520959" data-pid="1520959" class="a_reply J_read_reply" data-topped="false">回复<span style="display:none">(0)</span></a> 
+           <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=like&amp;c=mylike&amp;a=doLike&amp;typeid=2&amp;fromid=1520959" data-tid="42697" data-pid="1520959" data-fid="74" class="a_like J_like_btn J_qlogin_trigger">喜欢</a>
+           <span style="">(<a class="J_like_user_btn a_like_num" data-pid="1520959" href="http://bbs.typhoon.gov.cn/index.php?m=like&amp;c=like&amp;a=getLast&amp;typeid=2&amp;fromid=1520959">1</a>)</span> &nbsp;&nbsp;&nbsp;&nbsp;
+           <a role="button" rel="nofollow" href="#" data-pid="1520959" data-uri="http://bbs.typhoon.gov.cn/index.php?m=app&amp;c=mark&amp;a=mark&amp;tid=42697&amp;pid=1520959&amp;app=mark" class="J_plugin_read_mark" id=""><span>评分</span></a> 
+           <script>
+Wind.ready('global.js', function(){
+	Wind.js('http://bbs.typhoon.gov.cn/themes/extres/mark/js/mark.min.js?v=' + GV.JS_VERSION);
+});
+</script> 
+          </div> 
+          <div style="display:none;" class="J_reply_wrap" id="J_reply_wrap_1520959">
+           <div class="pop_loading"></div>
+          </div> </td> 
+        </tr> 
+       </tbody>
+      </table> 
+     </div> 
+     <div class="floor_page"> 
+      <span class="pre">上一页</span> 
+      <a href="http://bbs.typhoon.gov.cn/read.php?tid=42697&amp;fid=74&amp;page=2" class="next" title="下一页">下一页</a> 
+     </div> 
+     <div class="read_pages_wrap cc" id="floor_reply"> 
+      <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?c=post&amp;fid=74" id="J_read_post_btn" class="btn_post J_qlogin_trigger">发帖</a> 
+      <!-- 锁定时间 --> 
+      <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?c=post&amp;a=reply&amp;tid=42697" data-referer="true" class="btn_replay J_qlogin_trigger">回复</a> 
+      <div class="J_page_wrap" data-key="true"> 
+       <div class="pages" style="margin-right:3px;">
+        <a href="http://bbs.typhoon.gov.cn/index.php?c=thread&amp;fid=74&amp;page=1" class="pages_pre" rel="nofollow">&laquo; 返回列表</a>
+       </div> 
+       <div class="pages"> 
+        <strong>1</strong> 
+        <a href="http://bbs.typhoon.gov.cn/read.php?tid=42697&amp;fid=74&amp;page=2">2</a> 
+        <a href="http://bbs.typhoon.gov.cn/read.php?tid=42697&amp;fid=74&amp;page=3">3</a> 
+        <a href="http://bbs.typhoon.gov.cn/read.php?tid=42697&amp;fid=74&amp;page=4">4</a> 
+        <a href="http://bbs.typhoon.gov.cn/read.php?tid=42697&amp;fid=74&amp;page=8">...8</a> 
+        <a href="http://bbs.typhoon.gov.cn/read.php?tid=42697&amp;fid=74&amp;page=2" class="pages_next J_pages_next">下一页&nbsp;&raquo;</a> 
+       </div> 
+      </div> 
+     </div> 
+     <div style="display:none;" class="btn_post_menu" id="J_read_post_types"> 
+      <ul> 
+       <li><a href="http://bbs.typhoon.gov.cn/index.php?c=post&amp;fid=74" data-referer="true" class="J_qlogin_trigger">普通帖</a></li> 
+      </ul> 
+     </div> 
+     <!--快速回复--> 
+     <div class="floor cc"> 
+      <table width="100%" style="table-layout:fixed;" class="floor_table"> 
+       <tbody>
+        <tr> 
+         <td class="floor_left"> 
+          <div class="floor_info"> 
+           <img class="J_avatar" data-type="middle" src="http://bbs.typhoon.gov.cn/windid/attachment/avatar/000/00/00/0_middle.jpg" alt="游客" /> 
+          </div> </td> 
+         <td class="floor_reply box_wrap"> 
+          <div class="fl">
+           <div class="floor_arrow">
+            <em></em>
+            <span></span>
+           </div>
+          </div> 
+          <div class="reply_login_tips">
+            您需要登录后才可以回帖，
+           <a href="#floor_reply" rel="nofollow" class="J_qlogin_trigger">登录</a>&nbsp;或者&nbsp;
+           <a rel="nofollow" href="http://bbs.typhoon.gov.cn/index.php?m=u&amp;c=register">注册</a> 
+          </div> </td> 
+        </tr> 
+       </tbody>
+      </table> 
+     </div> 
+     <!--快速回复结束--> 
+     <div id="cloudwind_read_bottom"></div> 
+    </div> 
+   </div> 
+   <!--.main-wrap,#main End--> 
+   <div class="tac"> 
+    <br /> 
+   </div> 
+   <div class="footer_wrap"> 
+    <div class="footer"> 
+     <div class="bottom"> 
+      <a href="http://www.phpwind.com/index.php?m=aboutus&amp;a=index&amp;menuid=16">关于phpwind</a>
+      <a href="http://bbs.typhoon.gov.cn/index.php?m=3g">WAP</a>
+      <a href="http://www.typhoon.gov.cn">联系我们</a> 
+     </div> 
+     <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1000306838'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s5.cnzz.com/z_stat.php%3Fid%3D1000306838%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script> 
+     <p>Powered by <a href="http://www.phpwind.net/" target="_blank" rel="nofollow">phpwind v9.0</a> &copy;2003-2104 <a href="http://www.phpwind.com" target="_blank" rel="nofollow">phpwind.com</a> <a href="http://www.miibeian.gov.cn" target="_blank" rel="nofollow">沪ICP备11041484号-2</a></p> 
+     <p></p> 
+    </div> 
+    <div id="cloudwind_common_bottom"></div> 
+   </div> 
+   <!--返回顶部--> 
+   <a href="#" rel="nofollow" role="button" id="back_top" tabindex="-1">返回顶部</a> 
+  </div> 
+  <textarea id="J_like_user_ta" class="dn">
+	&lt;div id=&quot;&quot; class=&quot;core_pop_wrap&quot; style=&quot;position:absolute;&quot;&gt;
+		&lt;div class=&quot;core_pop&quot;&gt;
+			&lt;div class=&quot;floot_like_pop&quot;&gt;
+				&lt;div class=&quot;pop_top&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;pop_close J_like_user_close&quot;&gt;关闭&lt;/a&gt;最新喜欢&lt;/div&gt;
+				&lt;div class=&quot;pop_cont&quot;&gt;
+					&lt;ul class=&quot;cc J_like_user_list&quot;&gt;&lt;/ul&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+</textarea> 
+  <script>
+var TID = '42697';
+Wind.use('jquery', 'global', 'dialog', function(){
+
+
+	// 阅读页的常用交互
+	Wind.js(GV.JS_ROOT +'pages/bbs/read.js?v='+ GV.JS_VERSION);
+
+	// 投票帖
+	if($('ul.J_vote_item, a.J_vote_list_show').length) {
+		Wind.js(GV.JS_ROOT +'pages/bbs/readVote.js?v='+ GV.JS_VERSION);
+	}
+
+	// 购买记录
+	if($('#J_content_sell, #J_attach_buy, a.J_buy_record, .J_attach_post_del, a.J_attach_post_buy').length) {
+		Wind.js(GV.JS_ROOT + 'pages/bbs/buyRecords.js?v=' + GV.JS_VERSION);
+	}
+
+	//媒体播放
+	if( $('div.J_audio,div.J_video').length ) {
+		Wind.js(window.GV.JS_ROOT + 'pages/bbs/media_play.js?v=' + GV.JS_VERSION);
+	}
+
+
+	// 图片懒加载
+	Wind.js(GV.JS_ROOT + 'util_libs/lazyload.js?v=' + GV.JS_VERSION, function(){
+		$("img.J_lazy").lazyload({
+	        effect: 'fadeIn',
+	        error: function(settings){
+	        	$(this).attr("src", '#').removeClass("J_lazy")
+	        }
+	    });
+	});
+});
+</script>  
+  <script type="text/javascript">(function(d,t){var url="http://app.open.phpwind.com/?src=read&url=bbs.typhoon.gov.cn&sn=bbs.typhoon.gov.cn&fid=74&uid=0&tid=42697&8e05c788=0&charset=GBK&username=%D3%CE%BF%CD&title=%CC%A8%B7%E7%C2%DB%CC%B3%C8%EB%C3%C5%BD%CC%B3%CC%A1%AA%A1%AA%B0%D7%BB%B0%C6%F8%CF%F3%A3%A8%C9%CF%A3%A9&_ua=ffdfa51974e76560de&_shr=&_sqs=dGlkPTQyNjk3JyUyMG9yJTIwKDElM2QxJTIwYW5kJTIwMSUzZDIpJTIwYW5kJTIwJ2EnJTNkJ2EmZmlkPTc0&_ssn=L3JlYWQucGhw&_t=86400&_v=4590";var g=d.createElement(t);g.async=1;g.src=url;d.body.insertBefore(g,d.body.firstChild);}(document,"script"));</script>
+ </body>
+</html>

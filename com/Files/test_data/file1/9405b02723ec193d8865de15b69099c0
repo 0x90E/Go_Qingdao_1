@@ -1,0 +1,742 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>妈网亲子游，专为0-14岁家庭推荐亲子出行方案和旅游产品</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="stylesheet" href="/main/mobile_res/css/swiper-3.2.7.min.css">
+    <link rel="stylesheet" href="/main/mobile_res/css/base.css?v=2017032800003">
+    <link rel="stylesheet" href="/main/mobile_res/css/list.css?v=2017032800003">
+<script src="//hm.baidu.com/hm.js?42934e3b2dac604981ef9f6ae455bdfb"></script><script src="//statis1.mama.cn/x.php?siteid=608"></script><script id="echatmodulejs" src="//es.echatsoft.com/visitor/echat.js?companyId=44&amp;metaData="></script><script type="text/javascript" src="https://e.echatsoft.com/ysc?companyId=44"></script></head>
+<body class="">
+<div class="global-warn-tip" id="global-warn-tip" style="display: none;">
+  <div class="gwt-tip">通知：<span id="notice-message"></span></div>
+  <a href="javascript:;" class="close" id="global-warn-close">关闭</a>
+</div>
+
+<script type="text/javascript">
+  (function() {
+    function $$(selector) {
+      return document.querySelector(selector);
+    }
+
+    var req = new XMLHttpRequest();
+
+    req.onreadystatechange = function() {
+      if (req.readyState == 4 && req.status >= 200 && req.status < 400) {
+        var res = JSON.parse(req.responseText);
+
+        if (res.data && res.data.noticeId) {
+          $$('#notice-message').innerText = res.data.message;
+          $$('#global-warn-tip').style.display = 'block';
+
+          function handler() {
+            $$('#global-warn-tip').style.display = 'none';
+
+            var xhr = new XMLHttpRequest();
+
+            //成不成功 就不用管了
+            xhr.open('post', '/main/notice/read', true);
+            xhr.setRequestHeader('Content-Type', "application/x-www-form-urlencoded; charset=UTF-8");        
+            xhr.send(encodeURIComponent('noticeId') + '=' + encodeURIComponent(res.data.noticeId));
+
+            $$('#global-warn-close').removeEventListener('click', handler);
+          }
+
+          $$('#global-warn-close').addEventListener('click', handler);          
+        }
+
+        req.onreadystatechange = null;
+      } 
+    }
+
+    req.open('get', '/main/notice', true);
+    req.send(null);
+  })();
+</script>
+    <div class="contentWrap">
+<!-- 朋友圈分享时，供微信抓取图片用的 -->
+<img src="/main/mobile_res/images/woniu.jpg" style="width:0;height:0;display:block">
+<div class="topBarArea">
+	<div class="topBar">
+	    <a href="javascript:;" class="goBack" style="display: inline; "></a>
+        
+        <div class="ucdiv">
+            <a href="/main/userCenter/myCenter" class="goUserCenter"></a>
+            <span class="txt">妈网亲子游</span>
+        </div>
+
+	    <div class="topBarRight">
+            <a href="/main/searchPage" class="goSearch"></a>
+	    	<a href="javascript:;" class="city" id="cityBtn">
+	    		<span>北京</span><i></i>
+	    	</a>           
+        </div>
+
+        <div class="topBarBtns">
+            <a href="javascript:;" class="calling"></a>
+            <a href="/" class="home"></a>
+        </div>
+	</div>
+</div>
+
+<!--城市-->
+<div class="cityArea" id="cityArea">
+    <div class="cityMain" id="cityMain">
+        <header>选择城市<a href="javascript:;" id="cityClose"></a></header>
+
+        <div class="citySearchBox">
+            <form>
+                <input type="text" placeholder="输入城市名或者首字母" id="citySearchInput">
+                <del id="clearSearch"></del>
+            </form> 
+
+            <ul class="citiesList" id="cityTip"></ul>               
+        </div>
+
+        <div class="needToHide">
+            <div class="ct">定位城市</div>
+            <div class="address" id="locat">正在定位</div>
+
+            <div class="ct">热门城市</div>
+            <ul class="hotCities" id="hotCity"></ul>
+
+            <div id="allCities" class="allCities"></div>            
+        </div>
+        
+    </div>
+
+    <ul class="citySideBar needToHide" id="citySideBar"></ul>    
+</div>
+
+<!-- 百度定位 -->
+<script src="https://api.map.baidu.com/api?v=2.0&amp;ak=yvVK3d5pPnOFq9CzrqWC9r3h&amp;s=1"></script><script type="text/javascript" src="https://api.map.baidu.com/getscript?v=2.0&amp;ak=yvVK3d5pPnOFq9CzrqWC9r3h&amp;services=&amp;t=20170324173232"></script>
+
+<script type="text/html" id="cityTpl">
+    {{each data as item}}
+    <li{{if item.districtId == cityId}} class="cur"{{/if}}>
+        <a href="{{item.url}}" data-id="{{item.districtId}}">{{item.districtName}}</a>
+    </li>
+    {{/each}}
+</script>
+
+<script type="text/html" id="citySideBarTpl">
+    {{each data as item}}
+    <li>{{item}}</li>
+    {{/each}}
+</script>
+
+<script type="text/html" id="allCitiesTpl">
+    {{each data as item}}
+    <div class="ct" data-key="{{item.key}}">{{item.key}}</div>
+    <ul class="citiesList">
+        {{each item.value as val}}
+        <li{{if val.districtId == cityId}} class="cur"{{/if}}>
+            <a href="{{val.url}}" data-id="{{val.districtId}}">{{val.districtName}}</a>
+        </li>
+        {{/each}}        
+    </ul>  
+    {{/each}}   
+</script>        <div class="mainContent">
+        
+            <!-- 轮播 -->
+            <div class="listFocus">
+                <div class="swiper-container">
+                    <div class="swiper-wrapper">
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>        
+
+            <!-- 分类筛选 -->
+            <div class="space90">
+                <div class="sortBox">
+                    <div class="sortBar">
+                        <a href="javascript:;" data-index="0" class="on">排序</a>
+                        <a href="javascript:;" data-type="4">销量</a>
+                        <a href="javascript:;" data-index="1">目的地</a>
+                        <a href="javascript:;" data-index="2">筛选</a>
+                    </div>
+                    <div class="sortItemBox">
+                        <!--排序-->
+                        <div class="destBox">
+                           <!--省份-->
+                            <ul class="destList" id="seqList">
+                                <li>
+                                    <a href="javascript:;" data-type="1" class="selected">推荐排序</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" data-type="2">价格最低</a>
+                                </li> 
+                                <li>
+                                    <a href="javascript:;" data-type="3">价格最高</a>
+                                </li>                                 
+                            </ul>                                                
+                        </div>                    
+                        <!--目的地-->
+                        <div class="destBox">
+                           <!--省份-->
+                            <ul class="destList" id="proList">
+                                <li>
+                                    <a href="javascript:;" class="selected">不限省份</a>
+                                </li>
+                                    <li>
+                                        <a href="javascript:;" data-id="19">广东</a>
+                                        <textarea>                                            &lt;li class="back"&gt;&lt;a href="javascript:;"&gt;返回&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li class="all"&gt;&lt;a href="javascript:;"&gt;全部城市&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="291"&gt;深圳&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="299"&gt;惠州&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="289"&gt;广州&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="302"&gt;河源&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="295"&gt;江门&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="292"&gt;珠海&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="290"&gt;韶关&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="301"&gt;汕尾&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="294"&gt;佛山&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="309"&gt;云浮&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="304"&gt;清远&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="298"&gt;肇庆&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="293"&gt;汕头&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="297"&gt;茂名&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="306"&gt;中山&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="305"&gt;东莞&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="303"&gt;阳江&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="300"&gt;梅州&lt;/a&gt;&lt;/li&gt;
+                                        </textarea>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" data-id="20">广西</a>
+                                        <textarea>                                            &lt;li class="back"&gt;&lt;a href="javascript:;"&gt;返回&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li class="all"&gt;&lt;a href="javascript:;"&gt;全部城市&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="312"&gt;桂林&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="314"&gt;北海&lt;/a&gt;&lt;/li&gt;
+                                        </textarea>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" data-id="13">福建</a>
+                                        <textarea>                                            &lt;li class="back"&gt;&lt;a href="javascript:;"&gt;返回&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li class="all"&gt;&lt;a href="javascript:;"&gt;全部城市&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="204"&gt;厦门&lt;/a&gt;&lt;/li&gt;
+                                        </textarea>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" data-id="21">海南</a>
+                                        <textarea>                                            &lt;li class="back"&gt;&lt;a href="javascript:;"&gt;返回&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li class="all"&gt;&lt;a href="javascript:;"&gt;全部城市&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="325"&gt;三亚&lt;/a&gt;&lt;/li&gt;
+                                        </textarea>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" data-id="22">重庆</a>
+                                        <textarea>                                            &lt;li class="back"&gt;&lt;a href="javascript:;"&gt;返回&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li class="all"&gt;&lt;a href="javascript:;"&gt;全部城市&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="377"&gt;石柱土家族自治县&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="384"&gt;南川&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="365"&gt;璧山县&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="351"&gt;九龙坡&lt;/a&gt;&lt;/li&gt;
+                                        </textarea>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" data-id="17">湖北</a>
+                                        <textarea>                                            &lt;li class="back"&gt;&lt;a href="javascript:;"&gt;返回&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li class="all"&gt;&lt;a href="javascript:;"&gt;全部城市&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="268"&gt;咸宁&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="269"&gt;随州&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="258"&gt;武汉&lt;/a&gt;&lt;/li&gt;
+                                        </textarea>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" data-id="11">浙江</a>
+                                        <textarea>                                            &lt;li class="back"&gt;&lt;a href="javascript:;"&gt;返回&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li class="all"&gt;&lt;a href="javascript:;"&gt;全部城市&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="175"&gt;杭州&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="179"&gt;湖州&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="180"&gt;绍兴&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="183"&gt;金华&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="176"&gt;宁波&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="185"&gt;丽水&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="178"&gt;嘉兴&lt;/a&gt;&lt;/li&gt;
+                                        </textarea>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" data-id="27">陕西</a>
+                                        <textarea>                                            &lt;li class="back"&gt;&lt;a href="javascript:;"&gt;返回&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li class="all"&gt;&lt;a href="javascript:;"&gt;全部城市&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="438"&gt;西安&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="442"&gt;渭南&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="440"&gt;宝鸡&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="441"&gt;咸阳&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="444"&gt;汉中&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="447"&gt;商洛&lt;/a&gt;&lt;/li&gt;
+                                        </textarea>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" data-id="23">四川</a>
+                                        <textarea>                                            &lt;li class="back"&gt;&lt;a href="javascript:;"&gt;返回&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li class="all"&gt;&lt;a href="javascript:;"&gt;全部城市&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="385"&gt;成都&lt;/a&gt;&lt;/li&gt;
+                                        </textarea>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" data-id="15">山东</a>
+                                        <textarea>                                            &lt;li class="back"&gt;&lt;a href="javascript:;"&gt;返回&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li class="all"&gt;&lt;a href="javascript:;"&gt;全部城市&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="224"&gt;青岛&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="226"&gt;枣庄&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="229"&gt;潍坊&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="232"&gt;威海&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="223"&gt;济南&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="228"&gt;烟台&lt;/a&gt;&lt;/li&gt;
+                                        </textarea>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" data-id="34">澳门</a>
+                                        <textarea>                                            &lt;li class="back"&gt;&lt;a href="javascript:;"&gt;返回&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li class="all"&gt;&lt;a href="javascript:;"&gt;全部城市&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="45155"&gt;路氹城&lt;/a&gt;&lt;/li&gt;
+                                        </textarea>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" data-id="10">江苏</a>
+                                        <textarea>                                            &lt;li class="back"&gt;&lt;a href="javascript:;"&gt;返回&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li class="all"&gt;&lt;a href="javascript:;"&gt;全部城市&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="162"&gt;南京&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="165"&gt;常州&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="166"&gt;苏州&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="170"&gt;盐城&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="163"&gt;无锡&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="168"&gt;连云港&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="173"&gt;泰州&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="171"&gt;扬州&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="167"&gt;南通&lt;/a&gt;&lt;/li&gt;
+                                        </textarea>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" data-id="6">辽宁</a>
+                                        <textarea>                                            &lt;li class="back"&gt;&lt;a href="javascript:;"&gt;返回&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li class="all"&gt;&lt;a href="javascript:;"&gt;全部城市&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="116"&gt;辽阳&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="108"&gt;大连&lt;/a&gt;&lt;/li&gt;
+                                        </textarea>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" data-id="16">河南</a>
+                                        <textarea>                                            &lt;li class="back"&gt;&lt;a href="javascript:;"&gt;返回&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li class="all"&gt;&lt;a href="javascript:;"&gt;全部城市&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="243"&gt;平顶山&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="240"&gt;郑州&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="254"&gt;信阳&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="244"&gt;安阳&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="247"&gt;焦作&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="241"&gt;开封&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="242"&gt;洛阳&lt;/a&gt;&lt;/li&gt;
+                                        </textarea>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" data-id="1">北京</a>
+                                        <textarea>                                            &lt;li class="back"&gt;&lt;a href="javascript:;"&gt;返回&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li class="all"&gt;&lt;a href="javascript:;"&gt;全部城市&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="53"&gt;密云县&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="37"&gt;东城&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="51"&gt;怀柔&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="49"&gt;昌平&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="48"&gt;顺义&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="54"&gt;延庆县&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="38"&gt;西城&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="41"&gt;朝阳&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="44"&gt;海淀&lt;/a&gt;&lt;/li&gt;
+                                        </textarea>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" data-id="2">天津</a>
+                                        <textarea>                                            &lt;li class="back"&gt;&lt;a href="javascript:;"&gt;返回&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li class="all"&gt;&lt;a href="javascript:;"&gt;全部城市&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="65"&gt;西青&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="66"&gt;津南&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="69"&gt;宝坻&lt;/a&gt;&lt;/li&gt;
+                                        </textarea>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" data-id="25">云南</a>
+                                        <textarea>                                            &lt;li class="back"&gt;&lt;a href="javascript:;"&gt;返回&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li class="all"&gt;&lt;a href="javascript:;"&gt;全部城市&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="430"&gt;迪庆藏族自治州&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="426"&gt;西双版纳傣族自治州&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="427"&gt;大理白族自治州&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="420"&gt;丽江&lt;/a&gt;&lt;/li&gt;
+                                        </textarea>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" data-id="12">安徽</a>
+                                        <textarea>                                            &lt;li class="back"&gt;&lt;a href="javascript:;"&gt;返回&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li class="all"&gt;&lt;a href="javascript:;"&gt;全部城市&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="194"&gt;黄山&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="202"&gt;宣城&lt;/a&gt;&lt;/li&gt;
+                                        </textarea>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" data-id="3">河北</a>
+                                        <textarea>                                            &lt;li class="back"&gt;&lt;a href="javascript:;"&gt;返回&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li class="all"&gt;&lt;a href="javascript:;"&gt;全部城市&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="74"&gt;唐山&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="82"&gt;廊坊&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="78"&gt;保定&lt;/a&gt;&lt;/li&gt;
+                                        </textarea>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" data-id="14">江西</a>
+                                        <textarea>                                            &lt;li class="back"&gt;&lt;a href="javascript:;"&gt;返回&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li class="all"&gt;&lt;a href="javascript:;"&gt;全部城市&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="222"&gt;上饶&lt;/a&gt;&lt;/li&gt;
+                                        </textarea>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" data-id="33">香港</a>
+                                        <textarea>                                            &lt;li class="back"&gt;&lt;a href="javascript:;"&gt;返回&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li class="all"&gt;&lt;a href="javascript:;"&gt;全部城市&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="532"&gt;荃湾&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="527"&gt;北&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="520"&gt;南&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="525"&gt;离岛&lt;/a&gt;&lt;/li&gt;
+                                        </textarea>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" data-id="9">上海</a>
+                                        <textarea>                                            &lt;li class="back"&gt;&lt;a href="javascript:;"&gt;返回&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li class="all"&gt;&lt;a href="javascript:;"&gt;全部城市&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="155"&gt;浦东新&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="149"&gt;闸北&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="160"&gt;奉贤&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="157"&gt;松江&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="145"&gt;徐汇&lt;/a&gt;&lt;/li&gt;
+                                        </textarea>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" data-id="4">山西</a>
+                                        <textarea>                                            &lt;li class="back"&gt;&lt;a href="javascript:;"&gt;返回&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li class="all"&gt;&lt;a href="javascript:;"&gt;全部城市&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="93"&gt;临汾&lt;/a&gt;&lt;/li&gt;
+                                        </textarea>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" data-id="5">内蒙古</a>
+                                        <textarea>                                            &lt;li class="back"&gt;&lt;a href="javascript:;"&gt;返回&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li class="all"&gt;&lt;a href="javascript:;"&gt;全部城市&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="104"&gt;兴安盟&lt;/a&gt;&lt;/li&gt;
+                                        </textarea>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;" data-id="24">贵州</a>
+                                        <textarea>                                            &lt;li class="back"&gt;&lt;a href="javascript:;"&gt;返回&lt;/a&gt;&lt;/li&gt;
+                                            &lt;li class="all"&gt;&lt;a href="javascript:;"&gt;全部城市&lt;/a&gt;&lt;/li&gt;
+                                                &lt;li&gt;&lt;a href="javascript:;" data-id="413"&gt;黔东南苗族侗族自治州&lt;/a&gt;&lt;/li&gt;
+                                        </textarea>
+                                    </li>
+                            </ul>
+                            <!--城市-->
+                            <ul class="destList cityList" id="cityList"></ul>                                                
+                        </div>
+                        <!--筛选-->
+                        <div class="filterBox">
+                            <div class="filterMain">
+                                <div class="filterItems" id="filterItems">
+                                    <a href="javascript:;" class="cur">价格</a>
+                                    <!--其他-->
+                                </div>
+                                <div class="fliterLists" id="filterLists">
+                                    <!--价格列表-->
+                                    <ul id="priceList">              
+                                    </ul>
+                                    <!--其他-->
+                                </div>
+                            </div>
+                            <div class="filterBtns">
+                                <button class="filterReset">重置</button>
+                                <button class="filterConfirm">确定</button>
+                            </div>
+                        </div>                        
+                    </div>                  
+                </div>
+            </div>
+            
+            <!--优惠券信息-->
+
+            <div class="travelBox">
+                <div id="goodsList" class="travelList"></div>
+                <div class="dataLoding" id="dataLoading">
+                    <div></div>
+                    <p>数据正在加载中...</p>
+                </div>
+                <div class="noEvaTip" id="noTip">
+                    <div></div>
+                    <p>暂时没有数据~~</p>
+                </div>                      
+            </div>
+        </div>
+        <div class="footer">
+<p class="links"><a href="/">首页</a>|<a href="/main/userCenter/my/orders">我的订单</a>|<a href="javascript:;" class="calling">联系客服</a>|<a href="javascript:;" class="go-top">回到顶部</a></p>
+<p>客服电话：<a href="tel:4006-297599">4006-297599</a></p>
+<p>版权所有©妈网亲子游 ly.mama.cn</p>
+<p>备案号：44010602000103 | 粤ICP备13000334号-2</p>        </div>
+    </div>  
+
+    <!-- 选中的条件 -->
+    <div style="display:none;">
+        
+        
+        
+    </div>      
+
+    <!--价格列表模板-->
+    <script type="text/html" id="priceItemTpl">
+        <li>
+            <a href="javascript:;">不限</a>
+        </li>
+        {{each data as item}}
+        <li>
+            <a href="javascript:;" data-price="{{item.attr}}">{{item.text}}</a>
+        </li>
+        {{/each}}
+        <li class="priceArea">
+            <div id="priceArea">
+                <!--区间筛选-->
+                <label><input id="from" value=""></label>
+                <span>-</span>
+                <label><input id="to" value=""></label>                                                
+            </div>
+        </li>          
+    </script>    
+
+    <!--模板 -->
+    <script type="text/html" id="goodsItemTpl">
+        {{each data as item}}
+        <a href="/main/detail/{{item.goodsId}}" class="clearfix" data-pid="{{item.goodsId}}">
+            <div class="imgArea loading" data-src="{{item.goodsPic}}" style="background-image: url(/main/pc_res/images/p_loading.gif)">
+            </div>
+            <div class="txtArea">
+                <h3>{{item.goodsMainTitle}}</h3>
+                {{if item.uniqueTagList && item.uniqueTagList.length || item.parentTagList && item.parentTagList.length}}
+                <div class="labels">
+                    {{if item.uniqueTagList}}
+                    {{each item.uniqueTagList as tagName}}
+                    <span class="label-icons label-tag-1">{{tagName}}</span>
+                    {{/each}}
+                    {{/if}}
+
+                    {{if item.parentTagList}}
+                    {{each item.parentTagList as sd}}
+                    <span class="label-icons label-tag-2">{{sd.tagName}}</span>
+                    {{/each}}
+                    {{/if}}
+                </div>
+                {{/if}}
+                <div class="price">
+                    <strong>¥{{item.goodsPrice}}</strong>起
+                    <del>¥{{item.marketPrice}}</del> 
+                </div>
+                <p class="icons">
+                    {{if item.cashback > 0}}
+                    <span class="label-icons">可返¥{{item.cashback}}</span>
+                    {{/if}}
+                    <span class="label-icons coupon-label">券</span>          
+                </p>
+            </div>
+        </a>     
+        {{/each}}           
+    </script>    
+
+    <script type="text/javascript">
+        var basicSearch = "".replace(/\-$/, '');  
+         
+    </script>
+
+    <!-- 公共js模板 -->
+<!--<script type="text/javascript" src="/main/mobile_res/js/fastclick.min.js"></script>-->
+<script type="text/javascript" src="/main/mobile_res/js/template.js"></script>
+<script type="text/javascript" src="/main/mobile_res/js/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="/main/pc_res/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="/main/mobile_res/js/swiper-3.2.7.jquery.min.js"></script>
+<script type="text/javascript" src="/main/mobile_res/js/base.js?v=2017032800003"></script>
+<script type="text/javascript">
+
+//获取推广参数
+function getUrlParamIfNum (name) {
+  var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+  var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+  if (r != null && !isNaN(r[2])) return r[2]; 
+  else return null;
+}
+
+//FastClick.attach(document.body);
+
+;(function(){	          
+
+	//选中的页面
+	var url = window.location.href;
+	var locale = url.substring(url.lastIndexOf("/") + 1);
+	if(locale.indexOf("travels") != -1) {
+		var p_type = new RegExp('[-=](type_\\d*).*').exec(locale);
+		if(p_type && p_type[1]) {
+			$(".sideNav ." + p_type[1]).addClass("on");
+		}
+	} else if(locale.indexOf("userCenter") != -1) {
+		$(".sideNav .t_uc").addClass("on");
+	} else if(locale.indexOf("aboutUs") != -1) {
+		$(".sideNav .t_au").addClass("on");
+	} else {
+		$(".sideNav .t_ix").addClass("on");
+	}
+
+	//isMain
+	$.cookie('isMain', 1, {path: '/', expires: 7 });
+	
+	//渠道参数
+	var fm = getUrlParamIfNum('fm');
+	if(fm) {
+		$.cookie('fm', fm, {path:'/', expires:7});
+	}
+	var insidesource = getUrlParamIfNum('insidesource');
+	if(insidesource) {
+		$.cookie('insidesource', insidesource, {path:'/', expires:7});
+	}
+	var outsidesource = getUrlParamIfNum('outsidesource');
+	if(outsidesource) {
+		$.cookie('outsidesource', outsidesource, {path:'/', expires:7});
+	}
+
+	// 通过COOKIE获取定位信息
+  var siteInfo = $.cookie('WONIU_USER_SITE_INFO');
+  if(siteInfo){
+    siteInfo = JSON.parse(siteInfo);
+    $("#cityBtn span").text(siteInfo.districtName);
+  }
+
+  var tss = getUrlParamIfNum('tss');
+	if(tss) {
+		if(tss == -1) {
+			if(!!siteInfo && siteInfo.siteId != 0){
+				$.cookie('tss', siteInfo.siteId, {path:'/', expires:7});
+			}
+		} else {
+			$.cookie('tss', tss, {path:'/', expires:7});
+		}
+	}
+
+  //当入口来源是fm=11和fm=12，需要隐藏首页的banner图及导航栏中的个人中心入口、标题
+  fm = $.cookie('fm');
+	if(fm == 11 || fm == 12){
+		$(".indexFocus").hide();
+		$('.ucdiv').hide();
+	}
+})(); 
+
+</script>
+
+<!--客服跟踪代码-->
+<script type="text/javascript">
+;(function() {
+
+  if (!$('.calling').length) {
+    return;
+  }
+  
+  $.get('/main/controller/echat/encryptstr', {}, null, 'json')
+  .done(function(res) {
+    if (res.code == 100) {
+      var hm = document.createElement("script");
+      hm.id = 'echatmodulejs';
+      hm.src = "//es.echatsoft.com/visitor/echat.js?companyId=44&metaData=" + res.data;
+    
+      hm.onload = hm.onreadystatechange = function() {
+        if (!hm.readyState || /loaded|complete/.test(hm.readyState)) {
+          hm.onload = hm.onreadystatechange = null;
+          hm = null;
+          
+          $(".calling").on("click",function(){
+            WoniuTrip.Widget.callingPop();
+          });             
+        }
+      };
+    
+      document.head.appendChild(hm);    
+    }   
+  });
+
+  WoniuTrip.Widget.callingPop(function() {
+    ECHAT.customMiniChat('lywx');
+  });    
+})();  
+</script><div class="confirmAlert callingPop" style="display:none;"><div class="inCon"><a href="javascript:;" class="close"></a><h3>在线客服</h3><div class="txt"><p>及时高效，快速解决您的问题。</p></div><div class="btns"><a class="confirm" href="javascript:;">联系</a></div></div></div>
+
+<!-- 百度统计的代码 -->
+<script type="text/javascript">
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?42934e3b2dac604981ef9f6ae455bdfb";
+  document.head.appendChild(hm);
+})();
+</script>
+
+<!-- 日活统计的代码 -->
+<script type="text/javascript">
+var RHTJ_city = $("#cityBtn span").text();
+var mamaParams = {'ui':'0','gi':'0','fi':'0','ti':'0','srt':'','md':'','op':'','channel':'','bbtag':'','bbbirth':'','city':RHTJ_city};
+
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//statis1.mama.cn/x.php?siteid=608";
+  document.head.appendChild(hm);
+})();  
+	/*document.write(unescape("%3Cscript src='//statis1.mama.cn/x.php?siteid=608' type='text/javascript'%3E%3C/script%3E"));*/
+</script>
+    <script type="text/javascript" src="/main/mobile_res/js/list.js?v=2017032800003"></script>
+	
+	<!-- 私有js在这里写 -->
+    <script type="text/javascript">
+    	
+    	// 根据ua判断APP来源，并在分享的url上加上fm参数
+		var url = window.location.href;
+		var ua = navigator.userAgent.toLowerCase();
+		if(ua.indexOf("mmq") != -1){
+			// 如果有参数
+			if(url.indexOf("?") != -1 && url.indexOf("=") != -1){
+				url += "&fm=5";
+			}else{
+				url += "?fm=5"
+			}
+		}else if(ua.indexOf("pregnancyhelper") != -1){
+			// 如果有参数
+			if(url.indexOf("?") != -1 && url.indexOf("=") != -1){
+				url += "&fm=7";
+			}else{
+				url += "?fm=7";
+			}
+		}else if(ua.indexOf("gzq") != -1){
+			// 如果有参数
+			if(url.indexOf("?") != -1 && url.indexOf("=") != -1){
+				url += "&fm=9";
+			}else{
+				url += "?fm=9";
+			}
+		}
+		
+    	var data = {
+            "mshareTitle":"妈网亲子游，专为0-14岁家庭推荐亲子出行方案和旅游产品",
+            "mshareDesc":"妈网亲子游是妈妈网旗下品牌项目之一，为妈妈们提供城市周边旅游产品。平台主打产品：家有二宝、1.4M以下儿童免费、一价全包、生日趴等自营套餐，满足不同亲子家庭出行需求。同时，每月推荐、住玩路书、亲子游记等专题推荐，让妈妈们带孩子出游更省力、省心！",
+            "mshareImage":"//ly.mama.cn/main/mobile_res/images/woniu.jpg",
+            "mshareUrl":url
+        };
+		/* 孕管&妈妈圈-右上角分享*/ 
+		var Mama = new Object();
+		Mama.getShare = function (funcname) {
+		    if(typeof(funcname) == 'undefined' || funcname == null){ //ios使用
+		        return JSON.stringify(data);
+		    }else{ // android使用
+		    	eval(funcname + '(\'' + JSON.stringify(data) + '\')');
+		    }
+		}        
+    </script>
+
+</body></html>

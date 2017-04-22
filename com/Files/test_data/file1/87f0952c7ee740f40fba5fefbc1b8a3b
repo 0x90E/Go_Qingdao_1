@@ -1,0 +1,566 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head>
+    <meta name="viewport" content="width=device-width,user-scalable=no">
+    <title id="title"></title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+		 @font-face {
+    font-family: 'myface';
+    src: url('http://bznew.createapp.cn/api/FZLTXHJW.TTF');
+    }
+        html {
+            height: 100%;
+        }
+        a {
+            text-decoration: none;
+        }
+        body {
+            height: 100%;
+            color: #696969;
+            font-size: 18px;
+            font-family: myface;
+            background-color: #fff;
+            -webkit-tap-highlight-color: rgba(0,0,0,0);
+        }
+        
+        /*nav*/
+        .nav {
+            color: #fff;
+            width: 100%;
+            /*height: 64px;*/
+            position: fixed;
+            z-index: 9;
+            left: 0;
+            top: 0;
+            /*background-color: rgba(0, 0, 0, 0.7);*/
+        }
+        .nav .left {
+            float: left;
+            height: 44px;
+            width: 62.5%;
+            margin: 10px;
+        }
+        .nav img {
+            float: left;
+            height: 44px;
+            width: 44px;
+            margin-right: 10px;
+        }
+        .nav h1 {
+            font-size: 15px;
+            line-height: 15px;
+        }
+        .nav dl {
+            font-size: 10px;
+            overflow: hidden;
+        }
+        .nav dt {
+            margin-top: 3px;
+            line-height: 12px;
+            padding-left: 75px;
+            background: url("images/star.png") no-repeat left center;
+            background-size: auto 100%;
+        }
+        .nav dd {
+            line-height: 11px;
+            margin-top: 3px;
+        }
+        .nav .right {
+            float: right;
+            margin: 10px;
+            overflow: hidden;
+        }
+        .nav a {
+            /*color: #fff;
+            display: block;
+            width: 77px;
+            height: 28px;
+            margin: 7px 0;
+            font-size: 16px;
+            text-align: center;
+            line-height: 28px;
+            border: 1px solid #c7bbbc;
+            border-radius: 5px;*/
+            display: block;
+            width: 60px;
+            height: 60px;
+            background: url("images/download.png") no-repeat center;
+            background-size: 100%;
+        }
+
+        /*content*/
+        #content {
+            height: 100%;
+        }
+        .caption {
+            padding: 0 20px;
+        }
+        .caption h1 {
+            color: #242424;
+            margin: 18px 0;
+            font-size: 26px;
+            line-height: 31px;
+            word-break: break-all;
+        }
+        .content {
+            line-height: 27px;
+            overflow: hidden;
+            white-space: normal;
+            word-wrap: break-word;
+        }
+        .content p {
+            text-align: justify;
+            margin: 15px 20px;
+        }
+        .img-wrap {
+            margin: 18px 0;
+            background: url("def.png") no-repeat center;
+        }
+        .img-wrap.hide {
+            background: none;
+        }
+        img {
+            width: 100%;
+            display: block;
+        }
+
+        /*action*/
+        .action {
+            overflow: hidden;
+            margin: 0 20px;
+            padding: 10px 0;
+            border: 1px solid #d4d4d4;
+            border-width: 1px 0;
+        }
+        .action a {
+            color: #242424;
+            display: block;
+            height: 45px;
+            line-height: 45px;
+            font-size: 12px;
+            padding-left: 55px;
+            background-size: auto 100%;
+            background-repeat: no-repeat;
+            background-position: left center;
+        }
+        .action .fav {
+            float: left;
+            background-image: url("images/fav.png");
+        }
+        .action .faved {
+            background-image: url("images/faved.png");
+        }
+        .action .comment {
+            float: right;
+            background-image: url("images/comment.png");
+        }
+        .action span {
+            margin-left: 7px;
+        }
+        .actionPics{
+            width: 156px;
+            height: 60px;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            margin-top: -30px;
+            transition: all 1s ease;
+            -webkit-transform: translateX(-121px);
+            -moz-transform: translateX(-121px);
+            -ms-transform: translateX(-121px);
+            -o-transform: translateX(-121px);
+            transform: translateX(-121px);
+        }
+        .actionPics dt {
+            float: right;
+            width: 35px;
+            height: 100%;
+            margin-left: 1px;
+        }
+        .actionPics dt a {
+            display: block;
+            height: 100%;
+            background: url("images/arrow.png") no-repeat center;
+            background-size: auto 100%;
+        }
+        .actionPics dt a.fliped{
+            background-image: url("images/arrowFlip.png");
+        }
+        .actionPics dd a {
+            color: #fff;
+            float: left;
+            width: 60px;
+            height: 60px;
+            font-size: 10px;
+            line-height: 90px;
+            text-align: center;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 100%;
+        }
+        .actionPics a.fav {
+            background-image: url("images/favpics.png");
+        }
+        .actionPics a.faved {
+            background-image: url("images/favedpics.png");
+        }
+        .actionPics a.comment {
+            background-image: url("images/commentpics.png");
+        }
+
+        /*comments*/
+        .comments {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            z-index: 99;
+            left: 0;
+            top: 0;
+            background: rgba(0, 0, 0, 0.93);
+            -webkit-transition: all 1s ease;
+            -moz-transition: all 1s ease;
+            -ms-transition: all 1s ease;
+            -o-transition: all 1s ease;
+            transition: all 1s ease;
+            -webkit-transform: translateY(100%);
+            -moz-transform: translateY(100%);
+            -ms-transform: translateY(100%);
+            -o-transform: translateY(100%);
+            transform: translateY(100%);
+        }
+        .comments form {
+            padding: 0 20px;
+            overflow: hidden;
+            border-bottom: 1px solid #484542;
+        }
+        .comments form a.close {
+            float: right;
+            width: 21px;
+            height: 21px;
+            margin-top: 10px;
+            background: url("images/close.png") no-repeat center;
+            background-size: 100%;
+        }
+        .comments form h1 {
+            color: #ccc;
+            font-size: 25px;
+            font-weight: bold;
+            line-height: 40px;
+            margin-bottom: 10px;
+        }
+        .comments form textarea {
+            resize: none;
+            width: calc(100% - 20px);
+            height: 60px;
+            padding: 10px;
+            border: none;
+            font-size: 15px;
+            line-height: 15px;
+            background: #cececf;
+            margin-bottom: 10px;
+        }
+        .comments form input {
+            color: #fff;
+            width: 110px;
+            height: 33px;
+            float: right;
+            font-size: 17px;
+            line-height: 33px;
+            text-align: center;
+            margin-bottom: 20px;
+            border: 1px solid #cececf;
+            background-color: transparent;
+        }
+        .comments ul {
+            height: calc(100% - 245px);
+            overflow-y: scroll;
+        }
+        .comments li {
+            color: #b2b2b2;
+            font-size: 15px;
+            line-height: 20px;
+            padding: 15px 20px;
+            border-bottom: 1px solid #484542;
+        }
+        .comments h4 {
+            font-size: 15px;
+            margin-bottom: 15px;
+        }
+        .cooments p {
+            margin-bottom: 10px;
+        }
+        .comments span {
+            color: #666;
+            font-size: 12px;
+        }
+        .comments #more {
+            color: #fff;
+            display: block;
+            height: 45px;
+            font-size: 15px;
+            line-height: 45px;
+            text-align: center;
+            visibility: hidden;
+        }
+        .comments #more em {
+            display: inline-block;
+            height: 15px;
+            line-height: 15px;
+            padding-left: 25px;
+            font-style: normal;
+            background: url("images/more.png") no-repeat left center;
+            background-size: auto 100%;
+        }
+
+        /*swipe*/
+        .swipe {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            visibility: hidden;
+            position: relative;
+            background-color: #000;
+        }
+        .swipe-wrap {
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        .swipe-wrap > li {
+            float: left;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            list-style-type: none;
+        }
+        .swipe-wrap div {
+            width: 100%;
+            color: #fff;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0.5);
+            -webkit-transition: all 1s ease;
+            -moz-transition: all 1s ease;
+            -ms-transition: all 1s ease;
+            -o-transition: all 1s ease;
+            transition: all 1s ease;
+        }
+        .swipe-wrap h5 {
+            margin: 15px 19px;
+            font-size: 22px;
+            line-height: 31px;
+        }
+        .swipe-wrap p {
+            height: 81px;
+            line-height: 18px;
+            margin: 15px 19px;
+            overflow-y: scroll;
+        }
+        .swipe-wrap img {
+            padding: 0;
+            border: none;
+            max-width: 100%;
+        }
+
+
+        /*modal*/
+        .mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 10;
+        }
+        .mask img {
+            width: 100%;
+        }
+        .modal {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+
+    <script src="//hm.baidu.com/hm.js?e67bd315ea99eb7d028260b09685ef60"></script><script>
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?e67bd315ea99eb7d028260b09685ef60";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+</script>
+
+</head>
+
+<body class="body fnormal">
+    <!--<div class="nav">
+        <div class="left">
+            <img src="images/logo.png" />
+            <h1>时尚芭莎</h1>
+            <dl>
+                <dt>(<span>198</span>)</dt>
+                <dd>免费-在AppStore下载</dd>
+            </dl>
+        </div>
+        <div class="right">
+            <a href="javascript:void(0);" id="download-app">立即下载</a>
+        </div>
+    </div>-->
+    <div class="nav">
+        <div class="right">
+            <a href="javascript:void(0);" id="download-app"></a>
+        </div>
+    </div>
+    <div id="content">
+    暂无内容</div>
+    <div class="comments">
+        <form method="post" action="#">
+            <a class="close" href="javascript:void(0);"></a>
+            <h1>评论</h1>
+            <textarea></textarea>
+            <input type="button" value="发布">
+        </form>
+        <ul>
+        </ul>
+        <a id="more" href="javascript:void(0);"><em>加载更多</em></a>
+    </div>
+
+    <div style="display: none;" id="ico" pic=""></div>
+
+    <script src="js/jquery-1.8.3.min.js"></script>
+    <script src="js/jquery.url.js"></script>
+    <script src="js/swipe.js"></script>
+    <script src="js/tmpl.js"></script>
+    <script src="js/article.js?id=20150401"></script>
+    <script type="text/html" id="content-tmpl">
+        <div class="banner"><img src="<#= Ico  #>" alt="头部大图" /></div>
+        <div class="caption"><h1><#= Title #></h1></div>
+        <div class="action">
+           <a class="fav <# if (localStorage.getItem(ArticleId) == 1) { #>faved<# } #>" id="fav" href="javascript:void(0);" data-fav="<# if (localStorage.getItem(ArticleId) == 1) { #>1<# }else{#>0<#} #>">赞<span><#= LikeCount #></span></a>
+           <a class="comment" id="comment" href="javascript:void(0);">评论<span><#= CommentCount #></span></a>
+        </div>
+        <div class="content"><#= Content #></div>
+    </script>
+    <script type="text/html" id="pics-tmpl">
+        <div id="mySwipe" class="swipe">
+            <ul class="swipe-wrap">
+                <#for (var i = 0; i < ArticlePictures.length; i++) {#>
+                <li style="font-size: 20em;">
+                    <img src="<#= ArticlePictures[i].PicPath #>" style="display: inline-block;" /><div data-translate="0" >
+                        <#if(i==0){#>
+                        <h5><#= Title #></h5>
+                        <#}#>
+					<#if(ArticlePictures[i].Remark.length>40){#>
+						<p style="font-size: 16px;height:100%;"><#= ArticlePictures[i].Remark #></p>
+					<#}else{#>
+						<p style="font-size: 16px;height:81px;"><#= ArticlePictures[i].Remark #></p>
+					<#}#>
+                    </div>
+                </li>
+                <#}#>
+            </ul>
+            <dl class="actionPics" data-flip="0">
+                <dt><a class="arrow" id="arrow" href="javascript:void(0);"></a></dt>
+                <dd>
+                   <a class="fav <# if (localStorage.getItem(ArticleId) == 1) { #>faved<# } #>" id="favPics" href="javascript:void(0);" data-fav="<# if (localStorage.getItem(ArticleId) == 1) { #>1<# }else{#>0<#} #>"><span><#= LikeCount #></span></a>
+                   <a class="comment" id="commentPics" href="javascript:void(0);"><span><#= CommentCount #></span></a>
+                </dd>
+            </dl>
+        </div>
+    </script>
+    <script type="text/html" id="comments-tmpl">
+        <# for (var i = 0; i < result.length; i++){ #>
+        <li data-id="<#= result[i].CommentId #>">
+            <h4>
+                <# if(result[i].NickName){ #>
+                <#= result[i].NickName #>
+                <# } else { #>
+                匿名
+                <#}#>
+            </h4>
+            <p><#= result[i].Content #></p>
+            <span><#= result[i].CreateDate.toDate("yy-MM-dd hh:mm:ss") #></span>
+        </li>
+        <# } #>
+    </script>
+    <script type="text/html" id="commentNew-tmpl">
+        <li data-id="<#= result.CommentId #>">
+            <h4>
+                <# if(result.NickName){ #>
+                <#= result.NickName #>
+                <# } else { #>
+                匿名
+                <#}#>
+            </h4>
+            <p><#= result.Content #></p>
+            <span><#= result.CreateDate.toDate("yy-MM-dd hh:mm:ss") #></span>
+        </li>
+    </script>
+
+    <script>
+        var imgUrl = $("#ico").attr("pic");
+        var lineLink = 'http://bznew.createapp.cn/api/articledetail.html?id=' + $.url().param("id");
+        var descContent = "";
+        var shareTitle = $("#title").html();
+        //var appid = 'wxc9937e3a66af6dc8';  
+
+        function shareFriend() {
+            WeixinJSBridge.invoke('sendAppMessage', {
+                //"appid": appid,  
+                "img_url": $("#ico").attr("pic"),
+                "img_width": "200",
+                "img_height": "200",
+                "link": lineLink,
+                "desc": descContent,
+                "title": $("#title").html()
+            }, function (res) {
+                _report('send_msg', res.err_msg);
+            })
+        };
+        function shareTimeline() {
+            WeixinJSBridge.invoke('shareTimeline', {
+                "img_url": $("#ico").attr("pic"),
+                "img_width": "200",
+                "img_height": "200",
+                "link": lineLink,
+                "desc": descContent,
+                "title": $("#title").html()
+            }, function (res) {
+                _report('timeline', res.err_msg);
+            });
+        };
+        function shareWeibo() {
+            WeixinJSBridge.invoke('shareWeibo', {
+                "content": descContent,
+                "url": lineLink,
+            }, function (res) {
+                _report('weibo', res.err_msg);
+            });
+        };
+        // 当微信内置浏览器完成内部初始化后会触发WeixinJSBridgeReady事件。  
+        document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+            // 发送给好友  
+            WeixinJSBridge.on('menu:share:appmessage', function (argv) {
+                shareFriend();
+            });
+            // 分享到朋友圈  
+            WeixinJSBridge.on('menu:share:timeline', function (argv) {
+                shareTimeline();
+            });
+            // 分享到微博  
+            WeixinJSBridge.on('menu:share:weibo', function (argv) {
+                shareWeibo();
+            });
+        }, false);
+    </script>
+
+
+
+</body></html>

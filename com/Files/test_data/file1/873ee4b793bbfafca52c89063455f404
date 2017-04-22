@@ -1,0 +1,2035 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+ <head> 
+  <meta charset="UTF-8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+  <link rel="profile" href="http://gmpg.org/xfn/11" /> 
+  <link rel="pingback" href="http://www.openwrtdl.com/wordpress/xmlrpc.php" /> 
+  <!--[if lt IE 9]>
+<script src="http://www.openwrtdl.com/wordpress/wp-content/themes/ocomedrev/js/html5.js"></script>
+<![endif]--> 
+  <title>极路由插件ngrok使用教程 | OpenWrt下载网</title> 
+  <!-- All in One SEO Pack 2.3.12.1 by Michael Torbert of Semper Fi Web Design[401,441] --> 
+  <meta name="description" content="极路由插件ngrok使用教程" /> 
+  <meta name="keywords" content="hiwifi,ngrok,插件,极路由" /> 
+  <link rel="canonical" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b" /> 
+  <!-- /all in one seo pack --> 
+  <link rel="dns-prefetch" href="//fonts.proxy.ustclug.org" /> 
+  <link rel="dns-prefetch" href="//s.w.org" /> 
+  <link rel="alternate" type="application/rss+xml" title="OpenWrt下载网 &raquo; Feed" href="http://www.openwrtdl.com/wordpress/feed" /> 
+  <link rel="alternate" type="application/rss+xml" title="OpenWrt下载网 &raquo; 评论Feed" href="http://www.openwrtdl.com/wordpress/comments/feed" /> 
+  <link rel="alternate" type="application/rss+xml" title="OpenWrt下载网 &raquo; 极路由插件ngrok使用教程评论Feed" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b/feed" /> 
+  <script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.2.1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.2.1\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/www.openwrtdl.com\/wordpress\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.7.3"}};
+			!function(a,b,c){function d(a){var b,c,d,e,f=String.fromCharCode;if(!k||!k.fillText)return!1;switch(k.clearRect(0,0,j.width,j.height),k.textBaseline="top",k.font="600 32px Arial",a){case"flag":return k.fillText(f(55356,56826,55356,56819),0,0),!(j.toDataURL().length<3e3)&&(k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57331,65039,8205,55356,57096),0,0),b=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57331,55356,57096),0,0),c=j.toDataURL(),b!==c);case"emoji4":return k.fillText(f(55357,56425,55356,57341,8205,55357,56507),0,0),d=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55357,56425,55356,57341,55357,56507),0,0),e=j.toDataURL(),d!==e}return!1}function e(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g,h,i,j=b.createElement("canvas"),k=j.getContext&&j.getContext("2d");for(i=Array("flag","emoji4"),c.supports={everything:!0,everythingExceptFlag:!0},h=0;h<i.length;h++)c.supports[i[h]]=d(i[h]),c.supports.everything=c.supports.everything&&c.supports[i[h]],"flag"!==i[h]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[i[h]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script> 
+  <style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style> 
+  <link rel="stylesheet" id="crayon-css" href="http://www.openwrtdl.com/wordpress/wp-content/plugins/crayon-syntax-highlighter/css/min/crayon.min.css?ver=_2.7.2_beta" type="text/css" media="all" /> 
+  <link rel="stylesheet" id="smartideo_css-css" href="http://www.openwrtdl.com/wordpress/wp-content/plugins/smartideo/static/smartideo.css?ver=2.2.4" type="text/css" media="screen" /> 
+  <link rel="stylesheet" id="ocomedrev-style-css" href="http://www.openwrtdl.com/wordpress/wp-content/themes/ocomedrev/style.css?ver=4.7.3" type="text/css" media="all" /> 
+  <link rel="stylesheet" id="ocomedrev-color-schema-css" href="http://www.openwrtdl.com/wordpress/wp-content/themes/ocomedrev/css/styles-default.css?ver=4.7.3" type="text/css" media="all" /> 
+  <link rel="stylesheet" id="ocomedrev-headings-fonts-css" href="//fonts.proxy.ustclug.org/css?family=Open+Sans%3A400italic%2C700italic%2C400%2C700&amp;ver=4.7.3" type="text/css" media="all" /> 
+  <link rel="stylesheet" id="ionicons-css" href="http://www.openwrtdl.com/wordpress/wp-content/themes/ocomedrev/fonts/ionicons/css/ionicons.min.css?ver=4.7.3" type="text/css" media="all" /> 
+  <script type="text/javascript" src="http://www.openwrtdl.com/wordpress/wp-includes/js/jquery/jquery.js?ver=1.12.4"></script> 
+  <script type="text/javascript" src="http://www.openwrtdl.com/wordpress/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1"></script> 
+  <script type="text/javascript">
+/* <![CDATA[ */
+var CrayonSyntaxSettings = {"version":"_2.7.2_beta","is_admin":"0","ajaxurl":"http:\/\/www.openwrtdl.com\/wordpress\/wp-admin\/admin-ajax.php","prefix":"crayon-","setting":"crayon-setting","selected":"crayon-setting-selected","changed":"crayon-setting-changed","special":"crayon-setting-special","orig_value":"data-orig-value","debug":""};
+var CrayonSyntaxStrings = {"copy":"\u4f7f\u7528 %s \u590d\u5236\uff0c\u4f7f\u7528 %s \u7c98\u8d34\u3002","minimize":"\u70b9\u51fb\u5c55\u5f00\u4ee3\u7801"};
+/* ]]> */
+</script> 
+  <script type="text/javascript" src="http://www.openwrtdl.com/wordpress/wp-content/plugins/crayon-syntax-highlighter/js/min/crayon.min.js?ver=_2.7.2_beta"></script> 
+  <link rel="https://api.w.org/" href="http://www.openwrtdl.com/wordpress/wp-json/" /> 
+  <link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.openwrtdl.com/wordpress/xmlrpc.php?rsd" /> 
+  <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.openwrtdl.com/wordpress/wp-includes/wlwmanifest.xml" /> 
+  <link rel="prev" title="极路由插件开发[sdk版]" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6%e5%bc%80%e5%8f%91sdk%e7%89%88" /> 
+  <link rel="next" title="sunny ngrok.cc使用视频教程" href="http://www.openwrtdl.com/wordpress/sunny-ngrok-cc%e4%bd%bf%e7%94%a8%e8%a7%86%e9%a2%91%e6%95%99%e7%a8%8b" /> 
+  <meta name="generator" content="WordPress 4.7.3" /> 
+  <link rel="shortlink" href="http://www.openwrtdl.com/wordpress/?p=815" /> 
+  <meta name="robots" content="noindex,follow" /> 
+  <link rel="alternate" type="application/json+oembed" href="http://www.openwrtdl.com/wordpress/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.openwrtdl.com%2Fwordpress%2F%25e6%259e%2581%25e8%25b7%25af%25e7%2594%25b1%25e6%258f%2592%25e4%25bb%25b6ngrok%25e4%25bd%25bf%25e7%2594%25a8%25e6%2595%2599%25e7%25a8%258b" /> 
+  <link rel="alternate" type="text/xml+oembed" href="http://www.openwrtdl.com/wordpress/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.openwrtdl.com%2Fwordpress%2F%25e6%259e%2581%25e8%25b7%25af%25e7%2594%25b1%25e6%258f%2592%25e4%25bb%25b6ngrok%25e4%25bd%25bf%25e7%2594%25a8%25e6%2595%2599%25e7%25a8%258b&amp;format=xml" /> 
+  <style type="text/css">
+			.site-title a,
+		.site-description {
+			color: #ffffff;
+		}
+		</style> 
+  <link rel="icon" href="http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/03/cropped-openwrt-1-32x32.jpg" sizes="32x32" /> 
+  <link rel="icon" href="http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/03/cropped-openwrt-1-192x192.jpg" sizes="192x192" /> 
+  <link rel="apple-touch-icon-precomposed" href="http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/03/cropped-openwrt-1-180x180.jpg" /> 
+  <meta name="msapplication-TileImage" content="http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/03/cropped-openwrt-1-270x270.jpg" /> 
+  <style>body{
+			font-family: Open+Sans;
+		}
+		#masthead{
+			font-family: Open+Sans;
+		}
+		</style>
+  <link id="favicon" href="http://www.openwrtdl.com/favicon.ico" rel="icon" type="image/x-icon" /> 
+ </head> 
+ <body class="post-template-default single single-post postid-815 single-format-standard"> 
+  <div id="page" class="hfeed site"> 
+   <a class="skip-link screen-reader-text" href="#content">Skip to content</a> 
+   <header id="masthead" class="site-header" role="banner"> 
+    <nav id="site-navigation" class="main-navigation" role="navigation"> 
+     <div id="open-menu">
+      <a href="#">Menu</a>
+     </div>
+     <!--Responsive Menu Link--> 
+     <nav id="menu-principal" class="menu-%e8%8f%9c%e5%8d%951-container">
+      <ul id="menu-%e8%8f%9c%e5%8d%951" class="menu">
+       <li id="menu-item-144" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-144"><a href="http://www.openwrtdl.com/wordpress/">首页</a></li> 
+       <li id="menu-item-935" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-935"><a href="http://www.openwrtdl.com/wordpress/package-index-download">软件包索引下载</a> 
+        <ul class="sub-menu"> 
+         <li id="menu-item-940" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-940"><a href="http://www.openwrtdl.com/wordpress/package-index-download">软件包索引说明</a></li> 
+         <li id="menu-item-936" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-936"><a href="http://dl.openwrtdl.com">国服下载快速</a></li> 
+         <li id="menu-item-975" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-975"><a href="http://sources.lede-project.org">LEDE软件源</a></li> 
+         <li id="menu-item-937" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-937"><a href="https://downloads.openwrt.org/sources/">OpenWrt官方源</a></li> 
+        </ul> </li> 
+       <li id="menu-item-242" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-242"><a href="http://www.openwrtdl.com/wordpress/category/openwrt%e6%95%99%e7%a8%8b">OpenWrt教程</a></li> 
+       <li id="menu-item-473" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-473"><a href="http://www.openwrtdl.com/wordpress/category/linux-c">Linux编程</a> 
+        <ul class="sub-menu"> 
+         <li id="menu-item-346" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-346"><a href="http://www.openwrtdl.com/wordpress/category/linux-c">Linux C</a></li> 
+         <li id="menu-item-345" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-345"><a href="http://www.openwrtdl.com/wordpress/category/linux%e5%86%85%e6%a0%b8">Linux内核</a></li> 
+        </ul> </li> 
+       <li id="menu-item-474" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-474"><a href="http://www.openwrtdl.com/wordpress/category/smartiot">智能家居</a> 
+        <ul class="sub-menu"> 
+         <li id="menu-item-475" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-475"><a href="http://www.openwrtdl.com/wordpress/category/smartiot/%e4%bd%8e%e5%8a%9f%e8%80%97wifi">低功耗WiFi</a></li> 
+         <li id="menu-item-476" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-476"><a href="http://www.openwrtdl.com/wordpress/category/smartiot/zigbee">Zigbee</a></li> 
+         <li id="menu-item-477" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-477"><a href="http://www.openwrtdl.com/wordpress/category/smartiot/ble">蓝牙BLE</a></li> 
+        </ul> </li> 
+       <li id="menu-item-366" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-366"><a href="http://www.openwrtdl.com/wordpress/category/%e6%9d%82%e8%b0%88">杂谈&amp;WordPress</a></li> 
+       <li id="menu-item-304" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-304"><a href="http://www.openwrtdl.com/wordpress/2">关于</a> 
+        <ul class="sub-menu"> 
+         <li id="menu-item-145" class="menu-item menu-item-type-post_type menu-item-object-page current-post-parent menu-item-145"><a href="http://www.openwrtdl.com/wordpress/2-2">上海阿勇</a></li> 
+         <li id="menu-item-930" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-930"><a href="http://www.openwrtdl.com/wordpress/%e5%b0%8f%e5%b7%a5%e5%85%b7">小工具</a></li> 
+         <li id="menu-item-351" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-351"><a href="http://www.openwrtdl.com/wordpress/domain-name-sale">域名售卖</a></li> 
+         <li id="menu-item-302" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-302"><a href="http://www.openwrtdl.com/wordpress/specifically-openwrt">特别的OpenWrt</a></li> 
+        </ul> </li> 
+      </ul>
+     </nav> 
+    </nav>
+    <!-- #site-navigation --> 
+    <div id="masthead-head"> 
+     <div id="site-branding"> 
+      <h1 class="site-title" style="color:#ffffff;"><a href="http://www.openwrtdl.com/wordpress/" rel="home">OpenWrt下载网</a></h1> 
+      <h2 class="site-description" style="color:#ffffff;">openwrtdl.com分享下载</h2> 
+     </div>
+     <!-- .site-branding --> 
+     <div id="top-icon-right"> 
+      <a href="#" id="open-search"><span>点我搜 </span><i class="icon ion-search"></i></a> 
+     </div> 
+    </div> 
+    <div id="top-search"> 
+     <form role="search" method="get" class="search-form" action="http://www.openwrtdl.com/wordpress/"> 
+      <label> <span class="screen-reader-text">搜索：</span> <input type="search" class="search-field" placeholder="搜索…" value="" name="s" /> </label> 
+      <input type="submit" class="search-submit" value="搜索" /> 
+     </form> 
+    </div> 
+   </header>
+   <!-- #masthead --> 
+   <!-- Up buttom when scrolled --> 
+   <div id="up_buttom"> 
+    <a href="#"><i class="icon ion-chevron-up"></i></a> 
+   </div> 
+   <div id="content" class="site-content"> 
+    <div id="primary" class="content-area"> 
+     <main id="main" class="site-main" role="main"> 
+      <div class="col-normal"> 
+       <article id="post-815" class="post-single post-815 post type-post status-publish format-standard hentry category-openwrt tag-hiwifi tag-ngrok tag-35 tag-33"> 
+        <header class="entry-header"> 
+         <h1 class="entry-title">极路由插件ngrok使用教程</h1> 
+         <div class="entry-meta"> 
+          <span class="posted-on">Posted on <time class="entry-date published" datetime="2016-08-30T21:30:21+00:00">2016年8月30日</time><time class="updated" datetime="2016-09-01T16:07:11+00:00">2016年9月1日</time></span>
+          <span class="byline"> by 阿勇</span> 
+         </div>
+         <!-- .entry-meta --> 
+        </header>
+        <!-- .entry-header --> 
+        <div class="entry-content"> 
+         <p>这两天想在极路由上弄个ngrok的插件，毕竟有开源的代码，而且前期也已经做了一些事情，所以做起来就比较容易.</p> 
+         <h1>什么是ngrok？</h1> 
+         <p>简单总结下：内网穿透利器，使用反向代理原理，达到从外网访问防火墙内部的服务。</p> 
+         <p>ngrok是开源的，服务器也是开源的，可以自己搭建，具体的请百度。</p> 
+         <p>ngrok的客户端目前已经有好几种语言了，php、C、python等</p> 
+         <p><a href="https://github.com/hauntek/python-ngrok" target="_blank">https://github.com/hauntek/python-ngrok</a></p> 
+         <p><a href="https://github.com/dosgo/ngrok-c" target="_blank">https://github.com/dosgo/ngrok-c</a></p> 
+         <p><a href="https://github.com/dosgo/ngrok-php" target="_blank">https://github.com/dosgo/ngrok-php</a></p> 
+         <h1>服务器选择使用</h1> 
+         <p>服务器网上也有不少网友自己搭建的，让大家免费用的，在这里重点推荐下sunny的<a href="http://ngrok.cc" target="_blank">ngrok.cc</a>，稳定高效，目前已有：12684人使用，运行20677项服务,值得一提的是这个服务器是sunny自己搭建维护的，服务器费用全靠自己和网友贡献，如果你喜欢这个服务，也请出点举手之劳吧！</p> 
+         <p><span style="color: #ff0000;"><strong>另外建议大家一句，不要用做视频转发相关的业务，因为会占用太大的带宽，这些成本都是sunny一个人在承受，为了大家都能很好的使用这个服务，请大家共同维护秩序。</strong></span></p> 
+         <p>ngrok.cc的使用视频教程</p> 
+         <blockquote data-secret="wXVAqy70Ye" class="wp-embedded-content">
+          <p><a href="http://www.openwrtdl.com/wordpress/sunny-ngrok-cc%e4%bd%bf%e7%94%a8%e8%a7%86%e9%a2%91%e6%95%99%e7%a8%8b">sunny ngrok.cc使用视频教程</a></p>
+         </blockquote> 
+         <p><iframe class="wp-embedded-content" sandbox="allow-scripts" security="restricted" style="position: absolute; clip: rect(1px, 1px, 1px, 1px);" src="http://www.openwrtdl.com/wordpress/sunny-ngrok-cc%e4%bd%bf%e7%94%a8%e8%a7%86%e9%a2%91%e6%95%99%e7%a8%8b/embed#?secret=wXVAqy70Ye" data-secret="wXVAqy70Ye" width="600" height="338" title="《sunny ngrok.cc使用视频教程》—OpenWrt下载网" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe></p> 
+         <p>ngrok.cc注册地址：<a href="http://www.ngrok.cc/index.php/login/reg.html" target="_blank">http://www.ngrok.cc/index.php/login/reg.html</a></p> 
+         <p><a href="http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/QQ图片20160830205954.png"><img class="alignnone wp-image-816 size-full" src="http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/QQ图片20160830205954.png" alt="QQ图片20160830205954" width="468" height="513" srcset="http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/QQ图片20160830205954.png 468w, http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/QQ图片20160830205954-274x300.png 274w" sizes="(max-width: 468px) 100vw, 468px" /></a></p> 
+         <p>注册后登陆即可，登陆后左侧的“基本信息”中可以看到token，是服务器对这个用户的唯一识别码，记下来一会会用到。</p> 
+         <p>隧道管理中，点击新增，协议选择有三种，http、https、tcp，比如我要建立一个ssh的转发，就选择tcp，如下</p> 
+         <p><a href="http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/微信截图_20160830210625.png"><img class="alignnone size-full wp-image-817" src="http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/微信截图_20160830210625.png" alt="微信截图_20160830210625" width="604" height="284" srcset="http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/微信截图_20160830210625.png 604w, http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/微信截图_20160830210625-300x141.png 300w" sizes="(max-width: 604px) 100vw, 604px" /></a></p> 
+         <p>截图需要说明的就一个“域名/远程端口”，这个是ngrok.cc服务器的端口，允许范围为10000-&gt;55000，编写完保存即可。</p> 
+         <h1>极路由插件使用</h1> 
+         <p>进入插件云平台，找到“全部插件”的“极客工具”分组，安装“内网穿透ngrok”，安装需要填写服务器和通道规则</p> 
+         <p>实例：</p> 
+         <p>服务器：sunny.ngrok.cc</p> 
+         <p>服务器端口:4443（这个端口并不是刚才配置隧道的外网端口，而是固定的4443）</p> 
+         <p>token：输入用户注册后服务器分配的token</p> 
+         <p>rules：一行一个隧道规则，支持多隧道</p> 
+         <p>隧道协议,内网ip地址,内网端口,服务器申请的端口/subdomain/customdomain,子域名前缀/自定义域名</p> 
+         <p>比如：tcp,192.168.199.1,22,22873 &nbsp; &nbsp; http,192.168.199.1,80,subdomain,hiwifi &nbsp;https,192.168.199.1,80,customdomain,hiwifi.customurl.com</p> 
+         <p>因为http和https是向ngrok.cc申请的子域名或者用的cname的转换的自己的域名，所以第4个参数就是当协议为http或者https时用来告知是子域名还是自定义域名的。</p> 
+         <p>当协议为tcp时，第4个参数为服务器分配的外网端口。</p> 
+         <p>如下例子</p> 
+         <p><a href="http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/QQ图片20160901144704.png"><img class="alignnone size-full wp-image-823" src="http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/QQ图片20160901144704.png" alt="QQ图片20160901144704" width="700" height="210" srcset="http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/QQ图片20160901144704.png 700w, http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/QQ图片20160901144704-300x90.png 300w" sizes="(max-width: 700px) 100vw, 700px" /></a></p> 
+         <p>点击应用即可</p> 
+         <p>这里重点提一下<strong>自定义域名</strong>的使用，这个自定义域名需要你自己有一个域名，并在域名解析中加入cname解析方式到server.ngrok.cc上，如下我的hiwifi.openwrtdl.com</p> 
+         <p><a href="http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/微信截图_20160901145356.png"><img class="alignnone size-full wp-image-825" src="http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/微信截图_20160901145356.png" alt="微信截图_20160901145356" width="777" height="43" srcset="http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/微信截图_20160901145356.png 777w, http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/微信截图_20160901145356-300x17.png 300w, http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/微信截图_20160901145356-768x43.png 768w" sizes="(max-width: 777px) 100vw, 777px" /></a></p> 
+         <p>申请隧道时选择自定义，不要选择系统前缀</p> 
+         <p><a href="http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/微信截图_20160901145757.png"><img class="alignnone size-full wp-image-827" src="http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/微信截图_20160901145757.png" alt="微信截图_20160901145757" width="702" height="317" srcset="http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/微信截图_20160901145757.png 702w, http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/微信截图_20160901145757-300x135.png 300w" sizes="(max-width: 702px) 100vw, 702px" /></a></p> 
+         <p>subdomain就是ngrok.cc的子域名，向ngrok.cc申请的二级域名，只要不和别的重复即可,如下申请隧道时的截图</p> 
+         <p><a href="http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/微信截图_20160901145602.png"><img class="alignnone size-full wp-image-826" src="http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/微信截图_20160901145602.png" alt="微信截图_20160901145602" width="704" height="328" srcset="http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/微信截图_20160901145602.png 704w, http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/微信截图_20160901145602-300x140.png 300w" sizes="(max-width: 704px) 100vw, 704px" /></a></p> 
+         <h1>隧道使用</h1> 
+         <p>此时极路由与ngrok.cc的隧道已经建立了，下面就可以直接连接，如上面的截图中三个示例</p> 
+         <p>使用第一个通道的方法：浏览器输入ayong.ngrok.cc即可</p> 
+         <p>使用第二个通道的方法：浏览器驶入hiwifi.openwrtdl.com即可</p> 
+         <p>使用第三个通道的方法：使用securCRT连接</p> 
+         <p><a href="http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/微信截图_20160901145056.png"><img class="alignnone size-full wp-image-824" src="http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/微信截图_20160901145056.png" alt="微信截图_20160901145056" width="513" height="164" srcset="http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/微信截图_20160901145056.png 513w, http://www.openwrtdl.com/wordpress/wp-content/uploads/2016/08/微信截图_20160901145056-300x96.png 300w" sizes="(max-width: 513px) 100vw, 513px" /></a></p> 
+         <p>&nbsp;</p> 
+         <h1>其他</h1> 
+         <p>ngrok-c的作者已经更新了代码，支持了ngrok.cc的clientid，后期会更新代码，再出一版插件。</p> 
+         <p>敬请期待。</p> 
+         <p>在做这个插件的时候由于不熟悉页面配置相关的选项，多亏了hiwifi开发者群的</p> 
+         <p>dreaman（704012161）、[简简单单](472175645)、J[.o_o.](695595980)、极路由的王瑞珩(heng)给予的帮助！</p> 
+         <p>&nbsp;</p> 
+        </div>
+        <!-- .entry-content --> 
+        <footer class="entry-footer"> 
+         <div class="post-meta">
+          <span class="cat-links">Posted in <a href="http://www.openwrtdl.com/wordpress/category/openwrt%e6%95%99%e7%a8%8b" rel="category tag">openwrt教程</a></span>
+          <span class="tags-links">Tagged <a href="http://www.openwrtdl.com/wordpress/tag/hiwifi" rel="tag">hiwifi</a>, <a href="http://www.openwrtdl.com/wordpress/tag/ngrok" rel="tag">ngrok</a>, <a href="http://www.openwrtdl.com/wordpress/tag/%e6%8f%92%e4%bb%b6" rel="tag">插件</a>, <a href="http://www.openwrtdl.com/wordpress/tag/%e6%9e%81%e8%b7%af%e7%94%b1" rel="tag">极路由</a></span>
+         </div> 
+        </footer>
+        <!-- .entry-footer --> 
+       </article>
+       <!-- #post-## --> 
+       <nav class="navigation post-navigation" role="navigation"> 
+        <h1 class="screen-reader-text">Post navigation</h1> 
+        <div class="nav-links"> 
+         <div class="nav-previous">
+          <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6%e5%bc%80%e5%8f%91sdk%e7%89%88" rel="prev"><span class="meta-nav"><i class="ion-arrow-left-c"></i></span>&nbsp;极路由插件开发[sdk版]</a>
+         </div>
+         <div class="nav-next">
+          <a href="http://www.openwrtdl.com/wordpress/sunny-ngrok-cc%e4%bd%bf%e7%94%a8%e8%a7%86%e9%a2%91%e6%95%99%e7%a8%8b" rel="next">sunny ngrok.cc使用视频教程&nbsp;<span class="meta-nav"><i class="ion-arrow-right-c"></i></span></a>
+         </div> 
+        </div>
+        <!-- .nav-links --> 
+       </nav>
+       <!-- .navigation --> 
+       <div id="comments" class="comments-area"> 
+        <h2 class="comments-title"> 65 thoughts on “<span>极路由插件ngrok使用教程</span>” </h2> 
+        <ol class="comment-list"> 
+         <li id="comment-1247" class="comment even thread-even depth-1 parent"> 
+          <article id="div-comment-1247" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn"><a href="http://stray.love" rel="external nofollow" class="url">evenS</a></b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1247"> <time datetime="2016-09-01T14:32:08+00:00"> 2016年9月1日 下午2:32 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>感谢!现在去试试</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1247#respond" onclick="return addComment.moveForm( &quot;div-comment-1247&quot;, &quot;1247&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给evenS">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> 
+          <ol class="children"> 
+           <li id="comment-1248" class="comment byuser comment-author-siasjack bypostauthor odd alt depth-2"> 
+            <article id="div-comment-1248" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn"><a href="http://openwrtdl.com" rel="external nofollow" class="url">阿勇</a></b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1248"> <time datetime="2016-09-01T14:38:35+00:00"> 2016年9月1日 下午2:38 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p>我更新了插件，马上更新下教程!</p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1248#respond" onclick="return addComment.moveForm( &quot;div-comment-1248&quot;, &quot;1248&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给阿勇">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> </li>
+           <!-- #comment-## --> 
+          </ol>
+          <!-- .children --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-1264" class="comment even thread-odd thread-alt depth-1 parent"> 
+          <article id="div-comment-1264" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn">韩</b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1264"> <time datetime="2016-09-02T22:23:17+00:00"> 2016年9月2日 下午10:23 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>能否支持用自己的服务器来完成这个转发服务？一是可以减轻作者的负担，二是使用别人服务器转发数据总感觉不太好……</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1264#respond" onclick="return addComment.moveForm( &quot;div-comment-1264&quot;, &quot;1264&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给韩">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> 
+          <ol class="children"> 
+           <li id="comment-1284" class="comment byuser comment-author-siasjack bypostauthor odd alt depth-2"> 
+            <article id="div-comment-1284" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn"><a href="http://openwrtdl.com" rel="external nofollow" class="url">阿勇</a></b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1284"> <time datetime="2016-09-03T14:30:47+00:00"> 2016年9月3日 下午2:30 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p>本身就是支持的啊！<br /> 可以去github上看看说明文档，github搜索ngrokc</p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1284#respond" onclick="return addComment.moveForm( &quot;div-comment-1284&quot;, &quot;1284&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给阿勇">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> </li>
+           <!-- #comment-## --> 
+          </ol>
+          <!-- .children --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-1512" class="comment even thread-even depth-1"> 
+          <article id="div-comment-1512" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn">阿里里</b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1512"> <time datetime="2016-09-19T09:37:37+00:00"> 2016年9月19日 上午9:37 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>挺不错的，需要這个，感谢博主。</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1512#respond" onclick="return addComment.moveForm( &quot;div-comment-1512&quot;, &quot;1512&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给阿里里">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-1513" class="comment odd alt thread-odd thread-alt depth-1 parent"> 
+          <article id="div-comment-1513" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn">张小耀</b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1513"> <time datetime="2016-09-19T11:06:03+00:00"> 2016年9月19日 上午11:06 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>这个插件没有在极1上上架嘛 我办公室的极1也想用这个插件</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1513#respond" onclick="return addComment.moveForm( &quot;div-comment-1513&quot;, &quot;1513&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给张小耀">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> 
+          <ol class="children"> 
+           <li id="comment-1516" class="comment byuser comment-author-siasjack bypostauthor even depth-2"> 
+            <article id="div-comment-1516" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn"><a href="http://openwrtdl.com" rel="external nofollow" class="url">阿勇</a></b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1516"> <time datetime="2016-09-19T15:04:35+00:00"> 2016年9月19日 下午3:04 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p>没有极1<br /> 太老了！</p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1516#respond" onclick="return addComment.moveForm( &quot;div-comment-1516&quot;, &quot;1516&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给阿勇">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> </li>
+           <!-- #comment-## --> 
+          </ol>
+          <!-- .children --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-1514" class="comment odd alt thread-even depth-1 parent"> 
+          <article id="div-comment-1514" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn">Leon</b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1514"> <time datetime="2016-09-19T13:06:21+00:00"> 2016年9月19日 下午1:06 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>装了几次总是提示安装失败请重试，参数核对了没有问题。</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1514#respond" onclick="return addComment.moveForm( &quot;div-comment-1514&quot;, &quot;1514&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给Leon">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> 
+          <ol class="children"> 
+           <li id="comment-1517" class="comment byuser comment-author-siasjack bypostauthor even depth-2"> 
+            <article id="div-comment-1517" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn"><a href="http://openwrtdl.com" rel="external nofollow" class="url">阿勇</a></b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1517"> <time datetime="2016-09-19T15:05:03+00:00"> 2016年9月19日 下午3:05 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p>错误的截图发出来看看<br /> 提示什么信息？</p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1517#respond" onclick="return addComment.moveForm( &quot;div-comment-1517&quot;, &quot;1517&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给阿勇">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> </li>
+           <!-- #comment-## --> 
+          </ol>
+          <!-- .children --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-1515" class="comment odd alt thread-odd thread-alt depth-1 parent"> 
+          <article id="div-comment-1515" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn">Leon</b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1515"> <time datetime="2016-09-19T13:18:26+00:00"> 2016年9月19日 下午1:18 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>整体过程是这样的，先装了一次成功了，我去ngroc.cc配置隧道的过程中这边插件状态总是显示未知，我就想卸载了重装一下试试，结果就再也装不上了。。。。</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1515#respond" onclick="return addComment.moveForm( &quot;div-comment-1515&quot;, &quot;1515&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给Leon">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> 
+          <ol class="children"> 
+           <li id="comment-1518" class="comment byuser comment-author-siasjack bypostauthor even depth-2 parent"> 
+            <article id="div-comment-1518" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn"><a href="http://openwrtdl.com" rel="external nofollow" class="url">阿勇</a></b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1518"> <time datetime="2016-09-19T15:05:39+00:00"> 2016年9月19日 下午3:05 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p>插件的状态应该没有未知的可能<br /> 只有运行中，未运行的提示</p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1518#respond" onclick="return addComment.moveForm( &quot;div-comment-1518&quot;, &quot;1518&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给阿勇">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> 
+            <ol class="children"> 
+             <li id="comment-1762" class="comment odd alt depth-3"> 
+              <article id="div-comment-1762" class="comment-body"> 
+               <footer class="comment-meta"> 
+                <div class="comment-author vcard"> 
+                 <b class="fn">Keen Yang</b>
+                 <span class="says">说道：</span> 
+                </div>
+                <!-- .comment-author --> 
+                <div class="comment-metadata"> 
+                 <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1762"> <time datetime="2016-10-09T10:37:36+00:00"> 2016年10月9日 上午10:37 </time> </a> 
+                </div>
+                <!-- .comment-metadata --> 
+               </footer>
+               <!-- .comment-meta --> 
+               <div class="comment-content"> 
+                <p>我也是差不多情况，第一次装上了，但是修改配置，不管怎么修改，总是提示刷次年失败。然后我就卸载插件，卸载完选择删除应用配置文件。然后再想重新安装，就怎么也装不上了。极路由系统版本 1.1.4.14678s</p> 
+               </div>
+               <!-- .comment-content --> 
+               <div class="reply">
+                <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1762#respond" onclick="return addComment.moveForm( &quot;div-comment-1762&quot;, &quot;1762&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给Keen Yang">回复</a>
+               </div> 
+              </article>
+              <!-- .comment-body --> </li>
+             <!-- #comment-## --> 
+            </ol>
+            <!-- .children --> </li>
+           <!-- #comment-## --> 
+          </ol>
+          <!-- .children --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-1519" class="comment even thread-even depth-1 parent"> 
+          <article id="div-comment-1519" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn">leon</b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1519"> <time datetime="2016-09-19T15:20:41+00:00"> 2016年9月19日 下午3:20 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>我是在手机端安装的，插件状态确实显示了未知，现在插件都装不上了，也没法截图了<br /> 我的是极3<br /> 点击安装，配置参数，下一步，正在下载，正在安装，安装失败，请重试。<br /> 打算明天下夜班回家重置下路由器试试。</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1519#respond" onclick="return addComment.moveForm( &quot;div-comment-1519&quot;, &quot;1519&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给leon">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> 
+          <ol class="children"> 
+           <li id="comment-1520" class="comment byuser comment-author-siasjack bypostauthor odd alt depth-2"> 
+            <article id="div-comment-1520" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn"><a href="http://openwrtdl.com" rel="external nofollow" class="url">阿勇</a></b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1520"> <time datetime="2016-09-19T16:28:14+00:00"> 2016年9月19日 下午4:28 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p>好，有情况再给我说</p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1520#respond" onclick="return addComment.moveForm( &quot;div-comment-1520&quot;, &quot;1520&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给阿勇">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> </li>
+           <!-- #comment-## --> 
+          </ol>
+          <!-- .children --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-1540" class="comment even thread-odd thread-alt depth-1 parent"> 
+          <article id="div-comment-1540" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn">cnwhy</b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1540"> <time datetime="2016-09-22T19:14:54+00:00"> 2016年9月22日 下午7:14 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>我要代理路由器的管理后台<br /> 我发现路由器配置192.168.199.1是不行的,要配127.0.0.1才行</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1540#respond" onclick="return addComment.moveForm( &quot;div-comment-1540&quot;, &quot;1540&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给cnwhy">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> 
+          <ol class="children"> 
+           <li id="comment-1567" class="comment byuser comment-author-siasjack bypostauthor odd alt depth-2"> 
+            <article id="div-comment-1567" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn"><a href="http://openwrtdl.com" rel="external nofollow" class="url">阿勇</a></b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1567"> <time datetime="2016-09-26T08:34:49+00:00"> 2016年9月26日 上午8:34 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p>应该不会的啊 两个都可以才对的</p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1567#respond" onclick="return addComment.moveForm( &quot;div-comment-1567&quot;, &quot;1567&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给阿勇">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> </li>
+           <!-- #comment-## --> 
+          </ol>
+          <!-- .children --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-1544" class="comment even thread-even depth-1"> 
+          <article id="div-comment-1544" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn">BL</b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1544"> <time datetime="2016-09-23T22:27:33+00:00"> 2016年9月23日 下午10:27 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>感谢为我们免费做了这么多好用的东东。</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1544#respond" onclick="return addComment.moveForm( &quot;div-comment-1544&quot;, &quot;1544&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给BL">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-1602" class="comment odd alt thread-odd thread-alt depth-1 parent"> 
+          <article id="div-comment-1602" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn"><a href="http://www.vvvtimes.com" rel="external nofollow" class="url">gsls200808</a></b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1602"> <time datetime="2016-09-28T10:44:30+00:00"> 2016年9月28日 上午10:44 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>26号之后页面改版了，用原来的方法配置好像不行了。</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1602#respond" onclick="return addComment.moveForm( &quot;div-comment-1602&quot;, &quot;1602&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给gsls200808">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> 
+          <ol class="children"> 
+           <li id="comment-1611" class="comment byuser comment-author-siasjack bypostauthor even depth-2"> 
+            <article id="div-comment-1611" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn"><a href="http://openwrtdl.com" rel="external nofollow" class="url">阿勇</a></b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1611"> <time datetime="2016-09-29T09:43:31+00:00"> 2016年9月29日 上午9:43 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p>我看下！</p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1611#respond" onclick="return addComment.moveForm( &quot;div-comment-1611&quot;, &quot;1611&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给阿勇">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> </li>
+           <!-- #comment-## --> 
+           <li id="comment-1612" class="comment byuser comment-author-siasjack bypostauthor odd alt depth-2 parent"> 
+            <article id="div-comment-1612" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn"><a href="http://openwrtdl.com" rel="external nofollow" class="url">阿勇</a></b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1612"> <time datetime="2016-09-29T10:02:43+00:00"> 2016年9月29日 上午10:02 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p>不是不行了<br /> sunny吧以前的隧道都清空了，需要重新登录重新弄下</p> 
+              <p>26号他的服务器被攻击了！</p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1612#respond" onclick="return addComment.moveForm( &quot;div-comment-1612&quot;, &quot;1612&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给阿勇">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> 
+            <ol class="children"> 
+             <li id="comment-1613" class="comment even depth-3"> 
+              <article id="div-comment-1613" class="comment-body"> 
+               <footer class="comment-meta"> 
+                <div class="comment-author vcard"> 
+                 <b class="fn"><a href="http://www.vvvtimes.com" rel="external nofollow" class="url">gsls200808</a></b>
+                 <span class="says">说道：</span> 
+                </div>
+                <!-- .comment-author --> 
+                <div class="comment-metadata"> 
+                 <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1613"> <time datetime="2016-09-29T16:33:50+00:00"> 2016年9月29日 下午4:33 </time> </a> 
+                </div>
+                <!-- .comment-metadata --> 
+               </footer>
+               <!-- .comment-meta --> 
+               <div class="comment-content"> 
+                <p>今天恢复了，改版之后修改功能一次只能改一项，改多了就报错，按原来的配置参数配置好可以用</p> 
+               </div>
+               <!-- .comment-content --> 
+               <div class="reply">
+                <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1613#respond" onclick="return addComment.moveForm( &quot;div-comment-1613&quot;, &quot;1613&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给gsls200808">回复</a>
+               </div> 
+              </article>
+              <!-- .comment-body --> </li>
+             <!-- #comment-## --> 
+            </ol>
+            <!-- .children --> </li>
+           <!-- #comment-## --> 
+          </ol>
+          <!-- .children --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-1608" class="comment odd alt thread-even depth-1 parent"> 
+          <article id="div-comment-1608" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn">BL</b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1608"> <time datetime="2016-09-28T21:47:12+00:00"> 2016年9月28日 下午9:47 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>阿勇，求救啊！！！SUNNY的服务器前两天被攻击。今天开放，不过好像和以前有点不同了。他的服务器版本升级到了2.1，现在老是提示tunnel xxxxx.server.ngrok.cc not found。我在SUNNY群里问了，有的其他路由器的通过一定修改就能连了。可是没人会弄极路由的。</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1608#respond" onclick="return addComment.moveForm( &quot;div-comment-1608&quot;, &quot;1608&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给BL">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> 
+          <ol class="children"> 
+           <li id="comment-1610" class="comment byuser comment-author-siasjack bypostauthor even depth-2"> 
+            <article id="div-comment-1610" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn"><a href="http://openwrtdl.com" rel="external nofollow" class="url">阿勇</a></b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1610"> <time datetime="2016-09-29T09:43:09+00:00"> 2016年9月29日 上午9:43 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p>等我看看<br /> sunny的服务器规则改的频繁<br /> 代码更新太慢</p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1610#respond" onclick="return addComment.moveForm( &quot;div-comment-1610&quot;, &quot;1610&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给阿勇">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> </li>
+           <!-- #comment-## --> 
+          </ol>
+          <!-- .children --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-1661" class="comment odd alt thread-odd thread-alt depth-1 parent"> 
+          <article id="div-comment-1661" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn">疾风</b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1661"> <time datetime="2016-10-01T11:36:38+00:00"> 2016年10月1日 上午11:36 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>注册页面打不开</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1661#respond" onclick="return addComment.moveForm( &quot;div-comment-1661&quot;, &quot;1661&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给疾风">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> 
+          <ol class="children"> 
+           <li id="comment-1787" class="comment byuser comment-author-siasjack bypostauthor even depth-2"> 
+            <article id="div-comment-1787" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn"><a href="http://openwrtdl.com" rel="external nofollow" class="url">阿勇</a></b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1787"> <time datetime="2016-10-10T11:15:02+00:00"> 2016年10月10日 上午11:15 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p>前几天被黑了<br /> 再试试</p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1787#respond" onclick="return addComment.moveForm( &quot;div-comment-1787&quot;, &quot;1787&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给阿勇">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> </li>
+           <!-- #comment-## --> 
+          </ol>
+          <!-- .children --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-1757" class="comment odd alt thread-even depth-1 parent"> 
+          <article id="div-comment-1757" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn">传奇Legend</b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1757"> <time datetime="2016-10-06T15:54:14+00:00"> 2016年10月6日 下午3:54 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>这个插件有什么用？我没看懂，是用了之后可以搭建一个网站吗？</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1757#respond" onclick="return addComment.moveForm( &quot;div-comment-1757&quot;, &quot;1757&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给传奇Legend">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> 
+          <ol class="children"> 
+           <li id="comment-1785" class="comment byuser comment-author-siasjack bypostauthor even depth-2"> 
+            <article id="div-comment-1785" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn"><a href="http://openwrtdl.com" rel="external nofollow" class="url">阿勇</a></b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1785"> <time datetime="2016-10-10T11:14:10+00:00"> 2016年10月10日 上午11:14 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p>百度下ngrok，用来内网穿透的<br /> 原理是反向链接</p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1785#respond" onclick="return addComment.moveForm( &quot;div-comment-1785&quot;, &quot;1785&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给阿勇">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> </li>
+           <!-- #comment-## --> 
+          </ol>
+          <!-- .children --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-1759" class="comment odd alt thread-odd thread-alt depth-1"> 
+          <article id="div-comment-1759" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn">浅梦</b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1759"> <time datetime="2016-10-07T10:20:59+00:00"> 2016年10月7日 上午10:20 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>ngrok.cc更新了。。这种已经不能用了。。</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1759#respond" onclick="return addComment.moveForm( &quot;div-comment-1759&quot;, &quot;1759&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给浅梦">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-1847" class="comment even thread-even depth-1 parent"> 
+          <article id="div-comment-1847" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn">Lizhihao</b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1847"> <time datetime="2016-10-14T11:26:35+00:00"> 2016年10月14日 上午11:26 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>80端口外网能用？？？</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1847#respond" onclick="return addComment.moveForm( &quot;div-comment-1847&quot;, &quot;1847&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给Lizhihao">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> 
+          <ol class="children"> 
+           <li id="comment-1848" class="comment byuser comment-author-siasjack bypostauthor odd alt depth-2"> 
+            <article id="div-comment-1848" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn"><a href="http://openwrtdl.com" rel="external nofollow" class="url">阿勇</a></b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-1848"> <time datetime="2016-10-14T16:23:37+00:00"> 2016年10月14日 下午4:23 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p>可以啊</p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=1848#respond" onclick="return addComment.moveForm( &quot;div-comment-1848&quot;, &quot;1848&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给阿勇">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> </li>
+           <!-- #comment-## --> 
+          </ol>
+          <!-- .children --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-2136" class="comment even thread-odd thread-alt depth-1"> 
+          <article id="div-comment-2136" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn">zyc</b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2136"> <time datetime="2016-12-03T20:35:39+00:00"> 2016年12月3日 下午8:35 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>感谢阿勇，真的很好用。</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2136#respond" onclick="return addComment.moveForm( &quot;div-comment-2136&quot;, &quot;2136&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给zyc">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-2139" class="comment odd alt thread-even depth-1 parent"> 
+          <article id="div-comment-2139" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn">BUXOJ</b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2139"> <time datetime="2016-12-07T10:19:17+00:00"> 2016年12月7日 上午10:19 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>ngrok和你的已经不一样了，能更新下么，现在用不了</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2139#respond" onclick="return addComment.moveForm( &quot;div-comment-2139&quot;, &quot;2139&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给BUXOJ">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> 
+          <ol class="children"> 
+           <li id="comment-2140" class="comment byuser comment-author-siasjack bypostauthor even depth-2 parent"> 
+            <article id="div-comment-2140" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn"><a href="http://openwrtdl.com" rel="external nofollow" class="url">阿勇</a></b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2140"> <time datetime="2016-12-10T10:37:10+00:00"> 2016年12月10日 上午10:37 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p>最近有点忙，等等看有时间弄下</p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2140#respond" onclick="return addComment.moveForm( &quot;div-comment-2140&quot;, &quot;2140&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给阿勇">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> 
+            <ol class="children"> 
+             <li id="comment-2144" class="comment odd alt depth-3"> 
+              <article id="div-comment-2144" class="comment-body"> 
+               <footer class="comment-meta"> 
+                <div class="comment-author vcard"> 
+                 <b class="fn">BUXOJ</b>
+                 <span class="says">说道：</span> 
+                </div>
+                <!-- .comment-author --> 
+                <div class="comment-metadata"> 
+                 <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2144"> <time datetime="2016-12-16T16:55:12+00:00"> 2016年12月16日 下午4:55 </time> </a> 
+                </div>
+                <!-- .comment-metadata --> 
+               </footer>
+               <!-- .comment-meta --> 
+               <div class="comment-content"> 
+                <p>O(∩_∩)O好的</p> 
+               </div>
+               <!-- .comment-content --> 
+               <div class="reply">
+                <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2144#respond" onclick="return addComment.moveForm( &quot;div-comment-2144&quot;, &quot;2144&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给BUXOJ">回复</a>
+               </div> 
+              </article>
+              <!-- .comment-body --> </li>
+             <!-- #comment-## --> 
+            </ol>
+            <!-- .children --> </li>
+           <!-- #comment-## --> 
+          </ol>
+          <!-- .children --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-2141" class="comment even thread-odd thread-alt depth-1 parent"> 
+          <article id="div-comment-2141" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn"><a href="http://www.huatiqun.cn" rel="external nofollow" class="url">丶小蓝丶</a></b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2141"> <time datetime="2016-12-12T23:47:50+00:00"> 2016年12月12日 下午11:47 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>老大为何我配置OK 安装的时候显示安装失败，请重试 规则输入不合法,错误码-5 我用的自定义域名</p> 
+            <p>大致格式为http,192.168.199.101,80,xxxx,www.xxxxx.cc</p> 
+            <p>XXX为我的域名</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2141#respond" onclick="return addComment.moveForm( &quot;div-comment-2141&quot;, &quot;2141&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给丶小蓝丶">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> 
+          <ol class="children"> 
+           <li id="comment-2149" class="comment byuser comment-author-siasjack bypostauthor odd alt depth-2"> 
+            <article id="div-comment-2149" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn"><a href="http://openwrtdl.com" rel="external nofollow" class="url">阿勇</a></b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2149"> <time datetime="2016-12-17T18:17:13+00:00"> 2016年12月17日 下午6:17 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p>你的配置应该是http,192.168.199.101,80,customdomain,www.xxxxx.cc</p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2149#respond" onclick="return addComment.moveForm( &quot;div-comment-2149&quot;, &quot;2149&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给阿勇">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> </li>
+           <!-- #comment-## --> 
+          </ol>
+          <!-- .children --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-2150" class="comment even thread-even depth-1 parent"> 
+          <article id="div-comment-2150" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn">fhy</b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2150"> <time datetime="2016-12-18T13:59:27+00:00"> 2016年12月18日 下午1:59 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>我按照教程安装每次都显示安装失败 请重试</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2150#respond" onclick="return addComment.moveForm( &quot;div-comment-2150&quot;, &quot;2150&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给fhy">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> 
+          <ol class="children"> 
+           <li id="comment-2151" class="comment odd alt depth-2"> 
+            <article id="div-comment-2151" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn">fhy</b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2151"> <time datetime="2016-12-18T14:10:24+00:00"> 2016年12月18日 下午2:10 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p>http,127.0.0.1,80,subdomain,xxx xxx写的就是我申请时的前缀 但是就是一直失败 请重试</p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2151#respond" onclick="return addComment.moveForm( &quot;div-comment-2151&quot;, &quot;2151&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给fhy">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> </li>
+           <!-- #comment-## --> 
+           <li id="comment-2152" class="comment byuser comment-author-siasjack bypostauthor even depth-2 parent"> 
+            <article id="div-comment-2152" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn"><a href="http://openwrtdl.com" rel="external nofollow" class="url">阿勇</a></b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2152"> <time datetime="2016-12-18T17:26:16+00:00"> 2016年12月18日 下午5:26 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p>这个就是极路由的插件管理的bug，建议先彻底卸载ngrok，然后重新安装，最好重启后安装</p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2152#respond" onclick="return addComment.moveForm( &quot;div-comment-2152&quot;, &quot;2152&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给阿勇">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> 
+            <ol class="children"> 
+             <li id="comment-2153" class="comment odd alt depth-3"> 
+              <article id="div-comment-2153" class="comment-body"> 
+               <footer class="comment-meta"> 
+                <div class="comment-author vcard"> 
+                 <b class="fn">fhy</b>
+                 <span class="says">说道：</span> 
+                </div>
+                <!-- .comment-author --> 
+                <div class="comment-metadata"> 
+                 <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2153"> <time datetime="2016-12-19T17:21:38+00:00"> 2016年12月19日 下午5:21 </time> </a> 
+                </div>
+                <!-- .comment-metadata --> 
+               </footer>
+               <!-- .comment-meta --> 
+               <div class="comment-content"> 
+                <p>我现在都算是没有安装成功过没有办法卸载啊 这个该怎么弄 重启后重新装吗</p> 
+               </div>
+               <!-- .comment-content --> 
+               <div class="reply">
+                <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2153#respond" onclick="return addComment.moveForm( &quot;div-comment-2153&quot;, &quot;2153&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给fhy">回复</a>
+               </div> 
+              </article>
+              <!-- .comment-body --> </li>
+             <!-- #comment-## --> 
+            </ol>
+            <!-- .children --> </li>
+           <!-- #comment-## --> 
+          </ol>
+          <!-- .children --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-2158" class="comment even thread-odd thread-alt depth-1"> 
+          <article id="div-comment-2158" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn">gnrclark</b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2158"> <time datetime="2016-12-21T20:20:32+00:00"> 2016年12月21日 下午8:20 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>极路由上非常好用的插件，感谢阿勇。</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2158#respond" onclick="return addComment.moveForm( &quot;div-comment-2158&quot;, &quot;2158&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给gnrclark">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-2159" class="comment odd alt thread-even depth-1 parent"> 
+          <article id="div-comment-2159" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn">那个小极</b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2159"> <time datetime="2016-12-23T15:40:09+00:00"> 2016年12月23日 下午3:40 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>我从阿里云解析了自定义域名的CNAME到server.ngrok.cc，然后马上PING自己的域名，不成功，这是要等48小时吗？如下<br /> 记录类型 主机记录 解析线路 记录值 MX优先级 TTL 状态 操作<br /> CNAME ji 默认 server.ngrok.cc — 10分钟 —</p> 
+            <p>这是说cname解析还未成功吗？</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2159#respond" onclick="return addComment.moveForm( &quot;div-comment-2159&quot;, &quot;2159&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给那个小极">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> 
+          <ol class="children"> 
+           <li id="comment-2160" class="comment even depth-2"> 
+            <article id="div-comment-2160" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn">那个小极</b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2160"> <time datetime="2016-12-23T15:47:35+00:00"> 2016年12月23日 下午3:47 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p>我在ngrok.cc上配置的配置的自定义域名是ji.xxx.com，是这样的吗？</p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2160#respond" onclick="return addComment.moveForm( &quot;div-comment-2160&quot;, &quot;2160&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给那个小极">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> </li>
+           <!-- #comment-## --> 
+           <li id="comment-2162" class="comment byuser comment-author-siasjack bypostauthor odd alt depth-2"> 
+            <article id="div-comment-2162" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn"><a href="http://openwrtdl.com" rel="external nofollow" class="url">阿勇</a></b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2162"> <time datetime="2016-12-25T21:56:44+00:00"> 2016年12月25日 下午9:56 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p>解析自己的域名到CNAME到server.ngrok.cc是不需要时间延迟的，除非ngrok.cc坏掉了！</p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2162#respond" onclick="return addComment.moveForm( &quot;div-comment-2162&quot;, &quot;2162&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给阿勇">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> </li>
+           <!-- #comment-## --> 
+          </ol>
+          <!-- .children --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-2175" class="comment even thread-odd thread-alt depth-1"> 
+          <article id="div-comment-2175" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn">y</b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2175"> <time datetime="2017-01-26T06:58:47+00:00"> 2017年1月26日 上午6:58 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p><a href="https://www.ngrok.cc/index.php/login/reg.html" rel="nofollow">https://www.ngrok.cc/index.php/login/reg.html</a><br /> –&gt;<br /> 🙁<br /> 页面错误！请稍后再试～<br /> ThinkPHP3.2.3 { Fast &amp; Simple OOP PHP Framework } — [ WE CAN DO IT JUST THINK ]</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2175#respond" onclick="return addComment.moveForm( &quot;div-comment-2175&quot;, &quot;2175&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给y">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-2178" class="comment odd alt thread-even depth-1 parent"> 
+          <article id="div-comment-2178" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn">mickey</b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2178"> <time datetime="2017-02-02T17:33:10+00:00"> 2017年2月2日 下午5:33 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>token一定要有么？比如像tunnel.qydev.com这个公共的ngrok服务器，就没有token，那么这一项要怎么填？</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2178#respond" onclick="return addComment.moveForm( &quot;div-comment-2178&quot;, &quot;2178&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给mickey">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> 
+          <ol class="children"> 
+           <li id="comment-2182" class="comment byuser comment-author-siasjack bypostauthor even depth-2"> 
+            <article id="div-comment-2182" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn"><a href="http://openwrtdl.com" rel="external nofollow" class="url">阿勇</a></b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2182"> <time datetime="2017-02-06T09:17:36+00:00"> 2017年2月6日 上午9:17 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p>token不是必须的</p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2182#respond" onclick="return addComment.moveForm( &quot;div-comment-2182&quot;, &quot;2182&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给阿勇">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> </li>
+           <!-- #comment-## --> 
+          </ol>
+          <!-- .children --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-2191" class="comment odd alt thread-odd thread-alt depth-1 parent"> 
+          <article id="div-comment-2191" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn">ICARUS</b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2191"> <time datetime="2017-02-17T12:11:37+00:00"> 2017年2月17日 下午12:11 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>现在sunny ngrok需要客户端输入ID才能用，极路由的在哪里输入ID?</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2191#respond" onclick="return addComment.moveForm( &quot;div-comment-2191&quot;, &quot;2191&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给ICARUS">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> 
+          <ol class="children"> 
+           <li id="comment-2195" class="comment byuser comment-author-siasjack bypostauthor even depth-2"> 
+            <article id="div-comment-2195" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn"><a href="http://openwrtdl.com" rel="external nofollow" class="url">阿勇</a></b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2195"> <time datetime="2017-02-23T13:46:05+00:00"> 2017年2月23日 下午1:46 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p>sunny的规则变了，我的程序可能需要更改才可以</p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2195#respond" onclick="return addComment.moveForm( &quot;div-comment-2195&quot;, &quot;2195&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给阿勇">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> </li>
+           <!-- #comment-## --> 
+          </ol>
+          <!-- .children --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-2192" class="comment odd alt thread-even depth-1 parent"> 
+          <article id="div-comment-2192" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn">Hello</b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2192"> <time datetime="2017-02-17T16:53:32+00:00"> 2017年2月17日 下午4:53 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>提示：Tunnel XXXXXX.ngrok.cc not found (XXXXX是我的二级域名)<br /> 请问作者是什么问题？ 我其他路由的ngrok没问题，就是两台极路由的ngrok有问题。</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2192#respond" onclick="return addComment.moveForm( &quot;div-comment-2192&quot;, &quot;2192&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给Hello">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> 
+          <ol class="children"> 
+           <li id="comment-2197" class="comment even depth-2 parent"> 
+            <article id="div-comment-2197" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn">1601</b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2197"> <time datetime="2017-02-28T14:58:58+00:00"> 2017年2月28日 下午2:58 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p>Tunnel xxxx.ngrok.cc not found<br /> 一样提示这个</p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2197#respond" onclick="return addComment.moveForm( &quot;div-comment-2197&quot;, &quot;2197&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给1601">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> 
+            <ol class="children"> 
+             <li id="comment-2199" class="comment byuser comment-author-siasjack bypostauthor odd alt depth-3 parent"> 
+              <article id="div-comment-2199" class="comment-body"> 
+               <footer class="comment-meta"> 
+                <div class="comment-author vcard"> 
+                 <b class="fn"><a href="http://openwrtdl.com" rel="external nofollow" class="url">阿勇</a></b>
+                 <span class="says">说道：</span> 
+                </div>
+                <!-- .comment-author --> 
+                <div class="comment-metadata"> 
+                 <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2199"> <time datetime="2017-03-01T14:23:18+00:00"> 2017年3月1日 下午2:23 </time> </a> 
+                </div>
+                <!-- .comment-metadata --> 
+               </footer>
+               <!-- .comment-meta --> 
+               <div class="comment-content"> 
+                <p>ngrok.cc的规则变了，所以有些不能用了！</p> 
+               </div>
+               <!-- .comment-content --> 
+               <div class="reply">
+                <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2199#respond" onclick="return addComment.moveForm( &quot;div-comment-2199&quot;, &quot;2199&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给阿勇">回复</a>
+               </div> 
+              </article>
+              <!-- .comment-body --> 
+              <ol class="children"> 
+               <li id="comment-2202" class="comment even depth-4 parent"> 
+                <article id="div-comment-2202" class="comment-body"> 
+                 <footer class="comment-meta"> 
+                  <div class="comment-author vcard"> 
+                   <b class="fn">skyey</b>
+                   <span class="says">说道：</span> 
+                  </div>
+                  <!-- .comment-author --> 
+                  <div class="comment-metadata"> 
+                   <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2202"> <time datetime="2017-03-02T09:26:38+00:00"> 2017年3月2日 上午9:26 </time> </a> 
+                  </div>
+                  <!-- .comment-metadata --> 
+                 </footer>
+                 <!-- .comment-meta --> 
+                 <div class="comment-content"> 
+                  <p>麻烦有解决办法吗，我前段时间能用过一天，然后就一直报Tunnel not found了</p> 
+                 </div>
+                 <!-- .comment-content --> 
+                 <div class="reply">
+                  <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2202#respond" onclick="return addComment.moveForm( &quot;div-comment-2202&quot;, &quot;2202&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给skyey">回复</a>
+                 </div> 
+                </article>
+                <!-- .comment-body --> 
+                <ol class="children"> 
+                 <li id="comment-2203" class="comment byuser comment-author-siasjack bypostauthor odd alt depth-5"> 
+                  <article id="div-comment-2203" class="comment-body"> 
+                   <footer class="comment-meta"> 
+                    <div class="comment-author vcard"> 
+                     <b class="fn"><a href="http://openwrtdl.com" rel="external nofollow" class="url">阿勇</a></b>
+                     <span class="says">说道：</span> 
+                    </div>
+                    <!-- .comment-author --> 
+                    <div class="comment-metadata"> 
+                     <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2203"> <time datetime="2017-03-03T09:47:37+00:00"> 2017年3月3日 上午9:47 </time> </a> 
+                    </div>
+                    <!-- .comment-metadata --> 
+                   </footer>
+                   <!-- .comment-meta --> 
+                   <div class="comment-content"> 
+                    <p>需要点时间 最近没时间弄他</p> 
+                   </div>
+                   <!-- .comment-content --> 
+                  </article>
+                  <!-- .comment-body --> </li>
+                 <!-- #comment-## --> 
+                 <li id="comment-2209" class="comment byuser comment-author-siasjack bypostauthor even depth-5"> 
+                  <article id="div-comment-2209" class="comment-body"> 
+                   <footer class="comment-meta"> 
+                    <div class="comment-author vcard"> 
+                     <b class="fn"><a href="http://openwrtdl.com" rel="external nofollow" class="url">阿勇</a></b>
+                     <span class="says">说道：</span> 
+                    </div>
+                    <!-- .comment-author --> 
+                    <div class="comment-metadata"> 
+                     <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2209"> <time datetime="2017-03-07T08:43:22+00:00"> 2017年3月7日 上午8:43 </time> </a> 
+                    </div>
+                    <!-- .comment-metadata --> 
+                   </footer>
+                   <!-- .comment-meta --> 
+                   <div class="comment-content"> 
+                    <p>最近ngrok.cc不够稳定，免费频道使用的人太多了，我测试了也是时好时坏！</p> 
+                   </div>
+                   <!-- .comment-content --> 
+                  </article>
+                  <!-- .comment-body --> </li>
+                 <!-- #comment-## --> 
+                </ol>
+                <!-- .children --> </li>
+               <!-- #comment-## --> 
+              </ol>
+              <!-- .children --> </li>
+             <!-- #comment-## --> 
+            </ol>
+            <!-- .children --> </li>
+           <!-- #comment-## --> 
+          </ol>
+          <!-- .children --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-2205" class="comment odd alt thread-odd thread-alt depth-1"> 
+          <article id="div-comment-2205" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn">lj47312</b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2205"> <time datetime="2017-03-06T02:46:15+00:00"> 2017年3月6日 上午2:46 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p><a href="http://blog.tianya.cn/post-7517710-123605090-1.shtml" rel="nofollow">http://blog.tianya.cn/post-7517710-123605090-1.shtml</a><br /> 写了个教程！</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2205#respond" onclick="return addComment.moveForm( &quot;div-comment-2205&quot;, &quot;2205&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给lj47312">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-2207" class="comment even thread-even depth-1 parent"> 
+          <article id="div-comment-2207" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn">734181488</b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2207"> <time datetime="2017-03-06T13:49:12+00:00"> 2017年3月6日 下午1:49 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>这东西能固定外网ip吗</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2207#respond" onclick="return addComment.moveForm( &quot;div-comment-2207&quot;, &quot;2207&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给734181488">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> 
+          <ol class="children"> 
+           <li id="comment-2208" class="comment byuser comment-author-siasjack bypostauthor odd alt depth-2"> 
+            <article id="div-comment-2208" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn"><a href="http://openwrtdl.com" rel="external nofollow" class="url">阿勇</a></b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2208"> <time datetime="2017-03-07T08:42:41+00:00"> 2017年3月7日 上午8:42 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p>外网IP是否能固定是看你的运营商，不过这个东西的作用就是无论你的外网IP如何变化，都不需要关心！</p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2208#respond" onclick="return addComment.moveForm( &quot;div-comment-2208&quot;, &quot;2208&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给阿勇">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> </li>
+           <!-- #comment-## --> 
+          </ol>
+          <!-- .children --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-2214" class="comment even thread-odd thread-alt depth-1 parent"> 
+          <article id="div-comment-2214" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn">Eric</b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2214"> <time datetime="2017-03-08T15:20:13+00:00"> 2017年3月8日 下午3:20 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>我想在家里建立局域网VPN然后从外网访问。家里公网IP跟WAN口IP不一致，用ngrok能否搭建局域网的vpn？</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2214#respond" onclick="return addComment.moveForm( &quot;div-comment-2214&quot;, &quot;2214&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给Eric">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> 
+          <ol class="children"> 
+           <li id="comment-2218" class="comment byuser comment-author-siasjack bypostauthor odd alt depth-2 parent"> 
+            <article id="div-comment-2218" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn"><a href="http://openwrtdl.com" rel="external nofollow" class="url">阿勇</a></b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2218"> <time datetime="2017-03-09T14:40:17+00:00"> 2017年3月9日 下午2:40 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p>如果你是长城宽带的可以打客服电话让他们给你公网ip，我就是这么干的。<br /> 用ngrok可以做vpn（pptp/openvpn），看帖子<br /> <a href="http://www.right.com.cn/forum/thread-201745-1-1.html" rel="nofollow">http://www.right.com.cn/forum/thread-201745-1-1.html</a><br /> <a href="http://www.right.com.cn/forum/thread-187490-1-1.html" rel="nofollow">http://www.right.com.cn/forum/thread-187490-1-1.html</a><br /> 有人说不稳定，你可以试试</p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2218#respond" onclick="return addComment.moveForm( &quot;div-comment-2218&quot;, &quot;2218&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给阿勇">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> 
+            <ol class="children"> 
+             <li id="comment-2219" class="comment even depth-3"> 
+              <article id="div-comment-2219" class="comment-body"> 
+               <footer class="comment-meta"> 
+                <div class="comment-author vcard"> 
+                 <b class="fn">Eric</b>
+                 <span class="says">说道：</span> 
+                </div>
+                <!-- .comment-author --> 
+                <div class="comment-metadata"> 
+                 <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2219"> <time datetime="2017-03-09T19:17:29+00:00"> 2017年3月9日 下午7:17 </time> </a> 
+                </div>
+                <!-- .comment-metadata --> 
+               </footer>
+               <!-- .comment-meta --> 
+               <div class="comment-content"> 
+                <p>谢谢提议，打电话给联通公司果然换成公网IP了。这样建立VPN就不用经过ngrok穿透环节了，现在手机4G能连家里的VPN，单位的电脑挂代理服务器能访问外网却连不上家里的VPN了，显示错误800，，，</p> 
+               </div>
+               <!-- .comment-content --> 
+               <div class="reply">
+                <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2219#respond" onclick="return addComment.moveForm( &quot;div-comment-2219&quot;, &quot;2219&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给Eric">回复</a>
+               </div> 
+              </article>
+              <!-- .comment-body --> </li>
+             <!-- #comment-## --> 
+            </ol>
+            <!-- .children --> </li>
+           <!-- #comment-## --> 
+          </ol>
+          <!-- .children --> </li>
+         <!-- #comment-## --> 
+         <li id="comment-2216" class="comment odd alt thread-even depth-1 parent"> 
+          <article id="div-comment-2216" class="comment-body"> 
+           <footer class="comment-meta"> 
+            <div class="comment-author vcard"> 
+             <b class="fn">xljbear</b>
+             <span class="says">说道：</span> 
+            </div>
+            <!-- .comment-author --> 
+            <div class="comment-metadata"> 
+             <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2216"> <time datetime="2017-03-08T21:03:24+00:00"> 2017年3月8日 下午9:03 </time> </a> 
+            </div>
+            <!-- .comment-metadata --> 
+           </footer>
+           <!-- .comment-meta --> 
+           <div class="comment-content"> 
+            <p>提示安装失败，自己搭建的ngrok没有token的怎么办？</p> 
+           </div>
+           <!-- .comment-content --> 
+           <div class="reply">
+            <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2216#respond" onclick="return addComment.moveForm( &quot;div-comment-2216&quot;, &quot;2216&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给xljbear">回复</a>
+           </div> 
+          </article>
+          <!-- .comment-body --> 
+          <ol class="children"> 
+           <li id="comment-2217" class="comment byuser comment-author-siasjack bypostauthor even depth-2 parent"> 
+            <article id="div-comment-2217" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn"><a href="http://openwrtdl.com" rel="external nofollow" class="url">阿勇</a></b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2217"> <time datetime="2017-03-09T14:36:40+00:00"> 2017年3月9日 下午2:36 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p>自己搭建的token随便写</p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2217#respond" onclick="return addComment.moveForm( &quot;div-comment-2217&quot;, &quot;2217&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给阿勇">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> 
+            <ol class="children"> 
+             <li id="comment-2220" class="comment odd alt depth-3"> 
+              <article id="div-comment-2220" class="comment-body"> 
+               <footer class="comment-meta"> 
+                <div class="comment-author vcard"> 
+                 <b class="fn">xljbear</b>
+                 <span class="says">说道：</span> 
+                </div>
+                <!-- .comment-author --> 
+                <div class="comment-metadata"> 
+                 <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2220"> <time datetime="2017-03-09T20:43:32+00:00"> 2017年3月9日 下午8:43 </time> </a> 
+                </div>
+                <!-- .comment-metadata --> 
+               </footer>
+               <!-- .comment-meta --> 
+               <div class="comment-content"> 
+                <p>提示安装失败~有哪些可能，谢谢~</p> 
+               </div>
+               <!-- .comment-content --> 
+               <div class="reply">
+                <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2220#respond" onclick="return addComment.moveForm( &quot;div-comment-2220&quot;, &quot;2220&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给xljbear">回复</a>
+               </div> 
+              </article>
+              <!-- .comment-body --> </li>
+             <!-- #comment-## --> 
+             <li id="comment-2221" class="comment even depth-3"> 
+              <article id="div-comment-2221" class="comment-body"> 
+               <footer class="comment-meta"> 
+                <div class="comment-author vcard"> 
+                 <b class="fn">xljbear</b>
+                 <span class="says">说道：</span> 
+                </div>
+                <!-- .comment-author --> 
+                <div class="comment-metadata"> 
+                 <a href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b#comment-2221"> <time datetime="2017-03-09T20:52:11+00:00"> 2017年3月9日 下午8:52 </time> </a> 
+                </div>
+                <!-- .comment-metadata --> 
+               </footer>
+               <!-- .comment-meta --> 
+               <div class="comment-content"> 
+                <p>其他插件安装没问题，ngork安装提示安装失败，请重试</p> 
+               </div>
+               <!-- .comment-content --> 
+               <div class="reply">
+                <a rel="nofollow" class="comment-reply-link" href="http://www.openwrtdl.com/wordpress/%e6%9e%81%e8%b7%af%e7%94%b1%e6%8f%92%e4%bb%b6ngrok%e4%bd%bf%e7%94%a8%e6%95%99%e7%a8%8b?replytocom=2221#respond" onclick="return addComment.moveForm( &quot;div-comment-2221&quot;, &quot;2221&quot;, &quot;respond&quot;, &quot;815&quot; )" aria-label="回复给xljbear">回复</a>
+               </div> 
+              </article>
+              <!-- .comment-body --> </li>
+             <!-- #comment-## --> 
+            </ol>
+            <!-- .children --> </li>
+           <!-- #comment-## --> 
+          </ol>
+          <!-- .children --> </li>
+         <!-- #comment-## --> 
+        </ol>
+        <!-- .comment-list --> 
+        <div id="respond" class="comment-respond"> 
+         <h3 id="reply-title" class="comment-reply-title">向<a href="#comment-1264">韩</a>进行回复 <small><a rel="nofollow" id="cancel-comment-reply-link" href="/wordpress/%E6%9E%81%E8%B7%AF%E7%94%B1%E6%8F%92%E4%BB%B6ngrok%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B#respond">取消回复</a></small></h3> 
+         <form action="http://www.openwrtdl.com/wordpress/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate=""> 
+          <p class="comment-notes"><span id="email-notes">电子邮件地址不会被公开。</span> 必填项已用<span class="required">*</span>标注</p>
+          <p class="comment-form-comment"><label for="comment">评论</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" aria-required="true" required="required"></textarea></p>
+          <p class="comment-form-author"><label for="author">姓名 <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" aria-required="true" required="required" /></p> 
+          <p class="comment-form-email"><label for="email">电子邮件 <span class="required">*</span></label> <input id="email" name="email" type="email" value="" size="30" maxlength="100" aria-describedby="email-notes" aria-required="true" required="required" /></p> 
+          <p class="comment-form-url"><label for="url">站点</label> <input id="url" name="url" type="url" value="" size="30" maxlength="200" /></p> 
+          <p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="发表评论" /> <input type="hidden" name="comment_post_ID" value="815" id="comment_post_ID" /> <input type="hidden" name="comment_parent" id="comment_parent" value="1264" /> </p>
+          <p><input type="checkbox" name="comment_mail_notify" id="comment_mail_notify" value="comment_mail_notify" checked="checked" style="width: auto;" /><label for="comment_mail_notify">有人回复时邮件通知我</label></p> 
+         </form> 
+        </div>
+        <!-- #respond --> 
+       </div>
+       <!-- #comments --> 
+      </div> 
+      <div class="col-sidebar"> 
+       <div id="secondary" class="widget-area" role="complementary"> 
+        <div> 
+         <aside id="search-2" class="widget widget_search">
+          <h2 class="widget-title">文章搜索</h2>
+          <form role="search" method="get" class="search-form" action="http://www.openwrtdl.com/wordpress/"> 
+           <label> <span class="screen-reader-text">搜索：</span> <input type="search" class="search-field" placeholder="搜索…" value="" name="s" /> </label> 
+           <input type="submit" class="search-submit" value="搜索" /> 
+          </form>
+         </aside> 
+         <aside id="recent-posts-2" class="widget widget_recent_entries"> 
+          <h2 class="widget-title">近期文章</h2> 
+          <ul> 
+           <li> <a href="http://www.openwrtdl.com/wordpress/%ef%bb%bf%ef%bb%bf3%e5%88%86%e9%92%9f%e4%ba%86%e8%a7%a3base64%e5%8e%9f%e7%90%86">﻿﻿3分钟了解Base64原理</a> </li> 
+           <li> <a href="http://www.openwrtdl.com/wordpress/linux%e4%b8%8bbanner%e7%94%9f%e6%88%90%e5%b7%a5%e5%85%b7">Linux下banner生成工具</a> </li> 
+           <li> <a href="http://www.openwrtdl.com/wordpress/%e7%94%b5%e4%bf%a1elink%e5%8d%8f%e8%ae%ae%e7%ae%80%e4%bb%8b">中国电信智慧家庭elink协议简介</a> </li> 
+           <li> <a href="http://www.openwrtdl.com/wordpress/https%e5%be%ae%e4%bf%a1%e8%bf%9ewifi-ap%e5%8d%87%e7%ba%a7%e6%8c%87%e5%8d%97">微信连WiFi部署https,AP升级指南</a> </li> 
+           <li> <a href="http://www.openwrtdl.com/wordpress/%e9%94%90%e9%80%9f%e7%a0%b4%e8%a7%a3%e7%89%88linux%e4%b8%80%e9%94%ae%e5%ae%89%e8%a3%85%e5%8c%85">锐速破解版linux一键自动安装包</a> </li> 
+           <li> <a href="http://www.openwrtdl.com/wordpress/linux-%e6%8a%80%e5%b7%a7%e5%90%8e%e5%8f%b0%e8%bf%90%e8%a1%8c%e7%a8%8b%e5%ba%8f%e7%9a%84%e6%96%b9%e6%b3%95">Linux 技巧：让进程在后台可靠运行的几种方法</a> </li> 
+           <li> <a href="http://www.openwrtdl.com/wordpress/mtk-mt7628-mt7688-openwrt-pwm%e9%a9%b1%e5%8a%a8">MediaTech(MTK)MT7628/MT7688 OpenWRT下PWM驱动</a> </li> 
+           <li> <a href="http://www.openwrtdl.com/wordpress/%e7%bb%9f%e8%ae%a1%e5%bd%93%e5%89%8d%e7%bd%91%e7%bb%9c%e8%bf%9e%e6%8e%a5%e6%95%b0%e6%8e%92%e5%90%8d">统计当前网络连接数排名</a> </li> 
+           <li> <a href="http://www.openwrtdl.com/wordpress/%e7%bb%9f%e8%ae%a1apachenginx%e8%ae%bf%e9%97%ae%e6%9c%80%e5%a4%9a%e7%9a%84ip">统计apache/nginx访问最多的IP</a> </li> 
+           <li> <a href="http://www.openwrtdl.com/wordpress/iptables%e5%ae%9e%e7%8e%b0%e8%8e%b7%e5%8f%96%e5%9c%a8%e7%ba%bf%e5%ae%a2%e6%88%b7%e7%ab%af%e5%ae%9e%e6%97%b6%e9%80%9f%e7%8e%87">iptables实现获取在线客户端实时速率</a> </li> 
+          </ul> 
+         </aside> 
+         <aside id="categories-2" class="widget widget_categories">
+          <h2 class="widget-title">分类目录</h2> 
+          <ul> 
+           <li class="cat-item cat-item-3"><a href="http://www.openwrtdl.com/wordpress/category/linux-c">linux C</a> </li> 
+           <li class="cat-item cat-item-4"><a href="http://www.openwrtdl.com/wordpress/category/linux%e5%86%85%e6%a0%b8">linux内核</a> </li> 
+           <li class="cat-item cat-item-2"><a href="http://www.openwrtdl.com/wordpress/category/openwrt%e6%95%99%e7%a8%8b">openwrt教程</a> </li> 
+           <li class="cat-item cat-item-20"><a href="http://www.openwrtdl.com/wordpress/category/wordpress%e5%ad%a6%e4%b9%a0">wordpress</a> </li> 
+           <li class="cat-item cat-item-58"><a href="http://www.openwrtdl.com/wordpress/category/smartiot/%e4%bd%8e%e5%8a%9f%e8%80%97wifi" title="低功耗wifi，主要包含MT7681/ESP8266等">低功耗WiFi</a> </li> 
+           <li class="cat-item cat-item-55"><a href="http://www.openwrtdl.com/wordpress/category/smartiot" title="智能家居技术，zigbee，蓝牙，低功耗wifi">智能家居</a> </li> 
+           <li class="cat-item cat-item-17"><a href="http://www.openwrtdl.com/wordpress/category/%e6%9d%82%e8%b0%88">杂谈</a> </li> 
+           <li class="cat-item cat-item-57"><a href="http://www.openwrtdl.com/wordpress/category/smartiot/ble">蓝牙BLE</a> </li> 
+           <li class="cat-item cat-item-5"><a href="http://www.openwrtdl.com/wordpress/category/%e8%bd%af%e4%bb%b6%e4%b8%8b%e8%bd%bd">软件下载</a> </li> 
+          </ul> 
+         </aside>
+         <aside id="nav_menu-2" class="widget widget_nav_menu">
+          <h2 class="widget-title">友情连接</h2>
+          <div class="menu-%e5%8f%8b%e6%83%85%e8%bf%9e%e6%8e%a5-container">
+           <ul id="menu-%e5%8f%8b%e6%83%85%e8%bf%9e%e6%8e%a5" class="menu">
+            <li id="menu-item-258" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-258"><a href="http://www.myop.cf">明月永在博客</a></li> 
+            <li id="menu-item-166" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-166"><a href="http://www.right.com.cn/forum/forum-72-1.html">恩山Openwrt</a></li> 
+            <li id="menu-item-330" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-330"><a href="http://blog.hackpascal.net/">breed作者hackpascal博客</a></li> 
+            <li id="menu-item-677" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-677"><a href="https://github.com">Github</a></li> 
+            <li id="menu-item-678" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-678"><a href="http://git.oschina.net">git.oschina码云</a></li> 
+           </ul>
+          </div>
+         </aside> 
+        </div> 
+       </div>
+       <!-- #secondary --> 
+      </div> 
+     </main>
+     <!-- #main --> 
+    </div>
+    <!-- #primary --> 
+   </div>
+   <!-- #content --> 
+   <footer id="colophon" class="site-footer" role="contentinfo"> 
+    <div class="site-info"> 
+     <a href="http://wordpress.org/">Proudly powered by WordPress</a> 
+     <span class="sep"> | </span> 
+     <a href="http://www.miitbeian.gov.cn/publish/query/indexFirst.action">ICP备案号:豫ICP备15009167号-1</a> 
+     <span class="sep"> | </span> 
+     <a href="http://www.openwrtdl.com/wordpress/wp-login.php">登录</a> 
+    </div>
+    <!-- .site-info --> 
+   </footer>
+   <!-- #colophon --> 
+  </div>
+  <!-- #page --> 
+  <script type="text/javascript"><!--//--><![CDATA[//><!--
+var cf = document.getElementById("commentform");
+if(cf){
+	var msghtml = "<strong>NOTICE:</strong> 纯英文数字评论将被屏蔽！";
+	if(cf.insertAdjacentHTML){
+		cf.insertAdjacentHTML("afterEnd", msghtml);
+	}else{/* FireFox */
+		var range = cf.ownerDocument.createRange();
+		range.setStartAfter(cf);
+		var frag = range.createContextualFragment(msghtml);
+		cf.parentNode.insertBefore(frag, cf.nextSibling);
+	}
+}
+//--><!]]></script>
+  <script type="text/javascript" src="http://www.openwrtdl.com/wordpress/wp-content/plugins/smartideo/static/smartideo.js?ver=2.2.4"></script> 
+  <script type="text/javascript" src="http://www.openwrtdl.com/wordpress/wp-content/themes/ocomedrev/js/navigation.js?ver=20120206"></script> 
+  <script type="text/javascript" src="http://www.openwrtdl.com/wordpress/wp-includes/js/imagesloaded.min.js?ver=3.2.0"></script> 
+  <script type="text/javascript" src="http://www.openwrtdl.com/wordpress/wp-includes/js/masonry.min.js?ver=3.3.2"></script> 
+  <script type="text/javascript" src="http://www.openwrtdl.com/wordpress/wp-content/themes/ocomedrev/js/skip-link-focus-fix.js?ver=20130115"></script> 
+  <script type="text/javascript" src="http://www.openwrtdl.com/wordpress/wp-includes/js/comment-reply.min.js?ver=4.7.3"></script> 
+  <script type="text/javascript" src="http://www.openwrtdl.com/wordpress/wp-includes/js/wp-embed.min.js?ver=4.7.3"></script>  
+  <script type="text/javascript">
+/*  暂时关闭cnzz的统计，有百度即可
+var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1258728584'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1258728584%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));
+*/
+</script> 
+  <script>
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?74f119c0a731d3808b4dcb5d92cc51df";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+  <script>
+(function(){
+    var bp = document.createElement('script');
+    bp.src = '//push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>  
+  <!-- Dynamic page generated in 1.073 seconds. --> 
+  <!-- Cached page generated by WP-Super-Cache on 2017-03-28 23:45:24 --> 
+  <!-- Compression = gzip -->
+ </body>
+</html>

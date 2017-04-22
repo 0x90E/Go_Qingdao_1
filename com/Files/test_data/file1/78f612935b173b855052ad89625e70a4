@@ -1,0 +1,1044 @@
+<!DOCTYPE html><html><head>
+    <meta name="viewport" content="width=device-width">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>中通快递身份认证系统</title>
+    <link rel="stylesheet" href="/libs/Login/css/css.css?t=20150924">
+    <script src="//hm.baidu.com/hm.js?8e5561ae6e768a5a0ced4d6df3d699da"></script><script type="text/javascript" src="/libs/Login/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/libs/Login/js/jquery.enplaceholder.js"></script>
+    <script type="text/javascript" src="/libs/Login/js/layer/layer.min.js?v=1.8.4"></script><link type="text/css" rel="stylesheet" href="https://sso.zt-express.com/libs/Login/js/layer/skin/layer.css" id="skinlayercss">
+    <script type="text/javascript" src="/libs/Login/js/BigInt.js"></script>
+    <script type="text/javascript" src="/libs/Login/js/RSA.js"></script>
+    <script type="text/javascript" src="/libs/Login/js/Barrett.js"></script>
+    <script type="text/javascript" src="/libs/Login/js/xxtea.js"></script>
+    <script type="text/javascript">
+        //if (top.location != location) {
+        //    top.location.href = location.href;
+        //}
+
+        // 2016-05-13 增加了默认值 return null 改为 return "PORTAL"
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]); return "PORTAL";
+        }
+
+        var systemcode = GetQueryString("SystemCode");
+        if (systemcode.toLowerCase() != "gk") {
+            var sUserAgent = navigator.userAgent,
+            mobileAgents = ['Windows CE', 'iPod', 'Symbian', 'iPhone', 'BlackBerry', 'Android', 'Windows Phone'];
+            if ((sUserAgent.match(/iPad/i))) {
+                location.href = '/Login/MobileIndex?systemcode=' + systemcode;
+            }
+            for (var i = 0, len = mobileAgents.length; i < len; i++) {
+                if (sUserAgent.indexOf(mobileAgents[i]) !== -1) {
+                    location.href = '/Login/MobileIndex?systemcode=' + systemcode;
+                    break;
+                }
+            }
+        }
+        var ads = [];
+    </script>
+    
+    <script type="text/javascript">
+        function checkIdCard(num) {
+            //var len = num.length, re;
+            //if (len == 15)
+            //    re = new RegExp(/^(\d{6})()?(\d{2})(\d{2})(\d{2})(\d{3})$/);
+            //else if (len == 18)
+            //    re = new RegExp(/^(\d{6})()?(\d{4})(\d{2})(\d{2})(\d{3})(\d)$/);
+            //else {
+            //    //alert("请输入15或18位身份证号,您输入的是 "+len+ "位");
+            //    return false;
+            //}
+            //var a = num.match(re);
+            //if (a != null) {
+            //    if (len == 15) {
+            //        var D = new Date("19" + a[3] + "/" + a[4] + "/" + a[5]);
+            //        var B = D.getYear() == a[3] && (D.getMonth() + 1) == a[4] && D.getDate() == a[5];
+            //    } else {
+            //        var D = new Date(a[3] + "/" + a[4] + "/" + a[5]);
+            //        var B = D.getFullYear() == a[3] && (D.getMonth() + 1) == a[4] && D.getDate() == a[5];
+            //    }
+            //    if (!B) {
+            //        //alert("输入的身份证号 "+ a[0] +" 里出生日期不对！");
+            //        return false;
+            //    }
+            //}
+            return num.length == 15 || num.length == 18;
+        }
+
+        $(".code").placeholder();
+        //密码框特殊处理
+        $('#siteuserpass,#userpass').placeholder({ isUseSpan: true });
+
+        $(".more").click(function () {
+            var pagei = $.layer({
+                type: 1,
+                title: false,
+                border: [0],
+                closeBtn: [0],
+                shadeClose: true,
+                offset: [($(window).height() - 405) / 2 + 'px', ''],
+                area: ['480px', '350px'],
+                page: {
+                    html: '<\div style="width:480px; height:350px; background:#018BF6; color:#fff;line-height:180%; box-shadow:0 0 10px #06C;"><\div style="padding:20px;">' + $("#ttps").html() + '<\/div><\/div>'
+                }
+            });
+        });
+
+        var wait = 180;
+        //定时器
+        function time(o, oMobile, oCode) {
+            if (wait == 0) {
+                o.removeAttribute("disabled");
+                o.value = "免费获取验证码";
+                wait = 180;
+                oMobile.removeAttribute("disabled");
+                //oMobile.focus();
+                //oCode.setAttribute("disabled", true);
+            } else {
+                o.setAttribute("disabled", true);
+                oMobile.setAttribute("disabled", true);
+                o.value = "重新发送(" + wait + ")";
+                wait--;
+                setTimeout(function () {
+                    time(o, oMobile, oCode);
+                },
+                    1000);
+            }
+        };
+        //获取唯一用户名的验证码
+        function timeNick(o) {
+            if (wait == 0) {
+                o.removeAttribute("disabled");
+                o.value = "获取唯一用户名";
+                wait = 180;
+            } else {
+                o.setAttribute("disabled", true);
+                o.value = "重新获取发送(" + wait + ")";
+                wait--;
+                setTimeout(function () {
+                    timeNick(o);
+                },
+                    1000);
+            }
+        };
+        $(function () {
+            var _height = $(window).height();
+            $(".in-backspace").css("height", _height - "680" + "px");
+            $("#nickLogin").click();
+            $("#username").focus();
+            $(".left-02").click(function () {
+                alert("请用唯一用户名登录，可通过中天系统查看自己的认证信息或联系技术支持获取");
+                $(".left-01").click();
+            });
+            //document.getElementById("sitename").focus();
+            $("#sitename").keydown(function (event) {
+                if (event.keyCode == 13) {
+                    login();
+                }
+            });
+            $("#siteusername").keydown(function (event) {
+                if (event.keyCode == 13) {
+                    login();
+                }
+            });
+            $("#siteuserpass").keydown(function (event) {
+                if (event.keyCode == 13) {
+                    login();
+                }
+            });
+            $("#username").keydown(function (event) {
+                if (event.keyCode == 13) {
+                    login();
+                }
+            });
+            $("#userpass").keydown(function (event) {
+                if (event.keyCode == 13) {
+                    login();
+                }
+            });
+            //关闭密码修改页面
+            $("#overUpPwd").click(function () {
+                $(".upPwdShow").hide();
+                $(".bg").hide();
+            });
+            //关闭认证弹出页面
+            $("#overAuth").click(function () {
+                $(".authShow").hide();
+                $(".bg").hide();
+            });
+            //关闭7天未登录的手机验证
+            $("#overAuthMobile").click(function () {
+                $(".mobileAuthShow").hide();
+                $(".bgbox").hide();
+                $(".bg").hide();
+            });
+            //忘记唯一用户名 通过手机找回唯一用户名
+            $("#forgetNickname").click(function () {
+                $(".nickNameShow").show();
+                $(".bgbox").css("display", "block");
+                $(".bg").show();
+            });
+            //关闭手机找回密码
+            $("#overNickName").click(function () {
+                $(".nickNameShow").hide();
+                $(".bg").hide();
+            });
+            $("#rengZheng").click(function () {
+                $(".suggestShow").show();
+                $(".bgbox").css("display", "block");
+                $(".bg").show();
+            });
+            $("#overSuggest").click(function () {
+                $(".suggestShow").hide();
+                $(".bgbox").css("display", "none");
+                $(".bg").hide();
+            });
+            //
+            $("#vcode").focus(function () {
+                $("#checkcodeB").click();
+            });
+            //更换验证码
+            $("#checkcodeA,#checkcodeB").click(function () {
+                $(this).attr("src", "/Login/CheckCode?radom=" + Math.floor(Math.random() * 100));
+            });
+            //获取唯一用户名
+            $("#mobileNick").click(function () {
+                var me = this;
+                if ($("#mobileNum").val() == "") {
+                    alert("请输入手机号码");
+                    $("#mobileNum").focus();
+                    return;
+                }
+                if ($("#vcode").val() == "") {
+                    alert("请输入验证码");
+                    return;
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "/Login/GetNickName?radom=" + Math.floor(Math.random() * 100),
+                    data: { "mobile": $("#mobileNum").val(), "vcode": $("#vcode").val() },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.StatusCode == "true") {
+                            //发送成功
+                            timeNick(me);
+                        } else {
+                            alert(data.StatusMessage);
+                        }
+                    },
+                    error: function () {
+                        alert("系统出错了");
+                    }
+                });
+            });
+
+            //发送
+            function sendMobileSMS(mobile, me) {
+                //提交短信发送请求
+                $.ajax({
+                    type: "GET",
+                    url: "/Login/SendMobileSMS",
+                    data: { "mobile": mobile },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.StatusCode == "true") {
+                            //获得手机验证码
+                            alert(data.StatusMessage);
+                            var oMobile = document.getElementById("authMobile");
+                            var oCode = document.getElementById("authVerificationCode");
+                            oCode.removeAttribute("disabled");
+                            oCode.value = "";
+                            oCode.focus();
+                            time(me, oMobile, oCode);
+                        } else {
+                            alert(data.StatusMessage);
+                        }
+                    },
+                    error: function () {
+                        alert("系统出错了,请联系客服。");
+                    }
+                });
+            };
+
+            //修改密码发送验证码
+            $("#getMobileVcode").click(function () {
+                var me = this;
+                var oldPassword = $("#oldPassword").val();
+                if (!oldPassword) {
+                    alert("请输入原密码");
+                    return;
+                }
+                var newPassword = $("#newPassword").val();
+                if (!newPassword) {
+                    alert("请输入新密码");
+                    return;
+                }
+                var mobile = $("#mobile").val();
+                if (!mobile || !/1[3-8]+\d{9}/.test(mobile)) {
+                    alert("请输入正确的手机号码");
+                    return;
+                }
+                sendMobileSMS(mobile, me);
+            });
+
+            //发送验证码
+            $("#sendAuthCodde").click(function () {
+                var me = this;
+                var authMobile = document.getElementById("authMobile").value;
+                if (!authMobile || !/1[3-8]+\d{9}/.test(authMobile)) {
+                    alert("请输入正确的手机号码");
+                    return;
+                }
+                sendMobileSMS(authMobile, me);
+            });
+
+            //确认修改密码
+            $(".sureUpPwd").click(function () {
+                var oldPassword = document.getElementById("oldPassword").value;
+                var newPassword = document.getElementById("newPassword").value;
+                var reNewPassword = document.getElementById("reNewPassword").value;
+                var mobile = document.getElementById("mobile").value;
+                var mobileVcode = document.getElementById("mobileVcode").value;
+                var errorMsg;
+                var focusId;
+                if (!oldPassword || oldPassword == '请输入原密码') {
+                    errorMsg = "请输入原密码";
+                    focusId = "oldPassword";
+                }
+                if (!newPassword || newPassword == '请输入新密码') {
+                    errorMsg = "请输入新密码";
+                    focusId = "newPassword";
+                }
+                if (!reNewPassword || reNewPassword == '请输入新密码') {
+                    errorMsg = "请输入新密码";
+                    focusId = "reNewPassword";
+                }
+                if (reNewPassword != newPassword) {
+                    errorMsg = "确认密码与新密码应一致";
+                    focusId = "reNewPassword";
+                }
+                if (!mobile || mobile == '请输入手机号码') {
+                    errorMsg = "请输入手机号码";
+                    focusId = "mobile";
+                }
+                if (!mobileVcode || mobileVcode == '请输入手机获取的验证码') {
+                    errorMsg = "请输入手机获取的验证码";
+                    focusId = "mobileVcode";
+                }
+                if (errorMsg) {
+                    alert(errorMsg);
+                    document.getElementById(focusId).focus();
+                } else {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Login/ChangePassword",
+                        data: { "oldPassword": oldPassword, "newPassword": newPassword, 'mobile': mobile, 'mobileVcode': mobileVcode },
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.StatusCode == "ChangePasswordOK") {
+                                //密码修改成功，跳转页面
+                                window.location.href = "/System";
+                            } else {
+                                alert(data.StatusMessage);
+                            }
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            //alert("系统出错了");
+                            alert("系统出错了:"+XMLHttpRequest.status + "," + XMLHttpRequest.readyState + "," + textStatus);
+                        }
+                    });
+                }
+            });
+            //认证操作
+            $("#sureAuth").click(function () {
+                //认证处理 输入验证
+                var authRealName = document.getElementById("authRealName").value;
+                var authUserName = document.getElementById("authUserName").value;
+                var authNickName = document.getElementById("authNickName").value;
+                var authIdCard = document.getElementById("authIdCard").value;
+                var authQQ = document.getElementById("authQQ").value;
+                var authTel = document.getElementById("authTel").value;
+                var authMobile = document.getElementById("authMobile").value;
+                var authVerificationCode = document.getElementById("authVerificationCode").value;
+                var errorMsg;
+                var focusId;
+                if (!authRealName || authRealName.length < 2) {
+                    errorMsg = "真实姓名不能为空，至少2个汉字吧!";
+                    focusId = "authRealName";
+                } else if (!authUserName || authUserName.length < 3) {
+                    errorMsg = "用户名不能为空!长度不能小于3";
+                    focusId = "authUserName";
+                } else if (!authNickName || authUserName.length < 3) {
+                    errorMsg = "唯一用户名不能为空!长度不能小于3";
+                    focusId = "authNickName";
+                } else if (!authIdCard || !checkIdCard(authIdCard)) {
+                    errorMsg = "请填写真实身份证号码!";
+                    focusId = "authIdCard";
+                } else if (!authQQ || !(/^[0-9]{5,10}$/.test(authQQ))) {
+                    errorMsg = "QQ号码不能为空，请填入正确的QQ号码!";
+                    focusId = "authQQ";
+                } else if (!authMobile || !/1[3-8]+\d{9}/.test(authMobile)) {
+                    errorMsg = "手机号码不能为空!";
+                    focusId = "authMobile";
+                } else if (!authVerificationCode) {
+                    errorMsg = "手机验证码不能为空!";
+                    focusId = "authVerificationCode";
+                }
+                if (errorMsg) {
+                    alert(errorMsg);
+                    document.getElementById(focusId).focus();
+                } else {
+                    $.ajax({
+                        type: "POST",
+                        url: "/Login/Auth",
+                        data: { "authModel.RealName": $("#authRealName").val(), "authModel.UserName": $("#authUserName").val(), "authModel.NickName": $("#authNickName").val(), "authModel.IDCard": $("#authIdCard").val(), "authModel.QQ": $("#authQQ").val(), "authModel.Tel": $("#authTel").val(), "authModel.mobile": $("#authMobile").val(), "authModel.VerificationCode": $("#authVerificationCode").val() },
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.StatusCode == "true") {
+                                //认证信息成功，跳转页面
+                                alert(data.StatusMessage);
+                                window.location.href = "/System";
+                            } else {
+                                alert(data.StatusMessage);
+                            }
+                        },
+                        error: function () {
+                            alert("系统出错了");
+                        }
+                    });
+                }
+            });
+            //7天未登录验证
+            $("#authMobileCode").click(function () {
+                var me = this;
+                var mobileAuthNum = document.getElementById("mobileAuthNum").value;
+                if (!mobileAuthNum || !/1[3-8]+\d{9}/.test(mobileAuthNum)) {
+                    alert("请输入正确的手机号码");
+                    return;
+                }
+                //提交短信发送请求
+                $.ajax({
+                    type: "GET",
+                    url: "/Login/SendAuthMobileSMS",
+                    data: { "mobile": $("#mobileAuthNum").val() },
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.StatusCode == "true") {
+                            alert(data.StatusMessage);
+                            //获得手机验证码
+                            var oMobile = document.getElementById("mobileAuthNum");
+                            var oCode = document.getElementById("mobileAuthCode");
+                            oCode.removeAttribute("disabled");
+                            oCode.value = "";
+                            oCode.focus();
+                            time(me, oMobile, oCode);
+                        } else {
+                            alert(data.StatusMessage);
+                        }
+                    },
+                    error: function () {
+                        alert("系统出错了");
+                    }
+                });
+            });
+            //7天未登录认证处理
+            $("#mobileAuthLogin").click(function () {
+                if ($("#mobileAuthCode").val() == "") {
+                    alert("请输入手机收到的验证码");
+                }
+                var sitename, username, password, loginVcode;
+                if ($("#logintype").val() == "user") {
+                    username = document.getElementById("username").value;
+                    password = document.getElementById("userpass").value;
+                } else {
+                    sitename = document.getElementById("sitename").value;
+                    username = document.getElementById("siteusername").value;
+                    password = document.getElementById("siteuserpass").value;
+                }
+                password = getPassword(username + password);
+                username = getPassword(username);
+                loginVcode = document.getElementById("loginVcode").value;
+                $.ajax({
+                    type: "POST",
+                    url: "/Login/MobileAuth",
+                    data: { "SiteName": sitename, "UserName": username, "Password": password, "LoginVcode": loginVcode, "SystemCode": 'ZZT', "returnUrl": '', "mobile": $("#mobileAuthNum").val(), "vcode": $("#mobileAuthCode").val() },
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.StatusCode == "true") {
+                            //认证信息成功，跳转页面
+                            //window.location.href = "/System";
+                            window.location.href = result.Data.LoginUrl;
+                        } else if (result.StatusCode == "needAuth") {
+                            alert("您的账号未经过认证，请联系网点管理员完善你的个人资料，如姓名、唯一用户名、手机号码，QQ号码等联系信息。");
+                        }
+                        else {
+                            alert("验证出错:" + result.StatusMessage);
+                        }
+                    },
+                    error: function () {
+                        alert("系统出错了");
+                    }
+                });
+            });
+
+            //在这里面输入任何合法的js语句（以下将演示一个自定义风格的层）
+            /*
+                  $.layer({
+                      type: 2,
+                      shadeClose: false,
+                      title: false,
+                      closeBtn: [0, true],
+                      shade: [0.8, '#000'],
+                      border: [0],
+                      offset: ['130px', ''],
+                      area: ['860px', '415px'],
+                      iframe: { src: '/GanDongJiaoTong/index.html' }
+                  });
+          */
+        });
+
+        //忘记密码
+        function ForgetPassword() {
+            if ($("#Email").val() == "") {
+                $(".phoneway").css("display", "block");
+                $(".mailway").css("display", "none");
+                $("#duanxin").html("<span>验证中，请稍等......</span>");
+            } else {
+                $(".mailway").css("display", "block");
+                $(".phoneway").css("display", "none");
+                $("#youjian").html("<span>验证中，请稍等......</span>");
+            }
+            $(".findway").css("display", "none");
+            $.post("/ForgetPassword/ForgetPassword",
+                { "SiteName": $("#ForgetSiteName").val(), "UserName": $("#ForgetUserName").val(), "Phone": $("#Phone").val(), "Email": $("#Email").val() },
+                function (result) {
+                    if (result == null) {
+                        $(".mailway").css("display", "none");
+                        $(".phoneway").css("display", "none");
+                        $(".errorway").css("display", "block");
+                        $("#error").html("出错啦！");
+                        return false;
+                    }
+                    if (result.StatusCode == "true" || result.StatusCode == true) {
+                        if ($("#Email").val() == "") {
+                            $(".phoneway").css("display", "block");
+                            $(".mailway").css("display", "none");
+                            $("#duanxin").html(result.StatusMessage);
+                        } else {
+                            $(".mailway").css("display", "block");
+                            $(".phoneway").css("display", "none");
+                            $("#youjian").html(result.StatusMessage);
+                        }
+                    }
+                    else {
+                        $(".mailway").css("display", "none");
+                        $(".phoneway").css("display", "none");
+                        $(".errorway").css("display", "block");
+                        $("#error").html(result.StatusMessage);
+                    }
+                }, "json");
+        }
+        var bNeedloginVcode = true;
+        function getPassword(password) {
+            setMaxDigits(129);
+            var key = new RSAKeyPair("010001", "", "D3D8472DCE0A110BB0A4EC889BA678C6F1988C6F32EC4EF2491684ABF19D77B93D38D1B05279BFE4A76CC3B600A2EE42AB44BAD17C3C7C36486CA632D5663FAF8B4AD3A8371C6FF18722D6DB0E989EBE781A309AF12A9F5331CCDDFD9A387A8CCA59E46A271CEEB47ACF9ED1B2855D7AB318AD39E2B6BFD483ADFF6C570C8CDB");
+            return encryptedString(key, password);
+        }
+        //登录
+        function login() {
+            var errorMsg = "";
+            var sitename, username, password, returnUrl, loginVcode;
+            //登录成功跳转到的页面 暂时不考虑这么做
+            returnUrl = document.getElementById("ReturnUrl").value;
+            if ($("#logintype").val() == "user") {
+                username = document.getElementById("username").value;
+                password = document.getElementById("userpass").value;
+                loginVcode = document.getElementById("loginVcode").value;
+                if (username == '请输入唯一用户名') {
+                    username = "";
+                }
+                if (password == '请输入密码') {
+                    password = "";
+                }
+                if (loginVcode == '请输入验证码') {
+                    loginVcode = "";
+                }
+
+                if (!username) {
+                    errorMsg += "用户名不能为空!";
+                }
+                if (!password) {
+                    errorMsg += "密码不能为空!";
+                }
+                if (bNeedloginVcode && !loginVcode) {
+                    errorMsg += "验证码不能为空!";
+                }
+
+                if (errorMsg != "") {
+                    $("#user_info").html(errorMsg);
+                    $("#user_info").show();
+                    return false;
+                } else {
+                    $("#user_info").show();
+                    $("#user_info").html("正在登录中...");
+                }
+            } else {
+                sitename = document.getElementById("sitename").value;
+                username = document.getElementById("siteusername").value;
+                password = document.getElementById("siteuserpass").value;
+                if (sitename == "请输入站点名称") {
+                    sitename = "";
+                }
+                if (username == "请输入账号") {
+                    username = "";
+                }
+                if (password == "请输入密码") {
+                    password = "";
+                }
+                if (!sitename) {
+                    errorMsg += "站点不能为空!";
+                }
+                if (!username) {
+                    errorMsg += "账号不能为空!";
+                }
+                if (!password) {
+                    errorMsg += "密码不能为空!";
+                }
+                if (errorMsg != "") {
+                    $("#site_info").html(errorMsg);
+                    $("#site_info").show();
+                    return false;
+                } else {
+                    $("#site_info").show();
+                    $("#site_info").html("正在登录中...");
+                }
+            }
+            //登录处理
+            //setMaxDigits(129);
+            //var key = new RSAKeyPair("010001", "", "D3D8472DCE0A110BB0A4EC889BA678C6F1988C6F32EC4EF2491684ABF19D77B93D38D1B05279BFE4A76CC3B600A2EE42AB44BAD17C3C7C36486CA632D5663FAF8B4AD3A8371C6FF18722D6DB0E989EBE781A309AF12A9F5331CCDDFD9A387A8CCA59E46A271CEEB47ACF9ED1B2855D7AB318AD39E2B6BFD483ADFF6C570C8CDB");
+            //password = encryptedString(key, password);
+            password = getPassword(username + password);
+            username = getPassword(username);
+            //var xt = new Xxtea(key);
+            //password = xt.xxtea_encrypt(password);
+            $.post("/Login/Login",
+                { "SiteName": sitename, "UserName": username, "Password": password, "LoginVcode": loginVcode, "SystemCode": 'ZZT', "returnUrl": '' },
+                function (result) {
+                    if (result == null) {
+                        if ($("#logintype").val() == "user") {
+                            $("#user_info").html("登陆失败!");
+                        } else {
+                            $("#site_info").html("登陆失败!");
+                        }
+                        return false;
+                    }
+                    if (result.StatusCode == "true" || result.StatusCode == true) {
+                        if ($("#logintype").val() == "user") {
+                            $("#user_info").html("登录成功，正在转到主页...");
+                        } else {
+                            $("#site_info").html("登录成功，正在转到主页...");
+                        }
+                        window.location.href = result.Data.LoginUrl;
+                        //window.location = result.LoginUrl ;
+                    } else if (result.StatusCode == "needUpdatePassWord") {
+                        //弹出修改密码窗口
+                        var jsonResult = eval("(" + result.StatusMessage + ")");
+                        alert(jsonResult.Msg);
+                        $("#xgmmsjts").html("修改密码：手机提示:" + jsonResult.Mobile + "");
+                        $(".bgbox").css("display", "block");
+                        $(".bg").show();
+                        $(".upPwdShow").show();
+                    }
+                    else if (result.StatusCode == "needNickLogin") {
+                        //需要使用唯一用户名登录
+                        var jsonResult = eval("(" + result.StatusMessage + ")");
+                        alert("您已认证，请使用唯一用户名登录。如忘记唯一用户名，请进入中天或K8系统查看或通过手机" + jsonResult.Mobile + "找回唯一用户名。");
+                        $("#nickLogin").click();
+                    }
+                    else if (result.StatusCode == "needAuth") {
+                        alert("您的账号未经过认证，请联系网点管理员完善你的个人资料，如姓名、唯一用户名、手机号码，QQ号码等联系信息。");
+                        //弹出认证窗口
+                        //$("#user_info").html("账号未认证，请认证");
+                        //$(".bgbox").css("display", "block");
+                        //$(".bg").show();
+                        //$(".authShow").show();
+                        ////设置部分输入框的值
+                        //var jsonResult = eval("(" + result.StatusMessage + ")");
+                        //$("#authRealName").val(jsonResult.RealName);
+                        ////if (jsonResult.RealName) {
+                        ////    $("#authRealName").attr("readonly", "readonly").attr("title", "不允许修改").css("background", "wheat");
+                        ////}
+                        //$("#authUserName").val(jsonResult.UserName);
+                        //if (jsonResult.UserName && jsonResult.UserName.length > 2) {
+                        //    $("#authUserName").attr("readonly", "readonly").attr("title", "不允许修改").css("background", "wheat");
+                        //}
+                        //if (jsonResult.NickName && jsonResult.NickName.length > 2) {
+                        //    $("#authNickName").val(jsonResult.NickName).attr("readonly", "readonly").attr("title", "不允许修改").css("background", "wheat");
+                        //}
+                        //$("#authIdCard").val(jsonResult.IDCard);
+                        //$("#authQQ").val(jsonResult.QQ);
+                        //$("#authTel").val(jsonResult.Tel);
+                        //$("#authMobile").val(jsonResult.Mobile);
+                    } else if (result.StatusCode == "needMobileAuth") {
+                        //需要获取手机验证码进行登录
+                        var jsonResult = eval("(" + result.StatusMessage + ")");
+                        $("#tishiMobile").html(jsonResult.Mobile);
+                        alert("超七天未登录，需要通过手机" + jsonResult.Mobile + "验证。");
+                        $("#mobileAuthValidate").html("超七天未登录手机验证");
+                        $(".bgbox").css("display", "block");
+                        $(".bg").show();
+                        $(".mobileAuthShow").show();
+                        $("#checkcodeA").click();
+                    } else if (result.StatusCode == "needSolveException") {
+                        //登录异常需要手机验证
+                        var jsonResult = eval("(" + result.StatusMessage + ")");
+                        alert("系统判断您的账号有异常登录，请通过手机" + jsonResult.Mobile + "认证解除异常信息。");
+                        $("#tishiMobile").html(jsonResult.Mobile);
+                        $("#mobileAuthValidate").html("异常登录手机验证");
+                        $(".bgbox").css("display", "block");
+                        $(".bg").show();
+                        $(".mobileAuthShow").show();
+                        $("#checkcodeA").click();
+                    } else if (result.StatusCode == "passwordError") {
+                        //密码错误显示验证码
+                        $("#vcodeLogin").show();
+                        bNeedloginVcode = true;
+                        $("#checkcodeA").click();
+                        $("#user_info").html(result.StatusMessage);
+                    } else if (result.StatusCode == "passwordErrorLeaveNum") {
+                        //弹出提示尝试密码剩下多少次
+                        alert(result.StatusMessage);
+                        $("#user_info").html(result.StatusMessage);
+                        $("#vcodeLogin").show();
+                        bNeedloginVcode = true;
+                        $("#checkcodeA").click();
+                    } else if (result.StatusCode === "vcodeError") {
+                        //验证码不正确
+                        $("#vcodeLogin").show();
+                        $("#checkcodeA").click();
+                        $("#user_info").html(result.StatusMessage);
+                        alert(result.StatusMessage);
+                    } else if (result.StatusCode == "pageInvalid") {
+                        alert(result.StatusMessage);
+                        window.location.href = "/";
+                    } else if (result.StatusCode == "loginException") {
+                        alert("登录异常：" + result.StatusMessage + "请点击确定重新登录。");
+                        window.location.href = "/";
+                    }
+                    else {
+                        if ($("#logintype").val() == "user") {
+                            $("#user_info").html(result.StatusMessage);
+                        } else {
+                            $("#site_info").html(result.StatusMessage);
+                        }
+                        $("#vcodeLogin").show();
+                        bNeedloginVcode = true;
+                        $("#checkcodeA").click();
+                    }
+                }, "json");
+        };
+    </script>
+    <!--[if IE 6]>
+        <script type="text/javascript" src="/libs/Login/js/DD_belatedPNG.js"></script>
+        <script type="text/javascript">
+            DD_belatedPNG.fix('div,a');
+        </script>
+    <![endif]-->
+
+</head>
+<body>
+    <div class="head">
+        <div class="w980 mauto"><a class="logo"></a></div>
+    </div>
+    <div class="main" style="height: 480px; ">
+        <div class="w980 mauto pr">
+            
+            <div class="tips"><span>技术支持</span> &nbsp;&nbsp;&nbsp;&nbsp;电话：021-31165566</div>
+            <div class="ad" style="top: 79px; "></div>
+            <div style="clear: both;"></div>
+            <div class="login">
+                <ul class="nav" style="border-bottom-width: 3px; border-bottom-style: double; border-bottom-color: rgb(245, 222, 179); margin-top: 70px; ">
+                    <li class="left-01 curr" id="nickLogin" style="width: 100%; border-radius: 10px 10px 0 0;">用户登录</li>
+                    <li class="left-02" style="display:none">网点用户名登录<i class="jiao"></i></li>
+                </ul>
+                <ul class="guest" style="clear: both;">
+                    <li style="display: block">
+                        <div class="name label">
+                            唯一用户名：<input class="input code account" id="username" placeholder="请输入唯一用户名" type="text" tabindex="1">
+                            
+                            <a href="https://security.zt-express.com/Account/GetNickName" target="_blank">&nbsp;&nbsp;找回用户名</a>
+                        </div>
+                        <div class="password label" style="margin-top: 20px">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;密码：
+                            <input class="input psd" id="userpass" placeholder="请输入密码" type="password" tabindex="2">
+                            <a class="next1" href="https://security.zt-express.com/Password/Forget" target="_blank">&nbsp;&nbsp;找回密码</a>
+                        </div>
+                        <div class="vcode label" id="vcodeLogin" style="margin-top: 20px; display: block">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;验证码：<input class="input code account" id="loginVcode" name="loginVcode" style="width: 160px" placeholder="请输入验证码" type="text" tabindex="3">
+                            <img width="75" height="30" alt="验证码图片" title="点击更换验证码" id="checkcodeA" src="/Login/CheckCode" style="display: inline-block; border: 1px solid #c8c7da; border-radius: 4px; outline: medium none; line-height: 32px; vertical-align: middle; cursor: pointer;">
+                        </div>
+                        <div style="position: relative">
+                            <div id="user_info" style="display: block;" class="wrong wrong1">
+                                网点账号的登录方式已经取消，请使用唯一用户名的方式登录。<a id="rengZheng" href="javascript:;" title="如何找到唯一用户名？"></a>
+                            </div>
+                        </div>
+                    </li>
+                    <li style="display: none;">
+                        <div class="w90 mauto mt20">
+                            <div class="label" style="margin-top: 10px">
+                                网点名称：<input class="input code site" id="sitename" placeholder="请输入站点名称" type="text" style="width: 160px">
+                            </div>
+                            <div class="label" style="margin-top: 10px">
+                                &nbsp;&nbsp;&nbsp;&nbsp;用户名：<input class="input code account" id="siteusername" placeholder="请输入账号" type="text" style="width: 160px; ">
+                            </div>
+                            <div class="label" style="margin-top: 10px">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;密码：<input class="input psd" id="siteuserpass" placeholder="请输入密码" type="password" style="width: 160px;">
+                                &nbsp;&nbsp;<a class="next1" href="https://security.zt-express.com/Password/Forget" target="_blank">找回密码</a>
+                            </div>
+                            <div style="position: relative">
+                                <div id="site_info" style="display: block; width:260px;" class="wrong wrong2">网站账号登录的方式即将取消，请尽快使用唯一用户名的方式登录。</div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <input class="loginbtn" type="button" onclick="login()" value="登 录">
+                <input type="hidden" id="logintype" value="user">
+                <input type="hidden" id="ReturnUrl" name="ReturnUrl">
+
+            </div>
+            <div class="login"></div>
+        </div>
+        <div style="clear: both"></div>
+    </div>
+    <div style="clear: both"></div>
+    <div class="in-backspace" style="height: 0px; "></div>
+    <div class="footer">
+        <div class="w980 mauto textcenter h50">
+            中通快递 © 版权所有   沪ICP备13044869号 邮政编码：201708<br>
+            总部地址：上海市青浦区华新镇华志路1685号 投诉电话：4008270270 咨询电话：4008270270 客服QQ：719803318<br>
+            <div class="cnzzcounter">
+                <script>
+                    var _hmt = _hmt || [];
+                    (function () {
+                        var hm = document.createElement("script");
+                        hm.src = "//hm.baidu.com/hm.js?8e5561ae6e768a5a0ced4d6df3d699da";
+                        var s = document.getElementsByTagName("script")[0];
+                        s.parentNode.insertBefore(hm, s);
+                    })();
+                </script>
+                <script type="text/javascript">
+                    var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+                    document.write(unescape("%3Cspan id='cnzz_stat_icon_1253326999'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/z_stat.php%3Fid%3D1253326999%26online%3D1%26show%3Dline' type='text/javascript'%3E%3C/script%3E"));
+                </script><span id="cnzz_stat_icon_1253326999"><a href="http://www.cnzz.com/stat/website.php?web_id=1253326999" target="_blank">站长统计</a><a href="http://www.cnzz.com/stat/website.php?web_id=1253326999" target="_blank"> |  今日IP[8978] | 今日PV[22780] | 昨日IP[7826] |  昨日PV[17454] | </a><a href="http://www.cnzz.com/stat/website.php?web_id=1253326999&amp;method=online" target="_blank">当前在线[38]</a></span><script src=" https://s4.cnzz.com/z_stat.php?id=1253326999&amp;online=1&amp;show=line" type="text/javascript"></script><script src="https://c.cnzz.com/core.php?web_id=1253326999&amp;show=line&amp;online=1&amp;t=z" charset="utf-8" type="text/javascript"></script>
+            </div>
+            
+        </div>
+    </div>
+    <div class="bgbox" style="height: 673px; "></div>
+    <div class="show">
+        <div class="topbg">
+            <h3>找回密码</h3>
+            <span style="  color: white;cursor: pointer;display: block;font-size: 12px;font-weight: bold;position: absolute;left: 110px;top: 16px;">IT信息中心对外号码：021-31165566<span></span></span>
+            <span class="over">×</span>
+        </div>
+        <div class="bg contented">
+            <ul>
+                <li class="sited">站点：<input type="text" class="inputed1" id="ForgetSiteName" placeholder="请输入站点名称"></li>
+                <li class="accounted">账号：<input type="text" class="inputed2" id="ForgetUserName" placeholder="请输入账号"></li>
+                <li>
+                    <button class="next2" type="button" value="下一步">下一步</button>
+                </li>
+            </ul>
+        </div>
+        <div class="bg findway">
+            <ul>
+                <li class="bymail tu1">通过邮箱找回密码</li>
+                <li class="mailnum tu1">
+                    <input type="text" class="inputed3" id="Email" placeholder="请输入您的邮箱">
+                </li>
+                <li class="byphone tu2">通过手机找回密码</li>
+                <li class="phonenum tu2">
+                    <input type="text" class="inputed4" id="Phone" placeholder="请输入您的手机号码">
+                </li>
+                <li>
+                    <button class="next3" type="button" value="下一步">下一步</button>
+                    <button class="last3" type="button" value="上一步">上一步</button>
+                </li>
+            </ul>
+        </div>
+        <div class="bg mailway">
+            <ul>
+                <li class="success youjian" id="youjian"></li>
+            </ul>
+        </div>
+        <div class="bg phoneway">
+            <ul>
+                <li class="success duanxin" id="duanxin"></li>
+            </ul>
+        </div>
+        <div class="bg errorway">
+            <ul>
+                <li class="success errormessage" id="error"></li>
+                <li>
+                    <button class="last4" type="button" value="上一步">上一步</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="upPwdShow">
+        <div class="topbg">
+            <h3 id="xgmmsjts">修改密码</h3>
+            <span class="over" id="overUpPwd">×</span>
+        </div>
+        <div class="bg contented">
+            <ul>
+                <li style="display: none">唯一用户名：<input type="text" class="input code psd" id="nick" style="width: 200px; padding: 0 5px 0 10px"></li>
+                <li style="margin-top: 10px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;原密码：<input type="password" class="input code psd" id="oldPassword" placeholder="请输入原密码" style="width: 200px; padding: 0 5px 0 10px"></li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;新密码：<input type="password" class="input code psd" id="newPassword" placeholder="请输入新密码" style="width: 200px; padding: 0 5px 0 10px"></li>
+                <li>&nbsp;&nbsp;&nbsp;确认密码：<input type="password" class="input code psd" id="reNewPassword" placeholder="请输入新密码" style="width: 200px; padding: 0 5px 0 10px"></li>
+                <li>
+                    &nbsp;&nbsp;&nbsp;手机号码：<input type="text" class="input code psd" id="mobile" name="mobile" placeholder="请输入手机号码" style="width: 110px; padding: 0 5px 0 10px">
+                    <input type="button" class="authBtn" style="width: 90px; float: right; padding: 0px; margin-right:25px" name="getMobileVcode" id="getMobileVcode" value="获取验证码">
+                </li>
+                <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;验证码：<input type="text" class="input code psd" id="mobileVcode" name="mobileVcode" placeholder="请输入手机获取的验证码" style=" width: 200px; padding: 0 5px 0 10px"></li>
+                <li><button class="sureUpPwd" type="button" value="确认修改">确认修改</button></li>
+            </ul>
+        </div>
+    </div>
+    <div class="authShow">
+        <div class="topbg">
+            <h3>唯一用户名认证</h3>
+            <span class="over" id="overAuth">×</span>
+        </div>
+        <div class="bg">
+            <table width="100%" border="0" style="padding: 6px 0px">
+                <tbody><tr>
+                    <td class="txtRight" style="width: 90px">真实姓名：</td>
+                    <td>
+                        <input type="text" name="authRealName" id="authRealName" class="authInput"><label class="tdSpan">*请填写真实姓名，不少于2个汉字</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="txtRight">用户名：</td>
+                    <td>
+                        <input type="text" class="authInput" name="authUserName" id="authUserName"><label class="tdSpan">*拼音或数字组合，不少于3个字符</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="txtRight">唯一用户名：</td>
+                    <td>
+                        <input type="hidden" id="isAuthNickName">
+                        <input type="text" name="authNickName" id="authNickName" class="authInput"><label class="tdSpan">*拼音或数字组合，可用QQ号码或手机号</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="txtRight">身份证号码：</td>
+                    <td>
+                        <input type="text" class="authInput" style="width: 180px" name="authIdCard" id="authIdCard"><label class="tdSpan">*请如实填写身份证号码</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="txtRight">QQ号码：</td>
+                    <td>
+                        <input type="text" class="authInput" name="authQQ" id="authQQ"><label class="tdSpan">*业务QQ号码</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="txtRight">电话：</td>
+                    <td>
+                        <input type="text" class="authInput" name="authTel" id="authTel">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="txtRight">手机：</td>
+                    <td>
+                        <input type="text" class="authInput" style="width: 160px" name="authMobile" id="authMobile"><input type="button" class="authBtn" style="margin-left: 10px" name="sendAuthCodde" id="sendAuthCodde" value="发送手机验证码">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="txtRight">验证码：</td>
+                    <td>
+                        <input type="text" class="authInput" name="authVerificationCode" id="authVerificationCode" disabled="disabled"><label class="tdSpan">*请输入手机接收到得验证码</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="txtCenter" style="height: 8px"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" class="txtCenter">
+                        <input type="button" class="authSureBtn" id="sureAuth" value="确 定">
+                        <input type="hidden" class="authBtn" id="cancelAuth" value="取消">
+                    </td>
+                </tr>
+            </tbody></table>
+        </div>
+    </div>
+    <div class="mobileAuthShow">
+        <div class="topbg">
+            <h3 id="mobileAuthValidate">超七天未登录手机验证</h3>
+            <span class="over" id="overAuthMobile">×</span>
+        </div>
+        <div class="bg mobileContented">
+            <ul>
+                <li class="mobiled">
+                    手机号码：<label id="tishiMobile"></label><br>
+                    <input type="text" class="inputed1" style="width: 140px" id="mobileAuthNum" name="mobileAuthNum" placeholder="请输入手机号码">
+                    <input type="button" class="mobileBtn" style="margin-left: 10px" name="mobileCode" id="authMobileCode" value="获取验证码">
+                </li>
+                <li>
+                    验证码：<br>
+                    <input type="text" class="inputed1" id="mobileAuthCode" name="mobileAuthCode" placeholder="请输入收到的验证码">
+                </li>
+                <li>
+                    <input class="authMobileLogin" type="button" value="验证登录" id="mobileAuthLogin">
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="nickNameShow">
+        <div class="topbg">
+            <h3>通过手机找回唯一用户名</h3>
+            <span class="over" id="overNickName">×</span>
+        </div>
+        <div class="bg mobileContented">
+            <ul>
+                <li class="accounted" style="display: none">提示：<span id="mobiletishi" style="font-size: 16px; color: red; left: 190px">请输入您认证的手机号码</span></li>
+                <li class="mobiled">
+                    <label style="width: 80px; display: inline-block; text-align: right">手机号码：</label><input type="text" class="input" id="mobileNum" name="mobileNum" placeholder="请输入手机号码">
+                </li>
+                <li class="mobiled">
+                    <label style="width: 80px; display: inline-block; text-align: right">验证码：</label><input class="input" id="vcode" name="vcode" style="width: 120px" placeholder="请输入验证码" type="text">
+                    <label>
+                        <img width="75" height="30" alt="验证码图片" title="点击更换验证码" id="checkcodeB" src="/Login/CheckCode" style="display: inline-block; border: 1px solid #c8c7da; border-radius: 4px; outline: medium none; line-height: 32px; vertical-align: middle; cursor: pointer;">
+                    </label>
+                </li>
+                <li style="margin-top: 40px">
+                    <input class="authMobileLogin" type="button" value="获取唯一用户名" id="mobileNick" style="width: 180px">
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="suggestShow">
+        <div class="topbg">
+            <h3>如何找到唯一用户名？</h3>
+            <span class="over" id="overSuggest">×</span>
+        </div>
+        <div class="bg" style="top: 56px; left: 10px; height: 291px">
+            <div style="margin: 0px auto">
+                <img src="/libs/Login/images/renzhengok.jpg" alt="唯一认证账号">
+            </div>
+            <ul>
+                <li style="text-align: center">
+                    如果您还没安装中天系统，请下载<a href="http://im.zt-express.com:8280/mng/im/disk/sharing.action?key=D_ysDlABmSQIKvOEUU5Fi_Hw" target="_blank">中天系统</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+
+
+</body></html>

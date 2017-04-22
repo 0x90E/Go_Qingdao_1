@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" lang="zh-CN"><head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+	<meta http-equiv="Content-Language" content="zh-CN">
+	<link rel="stylesheet" rev="stylesheet" href="images/admin.css" type="text/css" media="screen">
+	<script language="javascript" src="../app/layer/jquery-1.9.1.min.js"></script>
+	<script language="javascript" src="../app/layer/layer.js"></script><link rel="stylesheet" href="http://ygdx.mall.zhantai.com/app/layer/skin/layer.css" id="layui_layer_skinlayercss" style="">
+	<title>欢GO网订单系统-管理员登录</title>
+</head>
+<body>
+<div style="display:none"><iframe id="msgloginasp" name="msgloginasp" width="0" height="0"></iframe></div>
+<div class="bg">
+<div id="wrapper">
+  <div class="logo"></div>
+  <div class="login" style="height:50px;">
+    <form method="post" action="?action=login" target="msgloginasp">
+
+    <dl><input type="hidden" name="txtMACAddr">
+      <dd><label for="username">用户名:</label><input type="text" id="username" name="username" size="20" tabindex="1"></dd>
+      <dd><label for="password">密码:</label><input type="password" id="password" name="password" size="20" tabindex="2"></dd>
+	  <dd><input id="btnPost" name="btnPost" type="submit" value="登录" class="button" tabindex="4"></dd>
+    </dl>
+    </form>
+  </div>
+<div style="display:none">
+<script src="images/mac.js"></script><script language="JScript" event="OnCompleted(hResult,pErrorObject, pAsyncContext)" for="foo">
+	document.forms[0].txtMACAddr.value = unescape(MACAddr);
+	document.forms[0].txtIPAddr.value = unescape(IPAddr);
+	document.forms[0].txtDNSName.value = unescape(sDNSName);
+	//document.formbar.submit();
+</script>
+<script language="JScript" event="OnObjectReady(objObject,objAsyncContext)" for="foo">
+	if (objObject.IPEnabled != null && objObject.IPEnabled != "undefined"
+			&& objObject.IPEnabled == true) {
+		if (objObject.MACAddress != null && objObject.MACAddress != "undefined")
+			MACAddr = objObject.MACAddress;
+		if (objObject.IPEnabled && objObject.IPAddress(0) != null
+				&& objObject.IPAddress(0) != "undefined")
+			IPAddr = objObject.IPAddress(0);
+		if (objObject.DNSHostName != null
+				&& objObject.DNSHostName != "undefined")
+			sDNSName = objObject.DNSHostName;
+	}
+</script>
+<object id="locator" classid="CLSID:76A64158-CB41-11D1-8B02-00600806D9B6" viewastext=""></object>
+<object id="foo" classid="CLSID:75718C9A-F029-11d1-A1AC-00C04FB6C223"></object>
+<script language="JScript">
+	var service = locator.ConnectServer();
+	var MACAddr;
+	var IPAddr;
+	var DomainAddr;
+	var sDNSName;
+	service.Security_.ImpersonationLevel = 3;
+	service.InstancesOfAsync(foo, 'Win32_NetworkAdapterConfiguration');
+</script>
+
+</div>
+</div>
+</div>
+
+<script language="javascript">
+if (top != self)top.location.href = "login.asp"; 
+</script>
+
+
+</body></html>

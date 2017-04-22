@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=gb2312" /> 
+  <title>OpenVPN服务端的搭建实践经验-路由器设置网</title> 
+  <meta name="description" content="为了能突破校网的种种限制，我决定在自己家的电脑上搭建一个vpn代理服务器。使用的软件自然是OpenVPN了。在网上搜索相关资料，综合实践。总算是吧这个服务器搭起来了。但是网上的资料总有疏漏之处，本文结合我自身遇到的问题给以补充。 OpenVPN的安装搭建的" /> 
+  <link href="/templets/default/win_style/layout.css" rel="stylesheet" type="text/css" /> 
+  <link href="/templets/default/win_style/global.css" rel="stylesheet" type="text/css" /> 
+  <link rel="shortcut icon" href="/favicon.ico" /> 
+ </head> 
+ <body> 
+  <div id="container"> 
+   <div id="header"> 
+    <div class="logo">
+     <a href="http://www.suchabang.com/luyouqi/" title="路由器设置"><img src="http://www.suchabang.com/luyouqi/logo.gif" border="0" /></a>
+    </div> 
+    <div class="tbox"> 
+     <script src="/plus/ad_js.php?aid=2" language="javascript"></script> 
+    </div> 
+   </div> 
+   <br class="clearfloat" />
+   <!-- 用于清除浮动的元素 --> 
+   <div id="menu"> 
+    <ul> 
+     <li><a href="/luyouqi/">首页</a></li> 
+     <li><a href="/192.168.1.1/">192.168.1.1</a></li> 
+     <li><a href="/192.168.0.1/">192.168.0.1</a></li> 
+     <li class="hover"><a href="/luyouqi/"><span>路由器设置</span></a></li> 
+     <li><a href="/wuxianluyouqi/">无线路由器设置</a></li> 
+     <li><a href="/mima/">路由器密码</a></li> 
+     <li><a href="/xiansu/">路由器限速</a></li> 
+     <li><a href="/shouji/">手机上网设置</a></li> 
+    </ul> 
+   </div> 
+   <div id="breadcrumb"> 
+    <div class="postbox"> 
+     <form action="/plus/search.php" method="post" name="frmsearch" id="frmsearch"> 
+      <input name="searchtype" type="radio" id="searchtype" value="title" checked="checked" /> 
+      <label title="按标题搜索" for="searchtype">标题</label> 
+      <input type="radio" name="searchtype" id="searchtype1" value="titlekeywords" /> 
+      <label title="按标题和内容模糊搜索" for="searchtype1">智能</label> 
+      <label> <input name="keyword" type="text" class="input" id="keyword" value="" style="width:145px;" /> </label> 
+      <label> <input name="button" type="submit" class="submit1" id="button" value="搜索" /> </label> 
+     </form> 
+    </div> 
+    <div class="breadcrumb1">
+     <a href="/">首页</a> &gt; 
+     <a href="/luyouqi/">路由器设置</a> &gt; 
+    </div> 
+    <div class="ltag">
+     <script src="/plus/ad_js.php?aid=8" language="javascript"></script> 
+    </div> 
+   </div> 
+   <div id="mainContent"> 
+    <div id="content"> 
+     <div class="mainpanel"> 
+      <div class="mcontent vcontent"> 
+       <h1>OpenVPN服务端的搭建实践经验</h1> 
+       <div class="artinfo">
+        作者 
+        <span>admin</span> 来源:
+        <span>未知</span>　　发布时间:
+        <span>2012-05-30 10:17</span>　
+       </div> 
+       <div id="news"> 
+        <div style="width:300px; float:left; margin:0 10px 0 0; padding:10px 0 0 0;"> 
+         <script src="/plus/ad_js.php?aid=5" language="javascript"></script> 
+        </div> 
+        <p>为了能突破校网的种种限制，我决定在自己家的电脑上搭建一个vpn代理服务器。使用的软件自然是OpenVPN了。在网上搜索相关资料，综合实践。总算是吧这个服务器搭起来了。但是网上的资料总有疏漏之处，本文结合我自身遇到的问题给以补充。</p> 
+        <p>OpenVPN的安装搭建的总体步骤，网上都有，可自行查询。在第一步制作证书&middot;key阶段，按说是不会出什么问题的，我倒是出问题了。完全按照步骤来的还出错，我决定换一个版本的OpenVPN，成功！在这个阶段完全按照网上给的步骤就可以，出错就不是你的问题了，又可能是程序的问题建议换一个。<br /> 安装完成，连接阶段，碰到的问题较多。分条叙述。</p> 
+        <p>1，客户端连接完成，但是ping不通服务端。比如，我的客户端的ip是10.8.0.2，服务端的ip是10.8.0.1。在客户端ping10.8.0.1返回超时。<br /> 问题出在服务端的配置文件server.ovpn上。在server.ovpn加上push &quot;route 10.8.0.0 255.255.0.0&quot;一条。</p> 
+        <p>2，既然是代理服务器，所有的数据应该加上push &quot;redirect-gateway def1 bypass-dhcp&quot;一条。这样，客户端的默认网关就成了服务端的ip。数据自然也由网关向外发出。<br /> 配置文件的问题完了。还有别的问题。</p> 
+        <p>3，按网上的资料，服务端应该相当于一个路由器。但想xp这样系统初始是不能进行数据转发的。需要修改注册表<br /> HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters下的IPEnableRouter的值为1，便可完成数据转发。</p> 
+        <p>4，客户端想通过服务端访问外网，还需要一项设置。我的电脑里有两个网卡，一个是本地连接，是物理网卡。一个事本地连接2，是openvpn安装的虚拟网卡。在这里，需要把服务端能连外网的网卡设置internet连接共享。设置完成后还要注意一下虚拟网卡的ip，如果不是dhcp自动分配的ip要改成自动获取ip。</p> 
+        <p>至此，openvpn搭建完成，实现代理上网。</p> 
+        <p>&nbsp;</p> 
+       </div> 
+       <div>
+        <script src="/plus/ad_js.php?aid=6" language="javascript"></script>
+       </div> 
+       <div class="news_updown"> 
+        <ul> 
+         <li>上一篇：<a href="/luyouqi/217.html">专网路由器设置方法</a> </li> 
+         <li>下一篇：<a href="/luyouqi/219.html">路由器复位方法和技巧</a> </li> 
+        </ul> 
+        <div style="clear:both"></div> 
+       </div> 
+      </div> 
+     </div> 
+     <div class="isidepanel"> 
+      <h4>评论留言</h4> 
+      <div class="ipcontent news_about"> 
+       <!-- UY BEGIN --> 
+       <div id="uyan_frame"></div> 
+       <script type="text/javascript" id="UYScript" src="http://v1.uyan.cc/js/iframe.js?UYUserId=1674066" async=""></script> 
+       <!-- UY END --> 
+      </div> 
+     </div> 
+    </div> 
+    <div id="sidebar"> 
+     <div class="isidepanel"> 
+      <script src="/plus/ad_js.php?aid=5" language="javascript"></script> 
+     </div> 
+     <div class="isidepanel"> 
+      <h4>相关文章</h4> 
+      <div class="ipcontent"> 
+       <ul class="list_con"> 
+       </ul> 
+      </div> 
+     </div> 
+     <div class="isidepanel"> 
+      <h4>最新文章</h4> 
+      <div class="ipcontent"> 
+       <ul class="list_con"> 
+        <li><a title="有线路由器拖无线路由器的设置方法" href="/luyouqi/226.html" target="_blank">有线路由器拖无线路由器的设置方法</a> </li> 
+        <li><a title="拨通Array SSL VPN后无法访问公司局域网的解决办法" href="/luyouqi/225.html" target="_blank">拨通Array SSL VPN后无法访问公司局域网的解决办法</a> </li> 
+        <li><a title="阿尔法v4路由器怎么用？" href="/luyouqi/224.html" target="_blank">阿尔法v4路由器怎么用？</a> </li> 
+        <li><a title="ADSL宽带路由器实现外网访问公司内网服务器" href="/luyouqi/223.html" target="_blank">ADSL宽带路由器实现外网访问公司内网服务器</a> </li> 
+        <li><a title="迅捷FR40路由器设置方法" href="/luyouqi/222.html" target="_blank">迅捷FR40路由器设置方法</a> </li> 
+        <li><a title="路由器当交换机用的设置方法" href="/luyouqi/221.html" target="_blank">路由器当交换机用的设置方法</a> </li> 
+        <li><a title="路由器复位方法和技巧" href="/luyouqi/219.html" target="_blank">路由器复位方法和技巧</a> </li> 
+        <li><a title="OpenVPN服务端的搭建实践经验" href="/luyouqi/218.html" target="_blank">OpenVPN服务端的搭建实践经验</a> </li> 
+        <li><a title="专网路由器设置方法" href="/luyouqi/217.html" target="_blank">专网路由器设置方法</a> </li> 
+        <li><a title="腾达3G611R 3G无线路由器设置教程" href="/luyouqi/215.html" target="_blank">腾达3G611R 3G无线路由器设置教程</a> </li> 
+       </ul> 
+      </div> 
+     </div> 
+     <div class="isidepanel"> 
+      <script src="/plus/ad_js.php?aid=7" language="javascript"></script> 
+     </div> 
+     <div class="isidepanel"> 
+      <h4>热点内容</h4> 
+      <div class="ipcontent"> 
+       <ul> 
+        <li><a href="/luyouqi/131.html" title="华为HG523破解电信限制路由器的" target="_blank">华为HG523破解电信限制路由器的</a> </li> 
+        <li><a href="/luyouqi/14.html" title="路由器限制网速：怎么限制别人耍" target="_blank">路由器限制网速：怎么限制别人耍</a> </li> 
+        <li><a href="/luyouqi/128.html" title="路由器限制网速设置方法2" target="_blank">路由器限制网速设置方法2</a> </li> 
+        <li><a href="/luyouqi/39.html" title="冲破电信限制的路由器设置方法" target="_blank">冲破电信限制的路由器设置方法</a> </li> 
+        <li><a href="/luyouqi/179.html" title="TP-LINK 841路由器，加装USB接口" target="_blank">TP-LINK 841路由器，加装USB接口</a> </li> 
+        <li><a href="/luyouqi/38.html" title="路由器限制流量的基本使用方法" target="_blank">路由器限制流量的基本使用方法</a> </li> 
+        <li><a href="/luyouqi/20.html" title="D-Link DI-504、DI-624＋A路由器" target="_blank">D-Link DI-504、DI-624＋A路由器</a> </li> 
+        <li><a href="/luyouqi/12.html" title="以TP-link为例，教您宽带路由器" target="_blank">以TP-link为例，教您宽带路由器</a> </li> 
+        <li><a href="/luyouqi/21.html" title="D-Link路由器UPnP操作方法" target="_blank">D-Link路由器UPnP操作方法</a> </li> 
+        <li><a href="/luyouqi/149.html" title="海蜘蛛软路由设置教程" target="_blank">海蜘蛛软路由设置教程</a> </li> 
+       </ul> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+   <br class="clearfloat" />
+   <!-- 用于清除浮动的元素 --> 
+   <div id="footer">
+     Copyright：2012-2016 
+    <a href="http://www.suchabang.com">速查榜</a> www.suchabang.com All rights reserved. 
+    <br /> 
+    <script language="javascript" type="text/javascript" src="/js/tongji.js"></script> 粤ICP备12028345号 合作联系:
+    <script language="javascript" type="text/javascript" src="/js/lianxi.js"></script> 
+   </div> 
+  </div>  
+ </body>
+</html>

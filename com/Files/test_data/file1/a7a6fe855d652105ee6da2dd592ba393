@@ -1,0 +1,353 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-cn" xmlns:xml="http://www.w3.org/XML/1998/namespace" class="zh-cn blizzard">
+<head xmlns:og="http://ogp.me/ns#" xmlns:fb="http://ogp.me/ns/fb#">
+<meta http-equiv="imagetoolbar" content="false" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<title>暴雪游戏通行证登录</title>
+<link rel="shortcut icon" href="/login/static/images/meta/favicon.0gxnz.ico" />
+<!--[if gt IE 8]><!--><link rel="stylesheet" type="text/css" media="all" href="/login/static/css/toolkit/blizzard-web.min.11uXH.css" /><!-- <![endif]-->
+<!--[if IE 8]><link rel="stylesheet" type="text/css" media="all" href="/login/static/css/toolkit/blizzard-web-ie8.min.css?v=58-1" /><![endif]-->
+<link rel="stylesheet" type="text/css" media="all" href="/login/static/css/login/global.min.12nKn.css?v=1" />
+<link rel="stylesheet" type="text/css" media="all" href="/login/static/css/nav-client/nav-client.3mVnl.css" />
+<link rel="stylesheet" type="text/css" media="(max-width:800px)" href="/login/static/css/nav-client/nav-client-responsive.0R6NA.css" />
+<!--[if IE 8]>
+<link rel="stylesheet" type="text/css" media="all" href="/login/static/css/login/ie8.1xfhv.css" />
+<![endif]-->
+<link rel="search" type="application/opensearchdescription+xml" href="http://www.battlenet.com.cn/zh-cn/data/opensearch" title="搜索" />
+<script async="" src="//www.googletagmanager.com/gtm.js?id=GTM-589KTQ"></script><script type="text/javascript" src="/login/static/js/toolkit/third-party/jquery/jquery-1.11.0.min.1UgDG.js?v=58-1"></script>
+<script type="text/javascript" src="/login/static/js/core.min.2conp.js?v=58-1"></script>
+<meta name="viewport" content="width=device-width" />
+<script type="text/javascript">
+//<![CDATA[
+var Core = require("@blizzard/core-client");
+var Login = require("@blizzard/login-client");
+Core.staticUrl = '/login/static';
+Core.sharedStaticUrl = '/login/static/local-common';
+Core.baseUrl = '/login/zh';
+Core.projectUrl = '/login';
+Core.cdnUrl = 'http://content.battlenet.com.cn';
+Core.supportUrl = 'http://www.battlenet.com.cn/support/';
+Core.secureSupportUrl = 'https://www.battlenet.com.cn/support/';
+Core.project = 'login';
+Core.locale = 'zh-cn';
+Core.language = 'zh';
+Core.region = 'cn';
+Core.shortDateFormat = 'yyyy/MM/dd';
+Core.dateTimeFormat = 'yyyy年MM月dd日 HH:mm';
+Core.loggedIn = false;
+Core.userAgent = 'web';
+Login.embeddedUrl = 'https://www.battlenet.com.cn/login/login.frag';
+//]]>
+</script>
+</head>
+<body class="cn zh-cn login-template web blizzard js-enabled" data-embedded-state="STATE_LOGIN">
+<script>
+//<![CDATA[
+var dataLayer = [{
+"userAgent": "web" , "analyticsRequestUri": "\/login/zh/" , "theme": "blizzard" }];
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({"gtm.start":new Date().getTime(),event:"gtm.js"});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!="dataLayer"?"&amp;l="+l:"";j.async=true;j.src=
+"//www.googletagmanager.com/gtm.js?id="+i+dl;f.parentNode.insertBefore(j,f);})
+(window,document,"script","dataLayer","GTM-589KTQ");
+//]]>
+</script>
+<script>
+//<![CDATA[
+(function () {
+window.AppAnalyticsPackage = {};
+if (typeof window.phoenix !== "undefined") {
+window.phoenix.connect(function () {
+AppAnalyticsPackage["clientId"] = window.phoenix.application.data.google_data.client_id;
+AppAnalyticsPackage["userId"] = window.phoenix.application.data.bnet_account_id;
+});
+}
+})();
+//]]>
+</script>
+<script type="text/javascript">
+//<![CDATA[
+(function() {
+var body = document.getElementsByTagName("body")[0];
+body.className = body.className + " js-enabled preload";
+})();
+$(function(){
+$('body').removeClass('preload');
+});
+//]]>
+</script>
+<div class="grid-container wrapper">
+<h1 class="logo">暴雪游戏通行证登录</h1>
+<div class="hide" id="info-wrapper">
+<h2><strong class="info-title"></strong></h2>
+<p class="info-body"></p>
+<button class="btn btn-block hide visible-phone" id="info-phone-close">Close</button>
+</div>
+<div class="input" id="login-wrapper">
+<div class="login">
+<form action="" method="post" id="password-form" novalidate="novalidate" class=" username-required input-focus" onload="loginForm.init();">
+<div id="login-input-container" class="">
+<div id="js-errors" class="alert alert-error alert-icon hide">
+<p id="cookie-check" class="hide">您的浏览器cookie已被禁用。需要重新启用cookie功能之后才能继续。</p>
+</div>
+<noscript>
+<div id="javascript-disabled" class="alert alert-error alert-icon">
+要正常浏览该网站，请开启浏览器的JavaScript支持。
+</div>
+</noscript>
+<div class="control-group">
+<label id="accountName-label" class="control-label" for="accountName">电子邮箱</label>
+<div class="controls">
+<input aria-labelledby="accountName-label" id="accountName" name="accountName" title="电子邮箱" maxlength="320" type="text" tabindex="1" class="input-block input-large" placeholder="电子邮箱" autocorrect="off" spellcheck="false" />
+</div>
+</div>
+<div class="control-group">
+<label id="password-label" class="control-label" for="password">密码</label>
+<div class="controls">
+<input aria-labelledby="password-label" id="password" name="password" title="密码" maxlength="16" type="password" tabindex="1" class="input-block input-large" autocomplete="off" placeholder="密码" autocorrect="off" spellcheck="false" />
+</div>
+</div>
+<input type="hidden" id="useSrp" name="useSrp" value="false" />
+<input type="hidden" id="publicA" name="publicA" value="" />
+<input type="hidden" id="clientEvidenceM1" name="clientEvidenceM1" value="" />
+<div class="persistWrapper">
+<label id="persistLogin-label" class="checkbox-label css-label hide checked" for="persistLogin">
+<input aria-labelledby="persistLogin-label" id="persistLogin" name="persistLogin" type="checkbox" checked="checked" tabindex="1" />
+<span class="input-checkbox"></span>
+保持登录状态
+</label>
+</div>
+</div>
+<div class="control-group submit ">
+<button type="submit" id="submit" class="btn btn-primary btn-large btn-block" data-loading-text="" tabindex="1">
+登录
+<i class="spinner-battlenet"></i>
+</button>
+</div>
+<input type="hidden" id="csrftoken" name="csrftoken" value="8d1c1745-ef56-49be-acde-1bb045212892" />
+<input type="hidden" id="sessionTimeout" name="sessionTimeout" value="1491080283199" />
+<input type="hidden" id="fp" name="fp" value="{&quot;0&quot;:&quot;DRgxjX&quot;,&quot;1&quot;:&quot;D02nuB&quot;,&quot;2&quot;:&quot;DSccB/&quot;,&quot;3&quot;:&quot;D9nt9M&quot;,&quot;4&quot;:&quot;pmXLX&quot;,&quot;5&quot;:&quot;BEejbW&quot;,&quot;6&quot;:&quot;CrWQFc&quot;,&quot;7&quot;:&quot;A&quot;,&quot;10&quot;:&quot;07c9y&quot;,&quot;11&quot;:&quot;vIKoV&quot;,&quot;12&quot;:&quot;CnQ+c&quot;}" />
+</form>
+<ul id="help-links">
+<li>
+<a rel="external" href=" https://www.battlenet.com.cn/account/creation/tos.html?ref=https://www.battlenet.com.cn/shop/zh/checkout/add-balance/p-0eb54aae-15847-0&amp;theme=blizzard&amp;app=shop " tabindex="1" id="signup">
+免费创建暴雪游戏通行证
+</a>
+</li>
+<li>
+<a rel="internal" href=" https://www.battlenet.com.cn/account/support/login-support.html?ref=&amp;theme=blizzard&amp;app=shop " tabindex="1" id="loginSupport">
+无法登录？
+</a>
+</li>
+<li>
+<a rel="internal" href=" https://www.battlenet.com.cn/account/support/token-resync.html?ref=https://www.battlenet.com.cn/shop/zh/checkout/add-balance/p-0eb54aae-15847-0&amp;theme=blizzard&amp;app=shop " tabindex="1" id="tokenResync">
+安全令重新同步
+</a>
+</li>
+</ul>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+$('#submit').addClass('unbind');
+$(function() {
+EmbeddedLogin.init();
+loginForm.language = "zh-cn";
+loginForm.supportSiteUrl = "http://www.battlenet.com.cn/support/article/";
+loginForm.networkErrorMessage = "请检查网络连接并重试。";
+loginForm.userAgent = "web";
+});
+//]]>
+</script>
+</div>
+<footer id="footer" class="footer zh-cn">
+<div id="nav-client-footer" class="nav-client">
+<div class="mobileFooterEnabled footer-content footer-desktop grid-container"> <div class="nav-section support-feedback">
+<div class="nav-left">
+<div id="nav-feedback">
+<a class="nav-item nav-a nav-item-btn" href="http://wow.blizzard.cn/services/security/" data-track-id="security-center-footer"><i class="nav-icon-24-blue nav-icon-globe"></i>战网安全中心</a>
+</div>
+</div>
+</div>
+<div class="nav-section">
+<div class="nav-left nav-logo-group">
+<div class="footer-links nav-left">
+<a class="nav-item nav-a" href="http://www.battlenet.com.cn/zh/legal-cn/" data-analytics="global-nav" data-analytics-placement="Footer - eula">Battle.net EULA</a>
+<span>|</span>
+<a class="nav-item nav-a" href="https://www.battlenet.com.cn/account/legal/privacy.html" data-analytics="global-nav" data-analytics-placement="Footer - Privacy">隐私</a>
+<span>|</span>
+<a class="nav-item nav-a" href="http://us.blizzard.com/zh-cn/company/legal/" data-analytics="global-nav" data-analytics-placement="Footer - Terms">法律条款</a>
+<span>|</span>
+<a class="nav-item nav-a" href="http://www.battlenet.com.cn/legal-cn/infringementnotice" data-analytics="global-nav" data-analytics-placement="Footer - copyright">著作权侵权</a>
+<div class="link-row"></div>
+<a class="nav-item nav-a" href="http://www.battlenet.com.cn/static/local-common/images/legal/cn/license.png" data-analytics="global-nav" data-analytics-placement="Footer - CN License">沪网文[2014]0731-161号</a>
+<span>|</span>
+<a class="nav-item nav-a" href="http://www.miitbeian.gov.cn/state/outPortal/loginPortal.action" data-analytics="global-nav" data-analytics-placement="Footer - CN Portal">增值电信业务经营许可证编号：沪B2－20080012</a>
+<div class="link-row"></div>
+<span class="nav-item nav-text">互联网违法和不良信息举报电话：0571-28090163</span>
+<span>|</span>
+<span class="nav-item nav-text">沪公网安备：31011502002167</span>
+<div class="copyright">©2017 Blizzard Entertainment, Inc.</div>
+<div class="nav-footer-icon-container">
+<ul class="nav-footer-icon-list">
+<li class="nav-footer-icon-list-item"><a class="nav-footer-icon-link footer-icon-cyberpolice" href="http://sh.cyberpolice.cn/infoCategoryListAction.do?act=initjpg" target="_blank"></a></li>
+<li class="nav-footer-icon-list-item"><a class="nav-footer-icon-link footer-icon-zx100" href="http://www.zx110.org/" target="_blank"></a></li>
+<li class="nav-footer-icon-list-item"><a class="nav-footer-icon-link footer-icon-sgs" href="http://www.sgs.gov.cn/lz/licenseLink.do?method=licenceView&amp;entyId=20111011175417664" target="_blank"></a></li>
+<li class="nav-footer-icon-list-item"><a class="nav-footer-icon-link footer-icon-shjbzx" href="http://www.shjbzx.cn/" target="_blank"></a></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="nav-ratings">
+</div>
+</div>
+</div>
+<div class="mobileFooterEnabled footer-content footer-mobile grid-container"> <div class="nav-logo-group">
+<div class="footer-links">
+<a class="nav-item nav-a" href="http://www.battlenet.com.cn/zh/legal-cn/" data-analytics="global-nav" data-analytics-placement="Footer - eula">Battle.net EULA</a>
+<span>|</span>
+<a class="nav-item nav-a" href="https://www.battlenet.com.cn/account/legal/privacy.html" data-analytics="global-nav" data-analytics-placement="Footer - Privacy">隐私</a>
+<span>|</span>
+<a class="nav-item nav-a" href="http://us.blizzard.com/zh-cn/company/legal/" data-analytics="global-nav" data-analytics-placement="Footer - Terms">法律条款</a>
+<span>|</span>
+<a class="nav-item nav-a" href="http://www.battlenet.com.cn/legal-cn/infringementnotice" data-analytics="global-nav" data-analytics-placement="Footer - copyright">著作权侵权</a>
+</div>
+<div class="footer-links footer-additional-links">
+<a class="nav-item nav-a" href="http://www.battlenet.com.cn/static/local-common/images/legal/cn/license.png" data-analytics="global-nav" data-analytics-placement="Footer - CN License">沪网文[2014]0731-161号</a>
+<span>|</span>
+<a class="nav-item nav-a" href="http://www.miitbeian.gov.cn/state/outPortal/loginPortal.action" data-analytics="global-nav" data-analytics-placement="Footer - CN Portal">增值电信业务经营许可证编号：沪B2－20080012</a>
+<div class="link-row"></div>
+<span class="nav-item nav-text">互联网违法和不良信息举报电话：0571-28090163</span>
+<span>|</span>
+<span class="nav-item nav-text">沪公网安备：31011502002167</span>
+</div>
+<div class="copyright">©2017 Blizzard Entertainment, Inc.</div>
+<div class="nav-footer-icon-container">
+<ul class="nav-footer-icon-list">
+<li class="nav-footer-icon-list-item"><a class="nav-footer-icon-link footer-icon-cyberpolice" href="http://sh.cyberpolice.cn/infoCategoryListAction.do?act=initjpg" target="_blank"></a></li>
+<li class="nav-footer-icon-list-item"><a class="nav-footer-icon-link footer-icon-zx100" href="http://www.zx110.org/" target="_blank"></a></li>
+<li class="nav-footer-icon-list-item"><a class="nav-footer-icon-link footer-icon-sgs" href="http://www.sgs.gov.cn/lz/licenseLink.do?method=licenceView&amp;entyId=20111011175417664" target="_blank"></a></li>
+<li class="nav-footer-icon-list-item"><a class="nav-footer-icon-link footer-icon-shjbzx" href="http://www.shjbzx.cn/" target="_blank"></a></li>
+</ul>
+</div>
+<div class="nav-ratings">
+</div>
+</div>
+</div>
+</div>
+</footer> </div>
+<script src="/login/static/js/embedded-javascript/embed-0.1.5.min.2QnZN.js"></script>
+<script>
+//<![CDATA[
+var xsToken = '';
+var supportToken = '';
+var jsonSearchHandlerUrl = '\//www.battlenet.com.cn';
+var Msg = Msg || {};
+Msg.support = {
+ticketNew: '表单{0}已被建立。',
+ticketStatus: '表单{0}的状态已变更为为{1}。',
+ticketOpen: '已开启',
+ticketAnswered: '已回复',
+ticketResolved: '已解决',
+ticketCanceled: '已取消',
+ticketArchived: '已存档记录',
+ticketInfo: '需要更多信息',
+ticketAll: '查看所有表单'
+};
+Msg.cms = {
+requestError: '无法完成您的请求。',
+ignoreNot: '无法屏蔽该用户',
+ignoreAlready: '已屏蔽该用户',
+stickyRequested: '已要求置顶',
+stickyHasBeenRequested: '您已经为该主题发送过置顶请求。',
+postAdded: '已添加帖子至追踪器',
+postRemoved: '已将帖子从追踪器移除',
+userAdded: '已添加用户至追踪器',
+userRemoved: '已将用户从追踪器移除',
+validationError: '有需要填写栏位未完成',
+characterExceed: '发帖内容超过XXXXXX字。',
+searchFor: "搜索",
+searchTags: "已标记的文章：",
+characterAjaxError: "您可能已登出。请刷新页面并重试。",
+ilvl: "物品等级{0}",
+shortQuery: "搜索请求必须至少有2个字。",
+editSuccess: "操作成功，是否重新加载？",
+postDelete: "您确定要删除这篇留言吗？",
+throttleError: "您必须等待片刻才能再留言。"
+};
+Msg.bml= {
+bold: '粗体',
+italics: '斜体',
+underline: '下划线',
+list: '无序列表',
+listItem: '列表物品',
+quote: '引用',
+quoteBy: '由{0}引用',
+unformat: '移除格式',
+cleanup: '修正换行符',
+code: '代码段',
+item: '《魔兽世界》物品',
+itemPrompt: '物品ID：',
+url: 'URL',
+urlPrompt: 'URL地址：'
+};
+Msg.ui= {
+submit: '提交',
+cancel: '取消',
+reset: '重置',
+viewInGallery: '在画集中显示',
+loading: '正在加载',
+unexpectedError: '发生错误',
+fansiteFind: '正在寻找……',
+fansiteFindType: '正在寻找{0}……',
+fansiteNone: '尚无玩家网站。',
+flashErrorHeader: '必须安装Adobe Flash Player才可以浏览该内容。',
+flashErrorText: '下载Adobe Flash Player',
+flashErrorUrl: 'http://get.adobe.com/flashplayer/',
+save: '保存'
+};
+Msg.grammar= {
+colon: '{0}：',
+first: '第一',
+last: '最后',
+ellipsis: '……'
+};
+Msg.fansite= {
+achievement: '成就',
+character: '角色',
+faction: '阵营',
+'class': '职业',
+object: '物件',
+talentcalc: '天赋',
+skill: '专业',
+quest: '任务',
+spell: '法术',
+event: '事件',
+title: '头衔',
+arena: '竞技场队伍',
+guild: '公会',
+zone: '区域',
+item: '物品',
+race: '种族',
+npc: 'NPC',
+pet: '宠物'
+};
+Msg.search= {
+noResults: '没有找到任何匹配结果。',
+kb: '技术支持',
+post: '论坛',
+article: '文章',
+static: '内容',
+wowcharacter: '角色',
+wowitem: '物品',
+wowguild: '公会',
+wowarenateam: '竞技场战队',
+url: '推荐链接',
+friend: '好友',
+product: 'Marketplace产品',
+other: '其它'
+};
+//]]>
+</script>
+<script src="/login/static/js/toolkit/toolkit.min.02nWw.js"></script>
+<script type="text/javascript" src="/login/static/js/login/global.min.40AuO.js"></script>
+<script type="text/javascript" src="/login/static/js/login/login.min.0oQoZ.js"></script>
+<script type="text/javascript" src="/login/static/js/login/srp-client.min.30N9R.js?v=1"></script>
+</body>
+</html>

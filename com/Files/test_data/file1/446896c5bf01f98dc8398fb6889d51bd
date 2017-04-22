@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html xmlns:wb="http://open.weibo.com/wb">
+ <head> 
+  <meta charset="UTF-8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0" /> 
+  <title>Android Support Library 学习入门 – 码农网</title> 
+  <link rel="stylesheet" id="wp-pagenavi-css" href="http://www.codeceo.com/wp-content/plugins/wp-pagenavi/pagenavi-css.css?ver=2.70" type="text/css" media="all" /> 
+  <link rel="prev" title="离职创业要看的22本书" href="http://www.codeceo.com/article/22-books-leave-job.html" /> 
+  <link rel="next" title="Linux 文件系统结构介绍" href="http://www.codeceo.com/article/linux-file-introduction.html" /> 
+  <link rel="canonical" href="http://www.codeceo.com/article/android-support-library-guide.html" /> 
+  <meta name="keywords" content="Android开发, Android开发, 编程开发, 首页精华" /> 
+  <meta name="description" content="0. 文前闲话 作为一个由原生桌面应用程序开发者（VC、Delphi）转行的Android菜鸟，虐心的事真是数不胜数：安装个开发工具下载个SDK需要整整一夜；早晨一上班点开Android Studio(简称AS)，去倒个水回来了还不见它开始工作；开发工具一忙起来就会忘记你这个开发者，不知过了多久后才给你一句：“去TMD的GFW，我啥也没干成，你自己看着办吧！”。  对于我们这些已经被微软、Borland、Sybase洗脑多年的开发者，除.." /> 
+  <link rel="shortcut icon" href="http://static.codeceo.com/favicon.ico" /> 
+  <link rel="stylesheet" href="http://static.codeceo.com/wp-asset/css/style.css" media="all" /> 
+  <link type="text/css" rel="stylesheet" href="http://static.codeceo.com/asset/script/ckeditor/plugins/codesnippet/lib/highlight/styles/github.css" /> 
+  <link rel="stylesheet" href="http://static.codeceo.com/wp-asset/css/custom.css" media="all" /> 
+  <!--[if lt IE 9]><script src="http://static.codeceo.com/wp-asset/js/html5.js"></script><![endif]--> 
+  <script src="http://static.codeceo.com/wp-asset/js/jquery.min.js"></script> 
+  <script src="http://static.codeceo.com/wp-asset/js/common.js"></script> 
+  <script type="text/javascript" src="http://static.codeceo.com/asset/script/ckeditor/plugins/codesnippet/lib/highlight/highlight.pack.js"></script> 
+ </head> 
+ <body class="single single-post postid-25505 single-format-standard"> 
+  <header class="header"> 
+   <div class="central"> 
+    <a href="http://www.codeceo.com"><img src="http://static.codeceo.com/asset/css/img/logo-new.png" alt="codeceo" class="logo" /></a> 
+    <ul class="nav"> 
+     <li><a href="http://www.codeceo.com">首页</a></li> 
+     <li><a href="http://ask.codeceo.com">问答</a></li> 
+     <li><a href="http://www.codeceo.com/article/category/recommanded">热门文章</a></li> 
+     <li><a href="http://www.codeceo.com/article/category/pick/feed" target="_blank">RSS订阅</a></li> 
+    </ul> 
+   </div> 
+  </header> 
+  <div class="main-nav"> 
+   <div class="central"> 
+    <ul> 
+     <li class="notag"><a href="http://www.codeceo.com">文章首页</a></li> 
+     <li class="tag"><a href="http://www.codeceo.com/article/tag/java">Java</a></li> 
+     <li class="tag"><a href="http://www.codeceo.com/article/tag/javascript">JavaScript</a></li> 
+     <li class="tag"><a href="http://www.codeceo.com/article/tag/php">PHP</a></li> 
+     <li class="tag"><a href="http://www.codeceo.com/article/tag/ios">iOS</a></li> 
+     <li class="tag"><a href="http://www.codeceo.com/article/tag/android">Android</a></li> 
+     <li class="tag"><a href="http://www.codeceo.com/article/tag/html5">HTML5</a></li> 
+     <li class="tag"><a href="http://www.codeceo.com/article/tag/css3">CSS3</a></li> 
+     <li class="tag"><a href="http://www.codeceo.com/article/tag/linux">Linux</a></li> 
+     <li class="tag"><a href="http://www.codeceo.com/article/tag/c">C++</a></li> 
+     <li class="tag"><a href="http://www.codeceo.com/article/tag/python">Python</a></li> 
+     <li class="tag"><a href="http://www.codeceo.com/article/tag/csharp">C#</a></li> 
+     <li class="tag"><a href="http://www.codeceo.com/article/tag/node.js">Node.Js</a></li> 
+    </ul> 
+   </div> 
+  </div> 
+  <div style="margin-bottom:16px;border-bottom:#eee solid 2px;padding:10px 0;background-color:#FCFCFC"> 
+   <div style="width:970px;margin:0 auto"> 
+    <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> 
+    <!-- 码农网大横幅 --> 
+    <ins class="adsbygoogle" style="display:inline-block;width:970px;height:250px" data-ad-client="ca-pub-3171310320403916" data-ad-slot="2281748188"></ins> 
+    <script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script> 
+   </div> 
+  </div> 
+  <section class="central container"> 
+   <div class="content-wrap"> 
+    <div class="content"> 
+     <div class="artical"> 
+      <header class="article-header"> 
+       <h1 class="article-title"><a href="http://www.codeceo.com/article/android-support-library-guide.html" title="Android Support Library 学习入门 - 码农网">Android Support Library 学习入门</a></h1> 
+       <p class="article-meta"> 2015-09-03 &nbsp;&nbsp; 分类：<a href="http://www.codeceo.com/article/category/develop/android" title="查看 Android开发 中的全部文章" rel="category tag">Android开发</a>、<a href="http://www.codeceo.com/article/category/develop" title="查看 编程开发 中的全部文章" rel="category tag">编程开发</a>、<a href="http://www.codeceo.com/article/category/pick" title="查看 首页精华 中的全部文章" rel="category tag">首页精华</a><a class="comm" href="http://www.codeceo.com/article/android-support-library-guide.html#comments" title="查看 Android Support Library 学习入门 的评论">0人评论</a> &nbsp;&nbsp;&nbsp;&nbsp;来源：<a ref="nofollow" href="http://my.oschina.net/u/725054/blog/499979" target="_blank">马丁当</a> </p> 
+       <div class="bdsharebuttonbox share" data-tag="share_1"> 
+        <span class="share-tit">分享到：</span> 
+        <a class="bds_mshare" data-cmd="mshare"></a> 
+        <a class="bds_qzone" data-cmd="qzone" href="#"></a> 
+        <a class="bds_tsina" data-cmd="tsina"></a> 
+        <a class="bds_weixin" data-cmd="weixin"></a> 
+        <a class="bds_baidu" data-cmd="baidu"></a> 
+        <a class="bds_renren" data-cmd="renren"></a> 
+        <a class="bds_tqq" data-cmd="tqq"></a> 
+        <a class="bds_more" data-cmd="more">更多</a> 
+        <a class="bds_count" data-cmd="count"></a> 
+       </div> 
+      </header> 
+      <div class="article-entry" id="article-entry"> 
+       <h2>0. 文前闲话</h2> 
+       <p>作为一个由原生桌面应用程序开发者（VC、Delphi）转行的Android菜鸟，虐心的事真是数不胜数：安装个开发工具下载个SDK需要整整一夜；早晨一上班点开Android Studio(简称AS)，去倒个水回来了还不见它开始工作；开发工具一忙起来就会忘记你这个开发者，不知过了多久后才给你一句：“去TMD的GFW，我啥也没干成，你自己看着办吧！”。</p> 
+       <p>对于我们这些已经被微软、Borland、Sybase洗脑多年的开发者，除了开发工具的不适应，最大的壁垒其实是大脑中已经固有的思维方式，往往在接受新概念时总要习惯性的去跟以往已经认知的东西做对比，这就要比一个New Comer耗费更多的时间和体力。比如说本文要谈的Android Support Library，一直被我望文生义的当做系统底层的支持库，在我的身边不停的出现，可是始终没有进入我的脑袋。于是经过一番搬梯翻墙，查阅了官网资料，在这儿试着弄个水落石出。</p> 
+       <p>要想真正的掌握Android Support Library，没有其它什么捷径，窍门。只有一条路，就是阅读官方的API参考，一个类一个函数的逐个搞明白。那就让本文做你开始品尝”API参考”大餐前的一道开胃菜吧。</p> 
+       <h2>1. Support Library 介绍</h2> 
+       <p>官方文档上（原文：<a href="http://developer.android.com/tools/support-library/index.html" target="_blank">http://developer.android.com/tools/support-library/index.html</a>）第一句话就指明了Support Library的作用：“Android Support Library代码包使新版本的Android框架中的最新特性能够兼容之前版本Android框架“。也就是说Support Library为不断升级的Android系统提供了向下兼容性。</p> 
+       <p>上面的翻译还是不太直白，还是打个比方吧：假设Google发布的新版本Android API提供了一个新特性：你只需要调用一个简单的api函数就可以实现在App应用出现车辆照片时自动识别车辆品牌，并振动提醒用户，真是太酷了。可是你调用这个api写出的App应用在旧版Android手机上却无法展示如此狂拽酷炫diao炸天的车震特效，甚至都无法安装运行，真是让人沮丧。这时候就该Support Library出马了，Support Library可以让新api特性在指定版本的Android上也能正常运行。（请注意这里的“新api特性”和“指定版本”，在使用Support Libary时，首先要确定这两点：你要使用什么新api特性以及最低支持到哪个版本的Android。）</p> 
+       <p>对于做过VC++开发的，Google的这种兼容方式看着太眼熟了。每一次Visual Studio的升级都会带来新版本的MFC库，程序发布时一定要同时打包相应版本的MFC库，才能在各个版本的Windows中运行。只是Google没有直接通过Google API库来实现这种兼容性，而是单独搞出个Support Library来。</p> 
+       <p>官方文档上提到，对于应用开发者,根据应用程序支持的系统版本和使用的API函数，最好在Android工程中包含相应的Support Libary以使用新特性，这样不仅可以把你应用程序的界面由穷D丝变成白富美，更重要的是可以扩大你的用户群体。</p> 
+       <p>对于Android开发者，由于要面对各种各样的设备类型、高低不同的系统版本，因此在由一坨Android开发的小鲜肉变成老腊肉的演变过程中，能够熟练处理兼容性问题是必不可缺的基本功之一。为此要熟知每一个特性是在哪一个API level上加入的，在查阅官方手册Api Reference时多留心右上角的API level。</p> 
+       <p><img src="http://static.codeceo.com/images/2015/09/485b3dc6bb065f483e9b1e8e4037a631.png" alt="Android Support Library 学习入门" width="693" height="191" /></p> 
+       <p>另外还要把下一节所介绍的Support Library Features原文多读几遍。</p> 
+       <h2>2. Support Library Features</h2> 
+       <p>Support Library其实是多个库（jar包）的组合，这里不得不说，它的jar包名比较有迷惑性，对于我这样的初学者来说，容易形成错误的“想当然认知”判断。例如下面的</p> 
+       <pre>com.android.support:support-v4:21.0.0</pre> 
+       <p>我一开始就粗心的把v4当成了版本号（21.0.0才是真正的版本号），因此总是迷惑什么情况选择v4版，什么情况选择v7版？是不是还有v5, v6？其实v4、v7都是Support Library中不同的库名称而已。包名中的v4不是版本号，只不过表明了它不凡的身世：“我的诞生，是为了照亮Android1.6（API &nbsp;level 4)用户的！”</p> 
+       <p>Support Library的第1版（２０１１年３月发布）就只包含v4库，之后的版本不断地在完善v4库。一直到2年后(2013年5月)的第13版，为了兼容API level 7(android2.1)增加了v7这个库（v7其实也是一组库的组合）。此时已经Android4.3(API level 18)的时代。</p> 
+       <p>随着Google为了提升用户体验，不断的解决版本兼容性问题，Support Library也越来越大。除了v4和v7这两个最常用的库，Support Library Features还包含了其它10几个库（不知将来Support Library是否会有终点？），关于每一个库的功能特性，在原文中（<a href="http://developer.android.com/tools/support-library/features.html" target="_blank">http://developer.android.com/tools/support-library/features.html</a>）有详细的论述。在这里，只把Support Library包含的库名罗列一下。</p> 
+       <ul> 
+        <li>v4 Support Library</li> 
+        <li>Multidex Support Library</li> 
+        <li>v7 Support Libraries（注意是复数，因此是一组库） 
+         <ul> 
+          <li>v7 appcompat library（这个最常用吧）</li> 
+          <li>v7 <span class="wp_keywordlink"><a href="http://www.codeceo.com/article/android-cardview.html" title="Cardview" target="_blank">Cardview</a></span> library</li> 
+          <li>v7 gridlayout library</li> 
+          <li>v7 mediarouter library</li> 
+          <li>v7 palette library</li> 
+          <li>v7 <span class="wp_keywordlink"><a href="http://www.codeceo.com/article/android-recyclerview.html" title="RecyclerView" target="_blank">RecyclerView</a></span> library</li> 
+          <li>v7 Preference Support Library</li> 
+         </ul> </li> 
+       </ul> 
+       <ul> 
+        <li>v8 Support Library</li> 
+        <li>v13 Support Library</li> 
+        <li>v14 Preference Support Library</li> 
+        <li>v17 Preference Support Library for TV</li> 
+        <li>v17 Leanback Library</li> 
+        <li>Annotations Support Library</li> 
+        <li>Design Support Library</li> 
+        <li>Custom Tabs Support Library</li> 
+        <li>Percent Support Library</li> 
+        <li>App Recommendation Support Library for TV</li> 
+       </ul> 
+       <p>由于v4 Support Library和v7 Support Librarys主要涉及程序组件，新的用户界面特效，网络连接等比较基础的变动，因此我们平时比较常用到。</p> 
+       <h2>3. &nbsp;Support Library的安装</h2> 
+       <p>如果你使用的是Android Studio(像我一样的菜鸟肯定选AS了，用过eclipse开发Android的老鸟请飞过这一节），Support Library的安装和使用非常简单。只需要打开SDK Manager，点几下鼠标，再加几行代码就行了。不信请看：</p> 
+       <h3>3.1 下载</h3> 
+       <p>打开SDK Manager：</p> 
+       <p><img src="http://static.codeceo.com/images/2015/09/fc46309d17dca103b4d8228044c54a5b.png" alt="Android Support Library 学习入门" width="647" height="431" /></p> 
+       <p>官网专门指出，如果你使用Android Studio，选择并安装&nbsp;Android Support Repository&nbsp;，不需要选择Android Support Library。</p> 
+       <h3>3.2 在程序中加入Support Librarys</h3> 
+       <p>在官网介绍中，根据带资源和不带资源两种库分别介绍了不同的使用方法，实际上只是针对eclipse而言。如果使用Android Studio，使用方法是一样的：只需要打开build.gradle文件，增加下面的代码（以v4库为例）：</p> 
+       <pre>dependencies&nbsp;{
+&nbsp;&nbsp;&nbsp;&nbsp;...
+&nbsp;&nbsp;&nbsp;&nbsp;compile&nbsp;&quot;com.android.support:support-v4:18.0.+&quot;
+}</pre> 
+       <p>剩下的事，就是在代码中使用你需要的类了。</p> 
+       <p>官方提醒：在应用程序中包含了Support Library后，强烈建议在发布程序前，使用ProGuard工具对发布包进行优化。这样除了能够保护你的源码不被别人用<span class="wp_keywordlink"><a href="http://www.codeceo.com/article/java-decompiler-tools.html" title="反编译工具" target="_blank">反编译工具</a></span>获取，同时它把你程序所引用的第三方库中并未使用的类都去掉了，让你的应用程序保持尽可能的小，别忘了，手机上的存储可是寸土寸金啊！</p> 
+       <h3>3.3 修改Manifest文件</h3> 
+       <p>既然你已经使用了Support Library，现在你的应用程序只差一步就能横行天下，兼容更多的系统版本了。那就是修改Manifest文件中的版本声明。打开Manifest.xml文件，找到android:minSdkVersion一项，把它修改的足够的低。</p> 
+       <pre>&lt;uses-sdk
+&nbsp;&nbsp;&nbsp;&nbsp;android:minSdkVersion=&quot;7&quot;
+&nbsp;&nbsp;&nbsp;&nbsp;android:targetSdkVersion=&quot;17&quot;&nbsp;/&gt;</pre> 
+       <p>你也许会问：“我改了Manifest.xml给谁看？”。是的，它还真不是给人看的。上面的Manifest.xml告诉Google Play(谷歌官方应用商店)，你的程序可以安装在Android 2.1(API 7)版本之上的设备上，低于这个版本的，我猜应该就不给装了。因为我还没用过Google Play（暗自一阵脸红），国内的软件应用商店好象没有版本提示，我只见过Apple的应用商店是进行版本判断的。</p> 
+       <h2>4. 结束语</h2> 
+       <p>在企业应用中，除了专业化较强的原生桌面应用程序，大多数业务系统已经迁移到了B/S架构的Web方式，随着移动互联网的普及，大量的应用程序将向手机迁移，这里面也会包括原有少量的桌面应用程序。原生桌面应用程序的生存空间越来越小，反之则出现了大量新的移动应用需求，新的机会慢慢来临。原生桌面程序开发人员，为了不被这个时代所淘汰，尽快掌握Android开发吧。路漫漫其修远兮，吾只能不停的上下折腾。</p> 
+       <script type="text/javascript">
+var strBatchView = 25505</script> 
+       <a id="soft-link" name="soft-link"></a> 
+       <div style="width:336px;height:280px;margin:40px auto"> 
+        <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> 
+        <!-- codeceo-bottom-big --> 
+        <ins class="adsbygoogle" style="display:inline-block;width:336px;height:280px" data-ad-client="ca-pub-3171310320403916" data-ad-slot="5138981789"></ins> 
+        <script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script> 
+       </div> 
+       <!--开源软件资源链接--> 
+       <!--开源软件资源链接结束--> 
+       <div class="bd_ad_bottom" style="margin:40px 0 40px 0"> 
+        <div class="sogou_ads" style="float:left;margin-right:36px"> 
+         <script type="text/javascript">
+    /*码农网文章底部1*/
+    var cpro_id = "u2809630";
+</script> 
+         <script type="text/javascript" src="http://cpro.baidustatic.com/cpro/ui/c.js"></script> 
+        </div> 
+        <div class="baidu_ads" style="float:left"> 
+         <script type="text/javascript">
+    /*码农网文章底部2*/
+    var cpro_id = "u2809631";
+</script> 
+         <script type="text/javascript" src="http://cpro.baidustatic.com/cpro/ui/c.js"></script> 
+        </div> 
+        <div style="clear:both"></div> 
+       </div> 
+      </div> 
+      <div id="related-post-content"> 
+       <!-- 相关资料开始 --> 
+       <h3>相关文章</h3> 
+       <ul class="d_hotpost_txt"> 
+        <li><a href="http://www.codeceo.com/article/flexbox-layout-and-calculation.html" target="_blank">深入理解 Flex 布局以及计算</a></li>
+        <li><a href="http://www.codeceo.com/article/android-bluetooth.html" target="_blank">Android 低功耗蓝牙的那点事</a></li>
+        <li><a href="http://www.codeceo.com/article/js-sort-not-only-bubblesort.html" target="_blank">JavaScript 排序，不只是冒泡</a></li>
+        <li><a href="http://www.codeceo.com/article/nginx-optimization-and-anti-theft-chain.html" target="_blank">Nginx 优化与防盗链实践教程</a></li>
+        <li><a href="http://www.codeceo.com/article/python-so-hard.html" target="_blank">Python 编码为什么那么蛋疼？</a></li>
+        <li><a href="http://www.codeceo.com/article/why-linq-beats-sql.html" target="_blank">为什么说 LINQ 要胜过 SQL</a></li>
+        <li><a href="http://www.codeceo.com/article/android-instant-run.html" target="_blank">深入理解 Android Instant Run 运行机制</a></li>
+        <li><a href="http://www.codeceo.com/article/20-javascript-questions.html" target="_blank">每个前端开发者必会的 20 个 JavaScript 面试题</a></li>
+       </ul> 
+       <!-- 相关资料结束 --> 
+       <div class="fast-operate" style="border-top:#009F64 solid 2px;padding:10px 0;margin-top:10px;"> 
+        <p> 在文章中找不到问题答案？您还可以</p> 
+        <a class="fast-button fast-ask" href="http://ask.codeceo.com/" target="_blank">前往问答社区提问</a> 
+       </div> 
+      </div> 
+      <footer class="article-footer"> 
+       <div class="bdsharebuttonbox share" data-tag="share_1"> 
+        <span class="share-tit">分享到：</span> 
+        <a class="bds_mshare" data-cmd="mshare"></a> 
+        <a class="bds_qzone" data-cmd="qzone" href="#"></a> 
+        <a class="bds_tsina" data-cmd="tsina"></a> 
+        <a class="bds_weixin" data-cmd="weixin"></a> 
+        <a class="bds_baidu" data-cmd="baidu"></a> 
+        <a class="bds_renren" data-cmd="renren"></a> 
+        <a class="bds_tqq" data-cmd="tqq"></a> 
+        <a class="bds_more" data-cmd="more">更多</a> 
+        <a class="bds_count" data-cmd="count"></a> 
+       </div> 
+       <div class="article-tags">
+        继续浏览有关
+        <a href="http://www.codeceo.com/article/tag/android" rel="tag">Android开发</a>的文章
+       </div> 
+      </footer> 
+     </div> 
+     <a name="comments"></a> 
+     <div id="SOHUCS" sid="25505"></div> 
+     <script charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/changyan.js"></script> 
+     <script type="text/javascript">
+    window.changyan.api.config({
+    appid: 'cysHL8j6i',
+    conf: 'prod_6de517d60b8ff6ea246dbc341515d4a9'
+    });
+</script> 
+    </div> 
+   </div> 
+   <aside class="sidebar"> 
+    <div class="widget widget_text"> 
+     <div class="textwidget">
+      <div class="hot" style="height:160px"> 
+       <a href="https://www.mysubmail.com/sms?s=codeceo" target="_blank"> <img src="http://static.codeceo.com/images/2016/12/submail_ad_for_codeceo_600x320.jpg" style="width:300px;height:160px;border:#eee solid 1px" /></a> 
+      </div> 
+      <div class="hot" style="height:250px"> 
+       <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> 
+       <!-- codeceo left 2 --> 
+       <ins class="adsbygoogle" style="display:inline-block;width:300px;height:250px" data-ad-client="ca-pub-3171310320403916" data-ad-slot="7648671380"></ins> 
+       <script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script> 
+      </div> 
+      <div class="hot" style="height:250px"> 
+       <script type="text/javascript">
+var cpro_id="u2191321";
+(window["cproStyleApi"] = window["cproStyleApi"] || {})[cpro_id]={at:"3",rsi0:"300",rsi1:"250",pat:"17",tn:"baiduCustNativeAD",rss1:"#FFFFFF",conBW:"1",adp:"1",ptt:"0",titFF:"%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91",titFS:"14",rss2:"#000000",titSU:"0"}
+</script> 
+       <script src="http://cpro.baidustatic.com/cpro/ui/c.js" type="text/javascript"></script> 
+      </div>
+     </div> 
+    </div>
+    <div class="widget widget_d_hotpost">
+     <h3 class="widget_tit">热门文章</h3>
+     <ul class="d_hotpost_txt">
+      <li><a href="http://www.codeceo.com/article/understanding-flexbox-everything-you-need-to-know.html" target="_blank">理解 Flexbox：你需要知道的一切</a></li>
+      <li><a href="http://www.codeceo.com/article/creation-motivated-programmer.html" target="_blank">创造型职业程序员的无奈</a></li>
+      <li><a href="http://www.codeceo.com/article/mistakes-i-made-as-a-developer.html" target="_blank">我（作为一名开发者）所犯过的错误</a></li>
+      <li><a href="http://www.codeceo.com/article/hecker-wang.html" target="_blank">黑客老王：一个人的黑客史</a></li>
+      <li><a href="http://www.codeceo.com/article/back-ali-interview.html" target="_blank">阿里面试回来，想和Java程序员谈一谈</a></li>
+      <li><a href="http://www.codeceo.com/article/android-5-years-interviews.html" target="_blank">一个五年 Android 开发者百度、阿里、聚美、映客的面试心经</a></li>
+      <li><a href="http://www.codeceo.com/article/appstore-apply-hole.html" target="_blank">那些年提交 AppStore 审核踩过的坑</a></li>
+      <li><a href="http://www.codeceo.com/article/youtube-recommend-algorithm.html" target="_blank">如何破解YouTube视频推荐算法</a></li>
+      <li><a href="http://www.codeceo.com/article/css3-3d-learn.html" target="_blank">手把手教你玩转 CSS3 3D 技术</a></li>
+      <li><a href="http://www.codeceo.com/article/taobao-home-high-performance.html" target="_blank">淘宝首页性能优化实践</a></li>
+     </ul>
+    </div>
+    <div class="widget widget_text"> 
+     <div class="textwidget">
+      <div class="hot" style="height:250px"> 
+       <script type="text/javascript">
+var cpro_id="u2509144";
+(window["cproStyleApi"] = window["cproStyleApi"] || {})[cpro_id]={at:"3",rsi0:"300",rsi1:"250",pat:"17",tn:"baiduCustNativeAD",rss1:"#FFFFFF",conBW:"1",adp:"1",ptt:"0",titFF:"%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91",titFS:"14",rss2:"#000000",titSU:"0"}
+</script> 
+       <script src="http://cpro.baidustatic.com/cpro/ui/c.js" type="text/javascript"></script> 
+      </div>
+     </div> 
+    </div>
+    <div class="widget widget_d_hotpost">
+     <h3 class="widget_tit">职场人生</h3>
+     <ul class="d_hotpost_txt">
+      <li><a href="http://www.codeceo.com/article/100-millions-code.html" target="_blank">写了 100 万行代码的程序员身上发生了什么故事</a></li>
+      <li><a href="http://www.codeceo.com/article/google-software-engineering-experience.html" target="_blank">Google 的软件工程经验总结</a></li>
+      <li><a href="http://www.codeceo.com/article/programmer-qipa.html" target="_blank">程序员“奇葩”说</a></li>
+      <li><a href="http://www.codeceo.com/article/how-improve-intermediate-programmer.html" target="_blank">中级程序员还应该如何提高自己？</a></li>
+      <li><a href="http://www.codeceo.com/article/do-best-developer.html" target="_blank">技术大牛养成指南，一篇不鸡汤的成功学实践</a></li>
+      <li><a href="http://www.codeceo.com/article/software-outsourcing-and-lover.html" target="_blank">趣文：妓女、二奶和软件外包哪个靠谱</a></li>
+      <li><a href="http://www.codeceo.com/article/jipa-programmer-story.html" target="_blank">编程没有捷径：奇葩冒牌程序员的故事</a></li>
+      <li><a href="http://www.codeceo.com/article/why-you-need-start-coding.html" target="_blank">为什么你该开始学习编程了？</a></li>
+      <li><a href="http://www.codeceo.com/article/10-things-keep-opensource-healthy.html" target="_blank">保持开源项目健康运行并减少压力的 10 件事</a></li>
+      <li><a href="http://www.codeceo.com/article/how-to-ask-question.html" target="_blank">程序员如何提一个好问题</a></li>
+     </ul>
+    </div>
+    <div class="widget widget_text"> 
+     <div class="textwidget"></div> 
+    </div>
+    <div class="widget widget_text"> 
+     <div class="textwidget">
+      <div id="related_post_bar" class="widget_d_hotpost" style="margin-top:10px"></div> 
+     </div> 
+    </div>
+   </aside>
+   <div style="position:absolute;right:0px;"> 
+    <div class="widget widget_d_hotpost hot_cat"> 
+     <h3 class="widget_tit">热门栏目订阅</h3> 
+     <ul class="cat_list"> 
+      <li> <img src="http://static.codeceo.com/images/2016/03/java-logo-4.jpg" alt="java" class="cat_img" /> <h4 class="cat_title"><a href="http://www.codeceo.com/article/category/develop/java" target="_blank">Java</a></h4> <span class="cat_link"><a href="http://www.codeceo.com/article/category/develop/java/feed" target="_blank">RSS</a></span> <span class="cat_link"><a href="http://weibo.com/u/3206249732" target="_blank">微博</a></span> </li> 
+      <li> <img src="http://static.codeceo.com/images/2016/03/programmer-logo-4.jpg" alt="程序员" class="cat_img" /> <h4 class="cat_title"><a href="http://www.codeceo.com/article/category/programmer" target="_blank">程序员</a></h4> <span class="cat_link"><a href="http://www.codeceo.com/article/category/programmer/feed" target="_blank">RSS</a></span> <span class="cat_link"><a href="http://weibo.com/u/2832482174" target="_blank">微博</a></span> </li> 
+      <li> <img src="http://static.codeceo.com/images/2016/03/android-logo-4.png" alt="Android" class="cat_img" /> <h4 class="cat_title"><a href="http://www.codeceo.com/article/category/develop/android" target="_blank">Android</a></h4> <span class="cat_link"><a href="http://www.codeceo.com/article/category/develop/android/feed" target="_blank">RSS</a></span> </li> 
+      <li> <img src="http://static.codeceo.com/images/2016/03/php-logo-4.png" alt="PHP" class="cat_img" /> <h4 class="cat_title"><a href="http://www.codeceo.com/article/tag/php" target="_blank">PHP</a></h4> <span class="cat_link"><a href="http://www.codeceo.com/article/tag/php/feed" target="_blank">RSS</a></span> </li> 
+      <li> <img src="http://static.codeceo.com/images/2016/03/javascript-logo-4.png" alt="JavaScript" class="cat_img" /> <h4 class="cat_title"><a href="http://www.codeceo.com/article/tag/javascript" target="_blank">JavaScript</a></h4> <span class="cat_link"><a href="http://www.codeceo.com/article/tag/javascript/feed" target="_blank">RSS</a></span> </li> 
+      <li> <img src="http://static.codeceo.com/images/2016/03/linux-logo-4.png" alt="Linux" class="cat_img" /> <h4 class="cat_title"><a href="http://www.codeceo.com/article/tag/linux" target="_blank">Linux</a></h4> <span class="cat_link"><a href="http://www.codeceo.com/article/tag/linux/feed" target="_blank">RSS</a></span> </li> 
+     </ul> 
+    </div> 
+    <div style="clear:both;width:160px"></div> 
+    <div style="width:160px;height:600px"> 
+     <script type="text/javascript">
+		var cpro_id="u2518649";
+		(window["cproStyleApi"] = window["cproStyleApi"] || {})[cpro_id]={at:"3",rsi0:"160",rsi1:"600",pat:"6",tn:"baiduCustNativeAD",rss1:"#FFFFFF",conBW:"1",adp:"1",ptt:"0",titFF:"%E5%BE%AE%E8%BD%AF%E9%9B%85%E9%BB%91",titFS:"14",rss2:"#000000",titSU:"0",ptbg:"90",piw:"0",pih:"0",ptp:"0"}
+		</script> 
+     <script src="http://cpro.baidustatic.com/cpro/ui/c.js" type="text/javascript"></script> 
+    </div> 
+    <div style="margin-top:20px" id="fixedNav"> 
+     <p style="text-align:center"> <b>关注我们的微博</b> </p>
+     <div style="width:156px;overflow:hidden;border:#2a7cb9 solid 2px;margin-top:10px;margin-bottom:20px"> 
+      <iframe width="100%" height="80" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&amp;width=0&amp;height=80&amp;fansRow=2&amp;ptype=1&amp;speed=0&amp;skin=1&amp;isTitle=0&amp;noborder=0&amp;isWeibo=0&amp;isFans=0&amp;uid=2832482174&amp;verifier=d71718ca&amp;dpc=1"></iframe>
+     </div> 
+     <p></p> 
+     <p style="text-align:center"> <a style="display: block;width: 140px;background: #2a7cb9;font-size: 18px;color: #fff;line-height: 35px;padding: 10px;text-align:center;" href="http://www.codeceo.com/article/2016-codeceo-post-plan.html?utm_source=left_bar" target="_blank">付费投稿计划<br />点击查看详情</a> </p> 
+    </div> 
+   </div> 
+   <script type="text/javascript">
+var relatedPostHTML = jQuery("#related-post-content");
+jQuery("#related_post_bar").html(relatedPostHTML.html());
+jQuery("#related-post-content").remove();
+ScrollFloatPanel("related_post_bar","related_scroll");
+
+jQuery("#article-entry").find('pre').each(function (i, block) {
+           hljs.highlightBlock(block);
+});
+try{
+	var elScript = document.createElement("script");
+	elScript.setAttribute("language", "javascript");
+	elScript.setAttribute("src", "http://www.codeceo.com/wp-counter.php?post_id=" + escape(strBatchView));
+	document.getElementsByTagName("body")[0].appendChild(elScript);
+	}
+catch(e){};
+</script> 
+  </section> 
+  <footer class="footer"> 
+   <div class="central"> 
+    <div class="trackcode"> 
+    </div> 
+    <div class="copyright">
+      版权所有，保留一切权利！ &copy; 2016 
+     <a href="http://www.codeceo.com">码农网</a> 
+     <a href="http://www.miitbeian.gov.cn/" target="_blank">浙ICP备14003773号-1</a> 
+     <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010502000955"> 浙公网安备 33010502000955号</a> 
+     <a target="_blank" href="javascript:void(0)" style="color:red"> 商务合作QQ：290074886（请注明来意）</a> 
+    </div> 
+   </div> 
+  </footer> 
+  <div class="rollto">
+   <a class="ico ico-totop" title="回顶部"></a>
+   <a href="#respond" class="ico ico-torespond" title="发评论"></a>
+  </div> 
+  <script>var asr_1 = 0,asr_2 = 0;</script>
+  <script src="http://static.codeceo.com/wp-asset/js/post.js"></script> 
+  <script>
+	window._bd_share_config = {
+		common : {
+			bdSnsKey:{"tsina":"1527345946"},	
+			bdUrl : 'http://www.codeceo.com/article/android-support-library-guide.html'
+		},
+		share : [{
+			"bdSize" : 16
+		}]
+	}
+	with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script> 
+  <script type="text/javascript">
+ScrollFloatPanel("fixedNav","nav_scroll");
+</script> 
+  <div style="display:none"> 
+   <script language="javascript" type="text/javascript" src="http://static.codeceo.com/wp-asset/js/16025287.js"></script> 
+   <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?af429ff7a5d8173130dceafabcc90a92";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+  </div>  
+ </body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html><html><head>
+<meta name="description" content="触屏版,无需去营业厅，手机上网就轻松搞定费用查询、充值交费、精彩增值、积分服务、宽带新装续 约、189选号、天翼手机等服务,中国电信,世界触手可及。">
+<meta name="author" content="广东电信">
+<meta name="keywords" content="广东电信,中国电信网上营业厅,中国电信,电信宽带,电信4g,电信宽带套餐">
+<meta http-equiv="Expires" content="-1">           
+<meta http-equiv="Cache-Control" content="no-cache">           
+<meta http-equiv="Pragma" content="no-cache">
+<title>统一支付</title>
+<!-- Optimized mobile viewport -->
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta content="telephone=no" name="format-detection">
+<!--cssfile1.htm及cssfile2.htm文件为更换版本不冲突设计-->
+<!--css file1-->
+<link rel="stylesheet" href="/uniteTouch/unitepay/css/reset-and-media.css">
+<link rel="stylesheet" href="/uniteTouch/unitepay/css/ctzt-page.css">
+<link rel="stylesheet" href="/uniteTouch/unitepay/css/lt_css.css">
+<style>
+.w2 {
+	letter-spacing: 2em; /*如果需要y个字两端对齐，则为(x-y)/(y-1),这里是（4-2）/(2-1)=2em */
+	margin-right: -2em; /*同上*/
+}
+.gmu-media-detect {
+	-webkit-transition: width 0.001ms;
+	width: 0;
+	position: relative;
+	bottom: -999999px;
+}
+@media screen and (width: 1366px) {
+	#gmu-media-detect0 {
+		width: 100px;
+	}
+}
+</style>
+<script type="text/javascript" src="/uniteTouch/js/jquery.min.js"></script>
+<script type="text/javascript" src="/uniteTouch/unitepay/js/util.js"></script>
+<script type="text/javascript">
+	var contextPath = '/uniteTouch';
+	var sessionId = "";
+	$(function(){
+		var paySeq = getURLParamValue("paySeq");
+		checkPayOrderState(paySeq);
+	})
+	
+	function checkPayOrderState(paySeq){
+		var param={'paySeq':paySeq};
+		$.ajax({
+			url: contextPath+"/unitepay/pay/checkPayOrderState.m",
+			data: param,
+			timeout: 5000,
+			error: function (e) {
+			},
+			success: function (data) {
+				//alert(data);
+				var resultMsg = splitReturnValue(data);
+				if('true'==resultMsg[0]){//支付成功或失败
+					var tourl=contextPath+"/unitepay/returnpage/wxpay/payresult.html?";
+					var result=resultMsg[1];
+					if(result!=null){
+						var busiReturnUrl=result.split("?")[0];
+						var param1=result.split("?")[1];
+						tourl=tourl+"busiReturnUrl="+busiReturnUrl+"&"+encodeURI(param1);
+						window.location.href=tourl;
+					}
+				}
+			}
+		});	
+	}
+</script>
+<script src="/uniteTouch/unitepay/js/qryPayOrderState.js"></script>
+</head>
+<body id="touch-screen-ctzt">
+	<!--流式布局开始-->
+	<div class="container">
+		<div></div>
+		<header id="header" class="lge page-header">
+			<article class="row pd_small">
+				<h1 class="tc f_24 se-f">
+					统一支付
+				</h1>
+
+			</article>
+		</header>
+	</div>
+	<!--流式布局结束-->
+	<div id="return_top"></div>
+	<!--/返回TOP-->
+	<!--二级页面页脚-->
+	<footer id="footer" class="row YaHei">
+		<nav class="col12 columns">
+			<dl class="copyright">
+				<dd>中国电信 | ICP证号:京ICP备09031924号</dd>
+			</dl>
+		</nav>
+	</footer>
+
+</body></html>

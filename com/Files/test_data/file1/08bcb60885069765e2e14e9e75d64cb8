@@ -1,0 +1,643 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+  <title>详解nodejs 文本操作模块-fs模块（二）-JavaScript/Ajax教程-源码库|专注为中国站长提供免费商业网站源码下载！</title> 
+  <meta property="og:type" content="news" /> 
+  <meta property="article:published_time" content="2016-12-22T19:43:47+08:00" /> 
+  <meta property="og:title" content="详解nodejs 文本操作模块-fs模块（二）" /> 
+  <meta property="og:description" content="这篇文章主要介绍了详解nodejs 文本操作模块-fs模块（二）,主要包括文件的读写操作，有兴趣的可以了解一下。" /> 
+  <meta property="og:url" content="http://www.aspku.com/kaifa/javascript/216008.html" /> 
+  <meta property="og:release_date" content="2016-12-22T19:43:47+08:00" /> 
+  <meta property="og:image" content="http://www.aspku.com/images/defaultpic.gif" /> 
+  <meta property="article:author" content="www.aspku.com" /> 
+  <meta name="keywords" content="node,fs模块,nodejs,fs模块,nodejs,文本操作模块" /> 
+  <meta name="description" content="这篇文章主要介绍了详解nodejs 文本操作模块-fs模块（二）,主要包括文件的读写操作，有兴趣的可以了解一下。" /> 
+  <link rel="stylesheet" href="/css/css.css" type="text/css" /> 
+  <script src="/img/jquery.min.js" type="text/javascript"></script> 
+  <script src="/img/js.js" type="text/javascript"></script> 
+  <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> 
+  <link rel="alternate" media="only screen and(max-width: 640px)" href="http://m.aspku.com/view-216008.html" /> 
+  <meta http-equiv="mobile-agent" content="format=xhtml;url=http://m.aspku.com/view-216008.html" /> 
+  <script type="text/javascript">if(window.location.toString().indexOf('pref=padindex') != -1){}else{if(/AppleWebKit.*Mobile/i.test(navigator.userAgent) || (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(navigator.userAgent))){if(window.location.href.indexOf("?mobile")<0){try{if(/Android|Windows Phone|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)){window.location.href="http://m.aspku.com/view-216008.html";}else if(/iPad/i.test(navigator.userAgent)){}else{}}catch(e){}}}}</script> 
+ </head> 
+ <body> 
+  <script type="text/javascript">R3();</script> 
+  <div id="header">
+   <div class="w960">
+    <div id="login"></div>
+    <script language="JavaScript">CK();</script>
+    <div id="topgg"></div>
+    <div id="quick-menu">
+     <script type="text/javascript" src="/img/top.js"></script>
+    </div>
+   </div>
+  </div> 
+  <div id="top">
+   <div class="w960"> 
+    <div class="logo">
+     <a href="/" title="源码库">网页模板_网站模板_源码库</a>
+    </div> 
+    <div class="ss">
+     <div class="s_form"> 
+      <form id="NewsSearchForm" name="NewsSearchForm" method="get" action="http://so.aspku.com/cse/search" target="_blank">
+       <input type="hidden" name="s" value="3527383009548599228" /> 
+       <input type="hidden" name="ie" value="utf-8" />
+       <input type="hidden" name="c" value="0" />
+       <div class="s1">
+        <input type="text" class="keywords" name="q" id="q" title="请输入关键字" value="" maxlength="27" onfocus="iC(this)" x-webkit-speech="" />
+       </div> 
+       <div class="s2">
+        <span id="_SearchSelectedCond" class="btn2"><a href="javascript:_SelectSearchCond();" onfocus="this.blur()">所有分类</a></span> 
+        <script language="javascript" src="/img/s.js"></script>
+       </div> 
+       <div class="btn">
+        <input type="button" class="btnb" onclick="javascript:_GoNewsSearch();" value="" />
+       </div>
+      </form>
+     </div> 
+     <div class="s_b_link">
+      <a href="/" target="_blank">每日更新</a>|
+      <a href="/top" rel="nofollow" target="_blank">TOP排行榜</a>|
+      <a href="/tags.php" target="_blank">Tag标签</a>|
+      <a href="/" rel="nofollow" target="_blank">充值</a>
+     </div> 
+     <div class="x_color">
+      <script type="text/javascript">wCL();</script>
+     </div>
+     <div class="cl"></div> 
+    </div>
+    <div class="s_rad"> 
+     <script src="/plus/ad_js.php?aid=22" language="javascript"></script>
+    </div>
+   </div> 
+  </div> 
+  <div id="nav">
+   <div class="navc"> 
+    <a href="/">源码库首页</a> 
+    <a href="/asp/"><span>ASP源码</span></a> 
+    <a href="/php/"><span>PHP源码</span></a> 
+    <a href="/net/"><span>NET源码</span></a> 
+    <a href="/vip/"><span>商业源码</span></a> 
+    <a href="/qita/" rel="dropmenu54"><span>其他源码</span></a> 
+    <a class="on" href="/tech/" rel="dropmenu9"><span>建站教程</span></a> 
+    <a href="/moban/" rel="dropmenu11"><span>网站模板</span></a> 
+    <a href="/sucai/" rel="dropmenu47"><span>站长素材</span></a> 
+    <a href="/texiao/" rel="dropmenu87"><span>网页特效</span></a> 
+    <a href="/zhuanti/" rel="dropmenu81"><span>专题</span></a> 
+   </div>
+  </div> 
+  <div id="mainbg"> 
+   <div id="f_btn">
+    <script type="text/javascript">wCF();</script>
+   </div>
+   <div id="xy_nav"> 
+    <div class="nav3b">
+     <div class="nav3"> 
+      <div id="nav3_1">
+       <ul> 
+        <a href="/kaifa/asp/">ASP教程</a> 
+        <a href="/kaifa/ios/">IOS开发</a> 
+        <a href="/kaifa/java/">JAVA教程</a> 
+        <a href="/kaifa/android/">Android开发</a> 
+        <a href="/kaifa/cjc/">c#教程</a> 
+        <a href="/kaifa/zhengze/">正则表达式</a> 
+        <a href="/kaifa/swift/">swift教程</a> 
+        <a href="/kaifa/c/">C++教程</a> 
+        <a href="/kaifa/mobile/">手机网站开发</a> 
+        <a href="/kaifa/css/">CSS教程</a> 
+        <a href="/kaifa/html/">HTML教程</a> 
+        <a href="/kaifa/javascript/" class="on">JavaScript/Ajax教程</a> 
+        <a href="/kaifa/jsp/">JSP教程</a> 
+        <a href="/kaifa/net/">ASP.NET教程</a> 
+        <a href="/kaifa/php/">PHP教程</a> 
+        <a href="/kaifa/bianjiqi/">编辑器</a> 
+       </ul> 
+      </div> 
+     </div>
+     <i></i> 
+    </div> 
+   </div> 
+   <div class="topad2"> 
+    <script src="/plus/ad_js.php?aid=23" language="javascript"></script> 
+    <div class="top210x90">
+     <script src="/plus/ad_js.php?aid=35" language="javascript"></script>
+    </div> 
+    <div class="top728x90">
+     <script src="/plus/ad_js.php?aid=21" language="javascript"></script>
+    </div> 
+   </div> 
+   <script type="text/javascript">
+    /* 创建于 2015-05-14*/
+    var cpro_id = "u2102564";
+</script> 
+   <script src=" http://su.bdimg.com/static/dspui/js/uf.js" type="text/javascript"></script> 
+   <div id="a22"> 
+    <script type="text/javascript" src="/z/a2.js"></script> 
+    <div class="delfloat"></div> 
+   </div> 
+   <div id="main"> 
+    <div id="sisbar">
+     <script type="text/javascript">wCB();</script>
+    </div> 
+    <div id="main_l" class="ml_wz"> 
+     <div class="place"> 
+      <div class="p_url">
+       当前位置:
+       <a href="http://www.aspku.com/">源码库</a>-
+       <a href="/tech/">建站教程</a>-
+       <a href="/kaifa/">网站开发</a>-
+       <a href="/kaifa/javascript/">JavaScript/Ajax教程</a>-详解nodejs 文本操作模块-fs模块（二）
+      </div> 
+      <div class="nr_tool">
+       <a href="javascript:wz(93611);" class="t_sc" title="收藏此教程">收藏</a>
+       <a href="javascript:bdfx('more');" class="t_fx" title="点击分享">分享</a>
+       <a href="javascript:scrolls('ajax_ts');" class="t_pl" title="查看本教程评论">查看评论</a>
+       <a href="/kaifa/javascript/" class="t_fh" title="返回/kaifa/javascript/列表">JavaScript/Ajax教程</a>
+      </div>
+      <div class="s_f">
+       <a href="javascript:sfont(16)">大</a>
+       <a href="javascript:sfont(14)">中</a>
+       <a href="javascript:sfont(12)">小</a>
+      </div> 
+     </div> 
+     <div class="p_ad">
+      <script src="/plus/ad_js.php?aid=24" language="javascript"></script> 
+     </div> 
+     <div class="nr"> 
+      <div class="nr_top">
+       <div class="nr_top_l">
+        <h1>详解nodejs 文本操作模块-fs模块（二）</h1>
+       </div>
+      </div> 
+      <div class="nr_tag">
+       <span>文章TAG：</span>
+       <em><a href="/tags.php?/NodeJS/">NodeJS</a> </em>
+       <em><a href="/tags.php?/node/">node</a> </em>
+       <em><a href="/tags.php?/fs%E6%A8%A1%E5%9D%97/">fs模块</a> </em>
+       <em><a href="/tags.php?/%E6%96%87%E6%9C%AC%E6%93%8D%E4%BD%9C%E6%A8%A1%E5%9D%97/">文本操作模块</a> </em>
+      </div> 
+      <div class="nr_b">
+       <div class="nr_body wz_body" id="sfont">
+        <div id="nr_tad"> 
+         <div class="info"> 
+          <small>时间:</small>2016-12-22
+          <small>来源:</small>www.aspku.com 
+          <small>作者:</small>源码库 
+          <small>文章热度:</small> 
+          <script src="/plus/count.php?view=yes&amp;aid=216008&amp;mid=1" type="text/javascript" language="javascript"></script> ℃
+         </div> 
+        </div> 
+        <div id="nr_tad">
+         <script src="/plus/ad_js.php?aid=25" language="javascript"></script>
+        </div>
+        <div id="nr_tad1">
+         <script src="/plus/ad_js.php?aid=36" language="javascript"></script>
+        </div> 
+        <p> 前一篇学习了文件的打开和关闭，文件操作总不能只包含打开和关闭吧，这里就开始文件的读写操作。</p> 
+        <p> fs模块方法</p> 
+        <p> <span style="color: #ff0000"><strong>1:read和readSync方法</strong></span></p> 
+        <p> 该方法，是从文件的指定位置处读取文件，一直读取到文件底部，然后江都区到的内容输出到一个缓存区，使用方法如下：</p> 
+        <div class="jb51code"> 
+         <pre class="brush:js;">
+fs.read(fd,buffer,offset,length,position,callback); </pre> 
+        </div> 
+        <p> 在read方法中，支持6个参数：</p> 
+        <ul> 
+         <li> fd参数，是文件描述符，是open方法的回调函数中获取到的，是一个数字。</li> 
+         <li> buffer，是一个buffer对象，用于指定将文件数据读取到那个缓存区，如果不定义，则会生成一个新的缓存区，进行存放新读取到的数据。</li> 
+         <li> offset，是一个整数值，用于指定向缓存区中写入数据时的开始位置，以字节为单位。其实也就是，读入到缓存中的数据，从buffer对象的第几个元素开始写入。</li> 
+         <li> length，是一个整数值，表示读入的数据，多少数据写入到buffer对象中去，要保证不能超出buffer的容纳范围，否则会抛出一个范围异常。</li> 
+         <li> position，是一个整数值，表示，从文件中的哪个位置，开始读取数据，如果设置为非0的整数，则从该整数所示的位置，读取长度为length的数据到buffer对象中。</li> 
+         <li> callback，回调函数，当读取文件成功之后，把执行该函数，该回调函数支持三个参数：</li> 
+        </ul> 
+        <div class="jb51code"> 
+         <pre class="brush:js;">
+function (err,bytesRead,buffer){ 
+ //err为读取文件操作失败时，触发的错误对象 
+ //bytesRead为读取到的字节数，如果文件的比较大，则该值就是length的值， 
+ //如果文件的大小比length小，则该值为实际中读取到的字节数。 
+ //buffer为读取到的内容，保存到了该缓存区，如果在使用read时， 
+ //传入了buffer对象，则此处的buffer就是传入的buffer对象。 
+ //如果在read时没有传入buffer，则此处的buffer为新创建的buffer对象 
+} </pre> 
+        </div> 
+        <p> 上面把参数的含义以及回调函数的定义，都说明了一下，这里就看一个示例吧：</p> 
+        <div class="jb51code"> 
+         <pre class="brush:js;">
+var fs = require(&quot;fs&quot;); 
+ 
+fs.open(&quot;fs.txt&quot;,&quot;r&quot;,function(err,fd){ 
+ //读取fs.text，文件的内容为“123456789”，长度为9 
+ var buffer = new Buffer([0,0,0,0,0,0,0,0,0,0]); 
+ //创建一个长度为10，初始值为0的buffer对象。 
+ //数据比较少，就直接写了，否则还是使用fill方法吧。 
+ console.log(buffer); 
+ //&lt;Buffer 00 00 00 00 00 00 00 00 00 00&gt; 
+ //初始时的buffer对象 
+  
+ fs.read(fd,buffer,4,6,4,function(err,bytesRead,buffer1){ 
+  //读取到的数据，从buffer对象的第5个元素开始保存，保存6个字节的元素 
+  //读取文件，是从文件的第5个字节开始，因为文件中内容长度为9， 
+  //那么，读取到的内容就是56789，所以buffer的最后一位仍然为初始值。 
+  //由于想要读取的字节长度为6，但是文件内容过短，只读取了5个字节的有效数据 
+  //就到了文件的结尾了，所以，bytesRead的值不是6，而是5。 
+  //而buffer对象，为被写入新数据之后的对象。 
+  console.log(bytesRead); //5 
+    console.log(buffer1);  
+  //&lt;Buffer 00 00 00 00 35 36 37 38 39 00&gt; 
+    console.log(buffer); 
+  //&lt;Buffer 00 00 00 00 35 36 37 38 39 00&gt; 
+  //它们俩是完全相同的。其实质是，它们俩占据的内存也是相同的， 
+  //它们就是同一个缓存区。 
+ }); 
+}); 
+</pre> 
+        </div> 
+        <p> 一般情况下，异步调用时，回调函数中，只有两个参数存在，第一个参数为err对象，第二个参数为操作之后的数据，可是，这里有三个数据，那么在同步时，什么才是返回值呢？</p> 
+        <p> 所以，要做如下的测试：</p> 
+        <div class="jb51code"> 
+         <pre class="brush:js;">
+var fs = require(&quot;fs&quot;); 
+ 
+fs.open(&quot;fs.txt&quot;,&quot;r&quot;,function(err,fd){ 
+ //读取fs.text，文件的内容为“123456789”，长度为9 
+ var buffer = new Buffer([0,0,0,0,0,0,0,0,0,0]); 
+  
+ var bytesRead = fs.readSync(fd,buffer,4,6,4); 
+ console.log(bytesRead); 
+}); </pre> 
+        </div> 
+        <p> 返回的是bytesRead的值，并没有返回buffer对象，可以想象，因为buffer对象是原本传入的buffer对象，依然可以通过传入的buffer对象，直接访问到重写数据之后的buffer对象。</p> 
+        <p> 但是，有个问题就来了，如果没有传入buffer对象呢？这又要如何呢？这个问题暂且别过，因为这个问题，并没有在一些API文档中说明，在书中也没有看到这个用法，但是接下来，我们去分析一下源码，就能发现，除了上述的两种常用的方法之外，还有其他的使用方式。</p> 
+        <p> OK，先看下read方法的源码：</p> 
+        <div class="jb51code"> 
+         <pre class="brush:js;">
+fs.read = function(fd, buffer, offset, length, position, callback) { 
+ if (!util.isBuffer(buffer)) { 
+ //如果传入的第二个参数不是一个buffer对象，则做一些自适应的处理 
+ // legacy string interface (fd, length, position, encoding, callback) 
+ var cb = arguments[4], 
+  encoding = arguments[3]; 
+ //本来read方法是有6个参数的，当buffer没有传入的时候， 
+ //则相应的offset也变得没有意义，所以变为了4个参数。 
+ //而这个时候，参数的形式就变成了前面英文部分的样子。5个参数，加入了encoding参数。 
+  
+ assertEncoding(encoding); 
+ //判断传入的encoding是否是当前支持的编码方式 
+ //如果不是，则抛出异常 
+ 
+ position = arguments[2]; 
+ length = arguments[1]; 
+ buffer = new Buffer(length); 
+ offset = 0; 
+ //设置对应的值，新建buffer对象 
+ 
+ //把callback做一个代理，根据传入的编码方式，把结果按照指定的编码，传入回调函数 
+ callback = function(err, bytesRead) { 
+  if (!cb) return; 
+  //如果回调函数不存在，则直接退出 
+  
+  var str = (bytesRead &gt; 0) ? buffer.toString(encoding, 0, bytesRead) : ''; 
+ 
+  //注意，当读取文件成功后，执行了wrapper的回调，从wrapper中， 
+  //执行到该callback回调时，并没有传入buffer对象， 
+  //并且，调用read中的回调的三个参数是:err,str(按照指定编码之后的字符串)， 
+  //bytesRead(读取字节数)，并没有buffer对象传入 
+  (cb)(err, str, bytesRead); 
+ }; 
+ } 
+ 
+ function wrapper(err, bytesRead) { 
+ // Retain a reference to buffer so that it can't be GC'ed too soon. 
+ // 由这里可以看出，在C++读取文件时，回调函数只有两个值 
+ //err对象和真实读取的字节数，至于buffer对象，则是nodejs代理之后 
+ //给添加上的 
+ callback &amp;&amp; callback(err, bytesRead || 0, buffer); 
+ } 
+ 
+ //创建一个实例，定义oncomplete属性 
+ //该实例，按照猜测，应该是分段读取文件的一个对象 
+ //当读取文件完成之后，会执行oncomplete方法 
+ var req = new FSReqWrap(); 
+ req.oncomplete = wrapper; 
+ 
+ //调用C++的接口，开始读取文件 
+ binding.read(fd, buffer, offset, length, position, req); 
+}; 
+</pre> 
+        </div> 
+        <p> 看了上面的源码分析，那么也就发现了另外一种使用read的方法了，即，不输入buffer和offset，添加encoding的5个参数的使用，举一个最简单的实例吧。</p> 
+        <div class="jb51code"> 
+         <pre class="brush:js;">
+var fs = require(&quot;fs&quot;); 
+ 
+fs.open(&quot;fs.txt&quot;,&quot;r&quot;,function(err,fd){ 
+ //读取fs.text，文件的内容为“123456789”，长度为9 
+ var buf1 = new Buffer([0,0,0,0,0,0,0,0,0,0]); 
+  
+ fs.read(fd,6,4,null,function(err,str,bytesRead){ 
+  console.log(err); 
+  //null 
+  console.log(&quot;str=&quot;+str); 
+  //str=56789 
+  console.log(&quot;bytesRead=&quot;+bytesRead); 
+  //bytesRead=5 
+ }); 
+  
+}); 
+</pre> 
+        </div> 
+        <p> 注意，当不传入buffer对象时，回调函数中的三个参数也相应的有了变化，详情请看前面的实例代码中，回调函数的参数以及源码中的注释。</p> 
+        <p> 继续看下readSync的源码，在本文的前面，也给出了一个readSync的示例，当传入buffer对象时，返回值是读取到真是字节数，那么，既然read方法可以省略buffer对象，改为返回读取到的字符串，那么readSync方法呢？这个就让我们看下源码中，是如何处理这些数据的。</p> 
+        <div class="jb51code"> 
+         <pre class="brush:js;">
+fs.readSync = function(fd, buffer, offset, length, position) { 
+ var legacy = false; 
+ if (!util.isBuffer(buffer)) { 
+ // legacy string interface (fd, length, position, encoding, callback) 
+ //该部分的处理，和read方法内部，完全相同，不再注释。 
+ //唯一区别，legacy标识符，标志是否传入了buffer，为false时，表示传入了 
+ legacy = true; 
+ var encoding = arguments[3]; 
+ 
+ assertEncoding(encoding); 
+ 
+ position = arguments[2]; 
+ length = arguments[1]; 
+ buffer = new Buffer(length); 
+ 
+ offset = 0; 
+ } 
+ 
+ //C++的read方法，如果传入了第六个参数，则属于读取成功之后，执行的回调相关的对象 
+ //如果不传入，则返回值为读取到的真是字节数，该数小于等于length 
+ var r = binding.read(fd, buffer, offset, length, position); 
+ if (!legacy) { 
+ //如果，传入了buffer对象，则直接返回读取到的真是字节数 
+ return r; 
+ } 
+ 
+ var str = (r &gt; 0) ? buffer.toString(encoding, 0, r) : ''; 
+ //如果没有传入buffer对象，那么返回一个数组，该数组包含两个元素， 
+ //字符串和读取到的字节数 
+ return [str, r]; 
+}; 
+</pre> 
+        </div> 
+        <p> 那么接下来看下，如果不传入buffer对象时的一个示例吧：</p> 
+        <div class="jb51code"> 
+         <pre class="brush:js;">
+var fs = require(&quot;fs&quot;); 
+ 
+fs.open(&quot;fs.txt&quot;,&quot;r&quot;,function(err,fd){ 
+ //读取fs.text，文件的内容为“123456789”，长度为9 
+ var buf1 = new Buffer([0,0,0,0,0,0,0,0,0,0]); 
+  
+ var arr = fs.readSync(fd,6,4,null); 
+ console.log(arr); 
+ //[&quot;56789&quot;,5] 
+}); 
+</pre> 
+        </div> 
+        <p> OK，到这里，关于read和readSync方法的使用及一些原理性东西，也基本说完了。</p> 
+        <p> <span style="color: #ff0000"><strong>2：write和writeSync方法</strong></span></p> 
+        <p> 有读取的方法，那么就必然有写入的方法了，要么flag=w不就无用了么。并且看到了前面的关于read的一些使用，那么接下来，对于write的使用，看起来就变得更加的简单了，现在直接看下示例：</p> 
+        <div class="jb51code"> 
+         <pre class="brush:js;">
+var fs = require(&quot;fs&quot;); 
+ 
+fs.open(&quot;fs.txt&quot;,&quot;a+&quot;,function(err,fd){ 
+ //读取fs.text，文件的内容为“123456789”，长度为9 
+ var buf1 = new Buffer(&quot;我喜爱Nodejs&quot;); 
+ console.log(buf1); 
+ //显示buf1的buffer数据 
+ //计算buf1的长度，把该数据全部写入到fs.txt文件中 
+ fs.write(fd,buf1,0,buf1.length,0,function(err,len,buf){ 
+  console.log(&quot;len=&quot;+len); 
+  //写入的长度 
+   
+  //写入的buf，其实和buf1完全相等 
+  console.log(buf); 
+  fs.read(fd,len,9,&quot;utf8&quot;,function(err,str,len2){ 
+   console.log(&quot;len2=&quot;+len2); 
+   //读取从9开始的数据 
+   console.log(&quot;str=&quot;+str); 
+   //读取相应得到的字符串 
+   //我喜爱Nodejs 
+  }); 
+ }); 
+}); 
+</pre> 
+        </div> 
+        <p> 从上面这个示例可以看出，write方法和read方法，使用基本是完全一样的，只是一个是在读取文件一个是在写入文件，前提也是需要你在open打开文件时，使用的flag打开文件方式，要支持读写才行。</p> 
+        <p> 既然，write和read是相同的使用方法，那么也可以不定义buffer的直接写入数据，所以，可以继续看下面的这个示例：</p> 
+        <div class="jb51code"> 
+         <pre class="brush:js;">
+var fs = require(&quot;fs&quot;); 
+ 
+fs.open(&quot;fs.txt&quot;,&quot;a+&quot;,function(err,fd){ 
+ //读取fs.text，文件的内容为“123456789”，长度为9 
+  
+ //复杂的写法，和简单的写法，就看个人喜好了，0代表的是字符串的开始位置 
+ //fs.write(fd,&quot;我喜爱Nodejs&quot;,0,&quot;utf8&quot;,function(err,len,str) 
+ fs.write(fd,&quot;我喜爱Nodejs&quot;,function(err,len,str){ 
+  console.log(&quot;len=&quot;+len); //len=15 
+  //写入的长度 
+   
+  //当直接写入字符串时，返回的也不再是buffer对象，而是字符串 
+  console.log(&quot;str=&quot;+str); //我喜爱Nodejs 
+  fs.read(fd,len,9,&quot;utf8&quot;,function(err,str,len2){ 
+   console.log(&quot;len2=&quot;+len2); //len2=15 
+   //读取从9开始的数据 
+   console.log(&quot;str=&quot;+str); 
+   //读取相应得到的字符串 
+   //我喜爱Nodejs 
+  }); 
+ }); 
+}); 
+</pre> 
+        </div> 
+        <p> 这里就不再分析源码了，基本上write的源码和read的源码处理方式类似，只是在最后调用C++接口不同而已，所以这里也就不再占用空间了。有兴趣的可以直接去nodejs的github源码中，查看：<a href="https://github.com/nodejs/node-v0.x-archive/blob/master/lib/fs.js" rel="nofollow" target="_blank">fs.js</a>。</p> 
+        <p> 关于writeSync的用法，用法和write是相同的，只是不需要回调函数，并且也不需要返回写入的数据，所以，和readSync的区别，也就是，readSync在不传入buffer时，会返回一个长度为2的数组，而writeSync不受buffer对象的影响，只要写入成功，就会返回写入的真实字节数。<br /> 不加示例，不加源码分析，请参考上面的read方法，readSync方法和write方法，也可以参考nodejs的API文档：<a href="http://nodeapi.ucdok.com/#/api/all.html" rel="nofollow" target="_blank">Nodejs的API中文版。</a></p> 
+        <p> <strong>总结</strong></p> 
+        <p> 本篇的read和write是文档操作的基础，是属于最基本的操作，也是最重要的操作，本篇也是属于fs模块中的基本使用方法，对于以后学习其他方法，以及更好的了解fs模块有重要的作用，好好学习，天天向上。</p> 
+        <p> 以上就是本文的全部内容，希望对大家的学习有所帮助，也希望大家多多支持ASPKU源码库。</p> 
+        <br /> 
+        <b>注：相关教程知识阅读请移步到<a href="/kaifa/javascript/">JavaScript/Ajax教程</a>频道。</b> 
+        <div class="wz-page"></div> 
+       </div>
+      </div> 
+      <div class="nr_info mb10">
+       上一篇：
+       <a href="/kaifa/javascript/216007.html">详解nodejs 文本操作模块-fs模块（一）</a> 
+      </div>
+      <div class="wz_nr_r">
+       下一篇：
+       <a href="/kaifa/javascript/216009.html">详解nodejs 文本操作模块-fs模块（三）</a> 
+      </div> 
+     </div> 
+     <div id="ajax_ts"></div>
+     <div id="comment"></div> 
+     <div class="l_ad">
+      <script src="/plus/ad_js.php?aid=26" language="javascript"></script> 
+     </div> 
+     <div class="vtitle">
+      相关
+      <strong>JavaScript/Ajax教程</strong>：
+     </div> 
+     <div class="xg_list">
+      <ul> 
+       <li><a href="/kaifa/javascript/216009.html">详解nodejs 文本操作模块-fs模块（三）</a></li> 
+       <li><a href="/kaifa/javascript/216007.html">详解nodejs 文本操作模块-fs模块（一）</a></li> 
+       <li><a href="/kaifa/javascript/215775.html">学习 NodeJS 第八天：Socket 通讯实例</a></li> 
+       <li><a href="/kaifa/javascript/215774.html">详解Nodejs基于mongoose模块的增删改查的操作</a></li> 
+       <li><a href="/fuwuqi/214851.html">Linux环境下nodejs的安装图文教程</a></li> 
+       <li><a href="/kaifa/javascript/214414.html">nodejs redis 发布订阅机制封装实现方法及实例代码</a></li> 
+       <li><a href="/kaifa/javascript/214121.html">Node.js中process模块常用的属性和方法</a></li> 
+       <li><a href="/kaifa/javascript/213704.html">解析NodeJs的调试方法</a></li> 
+      </ul>
+     </div> 
+     <div class="vtitle2">
+      <strong>热门标签</strong>：
+     </div> 
+     <div class="2_ad">
+      <script src="/plus/ad_js.php?aid=38" language="javascript"></script> 
+     </div> 
+     <div style="display:none"> 
+      <div class="wumii-hook"> 
+       <input type="hidden" name="wurl" value="http://www.aspku.com/kaifa/javascript/216008.html" /> 
+       <input type="hidden" name="wtitle" value="详解nodejs 文本操作模块-fs模块（二）" /> 
+       <input type="hidden" name="wpic" value="" /> 
+      </div> 
+      <p style="display: none;"> <a rel="tag">NodeJS</a><a rel="tag">node</a><a rel="tag">fs模块</a><a rel="tag">文本操作模块</a> </p> 
+      <script>
+    var wumiiSitePrefix = "http://www.aspku.com//";
+    var wumiiCategories = [""];
+</script> 
+     </div> 
+    </div>
+    <div id="main_r"> 
+     <h3><a href="/rss/27.xml" class="addrss" title="订阅JavaScript/Ajax教程更新">JavaScript/Ajax教程Rss订阅</a>JavaScript/Ajax教程搜索</h3> 
+     <div class="search"> 
+      <form method="get" name="mainrs" id="searchform" action="/plus/search.php" target="_blank">
+       <div class="cl">
+        <input type="hidden" name="c" value="65" />
+       </div>
+       <input type="text" value="搜索JavaScript/Ajax教程..." onfocus="iCc(this)" name="q" id="q" />
+       <input type="button" onclick="javascript:rs();" id="searchsubmit" class="ycss" value="" />
+      </form>
+     </div> 
+     <s></s> 
+     <div class="r_adl">
+      <ul> 
+       <script src="/plus/ad_js.php?aid=27" language="javascript"></script> 
+      </ul>
+     </div> 
+     <script src="/img/history.js" type="text/javascript"></script> 
+     <div class="sublist">
+      <h3>JavaScript/Ajax教程推荐</h3> 
+      <ul> 
+       <li><a target="_blank" href="/kaifa/javascript/194828.html"><strong><font color="#FF0000">JS判断域名实现加密(防止网站被镜像)</font></strong></a></li> 
+       <li><a target="_blank" href="/kaifa/javascript/146428.html">Javascript 实现广告后加载 可加载百度谷歌联盟广</a></li> 
+       <li><a target="_blank" href="/kaifa/javascript/119115.html">webstorm-前端javascript开发神器中文教程和技巧分享</a></li> 
+       <li><a target="_blank" href="/kaifa/javascript/115155.html">JS取绝对值函数</a></li> 
+       <li><a target="_blank" href="/kaifa/javascript/51064.html">JS中setTimeout()的用法详解</a></li> 
+       <li><a target="_blank" href="/kaifa/javascript/48967.html">纯Javascript实现ping功能的方法</a></li> 
+       <li><a target="_blank" href="/kaifa/javascript/46192.html">什么是vml？vml语言简介</a></li> 
+       <li><a target="_blank" href="/kaifa/javascript/45604.html">7款返回顶部代码|jQuery返回顶部|js返回顶部代码总</a></li> 
+      </ul> 
+     </div> 
+     <div class="2_ad">
+      <script src="/plus/ad_js.php?aid=39" language="javascript"></script> 
+     </div> 
+     <link rel="stylesheet" href="http://www.aspku.com/css/rad.css" type="text/css" /> 
+     <div class="rad"> 
+      <h3>热门源码推荐</h3> 
+      <div class="pdiv"> 
+       <div id="pShow" class="p">
+        <span class="num"><em id="dq">1</em> / <em>3</em></span>
+       </div> 
+       <div class="p_fy">
+        <a title="上一页" class="pre" href="javascript:rt(-1);">上一页</a>
+        <a title="下一页" class="next" href="javascript:rt(1);">下一页</a>
+       </div>
+      </div> 
+      <ul id="r_c1"> 
+       <div id="r_l1"> 
+        <li><a class="aimg" target="_top" href="/vip/212086.html"><img src="/uploads/allimg/161203/1-1612032334030-L.jpg" title="【众筹】仿美文网|美女阅读网整站源码（织梦CMS内核+采集+手机版）" /><em></em></a><a target="_top" href="/vip/212086.html" title="【众筹】仿美文网|美女阅读网整站源码（织梦CMS内核+采集+手机版）"><strong><font color="#FF6633">【众筹】仿美文网|美女阅读网整站源码</font></strong></a></li> 
+        <li><a class="aimg" target="_top" href="/vip/210732.html"><img src="/uploads/allimg/161127/1-16112H20G30-L.jpg" title="最新仿糗事百科|快乐麻花|搞笑笔记笑话网整站源码(全功能+手机版+六套模板自由切换)" /><em></em></a><a target="_top" href="/vip/210732.html" title="最新仿糗事百科|快乐麻花|搞笑笔记笑话网整站源码(全功能+手机版+六套模板自由切换)"><strong><font color="#006600">最新仿糗事百科|快乐麻花|搞笑笔记笑话</font></strong></a></li> 
+        <li><a class="aimg" target="_top" href="/vip/206911.html"><img src="/uploads/allimg/161109/1-161109230J70-L.jpg" title="最新福娃源码网|站长源码交易平台|友价源码商城系统 V2（新增支付+手机版）" /><em></em></a><a target="_top" href="/vip/206911.html" title="最新福娃源码网|站长源码交易平台|友价源码商城系统 V2（新增支付+手机版）"><strong><font color="#FF6633">最新福娃源码网|站长源码交易平台|友价</font></strong></a></li> 
+        <li><a class="aimg" target="_top" href="/vip/206428.html"><img src="/uploads/allimg/161106/1-1611061955220-L.jpg" title="最新顶级虚拟币|山寨币|数字币|比特币交易平台源码（完美版+商城+分红+钱包+4套模板）" /><em></em></a><a target="_top" href="/vip/206428.html" title="最新顶级虚拟币|山寨币|数字币|比特币交易平台源码（完美版+商城+分红+钱包+4套模板）"><strong><font color="#FF0000">最新顶级虚拟币|山寨币|数字币|比特币</font></strong></a></li> 
+       </div> 
+       <div id="r_l2" style="display:none"> 
+        <li><a class="aimg" target="_top" href="/php/215033.html"><img src="/uploads/allimg/161217/1-16121G910230-L.jpg" title="HTML5响应式自适应粉红色母婴网站源码(织梦DEDECMS内核)" /><em></em></a><a target="_top" href="/php/215033.html" title="HTML5响应式自适应粉红色母婴网站源码(织梦DEDECMS内核)">HTML5响应式自适应粉红色母婴网站源码</a></li> 
+        <li><a class="aimg" target="_top" href="/php/215032.html"><img src="/uploads/allimg/161217/1-16121GZ6060-L.jpg" title="织梦DEDECMS高端响应式自适应旅游网站源码" /><em></em></a><a target="_top" href="/php/215032.html" title="织梦DEDECMS高端响应式自适应旅游网站源码">织梦DEDECMS高端响应式自适应旅游网站源</a></li> 
+        <li><a class="aimg" target="_top" href="/php/215031.html"><img src="/uploads/allimg/161217/1-16121GZ1200-L.jpg" title="HTML5自适应房产公司网站源码(织梦DEDECMS内核)" /><em></em></a><a target="_top" href="/php/215031.html" title="HTML5自适应房产公司网站源码(织梦DEDECMS内核)">HTML5自适应房产公司网站源码(织梦DEDE</a></li> 
+        <li><a class="aimg" target="_top" href="/php/215030.html"><img src="/uploads/allimg/161217/1-16121GU6080-L.jpg" title="织梦DEDECMS响应式纸业公司网站源码(自适应手机版)" /><em></em></a><a target="_top" href="/php/215030.html" title="织梦DEDECMS响应式纸业公司网站源码(自适应手机版)">织梦DEDECMS响应式纸业公司网站源码(自适</a></li> 
+       </div> 
+       <div id="r_l3" style="display:none"> 
+        <li><a class="aimg" target="_top" href="/vip/199527.html"><img src="/uploads/allimg/161002/1-1610021055290-L.jpg" title="2016最新ECSHOP小京东商城网站源码V5.0(单仓库+多用户商家入驻+B2B2C+手机版)" /><em></em></a><a target="_top" href="/vip/199527.html" title="2016最新ECSHOP小京东商城网站源码V5.0(单仓库+多用户商家入驻+B2B2C+手机版)">2016最新ECSHOP小京东商城网站源码V5.0(单</a></li> 
+        <li><a class="aimg" target="_top" href="/vip/199526.html"><img src="/uploads/allimg/161002/1-1610021049110-L.jpg" title="2016最新微信外卖系统|手机微信点餐系统|微信订餐源码(99套商铺模板+众多营销利器)" /><em></em></a><a target="_top" href="/vip/199526.html" title="2016最新微信外卖系统|手机微信点餐系统|微信订餐源码(99套商铺模板+众多营销利器)">2016最新微信外卖系统|手机微信点餐系统</a></li> 
+        <li><a class="aimg" target="_top" href="/vip/198014.html"><img src="/uploads/allimg/160922/1-1609222201320-L.jpg" title="PHP虚拟货币交易网源码|多币种比特币山寨币交易平台源码" /><em></em></a><a target="_top" href="/vip/198014.html" title="PHP虚拟货币交易网源码|多币种比特币山寨币交易平台源码">PHP虚拟货币交易网源码|多币种比特币山</a></li> 
+        <li><a class="aimg" target="_top" href="/vip/198011.html"><img src="/uploads/allimg/160922/1-1609222125430-L.jpg" title="2016最新小白微信墙源码|微信大屏幕网站源码（对对碰+摇一摇+微信上墙）全功能版" /><em></em></a><a target="_top" href="/vip/198011.html" title="2016最新小白微信墙源码|微信大屏幕网站源码（对对碰+摇一摇+微信上墙）全功能版">2016最新小白微信墙源码|微信大屏幕网站</a></li> 
+       </div> 
+      </ul> 
+     </div> 
+     <script src="http://www.aspku.com/css/rad.js" type="text/javascript"></script> 
+     <div class="sublist">
+      <h3>热门JavaScript/Ajax教程</h3> 
+      <ul> 
+       <li><a target="_blank" href="/kaifa/javascript/46574.html">微信JS接口汇总及使用详解</a></li> 
+       <li><a target="_blank" href="/kaifa/javascript/45230.html">完美兼容IE,chrome,ff的设为首页、加入收藏及保存</a></li> 
+       <li><a target="_blank" href="/kaifa/javascript/45195.html">node.js中的fs.createWriteStream方法使用说明</a></li> 
+       <li><a target="_blank" href="/kaifa/javascript/52275.html">完美实现仿QQ空间评论回复特效</a></li> 
+       <li><a target="_blank" href="/kaifa/javascript/35162.html">iframe子页面与父页面在同域或不同域下的js通信</a></li> 
+       <li><a target="_blank" href="/kaifa/javascript/43988.html">node+express+ejs制作简单页面上手指南</a></li> 
+       <li><a target="_blank" href="/kaifa/javascript/39068.html">推荐10款最热门jQuery UI框架 原创</a></li> 
+       <li><a target="_blank" href="/kaifa/javascript/121762.html">webstorm怎么更改存储路径？webstorm 默认工作空间路</a></li> 
+      </ul> 
+     </div> 
+     <div class="r_ad">
+      <script src="/plus/ad_js.php?aid=28" language="javascript"></script> 
+     </div> 
+    </div> 
+   </div> 
+   <div class="cl"></div> 
+   <div class="site_info">
+    <ul>
+     <li><span>相关链接：</span><p><a href="javascript:copyToClipBoard();">复制本页链接</a>|&nbsp;&nbsp;&nbsp;<a href="/plus/search.php?q=详解nodejs 文本操作模块-fs模块（二）" target="_blank">搜索详解nodejs 文本操作模块-fs模块（二）</a></p></li>
+     <li class="s_i_a"><span>模板说明：</span><p><a class="s_i_a" href="/kaifa/javascript/">JavaScript/Ajax教程</a>-<strong>详解nodejs 文本操作模块-fs模块（二）</strong><img src="/img/11.gif" />。</p></li>
+    </ul>
+    <div class="cl"></div>
+   </div> 
+   <div id="footer"> 
+    <div class="f_l">
+     <ul>
+      <script src="/ajs/6.js" type="text/javascript" language="javascript"></script>
+     </ul>
+    </div> 
+    <div class="f_r">
+     &copy;2012 www.aspku.com
+     <a href="/">源码库</a>
+     <div style="display:none">
+      <script type="text/javascript"> var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://"); document.write(unescape("%3Cscript src=" + _bdhmProtocol + "hm.baidu.com/h.js%3F28f790eac4a97f95e41b17bcbc45a74a type=text/javascript%3E%3C/script%3E")); </script>
+     </div> 
+    </div>
+   </div> 
+  </div>
+  <script type="text/javascript">
+document.body.oncopy = function () { setTimeout( function () { var text = clipboardData.getData("text"); if (text) { text = text + "\r\n本篇文章来源于源码库(www.aspku.com),转载请注明出处 原文链接："+location.href; clipboardData.setData("text", text); } }, 100 ) }
+</script> 
+  <script type="text/javascript" id="wumiiRelatedItems" src="http://widget.wumii.cn/ext/relatedItemsWidget"></script> 
+  <a href="http://www.wumii.com/widget/relatedItems" style="border:0;"> <img src="http://static.wumii.cn/images/pixel.png" style="border:0;padding:0;margin:0;" /> </a> 
+  <script>
+(function(){
+    var bp = document.createElement('script');
+    bp.src = '//push.zhanzhang.baidu.com/push.js';
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>  
+ </body>
+</html>

@@ -1,0 +1,1078 @@
+<!DOCTYPE html><html><head>
+     <meta charset="utf-8">
+     <title></title>
+     <link href="http://static.g.iqiyi.com/game/common_js/base.css" type="text/css" rel="stylesheet">
+     <link href="http://static.g.iqiyi.com/game/otherWebsite/2016-pay/20170331/main.css" type="text/css" rel="stylesheet">
+     <script type="text/javascript">
+         var config = {
+             game_id      : "4642",            //选择充值的游戏
+             game_name    : "幻城",       //游戏名称
+             is_get_game  : "0",        //是否传递了游戏
+             server_id    : "",     //选择的服务器
+             server_name  : "",    //服务器
+             money        : "100",      //选择的支付金额
+             real_money   : "100",
+             account      : "",       //填写的用户的名称
+             user_id      : "",         //当前登录用户的id
+             user_name    : "",       //当前用户的用户名
+             authcookie   : "",  //当前用户的authcookie
+             qudao_id     : "",                      //当前支付的渠道
+             current_url  : window.location.href,    //当前页面地址
+             sidebar      : "",                      //当前选择的支付方式
+             pay_next_url : "",                      //调整的支付
+             pay_type     : "",                      //当前选中的支付方式
+             user_coin    : "",       //用户的橙豆树
+             credit       : "0",                     //用户选用的金币
+             coin         : "0",                     //用户选用的橙豆
+             total_credit : "",    //用户的总金币
+             available_credit : "",      //用户可用金币
+             redirect_url : "/gamepay/game_pay_main/locationPay?",              //点击充值跳转地址
+             redirect_params  : "",       //点击充值跳转地址需带的参数
+             redirect_params_extra : "",                       //点击充值根据具体选择拼接的额外参数
+             unit         : "￥",                              //显示的钱的符号
+             role_name    : ""  ,                              //118弹弹堂支付添加的参数
+             sidebar_num  : "7"  ,                              //该游戏默认显示的渠道树个数
+             default_qudao: "0",          //进入支付页面默认的渠道
+             default_pay_type : "",     //进入支付页面默认的支付方式
+             default_wy   : "" ,               //用户默认使用的银行
+             credit_threshold : "0",         //使用金币是否超过阈值
+             channel_enable_credit : [],  //可用金币抵扣渠道
+             voucher_sign : "",                 //获取可用代金券签名串
+             voucher_list :       //可用代金券
+         };
+     </script>
+     <script type="text/javascript" data-main="http://static.g.iqiyi.com/game/otherWebsite/2016-pay/20170331/main.min.js?20170331" src="http://static.g.iqiyi.com/game/common_js/require.js"></script>
+     <script type="text/javascript">
+         require(['jquery'],function(){
+             //判断是否登录
+             var location_url = location.host;
+             if(location_url.indexOf("pps.tv")>-1&&!config.user_name) {
+                 autoLoginNew();
+             }
+             function autoLoginNew(){
+                 $.getJSON('http://game.pps.tv/passport/api2/autologin_jsonp?position=g_header&callback=?',function(data){
+                     var code = data.code;
+                     if (code == 0) {
+                         uid = data.userInfo.user_id;
+                         user_name = data.userInfo.user_name;
+                         $("#account_id").val(user_name);
+                         config.user_name = user_name;
+                         location.reload();
+                     } else {
+//                         window.location.href = "http://g.iqiyi.com";
+                     }
+                 });
+             }
+         });
+     </script>
+ <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="http://static.g.iqiyi.com/game/otherWebsite/2016-pay/20170331/main.min.js?20170331" src="http://static.g.iqiyi.com/game/otherWebsite/2016-pay/20170331/main.min.js?20170331"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="jquery" src="http://static.g.iqiyi.com/game/common_js/jquery-1.11.1.min.js"></script></head>
+ <body>
+ <!-- 头部 -->
+ <!-- 头部 -->
+<div class="header-holder">
+    <div class="header">
+        <div class="container clearfix">
+
+            <h1 title="爱奇艺游戏">爱奇艺游戏 <a href="http://g.iqiyi.com" target="_blank"></a></h1>
+
+            <div class="nav">
+                <ul id="nav">
+                    <li class="on"><a target="_blank" href="/gamepay/game_pay_main/index">游戏充值</a></li>
+                    <li><a target="_blank" href="/vip/pay/index">贵宾充值</a></li>
+                    <li><a target="_blank" href="/gamepay/account_query/index">支付查询</a></li>
+                    <li><a target="_blank" href="http://faq.g.iqiyi.com/faq_index.php">客服咨询</a></li>
+                </ul>
+                <span class="cur" id="cur"></span>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- 头部 -->
+
+ <!-- 头部 -->
+
+ <!--main -->
+ <div class="main">
+
+    <div class="account-info">
+    <div class="clearfix">
+        <div class="account">
+            <input type="text" placeholder="请输入您的账号..." id="account_id" value="">
+            <h3>游戏账号</h3>
+            <span class="account-icon"></span>
+        </div>
+
+        <div class="error-tip" id="error-tip">您的账号不存在</div>
+    </div>
+
+    <div class="clearfix">
+        <div class="account-game" id="account_game">
+            <input type="text" id="game_text" value="请选择游戏..." readonly="">
+            <h3>选择游戏</h3>
+            <span class="game-icon"></span>
+        </div>
+
+        <div class="account-server" id="account_server">
+            <input type="text" id="server_text" value="请选择服务器..." readonly="">
+            <h3>选择服务器</h3>
+            <span class="server-icon"></span>
+        </div>
+        <div class="error-tip" id="game-error-tip">您的账号不存在</div>
+
+        <!-- 选择游戏 -->
+        <div class="select-game" id="select_game">
+            <ul class="game-menu clearfix" id="game_menu">
+                <li class="tab-menu on">最近玩过</li>
+                <li class="tab-menu">ABCDE</li>
+                <li class="tab-menu">FGHIJK</li>
+                <li class="tab-menu">LMNOP</li>
+                <li class="tab-menu">QRSTU</li>
+                <li class="tab-menu">VWXYZ</li>
+            </ul>
+
+            <ul class="game-content tab-content" id="game_content">
+                <li class="tab-box on">
+                    <div class="last-play">
+                                            </div>
+                </li>
+                                                <li class="tab-box">
+                                        <dl class="clearfix">
+                        <dt>A</dt>
+                        <dd>
+                                                                                                <label><input type="radio" name="game" value="138"><span>傲视天地</span></label>
+                                                                                    </dd>
+                    </dl>
+                                        <dl class="clearfix">
+                        <dt>B</dt>
+                        <dd>
+                                                                                                <label><input type="radio" name="game" value="701"><span>百战天下</span></label>
+                                                                    <label><input type="radio" name="game" value="5391"><span>不良人</span></label>
+                                                                                    </dd>
+                    </dl>
+                                        <dl class="clearfix">
+                        <dt>C</dt>
+                        <dd>
+                                                                                                <label><input type="radio" name="game" value="3353"><span>传奇霸业</span></label>
+                                                                    <label><input type="radio" name="game" value="3865"><span>传奇盛世</span></label>
+                                                                    <label><input type="radio" name="game" value="4570"><span>村长征战团</span></label>
+                                                                    <label><input type="radio" name="game" value="4681"><span>赤月传说2</span></label>
+                                                                                    </dd>
+                    </dl>
+                                        <dl class="clearfix">
+                        <dt>D</dt>
+                        <dd>
+                                                                                                <label><input type="radio" name="game" value="2764"><span>大皇帝</span></label>
+                                                                    <label><input type="radio" name="game" value="4882"><span>盗墓笔记</span></label>
+                                                                    <label><input type="radio" name="game" value="5016"><span>斗三国</span></label>
+                                                                    <label><input type="radio" name="game" value="5497"><span>斗破沙城</span></label>
+                                                                    <label><input type="radio" name="game" value="5511"><span>大青云</span></label>
+                                                                                    </dd>
+                    </dl>
+                                        <dl class="clearfix" style="display:none">
+                        <dt>E</dt>
+                        <dd>
+                                                    </dd>
+                    </dl>
+                                    </li>
+                                <li class="tab-box">
+                                        <dl class="clearfix">
+                        <dt>F</dt>
+                        <dd>
+                                                                                                <label><input type="radio" name="game" value="184"><span>凡人修真2</span></label>
+                                                                    <label><input type="radio" name="game" value="501"><span>风云无双</span></label>
+                                                                    <label><input type="radio" name="game" value="3346"><span>封天战神</span></label>
+                                                                    <label><input type="radio" name="game" value="5002"><span>打天下</span></label>
+                                                                    <label><input type="radio" name="game" value="5397"><span>范特西足球经理2</span></label>
+                                                                                    </dd>
+                    </dl>
+                                        <dl class="clearfix">
+                        <dt>G</dt>
+                        <dd>
+                                                                                                <label><input type="radio" name="game" value="321"><span>攻城掠地</span></label>
+                                                                                    </dd>
+                    </dl>
+                                        <dl class="clearfix">
+                        <dt>H</dt>
+                        <dd>
+                                                                                                <label><input type="radio" name="game" value="3262"><span>花千骨</span></label>
+                                                                    <label><input type="radio" name="game" value="4642"><span>幻城</span></label>
+                                                                                    </dd>
+                    </dl>
+                                        <dl class="clearfix" style="display:none">
+                        <dt>I</dt>
+                        <dd>
+                                                    </dd>
+                    </dl>
+                                        <dl class="clearfix">
+                        <dt>J</dt>
+                        <dd>
+                                                                                                <label><input type="radio" name="game" value="267"><span>街机三国</span></label>
+                                                                    <label><input type="radio" name="game" value="4153"><span>剑雨江湖</span></label>
+                                                                    <label><input type="radio" name="game" value="4181"><span>九阴绝学</span></label>
+                                                                    <label><input type="radio" name="game" value="4718"><span>酒神</span></label>
+                                                                    <label><input type="radio" name="game" value="5125"><span>剑侠情缘2</span></label>
+                                                                    <label><input type="radio" name="game" value="5371"><span>君王之路</span></label>
+                                                                    <label><input type="radio" name="game" value="5716"><span>剑侠伏魔录</span></label>
+                                                                                    </dd>
+                    </dl>
+                                        <dl class="clearfix" style="display:none">
+                        <dt>K</dt>
+                        <dd>
+                                                    </dd>
+                    </dl>
+                                    </li>
+                                <li class="tab-box">
+                                        <dl class="clearfix">
+                        <dt>L</dt>
+                        <dd>
+                                                                                                <label><input type="radio" name="game" value="187"><span>龙将</span></label>
+                                                                    <label><input type="radio" name="game" value="3833"><span>琅琊榜</span></label>
+                                                                    <label><input type="radio" name="game" value="4596"><span>蓝月传奇</span></label>
+                                                                    <label><input type="radio" name="game" value="5008"><span>丽华传奇</span></label>
+                                                                    <label><input type="radio" name="game" value="5422"><span>龙麟圣域</span></label>
+                                                                    <label><input type="radio" name="game" value="5612"><span>梁山传奇</span></label>
+                                                                                    </dd>
+                    </dl>
+                                        <dl class="clearfix">
+                        <dt>M</dt>
+                        <dd>
+                                                                                                <label><input type="radio" name="game" value="143"><span>梦幻修仙</span></label>
+                                                                    <label><input type="radio" name="game" value="3332"><span>莽荒纪</span></label>
+                                                                    <label><input type="radio" name="game" value="3688"><span>命运之塔</span></label>
+                                                                    <label><input type="radio" name="game" value="4767"><span>美食大战老鼠</span></label>
+                                                                    <label><input type="radio" name="game" value="4809"><span>魔晶幻想</span></label>
+                                                                    <label><input type="radio" name="game" value="5386"><span>魔神变</span></label>
+                                                                    <label><input type="radio" name="game" value="5560"><span>魔神战域</span></label>
+                                                                                    </dd>
+                    </dl>
+                                        <dl class="clearfix">
+                        <dt>N</dt>
+                        <dd>
+                                                                                                <label><input type="radio" name="game" value="371"><span>女神联盟</span></label>
+                                                                                    </dd>
+                    </dl>
+                                        <dl class="clearfix" style="display:none">
+                        <dt>O</dt>
+                        <dd>
+                                                    </dd>
+                    </dl>
+                                        <dl class="clearfix">
+                        <dt>P</dt>
+                        <dd>
+                                                                                                <label><input type="radio" name="game" value="640"><span>炮炮兵团</span></label>
+                                                                                    </dd>
+                    </dl>
+                                    </li>
+                                <li class="tab-box">
+                                        <dl class="clearfix">
+                        <dt>Q</dt>
+                        <dd>
+                                                                                                <label><input type="radio" name="game" value="240"><span>秦美人</span></label>
+                                                                    <label><input type="radio" name="game" value="449"><span>七杀</span></label>
+                                                                    <label><input type="radio" name="game" value="4891"><span>青云志</span></label>
+                                                                    <label><input type="radio" name="game" value="5061"><span>全民主公</span></label>
+                                                                    <label><input type="radio" name="game" value="5296"><span>奇迹重生</span></label>
+                                                                    <label><input type="radio" name="game" value="5646"><span>秦时明月</span></label>
+                                                                    <label><input type="radio" name="game" value="5660"><span>乾坤战纪</span></label>
+                                                                                    </dd>
+                    </dl>
+                                        <dl class="clearfix">
+                        <dt>R</dt>
+                        <dd>
+                                                                                                <label><input type="radio" name="game" value="201"><span>热血三国2</span></label>
+                                                                    <label><input type="radio" name="game" value="365"><span>热血战纪</span></label>
+                                                                    <label><input type="radio" name="game" value="3837"><span>热血江湖</span></label>
+                                                                    <label><input type="radio" name="game" value="5025"><span>热血三国3</span></label>
+                                                                                    </dd>
+                    </dl>
+                                        <dl class="clearfix">
+                        <dt>S</dt>
+                        <dd>
+                                                                                                <label><input type="radio" name="game" value="146"><span>三国杀OL</span></label>
+                                                                    <label><input type="radio" name="game" value="171"><span>神仙道</span></label>
+                                                                    <label><input type="radio" name="game" value="192"><span>神曲</span></label>
+                                                                    <label><input type="radio" name="game" value="235"><span>三国演义</span></label>
+                                                                    <label><input type="radio" name="game" value="2756"><span>盛世三国2</span></label>
+                                                                    <label><input type="radio" name="game" value="3955"><span>蜀山战纪</span></label>
+                                                                    <label><input type="radio" name="game" value="4635"><span>深海美战姬</span></label>
+                                                                    <label><input type="radio" name="game" value="5105"><span>三国令</span></label>
+                                                                    <label><input type="radio" name="game" value="5229"><span>生死簿</span></label>
+                                                                    <label><input type="radio" name="game" value="5311"><span>神魔传说</span></label>
+                                                                    <label><input type="radio" name="game" value="5410"><span>少年群侠传</span></label>
+                                                                    <label><input type="radio" name="game" value="5433"><span>神道</span></label>
+                                                                    <label><input type="radio" name="game" value="5459"><span>神仙道2</span></label>
+                                                                    <label><input type="radio" name="game" value="5526"><span>神仙劫</span></label>
+                                                                                    </dd>
+                    </dl>
+                                        <dl class="clearfix">
+                        <dt>T</dt>
+                        <dd>
+                                                                                                <label><input type="radio" name="game" value="237"><span>屠龙传说</span></label>
+                                                                    <label><input type="radio" name="game" value="3234"><span>天书世界</span></label>
+                                                                    <label><input type="radio" name="game" value="3976"><span>铁血皇城</span></label>
+                                                                    <label><input type="radio" name="game" value="4541"><span>通天西游</span></label>
+                                                                    <label><input type="radio" name="game" value="4761"><span>唐门六道</span></label>
+                                                                    <label><input type="radio" name="game" value="4881"><span>天神战</span></label>
+                                                                    <label><input type="radio" name="game" value="5187"><span>天地诸神</span></label>
+                                                                    <label><input type="radio" name="game" value="5222"><span>铁骑冲锋</span></label>
+                                                                    <label><input type="radio" name="game" value="5225"><span>特战英雄</span></label>
+                                                                    <label><input type="radio" name="game" value="5736"><span>屠龙战记</span></label>
+                                                                                    </dd>
+                    </dl>
+                                        <dl class="clearfix" style="display:none">
+                        <dt>U</dt>
+                        <dd>
+                                                    </dd>
+                    </dl>
+                                    </li>
+                                <li class="tab-box">
+                                        <dl class="clearfix" style="display:none">
+                        <dt>V</dt>
+                        <dd>
+                                                    </dd>
+                    </dl>
+                                        <dl class="clearfix">
+                        <dt>W</dt>
+                        <dd>
+                                                                                                <label><input type="radio" name="game" value="400"><span>武易</span></label>
+                                                                    <label><input type="radio" name="game" value="513"><span>卧龙OL</span></label>
+                                                                    <label><input type="radio" name="game" value="3005"><span>无上神兵</span></label>
+                                                                    <label><input type="radio" name="game" value="4496"><span>我欲封天</span></label>
+                                                                    <label><input type="radio" name="game" value="4504"><span>武神赵子龙</span></label>
+                                                                    <label><input type="radio" name="game" value="5145"><span>五鼠闹东京</span></label>
+                                                                    <label><input type="radio" name="game" value="5398"><span>武炼巅峰</span></label>
+                                                                                    </dd>
+                    </dl>
+                                        <dl class="clearfix">
+                        <dt>X</dt>
+                        <dd>
+                                                                                                <label><input type="radio" name="game" value="4092"><span>轩辕剑之天之痕</span></label>
+                                                                    <label><input type="radio" name="game" value="4538"><span>秀丽江山</span></label>
+                                                                    <label><input type="radio" name="game" value="4692"><span>小小精灵</span></label>
+                                                                    <label><input type="radio" name="game" value="4717"><span>仙侠道2</span></label>
+                                                                    <label><input type="radio" name="game" value="5378"><span>修天决</span></label>
+                                                                                    </dd>
+                    </dl>
+                                        <dl class="clearfix" style="display:none">
+                        <dt>Y</dt>
+                        <dd>
+                                                    </dd>
+                    </dl>
+                                        <dl class="clearfix">
+                        <dt>Z</dt>
+                        <dd>
+                                                                                                <label><input type="radio" name="game" value="3936"><span>战国之怒</span></label>
+                                                                    <label><input type="radio" name="game" value="4733"><span>战无止境</span></label>
+                                                                    <label><input type="radio" name="game" value="4823"><span>足球全明星</span></label>
+                                                                    <label><input type="radio" name="game" value="5205"><span>最佳阵容</span></label>
+                                                                    <label><input type="radio" name="game" value="5476"><span>众神之箭</span></label>
+                                                                                    </dd>
+                    </dl>
+                                    </li>
+                            </ul>
+
+            <a href="javascript:;" class="close-select-dialog" title="关闭"></a>
+        </div>
+        <!-- 选择服务器 -->
+        <div class="select-game select-server" id="select_server">
+            <ul class="game-menu clearfix" id="server_menu">
+            </ul>
+            <ul class="game-content tab-content" id="server_content">
+            </ul>
+
+            <a href="javascript:;" class="close-select-dialog" title="关闭"></a>
+        </div>
+    </div>
+</div>
+
+    <!-- 选择渠道 -->
+    <div class="pay-info">
+
+        <!-- 渠道列表 -->
+        <ul class="qudao clearfix" id="qudao">
+    <!-- 根据渠道树配置生成渠道界面 -->
+                <li class="on" qudao_id="8656" pay_way="wx">
+            <span class="wx-icon"></span>
+            <span>扫码支付</span>
+        </li>
+                    <li qudao_id="8601" pay_way="wy">
+            <span class="wy-icon"></span>
+            <span>网上银行</span>
+        </li>
+                    <li qudao_id="8001" pay_way="zfb">
+            <span class="zfb-icon"></span>
+            <span>支付宝</span>
+        </li>
+                    <li qudao_id="0" pay_way="phone">
+            <span class="phone-icon"></span>
+            <span>手机卡支付</span>
+        </li>
+                    <li qudao_id="8002" pay_way="cft">
+            <span class="cft-icon"></span>
+            <span>财付通</span>
+        </li>
+                    <li qudao_id="8502" pay_way="dk">
+            <span class="dk-icon"></span>
+            <span>游戏卡</span>
+        </li>
+                    <li qudao_id="0" pay_way="abroad">
+            <span class="abroad-icon"></span>
+            <span>港澳台及海外</span>
+        </li>
+            
+</ul>
+
+        <!-- 渠到元宝栏 -->
+        <ul class="qudao-box" id="qudao_box">
+                                            <!-- wx 微信支付 zfb 支付宝 cft 财付通; -->
+                <li class="content yb-wrapper on ">
+                    <ul class="num clearfix" find-data="money-wx">
+                                                                                    <li data-num="1">1元</li>
+                                                            <li data-num="10">10元</li>
+                                                            <li data-num="50">50元</li>
+                                                            <li data-num="100" class="current">100元</li>
+                                                            <li data-num="500">500元</li>
+                                                            <li data-num="1000">1000元</li>
+                                                            <li data-num="3000">3000元</li>
+                                                                            <li data-num="last"><input type="text" value="其它请输入" class="num-input"></li>
+                    </ul>
+
+                    <div class="yuanbao clearfix">
+                        <div class="num-tip">充值金额不小于10，且为10的倍数，上限100000</div>
+                        <span find-data="yuanbao-wx">对应元宝数量:</span>
+                        <b class="yuanbao-num" find-data="rate-wx" data-rate="10">1000</b>
+                        <span class="y-tip">[兑换比例1 : <i find-data="rate-tip-wx">10</i>]</span>
+                    </div>
+                </li>
+                                                <!-- 网银支付 -->
+                <li class="content yb-wrapper  ">
+                    <ul class="num clearfix" find-data="money-wy">
+                                                                                    <li data-num="1">1元</li>
+                                                            <li data-num="10">10元</li>
+                                                            <li data-num="50">50元</li>
+                                                            <li data-num="100" class="current">100元</li>
+                                                            <li data-num="500">500元</li>
+                                                            <li data-num="1000">1000元</li>
+                                                            <li data-num="10000">10000元</li>
+                                                            <li data-num="30000">30000元</li>
+                                                            <li data-num="50000">50000元</li>
+                                                            <li data-num="100000">100000元</li>
+                                                                            <li data-num="last"><input type="text" value="其它请输入" class="num-input"></li>
+                    </ul>
+
+                    <div class="yuanbao clearfix">
+                        <div class="num-tip">充值金额不小于10，且为10的倍数，上限100000</div>
+                        <span find-data="yuanbao-wy">对应元宝数量:</span>
+                        <b class="yuanbao-num" find-data="rate-wy" data-rate="10">1000</b>
+                        <span class="y-tip">[兑换比例1 : <i find-data="rate-tip-wy">10</i>]</span>
+                    </div>
+<!--                    -->                      <ul class="bank clearfix" id="bank_list">
+                        <li class="current" bank="CCB">
+                            <span class="icon-bank icon-js"></span>
+                            <span>建设银行</span>
+                        </li>
+                        <li bank="ICBC">
+                            <span class="icon-bank icon-gs"></span>
+                            <span>工商银行</span>
+                        </li>
+                        <li bank="ABC">
+                            <span class="icon-bank icon-ny"></span>
+                            <span>农业银行</span>
+                        </li>
+                        <li bank="PSBC">
+                            <span class="icon-bank icon-yz"></span>
+                            <span>中国邮政</span>
+                        </li>
+                        <li bank="BOC">
+                            <span class="icon-bank icon-zg"></span>
+                            <span>中国银行</span>
+                        </li>
+                        <li bank="COMM">
+                            <span class="icon-bank icon-jt"></span>
+                            <span>交通银行</span>
+                        </li>
+                        <li bank="SPABANK">
+                            <span class="icon-bank icon-pa"></span>
+                            <span>平安银行</span>
+                        </li>
+                        <li bank="CMB">
+                            <span class="icon-bank icon-zs"></span>
+                            <span>招商银行</span>
+                        </li>
+                        <li bank="CIB">
+                            <span class="icon-bank icon-xy"></span>
+                            <span>兴业银行</span>
+                        </li>
+                        <li id="more_bank">
+                            <span class="icon-bank icon-more"></span>
+                            <span>更多银行</span>
+                        </li>
+                        <li class="gt-bank" bank="CEB">
+                            <span class="icon-bank icon-gd"></span>
+                            <span>光大银行</span>
+                        </li>
+                        <li class="gt-bank" bank="GDB">
+                            <span class="icon-bank icon-gf"></span>
+                            <span>广发银行</span>
+                        </li>
+                        <li class="gt-bank" bank="SDB">
+                            <span class="icon-bank icon-sz"></span>
+                            <span>深圳发展银行</span>
+                        </li>
+                        <li class="gt-bank" bank="CMBC">
+                            <span class="icon-bank icon-ms"></span>
+                            <span>中国民生银行</span>
+                        </li>
+                        <li class="gt-bank" bank="CITIC">
+                            <span class="icon-bank icon-zx"></span>
+                            <span>中信银行</span>
+                        </li>
+                        <li class="gt-bank" bank="NBBANK">
+                            <span class="icon-bank icon-nb"></span>
+                            <span>宁波银行</span>
+                        </li>
+                        <li class="gt-bank" bank="SHBANK">
+                            <span class="icon-bank icon-sh"></span>
+                            <span>上海银行</span>
+                        </li>
+                        <li class="gt-bank" bank="BJRCB">
+                            <span class="icon-bank icon-bjns"></span>
+                            <span>北京农商银行</span>
+                        </li>
+                        <li class="gt-bank" bank="BJBANK">
+                            <span class="icon-bank icon-bj"></span>
+                            <span>北京银行</span>
+                        </li>
+                        <li class="gt-bank" bank="HZCB">
+                            <span class="icon-bank icon-hz"></span>
+                            <span>杭州银行</span>
+                        </li>
+                        <li class="gt-bank" bank="SHRCB">
+                            <span class="icon-bank icon-shns"></span>
+                            <span>上海农商银行</span>
+                        </li>
+                        <li class="gt-bank" bank="FDB">
+                            <span class="icon-bank icon-fd"></span>
+                            <span>富滇银行</span>
+                        </li>
+                        <li class="gt-bank" bank="NJCB">
+                            <span class="icon-bank icon-nj"></span>
+                            <span>南京银行</span>
+                        </li>
+                        <li class="gt-bank" bank="CBHB">
+                            <span class="icon-bank icon-bh"></span>
+                            <span>渤海银行</span>
+                        </li>
+                        <li class="gt-bank" bank="HKBEA">
+                            <span class="icon-bank icon-dy"></span>
+                            <span>东亚银行</span>
+                        </li>
+                        <li class="gt-bank" bank="SPDB">
+                            <span class="icon-bank icon-pf"></span>
+                            <span>浦发银行</span>
+                        </li>
+                    </ul>
+                </li>
+                                                <!-- wx 微信支付 zfb 支付宝 cft 财付通; -->
+                <li class="content yb-wrapper  c-zfb">
+                    <ul class="num clearfix" find-data="money-zfb">
+                                                                                    <li data-num="1">1元</li>
+                                                            <li data-num="10">10元</li>
+                                                            <li data-num="50">50元</li>
+                                                            <li data-num="100" class="current">100元</li>
+                                                            <li data-num="500">500元</li>
+                                                            <li data-num="1000">1000元</li>
+                                                            <li data-num="10000">10000元</li>
+                                                            <li data-num="30000">30000元</li>
+                                                            <li data-num="50000">50000元</li>
+                                                            <li data-num="100000">100000元</li>
+                                                                            <li data-num="last"><input type="text" value="其它请输入" class="num-input"></li>
+                    </ul>
+
+                    <div class="yuanbao clearfix">
+                        <div class="num-tip">充值金额不小于10，且为10的倍数，上限100000</div>
+                        <span find-data="yuanbao-zfb">对应元宝数量:</span>
+                        <b class="yuanbao-num" find-data="rate-zfb" data-rate="10">1000</b>
+                        <span class="y-tip">[兑换比例1 : <i find-data="rate-tip-zfb">10</i>]</span>
+                    </div>
+                </li>
+                                                <!-- 手机支付 -->
+                <li class="content">
+                    <ol class="phone-menu clearfix" id="phone_menu">
+                                                    <li class="tab-menu on" qudao_id="8252">
+                                <span class="icon-yd"></span>
+                                <span>神州行</span>
+                            </li>
+                                                    <li class="tab-menu " qudao_id="8253">
+                                <span class="icon-lt"></span>
+                                <span>联通卡</span>
+                            </li>
+                                                    <li class="tab-menu " qudao_id="8254">
+                                <span class="icon-dx"></span>
+                                <span>电信卡</span>
+                            </li>
+                                            </ol>
+                    <ol class="phone-content" id="phone_content">
+                                                    <li class="tab-box yb-wrapper on">
+                                <ul class="num clearfix" find-data="money-phone-8252">
+                                                                                                                        <li data-num="10">10元</li>
+                                                                                    <li data-num="20">20元</li>
+                                                                                    <li data-num="30">30元</li>
+                                                                                    <li data-num="50">50元</li>
+                                                                                    <li data-num="100" class="current">100元</li>
+                                                                                    <li data-num="300">300元</li>
+                                                                                    <li data-num="500">500元</li>
+                                                                                                            </ul>
+
+                                <div class="yuanbao clearfix">
+                                    <div class="num-tip">充值金额不小于10，且为10的倍数，上限100000</div>
+                                    <span find-data="yuanbao-phone-8252">对应元宝数量:</span>
+                                    <b class="yuanbao-num" find-data="rate-phone-8252" data-rate="9">900</b>
+                                    <span class="y-tip">[兑换比例1 : <i find-data="rate-tip-phone-8252">9</i>]</span>
+                                </div>
+                            </li>
+                                                    <li class="tab-box yb-wrapper ">
+                                <ul class="num clearfix" find-data="money-phone-8253">
+                                                                                                                        <li data-num="20">20元</li>
+                                                                                    <li data-num="30">30元</li>
+                                                                                    <li data-num="50">50元</li>
+                                                                                    <li data-num="100" class="current">100元</li>
+                                                                                    <li data-num="300">300元</li>
+                                                                                    <li data-num="500">500元</li>
+                                                                                                            </ul>
+
+                                <div class="yuanbao clearfix">
+                                    <div class="num-tip">充值金额不小于10，且为10的倍数，上限100000</div>
+                                    <span find-data="yuanbao-phone-8253">对应元宝数量:</span>
+                                    <b class="yuanbao-num" find-data="rate-phone-8253" data-rate="9">900</b>
+                                    <span class="y-tip">[兑换比例1 : <i find-data="rate-tip-phone-8253">9</i>]</span>
+                                </div>
+                            </li>
+                                                    <li class="tab-box yb-wrapper ">
+                                <ul class="num clearfix" find-data="money-phone-8254">
+                                                                                                                        <li data-num="20">20元</li>
+                                                                                    <li data-num="30">30元</li>
+                                                                                    <li data-num="50">50元</li>
+                                                                                    <li data-num="100" class="current">100元</li>
+                                                                                                            </ul>
+
+                                <div class="yuanbao clearfix">
+                                    <div class="num-tip">充值金额不小于10，且为10的倍数，上限100000</div>
+                                    <span find-data="yuanbao-phone-8254">对应元宝数量:</span>
+                                    <b class="yuanbao-num" find-data="rate-phone-8254" data-rate="9">900</b>
+                                    <span class="y-tip">[兑换比例1 : <i find-data="rate-tip-phone-8254">9</i>]</span>
+                                </div>
+                            </li>
+                                            </ol>
+                </li>
+                                                <!-- wx 微信支付 zfb 支付宝 cft 财付通; -->
+                <li class="content yb-wrapper  c-cft">
+                    <ul class="num clearfix" find-data="money-cft">
+                                                                                    <li data-num="1">1元</li>
+                                                            <li data-num="10">10元</li>
+                                                            <li data-num="50">50元</li>
+                                                            <li data-num="100" class="current">100元</li>
+                                                            <li data-num="500">500元</li>
+                                                            <li data-num="1000">1000元</li>
+                                                            <li data-num="10000">10000元</li>
+                                                                            <li data-num="last"><input type="text" value="其它请输入" class="num-input"></li>
+                    </ul>
+
+                    <div class="yuanbao clearfix">
+                        <div class="num-tip">充值金额不小于10，且为10的倍数，上限100000</div>
+                        <span find-data="yuanbao-cft">对应元宝数量:</span>
+                        <b class="yuanbao-num" find-data="rate-cft" data-rate="10">1000</b>
+                        <span class="y-tip">[兑换比例1 : <i find-data="rate-tip-cft">10</i>]</span>
+                    </div>
+                </li>
+                                                <!-- 点卡支付 -->
+                <li class="content yb-wrapper" id="dk_yb">
+                    <div class="dk-info">
+                        <div class="dk-cell">
+                            <label>骏网卡号：</label>
+                            <input type="text" id="dk_card" placeholder="请输入卡号">
+                        </div>
+                        <div class="dk-cell">
+                            <label>骏网密码：</label>
+                            <input type="text" id="dk_pass" placeholder="请输入密码">
+                        </div>
+                        <div class="error-tip" id="card-error-tip">您的账号不存在</div>
+                    </div>
+                    <ul class="num clearfix" find-data="money-dk">
+                                                                                    <li data-num="30">30元</li>
+                                                            <li data-num="50">50元</li>
+                                                            <li data-num="100" class="current">100元</li>
+                                                            <li data-num="200">200元</li>
+                                                            <li data-num="300">300元</li>
+                                                            <li data-num="500">500元</li>
+                                                                        </ul>
+                    <div class="yuanbao clearfix">
+                        <div class="num-tip">充值金额不小于10，且为10的倍数，上限100000</div>
+                        <span find-data="yuanbao-dk">对应元宝数量:</span>
+                        <b class="yuanbao-num" find-data="rate-dk" data-rate="8">1000</b>
+                        <span class="y-tip">[兑换比例1 : <i find-data="rate-tip-dk">8</i>]</span>
+                    </div>
+                </li>
+                                                <!-- 海外支付 -->
+                <li class="content" id="abroad_yb">
+                    <ol class="phone-menu clearfix" id="abroad_menu">
+<!--                        -->                        <li class="tab-menu " type="paypal" style="display: none;" qudao_id="8004">
+                            <span class="icon-paypal"></span>
+                            <span>PayPal</span>
+                        </li>
+                        <li class="tab-menu on" type="xyk" qudao_id="9012">
+                            <span class="icon-xyk"></span>
+                            <span>信用卡</span>
+                        </li>
+                        <li class="tab-menu" type="webatm" qudao_id="9012">
+                            <span class="icon-webatm"></span>
+                            <span>WebATM</span>
+                        </li>
+                        <li class="tab-menu" type="dk" qudao_id="0">
+                            <span class="icon-vip"></span>
+                            <span>点卡&amp;会员储值</span>
+                        </li>
+                        <li class="tab-menu" type="dx" qudao_id="9012">
+                            <span class="icon-dianxin"></span>
+                            <span>電信小額支付</span>
+                        </li>
+                    </ol>
+
+                    <ol class="phone-content" id="abroad_content">
+                        <!-- paypal -->
+                        <li class="tab-box yb-wrapper " style="display: none;">
+                            <ul class="num clearfix" find-data="money-abroad-paypal">
+                                                                                                            <li data-num="20">20美元</li>
+                                                                            <li data-num="40">40美元</li>
+                                                                            <li data-num="100" class="current">100美元</li>
+                                                                                                </ul>
+
+                            <div class="yuanbao clearfix">
+                                <div class="num-tip">充值金额不小于10，且为10的倍数，上限100000</div>
+                                <span find-data="yuanbao-abroad-paypal">对应元宝数量:</span>
+                                <b class="yuanbao-num" find-data="rate-abroad-paypal" data-rate="55">900</b>
+                                <span class="y-tip">[兑换比例1 : <i find-data="rate-tip-abroad-paypal">55</i>]</span>
+                            </div>
+                        </li>
+                        <!-- 信用卡 -->
+                        <li class="tab-box yb-wrapper on">
+                            <ul class="num clearfix" find-data="money-abroad-xyk">
+                                                                                                            <li data-num="100" class="current">100台幣</li>
+                                                                            <li data-num="200">200台幣</li>
+                                                                            <li data-num="500">500台幣</li>
+                                                                            <li data-num="1000">1000台幣</li>
+                                                                            <li data-num="2000">2000台幣</li>
+                                                                                                </ul>
+
+                            <div class="yuanbao clearfix">
+                                <div class="num-tip">充值金额不小于10，且为10的倍数，上限100000</div>
+                                <span find-data="yuanbao-abroad-xyk">对应元宝数量:</span>
+                                <b class="yuanbao-num" find-data="rate-abroad-xyk" data-rate="1.2">120</b>
+                                <span class="y-tip">[兑换比例1 : <i find-data="rate-tip-abroad-xyk">1.2</i>]</span>
+                            </div>
+
+                            <ul class="pay-bank clearfix" id="gash_money_xyk">
+                                                                                                            <li class="current" bank_extra="TWD|BNK82201|J990001">中國信託一般信用卡</li>
+                                                                                                </ul>
+                        </li>
+                        <!-- webATM -->
+                        <li class="tab-box yb-wrapper">
+                            <ul class="num clearfix" find-data="money-abroad-webatm">
+                                                                                                            <li data-num="100" class="current">100台幣</li>
+                                                                            <li data-num="200">200台幣</li>
+                                                                            <li data-num="500">500台幣</li>
+                                                                            <li data-num="1000">1000台幣</li>
+                                                                            <li data-num="2000">2000台幣</li>
+                                                                                                </ul>
+
+                            <div class="yuanbao clearfix">
+                                <div class="num-tip">充值金额不小于10，且为10的倍数，上限100000</div>
+                                <span find-data="yuanbao-abroad-webatm">对应元宝数量:</span>
+                                <b class="yuanbao-num" find-data="rate-abroad-webatm" data-rate="1.2">120</b>
+                                <span class="y-tip">[兑换比例1 : <i find-data="rate-tip-abroad-webatm">1.2</i>]</span>
+                            </div>
+
+                            <ul class="pay-bank clearfix" id="gash_money_webatm">
+                                                                                                            <li class="current" bank_extra="TWD|BNK80801|J990001">玉山銀行ATM</li>
+                                                                            <li bank_extra="TWD|BNK80803|J990001">大額轉賬匯款</li>
+                                                                            <li bank_extra="TWD|BNK80802|J990001">銀行/郵局ATM</li>
+                                                                                                </ul>
+                        </li>
+
+                        <!-- 点卡 会员储值 -->
+                        <li class="tab-box tab-dk">
+                            <ul class="pay-bank clearfix" id="dk_select">
+                                <li class="current" data-switch="1" dk-type="gash_dk" qudao-id="9011">GASH+點卡</li>
+                                <li data-switch="1" dk-type="mycard_stk" qudao-id="9013">Mycard實體卡</li>
+                                <li data-switch="1" dk-type="mycard_kd" qudao-id="9013">Mycard扣點</li>
+                            </ul>
+                            <ul class="pay-tip" id="pay_tip">
+                                <li class="p-box gash current">
+                                    點擊下方"<span class="origin">立即儲值</span>"即可跳轉至指定儲值頁面<br>对应元宝数量：获得的数量以卡的实际点数为准<i>[兑换比例1 : <i find-data="rate-tip-abroad-dk">1.2</i>]</i>
+                                </li>
+                                <li class="p-box st-card">
+                                    <div class="card-cell">
+                                        <label>MyCard實體卡卡號：</label>
+                                        <input type="text" id="mycard_stk_code">
+                                    </div>
+                                    <div class="card-cell">
+                                        <label>MyCard實體卡密碼：</label>
+                                        <input type="text" id="mycard_stk_pass">
+                                    </div>
+                                    <p>对应元宝数量：获得的数量以卡的实际点数为准 <span class="y-tip">[兑换比例1 : <i find-data="rate-tip-abroad-dk">1.2</i>]</span>
+                                </p></li>
+                                <li class="p-box yb-wrapper">
+                                    <ul class="num clearfix" find-data="money-abroad-dk">
+                                                                                                                                    <li data-num="1">1台幣</li>
+                                                                                            <li data-num="50">50台幣</li>
+                                                                                            <li data-num="100" class="current">100台幣</li>
+                                                                                            <li data-num="150">150台幣</li>
+                                                                                            <li data-num="300">300台幣</li>
+                                                                                            <li data-num="500">500台幣</li>
+                                                                                                                        </ul>
+
+                                    <div class="yuanbao clearfix">
+                                        <div class="num-tip">充值金额不小于10，且为10的倍数，上限100000</div>
+                                        <span find-data="yuanbao-abroad-dk">对应元宝数量:</span>
+                                        <b class="yuanbao-num" find-data="rate-abroad-dk" data-rate="1.2">120</b>
+                                        <span class="y-tip">[兑换比例1 : <i find-data="rate-tip-abroad-dk">1.2</i>]</span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <!-- 电信小额支付 -->
+                        <li class="tab-box yb-wrapper">
+                            <ul class="num clearfix" find-data="money-abroad-dx">
+                                                                                                            <li data-num="100" class="current">100台幣</li>
+                                                                            <li data-num="200">200台幣</li>
+                                                                            <li data-num="500">500台幣</li>
+                                                                            <li data-num="1000">1000台幣</li>
+                                                                            <li data-num="2000">2000台幣</li>
+                                                                                                </ul>
+
+                            <div class="yuanbao clearfix">
+                                <div class="num-tip">充值金额不小于10，且为10的倍数，上限100000</div>
+                                <span find-data="yuanbao-abroad-dx">对应元宝数量:</span>
+                                <b class="yuanbao-num" find-data="rate-abroad-dx" data-rate="1.2">120</b>
+                                <span class="y-tip">[兑换比例1 : <i find-data="rate-tip-abroad-dx">1.2</i>]</span>
+                            </div>
+
+                            <ul class="pay-bank clearfix" id="gash_money_webdx">
+                                                                                                            <li class="current" bank_extra="TWD|TELTCC01|J990001">台灣大哥手機</li>
+                                                                            <li bank_extra="TWD|TELSON04|J990001">亞太電信手機</li>
+                                                                            <li bank_extra="TWD|TELCHT07|J990001">中華電信市話</li>
+                                                                            <li bank_extra="TWD|TELCHT05|J990001">中華電信手機</li>
+                                                                            <li bank_extra="TWD|TELFET01|J990001">遠傳電信手機</li>
+                                                                            <li bank_extra="TWD|TELVIBO|J990001">威寶電信手機</li>
+                                                                            <li bank_extra="TWD|TELCHT06|J990001">中華電信Hinet</li>
+                                                                                                </ul>
+                        </li>
+                    </ol>
+                </li>
+                        
+</ul>
+
+        <!-- 金币橙豆 -->
+        <div class="box-bottom">
+            <div class="jifen clearfix">
+                <ul class="p-cell" id="p_cell">
+                    <li tabindex="-1" id="vocher"> 代金券抵扣
+                        <div class="jf-tip" id="vocher_tip">
+                            <i></i>
+                            <span class="corner-icon"></span>
+                            <a href="javascript:;" class="close-tip" title="关闭"></a>
+                        </div>
+                    </li>
+                    <li tabindex="-1" id="jifen" class="hide-jifen">
+                        金币抵扣
+                        <div class="jf-tip" id="jf_tip"><i></i><span class="corner-icon"></span><a href="javascript:;" class="close-tip" title="关闭"></a></div>
+                    </li>
+                    <li tabindex="-1" id="chengdou">
+                        橙豆抵扣
+                        <div class="jf-tip" id="chengdou_error"><i></i><span class="corner-icon"></span><a href="javascript:;" class="close-tip" title="关闭"></a></div>
+                    </li>
+                </ul>
+
+                <!--<ul class="p-content" id="p_content">
+                    <li id="credit_my">我的金币：<span id="jifen_num"></span></li>
+                    <li id="coin_my">我的橙豆：<span id="dou_num"></span></li>
+                </ul>-->
+
+                <ul class="p-use" id="p_use">
+                    <!--<li>
+                        <span>消耗</span>
+                        <input type="text" id="jifen_input">
+                        <span>金币，立减<b>￥<em id="jf_money">0</em>元</b><i>（抵扣的金币必须是1000的倍数）</i></span>
+                    </li>
+                    <li>
+                        <span>消耗</span>
+                        <select id="cd_select">
+                            <option value="100">0</option>
+                        </select>
+                        <span>橙豆，立减<b>￥<em id="cd_money">0</em>元</b><i>（最多可享受充值金额八折优惠）</i></span>
+                    </li>-->
+
+                    <li class="my-vocher clearfix">
+                        <h4>请选择可用代金券</h4>
+                        <div class="select-vocher" id="select_vocher">
+                            <a href="javascript:;" class="selected" hidefocus="true" id="selected"></a>
+                            <div class="inner" id="vocher_inner" data-vocher="0">
+                                                                <!--<a href="javascript:;" hidefocus="true"><span data-val="">元<i>到期</i></span></a>-->
+                                                                <!--<a href="javascript:;" hidefocus="true"><span class="last"  data-val="0">不使用代金券</span></a>-->
+                            </div>
+                        </div>
+
+                        <div class="vocher-tip">（每单只能使用一张代金券，不与其他优惠同享）</div>
+                    </li>
+                    <li>
+                        <span>我的金币：</span>
+                        <span id="jifen_num"></span>
+                        <span>消耗</span>
+                        <input type="text" id="jifen_input">
+                        <span>金币，立减<b>￥<em id="jf_money">0</em>元</b><i>（抵扣的金币必须是1000的倍数）</i></span> </li>
+                    <li>
+                        <span>我的橙豆：</span>
+                        <span id="dou_num"></span>
+                        <span>消耗</span>
+                        <select id="cd_select">
+                            <option value="100">0</option>
+                        </select>
+                        <span>橙豆，立减<b>￥<em id="cd_money">0</em>元</b><i>（最多可享受充值金额八折优惠）</i></span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- 实际充值 -->
+            <div class="charge">
+                <span>实际充值:</span>
+                <b id="total"></b>
+
+                <!-- 二维码 -->
+                <div id="wx_qr">
+                    <div class="qr-box">
+                        <div class="qr-tip" id="qr-tip">没有选择服务器</div>
+                        <div id="qr_image"><img src="" class="wx-qr" id="wx-image"></div>
+                        <div class="qr-mask">
+                            <img src="http://static.g.iqiyi.com/game/otherWebsite/2016-pay/20161108/images/loading.gif">
+                            <a href="javascript:;">点击刷新二维码</a>
+                        </div>
+                    </div>
+
+                    <!-- 20170109 提示二维码可以支持微信支付宝支付 -->
+                    <div class="charge-tip">
+                        <p>使用微信或支付宝扫描支付</p>
+                        <p>若二维码失效，可以点击<a href="javascript:;" id="refrash">刷新</a>再次获取</p>
+                        <p class="last">
+                            <span class="icon-wx"></span>
+                            <span class="icon-zfb"></span>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 支付按钮 -->
+                <div id="zf_btn">
+                    <from>
+                        <form id="pay-form" name="payForm" action="" method="post" target="_blank">
+                            <input type="hidden" id="spscodeHdn" value="CCB">
+                            <input type="hidden" name="credit" value="0">
+                            <input type="hidden" name="coin" value="">
+                            <input type="hidden" name="real_money" value="">
+                            <input type="hidden" name="qudao_id_text" value="">
+                            <input type="hidden" name="lasted" value="">
+                            <input type="hidden" name="game" value="">
+                            <input type="hidden" name="game_type" value="">
+                            <input type="hidden" name="server_type" value="">
+                            <input type="hidden" name="account" value="">
+                            <input type="hidden" name="pay_money_amount" value="">
+                            <input type="hidden" name="pd_FrpId" value="">
+                            <input type="hidden" name="jw_card_pwd" value="">
+                            <input type="hidden" name="jw_card_number" value="">
+                            <input type="hidden" name="bank_extra" value="">
+                            <input type="hidden" name="MyCardCardId" value="">
+                            <input type="hidden" name="MyCardPwd" value="">
+                            <input type="hidden" name="role_name" value="">
+                            <a href="javascript:;" class="zf-btn" id="submitPay">立即充值</a>
+                        </form>
+                    </from>
+                </div>
+            </div>
+
+            <div class="service">
+                <ul class="zf-help" id="zf_help">
+                    <li class="on" data-help="wx"></li>
+                    <li data-help="zfb">
+                        <p>支付宝客服电话：大陆热线：95188转1, 海外热线：+86 571 95188</p>
+                    </li>
+                    <li data-help="wy">
+                        <p>支付宝客服电话：大陆热线：95188转1, 海外热线：+86 571 95188</p>
+                    </li>
+                    <li data-help="cft">
+                        <p>财付通客服电话：0755-86013860</p>
+                    </li>
+                    <li data-help="dk">
+                        <p class="origin">注：选择金额必须与充值卡金额一致，否则将导致金额丢失及支付失败</p>
+                        <p>骏卡客服电话：010-58103559</p>
+                    </li>
+                    <li data-help="phone">
+                        <p class="origin">注：选择金额必须与充值卡金额一致，否则将导致金额丢失及支付失败</p>
+                        <p>19pay客服电话：400-019-1999，客服邮箱：cs@19pay.com.cn</p>
+                    </li>
+                    <li data-help="abroad">GASH客服聯繫方式：E-mail: B2Cgashplus@telexpress.com</li>
+                </ul>
+                <p>在线客服：<a href="http://faq.g.iqiyi.com/tp/front/service.htm" target="_blank">联系客服</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+ <!--main -->
+
+ <!-- 点击支付弹框 -->
+ <div class="dialog" id="pay_finish">
+     <h3>充值</h3>
+     <div class="finish-tip">
+         付款完成前请不要关闭此窗口，完成付款后请根据您的情况点击下面的按钮。
+         <a href="javascript:;" class="green-btn close" id="finish_pay">已完成支付</a>
+         <div class="kf">在线客服：<a href="http://faq.g.iqiyi.com/tp/front/service.htm" target="_blank">联系客服</a></div>
+     </div>
+ </div>
+ <!-- 支付弹框 -->
+
+ <!-- 选择角色弹框 -->
+ <div class="dialog" id="select_role">
+     <h3>请选择角色</h3>
+     <select id="role_options">
+     </select>
+ </div>
+<!-- 选择角色弹框 -->
+
+ <div class="loading-mask" id="loading_bg">
+     <div class="mask-bg"></div>
+     <div class="loading-bg"></div>
+ </div>
+
+ <!-- 20170109 活动按钮 -->
+ 
+ <div class="footer" id="ppsBottom">
+     <div class="ppsBottomIn">
+         <div class="dlArea">
+             <a href="http://www.iqiyi.com/common/aboutus.html" rel="nofollow" title="公司介绍" target="_blank">公司介绍</a><i class="cutline">|</i>
+             <a href="http://www.iqiyi.com/common/news.html" title="新闻动态" target="_blank">新闻动态</a><i class="cutline">|</i>
+             <a href="http://www.iqiyi.com/common/contactus.html" title="联系方式" target="_blank">联系方式</a><i class="cutline">|</i>
+             <a href="http://zhaopin.iqiyi.com" title="招聘英才" target="_blank">招聘英才</a><i class="cutline">|</i>
+             <a href="http://labs.iqiyi.com" title="爱奇艺实验室" target="_blank">爱奇艺实验室</a><i class="cutline">|</i>
+             <a href="http://open.iqiyi.com/" title="开放平台" target="_blank">开放平台</a><i class="cutline">|</i>
+             <a href="http://store.iqiyi.com/" title="应用商店" target="_blank">应用商店</a><i class="cutline">|</i>
+             <a href="http://bbs.iqiyi.com/" title="爱奇艺论坛" target="_blank">爱奇艺论坛</a><i class="cutline">|</i>
+             <a href="http://help.iqiyi.com/?entry=game" title="帮助中心" target="_blank">帮助中心</a><i class="cutline">|</i>
+             <a href="http://help.pps.tv/help_yx1.html" title="纠纷处理" target="_blank">纠纷处理</a><i class="cutline">|</i>
+             <a href="http://g.iqiyi.com/help" title="家长监控" target="_blank">家长监控</a><i class="cutline">|</i>
+             <a href="http://www.iqiyi.com/common/20100420/n4813.html" title="About Us" target="_blank">About Us</a>
+         </div>
+         <div class="copyright-ps"> Copyright © 2016 <a href="http://www.iqiyi.com/" title="爱奇艺">爱奇艺</a> All Rights Reserved</div>
+     </div>
+ </div>
+ 
+
+</body></html>

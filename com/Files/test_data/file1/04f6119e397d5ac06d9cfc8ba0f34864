@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en-US">
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>Laravel框架运行机制(四)实例化APP的运行过程-04007CN</title> 
+  <meta name="Keywords" content="Laravel,框架,运行机制,APP-php,php技术,php技术博客,php程序员,php个人博客,laravel,yii,thinkphp,codeigniter,php框架,mysql,redis,Linux,centos,Nginx,lua,python" /> 
+  <meta name="Description" content="&nbsp;&nbsp;&nbsp;&nbsp;看了一下Laravel框架对APP的实例化，确实与其它的框架完全不同。大量使用Closure，而且是一层又一层的Closure，之前已经写了一些对Laravel加载vendor的总结，这里写一下加载APP对象的结，La..." /> 
+  <meta name="viewport" content="width=device-width" /> 
+  <link rel="stylesheet" href="/images/frontdir/css/bootstrap.css?ver=4.1.1" type="text/css" media="all" /> 
+  <link rel="stylesheet" href="/images/frontdir/css/styles.css?ver=4.0.3" type="text/css" media="all" /> 
+  <link rel="stylesheet" href="/images/frontdir/css/style.css?ver=4.1.1" type="text/css" media="all" /> 
+  <script src="/images/admindir/js/jquery-1.8.3.min.js"></script> 
+  <script src="/images/frontdir/js/bootstrap.js"></script> 
+  <link rel="stylesheet" type="text/css" href="/images/frontdir/barrager/barrager.css" /> 
+  <script src="/images/frontdir/barrager/jquery.barrager.min.js"></script> 
+  <!--[if lt IE 9]>
+<script src="/images/frontdir/js/html5.js" type="text/javascript"></script>
+<![endif]--> 
+  <style type="text/css" id="custom-css"></style> 
+  <style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style> 
+  <script language="javascript"> var arid = 0;</script> 
+ </head> 
+ <body class="wordpress ltr en en-us child-theme multisite blog-8 y2015 m03 d14 h14 saturday logged-out singular singular-post singular-post-582 group-blog layout-2c-l"> 
+  <nav class="navbar navbar-inverse navbar-fixed-top"> 
+   <div class="container"> 
+    <!-- Brand and toggle get grouped for better mobile display --> 
+    <div class="navbar-header"> 
+     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse"> <span class="sr-only">04007.cn</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> 
+     <a class="navbar-brand" href="http://www.04007.cn/" title="Magazine"><span>04007.cn</span></a> 
+    </div> 
+    <!-- Collect the nav links, forms, and other content for toggling --> 
+    <div class="collapse navbar-collapse navbar-ex1-collapse"> 
+     <ul id="menu-short" class="nav navbar-nav"> 
+      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home first menu-item-1852"> <a href="/">首页</a></li> 
+      <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-1721 dropdown"> <a title="About The Tests" href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle">文章分类 <span class="caret"></span></a> 
+       <ul class="dropdown-menu"> 
+        <li class="menu-item menu-item-type-post_type menu-item-object-page"> <a title="PHP 技术" href="/php/php.html">PHP 技术</a></li> 
+        <li class="menu-item menu-item-type-post_type menu-item-object-page"> <a title="Mysql/Redis数据库" href="/php/mysql_nosql.html">Mysql/Redis数据库</a></li> 
+        <li class="menu-item menu-item-type-post_type menu-item-object-page"> <a title="Laravel/YII框架" href="/php/laravel_yii.html">Laravel/YII框架</a></li> 
+        <li class="menu-item menu-item-type-post_type menu-item-object-page"> <a title="ThinkPhp/CodeIgniter框架" href="/php/tp_ci.html">ThinkPhp/CodeIgniter框架</a></li> 
+        <li class="menu-item menu-item-type-post_type menu-item-object-page"> <a title="Html/Div/Css/Jquery" href="/php/html_js.html">Html/Div/Css/Jquery</a></li> 
+        <li class="menu-item menu-item-type-post_type menu-item-object-page"> <a title="Nginx/Apache/Linux" href="/php/server.html">Nginx/Apache/Linux</a></li> 
+        <li class="menu-item menu-item-type-post_type menu-item-object-page"> <a title="Python开发" href="/php/python.html">Python开发</a></li> 
+        <li class="menu-item menu-item-type-post_type menu-item-object-page"> <a title="Lua脚本开发" href="/php/lua.html">Lua脚本开发</a></li> 
+        <li class="menu-item menu-item-type-post_type menu-item-object-page"> <a title="Opencart" href="/php/cms.html">Opencart</a></li> 
+        <li class="menu-item menu-item-type-post_type menu-item-object-page"> <a title="Electronic电商平台" href="/php/electronic.html">Electronic电商平台</a></li> 
+        <li class="menu-item menu-item-type-post_type menu-item-object-page"> <a title="Sphinx" href="/php/extend.html">Sphinx</a></li> 
+        <li class="menu-item menu-item-type-post_type menu-item-object-page"> <a title="读书_程序手册" href="/php/book.html">读书_程序手册</a></li> 
+       </ul> </li> 
+      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home first menu-item-1852"> <a title="资源下载" href="/download/index.html">资源下载</a></li> 
+      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home first menu-item-1852"> <a title="KeFrame框架" href="http://keframework.04007.cn" style="color:#fff;">KeFrame框架</a></li> 
+      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home first menu-item-1852"> <a title="历史上的今天" target="_blank" href="http://history.04007.cn">04007历史上的今天</a></li> 
+      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home first menu-item-1852"> <a title="04007天气" target="_blank" href="http://weather.04007.cn">04007天气</a></li> 
+      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home first menu-item-1852"> <a title="04007笑话" target="_blank" href="http://joke.04007.cn">04007笑话</a></li> 
+      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home first menu-item-1852"> <a title="04007笑话" target="_blank" href="http://work.04007.cn">04007工作经历</a></li> 
+      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home first menu-item-1852"> <a title="GitHub主页" onclick="javascript:window.location.href='https://github.com/KermitCode';" rel="nofollow">GitHub主页</a></li> 
+      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home first menu-item-1852"> <a title="关于本站04007CN" href="http://www.04007.cn/article/211.html">关于本站</a></li> 
+     </ul> 
+    </div> 
+   </div>
+   <!-- /.container --> 
+  </nav> 
+  <div class="site-container"> 
+   <header id="header" class="site-header" role="banner" itemscope="itemscope" itemtype="http://schema.org/WPHeader"> 
+    <div class="container"> 
+     <div class="row"> 
+      <div class="title-area col-xs-12 col-md-4"> 
+       <h2 class="site-title" itemprop="headline"> <a href="http://www.04007.cn/" title="Magazine" rel="home">04007.cn</a> </h2> 
+       <h3 class="site-description"> <span>读不在三更五鼓，功只怕一曝十寒。</span> </h3> 
+      </div> 
+      <aside class="col-xs-12 col-md-8 header-right widget-area sidebar" style="padding-bottom:10px;"> 
+       <section id="search-2" class="widget widget-1 even widget-first widget_search" style="padding-bottom:2px;"> 
+        <div class="widget-wrap"> 
+         <form role="search" method="get" class="search-form" action="/search/article.html"> 
+          <input type="search" class="search-field" placeholder="Search ..." value="" name="q" /> 
+          <input type="submit" class="search-submit" value="Search" /> 
+         </form> 
+        </div> 
+       </section> 
+       <div class="hotweather">
+         今日全国最热城市(前10):&nbsp;
+        <a href="http://weather.04007.cn" title="攀枝花15&deg;C~28&deg;C">攀枝花</a>&nbsp;
+        <a href="http://weather.04007.cn" title="三亚23&deg;C~27&deg;C">三亚</a>&nbsp;
+        <a href="http://weather.04007.cn" title="保亭21&deg;C~27&deg;C">保亭</a>&nbsp;
+        <a href="http://weather.04007.cn" title="昌江20&deg;C~27&deg;C">昌江</a>&nbsp;
+        <a href="http://weather.04007.cn" title="乐东20&deg;C~27&deg;C">乐东</a>&nbsp;
+        <a href="http://weather.04007.cn" title="儋州20&deg;C~27&deg;C">儋州</a>&nbsp;
+        <a href="http://weather.04007.cn" title="白沙19&deg;C~27&deg;C">白沙</a>&nbsp;
+        <a href="http://weather.04007.cn" title="临高21&deg;C~26&deg;C">临高</a>&nbsp;
+        <a href="http://weather.04007.cn" title="东方21&deg;C~26&deg;C">东方</a>&nbsp;
+        <a href="http://weather.04007.cn" title="嘉义20&deg;C~26&deg;C">嘉义</a> 
+       </div> 
+      </aside> 
+     </div> 
+     <!-- .row --> 
+    </div> 
+    <!-- .container --> 
+   </header> 
+   <!-- .site-header --> 
+   <div class="container"> 
+    <nav class="navbar navbar-default nav-secondary" role="navigation" itemscope="itemscope" itemtype="http://schema.org/SiteNavigationElement"> 
+     <!-- Brand and toggle get grouped for better mobile display --> 
+     <div class="navbar-header"> 
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".menu-secondary"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> 
+      <a class="navbar-brand" href="#">全站文章分类</a> 
+     </div> 
+     <!-- Collect the nav links, forms, and other content for toggling --> 
+     <div class="collapse navbar-collapse menu-secondary"> 
+      <ul class="nav navbar-nav"> 
+       <li class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent first menu-item-1853"><a title="Post Formats" href="/">最新</a></li> 
+       <li class="menu-item menu-item-type-taxonomy menu-item-object-category"> <a title="PHP" href="/php/php.html">PHP</a></li> 
+       <li class="menu-item menu-item-type-taxonomy menu-item-object-category"> <a title="Mysql_Nosql" href="/php/mysql_nosql.html">Mysql_Nosql</a></li> 
+       <li class="menu-item menu-item-type-taxonomy menu-item-object-category active"> <a title="Laravel_Yii" href="/php/laravel_yii.html">Laravel_Yii</a></li> 
+       <li class="menu-item menu-item-type-taxonomy menu-item-object-category"> <a title="TP_CI" href="/php/tp_ci.html">TP_CI</a></li> 
+       <li class="menu-item menu-item-type-taxonomy menu-item-object-category"> <a title="Html_Js" href="/php/html_js.html">Html_Js</a></li> 
+       <li class="menu-item menu-item-type-taxonomy menu-item-object-category"> <a title="Server" href="/php/server.html">Server</a></li> 
+       <li class="menu-item menu-item-type-taxonomy menu-item-object-category"> <a title="Python" href="/php/python.html">Python</a></li> 
+       <li class="menu-item menu-item-type-taxonomy menu-item-object-category"> <a title="Lua" href="/php/lua.html">Lua</a></li> 
+       <li class="menu-item menu-item-type-taxonomy menu-item-object-category"> <a title="CMS" href="/php/cms.html">CMS</a></li> 
+       <li class="menu-item menu-item-type-taxonomy menu-item-object-category"> <a title="Electronic" href="/php/electronic.html">Electronic</a></li> 
+       <li class="menu-item menu-item-type-taxonomy menu-item-object-category"> <a title="Extend" href="/php/extend.html">Extend</a></li> 
+       <li class="menu-item menu-item-type-taxonomy menu-item-object-category"> <a title="Book" href="/php/book.html">Book</a></li> 
+      </ul> 
+     </div> 
+    </nav> 
+    <!-- .nav-secondary --> 
+   </div> 
+   <!-- /.container --> 
+   <div class="site-inner"> 
+    <div class="container"> 
+     <div class="row"> 
+      <main class="col-xs-12 col-sm-9" id="content"> 
+       <link rel="stylesheet" href="/images/code/prettify.css" /> 
+       <script src="/images/code/prettify.js"></script> 
+       <article id="post-358" class="entry post publish author-hwijaya post-358 format-standard category-post-formats post_tag-post-formats post_tag-readability post_tag-standard-2"> 
+        <div class="entry-wrap"> 
+         <header class="entry-header"> 
+          <h1 class="entry-title">Laravel框架运行机制(四)实例化APP的运行过程</h1> 
+          <div class="entry-meta"> 
+           <time class="entry-time">publish:August 12, 2016 -Friday</time> 
+           <span class="entry-author">by <a href="http://www.04007.cn" title="04007.cn" rel="author" class="url fn n"><span itemprop="name">04007</span></a> <span style="margin-left:100px;font-size:11px;font-family:楷体gb2312;font-style:normal;color:#993;">本站原创文章,转载请注明文章出处：www.04007.cn</span></span> 
+          </div> 
+         </header> 
+         <div class="entry-content" itemprop="articleBody"> 
+          <span class="hiddtext">本文地址:http://www.04007.cn/article/209.html</span> 
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;看了一下Laravel框架对APP的实例化，确实与其它的框架完全不同。大量使用Closure，而且是一层又一层的Closure，之前已经写了一些对Laravel加载vendor的总结，这里写一下加载APP对象的结，Laravel执行到这步还只是实例化了APP对象，并未开始真正的业务操作，业务操作都在Kernel对象里，说说其它的几个框架的源代码吧：<span class="hiddtext">本文地址:http://www.04007.cn/article/209.html,未经许可,不得转载.</span></p>
+          <p>ThinkPhp框架：代码一看就明白，可以这么说，TP框架就是用一堆面向过程的PHP程序堆成了一个功能也不错、使用也方便的框架。<span class="hiddtext">本文地址:http://www.04007.cn/article/209.html,未经许可,不得转载.</span></p>
+          <p>Codeigniter框架：Php框架的起源，初始化各种类然后导入到APP类中，然后在框架里使用$this-&gt;db等来操作一切所需要的类，简单，但大道至简吧。<span class="hiddtext">本文地址:http://www.04007.cn/article/209.html,未经许可,不得转载.</span></p>
+          <p>Yii框架：我已经很久没看过YII了，1.1时代看过，那时也没看透，但YII我一直觉得很强大。底层基本无明显缺陷，功能齐全。GII功能没有框架可比。<span class="hiddtext">本文地址:http://www.04007.cn/article/209.html,未经许可,不得转载.</span></p>
+          <p>Laravel框架：非常新，框架的加载过程非常新颖。和其它的框架都很不相同。毕竟Laravel起点很高，起点要求PHP5.4，大量使用新特性。<span class="hiddtext">本文地址:http://www.04007.cn/article/209.html,未经许可,不得转载.</span></p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;看一下laravel框架index.php执行完vendor之后加载app.php的代码：<span class="hiddtext">本文地址:http://www.04007.cn/article/209.html,未经许可,不得转载.</span></p> 
+          <pre class="prettyprint lang-php">//index.php中执行加载app.php
+$app = require_once __DIR__.'/../bootstrap/app.php';
+
+//bootstrap/app.php文件中执行对app的操作
+$app = new IlluminateFoundationApplication(
+    realpath(__DIR__.'/../')
+);
+$app-&gt;singleton(
+    IlluminateContractsHttpKernel::class,
+    AppHttpKernel::class
+);
+$app-&gt;singleton(
+    IlluminateContractsConsoleKernel::class,
+    AppConsoleKernel::class
+);
+$app-&gt;singleton(
+    IlluminateContractsDebugExceptionHandler::class,
+    AppExceptionsHandler::class
+);
+return $app;</pre> &nbsp;&nbsp;&nbsp;&nbsp;初始化IlluminateFoundationApplication类并传入laravel整体根目录路径。就调用到了vendor/laravel/framework/src/Illuminate/Foundation/Application.php类，这个类文件初始化的过程中主要操作了三个方法：如下： 
+          <pre class="prettyprint lang-php">    public function __construct($basePath = null)
+    {
+        $this-&gt;registerBaseBindings();
+        $this-&gt;registerBaseServiceProviders();
+        $this-&gt;registerCoreContainerAliases();
+        if ($basePath) {
+            $this-&gt;setBasePath($basePath);
+        }
+    }</pre> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;registerBaseBindings方法处理简单，只是把Application类的静态属性$instance、还有数组属性instances的app键值初始化递归成本类，
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;registerBaseServiceProviders方法则比较复杂，执行了$this-&gt;register(new EventServiceProvider($this));和$this-&gt;register(new RoutingServiceProvider($this));两个方法，分别是注册基础events服务和路由等其它服务组件，<span style="white-space:normal;">$this-&gt;register(new EventServiceProvider($this));方法所调用的整个过程最重要的在文件：laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php文件约545行里执行的这句：</span><span class="hiddtext">本文地址:http://www.04007.cn/article/209.html,未经许可,不得转载.</span></p>
+          <p><span style="white-space:normal;"> </span><span class="hiddtext">本文地址:http://www.04007.cn/article/209.html,未经许可,不得转载.</span></p> 
+          <pre class="prettyprint lang-php">$provider-&gt;register();</pre> &nbsp; &nbsp; 而上面这句代码调用的方法执行的是调用
+          <span style="white-space:normal;">Application的singleton方法，将events注册到Application的数组属性bindlings里，如下：</span> 
+          <pre class="prettyprint lang-php">    public function register()
+    {
+        $this-&gt;app-&gt;singleton('events', function ($app) {
+            return (new Dispatcher($app))-&gt;setQueueResolver(function () use ($app) {
+                return $app-&gt;make('IlluminateContractsQueueFactory');
+            });
+        });
+    }</pre> &nbsp;&nbsp; &nbsp; 上面的代码：（暂时先不要去理会function($app)这个闭包函数的处理，直接看vendor/laravel/framework/src/Illuminate/Container/Container.php中的singleton方法），会调用singleton方法，实际是调用Container.php的bind方法：public function bind($abstract, $concrete = null, $shared = false)；并固定传参shared为true。bind方法里两句很重要的代码： 
+          <pre class="prettyprint lang-php">	if (! $concrete instanceof Closure) {
+            $concrete = $this-&gt;getClosure($abstract, $concrete);
+        }
+        $this-&gt;bindings[$abstract] = compact('concrete', 'shared');</pre> &nbsp; &nbsp; 判断入参$concrete是否是闭包函数，Laravel里所有bind的对象全部要求是闭包函数，如果不是就调用getClosure方法造成闭包函数，方法如下： 
+          <pre class="prettyprint lang-php">    protected function getClosure($abstract, $concrete)
+    {
+        return function ($c, $parameters = []) use ($abstract, $concrete) {
+            $method = ($abstract == $concrete) ? 'build' : 'make';
+            return $c-&gt;$method($concrete, $parameters);
+        };
+    }</pre> &nbsp; &nbsp; 可见，如果传入的不是闭包函数，就会将他们转化成一个闭包函数的参数，在闭包函数中通过build或者make方法去调用。注意，$provider-&gt;register()这步看起来是执行$provider的方法，实际上是执行Application的方法，并修改Application实例的属性。这样执行后，Application类的bindlings数组属性值就成了如下图：
+          <p style="text-align:center;"><img src="/uploads/pageimg/20160812143846_63092.png" alt="" /><span class="hiddtext">本文地址:http://www.04007.cn/article/209.html,未经许可,不得转载.</span></p>
+          <p>&nbsp; &nbsp; 可以看到bindlings下的组件都要相同的结构，都是由一个闭包函数组件以及是否共享两个组成，而闭包函数组件看似是相同的结构，实际可以根据其中闭包函数调用的不同的类完成的不同的功能。到这里看的都是<span style="white-space:normal;">laravel/vendor/laravel/framework/src/Illuminate/Foundation/Application.php约545行里执行的这句</span>$provider-&gt;register();所执行的功能，而更精妙的这句代码在其后：<span class="hiddtext">本文地址:http://www.04007.cn/article/209.html,未经许可,不得转载.</span></p> 
+          <pre class="prettyprint lang-php">$this-&gt;markAsRegistered($provider);</pre> &nbsp;&nbsp;&nbsp;&nbsp;此方法的执行程序如下： 
+          <pre class="prettyprint lang-php">    protected function markAsRegistered($provider)
+    {
+        $this['events']-&gt;fire($class = get_class($provider), [$provider]);
+        $this-&gt;serviceProviders[] = $provider;
+        $this-&gt;loadedProviders[$class] = true;
+    }</pre> &nbsp;&nbsp; &nbsp; 几个字码的代码：$this['events']，这里实际上是使用
+          <span style="white-space:normal;">对象数组式访问ArrayAccess的方法，</span>执行了很重要的功能，最终调用了类：vendor/laravel/framework/src/Illuminate/Container/Container.php的offsetGet方法，然后offsetGet里再去调用Container里的make方法来，而在make方法里再调用getConcrete取出bindlings下面events数组里的concrete(如上面的图），这是laravel所有调用make时的操作，就是取出其闭包函数。取出闭包函数后会执行： 
+          <pre class="prettyprint lang-php">    if ($this-&gt;isBuildable($concrete, $abstract)) {
+            $object = $this-&gt;build($concrete, $parameters);
+        } else {
+            $object = $this-&gt;make($concrete, $parameters);
+        }</pre> &nbsp;&nbsp; &nbsp; isBuildable方法，只要concrere是闭包函数就会执行，所以此处会再调用build方法，而build方法实际就是执行这个闭包函数，代码如下： 
+          <pre class="prettyprint lang-php">public function build($concrete, array $parameters = [])
+    {
+        if ($concrete instanceof Closure) {
+            return $concrete($this, $parameters);
+        }
+...
+}</pre> 
+          <p>&nbsp;&nbsp; &nbsp; 至此实际完成的功能就是在Application类里的
+           <required style="line-height:normal;">
+            instances数组属性值里添加了一个events闭包函数执行后的组件，此处调用的events执行完后，instances数组数据即：
+           </required>
+           <required style="line-height:normal;">
+            IlluminateEventsDispatcher Object
+           </required><span style="line-height:normal;">如下：</span><span class="hiddtext">本文地址:http://www.04007.cn/article/209.html,未经许可,不得转载.</span></p>
+          <p><span style="line-height:1.5;"><img src="/uploads/pageimg/20160812171717_14342.png" alt="" /></span><span class="hiddtext">本文地址:http://www.04007.cn/article/209.html,未经许可,不得转载.</span></p>
+          <p><span style="line-height:1.5;">&nbsp; &nbsp; 为什么是这个对象，我们可以回头看到在最开始调用$this-&gt;register(new EventServiceProvider($this));时实例化的new 类vendor/laravel/framework/src/Illuminate/Events/EventServiceProvider.php中的register方法里执行的是：</span><span class="hiddtext">本文地址:http://www.04007.cn/article/209.html,未经许可,不得转载.</span></p>
+          <p><span style="line-height:1.5;"> </span><span class="hiddtext">本文地址:http://www.04007.cn/article/209.html,未经许可,不得转载.</span></p> 
+          <pre class="prettyprint lang-php">return (new Dispatcher($app))-&gt;setQueueResolver(function () use ($app) {
+                return $app-&gt;make('IlluminateContractsQueueFactory');
+            });</pre> &nbsp; &nbsp; 所以最终通过
+          <span style="white-space:normal;">$this['events']这个看起来很简单的索引，实际后面完成了组件注册后的实例化。Laravel的Application干的工作就是这样，注册服务组件到Application属性bindings:protected中，而且所有的组件都是一个闭包函数，然后根据需要使用数组索引一下就完成了</span>这个组件的实例化，并写入到数组属性值：instances中。执行完这句后，后面Application的实例化代码功能也都一样了： 
+          <pre class="prettyprint lang-php">$this-&gt;registerBaseServiceProviders();
+$this-&gt;registerCoreContainerAliases();</pre> &nbsp;&nbsp; &nbsp;上面的第一句代码注册了一些基础服务（比如router,url,redirect等），而registerCoreContainerAliases则是加载了一些类的别名。至此Application类完成了实例化。之后便是Kernel使用Application来创建
+          <span style="line-height:normal;">AppHttpKernel</span>
+          <span style="line-height:1.5;">对象，并通过此对象的handle方法来处理请求对象Request，以返回处理结果。</span> 
+          <p>本文地址:http://www.04007.cn/article/209.html 未经许可,不得转载.</p> 
+         </div> 
+         <footer class="entry-footer"> 
+          <div class="entry-meta right"> 
+           <span class="entry-terms post_tag"> Tags：<a href="javascript:void(0);" rel="tag">Laravel</a>,<a href="javascript:void(0);" rel="tag">框架</a>,<a href="javascript:void(0);" rel="tag">运行机制</a>,<a href="javascript:void(0);" rel="tag">APP</a>, View(1090) </span> 
+          </div> 
+         </footer> 
+        </div> 
+       </article> 
+       <article> 
+        <div class="widget-wrap"> 
+         <h4 class="widget-title">相关文章</h4> 
+         <ul> 
+          <li><a href="/article/209.html" title="Laravel框架运行机制(四)实例化APP的运行过程">Laravel框架运行机制(四)实例化APP的运行过程</a></li> 
+          <li><a href="/article/207.html" title="Laravel框架运行机制(三)全局方法">Laravel框架运行机制(三)全局方法</a></li> 
+          <li><a href="/article/206.html" title="Laravel框架运行机制(二)vendor自动加载机制">Laravel框架运行机制(二)vendor自动加载机制</a></li> 
+          <li><a href="/article/205.html" title="Laravel框架运行机制(一)全局基本加载逻辑流程">Laravel框架运行机制(一)全局基本加载逻辑流程</a></li> 
+          <li><a href="/article/192.html" title="laravel5.2使用composer安装的全过程">laravel5.2使用composer安装的全过程</a></li> 
+          <li><a href="/article/186.html" title="关于laravel框架的特点和版本历史-各主要版本发布时间">关于laravel框架的特点和版本历史-各主要版本发布时间</a></li> 
+          <li><a href="/article/114.html" title="2016PHP开发用什么框架-2015PHP各框架份额">2016PHP开发用什么框架-2015PHP各框架份额</a></li> 
+          <li><a href="/article/111.html" title="laravel电商网站怎么防止库存脏数据-减库存加锁">laravel电商网站怎么防止库存脏数据-减库存加锁</a></li> 
+          <li><a href="/article/110.html" title="laravel里的model属性配置大全">laravel里的model属性配置大全</a></li> 
+          <li><a href="/article/109.html" title="laravel5.2里在哪里配置一些全局都会用到的展示字符数据">laravel5.2里在哪里配置一些全局都会用到的展示字符数据</a></li> 
+         </ul> 
+        </div> 
+        <div class="widget-wrap"> 
+         <h4 class="widget-title">本栏最新文章</h4> 
+         <ul> 
+          <li><a href="/article/207.html" title="Laravel框架运行机制(三)全局方法">Laravel框架运行机制(三)全局方法</a></li> 
+          <li><a href="/article/206.html" title="Laravel框架运行机制(二)vendor自动加载机制">Laravel框架运行机制(二)vendor自动加载机制</a></li> 
+          <li><a href="/article/205.html" title="Laravel框架运行机制(一)全局基本加载逻辑流程">Laravel框架运行机制(一)全局基本加载逻辑流程</a></li> 
+          <li><a href="/article/192.html" title="laravel5.2使用composer安装的全过程">laravel5.2使用composer安装的全过程</a></li> 
+          <li><a href="/article/186.html" title="关于laravel框架的特点和版本历史-各主要版本发布时间">关于laravel框架的特点和版本历史-各主要版本发布时间</a></li> 
+          <li><a href="/article/111.html" title="laravel电商网站怎么防止库存脏数据-减库存加锁">laravel电商网站怎么防止库存脏数据-减库存加锁</a></li> 
+          <li><a href="/article/110.html" title="laravel里的model属性配置大全">laravel里的model属性配置大全</a></li> 
+          <li><a href="/article/109.html" title="laravel5.2里在哪里配置一些全局都会用到的展示字符数据">laravel5.2里在哪里配置一些全局都会用到的展示字符数据</a></li> 
+          <li><a href="/article/108.html" title="laravel5.2里怎么自定义全局方法,像config,env一样可在控制器模型视图中调用">laravel5.2里怎么自定义全局方法,像config,env一样可在控制器模型视图中调用</a></li> 
+          <li><a href="/article/106.html" title="关于laravel里的中间件Middleware的使用">关于laravel里的中间件Middleware的使用</a></li> 
+         </ul> 
+        </div> 
+       </article> 
+       <div style="display:none;" id="loadimg"> 
+        <div class="text-center">
+         <img src="/images/frontdir/load.gif" />
+        </div> 
+       </div> 
+       <h4 class="widget-title">文章评论</h4> 
+       <article id="pagecomment" class="entry post publish"> 
+       </article> 
+       <article id="post-358" class="entry post publish author-hwijaya"> 
+        <form> 
+         <textarea name="textarea" class="irt-message" id="comarea"></textarea> 
+         <div class="zhan" id="zhan">
+           限制
+          <input disabled="" class="charn" value="200" /> 已用 
+          <input disabled="" name="used" class="charn" value="0" />剩余
+          <input disabled="" name="remain" class="charn" value="200" />&nbsp;
+          <input type="button" id="subcomment" value="提交评论" class="irt-message-submit" /> 
+          <input type="hidden" id="arid" value="209" /> 
+         </div> 
+        </form> 
+       </article> 
+       <script language="javascript">
+	prettyPrint();
+	$(document).ready(function(){
+		$.getLen=function(str){return str.replace(/[^\x00-\xff]/g, '**').length;};
+		$.cutstr=function(str,len){    
+			 var str_length = 0;    
+			 var str_len = 0;    
+			 str_cut = new String();    
+			 str_len = str.length;    
+			 for(var i = 0; i < str_len; i++)    {    
+				 a = str.charAt(i);    
+				 str_length++;    
+				 if(escape(a).length >4){str_length++;    }    
+				 str_cut = str_cut.concat(a);    
+				 if(str_length>=len){    
+					 str_cut = str_cut.concat("...");    
+					 return str_cut;}    
+				 }        
+			 if(str_length < len){return str;}    
+		};
+		$.gbcount=function(){
+			var message=$("#comarea");
+			var used=$("input[name='used']");
+			var remain=$("input[name='remain']");
+			var len=$.getLen(message.val());
+			if(len>200){
+				message.val($.cutstr(message.val(),200));
+				used.val(200);remain.val(0);
+				alert("留言不能超过200个字符!");
+			}else {used.val(len);remain.val(200 - len);}
+		};
+		$("#comarea").keyup(function(){$.gbcount();});
+		$("#subcomment").click(function(){
+			var mess=$.trim($("#comarea").val());
+			if(mess=='' || mess.length<5){alert('评论未写或字数过少');return false;}
+			var id=$("#arid").val();
+			$.post("/article/comment.html",{"mess":mess,'id':id},
+				function(data){
+					if(data.rs==0){alert(data.message);}
+					else{
+						$("#pagecomment").html(data.message+$("#pagecomment").html());
+						$("#comarea").val('');
+					}
+				}
+			,'json');
+		});
+		//评论加载
+		$("#pagecomment").html($("#loadimg").html());
+		$.get("/article/loadcom/id/209.html",{},
+			function(data){
+				$("#pagecomment").html(data);
+			}
+		,'text');
+		$('#pagecomment').delegate('.pagination a', 'click', function(e) {
+			e.preventDefault();
+			$('#pagecomment').html($("#loadimg").html());
+			$('#pagecomment').load(this.href);
+			$('#pagecomment').fadeIn('fast');
+		});
+	});
+	var arid = "209";
+    </script> 
+      </main> 
+      <aside class="sidebar col-xs-12 col-sm-3"> 
+       <a href="http://www.04007.cn/article/99.html"> <button type="button" class="btn btn-success" id="keframe">本站所用框架及本站源码下载</button> </a> 
+       <section id="categories-2" class="widget widget-3 even widget_categories" style="margin-top:15px;"> 
+        <div class="widget-wrap"> 
+         <h4 class="widget-title">历史上的03月28日 <a href="http://history.04007.cn/" style="float:right"><small>更多&gt;&gt;</small></a></h4> 
+         <ul>
+          <li><a href="http://history.04007.cn/HisMain/3443.html" title="中国第一个“西藏百万农奴解放纪念日”">[2009年3月28日]中国第一个“西藏百万农奴解放纪念日”</a></li>
+          <li><a href="http://history.04007.cn/HisMain/3444.html" title="“地球一小时”活动在全球千余城市展开">[2009年3月28日]“地球一小时”活动在全球千余城市展开</a></li>
+          <li><a href="http://history.04007.cn/HisMain/3525.html" title="第五次全国人口普查 我国总人口为12.9533亿">[2001年3月28日]第五次全国人口普查 我国总人口为12.9533亿</a></li>
+          <li><a href="http://history.04007.cn/HisMain/2676.html" title="日本“奥姆真理教”因资不抵债被法院判破产">[1996年3月28日]日本“奥姆真理教”因资不抵债被法院判破产</a></li>
+          <li><a href="http://history.04007.cn/HisMain/3001.html" title="农民将军甘祖昌逝世">[1986年3月28日]农民将军甘祖昌逝世</a></li>
+          <li><a href="http://history.04007.cn/HisMain/2613.html" title="画家马克&middot;查格尔去世">[1985年3月28日]画家马克&middot;查格尔去世</a></li>
+          <li><a href="http://history.04007.cn/HisMain/2741.html" title="美国圣海伦斯火山喷发">[1980年3月28日]美国圣海伦斯火山喷发</a></li>
+          <li><a href="http://history.04007.cn/HisMain/3391.html" title="美国三里岛核电站发生泄漏事故">[1979年3月28日]美国三里岛核电站发生泄漏事故</a></li>
+          <li><a href="http://history.04007.cn/HisMain/3038.html" title="邓小平指出：一定要坚持按劳分配原则">[1978年3月28日]邓小平指出：一定要坚持按劳分配原则</a></li>
+          <li><a href="http://history.04007.cn/HisMain/2639.html" title="特纳里夫岛发生重大空难">[1977年3月28日]特纳里夫岛发生重大空难</a></li>
+         </ul> 
+        </div> 
+       </section> 
+       <section id="recent-posts-2" class="widget widget-1 even widget-first widget_recent_entries"> 
+        <div class="widget-wrap"> 
+         <h4 class="widget-title">推荐文章</h4> 
+         <ul> 
+          <li><a href="/article/333.html" title="mysql中show full processlist查询结果怎么筛选过滤分组统计导出">mysql中show full processlist查询结果怎么筛选过滤分组统计导出</a></li> 
+          <li><a href="/article/315.html" title="nginx中location匹配的优先级规则详解">nginx中location匹配的优先级规则详解</a></li> 
+          <li><a href="/article/309.html" title="给API接口增加Nginx+lua签名认证">给API接口增加Nginx+lua签名认证</a></li> 
+          <li><a href="/article/299.html" title="php里比gd效率更高功能更强的扩展imagick">php里比gd效率更高功能更强的扩展imagick</a></li> 
+          <li><a href="/article/259.html" title="使用php生成RSA公钥私钥及进行加密解密示例">使用php生成RSA公钥私钥及进行加密解密示例</a></li> 
+          <li><a href="/article/249.html" title="消息队列beanstalkd的安装使用">消息队列beanstalkd的安装使用</a></li> 
+          <li><a href="/article/246.html" title="[inet_http_server]实现在web界面下管理supervisortd的各进程">[inet_http_server]实现在web界面下管理supervisortd的各进程</a></li> 
+          <li><a href="/article/237.html" title="进程管理工具Supervisor的使用supervisorctl">进程管理工具Supervisor的使用supervisorctl</a></li> 
+          <li><a href="/article/235.html" title="linux下对nginx访问日志进行搜索筛选过滤去重统计分析的常用命令awk">linux下对nginx访问日志进行搜索筛选过滤去重统计分析的常用命令awk</a></li> 
+          <li><a href="/article/209.html" title="Laravel框架运行机制(四)实例化APP的运行过程">Laravel框架运行机制(四)实例化APP的运行过程</a></li> 
+          <li><a href="/article/208.html" title="Php使用数组索引的方式访问对象-ArrayAccess(数组式访问)接口">Php使用数组索引的方式访问对象-ArrayAccess(数组式访问)接口</a></li> 
+          <li><a href="/article/200.html" title="通过网站之间的链接抓取全网域名的php程序">通过网站之间的链接抓取全网域名的php程序</a></li> 
+          <li><a href="/article/198.html" title="使用bootstrap-datetimepicker实现动态添加日期时间范围">使用bootstrap-datetimepicker实现动态添加日期时间范围</a></li> 
+          <li><a href="/article/188.html" title="xdebug结合webgrind对程序进行性能分析">xdebug结合webgrind对程序进行性能分析</a></li> 
+          <li><a href="/article/187.html" title="很好用的windows下绿色PHP集成开发环境Visual-AMP(Visual-AMP官网不好找)">很好用的windows下绿色PHP集成开发环境Visual-AMP(Visual-AMP官网不好找)</a></li> 
+          <li><a href="/article/186.html" title="关于laravel框架的特点和版本历史-各主要版本发布时间">关于laravel框架的特点和版本历史-各主要版本发布时间</a></li> 
+          <li><a href="/article/185.html" title="百思不得姐www.budejie.com的火车头采集规则及已采集的数据sql文件">百思不得姐www.budejie.com的火车头采集规则及已采集的数据sql文件</a></li> 
+          <li><a href="/article/180.html" title="lua中针对xml解析的扩展-Lua-Simple-XML-Parser很好用">lua中针对xml解析的扩展-Lua-Simple-XML-Parser很好用</a></li> 
+          <li><a href="/article/176.html" title="调用淘宝API接口获取产品详情数据-淘宝API封装">调用淘宝API接口获取产品详情数据-淘宝API封装</a></li> 
+          <li><a href="/article/175.html" title="淘宝详情页的php抓取程序">淘宝详情页的php抓取程序</a></li> 
+         </ul> 
+        </div> 
+       </section> 
+       <section id="categories-2" class="widget widget-3 even widget_categories"> 
+        <div class="widget-wrap"> 
+         <h4 class="widget-title">最新评论</h4> 
+         <ul> 
+          <li class="cat-item cat-item-2"><a href="/article/27.html">。进步空间</a></li> 
+          <li class="cat-item cat-item-2"><a href="/article/27.html">人吗人太多要和你</a></li> 
+          <li class="cat-item cat-item-2"><a href="/article/35.html">php5.3 有遇到过这种情况，php5.4就能正常，最后在php5.3的情况下用snoopy类来获取可以正常获取</a></li> 
+          <li class="cat-item cat-item-2"><a href="/article/288.html">这个exec挺好用的。谢谢博主啊</a></li> 
+          <li class="cat-item cat-item-2"><a href="/article/27.html">下面有请我孙子发言</a></li> 
+          <li class="cat-item cat-item-2"><a href="/article/35.html">我也碰到，在本地正常，服务器阿里云抓陶淘宝优惠卷页也报56错，楼主解决了吗！</a></li> 
+          <li class="cat-item cat-item-2"><a href="/article/35.html">[04007]好久前的问题了，不大记得。但不是被墙，被墙的话结果是超时。</a></li> 
+          <li class="cat-item cat-item-2"><a href="/article/35.html">被墙了而已吧 翻墙就好了</a></li> 
+          <li class="cat-item cat-item-2"><a href="/article/257.html">awk还有很多功能很多用法的。</a></li> 
+          <li class="cat-item cat-item-2"><a href="/article/3.html">。。。。。</a></li> 
+          <li class="cat-item cat-item-2"><a href="/article/10.html">好好好 学到了</a></li> 
+          <li class="cat-item cat-item-2"><a href="/article/5.html">你的博客非常不错哦，我的个人网站 http://www.javaxxz.com 相互学习下。</a></li> 
+          <li class="cat-item cat-item-2"><a href="/article/230.html">你的博客非常不错哦，我的个人网站 http://www.javaxxz.com 相互学习下。</a></li> 
+          <li class="cat-item cat-item-2"><a href="/article/62.html">10000 元 1000人分的时候，会出现负数。。。</a></li> 
+          <li class="cat-item cat-item-2"><a href="/article/27.html">你的这个方法已经登陆不上了，现在淘宝增加了滑动验证</a></li> 
+         </ul> 
+        </div> 
+       </section> 
+       <section id="categories-2" class="widget widget-3 even widget_categories"> 
+        <div class="widget-wrap"> 
+         <h4 class="widget-title">月份归档 <small> (共计：333)</small></h4> 
+         <ul class="monthstat"> 
+          <li class="cat-item cat-item-2"><a href="/Article/month/yd/2015-03.html">2015-03发表(3)篇</a></li> 
+          <li class="cat-item cat-item-2"><a href="/Article/month/yd/2015-04.html">2015-04发表(11)篇</a></li> 
+          <li class="cat-item cat-item-2"><a href="/Article/month/yd/2015-05.html">2015-05发表(11)篇</a></li> 
+          <li class="cat-item cat-item-2"><a href="/Article/month/yd/2015-06.html">2015-06发表(16)篇</a></li> 
+          <li class="cat-item cat-item-2"><a href="/Article/month/yd/2015-07.html">2015-07发表(10)篇</a></li> 
+          <li class="cat-item cat-item-2"><a href="/Article/month/yd/2015-08.html">2015-08发表(17)篇</a></li> 
+          <li class="cat-item cat-item-2"><a href="/Article/month/yd/2015-09.html">2015-09发表(7)篇</a></li> 
+          <li class="cat-item cat-item-2"><a href="/Article/month/yd/2015-10.html">2015-10发表(8)篇</a></li> 
+          <li class="cat-item cat-item-2"><a href="/Article/month/yd/2015-11.html">2015-11发表(4)篇</a></li> 
+          <li class="cat-item cat-item-2"><a href="/Article/month/yd/2015-12.html">2015-12发表(2)篇</a></li> 
+          <li class="cat-item cat-item-2"><a href="/Article/month/yd/2016-01.html">2016-01发表(1)篇</a></li> 
+          <li class="cat-item cat-item-2"><a href="/Article/month/yd/2016-02.html">2016-02发表(5)篇</a></li> 
+          <li class="cat-item cat-item-2"><a href="/Article/month/yd/2016-03.html">2016-03发表(8)篇</a></li> 
+          <li class="cat-item cat-item-2"><a href="/Article/month/yd/2016-04.html">2016-04发表(5)篇</a></li> 
+          <li class="cat-item cat-item-2"><a href="/Article/month/yd/2016-05.html">2016-05发表(15)篇</a></li> 
+          <li class="cat-item cat-item-2"><a href="/Article/month/yd/2016-06.html">2016-06发表(19)篇</a></li> 
+          <li class="cat-item cat-item-2"><a href="/Article/month/yd/2016-07.html">2016-07发表(50)篇</a></li> 
+          <li class="cat-item cat-item-2"><a href="/Article/month/yd/2016-08.html">2016-08发表(33)篇</a></li> 
+          <li class="cat-item cat-item-2"><a href="/Article/month/yd/2016-09.html">2016-09发表(23)篇</a></li> 
+          <li class="cat-item cat-item-2"><a href="/Article/month/yd/2016-10.html">2016-10发表(24)篇</a></li> 
+          <li class="cat-item cat-item-2"><a href="/Article/month/yd/2016-11.html">2016-11发表(22)篇</a></li> 
+          <li class="cat-item cat-item-2"><a href="/Article/month/yd/2016-12.html">2016-12发表(9)篇</a></li> 
+          <li class="cat-item cat-item-2"><a href="/Article/month/yd/2017-01.html">2017-01发表(15)篇</a></li> 
+          <li class="cat-item cat-item-2"><a href="/Article/month/yd/2017-02.html">2017-02发表(8)篇</a></li> 
+          <li class="cat-item cat-item-2"><a href="/Article/month/yd/2017-03.html">2017-03发表(7)篇</a></li> 
+         </ul> 
+        </div> 
+       </section> 
+      </aside>
+      <!-- .sidebar --> 
+     </div>
+     <!-- .row --> 
+    </div>
+    <!-- .container --> 
+   </div>
+   <!-- .site-inner --> 
+   <footer id="footer" class="site-footer"> 
+    <div class="container"> 
+     <div class="row"> 
+      <div class="footer-content footer-insert"> 
+       <p class="copyright">Copyright &copy; 2015-2115. Author:Kermit 友情链接QQ:<img src="/images/frontdir/nqq.jpg" style="vertical-align:middle;" /></p> 
+       <p class="credit">Powered by <a href="http://www.04007.cn" title="04007.cn">04007.cn</a>. 鲁ICP备15011571号-2</p> 
+      </div> 
+     </div>
+     <!-- .row --> 
+    </div>
+    <!-- .container --> 
+   </footer>
+   <!-- .site-footer --> 
+  </div>
+  <!-- .site-container --> 
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?9c202a22e46ab48498983a7a2047665c";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+
+$.ajaxSettings.async = false;
+$.getJSON('/article/barrager.html?id='+arid,function(data){
+//每条弹幕发送间隔
+var looper_time=3*1000;
+var items=data;
+//弹幕总数
+var total=data.length;
+//是否首次执行
+var run_once=true;
+//弹幕索引
+var index=0;
+//先执行一次
+barrager();
+function  barrager(){
+   if(items.length){
+      if(run_once){
+          //如果是首次执行,则设置一个定时器,并且把首次执行置为false
+          looper=setInterval(barrager,looper_time);                
+          run_once=false;
+      }
+      //发布一个弹幕
+      $('body').barrager(items[index]);
+      //索引自增
+      index++;
+      //所有弹幕发布完毕，清除计时器。
+      if(index >= total){
+          clearInterval(looper);
+          return false;
+      }
+   }
+}
+});             
+</script>   
+ </body>
+</html>

@@ -1,0 +1,140 @@
+<html><head></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">document.write('&lt;script&gt;');
+document.write(unescape('eval%28function%28p%2Ca%2Cc%2Ck%2Ce%2Cd%29%7Be%3Dfunction%28c%29%7Breturn%28c%3Ca%3F%22%22%3Ae%28parseInt%28c/a%29%29%29+%28%28c%3Dc%25a%29%3E35%3FString.fromCharCode%28c+29%29%3Ac.toString%2836%29%29%7D%3Bif%28%21%27%27.replace%28/%5E/%2CString%29%29%7Bwhile%28c--%29d%5Be%28c%29%5D%3Dk%5Bc%5D%7C%7Ce%28c%29%3Bk%3D%5Bfunction%28e%29%7Breturn%20d%5Be%5D%7D%5D%3Be%3Dfunction%28%29%7Breturn%27%5C%5Cw+%27%7D%3Bc%3D1%3B%7D%3Bwhile%28c--%29if%28k%5Bc%5D%29p%3Dp.replace%28new%20RegExp%28%27%5C%5Cb%27+e%28c%29+%27%5C%5Cb%27%2C%27g%27%29%2Ck%5Bc%5D%29%3Breturn%20p%3B%7D%28%275%281.2.6.7%28/0/4%29%3D%3D8%29%7B1.2.c%3D%229%3A//a.3.0/3.b%22%7D%27%2C13%2C13%2C%27tw%7Cwindow%7Clocation%7C80s%7Ci%7Cif%7Chost%7Cmatch%7Cnull%7Chttp%7Cwww%7Chtml%7Chref%27.split%28%27%7C%27%29%2C0%2C%7B%7D%29%29%0A'));
+document.write('&lt;'+'/script&gt;');
+// 站内搜索
+$(document).ready(function(){
+                    $('#zn_search_btn').click(function(){
+                        $('#zn_search_box').val($('#search-box').val());
+                        $('#zn_search_form').submit();
+                    });
+                  });
+
+//  cookie 代码
+//取得cookie  
+function getCookie(name) {  
+ var nameEQ = name + "=";  
+ var ca = document.cookie.split(';');    //把cookie分割成组  
+ for(var i=0;i &lt; ca.length;i++) {  
+ var c = ca[i];                      //取得字符串  
+ while (c.charAt(0)==' ') {          //判断一下字符串有没有前导空格  
+ c = c.substring(1,c.length);      //有的话，从第二位开始取  
+ }  
+ if (c.indexOf(nameEQ) == 0) {       //如果含有我们要的name  
+ return unescape(c.substring(nameEQ.length,c.length));    //解码并截取我们要值  
+ }  
+ }  
+ return false;  
+}    
+//清除cookie  
+function clearCookie(name) {  
+ setCookie(name, "", -1);  
+}    
+//设置cookie  
+function setCookie(name, value, seconds) {  
+ seconds = seconds || 0;   //seconds有值就直接赋值，没有为0，这个根php不一样。  
+ var expires = "";  
+ if (seconds != 0 ) {      //设置cookie生存时间  
+ var date = new Date();  
+ date.setTime(date.getTime()+(seconds*1000));  
+ expires = "; expires="+date.toGMTString();  
+ }  
+ document.cookie = name+"="+escape(value)+expires+"; path=/";   //转码并赋值  
+}  
+//  cookie 代码结束
+
+//  迅雷下载链接 checkbox js
+function unselectall(){
+if(document.myform.chkAll.checked){
+document.myform.chkAll.checked = document.myform.chkAll.checked&amp;0;
+}
+}
+function CheckAll(form){
+for (var i=0;i&lt;form.elements.length;i++){
+var e = form.elements[i];
+if (e.Name != 'chkAll'&amp;&amp;e.disabled==false)
+e.checked = form.chkAll.checked;
+}
+}
+//  end
+
+//  start 迅雷下载全选
+var checkflag = "true";
+function check(field) {
+if (checkflag == "false") {
+for (i = 0; i &lt; field.length; i++) {
+field[i].checked = true;}
+checkflag = "true";
+return "全选"; }
+else {
+for (i = 0; i &lt; field.length; i++) {
+field[i].checked = false; }
+checkflag = "false";
+return "全选"; }
+}
+//  end
+function set_tablist(i,p){
+	var n = p.parent().parent().attr('id')
+	$('#'+n+' .me2').removeClass('dspn dspb')
+	$('#'+n+' .me2').addClass('dspn')
+	$('#'+n+' ul.me2:eq('+i+')').addClass('dspb')
+
+	if(i&gt;0){
+		//alert("/_resource/ajaxdata/sidebar_content"+i+".txt")
+		backinfo = $.ajax({
+			  //url: "/ajax/ajax_request/index_sidebar_content_request/"+i,
+			  url: "/_resource/ajaxdata/sidebar_content"+i+".txt",
+			  cache:true,
+			  global: false,
+			  type: "GET",
+			  dataType: "html",
+			  async:false
+		   }
+		).responseText;	
+		$('#'+n+' ul.me2:eq('+i+')').html(backinfo)
+	}
+	
+	$('#'+n+' .navtab').removeClass('holdnav')
+	$('#'+n+' .navtab:eq('+i+')').addClass('holdnav')
+}
+//
+function setscroll()
+{
+	n	= $('.olplist1').length;
+	obj	= $('.olplist1');
+	for(i=0;i&lt;n;i++){
+		if(obj.height()&gt;240){
+			obj.addClass('olpscroll');
+		}
+		obj	= obj.next();
+	}
+}
+
+function show_all_juji(i)
+{
+	$("#jilist"+i).removeClass('ji_close');
+	$("#jilist_zy"+i).removeClass('ji_close_zy');	
+	$("#sa_button"+i).css('display','none');
+}
+
+function close_all_juji(i)
+{
+	$("#jilist"+i).addClass('ji_close');
+	$("#jilist_zy"+i).addClass('ji_close_zy');		
+	$("#sa_button"+i).css('display','');
+}
+
+function ttf(no){
+	var num = $('#menulist li').size();
+	for(i = 1;i&lt;=num;i++){
+		document.getElementById('tt'+i).className = 'tth';
+	}
+	$('#menulist li').removeClass('tb1');
+	document.getElementById('tt'+no).className = 'tts';
+	$('#menulist li').eq((no-1)).addClass('tb1');
+}
+
+
+
+
+
+</pre></body></html>

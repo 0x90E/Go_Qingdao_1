@@ -1,0 +1,614 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><script type="text/javascript" src="http://ctweb.omniture.cn:9000/scode/live/ct189.js?v=20151104"></script><script type="text/javascript" src="http://ctweb.omniture.cn:9000/scode/live/v.js?t=1491058364668"></script>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<title>单天翼加装宽带高速宽带免费用-中国电信广西网厅 欢go中国电信</title>
+<link href="styles/common.css?" rel="stylesheet" type="text/css">
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+<meta content="email=no" name="format-detection">
+<script type="text/javascript" async="" src="http://image2.chinatelecom-ec.com/js/s_code.js"></script><script type="text/javascript" async="" src=" http://tajs.qq.com/stats?sId=19837564"></script><script type="text/javascript" async="" src=" http://www.google-analytics.com/ga.js"></script><script language="javascript" type="text/javascript" src="/sales/mall/czcc/js/jquery-1.10.2.min.js"></script>
+
+<script language="javascript" type="text/javascript" src="/sales/mall/czcc/js/layer.min.js"></script><link type="text/css" rel="stylesheet" href="http://gx.189.cn/sales/mall/czcc/js/skin/layer.css" id="skinlayercss">
+<script type="text/javascript" src="/public/common/control/dwr/engine.js"></script>
+<script language="javascript" type="text/javascript" src="/public/core/js/apiAnalyticsLog.js"></script><script src=" http://hm.baidu.com/h.js?8b5c429f5193dc4a670ff0814155f3fe" type="text/javascript"></script>
+<script language="javascript" type="text/javascript" src="/wss_analytics/js/analytics.js"></script>
+<script language="javascript" type="text/javascript" src="js/infiniteCarousel.js"></script>
+
+<script language="javascript" type="text/javascript" src="js/login.js"></script>
+<script>
+	$(function(){
+		$.ajax({
+			url:"/sales/act/end.jsp",
+			success:function(html){
+				$("body").prepend(html);
+			}
+		});
+	});
+</script>
+<script type="text/javascript">
+	function protocalConfirm(logonName, protocolNum, loginType, userNo){
+		$("#protocol_form [name=Logon_Name]").val(logonName);
+		$("#protocol_form [name=USE_PROTOCOL]").val(protocolNum);
+		$("#protocol_form [name=LOGIN_TYPE]").val(loginType);
+		$("#protocol_form [name=USER_NO]").val(userNo);
+		$("#protocol_form").submit();
+	}
+
+	function doQry(){
+		var qryNum = $.trim($('#qry_num').val());
+		var qryType = '1';
+		var vaildType = '22';
+		//var vaildType = '21';
+		var url = 'dzrsj.jsp';
+		if($('.tabPanel ul li.hit').index()==1){
+			qryType = '0';
+			url = 'dzrkd.jsp';
+			vaildType = '3';
+		}
+		var tip = $('.tabPanel ul li.hit').attr('tip');
+		if(qryNum==tip){
+			qryNum = '';
+		}
+		if(qryNum==''){
+			alert(tip);
+			return;
+		}
+		
+		$.ajax({
+			type : 'POST',
+			url : 'ajax/checkNum.jsp',
+			dataType : 'xml',
+			data : {
+				QRY_NUM : qryNum,
+				QRY_TYPE : qryType
+			},
+			beforeSend:function(){
+				layer.load('正在查询……');
+			},
+			success:function(responseXML){
+				var resultCode = $('resultCode', responseXML).text();
+				var areaCode = $('areaCode', responseXML).text();
+				if(resultCode=='0'){
+					window.location.href = url;
+				}else if(resultCode=='1'){
+					alert('对不起，您输入的号码未进行实名制，不能办理该业务！');
+					layer.closeAll();
+				}else if(resultCode=='3'){
+					layer.closeAll();
+					loginPop(qryNum, areaCode, vaildType);
+				}else if(resultCode=='9'){
+					vaildType = '1';
+					layer.closeAll();
+					loginPop(qryNum, areaCode, vaildType);
+				}else{
+					layer.closeAll();
+					if(qryType=="0"){
+						alert('对不起，您输入的号码不符合办理条件！');
+					}else{
+						$.layer({
+							area: ['600px','auto'],
+							title: '温馨提示',
+							dialog: {
+								msg: '<div>您好，由于您的套餐限制，无法办理加装宽带优惠，您可以前往宽带新装专区，直接办理宽带新装业务。详情点击办理</div>',
+								btns: 2,                    
+								type: -1,
+								btn: ['新装宽带', '返回'],
+								yes: function(){
+									layer.closeAll();
+									layer.load('正在前往新页面……');
+									window.location.href = '/activity/1510/kd/';
+								},
+								no: function(){
+									layer.closeAll();
+								}
+							}
+						});
+					}
+				}
+			},
+			error:function(){
+				layer.closeAll();
+			},
+			complete:function(){
+			}
+		});
+	}
+
+	$(function(){	
+		$('.infiniteCarousel').infiniteCarousel();
+		
+		ServAnalytics.init("[name=DZR]","DZR","DZR",3);
+		ServAnalytics.initServAnalytics();
+		
+		$('#qry_num').focus(function(){
+			if($(this).val()==$('.tabPanel ul li.hit').attr('tip')){
+				$(this).val("");
+			}
+			$(this).css({"color":"#000"});
+		}).blur(function(){
+			if($(this).val()==""){
+				$(this).val($('.tabPanel ul li.hit').attr('tip'));
+				$(this).css({"color":"#b7b7b7"});
+			}
+		});
+		
+		$('.tabPanel ul li').click(function(){
+			$(this).addClass('hit').siblings().removeClass('hit');
+			$('#qry_num').val($(this).attr('tip')).trigger('blur');
+		}).first().trigger('click');
+		
+		$("#kd").click(function(){
+			$("#banner_a").show();
+			$("#banner_b").hide();
+		});
+		$("#ty").click(function(){
+			$("#banner_b").show();
+			$("#banner_a").hide();
+		});
+		$("#dj").click(function(){
+			$("#cx").show();
+			$("#box").show();
+		});
+		$("#gb").click(function(){
+			$("#cx").hide();
+			$("#box").hide();
+		});
+		
+		var num = "";
+		if(num!=""&&num.length==11){
+			$('#qry_num').val(num);
+			$('#qry_num').css({"color":"#000"});
+		}
+	});
+</script>
+</head>
+
+<body style="">
+
+
+
+
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+
+
+
+
+<!-- Template Content End --><style>
+/*遮罩的CSS  ---- start */
+/*.page_event_overlay{position: fixed; left: 0;  width: 100%; height: 100%; background: #000; opacity: 0.7; filter: alpha(opacity=70); z-index: 599;}*/
+.page_event_overlay{position: fixed; top: 0px; left: 0px; width: 100%; height: 100%; opacity: 0.6; background:url(/sales/mall/s11/images/tanchu_bg.png) repeat 0 0; z-index: 69;}
+.page_event_tips{display: inline-block; width: 992px;  height: 576px; position: relative;  background: url(/sales/act/images/endinfo.png); z-index: 600;}
+.page_event_tips .back_home{position: absolute; top: 270px;  width: 160px; height: 40px; left:500px;}
+.page_event_tips_ad{position: absolute; left: 10px; bottom:5px; height:220px; width:973px;}
+.page_event_tips_ad .ad_big{float: left; width: 177px; height: 122px; margin-right: 20px; margin-top: 10px; overflow: hidden;}
+.page_event_tips_ad .ad_small{float: left; width: 177px; height: 56px; margin-right: 15px; margin-top: 10px; overflow: hidden;}
+/*遮罩的CSS  ---- end */
+</style>
+<!-- 遮罩的HTML -----start -->
+<div style="width: 992px; height: 576px;left:50%; margin-left:-492px; top: 50%; margin-top:-288px; position:absolute">
+<div class="page_event_tips">
+	<a href="/public/record.jsp?seq=2014052033&amp;POST_URL=%2F" class="back_home" title="返回首页"></a>
+	<div class="page_event_tips_ad" id="ACT_DIV1">
+
+
+
+
+
+	
+
+
+
+<script>
+var ru='&SERV_TYPE=/night/adban.jsp';
+var cads=[
+
+["/public/record.jsp?POST_URL=%23&amp;seq=2016051413"+ru,"/ress/gao/images/201605/2016052618263254266.gif"]
+
+
+];
+</script>
+
+	
+
+
+
+<script>
+var adurls = [
+
+["/s/dMAST"+ru,"/ress/gao/images/201702/2017021615213834233.jpg"]
+,
+
+["/public/record.jsp?POST_URL=%2Factivity%2F1601%2Fqz%2F&amp;seq=2016031003"+ru,"/ress/gao/images/201603/2016031015385226137.jpg"]
+,
+
+["/public/record.jsp?POST_URL=%2Factivity%2F1506%2Fqmcfj%2F&amp;seq=2016031002"+ru,"/ress/gao/images/201604/2016040715404626458.jpg"]
+,
+
+["/public/record.jsp?POST_URL=%2Factivity%2F1509%2Fcf%2F&amp;seq=2016010734"+ru,"/ress/gao/images/201606/2016060108331580849.jpg"]
+,
+
+["/public/record.jsp?POST_URL=http%3A%2F%2Fgx.189.cn%2Factivity%2F1702%2Fllhb%2Findex.html&amp;seq=2017032892"+ru,"/ress/gao/images/201703/2017032817092786145.jpg"]
+
+
+]
+function randomsort(a, b) {
+return Math.random()>0.5 ? -1 : 1;//用Math.random()函数生成0~1之间的随机数与0.5比较，返回-1或1
+}
+$(function() {
+	adurls.sort(randomsort);
+	cads.sort(randomsort);
+	
+	for(var i=0;i<6&&i<adurls.length;i++){
+		var adurl=adurls[i];
+		try{
+			/*$("#DDT_"+i).html('<a target="_blank" href="'+adurl[0]+'"><img width="249" height="104" border="0" src="'+adurl[1]+'"></a>'); width="301" height="125" */
+			$("#DDT_"+i).html('<a target="_blank" href="'+adurl[0]+'"><img width="100%"  border="0" src="'+adurl[1]+'"></a>');
+		}catch(e){}
+	}
+	for(var i=0;i<1;i++){
+		var cad=cads[i];
+		try{
+			/*$("#DTT_"+i).html('<a target="_blank" href="'+cad[0]+'"><img width="190" height="217" border="0" src="'+cad[1]+'"></a>');width="252" height="265"*/
+			$("#DTT_"+i).html('<a target="_blank" href="'+cad[0]+'"><img width="100%"  border="0" src="'+cad[1]+'"></a>');
+		}catch(e){}
+	}
+});
+</script>
+<style>
+#hdinfo2 {
+    background-position: center top;
+    background-repeat: no-repeat;
+    /*height: 230px;*/
+    margin: auto 0;
+    /*width: 984px;*/
+	width: 100%;
+	overflow:hidden
+}
+#hdinfo2 dl {
+    float: left;
+    margin-top: 10px;
+    width: 100%;
+}
+#hdinfo2 dt {
+    float: left;
+	width:19%;
+}
+#hdinfo2 dd {
+    float: left;
+  /*  margin-bottom: 8px;
+    margin-left: 12px;*/
+	  margin-bottom: 15px;
+    margin-left: 15px;
+	width:25.3%;
+}
+ul, ol, li, dl, dt, dd {
+    list-style: none outside none;
+}
+.clear {
+	CLEAR: both
+}
+</style>
+<div class="clear"></div>
+<div id="hdinfo2" style="position:relative">
+      <dl>
+        <dt id="DTT_0"><a target="_blank" href="/public/record.jsp?POST_URL=%23&amp;seq=2016051413&amp;SERV_TYPE=/night/adban.jsp"><img width="100%" border="0" src="/ress/gao/images/201605/2016052618263254266.gif"></a></dt>
+        <dd id="DDT_0"><a target="_blank" href="/s/dMAST&amp;SERV_TYPE=/night/adban.jsp"><img width="100%" border="0" src="/ress/gao/images/201702/2017021615213834233.jpg"></a></dd>
+        <dd id="DDT_1"><a target="_blank" href="/public/record.jsp?POST_URL=%2Factivity%2F1601%2Fqz%2F&amp;seq=2016031003&amp;SERV_TYPE=/night/adban.jsp"><img width="100%" border="0" src="/ress/gao/images/201603/2016031015385226137.jpg"></a></dd>
+        <dd id="DDT_2"><a target="_blank" href="/public/record.jsp?POST_URL=%2Factivity%2F1506%2Fqmcfj%2F&amp;seq=2016031002&amp;SERV_TYPE=/night/adban.jsp"><img width="100%" border="0" src="/ress/gao/images/201604/2016040715404626458.jpg"></a></dd>
+        <dd id="DDT_3"><a target="_blank" href="/public/record.jsp?POST_URL=%2Factivity%2F1509%2Fcf%2F&amp;seq=2016010734&amp;SERV_TYPE=/night/adban.jsp"><img width="100%" border="0" src="/ress/gao/images/201606/2016060108331580849.jpg"></a></dd>
+        <dd id="DDT_4"><a target="_blank" href="/public/record.jsp?POST_URL=http%3A%2F%2Fgx.189.cn%2Factivity%2F1702%2Fllhb%2Findex.html&amp;seq=2017032892&amp;SERV_TYPE=/night/adban.jsp"><img width="100%" border="0" src="/ress/gao/images/201703/2017032817092786145.jpg"></a></dd>
+        <dd id="DDT_5"></dd>
+      </dl>
+	 
+    </div>
+    
+   
+        
+     </div>
+</div>
+</div>
+<div class="page_event_overlay"></div>
+<!-- 遮罩的HTML ----- end -->
+<script>
+$(document).ready(function () {
+	$.ajax({
+			url:"/sales/mall/night/adban.jsp",
+			success:function(html){
+				$("#ACT_DIV1").html(html);
+			}
+		});
+	
+});
+</script>
+
+
+
+
+
+
+
+
+<form id="protocol_form" method="post" action="/public/user_protocol.jsp">
+	<input type="hidden" name="Logon_Name" value="">
+	<input type="hidden" name="USER_FLAG" value="001">
+	<input type="hidden" name="USE_PROTOCOL" value="">
+	<input type="hidden" name="LOGIN_TYPE" value="">
+	<input type="hidden" name="USER_NO" value="">
+	<input type="hidden" name="ESFlag" value="8">
+	<input type="hidden" name="REDIRECT_URL" value="/activity/1605/dzrh/">
+</form>
+<div class="hebg" id="cx"></div>
+<div class="hdsm_box" id="box">
+  <div class="hdsm">
+   1.天翼后付费手机用户（校园用户、政企用户除外）、单天翼手机用户，可通过升档至天翼乐享4G 169元 及天翼乐享4G 169元以上档次套餐，免费加装电信宽带。<br>
+2.成功办理乐享4G 169元套餐，可免费赠送最高50M宽带，免费赠送高清IPTV；乐享4G 199 元以上档次套餐，免费赠送最高100M宽带，免费赠送高清IPTV。成功办理后合约期为12/24个月。<br>
+3.每个用户号码最多免费加装一条IPTV，如您套餐中本身已是高清IPTV，则不能再进行加装。<br>
+4.如您套餐中已有标清的IPTV，通过本活动可以升级为赠送高清IPTV套餐后，需要您 更换高清机顶盒后才能使用。<br>
+5.套餐中免费赠送的宽带速率受您宽带接入方式影响，如您的接入方式为FTTB（LAN ）方式，最高可达20M，如您的接入方式为FTTH方式，最高可达100M，最终最高速率由您所在具体地点而定。<br>
+6.办理过存折计划，或享受过终端补贴的用户无法参与单电信手机号免费加装宽带的活动。<br>
+7.若您办理的宽带无法装通，我们将为您申请将光猫、机顶盒、调测费进行退款，200元预存款由于已经一次性存入您的账户，将无法退款。<br>
+8.南宁用户加装宽带，将同时为您办理360元存折计划，返还话费次起开始返还，存折计划次月生效。
+<br>
+9.由于各种原因导致单天翼手机号加装的宽带无法安装，单天翼套餐升档后，将无法退回至原有套餐。<br>
+10.在您提交订单后，由于月末/月初订单量火爆，业务将在7个工作日内为您办理完毕 ，新的套餐将在办理完毕的次月生效。<br>
+11.如遇到特殊情况无法办理，将会有客服人员与您联系。<br>
+12.具体办理细则请留意办理页面的"温馨提示"。
+
+
+    <div class="qd" id="gb">确定</div>
+  </div>
+</div>
+<div class="top">
+  <div class="middle">
+    <div class="logo"><img src="images/1_03.png" width="100%"></div>
+    <div class="home"><a href="http://gx.189.cn/">返回网上营业厅</a></div>
+    <div style="clear:both;"></div>
+  </div>
+</div>
+
+<div class="banner" id="banner_a">
+	<img class="banner_sj" src="images/banner_sj_20161123.jpg" width="100%">
+</div>
+<div class="banner_b" id="banner_b" style="display:none;">
+	<img class="banner_sj" src="images/banner2_sj.jpg" width="100%">
+</div>
+
+<div class="tabbox">
+  <div class="tabPanel">
+    <ul>
+      <li id="kd" class="hit" tip="请输入手机号"><span>我有电信手机号 免费加装宽带</span></li>
+    </ul>
+    <div class="panes"> 
+      <div class="pane">
+        <div class="ip_tx">
+          <div class="middle">
+            <input class="wbsr" name="qry_num" id="qry_num" type="text" value="">
+            <a href="javascript:void(0)" onclick="doQry()"><div class="yzm"><img src="images/dzr_05.png" width="100%"></div></a>
+            <div style="clear:both"></div>
+            
+            <span id="dj" style="text-align:center; font-size:1em; display:block; font-family:微软雅黑;text-decoration:underline; line-height:20px; color:#ffb00c; padding-bottom:25px; cursor:pointer;">点击查看活动说明</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="lct">
+  <div class="wzjs"><img src="images/1_05.jpg" width="100%"></div>
+  <div class="lctp"><img src="images/dzr_13.png" width="100%">
+  	
+  </div>
+</div>
+<div style="width:100%; margin:0 auto; line-height:3em; text-align:center; font-family:微软雅黑; font-size:0.8em; position:relative; color:#1c9ad8;">中国电信广西公司
+  <div style="position:absolute; font-size:14px; color:#666; left: 833px; top: 14px; font-weight:bold; display:none;">页面关注人数：<span id="follower">375395</span></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<title>侧边导航</title>
+<link href="/activity/1605/cbdh/css/lrtk.css?" rel="stylesheet" type="text/css">
+<!--<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>-->
+<style>
+@media screen and (max-width:1000px){  
+.go-top4 { display:none;} 
+｝
+</style>
+<script language="JavaScript" type="text/javascript" src=" http://im.189.cn/webclient/js/ccms_main_v2.js?t=20121220" charset="GBK"></script>
+<script>
+	im_model.display=false; //是否开启浮动“电小二”形象"
+	im_model.monitor=false;
+	im_model.type=3;
+	im_model.cityId="8009";//地区编号
+	im_model.manId="751";
+	im_model.statrTime="9:30";//开始运行时间(如果没有时间控制就设置为0)
+	im_model.endTime="22:30";//结束运行时间(如果没有时间控制就设置为0)
+	im_model.waitTime=5000;
+	im_model.message=" Hi，您好，欢迎光临广西天翼卖场，有什么可以帮到您的？点我吧~~~";
+	im_model.sound="1";
+	im_model.status="1";
+	im_model.wurl="";
+	im_model.qurl="";
+	im_model.kfurl="";
+	im_model.open_status_w=1;
+	im_model.city_w="广西";
+	im_model.address_w="广西天翼卖场";
+	im_model.image=0;
+	im_model.alpha=80;
+	im_success(im_model);
+	$("#Eye_Message_div").hide();
+	$(function(){
+		$("#Eye_Message_div").hide();
+	});
+	
+	$(function(){
+		$("[name=close_btn]").click(function(){
+			$("[name=close_div]").hide();
+			$("[name=open_div]").show();
+		});
+		
+		$("[name=open_btn]").click(function(){
+			$("[name=open_div]").hide();
+			$("[name=close_div]").show();
+		});
+  /*	if(window.screen.width<=1024){
+			$("[name=open_btn]").trigger("click");
+		}*/
+		tz();
+		$(".right_float_kf").hide();
+	});
+	window.onresize = function(){
+tz()
+}
+var isopen=false;
+function tz(){
+	var cw=(document.body.clientWidth+"").replace('px','');
+	if(cw<=1024){
+			isopen=true;
+			kg();
+	}else{
+		isopen=false;
+		kg();
+	}
+}
+
+function kg(){
+	if(isopen){
+		$("#qq_div").css('right','-130px');
+		isopen=false;
+	}else{
+		$("#qq_div").css('right','0px');
+		isopen=true;
+	}
+}
+</script>
+
+
+
+<!-- 代码 开始 -->
+<div class="go-top4" id="go-top4">
+	<a href="http://gx.189.cn/s/ftdRP" class="zbkf"></a>
+    <a href="javascript:;" onclick="ccms_ok(2)" class="sqkf"></a>
+    <a href="javascript:;" class="uc-2vm"></a>
+	<div class="uc-2vm-pop dn">
+		<div class="logo-2wm-box">
+			<img src="/activity/1605/cbdh/images/wx_ewm_20160325.jpg" width="120" height="155">
+		</div>
+	</div>
+    <a href="javascript:;" class="appewm"></a>
+    <div class="uc-2vm-pop_2 dn">
+		<div class="logo-2wm-box">
+			<img src="/activity/1605/cbdh/images/ebe1a8e3da852cb570650c480e602a24_app_ewm_0723.jpg" width="120" height="169">
+		</div>
+	</div>
+    <a href="http://gx.189.cn/sitemap/" class="cydh"></a>
+    <a href="javascript:;" class="go"></a>
+</div>
+
+<p>
+  <script>
+$(function(){
+	$('#go-top4 .go').bind('click',function(){
+		$('html,body').animate({'scrollTop':0},500);
+	});
+
+	$('#go-top4 .uc-2vm').hover(function(){
+		$('#go-top4 .uc-2vm-pop').removeClass('dn');
+	},function(){
+		$('#go-top4 .uc-2vm-pop').addClass('dn');
+	});
+	$('#go-top4 .appewm').hover(function(){
+		$('#go-top4 .uc-2vm-pop_2').removeClass('dn');
+	},function(){
+		$('#go-top4 .uc-2vm-pop_2').addClass('dn');
+	});
+	$('#go-top4 .feedback').hover(function(){
+		$('#go-top4 .tsdh').removeClass('dn');
+	},function(){
+		$('#go-top4 .tsdh').addClass('dn');
+	});
+});
+</script>
+
+
+
+ 
+    
+    
+ 
+   
+
+</p>
+
+
+
+
+
+<style>
+
+@media screen and (max-width:1080px){
+.box_ewm1{display:none;}
+.box_ewm{display:none;}
+}
+</style>
+
+
+
+<div class="box_ewm" id="img_b" style="position:fixed; left:20px; top:50%; margin-top:-105px; z-index:9999; display:none;">
+	<div class="ewm_s" style="position:relative; width:115px;">
+        <div class="ewm_con" style="width:100%; border:1px solid #dbdbdb; background:#fff; box-sizing:border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box;">
+            <div class="img" style="width:100%; box-sizing:border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box;"><img src="/activity/1603/ewm/images/1_01.jpg" style="width:100%"></div>
+            <div class="word" style="font-family:宋体; font-size:12px !important; color:#666; line-height:15px; text-align:center;">扫码关注<br><b>广西电信官方微信</b><br>更多精彩等着您</div>
+            <div class="btn" style="width:100%; padding-top:3px; padding-bottom:6px;"><a style="display:block; width:85%; margin:0 auto; border-radius:3px; text-align:center; font-family:宋体; font-size:12px; background:rgb(142,210,10); color:#fff; font-weight:bold; line-height:22px; text-decoration:none;" href="http://gx.189.cn/s/lmiJm" target="_blank">网上装宽带&gt;&gt;</a></div>
+        </div>
+        <div class="yz" style="position:absolute; bottom:-8px; right:-30px; z-index:-1;"><img src="/activity/1603/ewm/images/2_01.png" style="width:100%"></div>
+      <a href="javascript:;" class="sz_btn" onclick="ew_s()" style="position:absolute; right:-19px; top:0; width:20px; font-family:宋体; background:#ff8200; color:#fff; text-align:center; font-size:12px; padding:3px 0; line-height:16px;">收缩</a>
+    </div>
+</div>
+
+<div class="box_ewm1" style="position:fixed; left:20px; top:50%; margin-top:-105px; z-index:9999; display:none " id="img_s">
+	<div class="ewm_s zk" style=" position:relative; width:70px;">
+        <div class="ewm_con" style="width:100%; border:1px solid #dbdbdb; background:#fff; box-sizing:border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box;">
+            <div class="img" style="width:100%; box-sizing:border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box;padding:0;"><img src="/activity/1603/ewm/images/1_01.jpg" style="width:100%"></div>
+            
+        </div>
+        <div class="yz" style="position:absolute; bottom:-8px; right:-30px; z-index:-1;"><img src="/activity/1603/ewm/images/2_01.png"></div>
+      <a href="javascript:;" class="sz_btn" onclick="ew_b()" style="position:absolute; right:-19px; top:0; width:20px; font-family:宋体; background:#ff8200; color:#fff; text-align:center; font-size:12px; padding:3px 0; line-height:16px;">展开</a>
+    </div>
+</div>
+<script>
+	function ew_b(){
+		//document.getElementById('img_b').style.display='block';
+		//document.getElementById('img_s').style.display='none';
+		/*$("#img_b").show();
+		$("#img_s").hide();*/
+	}
+	function ew_s(){
+		//document.getElementById('img_b').style.display='none';
+		//document.getElementById('img_s').style.display='block';
+		/*$("#img_b").hide();
+		$("#img_s").show();*/
+	};
+	/*$(function(){
+	$("head").append("<link>");
+css = $("head").children(":last");
+css.attr({
+    rel: "stylesheet",
+    type: "text/css",
+    href: "/activity/1603/ewm/styles/2.css"
+});
+	});*/
+</script>
+</body></html>

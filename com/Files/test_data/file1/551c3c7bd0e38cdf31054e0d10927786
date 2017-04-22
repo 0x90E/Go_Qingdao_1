@@ -1,0 +1,792 @@
+<html><head><meta http-equiv="X-UA-Compatible" content="IE=8">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="viewport" content="no-cache, width=device-width, maximum-scale=2.0">
+
+<link rel="shortcut icon" href="/images/ico/favicon.ico" type="image/x-icon">
+
+<link rel="stylesheet" type="text/css" href="/css/base/base.css">
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+<link rel="stylesheet" type="text/css" href="/css/save.css">
+<link rel="stylesheet" type="text/css" href="/css/common/searchArea.css">
+<link rel="stylesheet" type="text/css" href="/js/common/plugin/myJquery.page.css">
+<link rel="stylesheet" type="text/css" href="/js/common/plugin/myJquery.select.css">
+<link rel="stylesheet" type="text/css" href="/js/common/plugin/myJquery.boxy.css">
+<script src="//hm.baidu.com/hm.js?f45441cee00e4b134487672ab2866012"></script><script type="text/javascript" src="/common/frameworks/jquery/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="/common/frameworks/jquery/jquery.cookie.js"></script>
+<script type="text/javascript" src="/common/frameworks/jquery/jquery.form.js"></script>
+<script type="text/javascript" src="/js/common/plugin/myJquery.Placeholder.js"></script>
+<script type="text/javascript" src="/js/common/plugin/myJquery.page.js"></script>
+<script type="text/javascript" src="/js/common/plugin/myJquery.select.js"></script>
+<script type="text/javascript" src="/js/common/plugin/myJquery.boxy.js"></script>
+<script type="text/javascript" src="/js/common/initAreaSelect.js"></script>
+<script type="text/javascript" src="/js/common/verify.js"></script>
+<script type="text/javascript">
+	var kview = {
+		path: ""
+	};
+	$(function(){
+		//getToken();//获取token的方法，解决token失效时间前后台不一致，如果一直可以删除该方法，但是在三个head中加载该方法
+		//checkLogin();//如果token失效时间和后台不一致则需要调用getToken()
+
+		
+		$("input").blur(function(){
+			$(this).val($.trim($(this).val()));
+		});
+		$.encryptAjax = function(ajaxData){
+			$.ajax({
+				url : kview.path+"/base/getServerTime",
+				type : "post",
+				cache : false,
+				async : false,
+				dataType : "json",
+				data: {
+				},
+				traditional: true,
+				success : function(data, textStatus){
+					if(data.statusCode == 200){
+						var eventTime = data.returnObj;
+						var encryptStr = encryptBase64(eventTime+"");
+						ajaxData['data']['eventTime'] = eventTime;
+						ajaxData['data']['encryptStr'] = encryptStr;
+						$.ajax(ajaxData);
+					}else{
+						$.ajax(ajaxData);
+					}
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown){
+					Boxy.alert(errorThrown);
+				}
+			});
+			
+		};
+	});
+	
+	
+	var myBoxy = {
+			alert:function(type,text,callback){
+				if(type == "error"){
+					Boxy.alert(
+							"<div class='boxy_content'><img src="+kview.path+"/js/common/plugin/myJqueryBoxyImages/error.png /><div class='fontdiv'>"+
+							text+"</div></div>",callback,{title:"信息提示框",closeable:true}
+						  );
+				}else if(type == "success"){
+					Boxy.alert(
+							"<div class='boxy_content'><img src="+kview.path+"/js/common/plugin/myJqueryBoxyImages/success.png /><div class='fontdiv'>"+
+							text+"</div></div>",callback,{title:"信息提示框",closeable:true}
+						  );
+				}else if(type == "tip"){
+					Boxy.alert(
+							"<div class='boxy_content'><img src="+kview.path+"/js/common/plugin/myJqueryBoxyImages/tip.png /><div class='fontdiv'>"+
+							text+"</div></div>",callback,{title:"信息提示框",closeable:true}
+						  );
+				}
+				return false;
+			}
+	};
+	
+	function getToken(){
+		var _token = $.cookie("token");
+		if(!(_token == null || _token == undefined || _token == "" || _token == "-1")){
+			$.ajax({
+				url : kview.path+"/base/getToken",
+				type : "post",
+				cache : false,
+				async : false,
+				dataType : "json",
+				data: {
+				},
+				traditional: true,
+				success : function(data, textStatus){
+					if(data.statusCode == 200){
+						kview.token = data.returnObj;
+					}else{
+						kview.token = null;
+					}
+				},
+				error : function(XMLHttpRequest, textStatus, errorThrown){
+					Boxy.alert(errorThrown);
+					kview.token = null;
+				}
+			});
+		}else{
+			kview.token = null;
+		}
+		return kview.token;
+	}
+	
+	
+	function checkLogin(){
+		var token = $.cookie("token");
+		if(token == null || token == undefined || token == "" || token == "-1"){
+			Boxy.alert("登陆过期，请您重新登陆!");
+			locationLogin();
+		}
+	}
+	
+	
+	function exitSystem(){
+		delCookie("token");
+		window.location.href = kview.path + "/kplanindex.jsp";
+	}
+	
+	
+	function locationLogin(url){
+		var locationUrl = "";
+		if(url){
+			locationUrl = "?kurl="+url;
+		}
+		window.location.href = kview.path + "/homePage/home/login"+locationUrl;
+	}
+	
+	
+	function verifyUserType(theFirstChar){
+		// TODO 该方法以后可以去掉，为了防止其他地方有引用报错，暂时保留该方法
+	}
+	
+	function addFavorite(obj, opts){
+	    var _t, _u;
+	    if(typeof opts != 'object'){
+	        _t = document.title;
+	        _u = location.href;
+	    }else{
+	        _t = opts.title || document.title;
+	        _u = opts.url || location.href;
+	    }
+	    try{
+	        window.external.addFavorite(_u, _t);
+	    }catch(e){
+	        if(window.sidebar){
+	            obj.href = _u;
+	            obj.title = _t;
+	            obj.rel = 'sidebar';
+	        }else{
+	        	Boxy.alert('抱歉，该浏览器无法完成此操作。请使用 Ctrl+D收藏！');
+	        }
+	    }
+	}
+	
+	
+		//读取cookies
+function getCookie(name)
+{
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+ 
+    if(arr=document.cookie.match(reg))
+ 
+        return (unescape(arr[2]));
+    else
+        return null;
+};
+
+
+//删除cookie
+function delCookie(name) 
+{ 
+    var exp = new Date(); 
+    exp.setTime(exp.getTime() - 1); 
+    var cval=getCookie(name); 
+    if(cval!=null) 
+        document.cookie= name + "="+cval+";path=/;expires="+exp.toGMTString(); 
+};
+	
+</script>
+<script>
+		var _hmt = _hmt || [];
+		(function() {
+			var hm = document.createElement("script");
+			hm.src = "//hm.baidu.com/hm.js?f45441cee00e4b134487672ab2866012";
+			var s = document.getElementsByTagName("script")[0];
+			s.parentNode.insertBefore(hm, s);
+		})();
+</script>
+
+
+
+
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<title>码上天翼-中国电信</title>
+<meta name="description" content="码上天翼-中国电信 | 中国电信码上天翼官网 | 扫码购机 | 码上天翼 | 中国电信码上天翼 | k.189.cn | 宝宝购机 | 合伙人 | 充值">
+<meta name="Keywords" content="码上天翼，中国电信码上天翼，k.189.cn，宝宝购机，合伙人，充值">
+<link rel="stylesheet" type="text/css" href="/css/home/newKplanindex.css?_t=201605131831">
+<script type="text/javascript" src="/js/common/menuController.js"></script>
+<script type="text/javascript" src="/common/design/js/jquery.flexslider-min.js"></script>
+<script type="text/javascript" src="/common/design/js/jquery.vticker-min.js"></script>
+<script type="text/javascript" src="/js/kplanIndex.js?_t=201606151831"></script>
+<script type="text/javascript" src="/js/common/goTopBtn.js"></script>
+<style>
+
+hr{margin: 0 auto;    background-color: rgb(255, 255, 255);}
+</style>
+<script src="http://v1.jiathis.com/code/jia.js?uid=1980422"></script></head>
+<body class="body_bak"><link href="http://v1.jiathis.com/code/css/jiathis_share.css" rel="stylesheet" type="text/css"><iframe style="position: absolute; display: none; opacity: 0; " frameborder="0"></iframe><div class="jiathis_style" style="position: absolute; z-index: 1000000000; display: none; top: 50%; left: 50%; overflow: auto; "></div><div class="jiathis_style" style="position: absolute; z-index: 1000000000; display: none; overflow: auto; "></div><iframe style="display: none; " frameborder="0" src="http://v1.jiathis.com/code/jiathis_utility.html"></iframe>
+	<div id="messageBox">
+		<div id="innerMessageBox">
+			<div id="innerMessageBox_1" style="display: block; ">
+				<span id="messageTitleLeft">欢迎您,</span><span>码上天翼用户</span>
+				<span id="loginButton"><a href="/homePage/home/login">登录</a></span><span>|</span><span id="registButton"><a href="/home/Regist?typeId=1">免费注册</a></span><span>|</span><span id="kSprite"><a href="/kSpirit.jsp">K精灵</a></span>
+			</div>
+			<div id="innerMessageBox_2" style="display: none; ">
+				<div class="f_l colle">
+					<a href="/kSpirit.jsp">K精灵</a> | <a href="javascript:void(0);" onclick="addFavorite(this);">收藏本站</a>
+				</div>
+				<div class="f_r hello">
+					<span id="welcomeTitle"><span>欢迎您,</span><span id="userName">码上天翼用户</span>|</span><span class="exit"><a href="javascript:void(0);" onclick="newExitSystem()">退出</a>
+					</span> <span class="msg_readed"><a id="toMsgCenter" href="javascript:void(0);" onclick="showMessage()">站内信（0）</a>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="adsBidDiv">
+		<div class="adsDiv">
+			<img class="adsDivMainImg" src="/images/village/entrance.png">
+			<img id="adsDivClose" src="/images/village/close_02.png">
+		</div>
+	</div>
+	<div id="mainHead">
+		<div id="logoImg">
+			<a href="/kplanindex.jsp">
+				<img id="logopng" src="/images/k_logo.png">
+			</a>
+		</div>
+		<div id="searchBox">
+			<div id="searchInputDiv">
+				<input id="searchInput" type="text">
+			</div>
+			<div id="searchButtonDiv">
+				<input id="searchButton" type="button" value="搜索" onclick="searchByCommodityName();">
+			</div>
+		</div>
+		<div id="qrCodes">
+			<div id="qrCode1">
+				<dl>
+					<dt>
+						<img id="qrCodeImg1" src="/images/qrCodes/img1.png">
+					</dt>
+					<dd id="qrCodeText1">
+						微信公众号
+					</dd>
+				</dl>
+			</div>
+			<div id="qrCode2">
+				<dl>
+					<dt>
+						<img id="qrCodeImg2" src="/images/qrCodes/img2.png">
+					</dt>
+					<dd id="qrCodeText2">
+						触屏版
+					</dd>
+				</dl>
+			</div>
+		</div>
+	</div>
+	<div id="menuBar">
+		<div id="menuBarBody">
+			<div id="allGoods">
+				<span>全部商品分类</span>
+			</div>
+			
+			
+			
+			
+			
+		<div class="menuButton" style="width: 180px; "><span><a menuid="VISITOR01" href="/kplanindex.jsp?menuId=VISITOR01" target="_blank" isdefault="null">首页</a></span></div><div class="menuButton" style="width: 180px; "><span><a menuid="VISITOR02" href="/homePage/home/kplanCommodityList?menuId=VISITOR02" target="_blank" isdefault="null">商品展区</a></span></div><div class="menuButton" style="width: 180px; "><span><a menuid="VISITOR03" href="/homePage/home/userInfo?menuId=VISITOR03" target="_blank" isdefault="null">个人中心</a></span></div><div class="menuButton" style="width: 180px; "><span><a menuid="VISITOR04" href="/home/help/adminHelp?menuId=VISITOR04" target="_blank" isdefault="null">帮助中心</a></span></div><div class="menuButton" style="width: 180px; "><span><img style="position: absolute; left: 50%; top: -15px; display: inline;" class="newHelpClass" src="/images/help/newhelp.gif"><a menuid="VISITOR04" href="/kBanner.jsp?bannerNum=3&amp;menuId=VISITOR05" isdefault="null">新手指南</a></span></div></div>
+	</div>
+	<div id="leftMenu">
+		<div id="leftMenuBody">
+			<div id="leftMenuBar">
+				<ul>
+					<!-- 
+					<li class="leftMenuList" onclick="jumpToCommodityList(21)">
+						<span class="leftMenuListSpan">
+							<img class="leftMenuListImg" src="/images/leftMenuButton/goods1.png"/>
+							宝宝购机
+						</span>
+					</li> -->
+					<li class="leftMenuList" onclick="jumpToCommodityList(22)">
+						<span class="leftMenuListSpan">
+							<img class="leftMenuListImg" src="/images/leftMenuButton/goods2.png">
+							合约机
+						</span>
+					</li>
+					<li class="leftMenuList" onclick="jumpToCommodityList(23)">
+						<span class="leftMenuListSpan">
+							<img class="leftMenuListImg" src="/images/leftMenuButton/goods3.png">
+							宽带
+						</span>
+					</li>
+					<li class="leftMenuList" onclick="jumpToCommodityList(24)">
+						<span class="leftMenuListSpan">
+							<img class="leftMenuListImg" src="/images/leftMenuButton/goods4.png">
+							号卡
+						</span>
+					</li>
+					<li class="leftMenuList" onclick="jumpToCommodityList(25)">
+						<span class="leftMenuListSpan">
+							<img class="leftMenuListImg" src="/images/leftMenuButton/goods5.png">
+							上网卡
+						</span>
+					</li>
+					<li class="leftMenuList" onclick="jumpToCommodityList(26)">
+						<span class="leftMenuListSpan">
+							<img class="leftMenuListImg" src="/images/leftMenuButton/goods6.png">
+							裸机
+						</span>
+					</li>
+					<li class="leftMenuList" onclick="jumpToCommodityList(27)">
+						<span class="leftMenuListSpan">
+							<img class="leftMenuListImg" src="/images/leftMenuButton/goods7.png">
+							配件
+						</span>
+					</li>
+					<li class="leftMenuList" onclick="jumpToCommodityList(29)">
+						<span class="leftMenuListSpan">
+							<img class="leftMenuListImg" src="/images/leftMenuButton/goods9.png">
+							优惠券
+						</span>
+					</li>
+				</ul>
+			</div>
+			<div class="flexslider" id="banner">
+				<ul class="slides">
+					<!-- <li class="bannerImg" onclick="javascript:location.href='/homePage/home/kplanCommodityDetail?commodityInterID=88000003085&systemID=022&commodityID=0805375326'" style="background: url(/images/banner/banner_MD.png) 50% 0 no-repeat;"></li> 
+					<li class="bannerImg" onclick="javascript:window.open('/activity/activity517/link')" style="background: url(/images/banner/banner_517.png) 50% 0 no-repeat;"></li>
+					
+				    <li class="bannerImg" onclick="javascript:window.open('/activity/activityFather/link')" style="background: url(/images/banner/banner_father.jpg) 50% 0 no-repeat;"></li>
+					
+					<li class="bannerImg" onclick="javascript:location.href='#'" style="background: url(/images/banner/qixi-2016pc.png) 50% 0 no-repeat;"></li>
+					-->
+					<!-- 
+				    <li class="bannerImg" style="background: url(/images/banner/banner_tg.png) 50% 0 no-repeat;"></li> -->
+				    <!-- 
+				    <li class="bannerImg" style="background: url(/images/banner/banner_214.png) 50% 0 no-repeat;"></li>
+					 -->
+					<li class="bannerImg flex-active-slide" onclick="javascript:location.href='#'" style="background-image: url(http://k.189.cn/images/banner/banner11.png); width: 100%; float: left; margin-right: -100%; position: relative; opacity: 1; display: block; -webkit-transition: opacity 0.6s ease; z-index: 2; background-position: 50% 0px; background-repeat: no-repeat no-repeat; "></li>
+				    <li class="bannerImg" onclick="javascript:window.open('/kBanner.jsp?bannerNum=1')" style="background-image: url(http://k.189.cn/images/banner/banner_04.png); width: 100%; float: left; margin-right: -100%; position: relative; opacity: 0; display: block; -webkit-transition: opacity 0.6s ease; z-index: 1; background-position: 50% 0px; background-repeat: no-repeat no-repeat; "></li>
+					<!--
+					<li class="bannerImg" onclick="javascript:location.href='/foolactivity.jsp'" style="background: url(/images/banner/fool-banner.png) 50% 0 no-repeat;"></li>
+				    <li class="bannerImg" onclick="javascript:location.href='/homePage/home/kplanCommodityDetail?commodityInterID=88000000680&systemID=016&commodityID=64300004694'" style="background: url(/images/banner/shangdongactive.jpg) 50% 0 no-repeat;"></li>
+					<li class="bannerImg" onclick="javascript:location.href='/homePage/home/kplanCommodityDetail?commodityInterID=88000001847&systemID=021&commodityID=20150806093115283'" style="background: url(/images/banner/banner_10.jpg) 50% 0 no-repeat;"></li>
+					<li class="bannerImg" onclick="javascript:location.href='/homePage/home/kplanCommodityDetail?commodityInterID=88000000728&systemID=008&commodityID=0801151889'" style="background: url(/images/banner/banner_09.jpg) 50% 0 no-repeat;"></li>
+					<li class="bannerImg" onclick="javascript:location.href='#'" style="background: url(/images/banner/banner11.jpg) 50% 0 no-repeat;"></li>
+					-->
+				</ul>
+			<ol class="flex-control-nav flex-control-paging"><li><a class="flex-active">1</a></li><li><a>2</a></li></ol><ul class="flex-direction-nav"><li><a class="flex-prev" href="#"></a></li><li><a class="flex-next" href="#"></a></li></ul></div>
+			<div id="rechargeDiv">
+				<div id="rechargeTitle">
+					<span id="rechargeTypeForCount" class="rechargeTypeDown" onclick="changeRechargeType(1)">充话费</span>
+					<span id="rechargeLine">|</span>
+					<span id="rechargeTypeForData" class="rechargeTypeUp" onclick="changeRechargeType(2)">充流量</span>
+				</div>
+				<div id="rechargeBody">
+					<div id="rechargeInfo">
+						<ul id="rechargeForCount">
+							<li id="phoneNumList1" class="rechargeInfoList">
+								<span class="phoneNumSpan">
+									号码:
+									<input type="text" style="padding-left:10px" id="rechargePhoneNum_1" maxlength="11" class="rechargeNum" autocomplete="off" placeholder="手机号码" onkeyup="this.value=this.value.replace(/[^\d.]/g,'');showErrorMessageOrNot(1);" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d.]/g,''))">
+								</span>
+								<span id="errorMessage1" class="errorMessage">请输入正确的手机号码
+								</span>
+							</li>
+							<li class="rechargeInfoList">
+								<span>
+									金额:
+									<select id="rechargeValue_1" onchange="changeRechargePrice()">
+										<option value="10">10元</option>
+										<option value="20">20元</option>
+										<option value="30">30元</option>
+										<option value="50" selected="selected">50元</option>
+										<option value="100">100元</option>
+										<option value="200">200元</option>
+										<option value="500">500元</option>
+									</select>
+								</span>
+							</li>
+							<li class="rechargeInfoList">
+								<span id="submitButton" onclick="payForRecharge(1)">
+									充值
+								</span>
+								<span id="rechargePrice">
+									售价：￥49.25
+								</span>
+							</li>
+						</ul>
+						<ul id="rechargeForData">
+							<li id="phoneNumList2" class="rechargeInfoList">
+								<span class="phoneNumSpan">
+									号码:
+									<input type="text" id="rechargePhoneNum_2" maxlength="11" class="rechargeNum" autocomplete="off" placeholder="手机号码" onkeyup="this.value=this.value.replace(/[^\d.]/g,'');showErrorMessageOrNot(2);" onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d.]/g,''))">
+								</span>
+								<span id="errorMessage2" class="errorMessage">请输入正确的手机号码
+								</span>
+							</li>
+							<li class="rechargeInfoList">
+								<span>
+									流量:
+									<select id="rechargeValue_2">
+										<option value="10">60M/10元</option>
+		            					<option value="20" selected="selected">150M/20元</option>
+		            					<option value="30">300M/30元</option>
+									</select>
+								</span>
+							</li>
+							<li class="rechargeInfoList">
+								<span id="submitButtonForData" onclick="payForRecharge(2)">
+									充值
+								</span>
+							</li>
+						</ul>
+					</div>
+					<div id="rechargeQrcode">
+						<ul>
+							<li id="rechargeQrcodeTitle">充值二维码
+							</li>
+							<li class="rechargeQrcodeList"><img src="/partner/home/partnerHomePage/getRechargerQrCode?t=0.28389071802221466">
+							</li>
+							<li class="rechargeQrcodeList">
+								<span id="printQrcode" style="display: none;
+    margin: -10px 0 10px 0;">[打印二维码]
+								</span>
+							</li>
+						</ul>
+					</div>
+					<div id="shareButton">
+						<div class="jiathis_style">
+							<a href="http://www.jiathis.com/share/?uid=2066434" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+							<a class="jiathis_button_tsina" title="分享到微博"><span class="jiathis_txt jtico jtico_tsina"></span></a>
+							<a class="jiathis_button_yixin" title="分享到易信"><span class="jiathis_txt jtico jtico_yixin"></span></a>
+							<a class="jiathis_button_qzone" title="分享到QQ空间"><span class="jiathis_txt jtico jtico_qzone"></span></a>
+							<a class="jiathis_button_tqq" title="分享到腾讯微博"><span class="jiathis_txt jtico jtico_tqq"></span></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="hotBar">
+		<div id="middleBar">
+			<div id="middleBarBody">
+				<span id="middleBoxSupplier" class="middleBox">
+					<img src="/images/middleBar/supplierIcon.png">
+					入驻商家
+					<em class="totalNum">1</em>
+					<em class="totalNum">2</em>
+					<em class="totalNum">3</em>
+					<em class="totalNum">4</em>
+				</span>
+				<span id="middleBoxPartner" class="middleBox">
+					<img src="/images/middleBar/partnerIcon.png">
+					入驻合伙人
+					<em class="totalNum">2</em>
+					<em class="totalNum">3</em>
+					<em class="totalNum">4</em>
+					<em class="totalNum">5</em>
+					<em class="totalNum">6</em>
+				</span>
+				<span class="middleBox">
+					<img src="/images/middleBar/noticeIcon.png">
+					资讯:
+					<span id="sysNoticeText" style="overflow: hidden; position: relative; height: 60px; ">
+						<ul id="kplanNotices" style="position: absolute; margin: 0px; padding: 0px; "></ul>
+					</span>
+				</span>
+			</div>
+		</div>
+		<div id="recommendBar">
+			<div id="recommendBody">
+				<div id="recommendBox1" class="recommendBox"><div class="recommendText" onclick="redirectToCommodityDetail('88000003373','034','M1411C1004-1005S20160420106873')"><ul><li class="recommendText1">￥100.00</li><li class="recommendText2"><a title="飞Young4G纯流量云卡 2GB纯流量云卡 4G包月卡 ">飞Young</a></li><li class="recommendPrice">单款返利0.00元</li></ul></div><div class="recommendPic" onclick="redirectToCommodityDetail('88000003373','034','M1411C1004-1005S20160420106873')"><span class="imgPlusSpan"></span><img class="recommendImg" src="/fileimage/shopingimage/04/pc/d38460bd-413b-4622-ae63-f51d961d772f.png"></div></div>
+				<div id="recommendBox2" class="recommendBox"><div class="recommendText" onclick="redirectToCommodityDetail('88000003936','016','64300005879')"><ul><li class="recommendText1">￥100.00</li><li class="recommendText2"><a title="4G超牛卡39元套餐">4G超牛卡39元套餐</a></li><li class="recommendPrice">单款返利50.00元</li></ul></div><div class="recommendPic" onclick="redirectToCommodityDetail('88000003936','016','64300005879')"><span class="imgPlusSpan"></span><img class="recommendImg" src="/fileimage/shopingimage/16/pc/aea4bb5f-dd5e-40fb-9c32-91d1cb06de99.png"></div></div>
+				<div id="recommendBox3" class="recommendBox"><div class="recommendText" onclick="redirectToCommodityDetail('88000003360','016','64300005358')"><ul><li class="recommendText1">￥1060.00</li><li class="recommendText2"><a title="【济南市区装维专享】50M/2年 单宽带加装ITV资费">【济南市区装</a></li><li class="recommendPrice">单款返利60.00元</li></ul></div><div class="recommendPic" onclick="redirectToCommodityDetail('88000003360','016','64300005358')"><span class="imgPlusSpan"></span><img class="recommendImg" src="/fileimage/shopingimage/16/pc/0341c6cd-bece-400d-a679-a4b952336858.png"></div></div>
+				<div id="recommendBox4" class="recommendBox"><div class="recommendText" onclick="redirectToCommodityDetail('88000003383','016','64300005380')"><ul><li class="recommendText1">￥1270.00</li><li class="recommendText2"><a title="【青岛专享】50M/2年 单宽带+ITV资费">【青岛专享】</a></li><li class="recommendPrice">单款返利80.00元</li></ul></div><div class="recommendPic" onclick="redirectToCommodityDetail('88000003383','016','64300005380')"><span class="imgPlusSpan"></span><img class="recommendImg" src="/fileimage/shopingimage/16/pc/e0fbc79b-7df8-4768-86c4-3becad9eb375.png"></div></div>
+			</div>
+		</div>
+	</div>
+	<div id="floorDiv">
+		<div id="Floor_1" class="floor">
+		<div id="FloorBody_1" class="floorBody">
+			<div id="FloorTitle_1" class="floorTitle">
+				<img src="/images/home/lou.png">
+				<font>1F</font>
+				<span>合约机</span>
+				<img onclick="jumpToCommodityList(22)" id="floorMore_1" src="/images/home/no_more.png">
+			</div>
+			<div id="FloorContent_1" class="floorContent">
+			</div>
+		</div>
+	</div>
+	<div id="Floor_2" class="floor">
+		<div id="FloorBody_2" class="floorBody">
+			<div id="FloorTitle_2" class="floorTitle">
+				<img src="/images/home/lou.png">
+				<font>2F</font>
+				<span>宽带</span>
+				<img onclick="jumpToCommodityList(23)" id="floorMore_2" src="/images/home/no_more.png">
+			</div>
+			
+			<div id="FloorContent_2" class="floorContent">
+			</div>
+		</div>
+	</div>
+	<div id="Floor_3" class="floor">
+		<div id="FloorBody_3" class="floorBody">
+			<div id="FloorTitle_3" class="floorTitle">
+				<img src="/images/home/lou.png">
+				<span>号卡</span>
+				<font>3F</font>
+				<img onclick="jumpToCommodityList(24)" id="floorMore_3" src="/images/home/no_more.png">
+			</div>
+			<div id="FloorContent_3" class="floorContent">
+			</div>
+		</div>
+	</div>
+	<div id="Floor_4" class="floor">
+		<div id="FloorBody_4" class="floorBody">
+			<div id="fourthFloorTitle" class="floorTitle">
+				<img src="/images/home/lou.png">
+				<span>裸机</span>
+				<font>4F</font>
+				<img onclick="jumpToCommodityList(26)" id="floorMore_4" src="/images/home/no_more.png">
+			</div>
+			<div id="FloorContent_4" class="floorContent">
+			</div>
+		</div>
+	</div>
+	<!-- 
+	<div id="Floor_5" class="floor">
+		<div id="FloorBody_5" class="floorBody">
+			<div id="FloorTitle_5" class="floorTitle">
+				<img src="/images/home/lou.png"/>
+				<span>无线上网卡</span>
+				<font>5F</font>
+				<img onclick="jumpToCommodityList(25)" id="floorMore_5" src="/images/home/no_more.png" />
+			</div>
+			<div id="FloorContent_5" class="floorContent">
+			</div>
+		</div>
+	</div> -->
+	<!-- 
+	<div id="Floor_6" class="floor">
+		<div id="FloorBody_6" class="floorBody">
+			<div id="FloorTitle_6" class="floorTitle">
+				<img src="/images/floor/floorButton_6.png" />
+				<span>无线上网卡</span>
+				<img onclick="jumpToCommodityList(25)" id="floorMore_6" src="/images/floor/more.png" />
+			</div>
+			<div id="FloorContent_6" class="floorContent">
+			</div>
+		</div>
+	</div>
+	 -->
+	</div>
+	
+	<div id="footBar">
+		<div id="footBarForSource">
+			<div id="footBarForSourceText">
+				<span id="footBarForSourceTextSpan">合作电商</span>
+			</div>
+			<div id="footBarForSourcePic">
+				<a href="http://www.tmall.com/">
+					<img id="footBarForSourcePic1" class="footIconPng" src="/images/footIcon/Tmall.png">
+				</a>
+				<a href="https://www.alipay.com/">
+					<img class="footIconPng" src="/images/footIcon/Alipay.png">
+				</a>
+				<a href="http://www.jd.com/">
+					<img class="footIconPng" src="/images/footIcon/jd.png">
+				</a>
+				<a href="http://www.189.cn/">
+					<img class="footIconPng" src="/images/footIcon/189.png">
+				</a>
+			</div>
+		</div>
+		<div id="footBarForAds">
+			<div id="footBarForAdsImg">
+				<img src="/images/home/newBrand.png">
+			</div>
+		</div>
+		<div id="footBarForHelp">
+			<ul>
+				<li class="helpList">
+					<dl>
+						<dt class="helpListDt">
+							<a href="/home/help/adminHelp">账户帮助</a>
+						</dt>
+						<dd class="helpListDd">
+							<a href="/home/help/adminHelp">如何注册合伙人</a>
+						</dd>
+						<dd class="helpListDd">
+							<a href="/home/help/adminHelp">修改密码</a>
+						</dd>
+						<!--<dd class="helpListDd">
+							<a href="/home/help/adminHelp">如何添加二级合伙人</a>
+						</dd>-->
+					</dl>
+				</li>
+				<li class="helpList">
+					<dl>
+						<dt class="helpListDt">
+							<a href="/home/help/adminHelp">商品推广</a>
+						</dt>
+						<dd class="helpListDd">
+							<a href="/home/help/adminHelp">如何查看我的商品</a>
+						</dd>
+						<dd class="helpListDd">
+							<a href="/home/help/adminHelp">如何推广</a>
+						</dd>
+					</dl>
+				</li>
+				<li class="helpList">
+					<dl>
+						<dt class="helpListDt">
+							<a href="/home/help/adminHelp">返利帮助</a>
+						</dt>
+						<dd class="helpListDd">
+							<a href="/home/help/adminHelp">返利多久到账</a>
+						</dd>
+						<dd class="helpListDd">
+							<a href="/home/help/adminHelp">什么是返利</a>
+						</dd>
+						
+					</dl>
+				</li>
+				<li class="helpList">
+					<dl>
+						<dt class="helpListDt">
+							<a href="/home/help/adminHelp">订单帮助</a>
+						</dt>
+						<!-- <dd class="helpListDd">
+							<a href="/home/help/adminHelp">关于宝宝购机</a>
+						</dd> -->
+						<dd class="helpListDd">
+							<a href="/home/help/adminHelp">何时发货</a>
+						</dd>
+						<dd class="helpListDd">
+							<a href="/home/help/adminHelp">发票如何开</a>
+						</dd>
+					</dl>
+				</li>
+				<li class="helpList" style="width:140px">
+					<dl>
+						<dt class="helpListDt">
+							<a href="/home/help/adminHelp">其他帮助</a>
+						</dt>
+						<dd class="helpListDd">
+							<a href="javascript:window.open(kview.path+'/home/feedback/autoHelp', '在线客服',
+					'height=560,width=900,top=50,left=200,toolbar=no,menubar=no,scrollbars=no,resizable=yes,location=no, status=yes')">在线客服</a>
+						</dd>
+						<dd class="helpListDd">
+							<a href="/home/feedback/feedback">意见反馈</a>
+						</dd>
+						<!-- <dd class="helpListDd">
+							<a href="/home/help/adminHelp">189.cn</a>
+						</dd> -->
+					</dl>
+				</li>
+				<li class="helpList" style="width:120px">
+					<dl>
+						<dt class="helpListDt">微信公众号
+						</dt>
+						<dd class="helpListDd"><img style="width:60px;margin-left: 5px;" id="qrCodeImg1" src="/images/qrCodes/img1.png">
+						</dd>
+					</dl>
+				
+				</li>
+				<li class="helpList" style="width:120px">
+					<dl>
+						<dt class="helpListDt">手机触屏版
+						</dt>
+						<dd class="helpListDd"><img style="margin-left: 5px;" id="helpQrcode" src="/images/qrCodes/img2.png">
+						</dd>
+					</dl>
+				</li>
+
+			</ul>
+		</div>
+		<div id="footBarForCopyright">
+			<div id="footBarForCopyrightContent">
+				版权所有 ©2012 中国电信集团公司 [ 增值电信业务经营许可证 A2.B1.B2-20090001 ] ICP 证号：京 ICP 备 09031924号 客服电话 4008167189-9
+			</div>
+		</div>
+	</div>
+	<div id="floorIco">
+		<ul>
+			<li id="firstFloorIcon" class="floorIcoListOver"><a href="#FloorBody_1" class="floorIcoListA">1F</a>
+			</li>
+			<li id="secondFloorIcon" class="floorIcoList"><a href="#FloorBody_2" class="floorIcoListA">2F</a>
+			</li>
+			<li id="thirdFloorIcon" class="floorIcoList"><a href="#FloorBody_3" class="floorIcoListA">3F</a>
+			</li>
+			<li id="fourthFloorIcon" class="floorIcoList"><a href="#FloorBody_4" class="floorIcoListA">4F</a>
+			</li>
+			<!-- 
+			<li id="fifthFloorIcon" class="floorIcoList"><a href="#FloorBody_5" class="floorIcoListA">5F</a>
+			</li>
+			 -->
+		</ul>
+	</div>
+	<div id="waitPay">
+	</div>
+	<div id="waitPayBody">
+		<div id="waitPayTitle">
+			<span id="waitPayTitleText">
+				码上天翼友情提示
+			</span>
+			<span id="waitPayTitleClose" onclick="closeWaitPay()">
+				<img src="/images/partner/closed.png">
+			</span>
+		</div>
+		<div id="waitPayContent">
+			<div id="waitPayGif">
+				<img src="/images/partner/loading.gif">
+			</div>
+			<div id="waitPayText">
+				<span id="waitPayText1">支付完成前，请不要关闭此支付等待窗口。</span>
+				<span id="waitPayText2">支付完成后，请根据您已经支付的情况进行下面操作。</span>
+			</div>
+			<div id="waitPayButton">
+				<span id="waitPayButton1">支付遇到问题</span>
+				<span id="waitPayButton2">支付完成</span>
+			</div>
+		</div>
+	</div>
+		<div style="display:none;POSITION: fixed; TEXT-ALIGN: center; LINE-HEIGHT: 30px; WIDTH: 48px; BOTTOM: 65px; HEIGHT: 58px; FONT-SIZE: 12px; CURSOR: pointer; RIGHT: 0px; _position: absolute; _right: auto;" id="goTopBtn">
+		<div style="height:37px;">
+			<img border="0" id="goTopBtnImg" src="/images/home/home.png">
+		</div>
+		<div>
+			<a title="意见反馈" href="/home/feedback/feedback"><img id="feedbackImg" src="/images/home/feedback.png"></a>
+		</div>
+		<div>
+			<a title="在线客服"><img id="onlineKefuImg" src="/images/home/onlineHelp.png"></a>
+		</div>
+	</div>
+	<!-- 
+	<script type="text/javascript" src="/common/snow/js/ThreeCanvas.js"></script>
+	<script type="text/javascript" src="/common/snow/js/Snow.js"></script>
+	<script type="text/javascript" src="/common/snow/js/snowFall.js"></script>
+	 -->
+	<!-- <script type="text/javascript">
+	$.snowFall({
+		//创建粒子数量，密度
+		particleNo : 300,
+		//粒子下拉速度
+		particleSpeed : 50,
+		//粒子在垂直（Y轴）方向运动范围
+		particleY_Range : 1300,
+		//粒子在垂直（X轴）方向运动范围
+		particleX_Range : 1400,
+		//是否绑定鼠标事件
+		bindMouse : false,
+		//相机离Z轴原点距离
+		zIndex : 500,
+		//摄像机视野角度
+		angle : 55,
+		wind_weight : 0
+	});
+</script> -->
+
+
+</body></html>

@@ -1,0 +1,55 @@
+<html><head></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">define(['modulebase','mktutil','cImgLazyload'],function(module, util, cimgLazyload) {
+'use strict';
+	return _.inherit(module, {
+		init: function() {
+			this.template = '&lt;div id="container" class="container"&gt;&lt;/div&gt;';
+			this.events = {
+				'click #container *[proxy-url]': 'jumpProxyUrl'
+			};
+		},
+		onRender: function() {
+			var self = this, res = self.data.resource;
+			if(res &amp;&amp; res.htmlfile &amp;&amp; location.protocol==="https:"){
+				$.ajax({
+					url:res.htmlfile,
+					success:function(data){
+						if(data){
+							var container = self.$el.find("#container");
+							container.empty().append(data);
+
+							setTimeout(function(){
+								self.lazyload(container.find("img[data-src]"));
+							}, 5);
+						}
+					}
+				});
+			}
+		},
+		jumpProxyUrl: function(e){
+			var self = this,
+				target = self.$(e.currentTarget),
+				appUrl = target.attr('proxy-hybrid-url'),
+				navUrl = (util.isInCtrip() &amp;&amp; appUrl) ? appUrl : target.attr('proxy-url');
+
+			if(navUrl){
+				//self.root.jump(navUrl, {targetModel:2});
+				Lizard.jump(navUrl, {targetModel:2 });
+			}
+		},
+		lazyload : function(imgsContainer){
+			 if (imgsContainer &amp;&amp; imgsContainer.length &gt; 0) {
+                if (this.imgLazy &amp;&amp; this.imgLazy.refresh) {
+                    this.imgLazy.refresh({
+                        imgs: imgsContainer,
+                        loadingImg: "//pages.c-ctrip.com/commerce/promote/201602/spring/apph5/images/loadings.png"
+                    });
+                } else {
+                    this.imgLazy = new cimgLazyload({
+                        imgs: imgsContainer,
+                        loadingImg: "//pages.c-ctrip.com/commerce/promote/201602/spring/apph5/images/loadings.png"
+                    });
+                }
+            }
+		}
+	})
+});</pre></body></html>

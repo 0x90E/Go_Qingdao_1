@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta charset="UTF-8" /> 
+  <title>数据恢复设备中PCIE与USB3.0的对比 - 西数硬盘（Western Dightal）技术交流区 - DFL磁盘固件实验室用户论坛 - Powered by phpwind</title> 
+  <meta http-equiv="X-UA-Compatible" content="chrome=1" /> 
+  <meta name="generator" content="phpwind v9.0.1 20141223" /> 
+  <meta name="description" content="本人在数据恢复行业呆了有10余年了，使用过DFL，UDMA等各种数据恢复设备，那天听古总培训提到PCIE和USB3.0 的话题，平时也在群里面看到有人问这个，各种看法和各种争论。今天比较闲，在下也想说" /> 
+  <meta name="keywords" content="" /> 
+  <link rel="stylesheet" href="http://www.hddtools.net/BBS/themes/site/zhoulaohan/css/dev/core.css?v=20141223" /> 
+  <link rel="stylesheet" href="http://www.hddtools.net/BBS/themes/site/zhoulaohan/css/dev/style.css?v=20141223" /> 
+  <!-- <base id="headbase" href="http://www.hddtools.net/BBS/" /> --> 
+  <style>body{background-image:url(http://www.hddtools.net/bbs/attachment/background/5313597cc78fcf3.jpg);background-repeat:;background-attachment:fixed;font-family:'Microsoft Yahei';}</style>
+  <script>
+//全局变量 Global Variables
+var GV = {
+	JS_ROOT : 'http://www.hddtools.net/BBS/res/js/dev/',										//js目录
+	JS_VERSION : '20141223',											//js版本号(不能带空格)
+	JS_EXTRES : 'http://www.hddtools.net/BBS/themes/extres',
+	TOKEN : '4182c0ba906872de',	//token $.ajaxSetup data
+	U_CENTER : 'http://www.hddtools.net/BBS/index.php?m=space',		//用户空间(参数 : uid)
+	U_AVATAR_DEF : 'http://www.hddtools.net/BBS/res/images/face/face_small.jpg',					//默认小头像
+	U_ID : parseInt('0'),									//uid
+	REGION_CONFIG : '',														//地区数据
+	CREDIT_REWARD_JUDGE : '',			//是否积分奖励，空值:false, 1:true
+	URL : {
+		LOGIN : 'http://www.hddtools.net/BBS/index.php?m=u&c=login',										//登录地址
+		QUICK_LOGIN : 'http://www.hddtools.net/BBS/index.php?m=u&c=login&a=fast',								//快速登录
+		IMAGE_RES: 'http://www.hddtools.net/BBS/res/images',										//图片目录
+		CHECK_IMG : 'http://www.hddtools.net/BBS/index.php?m=u&c=login&a=showverify',							//验证码图片url，global.js引用
+		VARIFY : 'http://www.hddtools.net/BBS/index.php?m=verify&a=get',									//验证码html
+		VARIFY_CHECK : 'http://www.hddtools.net/BBS/index.php?m=verify&a=check',							//验证码html
+		HEAD_MSG : {
+			LIST : 'http://www.hddtools.net/BBS/index.php?m=message&c=notice&a=minilist'							//头部消息_列表
+		},
+		USER_CARD : 'http://www.hddtools.net/BBS/index.php?m=space&c=card',								//小名片(参数 : uid)
+		LIKE_FORWARDING : 'http://www.hddtools.net/BBS/index.php?c=post&a=doreply',							//喜欢转发(参数 : fid)
+		REGION : 'http://www.hddtools.net/BBS/index.php?m=misc&c=webData&a=area',									//地区数据
+		SCHOOL : 'http://www.hddtools.net/BBS/index.php?m=misc&c=webData&a=school',								//学校数据
+		EMOTIONS : "http://www.hddtools.net/BBS/index.php?m=emotion&type=bbs",					//表情数据
+		CRON_AJAX : '',											//计划任务 后端输出执行
+		FORUM_LIST : 'http://www.hddtools.net/BBS/index.php?c=forum&a=list',								//版块列表数据
+		CREDIT_REWARD_DATA : 'http://www.hddtools.net/BBS/index.php?m=u&a=showcredit',					//积分奖励 数据
+		AT_URL: 'http://www.hddtools.net/BBS/index.php?c=remind',									//@好友列表接口
+		TOPIC_TYPIC: 'http://www.hddtools.net/BBS/index.php?c=forum&a=topictype'							//主题分类
+	}
+};
+</script> 
+  <script src="http://www.hddtools.net/BBS/res/js/dev/wind.js?v=20141223"></script> 
+  <link href="http://www.hddtools.net/BBS/themes/site/zhoulaohan/css/dev/forum.css?v=20141223" rel="stylesheet" /> 
+  <link href="http://www.hddtools.net/BBS/res/css/editor_content.css?v=20141223" rel="stylesheet" /> 
+  <style>
+.aPre{
+	cursor:url(http://www.hddtools.net/BBS/themes/site/zhoulaohan/images/common/pre.cur),auto;
+}
+.aNext{
+	cursor:url(http://www.hddtools.net/BBS/themes/site/zhoulaohan/images/common/next.cur),auto;right:0;
+}
+</style> 
+ </head> 
+ <body> 
+  <style type="text/css">
+</style>
+  <div class="wrap"> 
+   <header class="header_wrap"> 
+    <div id="J_header" class="header cc"> 
+     <div class="logo"> 
+      <a href="http://www.hddtools.net/BBS/"> <img src="http://www.hddtools.net/BBS/themes/site/zhoulaohan/images/logo.png" alt="DFL磁盘固件实验室用户论坛" /> </a> 
+     </div> 
+     <nav class="nav_wrap"> 
+      <div class="nav"> 
+       <ul> 
+        <li class=""><a href="http://www.hddtools.net/bbs/index.php?m=bbs&amp;c=forumlist">DFL技术论坛</a></li> 
+        <li class=""><a href="http://www.diskfirmwarelab.com">DFL官网主页</a></li> 
+        <li class=""><a href="http://www.diskfirmwarelab.com/Catalog/">DFL产品介绍</a></li> 
+        <li class="current"><a href="http://www.hddtools.net/bbs/index.php?m=bbs">最新发帖</a></li> 
+        <li class=""><a href="http://www.hddtools.net/bbs/index.php?m=like&amp;c=like">喜欢</a></li> 
+       </ul> 
+      </div> 
+     </nav> 
+     <div class="header_search" role="search"> 
+      <form action="http://www.hddtools.net/BBS/index.php?m=search&amp;c=s" method="post"> 
+       <input type="text" id="s" aria-label="搜索关键词" accesskey="s" placeholder="搜索其实很简单" x-webkit-speech="" speech="" name="keyword" /> 
+       <button type="submit" aria-label="搜索"><span>搜索</span></button> 
+       <input type="hidden" name="csrf_token" value="4182c0ba906872de" />
+       <input type="hidden" name="csrf_token" value="4182c0ba906872de" />
+      </form> 
+     </div> 
+     <div class="header_login"> 
+      <a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?m=u&amp;c=login">登录</a>
+      <a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?m=u&amp;c=register">注册</a> 
+     </div> 
+    </div> 
+   </header> 
+   <div class="tac"></div> 
+   <div class="main_wrap"> 
+    <div class="bread_crumb"> 
+     <a href="http://www.hddtools.net/BBS/" title="DFL磁盘固件实验室用户论坛" class="home">首页</a>
+     <em>&gt;</em>
+     <a href="http://www.hddtools.net/BBS/index.php?c=cate&amp;fid=6">硬盘维修技术交流、数据恢复专修软件讨论区</a>
+     <em>&gt;</em>
+     <a href="http://www.hddtools.net/BBS/index.php?c=thread&amp;fid=7">西数硬盘（Western Dightal）技术交流区</a>
+     <em>&gt;</em>
+     <a href="http://www.hddtools.net/BBS/read.php?tid=1602&amp;fid=7">数据恢复设备中PCIE与USB3.0的对比</a> 
+    </div> 
+    <div id="app_test"></div> 
+    <div id="cloudwind_read_top"></div> 
+    <div class="read_pages_wrap cc"> 
+     <a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?c=post&amp;a=reply&amp;tid=1602" data-referer="true" class="btn_replay J_qlogin_trigger">回复</a> 
+     <div class="pages" style="margin-right:3px;">
+      <a href="http://www.hddtools.net/BBS/index.php?c=thread&amp;fid=7&amp;page=1" class="pages_pre" rel="nofollow">&laquo; 返回列表</a>
+     </div> 
+    </div> 
+    <input type="hidden" id="js-tid" value="$tid" /> 
+    <div class="read_page" id="J_posts_list"> 
+     <a name="0"></a> 
+     <div id="cloudwind_read_readfloor_0"></div> 
+     <div class="floor cc J_read_floor" id="read_0"> 
+      <table width="100%" style="table-layout:fixed;" class="floor_table"> 
+       <tbody>
+        <tr> 
+         <td rowspan="2" class="floor_left"> 
+          <div class="floor_info"> 
+           <!--头像--> 
+           <div class="face"> 
+            <a href="http://www.hddtools.net/BBS/index.php?m=space&amp;uid=1323" class="J_user_card_show" data-uid="1323" target="_blank"><img src="http://www.hddtools.net/BBS/windid/attachment/avatar/000/00/13/1323_middle.jpg" class="J_avatar" data-type="middle" alt="zhiyuan_sh" /></a> 
+           </div> 
+           <!--用户名--> 
+           <div class="name"> 
+            <span class="man_unol" title="离线"></span>
+            <a href="http://www.hddtools.net/BBS/index.php?m=space&amp;uid=1323" class="J_user_card_show mr5" data-uid="1323">zhiyuan_sh</a> 
+           </div> 
+           <!--等级--> 
+           <div class="level"> 
+            <div>
+             VIP
+            </div> 
+            <img src="http://www.hddtools.net/BBS/res/images/level/13.gif" alt="VIP" /> 
+           </div> 
+           <!--相关数据--> 
+           <ul class="cc integral"> 
+            <li><em>UID</em><span>1323</span></li> 
+            <li><em>粉丝</em><a href="http://www.hddtools.net/BBS/index.php?m=space&amp;c=fans&amp;uid=1323" target="_blank">0</a></li> 
+            <li><em>关注</em><a href="http://www.hddtools.net/BBS/index.php?m=space&amp;c=follows&amp;uid=1323" target="_blank">0</a></li> 
+            <li><em>发帖数</em><a href="http://www.hddtools.net/BBS/index.php?m=space&amp;c=thread&amp;uid=1323" target="_blank">1</a></li> 
+           </ul> 
+           <!--发私信加关注--> 
+           <div class="operate cc"> 
+            <a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?m=my&amp;c=follow&amp;a=add" data-uid="1323" class="follow J_read_follow J_qlogin_trigger">加关注</a> 
+            <a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?m=message&amp;c=message&amp;a=pop&amp;username=zhiyuan_sh" class="message J_send_msg_pop J_qlogin_trigger" data-name="zhiyuan_sh">写私信</a> 
+           </div> 
+           <!--广告位--> 
+           <!--信息栏结束--> 
+          </div> </td> 
+         <td class="box_wrap floor_right"> 
+          <div class="fl">
+           <div class="floor_arrow">
+            <em></em>
+            <span></span>
+           </div>
+          </div> 
+          <div class="floor_title cc"> 
+           <div class="post_num"> 
+            <span class="hits">阅读：<em>3590</em></span>
+            <span class="replies">回复：<em id="topicRepliesNum">4</em></span> 
+           </div> 
+           <h1 id="J_post_title">数据恢复设备中PCIE与USB3.0的对比</h1> 
+           <span class="floor_honor posts_icon"> <i class="icon_topichot" title="热门"></i> </span> 
+          </div> 
+          <div class="c"></div> 
+          <div class="floor_top_tips cc"> 
+           <div style="position:relative;">
+            <span class="lou J_floor_copy" title="复制此楼地址" data-type="main" data-hash="read_0">楼主<sup>#</sup></span>
+           </div> 
+           <a href="javascript:;" class="more_down" id="J_read_moredown">更多</a> 
+           <div id="J_read_moredown_list" class="core_menu" style="display:none;"> 
+            <ul class="core_menu_list"> 
+             <li><a rel="nofollow" href="http://www.hddtools.net/BBS/read.php?tid=1602&amp;fid=7&amp;uid=1323">只看楼主</a></li> 
+             <li><a rel="nofollow" href="http://www.hddtools.net/BBS/read.php?tid=1602&amp;fid=7&amp;desc=1">倒序阅读</a></li> 
+            </ul> 
+           </div> 
+           <span class="fl">发布于：2015-03-23 20:27 </span> 
+          </div> 
+          <div id="J_read_main"> 
+           <div id="J_read_tag_wrap" class="read_tag_list"> 
+           </div> 
+           <!--=========话题编辑=========--> 
+           <div id="J_read_tag_edit" class="mb10 cc" style="display:none;"> 
+            <form id="J_read_tag_form" action="http://www.hddtools.net/BBS/index.php?m=tag&amp;a=editReadTag&amp;tid=1602" method="post"> 
+             <div class="user_select_input J_user_tag_wrap fl mr10"> 
+              <ul class="fl J_user_tag_ul"></ul> 
+              <input class="J_user_tag_input" data-name="tagnames[]" type="text" /> 
+             </div> 
+             <button id="J_read_tag_sub" class="btn btn_submit">保存</button> 
+             <input type="hidden" name="csrf_token" value="4182c0ba906872de" />
+             <input type="hidden" name="csrf_token" value="4182c0ba906872de" />
+            </form> 
+           </div> 
+           <div class="fr"> 
+            <!--开始右侧广告位--> 
+            <!--结束右侧广告位--> 
+           </div> 
+           <div class="editor_content">
+             本人在数据恢复行业呆了有10余年了，使用过DFL，UDMA等各种数据恢复设备，那天听古总培训提到PCIE和USB3.0 的话题，平时也在群里面看到有人问这个，各种看法和各种争论。今天比较闲，在下也想说点心得体会，欢迎扔砖头（正好修房子用） &nbsp; 
+            <br />首先来讲，我个人是更喜欢USB设备的！！原因很简单，携带方便！！有东西没做完，直接拔了电源放衣服口袋就可以带回家，你不知道这样可以少挨多少我媳妇的埋怨; 还有有时候有些企业的客户是不是希望把他们的硬盘带走的，都要求上门服务，这个时候USB设备的优势就体现出来。（要都这样就不会有希哥的艳照门了） 
+            <br />发两张图，大家也可以感受下用不同的设备的工作状态，个人已经有点受不了PCIE的凌乱了 
+            <br />下图为PCIE设备 
+            <br />
+            <span id="J_att_1088"><span id="td_att_1088" class="J_attach_img_wrap single_img">
+              <div class="img_info J_img_info">
+               <p>图片：pcie.jpg</p>
+              </div><img class="J_post_img" src="http://www.hddtools.net/BBS/attachment/thumb/1503/thread/7_1323_57452bb65726f47.jpg" border="0" onload="if(this.offsetWidth&gt;700)this.width=700;" style="max-width:700px;" title="点击查看原图" onclick="if(this.parentNode.tagName!='A') window.open('http://www.hddtools.net/BBS/attachment/1503/thread/7_1323_57452bb65726f47.jpg');" /></span></span> 
+            <br />&nbsp; 
+            <br />下图为USB设备 
+            <br />&nbsp; 
+            <br />
+            <span id="J_att_1089"><span id="td_att_1089" class="J_attach_img_wrap single_img">
+              <div class="img_info J_img_info">
+               <p>图片：usb.jpg</p>
+              </div><img class="J_post_img" src="http://www.hddtools.net/BBS/attachment/thumb/1503/thread/7_1323_82f5d540a64e4d0.jpg" border="0" onload="if(this.offsetWidth&gt;700)this.width=700;" style="max-width:700px;" title="点击查看原图" onclick="if(this.parentNode.tagName!='A') window.open('http://www.hddtools.net/BBS/attachment/1503/thread/7_1323_82f5d540a64e4d0.jpg');" /></span></span> 
+            <br />&nbsp; 
+            <br />刚说了USB设备优势，下面聊聊经常被提及的USB设备的“弱点”-稳定性。下面这个技术解释是google搜到的（之所用google,主要还是某度太无耻了。当然，翻墙了才能google） 
+            <br />-------------------------------------------------------------------------------------------------------------------------------- 
+            <br />PCI-EXPRESS是最新的总线和接口标准，它原来的名称为“3GIO”，是由英特尔提出的，很明显英特尔的意思是它代表着下一代I/O接口标准。PCIe由PCI-SIG（PCI特殊兴趣组织）认证发布后才改名为“PCI-Express”，简称“PCI-E”。这个新标准将全面取代现行的PCI和AGPP，最终实现总线标准的统一。 
+            <br />&nbsp;&nbsp; PCIE是PC系统总线，是CPU与芯片组之间的通信管道。毫无疑问，USB3.0也是接入了PCIE总线。也就是说，USB根集线器就是个PCIE to USB的转接芯片。从这个角度上来讲，USB就是在PCIE基础上套上了另外一层协议和接口，为的就是实现便于接驳外设的通用串行总线。 
+            <br />-------------------------------------------------------------------------------------------------------------------------------- 
+            <br />&nbsp;&nbsp; &nbsp;上面这段话，翻译下就是说理论上讲PCIE接口和USB3.0效果是相同的。 当然很多事儿说起来容易但做起来确实蛮难得。 目前市面上USB3.0 的数据设备并不多，DFL算是其中做的比较好的一个。他们一直坚持走USB路线，并在近三年推出了几款USB的产品，从之前的2.0到 3.0 接口，最开始的WDⅡ设备上实现了WD硬盘校准监控，随后又推出了DE和DDP两款产品。在使用过程中个人感觉DE和DDP的坏道处理、文件提取均表现出极为优秀的水准，完成了很多看似不可能的数据恢复任务，尤其DDP高达230MBps的传输速度。至于很多人提及的稳定性问题，本人真的没遇到过！！目前支持多盘的SRP已经出来了，刚刚换购，使用半个多月，一如既往的好！还是原生的SATA&amp;IDE接口！就说到这儿，有时间大家多交流。立等！可约!!  
+           </div> 
+          </div> </td> 
+        </tr> 
+        <tr> 
+         <td class="box_wrap floor_bottom" valign="bottom"> <style>
+/*评分列表*/
+.read_mark_list{
+}
+.read_mark_list .hd{
+	padding:8px 10px 7px;
+	height:18px;
+	background:#f4f4f4;
+	border-bottom:1px solid #e4e4e4;
+}
+.a_mark_manage{
+	float:right;
+}
+.read_mark_list li{
+	overflow:hidden;
+	padding:7px 10px;
+	border-bottom:1px dotted #e4e4e4;
+}
+.read_mark_list li div.face,
+.read_mark_list li div.name,
+.read_mark_list li div.num,
+.read_mark_list li div.detail,
+.read_mark_list li div.time,
+.read_mark_list li div.checkbox{
+	float:left;
+	line-height:30px;
+	height:30px;
+	overflow:hidden;
+	white-space:nowrap;
+	text-overflow:ellipsis;
+	-ms-text-overflow:ellipsis;
+}
+.read_mark_list li div.face{
+	width:35px;
+}
+.read_mark_list li div.name{
+	width:80px;
+}
+.read_mark_list li div.num{
+	width:90px;
+}
+.read_mark_list li div.time{
+	float:right;
+	width:100px;
+	text-align:right;
+	color:#999;
+}
+.read_mark_list li div.detail{
+	width:400px;
+}
+</style> 
+          <div class="read_mark_list"> 
+           <form class="J_marklist_form" action="http://www.hddtools.net/BBS/index.php?m=app&amp;c=mark&amp;a=delete&amp;app=mark" method="post"> 
+            <div class="hd">
+             共
+             <strong class="b org">6</strong>条评分， DFL铜币&nbsp;
+             <strong class="b org">+27</strong> 用户威望&nbsp;
+             <strong class="b org">+30</strong> 
+            </div> 
+            <ul> 
+             <li class="cc"> 
+              <div class="face">
+               <a href="http://www.hddtools.net/BBS/index.php?m=space&amp;uid=1092" target="_blank" class="J_user_card_show face" data-uid="1092"><img class="J_avatar" src="http://www.hddtools.net/BBS/windid/attachment/avatar/000/00/10/1092_small.jpg" data-type="small" alt="treeykoo" width="30" height="30" /></a>
+              </div> 
+              <div class="name">
+               <a href="http://www.hddtools.net/BBS/index.php?m=space&amp;uid=1092" target="_blank" class="J_user_card_show face" data-uid="1092">treeykoo</a>
+              </div> 
+              <div class="num">
+               用户威望&nbsp;
+               <strong class="org b">+10</strong>
+              </div> 
+              <div class="detail">
+               膜拜
+              </div> 
+              <div class="time">
+               2015-03-31 11:09
+              </div> </li> 
+             <li class="cc"> 
+              <div class="face">
+               <a href="http://www.hddtools.net/BBS/index.php?m=space&amp;uid=1092" target="_blank" class="J_user_card_show face" data-uid="1092"><img class="J_avatar" src="http://www.hddtools.net/BBS/windid/attachment/avatar/000/00/10/1092_small.jpg" data-type="small" alt="treeykoo" width="30" height="30" /></a>
+              </div> 
+              <div class="name">
+               <a href="http://www.hddtools.net/BBS/index.php?m=space&amp;uid=1092" target="_blank" class="J_user_card_show face" data-uid="1092">treeykoo</a>
+              </div> 
+              <div class="num">
+               DFL铜币&nbsp;
+               <strong class="org b">+7</strong>
+              </div> 
+              <div class="detail">
+               膜拜
+              </div> 
+              <div class="time">
+               2015-03-31 11:09
+              </div> </li> 
+             <li class="cc"> 
+              <div class="face">
+               <a href="http://www.hddtools.net/BBS/index.php?m=space&amp;uid=3" target="_blank" class="J_user_card_show face" data-uid="3"><img class="J_avatar" src="http://www.hddtools.net/BBS/windid/attachment/avatar/000/00/00/3_small.jpg" data-type="small" alt="cham_810" width="30" height="30" /></a>
+              </div> 
+              <div class="name">
+               <a href="http://www.hddtools.net/BBS/index.php?m=space&amp;uid=3" target="_blank" class="J_user_card_show face" data-uid="3">cham_810</a>
+              </div> 
+              <div class="num">
+               用户威望&nbsp;
+               <strong class="org b">+10</strong>
+              </div> 
+              <div class="detail">
+               原创精品。
+              </div> 
+              <div class="time">
+               2015-03-24 12:51
+              </div> </li> 
+             <li class="cc"> 
+              <div class="face">
+               <a href="http://www.hddtools.net/BBS/index.php?m=space&amp;uid=3" target="_blank" class="J_user_card_show face" data-uid="3"><img class="J_avatar" src="http://www.hddtools.net/BBS/windid/attachment/avatar/000/00/00/3_small.jpg" data-type="small" alt="cham_810" width="30" height="30" /></a>
+              </div> 
+              <div class="name">
+               <a href="http://www.hddtools.net/BBS/index.php?m=space&amp;uid=3" target="_blank" class="J_user_card_show face" data-uid="3">cham_810</a>
+              </div> 
+              <div class="num">
+               DFL铜币&nbsp;
+               <strong class="org b">+10</strong>
+              </div> 
+              <div class="detail">
+               原创精品。
+              </div> 
+              <div class="time">
+               2015-03-24 12:51
+              </div> </li> 
+             <li class="cc"> 
+              <div class="face">
+               <a href="http://www.hddtools.net/BBS/index.php?m=space&amp;uid=3" target="_blank" class="J_user_card_show face" data-uid="3"><img class="J_avatar" src="http://www.hddtools.net/BBS/windid/attachment/avatar/000/00/00/3_small.jpg" data-type="small" alt="cham_810" width="30" height="30" /></a>
+              </div> 
+              <div class="name">
+               <a href="http://www.hddtools.net/BBS/index.php?m=space&amp;uid=3" target="_blank" class="J_user_card_show face" data-uid="3">cham_810</a>
+              </div> 
+              <div class="num">
+               用户威望&nbsp;
+               <strong class="org b">+10</strong>
+              </div> 
+              <div class="detail">
+               好贴一张。
+              </div> 
+              <div class="time">
+               2015-03-24 12:50
+              </div> </li> 
+             <li class="cc"> 
+              <div class="face">
+               <a href="http://www.hddtools.net/BBS/index.php?m=space&amp;uid=3" target="_blank" class="J_user_card_show face" data-uid="3"><img class="J_avatar" src="http://www.hddtools.net/BBS/windid/attachment/avatar/000/00/00/3_small.jpg" data-type="small" alt="cham_810" width="30" height="30" /></a>
+              </div> 
+              <div class="name">
+               <a href="http://www.hddtools.net/BBS/index.php?m=space&amp;uid=3" target="_blank" class="J_user_card_show face" data-uid="3">cham_810</a>
+              </div> 
+              <div class="num">
+               DFL铜币&nbsp;
+               <strong class="org b">+10</strong>
+              </div> 
+              <div class="detail">
+               好贴一张。
+              </div> 
+              <div class="time">
+               2015-03-24 12:50
+              </div> </li> 
+            </ul> 
+            <div class="J_plugin_mark_page"></div> 
+            <input type="hidden" name="csrf_token" value="4182c0ba906872de" />
+           </form> 
+          </div> 
+          <div class="read_appbtn_wrap"> 
+           <a role="button" rel="nofollow" href="http://www.hddtools.net/BBS/index.php?m=like&amp;c=mylike&amp;a=doLike" data-tid="1602" data-pid="0" data-fid="7" class="icon_read_like J_like_btn J_qlogin_trigger" data-role="main" data-typeid="1" data-fromid="1602"> <span>喜欢</span><em class="J_like_count">2</em> </a> 
+           <style>
+/*评分按钮*/
+.read_appbtn_wrap{
+	height:30px;
+	padding:20px 0;
+	position:relative;
+}
+.icon_read_like{
+	margin:0;
+	position:absolute;
+	left:50%;
+	margin-left:-120px;
+}
+.icon_read_mark{
+	left:50%;
+	margin-left:5px;
+	position:absolute;
+	width:115px;
+	height:25px;
+	background:url(http://www.hddtools.net/BBS/themes/extres/mark/images/icon_read_mark.png) no-repeat;
+	display:block;
+	line-height:25px;
+	cursor:pointer;
+	overflow:hidden;
+}
+.icon_read_mark span{
+	float:left;
+	display:block;
+	width:0;
+	height:0;
+	overflow:hidden;
+	font:0/0 Arial;
+	padding:0;
+	margin:0;
+}
+.icon_read_mark em{
+	float:right;
+	width:47px;
+	height:25px;
+	color:#3982c2;
+	text-align:center;
+	font-weight:700;
+	text-indent:0;
+	overflow:hidden;
+	display:block;
+}
+.icon_read_mark:hover{
+	filter:alpha(opacity=90);
+	-moz-opacity:0.9;
+	opacity:0.9;
+	text-decoration:none;
+}
+</style> 
+           <a role="button" rel="nofollow" href="#" data-pid="0" data-uri="http://www.hddtools.net/BBS/index.php?m=app&amp;c=mark&amp;a=mark&amp;tid=1602&amp;pid=0&amp;app=mark" class="icon_read_mark J_plugin_read_mark" id=""><span>评分</span><em>6</em></a> 
+           <script>
+Wind.ready('global.js', function(){
+	Wind.js('http://www.hddtools.net/BBS/themes/extres/mark/js/mark.min.js?v=' + GV.JS_VERSION);
+});
+</script> 
+          </div> 
+          <div style="" id="J_read_like_list" class="read_like_list cc"> 
+           <h4 class="J_read_like_tit">最新喜欢：</h4> 
+           <a class="J_user_card_show" data-uid="1092" href="http://www.hddtools.net/BBS/index.php?m=space&amp;uid=1092"><img class="J_avatar" src="http://www.hddtools.net/BBS/windid/attachment/avatar/000/00/10/1092_middle.jpg" data-type="small" width="50" height="50" alt="treeykoo" /><span title="treeykoo">treeyk...</span></a> 
+           <a class="J_user_card_show" data-uid="264" href="http://www.hddtools.net/BBS/index.php?m=space&amp;uid=264"><img class="J_avatar" src="http://www.hddtools.net/BBS/windid/attachment/avatar/000/00/02/264_middle.jpg" data-type="small" width="50" height="50" alt="北京瑞卡" /><span title="北京瑞卡">北京瑞卡</span></a> 
+          </div> 
+          <div id="app_read_floor_0"></div> 
+          <div id="cloudwind_read_content"></div> 
+          <div class="floor_bottom_tips cc"> 
+           <span class="fr"> </span> 
+           <a rel="nofollow" href="#floor_reply" data-hash="floor_reply" class="a_reply" id="J_readreply_main">回复</a> 
+           <!-- Baidu Button HTML BEGIN --> 
+           <div id="bdshare" class="bdshare_b" style="line-height: 12px;"> 
+            <img src="http://bdimg.share.baidu.com/static/images/type-button-1.jpg?cdnversion=20120831" /> 
+            <a class="shareCount"></a> 
+           </div> 
+           <!-- Baidu Button HTML END --> 
+          </div> 
+          <div style="display:none;" class="J_reply_wrap" id="J_reply_wrap_0">
+           <div class="pop_loading"></div>
+          </div> </td> 
+        </tr> 
+       </tbody>
+      </table> 
+     </div> 
+     <a name="5153"></a> 
+     <div id="cloudwind_read_readfloor_5153"></div> 
+     <div class="floor cc J_read_floor" id="read_5153"> 
+      <table width="100%" style="table-layout:fixed;" class="floor_table"> 
+       <tbody>
+        <tr> 
+         <td rowspan="2" class="floor_left"> 
+          <div class="floor_info"> 
+           <!--头像--> 
+           <div class="face"> 
+            <a href="http://www.hddtools.net/BBS/index.php?m=space&amp;uid=76" class="J_user_card_show" data-uid="76" target="_blank"><img src="http://www.hddtools.net/BBS/windid/attachment/avatar/000/00/00/76_middle.jpg" class="J_avatar" data-type="middle" alt="zhouminglong" /></a> 
+           </div> 
+           <!--用户名--> 
+           <div class="name"> 
+            <span class="man_unol" title="离线"></span>
+            <a href="http://www.hddtools.net/BBS/index.php?m=space&amp;uid=76" class="J_user_card_show mr5" data-uid="76">zhouminglong</a> 
+           </div> 
+           <!--等级--> 
+           <div class="level"> 
+            <div>
+             VIP
+            </div> 
+            <img src="http://www.hddtools.net/BBS/res/images/level/13.gif" alt="VIP" /> 
+           </div> 
+           <!--相关数据--> 
+           <ul class="cc integral"> 
+            <li><em>UID</em><span>76</span></li> 
+            <li><em>粉丝</em><a href="http://www.hddtools.net/BBS/index.php?m=space&amp;c=fans&amp;uid=76" target="_blank">3</a></li> 
+            <li><em>关注</em><a href="http://www.hddtools.net/BBS/index.php?m=space&amp;c=follows&amp;uid=76" target="_blank">8</a></li> 
+            <li><em>发帖数</em><a href="http://www.hddtools.net/BBS/index.php?m=space&amp;c=thread&amp;uid=76" target="_blank">146</a></li> 
+           </ul> 
+           <!--发私信加关注--> 
+           <div class="operate cc"> 
+            <a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?m=my&amp;c=follow&amp;a=add" data-uid="76" class="follow J_read_follow J_qlogin_trigger">加关注</a> 
+            <a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?m=message&amp;c=message&amp;a=pop&amp;username=zhouminglong" class="message J_send_msg_pop J_qlogin_trigger" data-name="zhouminglong">写私信</a> 
+           </div> 
+           <div class="medal"> 
+            <ul class="cc"> 
+             <li><a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?m=medal"><img src="http://www.hddtools.net/BBS/res/images/medal/icon/shequjumin.gif" title="社区居民" width="30" height="30" alt="社区居民" /></a></li> 
+             <li><a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?m=medal"><img src="http://www.hddtools.net/BBS/res/images/medal/icon/zhongshihuiyuan.gif" title="忠实会员" width="30" height="30" alt="忠实会员" /></a></li> 
+            </ul> 
+           </div> 
+           <!--广告位--> 
+           <!--信息栏结束--> 
+          </div> </td> 
+         <td class="box_wrap floor_right"> 
+          <div class="fl">
+           <div class="floor_arrow">
+            <em></em>
+            <span></span>
+           </div>
+          </div> 
+          <div class="c"></div> 
+          <div class="floor_top_tips cc"> 
+           <div style="position:relative;">
+            <span class="lou J_floor_copy" title="复制此楼地址" data-hash="read_5153">沙发<sup>#</sup></span>
+           </div> 
+           <span class="fl">发布于：2015-03-23 20:41 </span> 
+          </div> 
+          <div id="J_read_main"> 
+           <div class="fr"> 
+            <!--开始右侧广告位--> 
+            <!--结束右侧广告位--> 
+           </div> 
+           <div class="editor_content">
+             不错！！！！ 
+           </div> 
+          </div> </td> 
+        </tr> 
+        <tr> 
+         <td class="box_wrap floor_bottom" valign="bottom"> 
+          <div id="app_read_floor_1"></div> 
+          <div class="floor_bottom_tips cc"> 
+           <span class="fr"> </span> 
+           <a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?c=post&amp;a=fastreply&amp;tid=1602&amp;pid=5153" data-pid="5153" class="a_reply J_read_reply" data-topped="false">回复<span style="display:none">(0)</span></a> 
+           <a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?m=like&amp;c=mylike&amp;a=doLike" data-tid="1602" data-pid="5153" data-fid="7" class="a_like J_like_btn J_qlogin_trigger" data-typeid="2" data-fromid="5153">喜欢</a>
+           <span style="display:none">(<a class="J_like_user_btn a_like_num" data-pid="5153" href="http://www.hddtools.net/BBS/index.php?m=like&amp;c=like&amp;a=getLast&amp;typeid=2&amp;fromid=5153">0</a>)</span> &nbsp;&nbsp;&nbsp;&nbsp;
+           <a role="button" rel="nofollow" href="#" data-pid="5153" data-uri="http://www.hddtools.net/BBS/index.php?m=app&amp;c=mark&amp;a=mark&amp;tid=1602&amp;pid=5153&amp;app=mark" class="J_plugin_read_mark" id=""><span>评分</span></a> 
+           <script>
+Wind.ready('global.js', function(){
+	Wind.js('http://www.hddtools.net/BBS/themes/extres/mark/js/mark.min.js?v=' + GV.JS_VERSION);
+});
+</script> 
+          </div> 
+          <div style="display:none;" class="J_reply_wrap" id="J_reply_wrap_5153">
+           <div class="pop_loading"></div>
+          </div> </td> 
+        </tr> 
+       </tbody>
+      </table> 
+     </div> 
+     <a name="5169"></a> 
+     <div id="cloudwind_read_readfloor_5169"></div> 
+     <div class="floor cc J_read_floor" id="read_5169"> 
+      <table width="100%" style="table-layout:fixed;" class="floor_table"> 
+       <tbody>
+        <tr> 
+         <td rowspan="2" class="floor_left"> 
+          <div class="floor_info"> 
+           <!--头像--> 
+           <div class="face"> 
+            <a href="http://www.hddtools.net/BBS/index.php?m=space&amp;uid=1151" class="J_user_card_show" data-uid="1151" target="_blank"><img src="http://www.hddtools.net/BBS/windid/attachment/avatar/000/00/11/1151_middle.jpg" class="J_avatar" data-type="middle" alt="DFL锡丹" /></a> 
+           </div> 
+           <!--用户名--> 
+           <div class="name"> 
+            <span class="man_unol" title="离线"></span>
+            <a href="http://www.hddtools.net/BBS/index.php?m=space&amp;uid=1151" class="J_user_card_show mr5" data-uid="1151">DFL锡丹</a> 
+           </div> 
+           <!--等级--> 
+           <div class="level"> 
+            <div>
+             VIP
+            </div> 
+            <img src="http://www.hddtools.net/BBS/res/images/level/13.gif" alt="VIP" /> 
+           </div> 
+           <!--相关数据--> 
+           <ul class="cc integral"> 
+            <li><em>UID</em><span>1151</span></li> 
+            <li><em>粉丝</em><a href="http://www.hddtools.net/BBS/index.php?m=space&amp;c=fans&amp;uid=1151" target="_blank">5</a></li> 
+            <li><em>关注</em><a href="http://www.hddtools.net/BBS/index.php?m=space&amp;c=follows&amp;uid=1151" target="_blank">2</a></li> 
+            <li><em>发帖数</em><a href="http://www.hddtools.net/BBS/index.php?m=space&amp;c=thread&amp;uid=1151" target="_blank">65</a></li> 
+           </ul> 
+           <!--发私信加关注--> 
+           <div class="operate cc"> 
+            <a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?m=my&amp;c=follow&amp;a=add" data-uid="1151" class="follow J_read_follow J_qlogin_trigger">加关注</a> 
+            <a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?m=message&amp;c=message&amp;a=pop&amp;username=DFL%E9%94%A1%E4%B8%B9" class="message J_send_msg_pop J_qlogin_trigger" data-name="DFL锡丹">写私信</a> 
+           </div> 
+           <!--广告位--> 
+           <!--信息栏结束--> 
+          </div> </td> 
+         <td class="box_wrap floor_right"> 
+          <div class="fl">
+           <div class="floor_arrow">
+            <em></em>
+            <span></span>
+           </div>
+          </div> 
+          <div class="c"></div> 
+          <div class="floor_top_tips cc"> 
+           <div style="position:relative;">
+            <span class="lou J_floor_copy" title="复制此楼地址" data-hash="read_5169">板凳<sup>#</sup></span>
+           </div> 
+           <span class="fl">发布于：2015-03-24 11:59 </span> 
+          </div> 
+          <div id="J_read_main"> 
+           <div class="fr"> 
+            <!--开始右侧广告位--> 
+            <!--结束右侧广告位--> 
+           </div> 
+           <div class="editor_content">
+             感谢分享
+            <img src="http://www.hddtools.net/BBS/res/images/emotion/taodoll/26.gif" /> 
+           </div> 
+          </div> </td> 
+        </tr> 
+        <tr> 
+         <td class="box_wrap floor_bottom" valign="bottom"> 
+          <div id="app_read_floor_2"></div> 
+          <div class="floor_bottom_tips cc"> 
+           <span class="fr"> </span> 
+           <a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?c=post&amp;a=fastreply&amp;tid=1602&amp;pid=5169" data-pid="5169" class="a_reply J_read_reply" data-topped="false">回复<span style="display:none">(0)</span></a> 
+           <a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?m=like&amp;c=mylike&amp;a=doLike" data-tid="1602" data-pid="5169" data-fid="7" class="a_like J_like_btn J_qlogin_trigger" data-typeid="2" data-fromid="5169">喜欢</a>
+           <span style="display:none">(<a class="J_like_user_btn a_like_num" data-pid="5169" href="http://www.hddtools.net/BBS/index.php?m=like&amp;c=like&amp;a=getLast&amp;typeid=2&amp;fromid=5169">0</a>)</span> &nbsp;&nbsp;&nbsp;&nbsp;
+           <a role="button" rel="nofollow" href="#" data-pid="5169" data-uri="http://www.hddtools.net/BBS/index.php?m=app&amp;c=mark&amp;a=mark&amp;tid=1602&amp;pid=5169&amp;app=mark" class="J_plugin_read_mark" id=""><span>评分</span></a> 
+           <script>
+Wind.ready('global.js', function(){
+	Wind.js('http://www.hddtools.net/BBS/themes/extres/mark/js/mark.min.js?v=' + GV.JS_VERSION);
+});
+</script> 
+          </div> 
+          <div style="display:none;" class="J_reply_wrap" id="J_reply_wrap_5169">
+           <div class="pop_loading"></div>
+          </div> </td> 
+        </tr> 
+       </tbody>
+      </table> 
+     </div> 
+     <a name="5170"></a> 
+     <div id="cloudwind_read_readfloor_5170"></div> 
+     <div class="floor cc J_read_floor" id="read_5170"> 
+      <table width="100%" style="table-layout:fixed;" class="floor_table"> 
+       <tbody>
+        <tr> 
+         <td rowspan="2" class="floor_left"> 
+          <div class="floor_info"> 
+           <!--头像--> 
+           <div class="face"> 
+            <a href="http://www.hddtools.net/BBS/index.php?m=space&amp;uid=171" class="J_user_card_show" data-uid="171" target="_blank"><img src="http://www.hddtools.net/BBS/windid/attachment/avatar/000/00/01/171_middle.jpg" class="J_avatar" data-type="middle" alt="ychdd" /></a> 
+           </div> 
+           <!--用户名--> 
+           <div class="name"> 
+            <span class="man_unol" title="离线"></span>
+            <a href="http://www.hddtools.net/BBS/index.php?m=space&amp;uid=171" class="J_user_card_show mr5" data-uid="171">ychdd</a> 
+           </div> 
+           <!--等级--> 
+           <div class="level"> 
+            <div>
+             VIP
+            </div> 
+            <img src="http://www.hddtools.net/BBS/res/images/level/13.gif" alt="VIP" /> 
+           </div> 
+           <!--相关数据--> 
+           <ul class="cc integral"> 
+            <li><em>UID</em><span>171</span></li> 
+            <li><em>粉丝</em><a href="http://www.hddtools.net/BBS/index.php?m=space&amp;c=fans&amp;uid=171" target="_blank">3</a></li> 
+            <li><em>关注</em><a href="http://www.hddtools.net/BBS/index.php?m=space&amp;c=follows&amp;uid=171" target="_blank">8</a></li> 
+            <li><em>发帖数</em><a href="http://www.hddtools.net/BBS/index.php?m=space&amp;c=thread&amp;uid=171" target="_blank">63</a></li> 
+           </ul> 
+           <!--发私信加关注--> 
+           <div class="operate cc"> 
+            <a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?m=my&amp;c=follow&amp;a=add" data-uid="171" class="follow J_read_follow J_qlogin_trigger">加关注</a> 
+            <a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?m=message&amp;c=message&amp;a=pop&amp;username=ychdd" class="message J_send_msg_pop J_qlogin_trigger" data-name="ychdd">写私信</a> 
+           </div> 
+           <div class="medal"> 
+            <ul class="cc"> 
+             <li><a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?m=medal"><img src="http://www.hddtools.net/BBS/res/images/medal/icon/shequjumin.gif" title="社区居民" width="30" height="30" alt="社区居民" /></a></li> 
+            </ul> 
+           </div> 
+           <!--广告位--> 
+           <!--信息栏结束--> 
+          </div> </td> 
+         <td class="box_wrap floor_right"> 
+          <div class="fl">
+           <div class="floor_arrow">
+            <em></em>
+            <span></span>
+           </div>
+          </div> 
+          <div class="c"></div> 
+          <div class="floor_top_tips cc"> 
+           <div style="position:relative;">
+            <span class="lou J_floor_copy" title="复制此楼地址" data-hash="read_5170">地板<sup>#</sup></span>
+           </div> 
+           <span class="fl">发布于：2015-03-24 12:51 </span> 
+          </div> 
+          <div id="J_read_main"> 
+           <div class="fr"> 
+            <!--开始右侧广告位--> 
+            <!--结束右侧广告位--> 
+           </div> 
+           <div class="editor_content">
+             不错，一直想换，一直有事换不了。忙完了这阵。立马换 
+           </div> 
+          </div> </td> 
+        </tr> 
+        <tr> 
+         <td class="box_wrap floor_bottom" valign="bottom"> 
+          <div id="app_read_floor_3"></div> 
+          <div class="floor_bottom_tips cc"> 
+           <span class="fr"> </span> 
+           <a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?c=post&amp;a=fastreply&amp;tid=1602&amp;pid=5170" data-pid="5170" class="a_reply J_read_reply" data-topped="false">回复<span style="display:none">(0)</span></a> 
+           <a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?m=like&amp;c=mylike&amp;a=doLike" data-tid="1602" data-pid="5170" data-fid="7" class="a_like J_like_btn J_qlogin_trigger" data-typeid="2" data-fromid="5170">喜欢</a>
+           <span style="display:none">(<a class="J_like_user_btn a_like_num" data-pid="5170" href="http://www.hddtools.net/BBS/index.php?m=like&amp;c=like&amp;a=getLast&amp;typeid=2&amp;fromid=5170">0</a>)</span> &nbsp;&nbsp;&nbsp;&nbsp;
+           <a role="button" rel="nofollow" href="#" data-pid="5170" data-uri="http://www.hddtools.net/BBS/index.php?m=app&amp;c=mark&amp;a=mark&amp;tid=1602&amp;pid=5170&amp;app=mark" class="J_plugin_read_mark" id=""><span>评分</span></a> 
+           <script>
+Wind.ready('global.js', function(){
+	Wind.js('http://www.hddtools.net/BBS/themes/extres/mark/js/mark.min.js?v=' + GV.JS_VERSION);
+});
+</script> 
+          </div> 
+          <div style="display:none;" class="J_reply_wrap" id="J_reply_wrap_5170">
+           <div class="pop_loading"></div>
+          </div> </td> 
+        </tr> 
+       </tbody>
+      </table> 
+     </div> 
+     <a name="5173"></a>
+     <a name="a"></a> 
+     <div id="cloudwind_read_readfloor_5173"></div> 
+     <div class="floor cc J_read_floor" id="read_5173"> 
+      <table width="100%" style="table-layout:fixed;" class="floor_table"> 
+       <tbody>
+        <tr> 
+         <td rowspan="2" class="floor_left"> 
+          <div class="floor_info"> 
+           <!--头像--> 
+           <div class="face"> 
+            <a href="http://www.hddtools.net/BBS/index.php?m=space&amp;uid=350" class="J_user_card_show" data-uid="350" target="_blank"><img src="http://www.hddtools.net/BBS/windid/attachment/avatar/000/00/03/350_middle.jpg" class="J_avatar" data-type="middle" alt="wang1113" /></a> 
+           </div> 
+           <!--用户名--> 
+           <div class="name"> 
+            <span class="man_unol" title="离线"></span>
+            <a href="http://www.hddtools.net/BBS/index.php?m=space&amp;uid=350" class="J_user_card_show mr5" data-uid="350">wang1113</a> 
+           </div> 
+           <!--等级--> 
+           <div class="level"> 
+            <div>
+             硬盘砖家
+            </div> 
+            <img src="http://www.hddtools.net/BBS/res/images/level/5.gif" alt="硬盘砖家" /> 
+           </div> 
+           <!--相关数据--> 
+           <ul class="cc integral"> 
+            <li><em>UID</em><span>350</span></li> 
+            <li><em>粉丝</em><a href="http://www.hddtools.net/BBS/index.php?m=space&amp;c=fans&amp;uid=350" target="_blank">1</a></li> 
+            <li><em>关注</em><a href="http://www.hddtools.net/BBS/index.php?m=space&amp;c=follows&amp;uid=350" target="_blank">0</a></li> 
+            <li><em>发帖数</em><a href="http://www.hddtools.net/BBS/index.php?m=space&amp;c=thread&amp;uid=350" target="_blank">23</a></li> 
+           </ul> 
+           <!--发私信加关注--> 
+           <div class="operate cc"> 
+            <a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?m=my&amp;c=follow&amp;a=add" data-uid="350" class="follow J_read_follow J_qlogin_trigger">加关注</a> 
+            <a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?m=message&amp;c=message&amp;a=pop&amp;username=wang1113" class="message J_send_msg_pop J_qlogin_trigger" data-name="wang1113">写私信</a> 
+           </div> 
+           <div class="medal"> 
+            <ul class="cc"> 
+             <li><a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?m=medal"><img src="http://www.hddtools.net/BBS/res/images/medal/icon/shequjumin.gif" title="社区居民" width="30" height="30" alt="社区居民" /></a></li> 
+            </ul> 
+           </div> 
+           <!--广告位--> 
+           <!--信息栏结束--> 
+          </div> </td> 
+         <td class="box_wrap floor_right"> 
+          <div class="fl">
+           <div class="floor_arrow">
+            <em></em>
+            <span></span>
+           </div>
+          </div> 
+          <div class="c"></div> 
+          <div class="floor_top_tips cc"> 
+           <div style="position:relative;">
+            <span class="lou J_floor_copy" title="复制此楼地址" data-hash="read_5173">4楼<sup>#</sup></span>
+           </div> 
+           <span class="fl">发布于：2015-03-24 23:10 </span> 
+          </div> 
+          <div id="J_read_main"> 
+           <div class="fr"> 
+            <!--开始右侧广告位--> 
+            <!--结束右侧广告位--> 
+           </div> 
+           <div class="editor_content">
+             好东西
+            <br />各有个的用法 
+           </div> 
+          </div> </td> 
+        </tr> 
+        <tr> 
+         <td class="box_wrap floor_bottom" valign="bottom"> 
+          <div id="app_read_floor_4"></div> 
+          <div class="floor_bottom_tips cc"> 
+           <span class="fr"> </span> 
+           <a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?c=post&amp;a=fastreply&amp;tid=1602&amp;pid=5173" data-pid="5173" class="a_reply J_read_reply" data-topped="false">回复<span style="display:none">(0)</span></a> 
+           <a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?m=like&amp;c=mylike&amp;a=doLike" data-tid="1602" data-pid="5173" data-fid="7" class="a_like J_like_btn J_qlogin_trigger" data-typeid="2" data-fromid="5173">喜欢</a>
+           <span style="display:none">(<a class="J_like_user_btn a_like_num" data-pid="5173" href="http://www.hddtools.net/BBS/index.php?m=like&amp;c=like&amp;a=getLast&amp;typeid=2&amp;fromid=5173">0</a>)</span> &nbsp;&nbsp;&nbsp;&nbsp;
+           <a role="button" rel="nofollow" href="#" data-pid="5173" data-uri="http://www.hddtools.net/BBS/index.php?m=app&amp;c=mark&amp;a=mark&amp;tid=1602&amp;pid=5173&amp;app=mark" class="J_plugin_read_mark" id=""><span>评分</span></a> 
+           <script>
+Wind.ready('global.js', function(){
+	Wind.js('http://www.hddtools.net/BBS/themes/extres/mark/js/mark.min.js?v=' + GV.JS_VERSION);
+});
+</script> 
+          </div> 
+          <div style="display:none;" class="J_reply_wrap" id="J_reply_wrap_5173">
+           <div class="pop_loading"></div>
+          </div> </td> 
+        </tr> 
+       </tbody>
+      </table> 
+     </div> 
+     <div class="read_pages_wrap cc" id="floor_reply"> 
+      <a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?c=post&amp;fid=7" id="J_read_post_btn" class="btn_post J_qlogin_trigger">发帖</a> 
+      <!-- 锁定时间 --> 
+      <a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?c=post&amp;a=reply&amp;tid=1602" data-referer="true" class="btn_replay J_qlogin_trigger">回复</a> 
+      <div class="J_page_wrap" data-key="true"> 
+       <div class="pages" style="margin-right:3px;">
+        <a href="http://www.hddtools.net/BBS/index.php?c=thread&amp;fid=7&amp;page=1" class="pages_pre" rel="nofollow">&laquo; 返回列表</a>
+       </div> 
+      </div> 
+     </div> 
+     <div style="display:none;" class="btn_post_menu" id="J_read_post_types"> 
+      <ul> 
+       <li><a href="http://www.hddtools.net/BBS/index.php?c=post&amp;fid=7" data-referer="true" class="J_qlogin_trigger">普通帖</a></li> 
+      </ul> 
+     </div> 
+     <!--快速回复--> 
+     <div class="floor cc"> 
+      <table width="100%" style="table-layout:fixed;" class="floor_table"> 
+       <tbody>
+        <tr> 
+         <td class="floor_left"> 
+          <div class="floor_info"> 
+           <img class="J_avatar" data-type="middle" src="http://www.hddtools.net/BBS/windid/attachment/avatar/000/00/00/0_middle.jpg" alt="游客" /> 
+          </div> </td> 
+         <td class="floor_reply box_wrap"> 
+          <div class="fl">
+           <div class="floor_arrow">
+            <em></em>
+            <span></span>
+           </div>
+          </div> 
+          <div class="reply_login_tips">
+            您需要登录后才可以回帖，
+           <a href="#floor_reply" rel="nofollow" class="J_qlogin_trigger">登录</a>&nbsp;或者&nbsp;
+           <a rel="nofollow" href="http://www.hddtools.net/BBS/index.php?m=u&amp;c=register">注册</a> 
+          </div> </td> 
+        </tr> 
+       </tbody>
+      </table> 
+     </div> 
+     <!--快速回复结束--> 
+     <div id="cloudwind_read_bottom"></div> 
+    </div> 
+   </div> 
+   <!--.main-wrap,#main End--> 
+   <div class="tac"> 
+    <br /> 
+   </div> 
+   <div class="footer_wrap"> 
+    <div class="footer"> 
+     <div class="bottom"> 
+     </div> 
+     <p>Powered by <a href="http://www.phpwind.net/" target="_blank" rel="nofollow">phpwind v9.0.1</a> &copy;2003-2015 <a href="http://www.phpwind.com" target="_blank" rel="nofollow">phpwind.com</a> <a href="http://www.miitbeian.gov.cn" target="_blank" rel="nofollow">蜀ICP备11009851号-1</a></p> 
+     <p></p> 
+    </div> 
+    <div id="cloudwind_common_bottom"></div> 
+   </div> 
+   <!--返回顶部--> 
+   <a href="#" rel="nofollow" role="button" id="back_top" tabindex="-1">返回顶部</a> 
+  </div> 
+  <textarea id="J_like_user_ta" class="dn">
+	&lt;div id=&quot;&quot; class=&quot;core_pop_wrap&quot; style=&quot;position:absolute;&quot;&gt;
+		&lt;div class=&quot;core_pop&quot;&gt;
+			&lt;div class=&quot;floot_like_pop&quot;&gt;
+				&lt;div class=&quot;pop_top&quot;&gt;&lt;a href=&quot;#&quot; class=&quot;pop_close J_like_user_close&quot;&gt;关闭&lt;/a&gt;最新喜欢&lt;/div&gt;
+				&lt;div class=&quot;pop_cont&quot;&gt;
+					&lt;ul class=&quot;cc J_like_user_list&quot;&gt;&lt;/ul&gt;
+				&lt;/div&gt;
+			&lt;/div&gt;
+		&lt;/div&gt;
+	&lt;/div&gt;
+</textarea> 
+  <script>
+var TID = '1602';
+Wind.use('jquery', 'global', 'dialog', function(){
+
+
+	// 阅读页的常用交互
+	Wind.js(GV.JS_ROOT +'pages/bbs/read.js?v='+ GV.JS_VERSION);
+
+	// 投票帖
+	if($('ul.J_vote_item, a.J_vote_list_show').length) {
+		Wind.js(GV.JS_ROOT +'pages/bbs/readVote.js?v='+ GV.JS_VERSION);
+	}
+
+	// 购买记录
+	if($('#J_content_sell, #J_attach_buy, a.J_buy_record, .J_attach_post_del, a.J_attach_post_buy').length) {
+		Wind.js(GV.JS_ROOT + 'pages/bbs/buyRecords.js?v=' + GV.JS_VERSION);
+	}
+
+	//媒体播放
+	if( $('div.J_audio,div.J_video').length ) {
+		Wind.js(window.GV.JS_ROOT + 'pages/bbs/media_play.js?v=' + GV.JS_VERSION);
+	}
+
+
+});
+</script> 
+  <!-- Baidu Button JS BEGIN --> 
+  <script type="text/javascript" id="bdshare_js" data="type=button&amp;uid=0"></script> 
+  <script type="text/javascript" id="bdshell_js"></script> 
+  <script type="text/javascript">
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000);
+</script> 
+  <!-- Baidu Button JS END -->   
+ </body>
+</html>

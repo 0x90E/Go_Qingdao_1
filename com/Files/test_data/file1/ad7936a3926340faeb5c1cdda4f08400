@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><script type="text/javascript">
+	var contextPath="/recruit";
+</script>
+<script src="/recruit/common/nui/nui.js" type="text/javascript"></script><script src="https://zhaopin.nbcb.com.cn/recruit/common/nui/jquery/jquery-1.6.2.min.js" type="text/javascript"></script><script src="https://zhaopin.nbcb.com.cn/recruit/common/nui/nui-min.js" type="text/javascript"></script><link href="https://zhaopin.nbcb.com.cn/recruit/common/nui/themes/default/miniui.css" rel="stylesheet" type="text/css"><link href="https://zhaopin.nbcb.com.cn/recruit/common/nui/themes/icons.css" rel="stylesheet" type="text/css">
+<script src="/recruit/common/nui/locale/zh_CN.js" type="text/javascript"></script>
+<!-- 日期插件 -->
+<script src="/recruit/common/js/My97DatePicker/WdatePicker.js" type="text/javascript"></script><link href="/recruit/common/js/My97DatePicker/skin/WdatePicker.css" rel="stylesheet" type="text/css">
+<!-- 编辑器，上传插件 -->
+<script src="/recruit/common/js/kindeditor/kindeditor.js" type="text/javascript"></script>
+<link href="/recruit/common/js/kindeditor/themes/default/default.css" rel="stylesheet" type="text/css">
+<!-- 公共样式 -->
+<link href="/recruit/css/css.css" rel="stylesheet" type="text/css">
+<script src="/recruit/common/js/top.js" type="text/javascript"></script>
+<!-- 公共方法 -->
+<script src="/recruit/common/common.js" type="text/javascript"></script>
+
+
+
+<!-- 
+  - Author(s): ls3183
+  - Date: 2014-09-22 11:05:39
+  - Description:
+-->
+
+<title>校招首页</title>
+</head>
+<body>
+	<table border="0" cellpadding="0" cellspacing="0" style="width:100%;">
+		<tbody><tr>
+			<td style="background:url(/recruit/images/left.jpg);width:22%;"></td>
+			<td>
+				<!--头部开始-->
+				
+<div class="w1024 top">
+	<div class="logo fl"><a href="http://www.nbcb.cn" target="_blank" title="网站名称"></a></div>
+    <div class="nav fl">
+    	<li class="hov"><a href="javascript:redirectTo('schoolNotice');">校园招聘</a></li>
+        <li><a href="javascript:redirectTo('socialJob');">社会招聘</a></li>
+        <li><a href="javascript:redirectTo('internJob');">实习生招聘</a></li>
+        <li><a href="javascript:redirectTo('resumeCenter');">个人中心</a></li>
+        <li>
+        	<a href="javascript:show2dCode();">招聘微信</a>
+        	<div id="2dCodeDiv" style="width:200px;height:200px;position:absolute;z-index:99;border:1px solid black;display:none;">
+        		<img src="/recruit/images/2dcode.jpg">
+        	</div>
+        </li>
+    </div>
+	<div class="login fl" id="userLogin" style="line-height:25px">
+    	<a href="javascript:redirectTo('register');">注册</a><br>
+    	<a href="javascript:redirectTo('login');">个人登录</a>
+    	&nbsp;|&nbsp;
+    	<a href="javascript:redirectTo('companyLogin');">企业登录</a>
+    </div>
+	<div class="clear"></div>
+</div>
+<script type="text/javascript">
+	$().ready(function(){
+		var userMail="";
+		var company="";
+		if(company){
+			$("#userLogin").html("欢迎您！<br/> <br/>"
+									+"<a href='javascript:logout();'>注销</a>"
+									+"&nbsp;|&nbsp;"
+									+"<a href='javascript:redirectTo(\"companyUpdatePassword\");'>修改密码</a>");
+		}else{
+			if(userMail){
+				$("#userLogin").html("欢迎您！<br/> <br/>"
+									+"<a href='javascript:logout();'>注销</a>"
+									+"&nbsp;|&nbsp;"
+									+"<a href='javascript:redirectTo(\"updatePassword\");'>修改密码</a>");
+			}
+		}
+		
+	});
+	
+	//注销
+	function logout(){
+		$.ajax({
+			url:contextPath+"/auth/service/logout.jsp",
+			success:function(){
+				redirectTo('index');
+			}
+		});
+	}
+	
+	//显示微信二维码
+	var isShow=false;
+	function show2dCode(){
+		if(!isShow){
+			$("#2dCodeDiv").show();
+			isShow=true;
+		}else{
+			$("#2dCodeDiv").hide();
+			isShow=false;
+		}
+	}
+</script>
+				<!--头部结束-->
+				<!--中间开始-->
+					<!--幻灯片开始-->
+				    
+<!-- 
+<div class="flash">
+	<div class="fcnt" id="ppt">
+	    <div class="mimg" id="mpc">
+	        <div style="display: block;"><a href="#" style="cursor:default;"><img src="/recruit/images/1.jpg" alt=""></a></div>
+	        <div style="display: none;"><a href="#"><img src="/recruit/images/2.jpg" alt=""></a></div>
+	        <div style="display: none;"><a href="#"><img src="/recruit/images/3.jpg" alt=""></a></div>
+	    </div>
+	    <div id="tri" style="top: 87px;"></div>
+	    <ul>
+	        <li class="cur">1</li>
+	        <li class="">2</li>
+	        <li class="">3</li>
+	    </ul>
+	</div>
+</div>
+ -->
+<div style="height:10px;"></div>
+				    <!--幻灯片结束-->
+					<div class="bg1">
+						<div class="w1024">
+							<div class="a1 fl">
+					            <li><a href="javascript:showDiv(2);">招聘公告</a></li>
+					        	<li><a href="javascript:showDiv(1);">招聘岗位</a></li>
+					            <li><a href="javascript:redirectTo('resumeCenter');">个人中心</a></li>
+					            <li><a href="javascript:redirectTo('resumeNotice');">通知信</a></li>
+								<div class="clear"></div>
+					     	</div>
+					        <!--右边开始-->
+					        <div id="rightInfoDiv" class="a2 fr">
+<!-- 岗位详情弹出页面样式、脚本 -->
+<link href="/recruit/css/tana.css" rel="stylesheet" type="text/css">
+
+<div class="tab">
+	<div class="fr wz">
+		<span class="sp1"><a href="javascript:redirectTo('index');">首页</a> - <a href="#">招聘岗位</a></span>
+		<span class="sp2"><a href="javascript:showDiv(2);">返回 &gt;</a></span>
+	</div>
+	<li class="hov">搜索我的职位</li>
+</div>
+<div class="tabcon" id="searchDiv" style="min-height:20px;">
+	<div class="a22">
+    	<div class="a23 fl">招聘机构</div><select name="compid"></select>
+		<div class="a23 fl">工作地点</div><select name="workcity"></select>
+		<div class="a23 fl">学历要求</div><select name="higlevel"></select>
+		<div class="clear"></div>
+		<div class="a23 fl">发布时间</div><select name="pubtime"></select>
+        <div class="a24">
+        	<button type="submit" onclick="search()">搜索</button>
+        </div>
+		<div class="clear"></div>
+	</div>
+</div>
+<div class="a21 mt10">
+	<table width="96%" border="0" cellpadding="0" cellspacing="0" class="biao">
+		<tbody><tr>
+            <th width="15%">招聘机构</th>
+			<th width="20%">招聘岗位</th>
+			<th width="2%">&nbsp;</th>
+            <th width="10%">工作地点</th>
+            <th width="15%">截止时间</th>
+            <th width="10%">人数</th>
+            <th width="20%" style="text-align:right;">
+            	<span style="padding-right:10px;">
+            		每页<a href="javascript:setPageSize(10);">10</a>
+            		<a href="javascript:setPageSize(20);">20</a>
+            		<a href="javascript:setPageSize(50);">50</a>条
+            	</span>
+            </th>
+		</tr>
+		</tbody><tbody id="jobTable"></tbody>
+    </table>
+    <div id="showjobb" style="background-color:#ffffff;opacity:0.9;filter:alpha(opacity=90);display: none;width: 400px;height: auto;position: absolute;border: 1px solid #000000;"></div>
+</div>
+<!-- 分页 -->
+<div class="pages" id="pageDiv"></div>
+</div>
+					   		 <!--右边结束-->
+							<div class="clear" style=" height:28px;"></div>
+						</div>
+					</div>
+				<!--中间结束-->
+				<!-- 底部开始-->
+				
+<div class="xia">
+	<div class="w1024 foot">
+		<a href="#">网站声明</a> | <a href="#">网站导航</a>&nbsp;&nbsp;&nbsp;&nbsp; © 宁波银行股份有限公司版权所有 浙ICP备 11055414号
+	</div>
+</div>
+				<!--底部开始-->
+			</td>
+			<td style="background:url(/recruit/images/right.jpg);width:22%;"></td>
+		</tr>
+	</tbody></table>
+
+
+<script type="text/javascript">
+	$().ready(function(){
+		$(".nav li:eq(0)").addClass("hov");
+		var type='';	//1-招聘岗位 2-招聘公告
+		var pid='';
+		showDiv(type,pid);
+	});
+	
+	//显示右侧页面
+	function showDiv(type,pid){
+		if(type==2){
+			$("#rightInfoDiv").load("/recruit/school/noticeMain.jsp");
+		}else{
+		    $("#rightInfoDiv").load("/recruit/school/job/jobMain.jsp",function(){
+		    	if(pid){
+				    tipsWindown("招聘岗位说明", "url:"+contextPath+"/school/job/jobDetail.jsp?pid="+pid, "680", "560", "true", "", "true", "text");
+		    	}
+		    });
+		}
+	}
+</script>
+</body></html>

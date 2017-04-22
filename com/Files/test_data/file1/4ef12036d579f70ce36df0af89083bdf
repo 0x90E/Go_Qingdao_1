@@ -1,0 +1,182 @@
+<!DOCTYPE html><html><head>
+	<title>通过手机找回密码 - 酷6网</title>
+	<meta charset="gbk">
+	<script type="text/javascript" src="http://js.ku6cdn.com/www/2014/1126/jquery-1.11.1.min.js"></script>
+   <link rel="stylesheet" type="text/css" href="http://passport.ku6.com/static/choice_way.css">
+</head>
+
+<body>
+<div class="main">
+	<div class="comm">
+		<div class="top clear-float">
+			<div class="top-logo"></div>
+			<div class="top-home"><a href="http://www.ku6.com">酷6首页</a></div>
+		</div>
+		<div class="fd-cont">
+			<div class="fd-title">
+				<h1>密码找回</h1>
+			</div>
+			<div class="fd-comm">
+				<div class="cm-title clear-float">
+					<div class="fd-num">
+						<span style="color:#6c9f04;">1</span>
+					</div>
+					<div class="fd-tl-com"><span style="color:#6c9f04;">选择找回方式</span></div>
+					<div class="fd-coin"></div>
+					<div class="fd-num">
+						<span style="color:#6c9f04;">2</span>
+					</div>
+					<div class="fd-tl-com"><span style="color:#6c9f04;">验证用户身份</span></div>
+					<div class="fd-coin"></div>
+					<div class="fd-num">
+						<span class="">3</span>
+					</div>
+					<div class="fd-tl-com"><span>设置新密码</span></div>
+				</div>
+				<form class="fd-type fd-way clear-float" id="fd_form" name="form" method="post" action="http://passport.ku6.com/v3-doGetPasswordPhone.htm" accept-charset="gb2312">
+					<div class="fd-name">
+						<label class="form_input_placeholder">
+							<span style="">手机号码</span>
+						</label>
+						<input id="loginNamePar" name="loginNamePar" placeholder="" class="ph-num" value="">
+					</div>
+					<div class="fd-code clear-float">
+						<label class="form_input_placeholder">
+							<span style="padding-left:0px;">验证码</span>
+						</label>
+						<input id="mobilecodePar" class="ch-code" placeholder="" name="mobilecodePar" value="">
+						<a id="send_msg" href="javascript:void(0);">发送验证码</a>
+					</div>
+					<div class="em-code clear-float">
+						<a class="lg-submit" href="javascript:void(0);">确认</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+</div>
+ 
+<script type="text/javascript">
+var int_num = 60;
+
+
+$(".fd-name,.fd-code").click(function(){
+	$(this).find(".form_input_placeholder").hide();
+	$(this).find("input").focus();
+})
+$(".fd-name input,#mobilecodePar").focus(function(){
+	$(this).parent().find(".form_input_placeholder").hide();
+})
+$("input").blur(function(){
+	if($(this).val() == ""){
+		$(this).parent().find(".form_input_placeholder").show();
+	}
+	if(!(/^1\d{10}$/.test($("#loginNamePar").val()))){
+		$(".fd-name .n-msg").remove();
+		$("#loginNamePar").after("<span class='n-msg' style='color:red;'>手机号码格式错误！</span>");return;
+	}else{
+		$(".fd-name .n-msg").remove();
+		
+		check_userName();
+	}
+	
+})
+$.each($("input"),function(i,item){
+	
+	if($(item).val() != ""){
+		$(item).parent().find(".form_input_placeholder").hide();
+	}
+	
+})
+$("#send_msg").click(function(){
+	//if($(".n-msg").length >0){return;};
+	if(int_num >0 && int_num<60){return;}else{int_num = 60;}
+	
+	
+	var msg_id = $(this);
+	var m_num = $("#loginNamePar").val();
+	$.ajax({url:"http://passport.ku6.com/v3-postMobileCodePass.htm",
+				data:{
+					loginNamePar:m_num
+				},
+				type:"GET",
+				dataType:'json',
+				success: function (data){
+					console.log(data);
+					$(".fd-code .n-msg").remove();
+				if(data.status == "-1"){
+					$(".fd-name .n-msg").remove();
+					$("#loginNamePar").after("<span class='n-msg' style='color:red;'>"+data.msgInfo+"</span>");
+					return;
+				}else if(data.status == "-5"){
+					$("#send_msg").after("<span class='n-msg' style='color:red;'>"+data.msgInfo+"</span>");
+					return;
+				}else{
+					msg_id.attr("style","background-color:#AEB0AB;");
+					msg_id.html("(<span class='int_num'>60</span>) 发送验证码");
+
+				}
+				},error:function(){
+	                // errorHandler('未定义错误');
+	            }
+			});
+});
+$("a.lg-submit").click(function(){
+
+	
+	if($("#loginNamePar").val() == ""){
+		$("#loginNamePar").after("<span class='n-msg' style='color:red;'>请输入用户名！</span>");
+		return;
+	}else{
+		$(".fd-name .n-msg").remove();
+	}
+	
+	if($("#mobilecodePar").val() == ""){
+		$(".fd-code .n-msg").remove();
+		$("#send_msg").after("<span class='n-msg' style='color:red;'>请输入验证码！</span>");
+		return;
+	}else{
+		$(".fd-code .n-msg").remove();
+	}
+	if(!(/^1\d{10}$/.test($("#loginNamePar").val()))){
+		$("#loginNamePar").after("<span class='n-msg' style='color:red;'>手机号码格式错误！</span>");return;
+	}else{
+		$(".fd-name .n-msg").remove();
+	}
+	check_userName();
+		
+	$("#fd_form").submit();
+			
+});
+setInterval(function(){
+	if($(".int_num").length<1 || int_num == 0){return;};
+	int_num--;
+	$(".int_num").html(int_num);
+	if(int_num == 0){
+		//int_num = 60;
+		$(".send-msg a").attr("style","background-color:#F4F8E6;");
+		$(".send-msg a").html("发送验证码");
+	}
+},1000);
+
+function check_userName(){
+	$.ajax({url:"http://passport.ku6.com/v3-ifreg.htm",
+				data:{loginNamePar:$("#loginNamePar").val()},
+				type:"GET",
+				dataType:'json',
+				success: function (data){
+				//console.log(data);
+				if(data.status != "0"){
+					$("#loginNamePar").after("<span class='n-msg' style='color:red;'>手机号码输入错误！</span>");
+					return;
+				}
+				},error:function(){
+	                // errorHandler('未定义错误');
+	            }
+			})
+}
+</script>
+ 
+
+</body></html>

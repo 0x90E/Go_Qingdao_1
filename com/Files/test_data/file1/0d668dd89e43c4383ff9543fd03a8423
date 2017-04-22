@@ -1,0 +1,455 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8;">
+<title>坐车网-公交路线查询，深圳、佛山、上海、北京、杭州等各大城市间的交通查询</title>
+<meta name="description" content="坐车网-公交路线查询，深圳、佛山、上海、北京、杭州等各大城市间的交通查询">
+<meta name="author" content="坐车网">
+<meta name="copyright" content="Copyright 2008 Ourlinc,Co.,Ltd">
+<link href="http://cdn4.pmpsys.cn/css/common.css" rel="stylesheet" type="text/css">
+<script src="http://cdn4.pmpsys.cn/js/common.js"></script>
+<script src="http://cdn4.pmpsys.cn/js/omniobject.js"></script>
+<script src="http://cdn4.pmpsys.cn/js/rpdialog.js"></script>
+<script type="text/javascript">
+
+function mouseOut(the,idx){
+	the.bgColor="";
+	if(idx) $("td_"+idx).style.display='none';
+}
+function mouseOver(the,idx){
+	the.bgColor="#F0F0F0";
+	if(idx)	$("td_"+idx).style.display='block';
+}
+function showrpdialog(x,y,id,idx){
+	$("objid").value=id;
+	setReply(x,y,$("rp_content"),document.f_replay,'',idx);
+}
+</script>
+<script type="text/javascript" src="/traffic/favlist.jspx"></script><link href="http://cdn4.pmpsys.cn/traffic/css/searchbox.css" rel="stylesheet" type="text/css"></head>
+<body>
+<div>
+<style>
+.zuoche_weixin{background-color:#fff;display:none;z-index:999;text-align: center;position: absolute;top:80px;right:240px;border: 1px solid #ccc;}
+</style>
+<div class="header_div" id="header_div">
+	<table style="margin: auto;color:#07466f;" border="0" width="960">
+		<tbody><tr>
+			<td style="padding-top:5px" height="25" width="480" align="left">
+			</td>
+			<td align="right" width="480" class="welcome" id="myInfo" style="font-size: 13px; font-weight: bold; "><a target="_top" href="/help/">帮助中心</a>&nbsp;&nbsp;<a target="_top" href="http://xq.zuoche.com/xqweb/myorder.jspx">我的订单</a>&nbsp;&nbsp;<a target="_top" href="javascript:loginTurnOff();">登录</a>&nbsp;&nbsp;<a target="_top" href="javascript:regTurnOff();">注册</a></td>
+		</tr>
+	</tbody></table>
+</div>
+<div class="zuoche_menu">
+<div id="zuoche_weixin" class="zuoche_weixin">
+	<div>扫描二维码</div>
+	<div>关注坐车网官方微信</div>
+	<img src="http://cdn4.pmpsys.cn/images/home/qrcode_for_zc.png" width="220px" alt="坐车网微信">
+</div>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<tbody><tr height="50">
+		<td width="100%">
+			<table height="100%" width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tbody><tr>
+					<td width="230" align="center" valign="middle">
+						<a target="_top" href="/"><span id="h_logo" class="h_logo"></span></a>
+					</td>
+					<td align="right" valign="bottom">
+						<table width="100%" border="0" cellpadding="0" cellspacing="0">
+							<tbody><tr valign="middle">
+								<td height="80" align="right" width="520" valign="top" style="padding-top: 5px;">
+									
+								</td>
+								<td style="padding-left: 45px;text-align: left;vertical-align: middle;">
+									关注我们：
+									<a href="http://e.weibo.com/cnzuoche"><img src="http://cdn4.pmpsys.cn/images/home/t_icon.gif" alt="关注坐车网微博" title="坐车网-微博">
+									</a>
+									<a href="#" onmouseout="showZuoCheWeixin(0);" onmouseover="showZuoCheWeixin(1);"><img src="http://cdn4.pmpsys.cn/images/home/wx_logo.png" alt="关注坐车网微信">
+									</a>
+								</td>
+							</tr>
+						</tbody></table>
+					</td>
+				</tr>
+			</tbody></table>
+		</td>
+	</tr>
+	<tr>
+		<td align="left">
+			<table border="0" style="background-image:url(http://cdn4.pmpsys.cn/images/tag/blueback.png); width: 959px; height: 32px; " cellspacing="0" cellpadding="0" width="100%">
+				<tbody><tr align="left" valign="middle" id="header_tags" height="22">
+					<td width="14"></td>
+					<td id="tag_home" class="headerMenu" width="102" align="center">
+						<a href="../">首页</a>
+					</td>
+					<td id="tag_traffic" class="headerMenu" width="102" align="center"><div id="selectMenu" class="selectMenu">
+							<a href="/traffic/" id="searchtraffic">交通查询</a>
+					</div></td>
+					<td id="tag_ticket" class="headerMenu" width="102" align="center">
+						<a href="/ticket/">网上售票</a>
+					</td>
+					<!-- td id="tag_train" class="headerMenu" width="102" align="center">
+						<a href="/train/tt.html">火车高铁</a>
+					</td -->
+					<td id="tag_hotel" class="headerMenu" width="102" align="center">
+						<a href="http://hotel.zuoche.com/">酒店预订</a>
+					</td>
+					<td id="tag_mtr" class="headerMenu" width="102" align="center">
+						<a href="/traffic/searchmetro.mtr">地铁线路图</a>
+					</td>
+				<!-- <td id="tag_tour" class="headerMenu" width="102" align="center">
+						<a href="/tour/">自游交通</a>
+					</td>-->
+				<!-- <td id="tag_sns" class="headerMenu" width="102" align="center">
+						<a href="/sns/home.jspx">交通社区</a>
+					</td> -->	
+					<td id="tag_moblie" class="headerMenu" width="102" align="center">
+						<span class="span_mobile_index" style="margin:5px 0 0 10px;"></span><a href="../ardownload.jspx" style="margin:0px 0 0 10px;">手机客户端</a>
+					</td>
+					<td width="141"></td>
+				</tr>
+			</tbody></table>
+		</td>
+	</tr>
+	<tr>
+		<td align="left" style="BACKGROUND-Image:url(http://cdn4.pmpsys.cn/images/tag/whiteback.png);padding-left:20px;background-repeat:no-repeat;" id="tag_menu" height="24"></td>
+	</tr>
+</tbody></table>
+</div>
+<script src="http://cdn4.pmpsys.cn/include/header.js" type="text/javascript"></script>
+
+<script type="text/javascript" src="/welcome.jspx"></script>
+<script>
+function showZuoCheWeixin(flag){
+	var obj = document.getElementById("zuoche_weixin");
+	if(1==flag){
+		obj.style.display = "block";
+	}else{
+		obj.style.display = "none";
+	}
+}
+</script>
+</div>
+
+<center>
+<table id="htb" class="table_main" border="0" cellspacing="0" cellpadding="0">
+	<tbody><tr><td height="10"></td></tr>
+	<tr valign="top">
+		<td style="padding-left: 50px;width:680px;">
+		
+<script src="http://cdn4.pmpsys.cn/js/omniobject.js" type="text/javascript"></script>
+<script type="text/javascript" language="javascript" src="http://cdn4.pmpsys.cn/traffic/js/eye-all.js"></script>
+<div id="searchBox" style="width: 100%; white-space: nowrap;">
+<table>
+	<tbody><tr>
+		<td style="vertical-align: top;">
+		<ul id="menu">
+			<li id="tab1" class="curr-menu">市内换乘</li>
+			<li id="tab2">城际换乘</li>
+			<li id="tab3">线路查询</li>
+		</ul>
+		</td>
+		<td valign="top">
+		<form class="zc-form" action="/traffic" style="display: block; width: 580px; "><input type="hidden" name="searchtype" value="0">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tbody><tr>
+				<td></td>
+				<td colspan="2"><span class="strong city" id="city">广州</span>[<a style="cursor:pointer;" id="chCity">切换城市</a>] <input type="hidden" name="c1" value="广州" id="c1f1"></td>
+			</tr>
+			<tr>
+				<td class="inputtitle">出发地&nbsp;</td>
+				<td>
+				<div style="overflow: hidden;width:294px;" class="text-border" id="textdiv1"><input type="text" tabindex="1" class="text1" id="s" name="s" value="广东药科大学附属第三医院" message="请输入出发地名称" autocomplete="off"></div>
+				</td>
+				<td rowspan="3"><img onclick="switchcity(1)" src="http://cdn4.pmpsys.cn/images/testhome/cityswitch.png" style="padding: 0px 10px 0px 5px; cursor: pointer;"></td>
+				<td rowspan="3"><input type="submit" class="btn_submit" tabindex="3" value=""></td>
+				
+			</tr>
+			<tr>
+				<td class="row-compart"></td>
+			</tr>
+			<tr>
+				<td class="inputtitle">目的地&nbsp;</td>
+				<td>
+				<div style="overflow: hidden;width:294px;" class="text-border" id="textdiv2"><input type="text" tabindex="2" class="text1" id="d" name="d" value="珠海市金湾中心区" message="请输入目的地名称" autocomplete="off"></div>
+				</td>
+				
+			</tr>
+			<tr>
+				<td colspan="3">
+				<table border="0" cellpadding="0" cellspacing="0" class="user-option">
+					<tbody><tr>
+						<td>坐车时间：</td>
+						<td><input type="radio" id="incity_now" name="time" value="0"><label for="incity_now">当前时间</label></td>
+						<td><input type="radio" id="incity_day" name="time" value="4096" checked="checked"><label for="incity_day">白天</label></td>
+						<td><input type="radio" id="incity_night" name="time" value="8192"><label for="incity_night">夜车</label></td>
+					</tr>
+					<tr>
+						<td>换乘选项：</td>
+						<td><input type="radio" id="incity_all" name="stgy" value="0" checked="checked"><label for="incity_all">不限</label></td>
+						<td><input type="radio" id="incity_road" name="stgy" value="1"><label for="incity_road">少走路</label></td>
+						<td><input type="radio" id="incity_car" name="stgy" value="2"><label for="incity_car">少转车</label></td>
+					</tr>
+				</tbody></table>
+				</td>
+				<td>
+				<table>
+					<tbody><tr>
+						<td>&nbsp;<img src="http://cdn4.pmpsys.cn/images/ticket/ask.gif"></td>
+						<td>&nbsp;<a href="../help/quickstart.jspx#1">使用说明</a></td>
+					</tr>
+				</tbody></table>
+				</td>
+			</tr>
+		</tbody></table>
+		</form>
+		<form class="zc-form" style="display: none; width: 580px;" action="/traffic"><input type="checkbox" id="long" checked="checked" style="display: none;"> <input type="hidden" name="searchtype" value="1">
+		<table border="0" cellpadding="0" cellspacing="0">
+			<tbody><tr style="white-space: nowrap;">
+				<td class="inputtitle">出发地&nbsp;</td>
+				<td colspan="2">
+				<div style="overflow: hidden;width:295px;position:relative;" class="text-border" id="textdiv3">
+				<input type="text" tabindex="2" class="text1" name="s" value="广州广东药科大学附属第三医院" message="请输入出发地名称" maxlength="26" id="sf2" autocomplete="off"><span class="input_tips" id="sf2Tips"></span></div>
+				</td>
+				<td rowspan="2"><img onclick="switchcity(2)" src="http://cdn4.pmpsys.cn/images/testhome/cityswitch.png" style="padding: 0px 10px 0px 5px; cursor: pointer;"></td>
+				<td rowspan="2"><input type="submit" class="btn_submit" tabindex="5" value=""></td>
+			</tr>
+			<tr>
+				<td class="inputtitle">目的地&nbsp;</td>
+				<td colspan="2">
+				<div style="overflow: hidden;width:295px;position:relative;" class="text-border" id="textdiv4"><input type="text" tabindex="4" class="text1" name="d" value="珠海珠海市金湾中心区" message="请输入目的地名称" maxlength="26" id="df2" autocomplete="off"><span class="input_tips" id="df2Tips"></span></div>
+				</td>
+			</tr>
+			<tr>
+				<td class="inputtitle">出发时刻&nbsp;</td>
+				<td align="left" height="32px" colspan="2"><select id="timeid" name="time" style="height:24px;width: 117px;">
+					<option selected="selected" value="0">不限</option>
+					<option value="28672">凌晨(0-6点)</option>
+					<option value="12288">上午(6-12点)</option>
+					<option value="16384">中午(12-14点)</option>
+					<option value="20480">下午(14-18点)</option>
+					<option value="24576">晚上(18-24点)</option>
+				</select></td>
+				<td></td>
+				<td>
+				<table>
+					<tbody><tr>
+						<td>&nbsp;<img src="http://cdn4.pmpsys.cn/images/ticket/ask.gif"></td>
+						<td>&nbsp;<a href="../help/quickstart.jspx#2">使用说明</a> </td>
+					</tr>
+				</tbody></table>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="4">
+				<table border="0" cellpadding="0" cellspacing="0" class="user-option" style="margin-left: 37px;">
+					<tbody><tr>
+						<td>交通工具：</td>
+						<td><input type="radio" id="outcity_alltool" name="tool" value="0" checked="checked"><label for="outcity_alltool">不限</label></td>
+						<td><input type="radio" id="outcity_traintool" name="tool" value="1"><label for="outcity_traintool">火车/轻轨</label></td>
+						<td><input type="radio" id="outcity_flytool" name="tool" value="2"><label for="outcity_flytool">飞机</label></td>
+						<td><input type="radio" id="outcity_cartool" name="tool" value="3"><label for="outcity_cartool">长途汽车</label></td>
+						<td><input type="radio" id="outcity_cartool" name="tool" value="5"><label for="outcity_cartool">客轮</label></td>
+					</tr>
+					<tr>
+						<td>换乘选项：</td>
+						<td><input type="radio" id="outcity_all" name="stgy" value="0" checked="checked"><label for="outcity_all">不限</label></td>
+						<td><input type="radio" id="outcity_road" name="stgy" value="1"><label for="outcity_road">少走路</label></td>
+						<td><input type="radio" id="outcity_car" name="stgy" value="2"><label for="outcity_car">少转车</label></td>
+					</tr>
+				</tbody></table>
+				</td>
+			</tr>
+		</tbody></table>
+		</form>
+		<form action="/traffic/course.jspx" class="zc-form" style="display: none; width: 580px;"><input type="hidden" value="q" name="op"> <input type="hidden" name="searchtype" value="2"> <input type="hidden" name="m" id="m" value="广州">
+		<table border="0" cellpadding="0" cellspacing="0" id="lineBox">
+			<tbody><tr>
+				<td id="lineMode"><a href="javascript:;" class="curr-mode" mode="busLine">市内路线</a> <span>&nbsp;|&nbsp;</span> <a href="javascript:;" mode="trainLine">火车/轻轨</a></td>
+			</tr>
+			<tr>
+				<td>
+				<table border="0" cellpadding="0" cellspacing="0">
+					<tbody><tr>
+						<td class="row-compart"></td>
+					</tr>
+					<tr id="lineMap">
+						<td></td>
+						<td colspan="2"><span class="strong city" id="map">广州</span>[<a href="javascript:;" id="chMap">切换城市</a>]</td>
+					</tr>
+					<tr>
+						<td class="row-compart"></td>
+					</tr>
+					<tr>
+						<td class="inputtitle" id="lineTitle">线路名称</td>
+						<td>
+						<div style="overflow: hidden;width:294px;" class="text-border"><input type="text" class="text1" name="k" message="请输入路线名称"></div>
+						</td>
+						<td id="lineSubmit1"><input type="submit" class="btn_submit2" value=""></td>
+					</tr>
+					<tr>
+						<td class="row-compart"></td>
+					</tr>
+					<tr id="lineOption" class="user-option">
+						<td></td>
+						<td>类型： <input type="radio" id="line_car" name="c" value="1" checked="checked"><label for="line_car">公共汽车</label> <input type="radio" id="line_train" name="c" value="2"><label for="line_train">地铁/轻轨</label> <input type="radio" name="c" value="7" style="visibility: hidden;"></td>
+						<td> 
+						<table>
+							<tbody><tr>
+								<td>&nbsp;<img src="http://cdn4.pmpsys.cn/images/ticket/ask.gif"></td>
+								<td>&nbsp;<a href="../help/quickstart.jspx#3">使用说明</a></td>
+							</tr>
+						</tbody></table>
+						</td>
+					</tr>
+				</tbody></table>
+				</td>
+			</tr>
+		</tbody></table>
+		</form>
+		</td>
+	</tr>
+</tbody></table>
+</div>
+<div id="show_place" style="height:150px;max-height:240px;border: 1px solid #CCCCCC;display: none;padding: 5px 5px 5px 5px;width: 285px;overflow-x:hidden;overflow-y: auto;"></div>
+<div id="divMask" style="display:none;"></div>
+<div id="waitting" style="text-align:center;top:30%;left:35%;display:none; position:fixed;_position:absolute;width:500px;"><img src="http://cdn4.pmpsys.cn/images/common/loading.gif"><br><font color="#ffffff" style="font-size:42px;font-family:隶书" ;color:black="">查询中，请稍候...</font></div>
+<script type="text/javascript">
+	var searchboxInitMenu = parseInt('');
+</script>
+<script src="/traffic/js/searchbox.js?timestamp=20130225" type="text/javascript"></script>
+<!-- 载入页面样式 -->
+<script type="text/javascript">
+	var cityArrsGroup;
+	var cityArrs=[];
+	
+	//document.createStyleSheet('/traffic/css/searchbox.css');
+	var style = document.createElement("link");
+	style.href = "http://cdn4.pmpsys.cn/traffic/css/searchbox.css";
+	style.rel = "stylesheet";
+	style.type = "text/css";
+	document.getElementsByTagName("head")[0].appendChild(style);
+	// js加载城市数据后回调
+	function onLoadCityArrs(){
+		cityArrsGroup = cityArrsGroup.split(";");
+		for(var i=0;i<cityArrsGroup.length;i++){
+		cityArrs[i]=cityArrsGroup[i].split(",");
+		}
+	}
+</script>
+<script type="text/javascript" src="../traffic/cityarrs.jspx"></script>
+
+
+        <!-- 未找到地点 -->
+        
+		<!-- 其他错误 -->
+		<div style="text-align:left;font-weight: bolder;margin-bottom: 30px;"></div>
+		
+
+		
+		
+		
+		<!-- ---------------- -->
+		</td>
+		 
+		<td valign="top" rowspan="2" style="width:250px;">
+		<table cellpadding="10px">
+			<tbody><tr>
+				<td><!-- <iframe name="usermessage" id="usermessage"
+					src="/profiles/usermessage.jspx" width="100%"
+					marginwidth="0" marginheight="0" frameborder="0" scrolling="no"
+					height="150" onload="autoFrameHeight(this)"></iframe>-->
+				</td>
+			</tr>
+          
+            <tr></tr>
+			<tr>
+			<td width="250">
+			<div>
+			<iframe name="promo" id="promo" src="/promo/gold.jspx?position=51" width="100%" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" onload="FixIframeHeight(this);"></iframe></div>
+			</td>
+            </tr>
+            
+            <tr>
+			<td style="padding-top:20px" width="250">
+			<div>
+			<iframe name="promo" id="promo" src="/promo/gold.jspx?position=52" width="100%" marginwidth="0" marginheight="0" frameborder="0" scrolling="no" onload="FixIframeHeight(this);"></iframe>
+			</div>
+			</td>
+			</tr>
+		</tbody></table>
+		</td>		
+	</tr>
+
+	<tr><td height="10"></td></tr>
+
+	<tr>
+		<td colspan="2" height="15"></td>
+	</tr>
+	<tr>
+		<td colspan="2">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tbody><tr>
+		<td height="35" width="100%" align="center"></td>
+	</tr>
+	<tr>
+		<td height="15" width="100%" align="center"><a onclick="SetToHome(this);return false;" href="#" target="_self">设为首页</a>
+		| <a onclick="return AddFav()" href="#" rel="sidebar" target="_self">加入收藏夹</a> | <a href="../recommend.jspx">推荐给好友</a> | <a href="../help/about.jspx">关于我们</a>
+		| <a href="../feedback.jspx">信息反馈</a> | <a href="/promo/">广告及合作</a>
+		| <a href="../ticket/union/stationlogin.jspx">客运站管理</a> | <a href="/promo/partners.jspx">友情链接</a> | <a href="/tour/hotcity.jspx">热点城市</a>
+		| <a href="../webmap/website_map.html">网站地图</a> | <a href="/promo/code.jspx" style="color: rgb(128, 0, 0)">免费资源</a></td>
+	</tr>
+	<tr>
+		<td height="5" valign="top" align="center">
+		<table width="100%" border="0">
+			<tbody><tr>
+				<td>
+				<hr color="#808080" size="1">
+				</td>
+			</tr>
+		</tbody></table>
+		</td>
+	</tr>
+	<tr>
+		<td height="25" width="100%" valign="top" align="center">
+		<table border="0">
+			<tbody><tr height="25" align="center">
+				<td width="62"><img border="0" src="http://cdn4.pmpsys.cn/images/home/ourlinc.gif" title="广州坐车网" alt="坐车网-广州浩宁智能设备有限公司所有"></td>
+				<td><font color="#111111"> 广州浩宁智能设备有限公司版权所有 ©2017</font></td>
+			</tr>
+		</tbody></table>
+		</td>
+	</tr>
+	<tr>
+		<td width="100%" valign="top" align="center">
+		<table border="0" cellspacing="0" cellpadding="0">
+			<tbody><tr height="53" valign="middle" align="center">
+				<td style="line-height: 20px"><a href="http://www.miibeian.gov.cn/" target="_blank">粤B2-20040491</a>&nbsp;&nbsp;备案编号：4401040101952<br>
+				<span id="sys_verinfo" style="color: #f0f0f0"></span></td>
+				<td></td>
+			</tr>
+		</tbody></table>
+		</td>
+	</tr>
+</tbody></table>
+<!-- BD统计 -->
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fd91c090e9c1140131a8ac18e9cb36e23' type='text/javascript'%3E%3C/script%3E"));
+</script><script src=" http://hm.baidu.com/h.js?d91c090e9c1140131a8ac18e9cb36e23" type="text/javascript"></script>
+</td>
+	</tr>
+</tbody></table>
+</center>
+<script>
+getMain().setTag("traffic");
+/*var menus = new Array();
+menus[0]="市内换乘";
+menus[1]="城际换乘";
+menus[2]="线路查询";
+getMain().setMenu(menus,3);*/
+</script>
+<!-- 代码视频广告 --> 
+
+<!-- end. -->
+
+
+<div id="siteList_FavSite" style="width: 280px; "><span id="none_FavSite">您还没有收藏的地点。</span></div></body></html>

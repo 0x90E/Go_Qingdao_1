@@ -1,0 +1,234 @@
+<!DOCTYPE html><html><head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+   <!-- <meta name="viewport" content="width=320, user-scalable=no"/>-->
+   <title>
+   益智竞猜   </title>
+
+   <meta name="description" content="益智竞猜">
+
+
+
+    <link href="https://static.ttz.com/mobile/luck28/css/swiper.min.css" rel="stylesheet">
+    <link href="https://static.ttz.com/mobile/luck28/css/index.css?v=20161" rel="stylesheet">
+
+    <script src="https://static.ttz.com/mobile/luck28/js/swiper.min.js"></script>
+    <script src="https://static.ttz.com/mobile/luck28/js/zepto.min.js"></script>
+<!--    <script src="https://static.ttz.com/mobile/luck28/js/fastclick.js"></script>-->
+<!--    <script>
+        $(function () {
+            if ('addEventListener' in document) {
+                document.addEventListener('DOMContentLoaded', function () {
+                    FastClick.attach(document.body);
+                }, false);
+            }
+        })
+    </script>-->
+</head>
+<body>
+<script type="text/javascript">
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+    var g28 = getQueryString('g28');//js used
+    g28 = g28 ? g28 : 'luck';
+</script>
+
+<style>
+    .error_msg{
+        color: red;
+    }
+</style>
+<div class="wrap login-wrap">
+    <div class="nav">
+        <a class="arrow"></a>
+        <span>会员登录</span>
+        <i class="reload"></i>
+    </div>
+    <div class="login">
+        <div class="br">
+            用户名：<input id="username" placeholder="账号/ID/手机/邮箱" type="text">
+        </div>
+        <div class="br">
+            密　码：<input id="password" type="password">
+        </div>
+                <div class="br error_msg"></div>
+    </div>
+    <div class="btn-box">
+        <a class="dl-btn">登录</a>
+        <a class="zz-btn" href="/Member/register.html">免费注册</a>
+    </div>
+</div>
+<script src="https://static.ttz.com/mobile/luck28/js/common.js"></script><style>
+a.znq-ylb-link i {
+    display: block;
+    font-style: normal;
+    color: #F32020;
+    margin: -10px 0 5px;
+}
+</style>
+<div class="tz-pop showmsg">
+    <div class="mask"></div>
+    <div class="content">
+        <h3 class="showmsg-title"></h3>
+        <p class="showmsg-content"></p>
+        <div class="br btn-box">
+            <a class="sure showmsg-sure">确定</a>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="tz-pop login" style="display:none;">
+    <div class="mask"></div>
+    <div class="content">
+        <h3>用户登录</h3>
+
+        <div class="br">
+            <label>用户名：</label>
+            <input placeholder="账号/ID/手机/邮箱" type="text">
+        </div>
+        <div class="br">
+            <label>密　码：</label>
+            <input type="password">
+        </div>
+        <div class="br btn-box">
+            <a class="sure">确定</a>
+            <a class="cancel close">取消</a>
+        </div>
+    </div>
+</div>
+<div class="footmenu">
+    <div class="item">
+        <span>今日活动</span>
+        <div class="item-pop">
+			<!--  <a href="/Draw?rand=20160425">免费抽爱疯</a>-->
+            			
+			<!--<a href="/Draw/qrs?rand=20160425">整点送黄豆</a>-->
+			<a href="/Rankings/index?rand=20160425">天天竞猜牛人榜</a>
+            <a href="/Friend/YaoqingActive/ParentId/?rand=20160425">推荐赚黄豆</a>
+            <!-- <a href="/Rankings/jlyldbp?rand=20160425">累计盈利大比拼<br>第二期</a> -->
+			<!-- <a href="/Rankings/jlyldbp?rand=20160425">累计赢取排名</a> -->
+            <span></span>
+        </div>
+    </div>
+
+    	
+        	<div class="item" id="footer_trend">
+				<span><a style="color:black" href="/Luck28/index?g28=luck&amp;rand=20160425">益智竞猜</a></span>
+			</div>   
+    <div class="item">
+        <span>我的信息</span>
+        <div class="item-pop">
+			<a href="/Vip/userInfo?rand=20160425">我的信息</a>
+            <a href="/Vip?rand=20160425">购买VIP</a>
+            <a href="/Vip/exchange?rand=20160425">兑换黄豆</a>
+            <a href="/Goods?rand=20160425">黄豆商城</a>
+			<a href="/Freeca/exchangeFreeca?rand=20160425">福利卡兑换</a>
+			<a href="javascript:void(0);" class="getHelpBean" style="color:red">领取救济豆</a>
+            <span></span>
+        </div>
+    </div>
+</div>
+
+<script>
+$('.getHelpBean').on('click', function(){
+	var obj = $(this);
+	$('.error_tips').html('');
+	$.ajax({
+		url:'/Vip/getHelpBean/?AwardType='+'',
+		type:'get',
+		dataType:'json',
+		async:false,
+		success:function(res){
+			if(res.CODE == 'ok')
+			{
+				//if(res.HaveHelpBean == 'n')
+				//{
+				//	obj.parent().html('<a class="gray" >救济豆</a>');
+				//}
+				showMsg('1', '成功领取了'+res.DATA+'救济豆！');
+				// $('.error_tips').html('成功领取了'+res.DATA+'救济豆！');
+			}
+			else
+			{
+				showMsg('1', '您当前未达到领取条件！');
+				// $('.error_tips').html('您当前未达到领取条件！');
+			}
+		}
+	});
+});
+</script>
+<img src="https://c.cnzz.com/wapstat.php?siteid=1258781756&amp;r=&amp;rnd=141775879" width="0" height="0">
+
+<script>
+$(function(){
+
+    /** 切换图片验证码 **/
+    $('#verifyImg').on('click', function(){
+        $(this).attr('src', '/member/verify/' + Math.random());
+    });
+
+    /** 提交验证 **/
+    $('.dl-btn').on('click', function(){
+        $('.error_msg').html('');
+        var username = $.trim($('#username').val());
+        var password = $.trim($('#password').val());
+        var url = '/Member/loginAjax?Username=';
+
+        if(!username || (username.length < 5) || (username.length > 30))
+        {
+            $('.error_msg').html('请输入有效的登陆账户！');return;
+        }
+        url +=username;
+
+        if(!password || (password.length < 6) || (password.length > 30))
+        {
+            $('.error_msg').html('请输入有效的登陆密码！');return;
+        }
+        url +='&Password='+password;
+
+        var isVerfyflay = "1";
+
+        if(parseInt(isVerfyflay) != 1)
+        {
+            var verify = $.trim($('#verify').val());
+            if(!verify || (verify.length != 4))
+            {
+                $('.error_msg').html('请输入有效的登陆验证码！');return;
+            }
+            url +='&Verify='+verify;
+        }
+
+        url +='&VerifyFlag='+isVerfyflay;
+        
+        $.ajax({
+            url:url,
+            type:'get',
+            dataType:'json',
+            success:function(res)
+            {
+                if(res.CODE == 'ok')
+                {
+                    //window.location.href="/Vip/userinfo";
+                	 window.location.href=res.URL;
+                }
+                else
+                {
+                    $('#verify').val('');
+                    $('#verifyImg').attr('src', '/member/verify/' + Math.random());
+                    $('.error_msg').html(res.MESSAGE);
+                }
+            }
+        });
+
+    });
+
+});
+
+</script></body></html>

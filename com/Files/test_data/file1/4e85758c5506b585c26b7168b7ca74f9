@@ -1,0 +1,678 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head> 
+  <link href="http://c.csdnimg.cn/public/favicon.ico" rel="SHORTCUT ICON" /> 
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+  <title>富途证券CTO陈伟华：互联网券商云计算实践心得分享-CSDN.NET </title> 
+  <meta name="description" content="近日，富途证券CTO陈伟华（ppchen）接受腾讯云会客厅的采访，介绍云计算技术在富途证券的业务发展中如何发挥作用，以及作为技术团队建设经验。" /> 
+  <meta name="keywords" content="云计算,腾讯云,富途证券" /> 
+  <meta name="author" content="CSDN.NET" /> 
+  <meta name="Copyright" content="CSDN.NET" /> 
+  <meta name="image" content="" /> 
+  <!-- toolbar start --> 
+  <link href="http://c.csdnimg.cn/public/common/toolbar/css/index.css" type="text/css" rel="stylesheet" /> 
+  <script src="http://c.csdnimg.cn/public/common/libs/jquery/jquery-1.9.1.min.js" type="text/javascript"></script> 
+  <!-- toolbar end --> 
+  <link href="http://news.csdn.net/css/content.css" rel="stylesheet" type="text/css" /> 
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?6275c7f2c7d9617f47b5ea3c72633374";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+  <script src="http://ads.csdn.net/js/tracking.js" type="text/javascript"></script> 
+ </head> 
+ <body> 
+  <script type="text/javascript">
+  var protocol = window.location.protocol;
+  document.write('<script type="text/javascript" src="' +protocol+ '//c.csdnimg.cn/pubfooter/js/repoAddr2.js?v=' + Math.random() + '"></'+'script>');
+</script> 
+  <script src="http://c.csdnimg.cn/public/common/toolbar/js/html.js" type="text/javascript" id="toolbar-tpl-scriptId" prod="news" skin="black" domain="http://cloud.csdn.net"></script> 
+  <script type="text/javascript" src="http://cbjs.baidu.com/js/m.js"></script> 
+  <div class="wrap"> 
+   <!-- 间歇滚动 --> 
+   <script language="javascript">function T(n){document.getElementById("ArticleCnt").style.fontSize=n+"px";}</script> 
+   <script src="http://news.csdn.net/js/jquery.autoscroll.js" type="text/javascript"></script>
+   <!--滚动js--> 
+   <!-- //间歇滚动 --> 
+   <script type="text/javascript">BAIDU_CLB_preloadSlots("421718","421717","421715","421714","421712","445821","421709","119835");</script> 
+  </div> 
+  <!-- nav --> 
+  <div id="xcx_tabmenu" class="nav"> 
+   <div id="cx_tabmenu" class="cx_tabmenu"> 
+    <!-- lev one --> 
+    <div id="ddimagetabs" class="lev_1"> 
+     <ul> 
+      <li><a href="http://news.csdn.net" id="sclink1" target="_blank" onclick="LogClickCount(this, 392);">业界</a></li> 
+      <li><a href="http://mobile.csdn.net" id="sclink2" target="_blank" onclick="LogClickCount(this, 393);">移动开发</a></li> 
+      <li><a href="http://cloud.csdn.net" id="sclink3" target="_blank" onclick="LogClickCount(this, 394);">云计算</a></li> 
+      <li><a href="http://sd.csdn.net" id="sclink4" target="_blank" onclick="LogClickCount(this, 395);">软件研发</a></li> 
+      <li><a href="http://programmer.csdn.net/" id="sclink6" target="_blank">程序员</a></li> 
+      <li><a href="http://geek.csdn.net/" id="sclink7" target="_blank">极客头条</a></li> 
+      <li><a href="http://special.csdn.net/newssubject/index.html" id="sclink5" target="_blank">专题</a></li> 
+      <!--<li><a href="http://share.csdn.net" id="sclink8" target="_blank">CSDN Share</a></li>
+				<li><a href="http://read.csdn.net/" id="sclink9" target="_blank">我的Tag</a></li>--> 
+     </ul> 
+    </div> 
+    <!-- lev two --> 
+    <div id="tabcontentcontainer" class="lev_2"> 
+     <div class="tabcontent" id="sc1"> 
+      <ul> 
+       <li><a href="http://www.csdn.net/tag/cto/news" target="_blank">CTO</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E4%BA%A7%E5%93%81/news" target="_blank">产品</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E5%88%9B%E4%B8%9A/news" target="_blank">创业</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E8%81%8C%E5%9C%BA/news" target="_blank">职场</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E4%BA%BA%E7%89%A9/news" target="_blank">人物</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E7%A4%BE%E5%8C%BA%E4%B9%8B%E6%98%9F/news" target="_blank">社区之星</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E5%AF%B9%E8%AF%9Dcto/news" target="_blank">对话CTO</a></li> 
+      </ul> 
+     </div> 
+     <div class="tabcontent" id="sc2"> 
+      <ul> 
+       <li><a href="http://www.csdn.net/tag/android/news" target="_blank">Android</a></li> 
+       <li><a href="http://www.csdn.net/tag/ios/news" target="_blank">iOS</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E7%A7%BB%E5%8A%A8%E6%B8%B8%E6%88%8F/news" target="_blank">移动游戏</a></li> 
+       <li><a href="http://www.csdn.net/tag/html5/news" target="_blank">HTML5</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E8%BF%91%E5%8C%A0/news" target="_blank">近匠</a></li> 
+       <li><a href="http://www.csdn.net/tag/swift/news" target="_blank">Swift</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%99%BA%E8%83%BD%E7%A1%AC%E4%BB%B6/news" target="_blank">智能硬件</a></li> 
+      </ul> 
+     </div> 
+     <div class="tabcontent" id="sc3"> 
+      <ul> 
+       <li><a href="http://www.csdn.net/tag/%E5%A4%A7%E6%95%B0%E6%8D%AE/news" target="_blank">大数据</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E4%B8%AD%E5%BF%83/news" target="_blank">数据中心</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%9C%8D%E5%8A%A1%E5%99%A8/news" target="_blank">服务器</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E5%AD%98%E5%82%A8/news" target="_blank">存储</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E8%99%9A%E6%8B%9F%E5%8C%96/news" target="_blank">虚拟化</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E5%AE%89%E5%85%A8/news" target="_blank">安全</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E4%BA%91%E5%85%88%E9%94%8B/news" target="_blank">云先锋</a></li> 
+       <li><a href="http://www.csdn.net/tag/nosql/news" target="_blank">NoSQL</a></li> 
+      </ul> 
+     </div> 
+     <div class="tabcontent" id="sc4"> 
+      <ul> 
+       <li><a href="http://www.csdn.net/tag/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/news" target="_blank">编程语言</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E5%BC%80%E6%94%BE%E5%B9%B3%E5%8F%B0/news" target="_blank">开放平台</a></li> 
+       <li><a href="http://www.csdn.net/tag/html5/news" target="_blank">HTML5</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/news" target="_blank">前端开发</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E5%BC%80%E6%BA%90/news" target="_blank">开源</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%9E%B6%E6%9E%84/news" target="_blank">架构</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%99%BA%E8%83%BD%E7%AE%97%E6%B3%95/news" target="_blank">智能算法</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E5%BA%93/news" target="_blank">数据库</a></li> 
+      </ul> 
+     </div> 
+     <div class="tabcontent" id="sc5"> 
+      <ul> 
+       <li><a href="http://www.csdn.net/tag/%E5%B0%81%E9%9D%A2%E7%A7%80/news" target="_blank">封面秀</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E7%89%B9%E5%88%AB%E7%AD%96%E5%88%92/news" target="_blank">特别策划</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/news" target="_blank">管理实践</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84/news" target="_blank">技术架构</a></li> 
+      </ul> 
+     </div> 
+    </div> 
+   </div> 
+  </div> 
+  <script type="text/javascript">
+	// The idea borrowed from dynamicDrive.com
+	
+	var initialtab = [1, "sc1"]
+	
+	var previoustab = "";
+	var intv;
+	function expandcontent(cid, aobject) {
+	    stopTimer();
+	    highlighttab(aobject);
+	    if (previoustab != ""){
+	         document.getElementById(previoustab).style.display = "none";
+	    }
+	    document.getElementById(cid).style.display = "block";
+	    previoustab = cid;
+	}
+	
+	function highlighttab(aobject) {
+	    stopTimer();
+	
+	   if (typeof tabobjlinks == "undefined"){
+	         collectddimagetabs();
+	    }
+	   for (i = 0; i < tabobjlinks.length; i++){
+	    	tabobjlinks[i].className = "";   
+	    }
+	    aobject.className = "current";
+	}
+	
+	function collectddimagetabs() {
+	    var tabobj = document.getElementById("ddimagetabs");
+	    tabobjlinks = tabobj.getElementsByTagName("A");
+	}
+	
+	function startTimer() {
+	    intv = setTimeout("expandcontent(initialtab[1], tabobjlinks[initialtab[0]-1])", 2000);
+	}
+	
+	function stopTimer() {
+	    clearTimeout(intv);
+	}
+	
+	$(document).ready(function(){ 
+		collectddimagetabs();
+		var domain = new Array('news.','mobile.','cloud.','sd.','programmer.');
+		for(var i=0;i<domain.length;i++){
+			if(window.location.href.indexOf(domain[i]) > 0){
+				expandcontent('sc'+(i+1), tabobjlinks[i]);
+			}
+		}
+		$('#button_both').click(function(){
+			var key=$('#queries_searchfield_query-new').val();
+			key = $.trim(key);
+			if(key==""){
+				alert("关键字不能为空！");
+			}
+			else{
+				key =  encodeURIComponent(key)
+				var url="http://so.csdn.net/search?sort=created_at&t=news&q="+key;
+				window.location.href=url;
+			}
+			return false;
+		});
+	});
+	
+	</script> 
+  <div class="wrap"> 
+   <div class="ad_960"> 
+    <ins data-revive-zoneid="94" data-revive-id="8c38e720de1c90a6f6ff52f3f89c4d57"></ins> 
+   </div> 
+   <div class="brea_nav"> 
+    <span class="fr"> <a href="http://news.csdn.net/rss_cloud.html" class="rss" target="_blank">订阅云计算RSS</a> </span>
+    <a href="http://www.csdn.net/">CSDN首页</a>
+    <em>&gt;</em> 
+    <a href="http://cloud.csdn.net" target="_blank">云计算</a> 
+   </div> 
+   <div class="content"> 
+    <div class="left"> 
+     <div class="detail"> 
+      <h1 class="title">富途证券CTO陈伟华：互联网券商云计算实践心得分享</h1> 
+      <h4> 
+       <div class="tit_bar">
+         发表于
+        <span class="ago">2016-02-29 09:26</span>| 
+        <span class="view_time">次阅读</span>| 来源
+        <span class="ago">CSDN</span>| 
+        <span class="num_recom"><font id="remark_count1" class="cmtcount" style="font-size:12px;color:#c00;">0</font> 条评论</span>| 作者
+        <span class="ago">云知秋</span> 
+       </div> </h4> 
+      <div class="tag">
+       <a href="http://www.csdn.net/tag/%E4%BA%91%E8%AE%A1%E7%AE%97/news">云计算</a>
+       <a href="http://www.csdn.net/tag/%E8%85%BE%E8%AE%AF%E4%BA%91/news">腾讯云</a>
+       <a href="http://www.csdn.net/tag/%E5%AF%8C%E9%80%94%E8%AF%81%E5%88%B8/news">富途证券</a>
+      </div> 
+      <div class="summary"> 
+       <input type="hidden" id="article_description" name="article_description" value="近日，富途证券CTO陈伟华（ppchen）接受腾讯云会客厅的采访，介绍云计算技术在富途证券的业务发展中如何发挥作用，以及作为技术团队建设经验。" /> 
+       <script type="text/javascript" charset="utf-8">
+(function(){
+  var _w = 22 , _h = 16;
+  var article_description=$("#article_description").val();
+  var param = {
+    url:location.href,
+    type:'3',
+    count:'', /**是否显示分享数，1显示(可选)*/
+    appkey:'', /**您申请的应用appkey,显示分享来源(可选)*/
+    title:article_description, /**分享的文字内容(可选，默认为所在页面的title)*/
+    pic:'', /**分享图片的路径(可选)*/
+    ralateUid:'', /**关联用户的UID，分享微博会@该用户(可选)*/
+	language:'zh_cn', /**设置语言，zh_cn|zh_tw(可选)*/
+    rnd:new Date().valueOf()
+  }
+  var temp = [];
+  for( var p in param ){
+    temp.push(p + '=' + encodeURIComponent( param[p] || '' ) )
+  }
+  document.write('<iframe allowTransparency="true" frameborder="0" scrolling="no" src="http://hits.sinajs.cn/A1/weiboshare.html?' + temp.join('&') + '" width="'+ _w+'" height="'+_h+'"></iframe>')
+})()
+</script>
+       <strong>摘要：</strong>近日，富途证券CTO陈伟华（ppchen）接受腾讯云会客厅的采访，介绍云计算技术在富途证券的业务发展中如何发挥作用，以及作为技术团队建设经验。 
+      </div> 
+      <div class="con news_content"> 
+       <p>“互联网<span>+”的大趋势下，越来越多的公司尤其是初创公司选择基于云计算平台构建自己的业务。近日，富途证券CTO陈伟华（ppchen）接受腾讯云会客厅的采访，介绍云计算技术在富途证券的业务发展中如何发挥作用，以及作为技术团队建设经验。</span></p>
+       <p><b>富途证券的挑战</b></p>
+       <p>富途证券的目标是打造可信的互联网证券服务，近期的关键动作主要包括：</p>
+       <p></p>
+       <ul>
+        <li><span style="background-color: initial;">打造可信服务，包括安全、可靠、好用三个指标；</span></li>
+        <li><span style="background-color: initial;">推出针对港股</span><span style="background-color: initial;">-Margin业务（信贷业务）；</span></li>
+        <li><span style="background-color: initial;">上线了富途证券的</span><span style="background-color: initial;">FTBOS系统（富途自主研发的结算系统），标志着富途完成了所有证券系统后台的自研上线；</span></li>
+        <li><span style="background-color: initial;">上线了一个</span><span style="background-color: initial;">FTAPI，通过OpenID的方式开放了富途证券美股、港股的交易能力。</span></li>
+       </ul>
+       <p></p>
+       <p>对于富途证券而言，打造可信的互联网证券服务，当前主要存在几块技术挑战：</p>
+       <p>1.安全</p>
+       <p>富途证券作为一家中小企业，自身安全力量无法跟<span>BAT之类的互联网公司相比，但富途证券提供的服务性质又对团队提出了更高的安全要求。</span></p>
+       <p>团队提出了一套整体的安全体系建设计划，这很大程度上也是得益于后端团队负责人和陈伟华自己之前在腾讯的工作背景，当前富途后端团队的负责人来自<span>QQ的帐号团队，有过较为丰富的安全工作经验；陈伟华自己之前在腾讯也负责过QQ安全有5~6年，负责过微信安全近两年。相信通过建设，可以做出一套中小企业的安全的最佳实践。</span></p>
+       <p>2.可用性（稳定性）</p>
+       <p>富途提供的服务性质决定了用户对可用性有更高的要求，服务中断有可能就意味着用户投资机会的损失。对于富途证券来说，能够自研的系统全部都完成了自研。但自研系统的稳定性是一个挑战。另外证券服务不可避免会依赖第三方系统，比如香港交易所、纳斯达克等，而且这些上家通常位于香港或美国，这里对网络<span>IT基础设施也提出了更高的要求。</span></p>
+       <p>3.研发效率</p>
+       <p>对于一家互联网公司，这是一个永恒的话题，需要持续提升团队的研发效率，但团队的经验背景的多样化是有有待提升的。</p>
+       <p><b>基于云计算构建核心竞争力</b></p>
+       <p>富途证券一开始就在腾讯云上面去构建自己的服务，在这个基础上实现了单月交易额突破<span>200亿港币。陈伟华认为，云计算的出现大大减低了创业公司的IT设施的建设和维护成本，选择公有云基本上成为默认和标准答案。陈伟华认为，这个时代只有像BAT这种公司应该去自建IDC，其它公司都不应该自建IDC,尤其是初创公司。当然成本只是云计算的基本优势，灵活扩容的支持更为重要。陈伟华介绍，去年的一个突发交易高峰，很多港股券商的服务都受到了中断，而富途证券在高峰的时候经受住了考验。这是得益于云计算的利用。</span></p>
+       <p>富途证券选择腾讯云，很大程度上基于<span>3个原因：</span></p>
+       <p></p>
+       <ol>
+        <li><span style="background-color: initial;">腾讯在</span><span style="background-color: initial;">IT基础设计建设上的优势，特别是网络基础设施；</span></li>
+        <li><span style="background-color: initial;">快速响应能力，能够第一时间响应在网络和服务方面的故障；</span></li>
+        <li><span style="background-color: initial;">安全能力，特别是攻防方面，中小企业很难构建出自己在攻防方面的能力，而腾讯有非常好的积累，而且也乐于开放出来。</span></li>
+       </ol>
+       <p></p>
+       <p>腾讯云能够提供一个非常好的专线支持和快速响应。对一家券商来说，因为它面临的环境非常复杂，它有自己的服务，有用户，还有上家，上家还有上家，所以整个网络<span>IT的架构是比较复杂的。在这种架构下它可能面临各种IT层面的故障，而证券服务的用户对中断的忍受度是非常低的，所以快速响应就是一个非常核心的问题。富途证券在跟腾讯云的合作过程中，腾讯提供了一些非标准的服务，解决了关键问题。</span></p>
+       <p>对于证券行业来说，安全要求要高出一般企业，富途证券提出了一个自己的安全体系，去涵盖到各个方面的安全的目标。在陈伟华看来，安全是有十几个正交的领域，比如信息安全帽子下还分为：用户数据安全、用户身份鉴别、协议加密、安全制度、备份与恢复、代码安全、运维安全、审计等；而<span>IDC安全帽子下又分为：主机安全、网络安全、业务安全等；办公安全帽子下则包括：OA帐号安全、OA权限控制、办公网络接入安全、办公机病毒与漏洞防护、VPN与邮件安全等。</span></p>
+       <p>这是一个十分繁杂的工作，需要体系化设计。对于中小企业而言，要构建出完整的安全能力是十分困难的，不仅成本高昂，还缺乏合适的专业人选，所以很多地方是需要公有云或者第三方服务商的支持，比如在<span>DDoS、入侵检测、Web漏洞等，富途证券都是有赖于腾讯云提供的安全防护。</span></p>
+       <p>他透露，富途证券总结出了一套中小互联网公司在安全方面的整体方案，待有一定验证之后也会开放出来，供行业参考。他特别强调，很多人对安全的理解仅仅局限在<span>DDoS，在攻防，这其实只是基础能力。</span></p>
+       <p>谈到未来，陈伟华相信云计算在提升开发和运维的效率方面可以做得更多；此外，他还期待更多真正的知识分享<span>——这方面云服务提供商当前多以PR为主。</span></p>
+       <p><b>技术团队建设经验</b></p>
+       <p>作为富途证券的<span>CTO，陈伟华的工作职责包括技术团队搭建、技术方向把握、技术氛围建设、打造学习型组织、搭建培训体系、安全体系建设、技术人员招聘、组织分工协调和效率建设等。</span></p>
+       <p>他介绍，富途证券研发团队规模为<span>80多人，主要有：后端团队（包括后台开发、BI、运维、安全）、前端团队（Win/Mac/iOS/Android）、Web团队、测试团队以及项目管理。团队的管理干部和骨干大多来自腾讯公司。</span></p>
+       <p>谈到打造一个高水平的团队，陈伟华主要提到了<span>3点经验：</span></p>
+       <p>1.<span>&nbsp; </span>招募有潜力的人，不一定要有非常强的经验背景，但一定要<span>smart、基础要好；</span></p>
+       <p>2.<span>&nbsp; </span>一个好的靶场，业务有较好的规模也快速上升，这个好不但绝对值要较好，一阶导也要较高，最好二阶导也是正的；</p>
+       <p>3.<span>&nbsp; </span>学习，一个高水平的知识型团队一定是一个学习型组织。</p> 
+       <p class="copyright"></p> 
+      </div> 
+      <div class="share"> 
+       <div class="bdsharebuttonbox" style="float:right;"> 
+        <!-- a href="#" class="bds_more" data-cmd="more"></a --> 
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a> 
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a> 
+        <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a> 
+        <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a> 
+       </div> 
+       <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"32"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script> 
+      </div> 
+      <div class="detail"> 
+       <div class="digg"> 
+        <input type="hidden" id="digg_id" value="2826601" /> 
+        <dl class="support"> 
+         <dt>
+          顶
+         </dt> 
+         <dd>
+          0
+         </dd> 
+        </dl> 
+        <dl class="oppose"> 
+         <dt>
+          踩
+         </dt> 
+         <dd>
+          0
+         </dd> 
+        </dl> 
+       </div> 
+      </div> 
+      <div class="ad_600_90"> 
+       <ins data-revive-zoneid="95" data-revive-id="8c38e720de1c90a6f6ff52f3f89c4d57"></ins> 
+      </div> 
+      <div class="related">
+       推荐阅读相关主题： 
+       <a href="http://www.csdn.net/tag/%E4%BA%92%E8%81%94%E7%BD%91/news" title="互联网" target="_blank">互联网</a> 
+       <a href="http://www.csdn.net/tag/cto/news" title="cto" target="_blank">cto</a> 
+       <a href="http://www.csdn.net/tag/%E4%BA%91%E8%AE%A1%E7%AE%97%E5%B9%B3%E5%8F%B0/news" title="云计算平台" target="_blank">云计算平台</a> 
+       <a href="http://www.csdn.net/tag/%E4%B8%AD%E5%B0%8F%E4%BC%81%E4%B8%9A/news" title="中小企业" target="_blank">中小企业</a> 
+       <a href="http://www.csdn.net/tag/%E5%88%9D%E5%88%9B%E5%85%AC%E5%8F%B8/news" title="初创公司" target="_blank">初创公司</a> 
+       <a href="http://www.csdn.net/tag/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/news" title="信息安全" target="_blank">信息安全</a> 
+      </div> 
+      <!-- relational article and news --> 
+      <div id="Tab3" class="relational"> 
+       <h2 class="tab_1 Menubox"> 
+        <ul> 
+         <li id="three1" onclick="setTab('three',1,2)" class="hover">相关文章</li> 
+         <li id="three2" onclick="setTab('three',2,2)">最新报道</li> 
+        </ul> </h2> 
+       <div class="con Contentbox"> 
+        <div id="con_three_1" class="hover"> 
+         <ul class="list_1"> 
+          <li><a href="http://www.csdn.net/article/1970-01-01/2825367" title="e袋洗岑永洪：超预想20倍压力下，架构怎么变？" target="_blank">e袋洗岑永洪：超预想20倍压力下，架构怎么变？</a></li> 
+          <li><a href="http://www.csdn.net/article/1970-01-01/2817153" title="腾讯云的Container实现" target="_blank">腾讯云的Container实现</a></li> 
+          <li><a href="http://www.csdn.net/article/1970-01-01/2824847" title="腾讯副总裁邱跃鹏 ：腾讯云，成就创业家之路" target="_blank">腾讯副总裁邱跃鹏 ：腾讯云，成就创业家之路</a></li> 
+          <li><a href="http://www.csdn.net/article/1970-01-01/2824331" title="腾讯云：云计算时代，CDN要解决的不仅仅是加速的问题" target="_blank">腾讯云：云计算时代，CDN要解决的不仅仅是加速的问题</a></li> 
+          <li><a href="http://www.csdn.net/article/1970-01-01/2825521" title="2015“云+未来”腾讯云技术领袖峰会于9月隆重举行（嘉宾名单公布）" target="_blank">2015“云+未来”腾讯云技术领袖峰会于9月隆重举行（嘉宾名单公布）</a></li> 
+          <li><a href="http://www.csdn.net/article/1970-01-01/2825581" title="土巴兔CEO王国彬：用技术改变世界，打通互联网与传统行业的壁垒" target="_blank">土巴兔CEO王国彬：用技术改变世界，打通互联网与传统行业的壁垒</a></li> 
+         </ul> 
+        </div> 
+        <div id="con_three_2" style="display:none"> 
+         <ul class="list_1 "> 
+          <li><a href="http://www.csdn.net/article/2017-02-16/2826692" title="2017中国云计算技术大会将于5月18-19日在京召开" target="_blank">2017中国云计算技术大会将于5月18-19日在京召开</a></li> 
+          <li><a href="http://www.csdn.net/article/2016-12-20/2826683" title="亚马逊AWS业务成长最快，下一步转投人工智能" target="_blank">亚马逊AWS业务成长最快，下一步转投人工智能</a></li> 
+          <li><a href="http://www.csdn.net/article/2016-12-20/2826682" title="AWS：云计算发展的新趋势与AWS提供新的云服务" target="_blank">AWS：云计算发展的新趋势与AWS提供新的云服务</a></li> 
+          <li><a href="http://www.csdn.net/article/2016-12-15/2826679" title="专访俞岳：华为如何构建新一代PaaS平台" target="_blank">专访俞岳：华为如何构建新一代PaaS平台</a></li> 
+          <li><a href="http://www.csdn.net/article/2016-12-13/2826678" title="专访Rachel：服务是美团云的核心竞争力" target="_blank">专访Rachel：服务是美团云的核心竞争力</a></li> 
+          <li><a href="http://www.csdn.net/article/2016-11-23/2826673" title="［重磅］懂行的人都在这里，BDTC 2016将于12月8-10日在京举行" target="_blank">［重磅］懂行的人都在这里，BDTC 2016将于12月8-10日在京举行</a></li> 
+         </ul> 
+        </div> 
+       </div> 
+      </div> 
+      <!-- //relational article and news 广告 --> 
+      <!-- comments --> 
+      <div id="comments" class="csdn_comments"></div> 
+      <script type="text/javascript" src="http://c.csdnimg.cn/pig/pubjs/cnick.js"></script> 
+      <script src="http://ptcms.csdn.net/comment/js/comments.js" type="text/javascript"></script> 
+      <script src="http://c.csdnimg.cn/atsuggest/comment_atsuggest.js" type="text/javascript"></script> 
+      <!--script src="js/https://passport.csdn.net/scripts/login.js?v=1.2" type="text/javascript"></script--> 
+      <script type="text/javascript">
+					    //var path = location.protocol +"//"+ location.host+"/comments/";                 //本地测试需要配置一个csdn.net的子域名，以便登录，例:http://comments.csdn.net
+					    var path = "http://ptcms.csdn.net/comment";
+					    csdn.comments = new csdn.comments({
+					        id:"comments",                                                                  //容器ID
+					        path:path,
+					        datapath:"http://ptcms.csdn.net",                                          //数据接口host
+					        cssUrl:path+"/css/comments.css",                                                 //css地址
+					        //loginUrl:path+"/js/login.js",                  //login.js地址
+					        loginUrl:"https://passport.csdn.net/content/loginbox/login.js",
+					        articleURL:"http://www.csdn.net/article/2016-02-29/2826601",
+					        title:"%E5%AF%8C%E9%80%94%E8%AF%81%E5%88%B8CTO%E9%99%88%E4%BC%9F%E5%8D%8E%EF%BC%9A%E4%BA%92%E8%81%94%E7%BD%91%E5%88%B8%E5%95%86%E4%BA%91%E8%AE%A1%E7%AE%97%E5%AE%9E%E8%B7%B5%E5%BF%83%E5%BE%97%E5%88%86%E4%BA%AB",
+					        md5:"http://static.blog.csdn.net/scripts/md5.js",                               //用于计算用户头像的md5.js地址
+					        componentsUrl:path+"/js/componet.js",              //CSDN通用组件地址
+					        toolkitUrl:path+"/js/toolkit.js",                  //CSDN工具包地址
+					        tab:{                                                                           //【通用组件】tab
+					            id:"csdnTab",                                                               //容器ID
+					            highlight:"hover"                                                           //表示当前选择的CSS样式名
+					        },
+					        pagination:{                                                                    //【通用组件】AJAX分页组件
+					            pagesize:50,                                                                //每页多少条数据
+					            showpages:10                                                                //显示多少页
+					        },
+                            oncountchange:function(count){                                                  //评论数chagnge回调
+                                var el = document.getElementById('remark_count1');
+                                if(el){el.innerHTML=count}
+                            }
+					    });
+					</script> 
+      <!-- //comments --> 
+     </div> 
+    </div> 
+    <div class="right"> 
+     <div class="ad_300_250"> 
+      <ins data-revive-zoneid="97" data-revive-id="8c38e720de1c90a6f6ff52f3f89c4d57"></ins> 
+     </div> 
+     <div style="border: 1px #ccc solid; font-size:14px; padding:10px; margin-bottom:20px;"> 
+      <ul style=" float:right; width: 160px; padding:5px;"> 
+       <li style="font-size:16px; font-weight:bold;">CSDN官方微信</li> 
+       <li style="float:left;">扫描二维码,向CSDN吐槽</li> 
+       <li>微信号：CSDNnews</li> 
+      </ul> 
+      <img src="http://articles.csdn.net/uploads/allimg/121116/28_121116100507_1.jpg" width="100" height="100" /> 
+     </div> 
+     <div style="border: 1px #ccc solid; font-size:14px; padding:3px; margin-bottom:20px; font-weight:bold;">
+      <img style="vertical-align:middle; margin-right:10px;" src="http://news.csdn.net/images/icon_ipad.png" />
+      <a href="http://dingyue.programmer.com.cn" target="_blank">程序员移动端订阅下载</a>
+     </div> 
+     <div class="sitemap">
+      <a href="http://www.csdn.net/article/lastnews" target="_blank">每日资讯快速浏览 </a>
+     </div> 
+     <!-- 订阅和关注 --> 
+     <div class="report"> 
+      <h2 class="tit_2"><p>微博关注</p></h2> 
+      <iframe width="100%" height="300" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&amp;width=0&amp;height=300&amp;fansRow=2&amp;ptype=0&amp;speed=0&amp;skin=5&amp;isTitle=0&amp;noborder=0&amp;isWeibo=1&amp;isFans=0&amp;uid=1741045432&amp;verifier=8c7c607d&amp;dpc=1"></iframe> 
+     </div> 
+     <div class="rtbrill" id="digestComment"></div> 
+     <div class="ad_300_250"> 
+      <ins data-revive-zoneid="98" data-revive-id="8c38e720de1c90a6f6ff52f3f89c4d57"></ins> 
+     </div> 
+     <!-- recommend and hot weekly --> 
+     <div id="Tab2" class="hot_weekly"> 
+      <h2 class="tit_2"><p>相关热门文章</p></h2> 
+      <div class="con Contentbox"> 
+       <div id="con_two_2"> 
+        <ul class="list_1 "> 
+        </ul> 
+       </div> 
+      </div> 
+     </div> 
+     <!-- hot tag --> 
+     <div class="hot_tag"> 
+      <h2 class="tit_2"><p><a href="http://www.csdn.net/tag">热门标签</a></p></h2> 
+      <ul class="list_1"> 
+       <li><a href="http://www.csdn.net/tag/hadoop" title="Hadoop" target="_blank">Hadoop</a></li> 
+       <li><a href="http://www.csdn.net/tag/aws" title="AWS" target="_blank">AWS</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E7%A7%BB%E5%8A%A8%E6%B8%B8%E6%88%8F" title="移动游戏" target="_blank">移动游戏</a></li> 
+       <li><a href="http://www.csdn.net/tag/java" title="Java" target="_blank">Java</a></li> 
+       <li><a href="http://www.csdn.net/tag/android" title="Android" target="_blank">Android</a></li> 
+       <li><a href="http://www.csdn.net/tag/ios" title="iOS" target="_blank">iOS</a></li> 
+       <li><a href="http://www.csdn.net/tag/swift" title="Swift" target="_blank">Swift</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%99%BA%E8%83%BD%E7%A1%AC%E4%BB%B6" title="智能硬件" target="_blank">智能硬件</a></li> 
+       <li><a href="http://www.csdn.net/tag/docker" title="Docker" target="_blank">Docker</a></li> 
+       <li><a href="http://www.csdn.net/tag/openstack" title="OpenStack" target="_blank">OpenStack</a></li> 
+       <li><a href="http://www.csdn.net/tag/vpn" title="VPN" target="_blank">VPN</a></li> 
+       <li><a href="http://www.csdn.net/tag/spark" title="Spark" target="_blank">Spark</a></li> 
+       <li><a href="http://www.csdn.net/tag/erp" title="ERP" target="_blank">ERP</a></li> 
+       <li><a href="http://www.csdn.net/tag/ie10" title="IE10" target="_blank">IE10</a></li> 
+       <li><a href="http://www.csdn.net/tag/eclipse" title="Eclipse" target="_blank">Eclipse</a></li> 
+       <li><a href="http://www.csdn.net/tag/crm" title="CRM" target="_blank">CRM</a></li> 
+       <li><a href="http://www.csdn.net/tag/javascript" title="JavaScript" target="_blank">JavaScript</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E5%BA%93" title="数据库" target="_blank">数据库</a></li> 
+       <li><a href="http://www.csdn.net/tag/ubuntu" title="Ubuntu" target="_blank">Ubuntu</a></li> 
+       <li><a href="http://www.csdn.net/tag/nfc" title="NFC" target="_blank">NFC</a></li> 
+       <li><a href="http://www.csdn.net/tag/wap" title="WAP" target="_blank">WAP</a></li> 
+      </ul> 
+     </div> 
+     <!-- //hot tag --> 
+     <!-- share --> 
+     <style>
+.box{ margin-bottom:20px;}
+.box h2{ color:#c00;font:normal 18px/30px "Microsoft YaHei";border-bottom:2px #333 solid;margin-bottom:15px;}
+.box h2 a{ color:#c00;}
+</style> 
+     <div class="box share"> 
+      <h2><a target="_blank" href="http://download.csdn.net/album/list" onclick="LogClickCount(this,342);">下载专辑</a></h2> 
+      <dl> 
+       <dt class="clearfix"> 
+        <a title="【资源优选】20个热门MySQL源码" href="http://download.csdn.net/album/detail/3626" target="_blank" onclick="LogClickCount(this,342);"><img style="height:75px;width:75px;" src="http://images.csdn.net/20170327/MySQL_180x220.png" /></a> 
+        <a title="【资源优选】20个热门MySQL源码" href="http://download.csdn.net/album/detail/3626" target="_blank" onclick="LogClickCount(this,342);"> 【资源优选】20个热门MySQL源码 </a>
+       </dt> 
+       <dt class="clearfix"> 
+        <a title="【资源优选】20个热门的Unity源码" href="http://download.csdn.net/album/detail/3611" target="_blank" onclick="LogClickCount(this,342);"><img style="height:75px;width:75px;" src="http://images.csdn.net/20170320/unity3D_180x220.png" /></a> 
+        <a title="【资源优选】20个热门的Unity源码" href="http://download.csdn.net/album/detail/3611" target="_blank" onclick="LogClickCount(this,342);"> 【资源优选】20个热门的Unity源码 </a>
+       </dt> 
+       <dt class="clearfix"> 
+        <a title="【资源优选】第十期：20个最热门的cocos2D源码" href="http://download.csdn.net/album/detail/3601" target="_blank" onclick="LogClickCount(this,342);"><img style="height:75px;width:75px;" src="http://images.csdn.net/20170313/cocos2D_180.png" /></a> 
+        <a title="【资源优选】第十期：20个最热门的cocos2D源码" href="http://download.csdn.net/album/detail/3601" target="_blank" onclick="LogClickCount(this,342);"> 【资源优选】第十期：20个最热门的cocos2D源码 </a>
+       </dt> 
+       <dt class="clearfix"> 
+        <a title="【资源优选】CSDN最热门的20个iOS精品源代码" href="http://download.csdn.net/album/detail/3593" target="_blank" onclick="LogClickCount(this,342);"><img style="height:75px;width:75px;" src="http://images.csdn.net/20170306/iOS180x23001.png" /></a> 
+        <a title="【资源优选】CSDN最热门的20个iOS精品源代码" href="http://download.csdn.net/album/detail/3593" target="_blank" onclick="LogClickCount(this,342);"> 【资源优选】CSDN最热门的20个iOS精品源代码 </a>
+       </dt> 
+       <dt class="clearfix"> 
+        <a title="10本python学习经典书" href="http://download.csdn.net/album/detail/3588" target="_blank" onclick="LogClickCount(this,342);"><img style="height:75px;width:75px;" src="http://images.csdn.net/20170303/python电子书.png" /></a> 
+        <a title="10本python学习经典书" href="http://download.csdn.net/album/detail/3588" target="_blank" onclick="LogClickCount(this,342);"> 10本python学习经典书 </a>
+       </dt> 
+      </dl> 
+     </div> 
+     <!-- //share --> 
+    </div> 
+   </div> 
+   <div class="hot_topic"> 
+    <ins data-revive-zoneid="96" data-revive-id="8c38e720de1c90a6f6ff52f3f89c4d57"></ins> 
+   </div> 
+   <script type="text/javascript" src="http://ptcms.csdn.net/like/js/like.js"></script> 
+   <script>
+	/*
+  window.WebSocket = window.WebSocket || window.MozWebSocket;
+  if( window.WebSocket ) {
+    var  wsServer = 'ws://geektest.csdn.net/'; 
+    var websocket = new window.WebSocket(wsServer, 'cmslike');
+
+    websocket.onopen = function (evt) { onOpen(evt) }; 
+    websocket.onclose = function (evt) { onClose(evt) }; 
+    websocket.onmessage = function (evt) { onMessage(evt) }; 
+    websocket.onerror = function (evt) { onError(evt) }; 
+    function onOpen(evt) {
+    } 
+    function onClose(evt) { 
+    } 
+    function onMessage(evt) {
+      var data = JSON.parse(evt.data);
+      var ding = $('.support dd').text();
+      if(ding != '' && data.support > ding){
+        $('.support dd').text(data.support);
+      };
+      var cai = $('.oppose dd').text();
+      if (cai != '' && data.oppose > cai) {
+        $('.oppose dd').text(data.oppose);
+      };
+    } 
+    function onError(evt) { 
+    }
+  }
+  */
+		$(document).ready(function(){
+			var digg_id=$("#digg_id").val();
+			$('.digg').like({
+				article_id: digg_id, // 文章id
+				ding_class: 'support', // 顶的class
+				cai_class: 'oppose', // 踩的class
+        domain: 'news.csdn.net',
+				callback: function(data) //处理数据方法
+				{
+          if(data.succ == 1)
+          {
+            $('.support dd').text(data.info.ding);
+            $('.oppose dd').text(data.info.ding);
+          }
+					if(data.succ == -2)
+					{
+						if(confirm(data.msg)){
+							window.location.href = "https://passport.csdn.net/UserLogin.aspx?from=http://news.csdn.net%2Farticle%2F2016-02-29%2F2826601";
+							return false;
+						}
+					}
+					if(data.succ == -1)
+					{
+						alert(data.msg);
+					}
+				}
+			});
+		});
+	</script> 
+   <script type="text/javascript">
+		$(document).ready(function(){ 
+			var href=document.location.href;	
+
+			if(href.split("/")[6] == undefined){
+				$("#click_"+1).addClass("on");
+			}else{
+				var hrefpageno=href.split("/")[6];		
+				$("#click_"+hrefpageno).addClass("on");
+			}	
+
+			new $.AutoScroll({
+				wrap:$('#job_ul'),scrollCount:1,interval:1500
+			});
+		expandcontent('sc3', tabobjlinks[2]);
+		$.getJSON('http://ptcms.csdn.net/article/service/article_count?preview=1&aid=2826601&jsonpcallback=?',function(data){
+				$('.view_time').html(data+'次阅读');
+			});
+
+		});
+		function linkfirst(arcid){
+			$("#linkfirst").attr("href","article.html?arcid="+arcid+"&pageno=1");			
+		}
+		function preclick(arcid){
+			var href=window.location.href;		
+			var hrefpageno=href.split("&")[1];		
+			var pageno=hrefpageno.split("=")[1];
+			var hrefno=pageno-1;
+			if(hrefno <1){
+				hrefno = 1;
+			}
+			$("#preclick").attr("href","article.html?arcid="+arcid+"&pageno="+hrefno);
+		}
+	
+		function nextclick(total,arcid){
+			var href=window.location.href;		
+			var hrefpageno=href.split("&")[1];		
+			var pageno=hrefpageno.split("=")[1];
+			var hrefno=parseInt(pageno)+1;
+			if(hrefno >total){
+				hrefno = total;
+			}
+			$("#nextclick").attr("href","article.html?arcid="+arcid+"&pageno="+hrefno);
+		}
+	
+		function firstclick(arcid){
+			$("#firstclick").attr("href","article.html?arcid="+arcid+"&pageno=1");	
+		}
+		
+		function lastclick(total,arcid){
+			$("#lastclick").attr("href","article.html?arcid="+arcid+"&pageno="+total);
+		}
+		function linktitle(num,arcid){
+			var numid=parseInt(num)+1;
+			$("#linktitle_"+num).attr("href","article.html?arcid="+arcid+"&pageno="+numid);
+		}
+	</script> 
+   <script>
+	   $(function () {
+	    var wrap = function () {
+	        var elems = document.getElementsByClassName('syntaxhighlighter');
+	        for (var j = 0; j < elems.length; ++j) {
+	            var sh = elems[j];
+	            var gLines = sh.getElementsByClassName('gutter')[0].getElementsByClassName('line');
+	            var cLines = sh.getElementsByClassName('code')[0].getElementsByClassName('line');
+	            var stand = 15;
+	            for (var i = 0; i < gLines.length; ++i) {
+	                var h = $(cLines[i]).height();
+	                if (h != stand) {
+	                    //console.log(i);
+	                    gLines[i].setAttribute('style', 'height: ' + h + 'px !important;');
+	                }
+	            }
+	        }
+	     };
+	    var whenReady = function () {
+	        if ($('.syntaxhighlighter').length === 0) {
+	            setTimeout(whenReady, 0);
+	        } else {
+	            wrap();
+	        }
+	    };
+	    whenReady();
+	});
+	</script> 
+   <script type="text/javascript">
+ 	 document.write('<script src="http' + (/^https/.test(location.href) ? 's' : '') + '://c.csdnimg.cn/public/highlighter/js/highlighter.js?' + (new Date()/300000|0) + '"></'+'script>');
+	</script> 
+   <!-- 广告位：富媒体广告 --> 
+   <script type="text/javascript">BAIDU_CLB_fillSlot("119835");</script> 
+   <script language="javascript" type="text/javascript" src="http://ads.csdn.net/js/async_new.js"></script> 
+   <!-- public footer --> 
+   <script type="text/javascript">
+      document.write('<script type="text/javascript" src="http://c.csdnimg.cn/pubfooter/js/publib_footer.js?' + Math.floor(new Date()/120000).toString(36) + '="></'+'script>');
+      </script> 
+   <!-- //public footer --> 
+  </div> 
+  <!-- tab js --> 
+  <script type="text/javascript">
+<!--
+/*第一种形式 第二种形式 更换显示样式*/
+function setTab(name,cursel,n){
+	for(i=1;i<=n;i++){
+		var menu=document.getElementById(name+i);
+		var con=document.getElementById("con_"+name+"_"+i);
+		menu.className=i==cursel?"hover":"";
+		con.style.display=i==cursel?"block":"none";
+	}
+}
+//-->
+</script> 
+  <script type="text/javascript" src="http://www.csdn.net/ui/scripts/Csdn/counter.js"></script> 
+  <script id="csdn-toolbar-id" btnid="header_notice_num" wrapid="note1" count="5" subcount="5" type="text/javascript" src="http://c.csdnimg.cn/public/common/toolbar/js/toolbar.js"></script>  
+  <!-- ask 全局悬浮按钮  --> 
+  <link href="http://c.csdnimg.cn/comm_ask/css/ask_float_block.css" rel="stylesheet" type="text/css" /> 
+  <script type="text/javascript" src="http://c.csdnimg.cn/comm_ask/js/libs/wmd.js"></script> 
+  <script type="text/javascript" src="http://c.csdnimg.cn/comm_ask/js/libs/showdown.js"></script> 
+  <script type="text/javascript" src="http://c.csdnimg.cn/comm_ask/js/libs/prettify.js"></script> 
+  <script type="text/javascript" src="http://c.csdnimg.cn/comm_ask/js/apps/ask_float_block.js"></script>  
+ </body>
+</html>

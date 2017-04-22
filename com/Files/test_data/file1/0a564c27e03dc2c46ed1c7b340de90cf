@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head> 
+  <meta charset="UTF-8" /> 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /> 
+  <title>优易惠投标大管家-标讯服务</title> 
+  <script type="text/javascript" src="/Resource/js/jquery-1.12.0.min.js"></script> 
+  <script type="text/javascript" src="/Resource/js/md5Util.js"></script> 
+  <script type="text/javascript" src="/view/auth/login.js"></script> 
+  <link type="text/css" rel="stylesheet" href="/Resource/css/base_login.css" /> 
+  <link type="text/css" rel="stylesheet" href="/Resource/css/module.css" /> 
+  <link rel="shortcut icon" href="/Resource/images/favicon.ico" /> 
+ </head> 
+ <body> 
+  <input type="hidden" id="initPath" value="" /> 
+  <input type="hidden" id="requestPath" value="" /> 
+  <div class="header"> 
+   <div class="topHeader"> 
+    <div class="wHeader"> 
+     <div class="hLeft" id="loginStatus"></div> 
+     <div class="hRight"> 
+      <a href="/">首页</a> 
+      <em>|</em> 
+      <a href="/view/common/download_link.jsp">保存本站</a> 
+      <em>|</em> 
+      <a href="/view/common/introduce.jsp">关于我们</a> 
+     </div> 
+    </div> 
+   </div> 
+   <div class="login"> 
+    <a href="#"><img src="/Resource/images/logo.png" /></a> 
+    <span style="float: left; margin-top: 26px; font-size: 25px; color: #dc631b; font-weight: bold;">-标讯服务</span> 
+    <span style="float: left; margin-top: 17px; margin-left: 50px; font-size: 40px; font-style: italic; color: orange;">想中标吗？用投标大管家！</span> 
+    <!-- 				<div style="float: right;"> --> 
+    <!-- 				</div> --> 
+   </div> 
+  </div> 
+  <script type="text/javascript">
+	$.getJSON("/LoginController.cb?method=getCurrUser", function(json) {
+		if (json.name) {
+			$("#loginStatus").html('您好，' + json.name + ' <em>|</em> <a href="/IndexController.cb?method=toManagerIndex">个人工作台</a> <em>|</em> <a href="/IndexController.cb?method=changepwd" target="changepwd">修改密码</a> <em>|</em> <a href="/LoginController.cb?method=logout">退出</a>');
+		} else {
+			$("#loginStatus").html('<a href="/LoginController.cb?method=toLoginPage">登录</a>');
+		}
+	});
+	
+	function toDesktop(sUrl,sName){
+		try{
+			var WshShell = new ActiveXObject("WScript.Shell");
+			var oUrlLink = WshShell.CreateShortcut(WshShell.SpecialFolders("Desktop") + "\\" + sName + ".url");
+			oUrlLink.TargetPath = sUrl; oUrlLink.Save(); 
+		}catch(e){
+			alert("当前IE安全级别不允许操作！");
+		}
+	}
+</script> 
+  <div class="loginMain"> 
+   <div class="login"> 
+    <div class="loginBanner" style="background: none;">
+     <img src="/Resource/images/loginBanner03.png" />
+    </div> 
+    <div class="loginForm"> 
+     <form id="loginForm"> 
+      <h2>用户登录</h2> 
+      <p style="margin-top: 0px;float: none;">使用公共网络不建议自动登录，以免账户信息丢失</p> 
+      <ul> 
+       <li><input type="text" name="j_username" id="j_username" class="user" placeholder="用户名" value="" /></li> 
+       <li><input type="password" name="j_password" id="j_password" class="password" placeholder="密码" value="" /></li> 
+       <li> <input type="text" name="j_rand" id="j_rand" class="verification" placeholder="验证码" value="" /> <img id="randImg" src="/LoginController.cb?method=getRandomImg" onclick="{ $(this).attr('src',$(this).attr('src')+'&amp;flag='+(new Date()).valueOf());}" title="点击更换" alt="点击更换" style="cursor: pointer;" /> <a href="#" onclick="{ $('#randImg').attr('src',$('#randImg').attr('src')+'&amp;flag='+(new Date()).valueOf());}">换一张</a> </li> 
+      </ul> 
+      <div class="forgetPW"> 
+       <label><input type="checkbox" name="j_autologin" />下次自动登录</label> 
+       <a href="/view/auth/forgetPW.jsp">忘记密码？</a> 
+       <span id="ErrorMsg" style="color: red;"></span> 
+      </div> 
+      <div class="btn btnTwo"> 
+       <a href="#" class="btnBg" id="login" style="width: 380px;">登录</a> 
+       <!-- 								<a href="#">注册</a> --> 
+      </div> 
+     </form> 
+    </div> 
+   </div> 
+  </div> 
+  <div class="footer"> 
+   <div style="width: 1200px; margin: 0 auto;"> 
+    <p> <img src="/Resource/images/phone.png" />服务电话<b>4006168636</b><a href="tencent://message/?uin=2602608636&amp;Menu=yes"><img src="http://wpa.qq.com/pa?p=1:2602608636:7" /></a> </p> 
+    <div style="height: 120px; width: 100px; border: 1px solid white; float: right; background: white; margin-right: 0px;"> 
+     <div style="width: 100%; height: 100px;"> 
+      <img alt="" src="/Resource/images/wx.png" height="100px" width="100px" /> 
+     </div> 
+     <div style="width: 100%; height: 20px; text-align: center; font-weight: bold; line-height: 20px;">
+      微信客服
+     </div> 
+    </div> 
+    <div style="height: 120px; width: 100px; border: 1px solid white; float: right; background: white; margin-right: 50px;"> 
+     <div style="width: 100%; height: 100px;"> 
+      <img alt="" src="/Resource/images/uehtb.jpg" height="100px" width="100px" /> 
+     </div> 
+     <div style="width: 100%; height: 20px; text-align: center; font-weight: bold; line-height: 20px;">
+      公众号
+     </div> 
+    </div> 
+    <ul> 
+     <li>本网站支持的浏览器为：火狐浏览器、谷歌浏览器、IE10+以及使用以上三个内核的浏览器</li> 
+     <li>北京市海淀区车公庄西路乙19号华通大厦B座南塔三层 E-mail:uehtb@uehchina.com</li> 
+     <li>京ICP备15054167号-2</li> 
+     <li> &copy;2015- 2017 北京优易惠技术有限公司 版权所有，并保留所有权利 </li> 
+    </ul> 
+   </div> 
+  </div>   
+ </body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<title>login登陆页面</title>
+ <link rel="stylesheet" type="text/css" href="/css/login.css">
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script>
+
+//同步登录 start      by ljx
+window.addEventListener('message', function(e){
+//	console.log('foo say: ' + e.data.a);
+//	console.log('foo say1: ' + e.data.b);
+//	e.source.postMessage('get', '*');
+	console.log(e.data.username);
+	$('#uname').val(e.data.username);
+	$('#pwd').val(e.data.pwd);
+	if($('#uname').val()!='' && $('#pwd').val()!=''){
+	$('#submit').click();
+	}
+	//e.source.postMessage('get', '*');
+	
+}, false);
+//同步登录 end
+
+
+	$(function(){
+	  $('.zg_sr').hover(function(){
+		$(this).addClass('zg_nrbj');  
+	   },function(){
+		$(this).removeClass('zg_nrbj'); 
+	   })
+	});
+</script>
+</head>
+<body>
+<form action="/index/login" method="post" id="login_form">
+
+
+<input type="hidden" name="_csrf" value="WGd0ay1yUi1qLEcNT0o3YR0mRi5fIT11NQ86A0UZamU6EQZTaEdqVQ==">
+<!--登陆-->
+<div class="zg_login">
+	<p class="zg_logint"><span>OFFCN</span> MIS</p>
+    <div class="zg_zn">
+    <p class="zg_sr"><span class="zg_logtb"></span><input type="text" value="IS账号" name="username" id="uname" onfocus="this.value=''" onblur="if(this.value==''){this.value='IS账号'}" class="zg_xm"></p>
+    <p class="zg_sr"><span class="zg_logtb1"></span>
+    		<input name="" type="text" value="密码" id="powd" class="zg_xm">
+			<input name="password" type="password" style="display:none;" id="pwd" class="zg_xm">
+			<script type="text/javascript">
+            var tx = document.getElementById("powd"), pwd = document.getElementById("pwd");
+            tx.onfocus = function(){
+            if(this.value != "密码") return;
+            this.style.display = "none";
+            pwd.style.display = "";
+            pwd.value = "";
+            pwd.focus();
+            }
+            pwd.onblur = function(){
+            if(this.value != "") return;
+            this.style.display = "none";
+            tx.style.display = "";
+            tx.value = "密码";
+            }
+            </script></p>
+    <!--<p class="zg_sr1"><span><img src="/images/zg_yzm.jpg" alt="验证码" width="72" height="21" /></span><input type="text" value="验证码" onfocus="this.value=''" onblur="if(this.value==''){this.value='验证码'}" class="zg_xm1" /></p>
+    <p class="zg_logts" style="display:none;">密码输入错误，请重新输入</p>
+    <p class="zg_logts">验证码输入错误，请重新输入</p> -->
+    </div>
+    <p class="zg_logzs"><input type="submit" name="submit" id="submit" value="Log In" class="zg_loginan"></p>
+</div>
+</form>
+
+
+</body></html>

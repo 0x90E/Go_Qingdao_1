@@ -1,0 +1,362 @@
+<!DOCTYPE html><html lang="zh"><head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+    <meta charset="utf-8">
+    <title>掌合商城登录 – 掌合天下 –超市进货 上掌合！</title>
+    <link href="http://static.zhanghetianxia.com/pc/web/cs/images/logo64.ico?v=2.1.1.3" rel="shortcut icon" type="image/x-icon">
+    <meta name="viewport" content="width=device-width">
+    <!--屏蔽百度蜘蛛代码-->
+    <meta name="baiduspider  " content="noindex,nofollow">
+    <link href="http://static.zhanghetianxia.com/pc/web/cs/css/zh_global.css?v=2.1.1.3" rel="stylesheet" type="text/css">
+    <link href="http://static.zhanghetianxia.com/pc/web/cs/css/zh_login.css?v=2.1.1.3" rel="stylesheet" type="text/css">
+
+
+    <script type="text/javascript" async="" src="http://dn-growing.qbox.me/vds.js"></script><script src="http://static.zhanghetianxia.com/pc/base/js/jquery-1.8.3.js?v=2.1.1.3"></script>
+    <script src="http://static.zhanghetianxia.com/pc/web/cs/js/dialog.js?v=2.1.1.3"></script>
+    <script src="http://static.zhanghetianxia.com/pc/base/js/jquery.cookie.js?v=2.1.1.3"></script>
+    <script type="text/javascript">
+        //判断浏览器是否支持 placeholder属性
+        function isPlaceholder() {
+            var input = document.createElement('input');
+            return 'placeholder' in input;
+        }
+
+        if (!isPlaceholder()) {//不支持placeholder 用jquery来完成
+            $(document).ready(function () {
+                if (!isPlaceholder()) {
+                    $("input").not("input[type='password']").each(//把input绑定事件 排除password框
+                        function () {
+                            if ($(this).val() == "" && $(this).attr("placeholder") != "") {
+                                $(this).val($(this).attr("placeholder"));
+                                $(this).focus(function () {
+                                    if ($(this).val() == $(this).attr("placeholder")) $(this).val("");
+                                });
+                                $(this).blur(function () {
+                                    if ($(this).val() == "") $(this).val($(this).attr("placeholder"));
+                                });
+                            }
+                        });
+                    //对password框的特殊处理1.创建一个text框 2获取焦点和失去焦点的时候切换
+                    var pwdField = $("input[type=password]");
+                    var pwdVal = pwdField.attr('placeholder');
+                    pwdField.after('<input id="pwdPlaceholder" type="text" value=' + pwdVal + ' autocomplete="off" />');
+                    var pwdPlaceholder = $('#pwdPlaceholder');
+                    pwdPlaceholder.show();
+                    pwdField.hide();
+
+                    pwdPlaceholder.focus(function () {
+                        pwdPlaceholder.hide();
+                        pwdField.show();
+                        pwdField.focus();
+                    });
+
+                    pwdField.blur(function () {
+                        if (pwdField.val() == '') {
+                            pwdPlaceholder.show();
+                            pwdField.hide();
+                        }
+                    });
+
+                }
+            });
+
+        }
+    </script>
+
+
+
+    <script type="text/javascript">
+        //超市地址
+        //2015年11月16日 11:14:20 sunl
+        var csurl = 'http://chaoshi.zhanghetianxia.com/';//旧版超市地址
+        var homeurl = 'http://cs.ccoop.com.cn/';//新版超市首页地址
+        //回车键触发事件
+        document.onkeydown = function (e) {
+            var ev = document.all ? window.event : e;
+            if (ev.keyCode == 13) {
+                $("#btn_login").trigger("click");
+            }
+
+        }
+
+        $(document).ready(function () {
+
+            $(".forget-pwd").click(function () {
+                //跳转找回密码
+                location.href = csurl + "/retrievepassword/confirmaccount";
+            });
+
+            // 使用 jQuery 异步提交表单
+            $('#btn_login').bind("click", function () {
+                var data_oper = $(this).attr("data-oper");
+                if (data_oper == "on") {
+                    $(this).attr("data-oper", "off");
+                    $(this).val("登录中...");
+
+                    $("#error_info").html("<span class=\"login_error\"></span>");
+                    var username = $('input[name=username]').val();
+                    if (username == "用户名") {
+                        username = '';
+                    }
+                    var password = $('input[name=password]').val();
+                    var returnurl = $('input[name=returnurl]').val();
+                    var rememberMe = $('input[name=rememberMe]').is(':checked');
+
+                    $.ajax({
+                        url: '/account/login',
+                        type: "POST",
+                        dataType: "json",
+                        data: { username: username, password: password, returnurl: returnurl, rememberMe: rememberMe },
+                        error: function (msg) {
+                            $("#error_info").show();
+                            $("#error_info").html("<span class=\"login_error\">操作失败!错误信息:" + msg + "</span>");
+                        },
+                        success: function (data) {
+                            //2015年5月29日15:32:50 兰振凯增加弹层提示  start
+                            if (data.result == 0) {
+                                $("#btn_login").attr("data-oper", "on");
+                                $("#btn_login").val("登录");
+
+                                alert(data.msg);
+
+                            }
+                            else if (data.result == 404) {
+                                window.location.href = data.pormptUrl;
+                            }
+                            else if (data.result == 1) {
+
+
+                                $.getJSON(csurl + "/account/LoginNew?callback=?", { javacookiesvalue: $.cookie('zhtxnewcs'), cookiesvalue: $.cookie('zhtxgosproject'), rememberMe: rememberMe }, function (json) {
+                                   
+                                    if (json == 1) {
+                                        if (data.returnUrl && data.returnUrl != '/') {
+                                            window.location.href = data.returnUrl;
+                                        }
+                                        else {
+                                            window.location.href = homeurl;//跳转到新版超市首页
+                                        }
+                                    } else {
+                                        alert("失败")
+                                    }
+                                })
+
+
+
+
+                            }
+                            else if (data.result == 3) {
+                                window.location.href = csurl + "account/reregister?uid=" + data.uid;
+                            }
+                            else if (data.result == 5) { //未绑卡跳转 LZK 2015-9-17 10:10:15
+                                window.location.href = csurl + "MyAccountBook/BandCardPage";
+                            }
+                            else {
+                                $("#btn_login").attr("data-oper", "on");
+                                $("#btn_login").val("登录");
+                                $("#error_info").html("<span class=\"login_error\">" + data.result + "</span>");
+                                $("#error_info").show();
+                            }
+                        },
+                        error: function (error) {
+                            alert("登录失败!" + error);
+                        }
+                    });
+        }
+            });
+        });
+
+function AlertColse() {
+    $("#backDiv").hide();
+    $("#messageDiv").hide();
+    $("#btn_login").attr("data-oper", "on");
+    $("#btn_login").val("登录");
+}
+    </script>
+    
+</head>
+<body>
+
+    
+    <div class="login-top">
+        <div class="wid-warp" style="width: 760px; ">
+            <div class="login-logo">
+                <a href="http://b2b.ccoop.com.cn/" target="_self">
+                    <img src="http://static.zhanghetianxia.com/pc/web/cs/images/logoLogin.jpg?v=2.1.1.3" alt="超市订货系统">
+                    
+                    
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="login-main">
+<form action="/" enctype="multipart/form-data" id="myform" method="post">            <div class="wid-warp" style="width: 760px; ">
+                <div class="login-img fl" style="width: 360px; ">
+                    <div class="bannerIndex" id="divAdvList"><ul><li style="display: list-item; "><a href="http://www.zhanghetianxia.com/news/detailednews-88701_21.html" target="_blank"><img width="496" height="302" src="http://img.zhanghetianxia.com//GosImgs/ADImgs/2017/3/17/df2d532a7a464f4cb6bfeb321bf8ae06.png"></a></li><li style="display: none; "><a href="http://www.dwz.cn/5FkKSv" target="_blank"><img width="496" height="302" src="http://img.zhanghetianxia.com//GosImgs/ADImgs/2017/4/1/190ee6bc9c2f4bf9811048c9bebdc3c7.png"></a></li><li style="display: none; "><a href="http://passport.zhanghetianxia.com/account/login" target="_blank"><img width="496" height="302" src="http://img.zhanghetianxia.com//GosImgs/ADImgs/2016/11/22/02a93e0cb103465b82ebd28ad6f1b9e4.png"></a></li></ul><dl><dd class="active"></dd><dd class=""></dd><dd class=""></dd></dl><div class="clearfix"></div></div>
+
+                </div>
+                <div class="login-box fr" style="width: 340px; ">
+                    <div class="login-box-warp" style="width: 340px; ">
+                        <div class="login-box-content">
+                            <h1>用户登录</h1>
+                            <span id="error_info" class="erro-tip" style="display: none; visibility: visible">密码输入错误</span>
+                            <ul>
+                                <li>
+                                    <em class="status-ico"></em>
+                                    <input name="username" type="text" placeholder="用户名">
+                                </li>
+                                <li>
+                                    <em class="status-ico status-ico2"></em>
+                                    <input name="password" type="password" placeholder="密码">
+                                </li>
+
+                            </ul>
+                            <p>
+                                <span class="fl">
+                                    <input type="checkbox" name="rememberMe">自动登录
+                                </span>
+                                <span class="fr underline"><a href="javascript:void(0);" class="forget-pwd">忘记密码 ？</a></span>
+                            </p>
+                            <input id="returnurl" name="returnurl" type="hidden" value="http://chaoshi.zhanghetianxia.com/myaccountcenter/index">
+                            <input id="btn_login" name="btn_login" type="button" class="login-btn" value="登录" data-oper="on">
+                        </div>
+                        <div class="register-btn">
+                            <span class="font14">现在还不是会员? </span>
+                            
+                            <a href="http://chaoshi.zhanghetianxia.com/account/register">立即注册</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="cl"></div>
+            </div>
+</form>    </div>
+
+    <div class="login-foot">copyright © 2013-2017 掌合天下(北京)信息技术有限公司&nbsp;&nbsp;琼公网安备46010802000021号｜ 琼ICP备15002571号</div>
+    <script type="text/javascript" src="http://static.zhanghetianxia.com/pc/web/cs/js/slideLogin.js?v=2.1.1.3"></script>
+
+
+
+
+
+    <script>
+
+<!-- Begin
+    $(function () {
+        /*屏幕分辨率适配 liuhuanhuan*/
+        var zh_screenWid = screen.width;
+        var adv = "c#";
+
+            if (zh_screenWid == 1024) {
+                $(".wid-warp").css("width", "900px");
+                $(".wid-warp .login-img img").width(450);
+                $(".wid-warp .login-img").width(360);
+                $(".login-box,.login-box-warp").width(360);
+
+            }
+            if (zh_screenWid < 1024) {
+                $(".wid-warp").css("width", "760px");
+                $(".wid-warp .login-img img").width(360);
+                $(".wid-warp .login-img").width(360);
+                $(".login-box,.login-box-warp").width(340);
+            }
+            if (adv == "java") {
+                GetAdvertN();
+            } else {
+                GetAdvert();
+            }
+
+        });
+
+
+
+        function GetAdvertN() {
+            $.ajax({
+                url: "/Account/GetAdvertN",
+                data: {},
+                type: "get",
+                dataType: "",
+                success: function (data) {
+                    var advHtml = "";
+                    //填充广告区域
+                    if (data.data.length > 0) {
+                        advHtml += "<ul>";
+                        for (var i = 0; i < data.data.length; i++) {
+                            advHtml += '<li style="display: ' + (i == 0 ? 'list-item' : 'none') + '">';
+                            advHtml += '<a href="' + data.data[i].linkAddress + '" target="_blank">';
+                            advHtml += '<img width="496" height="302" src="' + data.data[i].url + '">';
+                            advHtml += '</a>';
+                            advHtml += '</li>';
+                        }
+                        advHtml += "</ul>";
+                        advHtml += "<dl>";
+                        for (var i = 0; i < data.data.length; i++) {
+                            advHtml += '<dd class="' + (i == 0 ? 'active' : '') + '"></dd>';
+                        }
+                        advHtml += "</dl>";
+                    } else {
+                        advHtml += '<a href="http://b2b.ccoop.com.cn/news/detailednews-84368_21.html" target="_blank">';
+                        advHtml += '<img src="pc/web/cs/images/login-img.jpg" alt="掌合天下"/>';
+                        advHtml += '</a>';
+                    }
+
+                    advHtml += '<div class="clearfix"></div>';
+                    $("#divAdvList").html(advHtml);
+
+                    //*轮播 update  author:liuhuanhuan desc:slide 修改*//
+                    new slider('bannerIndex');
+                },
+                error: function (error) {
+
+                }
+            });
+        };
+
+
+        //加载轮播广告
+        function GetAdvert() {
+            $.ajax({
+                url: "/Account/GetAdvert",
+                data: {},
+                type: "post",
+                dataType: "",
+                success: function (data) {
+                    var advHtml = "";
+                    //填充广告区域
+                    if (data && data.result && data.data && data.data.length > 0) {
+                        advHtml += "<ul>";
+                        for (var i = 0; i < data.data.length; i++) {
+                            advHtml += '<li style="display: ' + (i == 0 ? 'list-item' : 'none') + '">';
+                            advHtml += '<a href="' + data.data[i].LinkAddress + '" target="_blank">';
+                            advHtml += '<img width="496" height="302" src="' + data.data[i].AdImage + '">';
+                            advHtml += '</a>';
+                            advHtml += '</li>';
+                        }
+                        advHtml += "</ul>";
+                        advHtml += "<dl>";
+                        for (var i = 0; i < data.data.length; i++) {
+                            advHtml += '<dd class="' + (i == 0 ? 'active' : '') + '"></dd>';
+                        }
+                        advHtml += "</dl>";
+                    } else {
+                        advHtml += '<a href="http://b2b.ccoop.com.cn/news/detailednews-84368_21.html" target="_blank">';
+                        advHtml += '<img src="pc/web/cs/images/login-img.jpg" alt="掌合天下"/>';
+                        advHtml += '</a>';
+                    }
+
+                    advHtml += '<div class="clearfix"></div>';
+                    $("#divAdvList").html(advHtml);
+
+                    //*轮播 update  author:liuhuanhuan desc:slide 修改*//
+                    new slider('bannerIndex');
+                },
+                error: function (error) {
+
+                }
+            });
+        };
+        // End -->
+    </script>
+    <!-- growing -->
+    <script type="text/javascript" src="http://static.zhanghetianxia.com/pc/base/js/tongji.js?v=2.1.1.3"></script>
+
+
+</body></html>

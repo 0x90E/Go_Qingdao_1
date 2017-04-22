@@ -1,0 +1,68 @@
+<!DOCTYPE html><html><head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" name="viewport">
+    <title>校招详情</title>
+    <link rel="stylesheet" href="/ali/css/reset-452f73d5d0.css">
+    <link rel="stylesheet" href="/ali/css/detail-7942288b06.css">
+    <style>
+    [v-cloak],
+    [v-if],
+    [v-show] {
+        display: none;
+    }
+    </style>
+<script src="http://pingjs.qq.com/h5/stats.js?v2.0.4" name="MTAH5" sid="500351756"></script><script charset="utf-8" async="" src="https://xiaoyuan.chinahr.com/ali/js/util-c431eb0b0d.js"></script><script charset="utf-8" async="" src="https://xiaoyuan.chinahr.com/ali/js/config-89702ab1cb.js"></script></head>
+
+<body id="body" v-cloak="">
+    <div class="detl">
+        <div class="detl-top">
+            <h1 class="detl-top-title">{{entity.attachedName}}</h1>
+            <p>{{entity.companyAddress+' / 职位'}}<span class="detl-top-note">{{entity.positionNumber}}</span>个</p>
+        </div>
+        <div class="detl-item">
+            <h2 class="detl-item-title">招聘简章</h2>
+            <div>{{{entity.attachedContext||'暂无数据'}}}</div>
+        </div>
+        <div class="detl-item">
+            <h2 class="detl-item-title">校招职位</h2>
+            <ul v-if="entity.positions.length!=0">
+                <li v-for="p in entity.positions" :class="['detl-job',$index==0?'first':'']">{{p.split(';')[0]}}<span class="detl-job-local">{{p.split(';')[1]}}</span></li>
+            </ul>
+            <p v-else="">暂无数据</p>
+        </div>
+        <div class="detl-item">
+            <h2 class="detl-item-title">宣讲会信息</h2>
+            <ul v-if="list.length!=0">
+                <li v-for="li in list" class="detl-preach" @click="goto(li.id)">
+                    <img :src="li.schoolLogo" class="detl-preach-img">
+                    <div class="detl-preach-txt">
+                        <p class="detl-preach-txt-title">{{li.talkName}}</p>
+                        <p>{{li.schoolName}}</p>
+                        <p>{{li.talkDate}}</p>
+                        <p class="detl-preach-txt-note">{{li.residualTime}}</p>
+                    </div>
+                </li>
+            </ul>
+            <p v-else="">暂无数据</p>
+        </div>
+    </div>
+    <script src="https://o9xctjw8r.qnssl.com/lib/vue.min.js"></script>
+    <script src="https://o9xctjw8r.qnssl.com/lib/sea.js"></script>
+    <script>
+    seajs.config({
+        base: '/ali/js/',
+        alias: {
+            "config": "config-89702ab1cb.js",
+            "util": "util-c431eb0b0d.js",
+            "main": "schooldetail-1174682779.js"
+        }
+    });
+    seajs.use('main', function(a) {
+        a.init();
+    });
+    </script>
+    <script src="http://weixiao.qq.com/js/MTAH5/stats.js" id="WXH5" sid="500351756"></script>
+
+
+
+  </body></html>

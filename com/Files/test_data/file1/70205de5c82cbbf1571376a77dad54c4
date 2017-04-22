@@ -1,0 +1,334 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+    <title>登录</title>
+    <link href="../css/popdiv.css" rel="Stylesheet" type="text/css">
+    <link href="../css/layout.css" rel="stylesheet" type="text/css">
+    <link href="../css/common.css" rel="stylesheet" type="text/css">
+    <link href="../css/default.css" rel="stylesheet" type="text/css">
+    <link href="../css/login.css" rel="stylesheet" type="text/css">
+    <script src="//hm.baidu.com/hm.js?6debcbf742b5092b534195e3a6aa7e55"></script><script src="//hm.baidu.com/hm.js?b8b19370771d6914b2aac73158a962b8"></script><script src="../Scripts/jquery-1.4.1.min.js" type="text/javascript"></script>
+    <script src="../scripts/loginScript.js" type="text/javascript"></script>
+    <script src="../scripts/loginAccessScript.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        function checkCode() {
+            var myDate = new Date();
+            document.getElementById("imgCheckCode").src = "CheckCode.aspx?id=" + myDate.toLocaleTimeString();
+        }
+        function check() {
+            document.getElementById("hfScreenX").value = screen.width;
+            document.getElementById("hfScreenY").value = screen.height;
+            if (document.getElementById("loginName").value == "" || document.getElementById("loginPwd").value == "") {
+                alert("用户名密码不能为空");
+                return false;
+            }
+            if (document.getElementById("txtCheckCode").value == "") {
+                alert("请输入验证码");
+                return false;
+            }
+
+        }
+        function loginAccessLoginFun() {
+            var checkbool = false;
+            if ($("#loginAccessCheckRem").attr("checked") == true) {
+                checkbool = true;
+            }
+            else {
+                checkbool = false;
+            }
+            //alert(checkbool);
+            var loginName = $("#loginAccessName").val();
+            var loginPwd = $("#loginAccessPwd").val();
+            var code=$("#txtCheckCode").val();
+            if (loginName == "" || loginPwd == "") {
+                $("#showMssage").empty();
+                $("#showMssage").html("用户名和密码不能为空");
+                GetFocus($("#loginAccessName"));
+                return false;
+            }
+            if(code=="")
+            {
+                $("#showMssage").empty();
+                $("#showMssage").html("验证码不能为空");
+                GetFocus($("#txtCheckCode"));
+                return false;
+            }
+            //alert(checkbool);
+            var backuser = "";
+            var backSeesion = "";
+            $.ajax({
+                url: "../ashx/loginJson.ashx",
+                type: "POST",
+                data: { UserName: loginName, Password: loginPwd,code:code },
+                beforeSend: loginAccessloading,
+                success: function (data) {
+                    //alert(data);
+                    var json = eval(data);
+                    var backuser = "";
+                    var backSeesion = "";
+                    $.each(json, function (id, item) {
+                        backuser = item.userName;
+                        backSeesion = item.sessionType;
+                        if (backuser == "" || backSeesion == "") {
+                            $("#showMssage").empty();
+                            $("#showMssage").html("系统错误！请重新登录");
+                            GetFocus($("#loginAccessName"));
+                        }
+                        else if (backuser == "00")
+                        {
+                            $("#showMssage").empty();
+                            $("#showMssage").html("您输入的验证码错误！请重新输入");
+
+                            GetFocus($("#txtCheckCode"));
+                        }
+                        else if (backuser == "01") {
+                            $("#showMssage").empty();
+                            $("#showMssage").html("您输入的用户名和密码错误！请重新输入");
+                            //alert("您输入的用户名和密码错误！请重新输入");
+                            GetFocus($("#loginAccessName"));
+                        }
+                        else if (backuser == "0") {
+                            $("#showMssage").empty();
+                            $("#showMssage").html("您输入的用户名错误！请重新输入");
+                            //alert("您输入的用户名错误！请重新输入");
+                            GetFocus($("#loginAccessName"));
+                        }
+                        else if (backuser == "1") {
+                            $("#showMssage").empty();
+                            $("#showMssage").html("您输入的密码错误！请重新输入");
+                            //alert("您输入的密码错误！请重新输入");
+                            GetFocus($("#loginAccessPwd"));
+                        }
+                        else {
+                            if (checkbool == true) {
+                                writeCookie("userName", loginName);
+                                writeCookie("userPwd", loginPwd);
+                                //alert(getCookie("userName"));
+                            }
+                            $("#showMssage").empty();
+                            $("#showMssage").html("登录成功！");
+                            $("#logindiv").empty();
+                            //                            if (checkHuayiUrlShow()) {
+                            //                                $("#logindiv").html(aShopUrl + "<span>" + backuser + "</span>  欢迎您！  <a href='#' onclick='delLoginCookie()'>退出</a>");
+                            //                            }
+                            //                            else {
+                            $("#logindiv").html("<span>" + backuser + "</span>  欢迎您！  <a href='#' onclick='delLoginCookie()'>退出</a>");
+                            //                            }
+                            var hiddenUrl = $("#hiddenSeccessUrl").val();
+                            //alert(hiddenUrl);
+                            if (hiddenUrl != "") {
+                                window.location.href = "../pages/" + hiddenUrl;
+                            }
+                            loginIPop.hide();
+                        }
+                    })
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <form method="post" action="./login.aspx" id="form1">
+<div class="aspNetHidden">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTE2MDkzMzAwNA8WAh4GZ29fdXJsBQ8uLi9EZWZhdWx0LmFzcHhkZECf3kRyDs6+tfocWhc0CTIwelu/dRupMqQyBHbASirp">
+</div>
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="88FDF362">
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEWCAL79eOUAgKkotafAwKs2PlaAvSOvp4GApjZhZcGAvTupdkGAoezudQPAoizudQPLAz9iNJ9OT74EBu1lN42ALpOqvuGkzUHRuy9hpUindg=">
+</div>
+    <div id="wrapper">
+        <div id="header">
+            <div class="logo">
+                <div class="huayi_logo">
+                </div>
+            </div>
+        </div>
+        
+        <div id="containter">
+            
+            
+            <div class="box960">
+                <h3>
+                    欢迎登录华医网</h3>
+                <div style="width: 800px; margin: 20px auto 0 auto">
+                    <div class="login_page" style="float: left; width: 400px;">
+                        <h2 class="hd">
+                            华医网学员请登录
+                        </h2>
+                        <ul class="field">
+                            <li style=" margin-bottom:10px;">
+                                <label class="wmax" style=" line-height:30px; height:30px;">
+                                    <select name="LoginType" id="LoginType" style=" height：30px; border:1px solid #ccc;">
+	<option value="1">用户名</option>
+	<option value="2">手机</option>
+	<option value="3">E_mail</option>
+	<option value="4">身份证</option>
+</select>：</label>
+                                <div>
+                                    <input name="loginName" type="text" id="loginName" class="text" style="width: 150px; height:26px; border:1px solid #ccc;">
+                                </div>
+                            </li>
+                            <li style=" margin-bottom:10px;">
+                                <label class="wmax" style=" line-height:30px;">
+                                    密 码 ：</label>
+                                <div>
+                                    <input name="loginPwd" type="password" id="loginPwd" class="text" style="width: 150px;height:26px; border:1px solid #ccc;">
+                                </div>
+                            </li>
+                             <li style=" margin-bottom:10px;"><label class="wmax" style=" line-height:30px;">
+                                    验证码 ：</label>
+                                <div>
+                            <input name="txtCheckCode" type="text" id="txtCheckCode" class="text" style="width: 150px; height:26px; border:1px solid #ccc;" size="20" maxlength="10" autocomplete="off">
+                            <img alt="" id="imgCheckCode" onclick="checkCode()" src="CheckCode.aspx?id=" +18:32:01="" width="63" height="22" align="absmiddle"><a style="cursor: pointer;" onclick="checkCode()">换一张</a>
+                                </div> </li>
+                        </ul>
+                        <div class="btn">
+                            <input type="submit" name="butLogin" value="登录" onclick="return check();" id="butLogin" class="btn_w58">
+                            &nbsp;<br>
+                            <div>
+                                <span style="color: Red">
+                                    <span id="lbMassage"></span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="res">
+                        <div class="hd2">
+                            还不是华医网学员？请先这里注册</div>
+                        <p>
+                            &nbsp;</p>
+                        <p>
+                            &nbsp;</p>
+                        <p>
+                            &nbsp;</p>
+                        <p>
+                            <input name="" onclick="javascript:location.href='http://hyuser.91huayi.com/AccountCenter/register.aspx?tag=cme'" type="button" class="res_1" value="">
+                        </p>
+                        <p>
+                            &nbsp;</p>
+                        <p>
+                            &nbsp;</p>
+                        <p>
+                            &nbsp;</p>
+                        <p>
+                            <img alt="客服热线：400-888-0052" src="../images/studycards_03aa.jpg" width="257" height="39">
+                        </p>
+                        <p>
+                            &nbsp;</p>
+                    </div>
+                    <br clear="all">
+                </div>
+                <p class="bottom">
+                </p>
+            </div>
+            <br clear="all">
+        </div>
+        <input type="hidden" name="hfScreenX" id="hfScreenX">
+        <input type="hidden" name="hfScreenY" id="hfScreenY">
+        <!-- footer -->
+        
+<div id="footer" style="height: 175px;">
+    <div class="w950">
+        <p>
+            <a href="http://www.91huayi.com/help/index.html" target="_blank">华医介绍</a> |
+            <a href="http://www.91huayi.com/help/index.html?type=hzhb" target="_blank">
+                        合作伙伴</a> | <a href="http://www.91huayi.com/help/index.html?type=flsm" target="_blank">
+                            法律声明</a> | <a href="http://www.91huayi.com/help/index.html?type=lxwm" target="_blank">
+                                联系我们</a> | <a href="http://www.91huayi.com/help/index.html?type=jrhy" target="_blank">
+                                    加入华医</a> | <a href="http://www.91huayi.com/help/index.html?type=wzdt" target="_blank">
+                                        网站地图</a> | <a href="http://www.91huayi.com/help/index.html?type=bzzx" target="_blank">
+                                            帮助中心</a></p>
+        <p>
+            <a href="http://cme.91huayi.com/cme/index.html" target="_blank">继续医学教育</a> | <a href="http://cme.91huayi.com/cme/index.html" target="_blank">全员/专项培训</a> |
+            
+            <a href="http://hukao.91huayi.com/" target="_blank">护考培训</a> |<a href="http://sqpx.91huayi.com/" target="_blank">基层卫生人员培训</a>
+            |
+            <a href="http://xljy.91huayi.com/" target="_blank">基层学历教育</a> | <a href="http://www.91huayi.com/help/index.html?type=jkjy" target="_blank">健康教育</a> |
+            <a href="http://www.91huayi.com/help/index.html?type=kjglxxh" target="_blank">科教管理信息化</a>
+            | <a href="http://www.huayiyuan.com/" target="_blank">华医园</a> | <a href="http://www.huayiweibo.com/index.php?mod=topic&amp;code=myhome" target="_blank">华医微博</a></p>
+        <p>
+            北京华医网科技股份有限公司 91huayi.com<span style="font-family: Arial"> © </span>2011 版权所有</p>
+        <p>
+            <a href="/icp.html" target="_blank">京ICP证090569号</a> <a href="http://www.miibeian.gov.cn" target="_blank">京ICP备09012743号-1</a> <a href="http://www.91huayi.com/html/2011-08/599.html" target="_blank">京卫网审[2011]第0035号</a> <a href="http://www.91huayi.com/html/2011-10/630.html" target="_blank">互联网药品信息服务资格证书（京）-非经营性-2011-0057</a> 京公网安备110102004996-1
+        </p>
+        <p>
+            <a href="http://www.hd315.gov.cn/beian/view.asp?bianhao=010202010020200021" target="_blank">
+                <img alt="" src="../images/copy_righti_1.jpg" border="0"></a> <a href="http://www.anquan.org/authenticate/cert/?site=www.91huayi.com&amp;at=realname" target="_blank">
+                    <img alt="" src="../images/copy_righti_2.jpg" border="0">
+                </a>
+        </p>
+    </div>
+    
+</div>
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?b8b19370771d6914b2aac73158a962b8";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+<script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?6debcbf742b5092b534195e3a6aa7e55";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+        <!-- footer -->
+    </div>
+    <div id="waitPopDiv" style="display: none; position: fixed; _position: absolute;
+        height: 100%; width: 100%; top: 0; left: 0; background: #000000; border: 1px solid #cecece;
+        z-index: 10;">
+    </div>
+    <div class="popdiv" id="popLoginDiv" style="display: none; position: fixed; _position: absolute;
+        z-index: 10; width: 366px; height: 212px; background: #fff;">
+        <h3>
+            <span><a href="#" onclick="loginClose()">
+                <img alt="关闭" src="../css/css_images/sp.gif" width="15" height="16" border="0"></a></span>华医网特别提醒您</h3>
+        <h2>
+            <img alt="" src="../css/css_images/tipicon.gif" width="16" height="16" align="absmiddle">
+            <span id="showMssage"></span>
+        </h2>
+        <div class="login">
+            <ul class="field">
+                <li>
+                    <label class="wmax">
+                        用户名：</label>
+                    <div>
+                        <input id="loginAccessName" type="text" class="text">
+                        <span class="a9"></span>
+                    </div>
+                </li>
+                <li>
+                    <label class="wmax">
+                        密 码：</label>
+                    <div>
+                        <input id="loginAccessPwd" type="password" class="text">
+                        <span class="a9"><a href="../secure/forget_pwd.aspx" target="_blank">用户名密码查询</a></span>
+                    </div>
+                </li>
+                <li>
+                    <label class="wmax">
+                    </label>
+                    <div>
+                        <input id="loginAccessCheckRem" type="checkbox" value="">
+                        记住登录状态
+                    </div>
+                    <input type="hidden" id="hiddenSeccessUrl" value="">
+                </li>
+            </ul>
+            <div class="btn">
+                <input id="loginAccessLogin" onclick="loginAccessLoginFun()" type="button" value="登 录" class="btn_w34_red">
+            </div>
+        </div>
+    </div>
+    </form>
+
+
+</body></html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <script type="text/javascript" src="Utility/Pswdplc.js"></script> 
+  <script language="javascript" type="text/javascript">
+///////
+</script>  
+  <!-- no cache headers --> 
+  <meta http-equiv="Pragma" content="no-cache" /> 
+  <meta http-equiv="Expires" content="-1" /> 
+  <meta http-equiv="Cache-Control" content="no-cache" /> 
+  <!-- end no cache headers --> 
+  <meta http-equiv="Content-Type" content="text/html; charset=gb2312" /> 
+  <meta name="keywords" content="NETGEAR网件社区提供客服ETGEAR工程师与渠道代理商工程师共同参与，一起分享经验、共同学习、共同成长的平台。" /> 
+  <meta name="description" content="NETGEAR网件社区提供NETGEAR工程师与渠道代理商工程师共同参与，一起分享经验、共同学习、共同成长。" /> 
+  <title>解决VPN因为IP SPOOFUDP FLOOD攻击频繁掉线的案例 - 社区论坛</title> 
+  <style type="text/css">
+<!--
+.STYLE2 {color: #666666}
+.a2:link {color:#003366; text-decoration:none}
+.a2:visited {color:#003366; text-decoration:none}
+.a2:hover {color:#003366; text-decoration:none}
+-->
+</style> 
+  <script language="JavaScript" type="text/javascript">var CookiePath="/",CookieDomain="";</script>
+  <script language="JavaScript" type="text/javascript" src="Utility/global.js"></script>
+  <script language="JavaScript" type="text/javascript" src="Utility/BBSXP_Modal.js"></script>
+  <script language="JavaScript" type="text/javascript">InitThemes();</script>
+ </head>     
+ <body> 
+  <!-- JiaThis Button BEGIN --> 
+  <script type="text/javascript">
+var jiathis_config = {data_track_clickback:'true'};
+</script> 
+  <script type="text/javascript" src="http://v3.jiathis.com/code/jiathis_r.js?move=0&amp;uid=1338175459761383" charset="utf-8"></script> 
+  <!-- JiaThis Button END --> 
+  <div class="CommonHeader"> 
+   <div class="CommonTop"> 
+    <!--<div class="CommonTopLogo" onClick="window.location.href='default.asp'" title="社区论坛"></div>
+<div class="CommonTopBanner">dd<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=7,0,19,0" width="468" height="60">
+  <param name="movie" value="Images/top_banner.swf" />
+  <param name="quality" value="high" />
+  <param name="wmode" value="transparent" />
+  <embed src="Images/top_banner.swf" width="468" height="60" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" wmode="transparent"></embed>
+</object></div>
+//--> 
+    <div> 
+     <table width="100%" height="54" border="0" align="center" cellpadding="0" cellspacing="0" valign="middle"> 
+      <tbody>
+       <tr> 
+        <td height="18" valign="bottom" bgcolor="#173c83"><img src="../images/top_01.jpg" width="220" height="90" /></td> 
+        <td align="right" valign="bottom" bgcolor="#173c83"><img src="../images/top_02.jpg" width="278" height="90" /></td> 
+       </tr> 
+       <tr> 
+        <td height="5" colspan="2" valign="bottom" bgcolor="#FFFFFF"></td> 
+       </tr> 
+       <tr>
+        <td width="39%" height="18" align="left" valign="bottom" background="../images/bg.gif"> 
+         <table border="0" align="left" cellpadding="0" cellspacing="0"> 
+          <tbody>
+           <tr> 
+            <td width="100" align="center" background="images/bg.gif"><a href="/Knowledgebase/" class="a2">文库</a></td> 
+            <td width="100" align="center" background="images/bg.gif"><a href="../default_ask.asp" class="a2">问吧</a></td> 
+            <td width="100" align="center" background="images/bg.gif" style="padding-top:3px;"><a href="/nebs/"><img src="../images/topbbs.gif" width="86" height="28" border="0" /></a></td> 
+            <td width="110" align="center" background="images/bg.gif"><a href="http://www.netgear.com.cn/support/" class="a2">技术支持首页</a></td> 
+            <td width="110" align="center" background="images/bg.gif"><a href="https://my.netgear.com/ChatRN/start.aspx?l=SCN" target="_blank" class="a2">在线技术支持</a></td> 
+           </tr> 
+          </tbody>
+         </table> </td> 
+        <td width="61%" align="right" valign="top" background="../images/bg.gif" style="padding-top:7px;"> <a href="/index.asp" class="a2">登录</a> | <a href="CreateUser.asp" class="a2">注册</a> | <a href="ViewOnline.asp" class="a2">在线情况</a> | <a href="Search.asp?ForumID=0" class="a2">搜索</a> | <a href="Help.asp" class="a2">帮助</a> &nbsp;&nbsp;&nbsp;&nbsp;</td> 
+       </tr>
+      </tbody>
+     </table> 
+    </div> 
+   </div> 
+   <div class="CommonBody"> 
+    <script type="text/javascript" src="Utility/PopupMenu.js"></script> 
+    <div class="CommonBreadCrumbArea"> 
+     <div style="float:left">
+      <a onmouseover="showmenu(event,'&lt;div class=menuitems&gt;&lt;a href=Default.asp?GroupID=1&gt;≡讨论区≡&lt;/a&gt;&lt;/div&gt;&lt;div class=menuitems&gt;&lt;a href=Default.asp?GroupID=5&gt;≡NGBT≡&lt;/a&gt;&lt;/div&gt;&lt;div class=menuitems&gt;&lt;a href=Default.asp?GroupID=4&gt;≡稿件区≡&lt;/a&gt;&lt;/div&gt;')" href="Default.asp">社区论坛</a> → 
+      <span id="TempGroup4"><a onmouseover="Ajax_CallBack(false,'TempGroup4','loading.asp?menu=ForumTree&amp;GroupID=4')" href="Default.asp?GroupID=4">≡稿件区≡</a></span> → 
+      <a href="ShowForum.asp?ForumID=11">优秀故障排错经验稿件</a> → 
+      <a href="?ThreadID=368">解决VPN因为IP SPOOFUDP FLOOD攻击频繁掉线的案例</a>
+     </div> 
+     <div style="float:right"> 
+      <a href="javascript:window.print();"> <img title="打印本页" src="images/Print.gif" border="0" /></a>　
+      <script language="JavaScript" type="text/javascript">
+		document.write("<a target=_blank href='Mailto:?subject="+document.title+"&body="+encodeURIComponent(location.href)+"'>");</script>
+      <img title="通过电子邮件发送本页面" src="images/mail.gif" border="0" />　
+      <a href="javascript:window.external.AddFavorite(location.href,document.title)"><img title="添加到IE收藏夹" src="images/favs.gif" border="0" /></a>　
+      <a href="?menu=Previous&amp;ForumID=11&amp;ThreadID=368"><img title="浏览上一篇主题" src="images/previous.gif" border="0" /></a>　
+      <a href="?menu=Next&amp;ForumID=11&amp;ThreadID=368"><img title="浏览下一篇主题" src="images/next.gif" border="0" /></a> 
+     </div>　 
+    </div> 
+    <table cellspacing="1" cellpadding="5" width="100%" class="CommonListArea"> 
+     <tbody>
+      <tr class="CommonListTitle"> 
+       <td colspan="2">
+        <div style="float:left">
+         解决VPN因为IP SPOOFUDP FLOOD攻击频繁掉线的案例
+        </div>
+        <div style="float:right"></div></td> 
+      </tr> 
+      <tr class="CommonListCell"> 
+       <td align="center" width="5%"><img src="images/totel.gif" /></td> 
+       <td>发起人：<a href="Profile.asp?UserName=jiao2003">jiao2003</a>　　回复数：<b>2</b>　　浏览数：<b>10081</b>　　最后更新：2008-6-6 15:43:52 作者：<a href="Profile.asp?UserName=kelvin.liu">kelvin.liu</a></td> 
+      </tr> 
+     </tbody>
+    </table> 
+    <br /> 
+    <div class="PopupMenu" id="View" style="DISPLAY: none"> 
+     <table cellspacing="0" cellpadding="1"> 
+      <tbody>
+       <tr> 
+        <td><a href="?ThreadID=368&amp;ViewMode=0">简洁模式</a></td> 
+       </tr> 
+       <tr> 
+        <td><a href="?ThreadID=368&amp;ViewMode=1">完整模式</a></td> 
+       </tr> 
+      </tbody>
+     </table> 
+    </div> 
+    <table cellspacing="0" cellpadding="0" border="0" width="100%"> 
+     <tbody>
+      <tr> 
+       <td> <a class="CommonImageTextButton" style="BACKGROUND-IMAGE: url(images/view.gif)" onmouseover="MouseOverOpen('View',this.id);" id="View1">选择查看</a> <a class="CommonTextButton"><script type="text/javascript" src="Utility/vote.js"></script><script language="JavaScript" type="text/javascript">ThreadID=368;showData("4");</script></a>[<font color="#FF0000">请评分</font>] </td> 
+       <td align="right" valign="bottom"> 　帖子排序：<select onchange="javascript:if(this.options[this.selectedIndex].value)window.location.href='ShowPost.asp?ThreadID=368&amp;ViewMode=0&amp;SortOrder='+this.options[this.selectedIndex].value"> <option value="0"> 从旧到新</option> <option value="1"> 从新到旧</option> </select> </td> 
+      </tr> 
+     </tbody>
+    </table> 
+    <table cellspacing="1" cellpadding="5" width="100%" class="CommonListArea" style="TABLE-LAYOUT:fixed;"> 
+     <tbody>
+      <tr class="CommonListHeader"> 
+       <td> 
+        <div style="float:left">
+         <b><a target="_blank" href="Profile.asp?UserName=jiao2003">jiao2003</a></b> 发表于 2008-6-4 10:47:03
+        </div> 
+        <div style="float:right"> 
+         <a href="EditPost.asp?ThreadID=368&amp;PostID=1629" title="编辑帖子">编辑</a> 
+         <a href="DelPost.asp?ThreadID=368&amp;PostID=1629" title="删除帖子">删除</a> 
+        </div> </td> 
+      </tr> 
+      <tr class="CommonListCell"> 
+       <td> 
+        <div class="ForumPostTitle">
+         解决VPN因为IP SPOOFUDP FLOOD攻击频繁掉线的案例
+        </div>
+        <div class="ForumPostContentText">
+         <span><a target="_blank" href="UpFile/UpAttachment/2008-6/200864104618.doc"><img border="0" src="images/affix.gif" />5.7解决VPN因为IP SPOOFUDP FLOOD攻击频繁掉线的案例.doc</a></span>
+        </div> 
+        <div style="float:right"> 
+        </div> </td> 
+      </tr> 
+     </tbody>
+    </table> 
+    <table cellspacing="1" cellpadding="5" width="100%" class="CommonListArea" style="TABLE-LAYOUT:fixed;"> 
+     <tbody>
+      <tr class="CommonListHeader"> 
+       <td> 
+        <div style="float:left">
+         <b><a target="_blank" href="Profile.asp?UserName=victor.yang">victor.yang</a></b> 发表于 2008-6-5 1:38:01
+        </div> 
+        <div style="float:right"> 
+         <a href="EditPost.asp?ThreadID=368&amp;PostID=1648" title="编辑帖子">编辑</a> 
+         <a href="DelPost.asp?ThreadID=368&amp;PostID=1648" title="删除帖子">删除</a> 
+        </div> </td> 
+      </tr> 
+      <tr class="CommonListCell"> 
+       <td> 
+        <div class="ForumPostContentText">
+         <p>来自真实应用当中的成功经验,不错:</p>
+         <p>1) 推荐向正式的IT媒体投稿</p>
+         <p>2) Netgear在本季度的社区论坛优秀稿件中一定要评选此稿,奖金为 400 元. </p>
+         <p>3) 我们热烈欢迎NETGEAR的代理商工程师朋友写出类似文档,我们将通过多种不同的形式进行表彰</p>
+        </div> 
+        <div style="float:right"> 
+        </div> </td> 
+      </tr> 
+     </tbody>
+    </table> 
+    <table cellspacing="1" cellpadding="5" width="100%" class="CommonListArea" style="TABLE-LAYOUT:fixed;"> 
+     <tbody>
+      <tr class="CommonListHeader"> 
+       <td> 
+        <div style="float:left">
+         <b><a target="_blank" href="Profile.asp?UserName=kelvin.liu">kelvin.liu</a></b> 发表于 2008-6-6 15:43:52
+        </div> 
+        <div style="float:right"> 
+         <a href="EditPost.asp?ThreadID=368&amp;PostID=1696" title="编辑帖子">编辑</a> 
+         <a href="DelPost.asp?ThreadID=368&amp;PostID=1696" title="删除帖子">删除</a> 
+        </div> </td> 
+      </tr> 
+      <tr class="CommonListCell"> 
+       <td> 
+        <div class="ForumPostContentText">
+         感谢广州明创公司的工程师焦建。
+        </div> 
+        <div style="float:right"> 
+        </div> </td> 
+      </tr> 
+     </tbody>
+    </table> 
+    <table cellspacing="0" cellpadding="0" border="0" width="100%"> 
+     <tbody>
+      <tr>
+       <td><script language="JavaScript" type="text/javascript">ShowPage(1,1,"ThreadID=368&ViewMode=0")</script></td>
+      </tr> 
+     </tbody>
+    </table> 
+    <table cellspacing="0" cellpadding="0" width="100%" border="0"> 
+     <tbody>
+      <tr> 
+       <td align="center"><br /></td> 
+      </tr> 
+      <tr> 
+       <td align="right"><script type="text/javascript">loadThemes("default");</script></td> 
+      </tr> 
+     </tbody>
+    </table> 
+   </div> 
+   <div class="CommonFooter"> 
+    <a href="http://www.netgear.com.cn/" target="_blank">美国网件（中国站）</a>&nbsp;│&nbsp;
+    <a href="http://readynas.netgear.cn/" target="_blank">ReadyNAS（中国站）</a>&nbsp;│&nbsp;
+    <a href="http://prosecure.netgear.cn/" target="_blank">ProSecure（中国站）</a>
+    <span style="background-repeat: repeat-x;">&nbsp;│&nbsp;</span>
+    <a href="/default.asp">返回首页</a> 
+    <span style="background-repeat: repeat-x;">│&nbsp;</span>
+    <a href="http://weibo.com/netgearsupport/" target="_blank" style="color: #ff0000;">NETGEAR 客服部微博</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+    <a href="#top">返回顶部</a>
+    <br /> 社区活动、帐号审核、文档投稿、访问帮助等事务请联系：
+    <span lang="EN-US" xml:lang="EN-US"><a href="mailto:neclub@netgear-support.com">neclub@netgear-support.com</a></span>
+    <br /> 美国网件（NETGEAR）公司中国客户服务部&nbsp;&nbsp;2017 粤&nbsp;ICP&nbsp;备&nbsp;05024906&nbsp;号&nbsp;Powered by 
+    <a target="_blank" href="http://www.linkist.net">Linkist</a>&nbsp;&nbsp;&nbsp; 
+    <script src="http://s14.cnzz.com/stat.php?id=2865355&amp;web_id=2865355&amp;show=pic" language="JavaScript"></script>&nbsp;&nbsp;
+    <script type="text/javascript" src="http://tajs.qq.com/stats?sId=12522486" charset="UTF-8"></script>
+    <script type="text/javascript">
+var _speedMark = new Date();
+</script> 
+   </div> 
+  </div>   
+ </body>
+</html>

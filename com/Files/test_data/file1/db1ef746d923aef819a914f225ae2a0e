@@ -1,0 +1,296 @@
+<html><head></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">var option = {
+	clicked : {
+		color: "#FFF",
+		backgroundColor: "#ccc",
+		boxShadow: "rgb(223, 223, 223) 0px 5px 0px;"
+	},
+	normal: {
+		color: "#FFFFFF",
+		backgroundColor: "#E33A3A",
+		boxShadow: "0 0 0 "
+	},
+	log: {
+		aid: params.aid,
+		sid: params.sid,
+		landing: params.landing
+	}
+}
+;(function( option ){
+	var opt = option;
+   	window.submit_lock = 1;
+
+   	/* url */
+	var captchaImgUrl = "//m.yooli.com/views/user/verifyCodeLanding.jsp", // 图片验证码地址
+    	firstSendSmsCodeUrl = "/user/inputMobile4MobileRegister.do", // 首次发送短信验证码API地址
+    	secondSendSmsCodeUrl = "/user/getMobileCode4MobileRegister.do", // 再次发送短信验证码API地址
+    	sendSmsCodeUrl = "/user/inputMobile4MobileRegister.do",
+    	registUrl = "/user/mobileRegister.do", // 最终提交地址
+   		errorLogUrl = "//h.youzhuanhua.com?id=duanxin",
+   		href = window.location.href.substr(0,window.location.href.indexOf("?")),
+    	jumpUrl = {
+    		"bindIdCard" : "", // 绑定身份证
+    		"appDownLoad" : href + "?bcid=appDownL2Test&amp;aid=" + option.log.aid + "&amp;sid=" + option.log.sid + "&amp;landing=" + option.log.landing // app下载页面
+    		// "appDownLoad" : "//m.yooli.com/views/partner/?bcid=appDownL2Test&amp;aid=" + option.log.aid + "&amp;sid=" + option.log.sid + "&amp;landing=" + option.log.landing // app下载页面
+    	}; // 提交后跳转地址
+    	
+	/* 按钮 输入框 */
+	var mobileInputEl = $("#mobile"), // 手机号码输入框
+		registStepFirstEl = $("#s-phone"), // 第一步提交按钮
+		captchaInputEl = $("#captcha"), // 图片验证码输入框
+		captchaImageEl = $("#captchaImg"), // 图片验证码
+		smsCodeInputEl = $("#code"), // 短信验证码输入框
+		smsButtonEl = $("#send_verify"), // 获取短信验证码按钮
+		passwordInputEl = $("#password"), // 密码输入框
+		passwordConfirmInputEl = $("#password_check"), // 再次输入密码输入框
+		registStepSecondEl = $("#s-2"); // 最终提交按钮
+		changePhoneButtonEl = $(".phone-notice.change"), // 点击更换手机号 
+		phoneInfoNoticeEl = $(".phone-notice").eq(0), // 手机信息提示
+		inputEl = $(".input"); // 所有的input输入框
+
+	/* 错误提示 */
+	var phoneErrorTipEl = $("#errorMsg"), // 手机号码错误提示
+		captchaErrorTipEl = $("#errorMsg_captcha"), // 图片验证码错误提示  
+		passwordErrorTipEl = $("#errorMsg_password"), // 密码错误提示
+		registErrorTipEl = $("#errorMsg2"); // 最后一步提交错误提示
+
+	/* 页面 */
+	var firstPage = $("#content"),
+		secondPage = $(".page_2");
+    
+	/* 变量储存 */
+	var Form = {
+		"mobile" : "", // 手机号码
+		"captcha" : "", // 图片验证码
+		"code" : "", // 短信验证码
+		"password" : "", // 密码
+		"mai" : "", // 是否是第一次发送短信验证码的记录
+		"timeLock": 0,
+		"type" : 1// 短信验证码
+	}
+    
+	/* 正则 */
+	var regexMobile = /^1[34578]\d{9}$/,
+    	regexCaptcha = /^\d{4}$/;
+    
+	inputEl.focus(function(event) {
+		if(!$(this).attr("id")) {
+    		return;
+		}
+		window.location.href = window.location.href.replace(/\#\w+/g, "") + "#" + $(this).attr("id");
+	});
+
+	/* loading */
+	function form_loading(obj){
+	    var loading = '&lt;style type="text/css"&gt;.spinner { margin: 0 auto; width: 20px; height: 20px; position: relative;    top: 15px; } .container1 &gt; div, .container2 &gt; div, .container3 &gt; div { width: 6px; height: 6px; background-color: #FFF; border-radius: 100%; position: absolute; -webkit-animation: bouncedelay 1.2s infinite ease-in-out; animation: bouncedelay 1.2s infinite ease-in-out; -webkit-animation-fill-mode: both; animation-fill-mode: both; } .spinner .spinner-container { position: absolute; width: 100%; height: 100%; } .container2 { -webkit-transform: rotateZ(45deg); transform: rotateZ(45deg); } .container3 { -webkit-transform: rotateZ(90deg); transform: rotateZ(90deg); } .circle1 { top: 0; left: 0; } .circle2 { top: 0; right: 0; } .circle3 { right: 0; bottom: 0; } .circle4 { left: 0; bottom: 0; } .container2 .circle1 { -webkit-animation-delay: -1.1s; animation-delay: -1.1s; } .container3 .circle1 { -webkit-animation-delay: -1.0s; animation-delay: -1.0s; } .container1 .circle2 { -webkit-animation-delay: -0.9s; animation-delay: -0.9s; } .container2 .circle2 { -webkit-animation-delay: -0.8s; animation-delay: -0.8s; } .container3 .circle2 { -webkit-animation-delay: -0.7s; animation-delay: -0.7s; } .container1 .circle3 { -webkit-animation-delay: -0.6s; animation-delay: -0.6s; } .container2 .circle3 { -webkit-animation-delay: -0.5s; animation-delay: -0.5s; } .container3 .circle3 { -webkit-animation-delay: -0.4s; animation-delay: -0.4s; } .container1 .circle4 { -webkit-animation-delay: -0.3s; animation-delay: -0.3s; } .container2 .circle4 { -webkit-animation-delay: -0.2s; animation-delay: -0.2s; } .container3 .circle4 { -webkit-animation-delay: -0.1s; animation-delay: -0.1s; } @-webkit-keyframes bouncedelay { 0%, 80%, 100% { -webkit-transform: scale(0.0) } 40% { -webkit-transform: scale(1.0) } } @keyframes bouncedelay { 0%, 80%, 100% { transform: scale(0.0); -webkit-transform: scale(0.0); } 40% { transform: scale(1.0); -webkit-transform: scale(1.0); } }&lt;/style&gt;&lt;div class="spinner"&gt;&lt;div class="spinner-container container1"&gt;&lt;div class="circle1"&gt;&lt;/div&gt;&lt;div class="circle2"&gt;&lt;/div&gt;&lt;div class="circle3"&gt;&lt;/div&gt;&lt;div class="circle4"&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="spinner-container container2"&gt;&lt;div class="circle1"&gt;&lt;/div&gt;&lt;div class="circle2"&gt;&lt;/div&gt;&lt;div class="circle3"&gt;&lt;/div&gt;&lt;div class="circle4"&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class="spinner-container container3"&gt;&lt;div class="circle1"&gt;&lt;/div&gt;&lt;div class="circle2"&gt;&lt;/div&gt;&lt;div class="circle3"&gt;&lt;/div&gt;&lt;div class="circle4"&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;';
+	    obj.html(loading);
+	}
+    
+	function GetQueryString(a){var b=new RegExp("(^|&amp;)"+a+"=([^&amp;]*)(&amp;|$)");var r=window.location.search.substr(1).match(b);if(r!=null)return unescape(r[2]);return""}function getCookie(c){if(document.cookie.length&gt;0){c_start=document.cookie.indexOf(c+"=");if(c_start!=-1){c_start=c_start+c.length+1;c_end=document.cookie.indexOf(";",c_start);if(c_end==-1){c_end=document.cookie.length}return unescape(document.cookie.substring(c_start,c_end))}}return""}function setCookie(c,v,e){var a=new Date();a.setDate(a.getDate()+e);document.cookie=c+"="+escape(v)+((e==null)?"":";expires="+a.toGMTString())}function getBcthuid(){if(getCookie('bcthuid')!==null&amp;&amp;getCookie('bcthuid')!==""){setCookie('bcthuid',getCookie('bcthuid'),365);return getCookie('bcthuid')}else if(GetQueryString("mid")!==null&amp;&amp;GetQueryString("mid")!==""){setCookie('bcthuid',GetQueryString("mid"),365);return GetQueryString("mid")}else if(GetQueryString("mid")==null||GetQueryString("mid")==""){setCookie('bcthuid',(+new Date()-1462344859280).toString(32)+"x"+(Math.random()*1000|0),365);return(+new Date()-1462344859280).toString(32)+"x"+(Math.random()*1000|0)}else{}}var params={};params["bcthuid"]=getBcthuid()||"";if(document.domain.indexOf("fenqi365")&gt;=0){params["project"]="fenqi365"}else if(document.domain.indexOf("yooli")&gt;=0){params["project"]="yooli"}else{params["project"]=""};params["sid"]=GetQueryString("sid")||"";params["aid"]=GetQueryString("aid")||"";params["landing"]=GetQueryString("landing")||"";params["device_w"]=window.screen.width;params["device_h"]=window.screen.height;params["device_dpr"]=window.devicePixelRatio;params["device_color"]=window.screen.colorDepth;var args='';for(var i in params){if(args!=''){args+='&amp;'}args+=i+'='+encodeURIComponent(params[i])}function clickLog(a,b,c){var d=new Image(1,1);d.src="http://log.fenqi365.com?"+"ele="+a+"_click&amp;"+args+"&amp;time="+b+"&amp;phone="+c}function loadLog(a,b,c){var d=new Image(1,1);d.src="http://log.fenqi365.com?"+"ele="+a+"_load&amp;"+args+"&amp;time="+b+"&amp;phone="+c}
+	/**
+ 	* [ 第一页 点击领取按钮 ]
+ 	*/
+	registStepFirstEl.on('click', function(event) {
+		//判断手机号格式
+		changeCaptcha();
+		Form.mobile = mobileInputEl.val();
+		if(!regexMobile.test(Form.mobile)){
+    		phoneErrorTipEl.text("请输入正确的手机号！").show();
+    		return false;
+		}
+		//清空input，errorMsg
+		phoneErrorTipEl.hide();
+		//翻页
+		firstPage.hide();secondPage.show();	
+		clickLog("registStepFirstEl",Date.now(),Form.mobile);
+	});
+    
+	/**
+ 	* [ 点击更换手机号 ]
+ 	*/
+	changePhoneButtonEl.on('click', function(event) {
+		phoneInfoNoticeEl.html("");	//清空手机提示
+		inputEl.val("");	//清空所有输入框
+		phoneErrorTipEl.html("");captchaErrorTipEl.html("");passwordErrorTipEl.html("");registErrorTipEl.html("");	//清空所有的错误信息
+		firstPage.show();secondPage.hide();	//翻页
+		clickLog("changePhoneButtonEl",Date.now(),Form.mobile);
+	});
+   
+   	/**
+	* [ 点击更换图片验证码 ]
+ 	*/
+	function changeCaptcha(){
+    	captchaImageEl.attr("src", captchaImgUrl+"?r=" + (+new Date()) );
+   	}
+   	captchaImageEl.on('click', function(event) {
+        changeCaptcha();
+        clickLog("captchaImageEl",Date.now(),Form.mobile);
+    });
+
+    function cutDown(time){
+    	Form.timeLock = 1;changePhoneButtonEl.hide();
+    	if (time == 0) {
+    		Form.timeLock = 0;changePhoneButtonEl.show();
+        	smsButtonEl.css(opt.normal).html("再次发送验证码");
+        	return;
+    	}
+		time--;
+		$("#send_verify").html(time + "秒");
+		setTimeout(function() {
+    		cutDown(time);
+		}, 1000);
+	}
+
+	/*focus*/
+	captchaInputEl.on("focus",function(){captchaErrorTipEl.hide().html("");})
+	smsCodeInputEl.on("focus",function(){registErrorTipEl.hide().html("");})
+	passwordInputEl.on("focus",function(){registErrorTipEl.hide().html("");})
+	passwordConfirmInputEl.on("focus",function(){registErrorTipEl.hide().html("");})
+
+	/**
+	* [ 点击获取短信验证码 ]
+ 	*/
+    smsButtonEl.on('click', function(event) {
+    	clickLog("smsButtonEl",Date.now(),Form.mobile);
+		Form.captcha = captchaInputEl.val();
+		// 判断图片验证码
+		if(!Form.captcha || !regexCaptcha.test( Form.captcha )){ 
+	        captchaErrorTipEl.show().html("请先输入图片验证码");
+	        return false;
+		};
+	    //captchaErrorTipEl.hide(); 
+
+		if(Form.mai){
+			form_loading(smsButtonEl);
+		    Form.timeLock || $.ajax({
+				type: "POST",
+				url: secondSendSmsCodeUrl,	//再次发送短信验证码地址
+				data: {
+                    mobile: Form.mobile,
+                    mai: Form.mai,
+                    type: Form.type
+                },
+				success: function(a) {
+					if (a.code == -1) {
+						smsButtonEl.html("点击获取验证码");
+	    				captchaErrorTipEl.html(a.msg).show();
+	    				console.log("1 min only can send once");
+					} else {
+						captchaErrorTipEl.html("").hide();
+	    				Form.mai = a.dict.mobileAuthenId;
+	    				cutDown(60);
+						smsButtonEl.css(opt.clicked);
+					};
+				}
+	        })
+		}else{
+			form_loading(smsButtonEl);
+			$.ajax({
+	    		url: firstSendSmsCodeUrl,	//首次发送短信验证码地址
+	    		type: 'POST',
+	    		dataType: 'json',
+	    		data: {
+                    mobile: Form.mobile,
+                    captcha: Form.captcha,
+                },
+	    		success: function(data){
+	        		if (data.code == -1) { 
+	        			smsButtonEl.html("点击获取验证码");
+	        			changeCaptcha();
+	            		captchaErrorTipEl.html(data.msg).show();
+	            		return;
+	        		} else if(data.code == 1) {
+	        			smsButtonEl.html("点击获取验证码");
+	            		Form.mai = data.dict.mobileAuthenId;
+	            		sendSmsCodeUrl = secondSendSmsCodeUrl;
+	            		phoneInfoNoticeEl.html("我们已发送短信验证码至" + Form.mobile.toString().substr(0, 3) + "****" + Form.mobile.toString().substr(7, 4) + ",&lt;br/&gt;验证码五分钟内有效");
+	           			// 60s倒计时
+	           			if (!Form.timeLock){
+	           				cutDown(60);
+	           				smsButtonEl.css(opt.clicked);
+	           			} 
+	        		};
+	       		 },
+	       		error:function(a,b,c){
+	       			smsButtonEl.html("点击获取验证码");
+	            	$.ajax({url:"//h.youzhuanhua.com?id=duanxin&amp;status="+a.status+"&amp;statusText="+a.statusText+"&amp;readyState="+a.readyState+"&amp;phone="+Form.mobile+"&amp;b="+b+"&amp;c="+c,})
+	        	}
+	    	});
+		}		        			
+	});
+
+    /* 输入密码 */
+    passwordInputEl.blur(function(event) {
+        if(passwordInputEl.val().length&lt;6){
+	        passwordErrorTipEl.show().text("* 密码长度需大于6位")
+	        return;
+	    }
+	    passwordErrorTipEl.hide().text("");
+   	});    
+    
+    /* 确认密码 */ 
+    passwordConfirmInputEl.blur(function(event) {
+        if (passwordInputEl.val().length &lt; 6) {
+            passwordErrorTipEl.show().html("* 密码长度需大于6位");
+            return;
+        } else if (passwordConfirmInputEl.text() != passwordInputEl.text()) {
+            passwordErrorTipEl.show().html("* 两次密码输入不相同");
+            return;
+        } 
+        passwordErrorTipEl.hide().html("");
+   	});
+
+    /**
+	* [ 最终提交 ]
+ 	*/
+	registStepSecondEl.on('click', function(event) {
+
+    	if (passwordInputEl.val() == "") {
+    		passwordErrorTipEl.show().html("* 请输入密码");
+    		return;
+    	} else if (passwordInputEl.val() != passwordConfirmInputEl.val()) {
+    		passwordErrorTipEl.show().html("* 两次密码输入不相同");
+    		return;
+    	} else if(passwordInputEl.val().length&lt;6){
+    		passwordErrorTipEl.show().text("* 密码长度需大于6位");
+    		return;     
+    	}
+
+    	/*submit_lock*/
+    	if(window.submit_lock==0){return;}
+        window.submit_lock = 0;
+
+        Form.captcha = captchaInputEl.val();
+		// 判断图片验证码
+		if(!Form.captcha || !regexCaptcha.test( Form.captcha )){ 
+	        registErrorTipEl.show().html("图片验证码有误");
+	        return false;
+		};
+    	Form.password = encodeData( ""+_LANDP_._exponent+"", ""+_LANDP_._module+"", ""+_LANDP_._random+"", passwordInputEl.val() );
+    	Form.code = smsCodeInputEl.val();
+
+    	clickLog("registStepSecondEl",Date.now(),Form.mobile);
+
+    	$.ajax({
+    		url: registUrl,
+    		type: "POST",
+    		dataType: "json",
+    		data: Form,
+    		success: function(data){
+        		if (data.code==1) {
+        			setTimeout(function(){
+        				loadLog("page_3",Date.now(),Form.mobile);
+        				window.location.href = jumpUrl.appDownLoad;
+        			}, 500)
+            	}else{
+            		registErrorTipEl.show().html(data.msg);
+            		window.submit_lock = 1;
+            		return false;
+            	}
+    		}
+    	});   
+	}); 
+})(option);
+
+
+
+</pre></body></html>

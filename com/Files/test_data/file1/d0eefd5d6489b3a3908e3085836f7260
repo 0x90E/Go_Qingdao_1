@@ -1,0 +1,109 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<meta http-equiv="Cache-Control" content="no-Cache">
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0">
+<meta name="MobileOptimized" content="320">
+<meta name="format-detection" content="telephone=no">
+<title>用户登录</title>
+<script type="text/javascript">
+var ctx = "/sso";
+</script>
+<script type="text/javascript" src="/sso/pages/login/js/jquery.js"></script>
+<script type="text/javascript" src="/sso/pages/login/js/tipLayer.js"></script>
+<script type="text/javascript" src="/sso/js/common.js"></script>
+<link href="/sso/pages/login/css/login.css" rel="stylesheet" type="text/css">
+<script type="text/javascript">
+
+$(function(){
+	if("" != ""){
+		alertMsg("");
+	}else{
+		wxGuide();
+	}
+	
+	$("#sendcodeButton").click(function(){
+		var phone = $("#phone").val();
+		if(!phone || !/^1[\d]{10}$/.test(phone)){
+			alertMsg("请输入正确的手机号码！");
+			return;
+		}
+		$.ajax({
+			url:"/sso/dynamic.do",
+			type:"post",
+			data:{"phone" : phone},
+			async:false,
+			cache:false,
+			success:function(data){
+				if(data.code == "000000"){
+					alertMsg("动态密码发送成功！");
+				}else{
+					alertMsg(data.message);
+				}
+			},
+			error:function(){
+				alertMsg("网络忙，动态密码发送失败");
+			}
+		});
+	});
+	
+});
+
+function alertMsg(content){
+	$.tipLayer('.msgbox','','<div class="maskbox"></div>',2000,true);
+	$("#msgContent").html(content);
+	$('#msgbox').show();
+}
+
+function checkForm(){
+	var phone = $("#phone").val();
+	var passwd = $("#passwd").val();
+	if(!phone){
+		alertMsg("请输入手机号码！");
+		return false;
+	}
+	if(!passwd){
+		alertMsg("请输入动态密码！");
+		return false;
+	}
+	return true;
+}
+
+</script>
+</head>
+<body>
+	<div class="main">
+		<div id="login" class="p10 login_wrapper">
+			<div class="logo_box"></div>
+			<p class="title">
+				<span>移动旗舰店用户登录</span>
+			</p>
+			<form action="/sso/login.do" method="post" onsubmit="return checkForm()">
+				<input name="backurl" value="544cde9b3f81cc9d7698c497d3486239261d11cdd6cf5d5a85d9ae95cda4d291737bfa81dfd6540fd5f8509c887d0dcf8e5e79ce4e3dfa16186c72cbc53995d7" type="hidden">
+				<input name="type" value="1" type="hidden">
+				<p>
+					<input id="phone" name="phone" type="text" value="" placeholder="输入手机号码" class="w100">
+				</p>
+				<p>
+					<span id="sendcodeButton" class="get_dtpsw">获取动态密码</span>
+					<input type="text" id="passwd" name="passwd" class="w60" placeholder="输入动态密码">
+				</p>
+				<p>
+					<input type="submit" value="登录" class="login_btn">
+				</p>
+			</form>
+		</div>
+
+		<div class="hide msgbox">
+			<div id="msgbox">
+				<dl>
+					<dt>温馨提示</dt>
+					<dd>
+						<p id="msgContent"></p>
+					</dd>
+				</dl>
+			</div>
+		</div>
+		
+	</div>
+
+</body></html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0,user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <title>京东登录</title>
+    <link rel="stylesheet" href="../../../st_new/css/mlogin.min.css?v0.0.1">
+    <link rel="icon" href="//m.jd.com/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon-precomposed" href="//m.jd.com/images/apple-touch-icon.png">
+</head>
+<body>
+<!--禁止chrome自动填充-->
+<input type="text" name="username" style="display:none;">
+<input type="password" name="password" style="display:none;">
+<header id="header" style="display:block;">
+    <span class="icon icon-goback"></span>
+    京东登录
+</header>
+<section class="page">
+    <div class="wrap loginPage">
+        <div class="input-container">
+            <input id="username" class="acc-input username txt-input J_ping" type="text" placeholder="用户名/邮箱/已验证手机" autocomplete="off" onblur="CtoH(this);" report-eventid="MLoginRegister_Username">
+            <i class="icon icon-clear"></i>
+        </div>
+        <div class="input-container">
+            <input id="password" type="password" class="acc-input password txt-input J_ping" placeholder="请输入密码" autocomplete="off" report-eventid="MLoginRegister_Password" onkeyup="CtoH(this);">
+            <i class="icon icon-clear"></i>
+            <label for="onOff_pwd" class="label-checkbox J_ping" report-eventid="MLoginRegister_Plaintext">
+                <input id="onOff_pwd" type="checkbox">
+                <div class="checkbtn">
+                    <span class="b-text">abc</span>
+                    <span class="b-pwd">...</span>
+                </div>
+            </label>
+        </div>
+        <div id="input-code" class="input-container" style="display:;">
+            <input id="code" class="acc-input imgverify J_ping txt-input" type="text" placeholder="请输入验证码" autocomplete="off" onkeyup="CtoH(this);" size="11" maxlength="6" report-eventid="MLoginRegister_VerificationCode">
+            <span class="code-box"><img id="imgCode" src="/cgi-bin/m/authcode?mod=login" alt=""></span>
+            <i class="icon icon-clear"></i>
+        </div>
+        <div class="notice">&nbsp;</div>
+        <a href="javascript:;" id="loginBtn" class="btn J_ping" report-eventid="MLoginRegister_Login">登 录</a>
+        <a href="javascript:;" id="loginOneStep" class="btn btn-onestep J_ping" report-eventid="MLoginRegister_MLogin" data-src="" style="display:none;">一键登录</a>
+        <input type="hidden" id="oneStep_switch" value="none">
+        <label for="remberme" class="remberme J_ping" report-eventid="MLoginRegister_AutoLogin">
+            <input type="checkbox" id="remberme" checked="">
+            <span class="icon icon-rember"></span>
+            一个月内免登录
+        </label>
+        <div class="quick-nav clearfix">
+            <a href="javascript:;" class="J_ping findpwd" report-eventid="MLoginRegister_FindPassword"><i class="icon icon-clock"></i>找回密码</a>
+            <a href="javascript:;" class="J_ping quickReg" report-eventid="MLoginRegister_PhoneRegister"><i class="icon icon-reg"></i>快速注册</a>
+        </div>
+        <div class="quick-login" style="display:">
+            <h4>其他登录方式</h4>
+            <a href="javascript:;" class="J_ping quick-qq" report-eventid="MLoginRegister_QQLogin"><i class="icon icon-qq"></i><br>QQ</a>
+            <a href="javascript:;" class="J_ping quick-wx" report-eventid="MLoginRegister_WxLogin" style="display:none"><i class="icon icon-wx"></i><br>微信</a>
+            <a href="//m.jdpay.com/wallet/login/index.htm" class="J_ping quick-money" style="display:none"><i class="icon icon-money"></i><br>京东钱包</a>
+        </div>
+    </div>
+</section>
+<div class="toast"></div>
+<div class="pop-dialog" style="display:none;">
+    <div class="pop-body">
+        <p class="pop-msg">您的账号存在安全风险，请前往电脑版京东验证账号</p>
+        <div class="pop-btns">
+            <a href="javascript:;" class="btn-pop btn-cancel">取消</a>
+            <a href="javascript:;" class="btn-pop btn-continue">继续注册</a>
+        </div>
+    </div>
+</div>
+<script src="../../../st_new/js/zepto.min.js"></script>
+<script>
+//模板需要的变量
+var _findPwdUrl = '/cgi-bin/m/mfindpwd',  //找回密码url
+    _need_ck = true,  //是否显示图片验证码
+    risk_jd = null,   // 指纹识别上报数据
+    str_rsaString = '9B2D22D8E8E8977843AF3BCDD8B1328D20A34590F90B1826892736A7FCB885DF587583F8E4217E4A4E816D7E0808CA916A12081A059B621607912D009DBE7642F09C117FCD08594F8A2403FB2AD8C283ACCE919BA2D1F0DEC69DDC0ACE3D0D1CB5619B6CAFE684FEFC1F9FA99EDDE1C2FFEBF517A9E9BFB04480820866DFB98F',  // rsa信息
+    wxShow = 'none',  //微信显示上报
+    str_kenString = '0gspjysj', //token信息
+    kpkeyBtn = false;  //是否自动拉起一键登录
+function getDat(username,pwd) {return md5('Hmin+qkk'.substr(5)+'I2Bsm6JU'.substr(5)+'723SCZ45'.charAt(0)+'8icqG9R+'.toLowerCase());}  //MD5加密调用函数
+</script>
+<script src="../../../st_new/js/md5.min.js"></script>
+<!-- 公用方法 -->
+<script src="../../../st_new/js/common.min.js"></script>
+<!-- 公用方法 -->
+<!-- 埋点上报 -->
+<script src="//h5.360buyimg.com/ws_js/jdwebm.js"></script>
+<script src="//wl.jd.com/unify.min.js"></script>
+<script>
+try{
+    var pv= new MPing.inputs.PV();   // 构造pv 请求
+    var mping = new MPing();         // 构造上报实例
+    mping.send(pv);                  // 上报pv
+} catch (e){}
+function mdUpdata(eventIdstr){
+    try{
+        var eventId = eventIdstr;			 // 必选参数，事件id
+        var click = new MPing.inputs.Click(eventId);         // 构造click 请求
+        //click.event_param = ;		 // 设置click的参数
+        click.page_name = window.location.host + window.location.pathname;
+        click.updateEventSeries();                           // 更新事件串
+
+        var mpingClick = new MPing();				 // 构造上报实例
+        mpingClick.send(click); 					 // 上报click
+    } catch (e){}
+}
+if(!wxShow){
+    mdUpdata('MLoginRegister_WxAppear');
+}
+</script>
+<!-- 埋点上报 -->
+<!-- 指纹识别 -->
+<script src="//payrisk.jd.com/m.html"></script>
+<script src="//payrisk.jd.com/js/m.js"></script>
+<!-- 指纹识别 -->
+<!-- QQ浏览器 -->
+
+<!-- QQ浏览器 -->
+<script>
+//获取url中"?"符后的字串
+function GetRequest() {
+ var url = location.search;
+ var theRequest = new Object();
+ if (url.indexOf("?") != -1) {
+    var str = url.substr(1);
+    strs = str.split("&");
+    for(var i = 0; i < strs.length; i ++) {
+       theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);
+    }
+ }
+ return theRequest;
+}
+var theRequest = GetRequest();
+var qblog_switch = true;
+
+if(theRequest.qbautologin != "false" && qblog_switch){
+  if(window.browser && browser.login && browser.login.getCpOpenid){
+  	browser.login.getCpOpenid({
+      "appkey" : 'jd',
+      "wx_type": 2,
+  	},function(res){
+      var resdata = (typeof res == 'string') ? JSON.parse(res) : res;
+  		if(resdata.code == 0){
+  			window.location.href = '//plogin.m.jd.com/cgi-bin/m/qblogin?appid='+theRequest.appid+'&returnurl='+encodeURIComponent(theRequest.returnurl)+'&type='+resdata.type+'&ticket='+resdata.ticket;
+  		}
+  	});
+  }
+}
+</script>
+<script src="../../../st_new/js/mlogin.min.js?v0.0.1"></script>
+
+
+</body></html>

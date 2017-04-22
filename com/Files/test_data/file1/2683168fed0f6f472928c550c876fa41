@@ -1,0 +1,1671 @@
+<!DOCTYPE html><html lang="zh-CN"><head><style type="text/css">.ng-animate.item:not(.left):not(.right){-webkit-transition:0s ease-in-out left;transition:0s ease-in-out left}</style><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}</style>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <noscript>
+            &lt;meta http-equiv="refresh" content="0.0;url=/javascript_disabled/"&gt;
+        </noscript>
+
+        <link rel="stylesheet" href="//ad.toutiao.com/static/libs/bootstrap/3.3.4/css/bootstrap.min.css?v=eedf9ee80c">
+        <link rel="stylesheet" href="//ad.toutiao.com/static/ad/css/common.css?v=707741768b">
+        <link rel="stylesheet" href="//ad.toutiao.com/static/libs/font-awesome/css/font-awesome.min.css?v=04425bbdc6">
+        
+    <link rel="stylesheet" href="//ad.toutiao.com/static/ad/css/admin.css?v=5ab81d149a">
+    <link rel="stylesheet" href="//ad.toutiao.com/static/ad/css/promotion.css?v=6824cf06fc">
+    <link rel="stylesheet" href="//ad.toutiao.com/static/libs/datepicker/datepicker.css?v=7ee7c88dac">
+    <link rel="stylesheet" href="//ad.toutiao.com/static/libs/jquery/dataTables/jquery.dataTables.min.css?v=a90c139040">
+    
+<link rel="stylesheet" href="//ad.toutiao.com/static/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css?v=35a0dfa4ef">
+<link rel="stylesheet" href="//ad.toutiao.com/static/ad/css/promotion.css?v=6824cf06fc">
+<link rel="stylesheet" href="//ad.toutiao.com/static/ad/css/new_login.css?v=da61f8a584">
+
+
+
+        <script async="" src="//www.google-analytics.com/analytics.js"></script><script src="//ad.toutiao.com/static/libs/jquery/1.10.0/jquery.min.js?v=6bd34992ee"></script>
+        <script src="//ad.toutiao.com/static/libs/bootstrap/3.3.4/js/bootstrap.min.js?v=8c23731286"></script>
+        <script src="//ad.toutiao.com/static/ad/js/csrf_header.js?v=bcd3f5cc30"></script>
+        <script>
+        var adAdmin,adAgent,adAdvertise;
+        
+            
+            adAdvertise = '';
+            
+        
+
+        // 用户角色
+        GLOBAL_VAR = typeof GLOBAL_VAR == "undefined" ? {} : GLOBAL_VAR;
+        GLOBAL_VAR.ROLE = (function(){
+            var userRole,role;
+            if (adAdmin) {
+                return '管理员';
+            } else {
+                role = adAgent ? adAgent : adAdvertise;
+                var userMapping = {
+                    '0':'广告主',
+                    '2':'广告主',
+                    '4':'广告主',
+                    '1':'代理商',
+                    '6':'代理商',
+                    '3':'管理员'
+                };
+                return userMapping[role];
+            }
+        })();
+        //是否关闭广告计划
+        GLOBAL_VAR.adCloseOld =  '';
+        GLOBAL_VAR.videoCpvType = "0";
+        </script>
+        <script src="//ad.toutiao.com/static/ad/js/common.js?v=963b8db94c"></script>
+
+        
+    
+    <script src="//ad.toutiao.com/static/libs/angularjs/1.3.15/angular.min.js?v=ca1a588186"></script>
+    <script src="//ad.toutiao.com/static/libs/angularjs/1.3.15/angular-cookies.min.js?v=4e660f537c"></script>
+    <script src="//ad.toutiao.com/static/libs/underscore/1.7.0/underscore-min.js?v=137af05d49"></script>
+    
+
+    
+<script src="//ad.toutiao.com/static/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js?v=f7206b5647"></script>
+
+    <script src="//ad.toutiao.com/static/libs/jquery/jquery.form.js?v=84ce0bde21"></script>
+    <script src="//ad.toutiao.com/static/libs/jquery/jquery.tmpl.min.js?v=17b69d96a8"></script>
+    <script src="//ad.toutiao.com/static/libs/swiper.min.js?v=7ee99ae1a8"></script>
+    <script src="//ad.toutiao.com/static/libs/bootstrap/bootstrap3.validate.js?v=8c78aa233e"></script>
+    <script src="//ad.toutiao.com/static/libs/jquery/dataTables/jquery.dataTables.min.js?v=a02c548530"></script>
+    
+<title>投放管理平台</title>
+<meta name="validation-tag" content="old_ads_web/templates/ad/register_extend">
+<style>
+body{background-color: #eee;}
+.register{ padding:30px 0;}
+.bs-callout h4{ line-height:1.5em}
+.bs-callout p{ line-height:1.5em; font-size:16px;}
+#register_form{
+    width:600px;
+    margin: 0 auto;
+}
+.error_tip {background: #FFF2F2; border-color: #ff8e8e;color: #d10000;line-height: 20px;font-size: 10px;}
+#register_form .form-group {
+    position: relative;
+}
+#register_form .help-block {
+    overflow: visible;
+    width: 10px;
+    white-space: nowrap;
+    float: left;
+    margin-top: 14px !important;
+}
+.form-group .note{color:#FF9966;padding-top:14px;float:left;}
+.input-captcha {
+    width: 100px;
+}
+.input-group-captcha {
+    width: 285px;
+    float: left;
+    margin-right: 15px;
+}
+.btn-captcha {
+    height: 42px;
+    width: 100px;
+}
+.register h1{
+    color:#bababa;
+}
+#section5 p{
+    text-align: center;
+    color:#000;
+    padding: 50px;
+    font-size: 30px;
+}
+#form input:-webkit-autofill {
+    box-shadow: 0 0 0px 1000px white inset;
+}
+</style>
+
+
+    </head>
+    <body class="" style="">
+
+        <div class="container">
+            <div class="row">
+                <!-- content -->
+                
+    
+
+    <script>
+        function chooseContent(create_url, stock_type) {
+            $("#splashModal").modal('hide');
+            var modal = $("#contentChooseModal");
+            modal.modal();
+            if (stock_type == "toutiao") {
+                $("#choose_c1").show();
+                $("#choose_c2").show();
+                $("#choose_c3").hide();
+                $("#choose_c4").hide();
+                $("#choose_c5").hide();
+                $("#choose_c6").hide();
+                $("#choose_c7").show();
+                $("#choose_c9").show();
+            } else if (stock_type == "gd") {
+                $("#choose_c1").show();
+                $("#choose_c2").show();
+                $("#choose_c3").show();
+                $("#choose_c4").show();
+                $("#choose_c5").hide();
+                $("#choose_c6").hide();
+                $("#choose_c7").show();
+                $("#choose_c9").show();
+            } else if (stock_type == "essay") {
+                $("#choose_c1").hide();
+                $("#choose_c2").hide();
+                $("#choose_c3").hide();
+                $("#choose_c4").hide();
+                $("#choose_c5").show();
+                $("#choose_c6").show();
+                $("#choose_c7").hide();
+                $("#choose_c9").hide();
+            }
+            $("#create_url").val(create_url);
+            return false;
+        }
+
+        function create_ad_plan() {
+            var create_url = $("input[name='create_url']").val();
+            var content_type = $("input[name='content_type_']:checked").val() || "";
+            $btn = $("input[name='content_type_']:checked")
+            system_origin = ''
+            if($btn.attr('id') == 'article_promotion') {
+                system_origin = 3
+            }
+
+            if (content_type == "") {
+                $.fixAlert("请选择广告投放类型");
+                return false;
+            }
+            location.href = create_url + "&content_type_=" + content_type + "&system_origin=" + system_origin;
+        }
+    </script>
+
+    <div class="col-md-12" role="main" id="main">
+        <div id="splashModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-sm small-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h4 class="modal-title">库存管理</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p class="append-bottom-10">操作单号: <span class="splash-contract-id"></span></p>
+                        <p class="append-bottom-10">库存ID: <span class="splash-stock-id"></span></p>
+                        <a class="btn btn-primary btn-create">创建广告</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="reserveModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-sm small-md">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <form id="stockForm" role="form" method="post" action="/stock/manage/">
+                            <input type="hidden" name="csrfmiddlewaretoken" value="qsHOpT3SCsskda3yJGbJlQVGWt1oXOKz">
+                            <div>
+                                <input type="text" class="form-control append-bottom-10" name="contractid" placeholder="合同编号">
+                                <input type="hidden" name="operation" value="">
+                                <input type="hidden" name="type" value="">
+                                <input type="hidden" name="date" value="">
+                                <input type="hidden" name="stock_id" value="">
+                            </div>
+                            <div class="clearfix">
+                                <p id="reserveTips">是否预留此点位</p>
+                                <button type="button" class="btn btn-default pull-right" data-dismiss="modal">否</button>
+                                <button type="submit" class="btn btn-primary pull-right append-right-15">是</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="contentChooseModal" class="modal fade" tabindex="0" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-sm small-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h4 class="modal-title">选择投放类型</h4>
+                    </div>
+                    <div class="modal-body">
+                        <label class="radio-inline" id="choose_c1">
+                            <input type="radio" value="102" name="content_type_">落地页面
+                        </label><br>
+                        <label class="radio-inline" id="choose_c2">
+                            <input type="radio" value="103" name="content_type_">今日头条文章
+                        </label><br>
+                        <label class="radio-inline" id="choose_c9">
+                            <input type="radio" value="101" name="content_type_" id="article_promotion">号外
+                        </label><br>
+                        <label class="radio-inline" id="choose_c3">
+                            <input type="radio" value="6" name="content_type_">应用下载
+                        </label><br>
+                        <label class="radio-inline" id="choose_c4">
+                            <input type="radio" value="203" name="content_type_">CallToAction
+                        </label><br>
+                        
+                        <label class="radio-inline" id="choose_c5">
+                            <input type="radio" value="10" name="content_type_">段子落地页面
+                        </label><br>
+                        <label class="radio-inline" id="choose_c6">
+                            <input type="radio" value="2" name="content_type_">应用下载
+                        </label><br>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="hidden" name="create_url" id="create_url" value="">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" onclick="create_ad_plan()">创建</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="protocolModal" class="modal fade" tabindex="0" role="dialog" aria-hidden="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title">今日头条广告推广协议</h4>
+            </div>
+            <div class="modal-body">
+                <div id="account-agreement">
+                    <div class="container">
+                        <div class="inner font-style">
+                            <h1 class="text-center title">今日头条移动端数据推广服务协议 </h1>
+                            <p>
+                                <strong>
+                                    欢迎使用“今日头条”、“内涵段子”等移动客户端数据推广服务，该服务由北京今日头条科技有限公司（以下简称“今日头条”公司）提供，在客户通过“今日头条”、“内涵段子”等移动客户端进行数据推广前,请务必审慎阅读、充分理解下述各条款内容，特别是免除“今日头条”公司义务或者限制“今日头条”公司责任或加重客户义务的条款，并选择接受或不接受。客户一经接受《今日头条移动端数据推广服务协议》（以下简称“本协议”）即应遵守本协议条款以及“今日头条”、“内涵段子”等平台各项制度和规范。
+                                </strong>
+                            </p>
+                            <ol class="outer-ol">
+                                <li>
+                                    <h3 class="li-header">定义</h3>
+                                    <ol class="inner-ul">
+                                        <li>客户：指符合“今日头条”公司移动端数据推广条件并按本协议规定条件支付数据推广费，使用“今日头条”公司数据推广服务的单位，以下简称“客户”。</li>
+                                        <li>今日头条移动端数据推广服务：指“今日头条”公司已经开通及陆续开通的在移动客户端相关页面的特定位置展示客户数据推广信息的服务及其他相关的衍生服务，包括但不限于 “今日头条”、“内涵段子”等移动客户端。</li>
+                                    </ol>
+                                </li>
+                                <li>
+                                    <h3 class="li-header">合同的确认与接受</h3>
+                                    <ol class="inner-ul">
+                                        <li>客户必须完全同意“今日头条”公司在如下网址<a href="https://ad.toutiao.com/overture/account/selfservice_agreement/ ">https://ad.toutiao.com/overture/account/selfservice_agreement/ </a> 上公布的《今日头条移动端数据推广服务协议》（即“本协议”及其后续更新版本）全部条款，并自行或授权他人完成注册程序。客户使用“今日头条”公司数据推广服务的行为将视为客户对本协议及其后续更新版本全部内容和条款的接受。</li>
+                                        <li>客户与“今日头条”公司签订的数据推广服务订单与“今日头条”公司在<a href="https://ad.toutiao.com/overture/account/selfservice_agreement/ ">https://ad.toutiao.com/overture/account/selfservice_agreement/ </a>  上公布的《今日头条移动端数据推广服务协议》有不一致的，以《今日头条移动端数据推广服务协议》为准。</li>
+                                    </ol>
+                                </li>
+                                <li>
+                                    <h3 class="li-header">“今日头条”公司数据推广服务的申请</h3>
+                                    <ol class="inner-ul">
+                                        <li>“今日头条”、“内涵段子”移动客户端数据推广服务是付费服务，客户应当通过“ad.toutiao.com”在线提交账户开通申请，在提交开通申请时需要上传相关证照的扫描件（包括但不限于：营业执照、法人登记证书、组织机构代码证、税务登记证、ICP证、特殊行业经营许可证、特殊行业广告发布前置审批证书等，如果客户需要取得增值税专用发票，还应提供增值税一般纳税人资格证明）申请开通本服务。在开通账户的过程中，客户应当填写并书面提交《今日头条移动客户端数据推广服务开通确认函》，指定客户单位的一位员工作为授权代表开通并使用本服务，客户指定的授权代表在开通及使用本服务的过程中所实施的行为视为客户本人的行为，客户需为客户的授权代表所实施的行为承担相应的法律责任，“今日头条”公司向授权代表填写的邮箱发送邮件的行为视为客户收到邮件，“今日头条”公司与授权代表填写的联系电话进行沟通视为与客户进行沟通。如客户需变更授权代表，需要在“ad.toutiao.com”系统后台变更并重新书面提交《今日头条移动客户端数据推广服务开通确认函》变更授权代表。</li>
+                                        <li>客户理解并同意，为了符合国家相关法律法规和政策的要求，“今日头条”公司有权选择是否接受客户的开通申请。客户的开通申请被审批通过、拟进行数据推广的内容被审核通过并预付数据推广费后，即可按照本合同的约定使用本服务。</li>
+                                    </ol>
+                                </li>
+                                <li>
+                                    <h3 class="li-header">“今日头条”公司数据推广服务内容</h3>
+                                    <ol class="inner-ul">
+                                        <li>“今日头条”、“内涵段子”移动客户端数据推广服务以增加客户宣传或数据推广的产品或服务的被展示或/和被点击的概率为目的，计费方式包括非竞价服务方式和竞价服务方式。竞价服务的计费方式包括但不限于CPC、CPM、CPT等方式,客户在登陆“今日头条”公司广告后台系统（以下简称“系统”）后可根据需要自行选择。启动本服务后，一旦客户的竞价满足本服务成交条件，客户的数据推广内容将在“今日头条”、“内涵段子”移动客户端信息流特定位置、文章详情页等位置中进行展示。</li>
+                                        <li>本协议所指的“数据推广服务”可能包含以下一种方式或几种方式的结合：以图片、文字或视频、音频形式、FLASH、网址链接等形式在“今日头条”、“内涵段子”移动客户端宣传或数据推广上为客户的产品或服务。</li>
+                                        <li>在开通本服务并支付预付款后，客户有权按照系统的规则设定数据推广内容，数据推广内容的上线需要经过“今日头条”公司的审核。在数据推广内容审核通过之后，客户方可针对被审核通过的数据推广内容以参与“今日头条”、“内涵段子”移动客户端系统的推广投放。</li>
+                                        <li>客户应当按照系统的自动提示进行数据推广服务的下单操作。客户需仔细阅读并遵守系统的投放操作规则，并对客户的操作行为负责，不得以任何理由否认操作行为的效力。</li>
+                                        <li>参与系统的实时竞价时，客户应当按照系统的规则及提示提交报价，如竞价成功，“今日头条”公司有权按成交价格从客户的预付款中扣减相应金额，直至客户的预付款扣减完毕或者客户设定的该次服务已经履行完毕。</li>
+                                        <li>客户的“预付款”消费完毕后可在本合同生效期间内自行选择是否续费，“今日头条”公司有权基于数据推广政策自行决定是否接受客户续费及是否终止向客户提供数据推广服务。</li>
+                                        <li>当客户的数据推广服务管理账号内余额不足以支付“今日头条”公司数据推广服务费用时，客户应及时向“今日头条”公司续费，如因客户没有及时续费造成客户数据推广信息下线从而导致“今日头条”公司数据推广服务终止，“今日头条”公司不承担任何责任。</li>
+                                        <li>客户的每次续费须经“今日头条”公司同意，并且每次续费视为双方达成了一个新的合同。任何一方均有权以拒绝续费/接受续费的方式终止双方的合作。</li>
+                                    </ol>
+                                </li>
+                                <li>
+                                    <h3 class="li-header">数据推广服务内容的审核</h3>
+                                    <ol class="inner-ul">
+                                        <li>依据数据推广的方式，客户应将相应数据的内容素材提前提交给“今日头条”公司，客户方内容素材：指客户自行设计制作或依法委托他人设计制作的，用于展示客户方品牌、他人自己生产或经授权销售的产品、服务的信息内容，包括但不限于图片、文字、视频、音频、FLASH等，内容素材包括落地页本身。落地页：指内容素材中所包含的链接所指向的网页，即用户点击数据推广素材后跳转到的页面或重定向的页面。</li>
+                                        <li>客户应当在数据推广投放前将内容素材提交“今日头条”公司，提交的方式为在线提交，内容素材文件的规格、大小应该符合“今日头条”公司的规定。若客户欲变更数据推广内容的，也应提前将变更后的内容素材提交“今日头条”公司。</li>
+                                        <li>“今日头条”公司将依据本协议的约定对客户提交的内容素材进行审查，“今日头条”公司的审查责任限于：依据相关法律、法规和规章制度的规定，对内容素材的合法性进行形式审查；若客户提供的内容素材包含链接，“今日头条”公司仅在技术上审查链接地址是否支持手机、平板电脑等终端设备以及链接地址能否快速顺利打开。“今日头条”公司不负责对落地页的内容进行审查。</li>
+                                        <li>“今日头条”公司的审查不代表“今日头条”公司为客户提交内容素材的真实性、合法性负责。若因为客户提交的内容素材的原因，导致“今日头条”公司受到任何第三方索赔或者国家机关处罚的，客户应当足额赔偿“今日头条”公司因此而遭受的损失。</li>
+                                        <li>无论是否属于“今日头条”公司审查责任范围内和/或无论数据推广内容是否已经发布，只要“今日头条”公司发现客户提交的内容素材为法律禁止发布或若发布将很可能导致违法、违规风险，或存在严重违背社会公序良俗的情形的，“今日头条”公司有权要求客户在收到“今日头条”公司书面通知后2日内进行修改；在客户按照“今日头条”公司要求进行修改前，“今日头条”公司有权拒绝发布或拒绝继续发布该数据推广内容，对由此导致的数据推广发布延迟、中止或终止，“今日头条”公司无需承担违约责任。如客户拒不修改数据推广内容或逾期修改数据推广影响“今日头条”公司数据推广业务的正常开展，“今日头条”公司有权单方解除或提前终止本协议，或要求客户支付延迟发布期间相应的数据推广费。</li>
+                                        <li>客户应当以高度注意义务按照中华人民共和国境内相关法律、法规及规章制度的要求对拟发布的数据推广内容自行进行审查，以尽可能避免数据推广内容中出现任何违法违规情况。</li>
+                                    </ol>
+                                </li>
+                                <li>
+                                    <h3 class="li-header">数据推广数据统计</h3>
+                                    <p>客户与“今日头条”公司双方确认，本协议项下的所有数据（包括但不限于信息发布位、发布时间、浏览量、点击量等）均由“今日头条”公司统计并作为结算依据。“今日头条”公司保证统计数据的客观、真实。</p>
+                                </li>
+                                <li>
+                                    <h3 class="li-header">“今日头条”公司的权利与义务</h3>
+                                    <ol class="inner-ul">
+                                        <li>“今日头条”公司会根据客户选择的服务以及计费方式等情况向客户提供相应的服务。</li>
+                                        <li>关于本协议及本协议项下服务的使用规则、协议条款、平台规则等，“今日头条”公司将不定时进行更新，且无须另行通知。相关内容条款一旦发生变更，“今日头条”公司将按照本协议第十四条“通知”条款约定的方式进行通知及公示。修改后的内容一经公示即有效替代原有的条款并成为本协议之有效组成部分。</li>
+                                        <li>客户理解并同意，“今日头条”公司发现客户的数据推广内容违反本协议约定的，有权采取以下一项或多项措施：
+                                            <ol class="leading-zero-style-ol">
+                                                <li>无论“今日头条”公司是否事先进行通知、提示，均有权根据前述判断决定客户的内容是否可以使用本服务或者继续使用本服务；</li>
+                                                <li>要求客户提供材料以证明客户行为的合法性；</li>
+                                                <li>对客户提交的数据推广内容予以下线或采取其他屏蔽措施；</li>
+                                                <li>中止或终止客户的账号，将客户的行为对外予以公告；</li>
+                                                <li>追究客户的法律责任；</li>
+                                                <li>其他“今日头条”公司认为适合的处理措施。</li>
+                                            </ol>
+                                        “今日头条”公司上述行为并不意味着“今日头条”公司对于客户发布的数据推广内容的合法合规性的任何承诺或担保，也不构成“今日头条”公司与客户或客户数据推广的内容承担任何连带责任，客户应当对客户的数据推广内容独立负责。
+                                        </li>
+                                        <li>除非另有约定，“今日头条”公司无需为按照本协议享有的权益而向客户支付任何费用。</li>
+                                        <li>“今日头条”公司负责本服务及服务数据查询系统的开发运营和维护，并尽最大努力保持该系统服务的连续性和稳定性，但客户理解并接受：客户或“今日头条”公司因不可抗力或情势变更导致部分或全部迟延或不能履行义务的，不承担违约责任，但应及时采取措施减少因不可抗力或情势变更造成的损失。不可抗力包括但不限于政府管制、国家政策调整、恐怖袭击、黑客攻击、自然灾害、战争、停电、电信部门技术调整以及病毒入侵等。
+                                            下列事项为本协议约定的情势变更：
+                                            <ol class="leading-zero-style-ol">
+                                                <li>
+                                                服务器终止。如发生如下情况时，“今日头条”公司可以不经通知客户，中止提供数据推广平台的信息发布及数据推广服务。
+                                                <ol class="i-style-ol">
+                                                    <li>
+                                                        紧急服务设备维护、检修等非人为因素造成的不可抗拒情况。
+                                                    </li>
+                                                    <li>
+                                                        由于基础电信业务故障而造成数据推广。
+                                                    </li>
+                                                    <li>
+                                                        平台的线路服务终止的情况。
+                                                    </li>
+                                                </ol>
+                                                对于上述情形，“今日头条”公司将于该情形发生后12小时内通知客户。
+                                                </li>
+                                                <li>
+                                                因“今日头条”公司服务器遭遇不法攻击导致临时性不能正常运行且经“今日头条”公司尽力抢修仍无法恢复使用。
+                                                </li>
+                                                <li>
+                                                    其他在协议成立以后发生的当事人在订立协议时无法预见的、非不可抗力造成的客观情况的重大变化。
+                                            如不可抗力事件或情势变更持续20日或在本协议有效期内累计超过30日，则任何一方有权以书面通知的方式单方提前解除或终止本协议。
+                                                </li>
+                                            </ol>
+                                        </li>
+                                        <li>“今日头条”公司依法对技术平台、接口、相关内容及名称享有所有权和知识产权，该知识产权在任何情况下均不发生任何形式的转移。</li>
+                                        <li>客户理解并同意，为了更好地为客户和用户提供本服务，“今日头条”公司有可能对相关服务数据进行整理、分析并用于进一步优化或拓宽本服务；“今日头条”公司或经“今日头条”公司授权的关联公司也可能会出于运营需要将客户的使用情况作为数据推广的案例进行展示或参与广告评奖。</li>
+                                        <li>当客户可能涉嫌违反国家法律法规或“今日头条”公司数据推广政策的情况下，“今日头条”公司有权立即通知客户终止数据推广服务，“今日头条”公司将向客户退回未消费完毕的数据推广费余额，“今日头条”公司无需承担其他法律责任和费用补偿。</li>
+                                        <li>若客户推广的商品或服务侵犯第三方拥有的合法权利，或确有证据证明存在此类侵权的重大嫌疑，或者其数据推广的商品或服务质量低劣，一经“今日头条”公司发现或收到针对该商品或服务的真实、合理的投诉的，“今日头条”公司有权解除或提前终止协议并要求客户支付相当于该商品或服务相应的数据推广费用或者伍仟元（以较高者为准）的违约金；若客户的侵权或违法行为导致“今日头条”公司向任何第三方赔偿或者遭受国家机关处罚的，客户还应当足额赔偿“今日头条”公司因此遭受的全部损失。</li>
+                                    </ol>
+                                </li>
+                                <li>
+                                    <h3 class="li-header">客户的权利与义务</h3>
+                                    <ol class="inner-ul">
+                                        <li>客户有权通过客户在系统后台帐户查询所获得的本服务内容。</li>
+                                        <li>客户需对数据推广账户的用户名和密码的安全性负责，不能向任何人透露数据推广帐户用户名和密码。没有“今日头条”公司的书面授权，客户不得将“今日头条”公司为客户开通的服务账号及“今日头条”公司在本协议下承诺向客户提供的服务及相关资源转卖、出租、出借给任何第三方。若客户违反该规定，“今日头条”公司将保留关闭客户服务账号及终止向客户提供服务的权利。同时，对客户支付的服务费用“今日头条”公司将不予退还或部分退还。客户对其在今日头条数据推广服务注册的用户名和密码的安全性负全部责任，并对以其用户名进行的所有活动和事件负全部责任，客户若发现任何非法使用“今日头条”公司数据推广服务管理账号或存在安全漏洞的情况，应立即通知“今日头条”公司。</li>
+                                        <li>客户应当保证其账户等财务信息的真实性并与今日头条数据推广服务合同签约主体保持一致，如因客户提供的财务信息虚假或者不一致，导致的财务风险由客户承担，“今日头条”公司不承担任何责任，由此给今日头条造成损失的，客户应当予以赔偿。</li>
+                                        <li>客户保证：客户对自己设定和提交的数据推广内容已获得所必需的全部权利，内容真实合法，该等内容不含有侵犯他人合法权利以及有违公序良俗的内容或指向这些内容的信息。</li>
+                                        <li>客户保证：客户设定和提交的数据推广内容符合中华人民共和国境内法律、法规及规章制度的规定，并且同时符合“今日头条”公司公示的各项规则。</li>
+                                        <li>若客户发布的数据推广内容违反法律、法规、规章制度的规定或“今日头条”公司公示的各项规则的，或者侵害第三方合法权益的，应由客户自行承担全部责任。若因此导致“今日头条”公司损失的，客户应向“今日头条”公司足额赔偿该等损失（包括但不限于“今日头条”公司向第三方的赔偿、向国家机关缴纳的罚款、诉讼费和合理的律师费等）。</li>
+                                        <li>若“今日头条”公司对数据推广内容的合法性或权利来源存在任何疑问的，客户应当按照“今日头条”公司的要求提供相关证据以充分证明数据推广内容的合法性和权利来源。</li>
+                                        <li>“今日头条”公司将向客户提供服务数据查询的统计系统，该系统可供客户查询客户使用本服务的相关信息。本服务经由“今日头条”公司广告系统后台所形成的服务数据（以下简称“服务数据”）归“今日头条”公司所有，属于商业秘密。未经“今日头条”公司事先书面许可，客户不得在本协议约定范围之外使用服务数据，亦不得披露或泄露给第三方。</li>
+                                        <li>未经“今日头条”公司书面许可，客户不得在市场数据推广、名片、文件、网站建设以及其他任何方面使用“今日头条”公司的名称、商标、商号、品牌、域名和网站，否则视为侵权。</li>
+                                        <li>若第三方基于客户数据推广的数据，发生购买商品或服务等行为，从而与客户产生的任何纠纷或争议“今日头条”公司不承担责任，客户应自行解决；对于客户数据推广的商品或服务，若“今日头条”公司基于消费者投诉或有权机关的要求对消费者先行赔付的，客户应当弥补“今日头条”公司的损失。</li>
+                                    </ol>
+                                </li>
+                                <li>
+                                    <h3 class="li-header">结算条款</h3>
+                                    <ol class="inner-ul">
+                                        <li>服务费、预付款及续费
+                                            <ol class="leading-zero-style-ol">
+                                                <li>
+                                                除非双方另有明确约定，本服务将以投放前预付，投放后即时结算并扣减费用的模式进行费用支付。单次支付的预付款金额不设上限，最低金额由“今日头条”公司确定并公布。
+                                                </li>
+                                                <li>
+                                                “今日头条”移动客户端数据推广服务费的续费，是指为了确保继续使用本服务，您在支付前一款规定的首次付款后，后续支付的预付款。每笔续费金额不设上限，最低金额由“今日头条”公司确定，并公布。
+                                                </li>
+                                            </ol>
+                                        </li>
+                                        <li>发票规则
+                                            <ol class="leading-zero-style-ol">
+                                                <li>
+                                                当您已经扣减且未开票的服务费金额（以下简称“待开票金额”）累计达到人民币 1000元时，可向“今日头条”公司申请开具发票。发票可选开票项目为广告费/广告发布费/信息服务费/信息推广费。
+                                                </li>
+                                                <li>
+                                                “今日头条”公司按照您申请的金额开具发票，但您申请的金额不得超过待开票金额。发票抬头为您申请开通本服务时填写的用户认证主体全称。
+                                                </li>
+                                                <li>
+                                                发票寄送流程：今日头条审核同意受理您的申请后，将以邮费到付方式将发票邮寄到您在本服务中留下的通讯地址，请您确认相关通讯地址真实、可用并同意支付邮寄费用。寄送发票的邮件一经发送至您在本服务中留下的通讯地址，即视为今日头条已经完成了发票开具义务，并且今日头条不会重复开具发票。因您的通讯地址不真实、不准确、不可用或者其他您的原因而导致您无法获得发票，相关后果由您自行承担。
+                                                </li>
+                                            </ol>
+                                        </li>
+                                        <li>退款规则
+                                            <ol class="leading-zero-style-ol">
+                                                <li>
+                                                当您通过系统申请终止本服务时，可以申请退款。
+                                                </li>
+                                                <li>
+                                                退款金额＝您的预付款和续费累积的余额 － 应扣费用<br>
+                                                其中：“您的预付款和续费累积的余额”为您的预付款和全部续费的总额扣减已经发生的全部服务费总额后的余额；“应扣费用”为依据本协议约定，因您的违约行为，“今日头条”公司可以要求您支付的违约金、赔偿金、补偿金等。
+                                                </li>
+                                                <li>
+                                                您应主动向“今日头条”公司递交书面的退款申请并确认终止使用本服务。
+                                                </li>
+                                                <li>
+                                                “今日头条”公司审核同意受理您的退款申请后60日内执行退款。
+                                                </li>
+                                            </ol>
+                                        </li>
+                                    </ol>
+                                </li>
+                                <li>
+                                    <h3 class="li-header">第三方投诉的解决</h3>
+                                    <p>客户数据推广行为违反本协议的规定导致“今日头条”公司受到第三方投诉（包括但不限于第三方以发函、媒体报道等形式指控“今日头条”公司侵权、对“今日头条”公司提起诉讼或向相关主管机关举报使“今日头条”公司遭受审查或质询等），或使“今日头条”公司面临相关主管机关的审查或质询，“今日头条”公司有权将该数据推广信息等下线，停止针对该客户的数据推广服务，客户应积极采取措施应对投诉。在发生上述情况时，如“今日头条”公司决定继续履行本合同，客户应立即整改数据推广信息和/或网站上涉嫌违规内容，并向“今日头条”公司提供有效证明材料；“今日头条”公司恢复履行合同并不免除客户在本协议项下的违约责任承担。</p>
+                                </li>
+                                <li>
+                                    <h3 class="li-header">保密条款</h3>
+                                    <ol class="inner-ul">
+                                        <li>一方因订立及履行本协议所知悉、了解到的对方的任何信息为对方当事人的专有信息。未经信息披露相对方事先书面同意，任何一方将对任何专有信息保密，不得向任何人或实体披露这些专有信息。但正常履行本协议的义务需要或者国家法律、法规另有规定的除外。</li>
+                                        <li>双方对本协议的具体内容负有保密责任，未经对方事先书面同意，任何一方不得将双方的合作及本协议的具体内容披露给任何第三方。</li>
+                                        <li>本协议的终止、解除、撤销或无效均不影响本保密条款的有效性及对双方的约束力。</li>
+                                    </ol>
+                                </li>
+                                <li>
+                                    <h3 class="li-header">免责条款</h3>
+                                    <ol class="inner-ul">
+                                        <li>客户理解并同意：为了向客户提供更完善的服务，“今日头条”公司有权定期或不定期地对提供本服务的平台或相关设备进行检修、维护、升级等，此类情况可能会造成相关服务在合理时间内中断或暂停的，若由此给客户造成损失的，客户同意放弃追究“今日头条”公司的责任。</li>
+                                        <li>客户理解并同意：本服务是按照现有技术和条件所能达到的现状提供的。“今日头条”公司会尽最大努力向客户提供服务，尽量提供具有连贯性和安全性的服务；但不能保证服务毫无瑕疵，也无法随时预见和防范法律、技术以及其他风险，包括但不限于不可抗力、病毒、木马、黑客攻击、系统不稳定、第三方服务瑕疵、政府行为等原因可能导致的服务中断、数据丢失以及其他的损失和风险。客户也同意：即使“今日头条”公司提供的服务存在瑕疵，但上述瑕疵是当时行业技术水平所无法避免的，其将不被视为“今日头条”公司违约，同时，由此给客户造成的数据或信息丢失等损失的，客户同意放弃追究“今日头条”公司的责任。</li>
+                                        <li>为运营需要及符合法律的相关规定，“今日头条”公司有权保存客户的注册信息与数据数据推广内容，并用于与本服务相关的用途，“今日头条”公司会对客户的信息尽最大努力进行保护。</li>
+                                    </ol>
+                                </li>
+                                <li>
+                                    <h3 class="li-header">承诺和保证</h3>
+                                    <ol class="inner-ul">
+                                        <li>“今日头条”公司保证其拥有从事数据推广的合法资质和签署本协议的权限。客户同意，如“今日头条”公司经营范围变更、主营业务变化或有其他合理原因，在不影响客户权利义务的前提下，“今日头条”公司有权随时将其于本协议项下尚未履行部分的权利和义务全部转让给“今日头条”公司关联企业。但“今日头条”公司应当书面通知客户。“今日头条”公司关联企业指控制“今日头条”公司或被“今日头条”公司所控制、或与“今日头条”公司共同受控制于同一实体的任何企业。控制指直接或间接拥有该企业百分之五十（50％）以上的股权、投票权或管理权。</li>
+                                        <li>客户保证其拥有数据推广客户产品和签署本协议的合法权限。无论客户数据推广的标的物权利归属如何，客户均应以自己的名义签署本协议并直接承担合同责任。</li>
+                                        <li>客户保证不会在数据推广中提供任何包含恶意软件、间谍软件或任何其他恶意代码的内容素材，也不会故意违反或规避任何法律、法规、规章制度。</li>
+                                        <li>在本协议有效期内，如有任何“今日头条”公司或“今日头条”公司关联企业在职员工成为客户的股东或者高级管理人员，客户承诺立即书面通知“今日头条”公司法律部门，否则“今日头条”公司有权随时提前终止本协议而无需承担任何责任。</li>
+                                        <li>在双方合作过程中，一方应保证服务质量，不得损害对方整体市场形象，也不得从事其它损害对方利益的行为。</li>
+                                    </ol>
+                                </li>
+                                <li>
+                                    <h3 class="li-header">通知条款</h3>
+                                    <ol class="inner-ul">
+                                        <li>“今日头条”公司可能会以网页（含客户端）公告、网页提示、电子邮箱、手机短信、常规的信件传送、客户注册的本服务帐户的管理系统内发送站内信等方式中的一种或多种，向客户送达关于本服务的各种规则、通知、提示等信息，该等信息一经“今日头条”公司采取前述任何一种方式公布或发送，即视为客户已经接受并同意，对客户产生约束力。若客户不接受的，请客户停止使用本服务，否则视为客户已经接受、同意。除协议另有约定外，双方因订立和履行本协议而相互发出的通知、文件、资料等，均为本协议的组成部分，与本协议具有同等法律效力，前述通知、文件、资料可以传真、邮寄或电子邮件方式送达。如客户变更传真号码、邮寄地址或电子邮箱的，应当在系统后台中予以修改。</li>
+                                        <li>若由于客户提供的电子邮箱、手机号码、通讯地址等信息错误或变更前述信息后更新不及时，导致客户未收到相关规则、通知、提示等信息的，客户同意仍然视为客户已经收到相关信息并受其约束，一切后果及责任由客户自行承担。</li>
+                                        <li>客户如需取得本协议的纸质版，可自行登陆客户在系统后台账户并下载打印一式两份协议，加盖客户的公章或者合同专用章后快递给“今日头条”公司，协议的签署日期以客户在线点击“同意”的日期为准。“今日头条”公司在收到客户盖章的协议后，将加盖“今日头条”公司的合同专用章后向客户以快递形式返回一份。客户打印的纸质版协议应与本协议的电子版内容完全一致，如有不一致之处，以本协议的电子版为准且“今日头条”公司有权拒绝在修改后的纸质版协议上盖章。</li>
+                                        <li>任何一方向对方发出通知，以多种方式通知的，以对方最早接收到通知的日期为通知送达日期。</li>
+                                    </ol>
+                                </li>
+                                <li>
+                                    <h3 class="li-header">有效期限与协议的变更、解除及终止</h3>
+                                    <ol class="inner-ul">
+                                        <li>本协议自客户在线点击同意后生效或者按照双方书面协议约定的方式生效。除本协议约定的解除或终止情形或法定解除或终止事由外，本协议将长期有效。</li>
+                                        <li>本协议未尽事宜，经甲、乙双方协商一致，可另行签署书面补充协议，经双方签字盖章的书面补充协议与本协议具有同等法律效力。</li>
+                                        <li>在协议执行期间，除本协议另有约定外，如一方认为需要提前解除或提前终止，应提前一个月以书面形式通知对方，但需经对方书面同意，未经双方一致同意，一方单方面主张变更、解除本协议的，不产生法律效力。因此而使另一方遭受损失的，应赔偿对方相应经济损失。</li>
+                                        <li>在本协议签订后30天内，如客户未提交任何数据推广内容，本协议将自行解除。</li>
+                                        <li>若客户有下列违约行为之一的，“今日头条”公司有权单方解除或终止本协议：
+                                            <ol class="leading-zero-style-ol">
+                                                <li>违反本协议保密条款，将“今日头条”公司商业秘密及软件、数据等信息内容进行转移、复制、传播、转让、许可或以任何方式披露、允许、提供他人使用，或从事任何商业或经营活动；</li>
+                                                <li>客户提交的内容素材为法律禁止发布或若发布将很可能导致违法风险，或存在严重违背社会公序良俗的情形，经“今日头条”公司通知，仍不改正的；</li>
+                                                <li>客户的链接数据推广上线后，客户通过修改链接所指向的网页或程序内容、设置网站跳转、设置恶意代码、设置病毒等方式展现违反现行法律、法规及规章制度的内容；或客户对落地页网站展示内容进行重大变更，比如将原本数据推广的普通产品变更为需要具备特殊经营资质方可经营的产品等；</li>
+                                                <li>客户超出“今日头条”公司授权权限或未经“今日头条”公司授权，以“今日头条”名义进行代理或其他活动；</li>
+                                                <li>客户在数据推广中提供任何包含恶意软件、间谍软件或任何其他恶意代码的内容素材，侵犯“今日头条”公司和/或“今日头条”公司用户的合法权益；</li>
+                                                <li>其他严重违约行为导致“今日头条”公司履行本协议已无实际意义的。</li>
+                                            </ol>
+                                        </li>
+                                        <li>本协议无论是否解除或提前终止，双方根据本协议约定进行财务结算。因一方违反本协议的约定擅自解除或终止本协议，给对方造成损失的，应赔偿对方损失。</li>
+                                        <li>如果本协议中的任何条款因违反法律或政府规定或因其他原因而完全或部分无效或不具有执行力，则该条款被视为删除。但该条款的删除不影响本协议同其他条款的法律效力。</li>
+                                        <li>若因客户违约导致“今日头条”公司终止本协议的，“今日头条”公司有权将客户剩余的服务费或者预付款作为违约金而不予退还。</li>
+                                    </ol>
+                                </li>
+                                <li>
+                                    <h3 class="li-header">反商业贿赂条款</h3>
+                                    <p>
+                                        一方不得向对方、对方经办人或其他相关人员索要、收受、提供、给予协议约定外的任何利益，包括但不仅限于明扣、暗扣、好处费、现金、有价证券、购物卡、实物、礼品、餐饮娱乐、旅游或其他非物质性利益等。否则，一经发现，守约方将立即提前终止协议，终止双方业务往来；一方的行为构成犯罪的，守约方可提请司法机关依法追究其法律责任。
+                                    </p>
+                                </li>
+                                <li>
+                                    <h3 class="li-header">其他条款</h3>
+                                    <ol class="inner-ul">
+                                        <li>本协议内容同时包括“今日头条”公司可能不断发布的关于本服务的其他相关协议、规则等内容。上述内容一经正式发布通知，即为本协议不可分割的组成部分，客户同样应当遵守。本协议所述通知方式为：“今日头条”公司将以网络公示（<a href="https://ad.toutiao.com/overture/account/selfservice_agreement/">https://ad.toutiao.com/overture/account/selfservice_agreement/</a>）和/或今日头条推广服务系统内部通知和/或电子邮件和/或传真/电话和/或特快专递等方式提前通知客户，通知客户的，客户获知该变更的日期以下述日期为准：网络公示之日起第3个工作日，电子邮件进入客户邮件账户之日，传真寄送客户之日，电话接收之日，特快专递发出之日起第3个工作日。任何情况下，客户向今日头条发出通知时，应当采用电子邮件和/或传真和/或特快专递方式（发出通知时，单位应加盖公章）。今日头条获知通知的日期同前。任何一方向对方发出通知，以多种方式通知的，对方获知日期以最早的获知日期为准。</li>
+                                        <li>本协议的订立、执行和解释及争议的解决均应适用中华人民共和国大陆地区法律。本协议的签署地点为北京市海淀区，若客户与“今日头条”公司发生争议的，双方同意将争议提交北京市海淀区法院诉讼解决。</li>
+                                    </ol>
+                                </li>
+                            </ol>
+                            <p style="text-align: right;">北京今日头条科技有限公司</p>
+                        </div>
+                    </div>
+                    <!-- 协议 -->
+                </div>
+
+            </div>
+            <!-- <div class="modal-footer">
+                <input type="hidden" name="create_url" id="create_url" value="">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="create_ad_plan()">创建</button>
+            </div> -->
+        </div>
+    </div>
+</div>
+        
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="col-sm-12 topnav">
+        <a href="https://ad.toutiao.com/overture/index/">
+             <img src="//ad.toutiao.com/static/ad/images/logo_tt.png?v=c511a37382">
+             <span class="logo-text">投放管理平台</span>
+        </a>
+
+    </div>
+   <div class="navbar-header">
+      <a class="navbar-brand active" href="#">平台概览</a>
+   </div>
+  <!--  <div>
+      <ul class = "nav navbar-nav">
+         <li><a href = "#">广告产品</a></li>
+         <li><a href = "#">广告投放</a></li>
+         <li><a href = "#">成功案例</a></li>
+         <li><a href = "#">联系我们</a></li>
+      </ul>
+   </div> -->
+</nav>
+<div id="ad-wrapper">
+            <div class="ad-con">
+                   <h4>广告即内容</h4>
+                    <p>一站式解决广告主多样化营销诉求，
+                        打造属于你的"头条营销"</p>
+                    <a href="/self_service/" class="reg-btn">三步开户</a>
+            </div>
+            <div id="loginbox">
+                    <!-- <div class="row">
+                        <div class="iconmelon">
+                          <svg viewBox="0 0 32 32">
+                            <g filter="">
+                              <use xlink:href="#git"></use>
+                            </g>
+                          </svg>
+                        </div>
+                    </div> -->
+                    <div id="ad-form" class="panel">
+                        <div class="panel-body">
+                            <form name="form" id="form" class="form-horizontal" enctype="multipart/form-data" method="POST">
+                                <input type="hidden" name="csrfmiddlewaretoken" value="qsHOpT3SCsskda3yJGbJlQVGWt1oXOKz">
+                                <h2>账号登录</h2>
+                                <p class="error_tip"></p>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon gly-user"><img src="//ad.toutiao.com/static/ad/images/gly-user.png?v=a2a32b092b"></i></span>
+                                    <input id="user" type="email" class="form-control" name="email" value="" placeholder="用户名">
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="glyphicon gly-pass"> <img src="//ad.toutiao.com/static/ad/images/gly-pass.png?v=c31a5696b0"></i></span>
+                                    <input id="password" type="password" class="form-control" name="password" placeholder="密码">
+                                </div>
+                                <div class="form-group">
+                                    <!-- Button -->
+                                    <div class="col-sm-12 controls">
+                                        <button type="submit" class="reg-btn">登录</button>
+                                    </div>
+                                </div>
+                                 <div class="form-group">
+                                    <!-- Button -->
+                                    <div class="col-sm-12 pull-right controls text-right">
+                                        <a href="/self_service/">注册</a><span>|</span><a href="https://ad.toutiao.com/forgot/">忘记密码</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+            </div>
+            <div class="swiper-container2 swiper-container-horizontal">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide swiper-slide-active" style="width: 970px; "><img src="//ad.toutiao.com/static/ad/images/loginbg1.png?v=8d22125c46"></div>
+                    <div class="swiper-slide swiper-slide-next" style="width: 970px; "><img src="//ad.toutiao.com/static/ad/images/loginbg1.png?v=8d22125c46"></div>
+                </div>
+            </div>
+            <!-- <div class="swiper-pagination">
+                <div class="swiper-pagination-bullet"></div>
+                <div class="swiper-pagination-bullet"></div>
+            </div> -->
+             <!-- <img src="//ad.toutiao.com/static/ad/images/loginbg.png?v=1d557cb4db"> -->
+</div>
+<div class="macine">
+      <div class="col-md-6 col-md-offset column-left">
+            <h4>机器算法</h4>
+            <p>行业领先的个性化机器推荐算法，机器通过分析人的特征与内容的特征将两者进行匹配，实现个性化精准推荐，我们将帮您把商业信息精准推荐给真正有需要的人，以减少广告浪费。</p>
+            <a href="#section4" class="reg-btn">立即注册</a>
+      </div>
+      <div class="column-right">
+          <img src="//ad.toutiao.com/static/ad/images/macine.png?v=d1479277cc">
+      </div>
+</div>
+<div class="data">
+    <div class="column-offset-2 col-md-6 column-left">
+        <img src="//ad.toutiao.com/static/ad/images/datacell.png?v=58f6989935">
+    </div>
+    <div class="column-right col-md-6">
+         <h4>数据厚度</h4>
+            <p>4年积累了6亿用户的样本数据，每天至少7800万以上的人使用，用户每日平均使用76分钟，我们将每一个用户样本数据进行精细化管理，提供用户行为定向、基本属性定向、关键词定向等多种定向方式，帮助您找到最合适目标受众。</p>
+            <a href="#section4" class="reg-btn">立即注册</a>
+    </div>
+</div>
+<div class="macine">
+      <div class="col-md-6 col-md-offset column-left">
+            <h4>千人千面</h4>
+            <p>每天30万条信息千人千面一次分发，深度分析用户兴趣偏好，建立清晰人群画像打造丰富场景，对每一位用户进行个性化资讯推荐，满足用户多样化需求，为您打造品效合一的一站式服务。</p>
+            <a href="#section4" class="reg-btn">立即注册</a>
+      </div>
+      <div class="column-right">
+          <img src="//ad.toutiao.com/static/ad/images/thousandface.png?v=cb9798e88d">
+      </div>
+</div>
+<div class="data">
+    <div class="column-offset-2 col-md-6 column-left">
+        <img src="//ad.toutiao.com/static/ad/images/qa.png?v=d52507aff9">
+    </div>
+    <div class="column-right col-md-6">
+         <h4>量化透明</h4>
+            <p>行业内第一家广告位全面支持监测，主动开放第三方监测，以真实的曝光量、点击量帮助您直观了解投放效果，让每一笔投放都清晰透明。</p>
+            <a href="#section4" class="reg-btn">立即注册</a>
+    </div>
+</div>
+<!-- <div class="data">
+    <div class="col-md-6">
+        <div class="mar">
+        </div>
+    </div>
+     <div class="col-md-3 col-md-offset-2">
+        <div class="column-left">
+            <h4>数据厚度</h4>
+              <p>4年积累了6亿用户的样本数据，每天至少6600万以上的人使用，用户每日平均使用76分钟，我们将每一个用户样本数据进行精细化管理，提供用户行为定向、基本属性定向、关键词定向等多种定向方式，帮助您找到最合适目标受众。</p>
+              <a href="" class="btn btn-primary btn-bg">立即注册</a>
+        </div>
+      </div>
+</div> -->
+    <div id="section3">
+        <p>广告样式</p>
+        <div class="swiper-container swiper-container-vertical">
+            <div class="swiper-wrapper" style="-webkit-transform: translate3d(0px, -700px, 0px); -webkit-transition: 0ms; ">
+                <div class="swiper-slide swiper-slide-prev" style="height: 700px; ">
+                    <img src="//ad.toutiao.com/static/ad/images/feed2.png?v=2b769862df">
+                </div>
+                <div class="swiper-slide swiper-slide-active" style="height: 700px; ">
+                    <img src="//ad.toutiao.com/static/ad/images/splash2.png?v=0f0f2b0df7">
+                </div>
+                <div class="swiper-slide swiper-slide-next" style="height: 700px; ">
+                    <img src="//ad.toutiao.com/static/ad/images/detail2.png?v=32ce8caee8">
+                </div>
+                <div class="swiper-slide" style="height: 700px; ">
+                    <img src="//ad.toutiao.com/static/ad/images/video2.png?v=680609ffa9">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="section4">
+     <div class="register">
+        <div class="page-header noborder text-center">
+        
+            <h1>免费注册广告主</h1>
+        
+            <p>留下您的联系信息，我们会有专业营销顾问与您联系，一对一为您详细介绍今日头条推广相关产品和服务，帮您更高效的开展网络营销</p>
+        </div>
+        <form class="form-horizontal row" action="/promotion/login/" role="form" method="post" id="register_form" novalidate="novalidate">
+            <input type="hidden" name="csrfmiddlewaretoken" value="qsHOpT3SCsskda3yJGbJlQVGWt1oXOKz">
+            <input type="hidden" id="captcha-img-key" value="UZJeRrS">
+            <div class="form-group">
+                <label for="inputContacter" class="col-sm-3 control-label">联系人姓名</label>
+                <div class="col-sm-8">
+                    <input type="text" name="name" class="form-control" id="inputContacter" placeholder="填写推广负责人的真实姓名" value="" check-type="required">
+                </div><span class="help-block valierr" style="color:#FF9966">*</span>
+            </div>
+            <div class="form-group">
+                <label for="companyName" class="col-sm-3 control-label">公司名称</label>
+                <div class="col-sm-8">
+                    <input type="text" name="company" value="" class="form-control" id="companyName" placeholder="" check-type="required">
+                </div><span class="help-block valierr" style="color:#FF9966">*</span>
+            </div>
+            <div class="form-group site">
+                <label class="col-sm-3 control-label">公司所在地</label>
+                <div class="col-sm-3">
+                    <select class="form-control" name="province" check-type="province">
+                        <option>省份</option>
+                    <option value="北京" id="11">北京</option><option value="天津" id="12">天津</option><option value="河北" id="13">河北</option><option value="山西" id="14">山西</option><option value="内蒙古" id="15">内蒙古</option><option value="辽宁" id="21">辽宁</option><option value="吉林" id="22">吉林</option><option value="黑龙江" id="23">黑龙江</option><option value="上海" id="31">上海</option><option value="江苏" id="32">江苏</option><option value="浙江" id="33">浙江</option><option value="安徽" id="34">安徽</option><option value="福建" id="35">福建</option><option value="江西" id="36">江西</option><option value="山东" id="37">山东</option><option value="河南" id="41">河南</option><option value="湖北" id="42">湖北</option><option value="湖南" id="43">湖南</option><option value="广东" id="44">广东</option><option value="广西" id="45">广西</option><option value="海南" id="46">海南</option><option value="重庆" id="50">重庆</option><option value="四川" id="51">四川</option><option value="贵州" id="52">贵州</option><option value="云南" id="53">云南</option><option value="西藏" id="54">西藏</option><option value="陕西" id="61">陕西</option><option value="甘肃" id="62">甘肃</option><option value="青海" id="63">青海</option><option value="宁夏" id="64">宁夏</option><option value="新疆" id="65">新疆</option><option value="台湾" id="71">台湾</option><option value="香港" id="81">香港</option><option value="澳门" id="82">澳门</option></select>
+                </div>
+                <div class="col-sm-3">
+                    <select class="form-control" name="city">
+                        <option>市</option>
+                    </select>
+                </div>
+                <span class="note">*</span>
+            </div>
+
+            <div class="form-group">
+                <label for="input-mobile" class="col-sm-3 control-label">图片验证码</label>
+                <div class="col-sm-8">
+                    <div class="input-group">
+                        <div class="input-group-addon captcha-img-addon">
+                            <img id="captcha-img" src="//ad.toutiao.com/img_captcha/?ckey=UZJeRrS&amp;channel=toutiao_ad" alt="" title="" class="captcha-img">
+                        </div>
+                        <input type="text" maxlength="4" size="4" id="captcha-img-input" class="form-control captcha-img-input" placeholder="点击图片刷新" value="">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="input-mobile" class="col-sm-3 control-label">联系人手机</label>
+                <div class="col-sm-8">
+                    <div class="input-group input-group-captcha">
+                        <input type="nubmer" name="phonenumber" class="form-control" id="input-mobile" placeholder="" value="" check-type="required mobile">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default btn-captcha" id="btn-captcha">发送验证码</button>
+                        </span>
+                    </div><span class="help-block valierr" style="color:#FF9966">*</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="input-captcha" class="col-sm-3 control-label">验证码</label>
+                <div class="col-sm-8">
+                    <input type="nubmer" name="captcha" class="form-control" id="input-captcha" placeholder="验证码" value="" check-type="required number" maxlength="4">
+                </div><span class="help-block valierr" style="color:#FF9966">*</span>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-3 col-sm-offset-3">
+                    <button type="submit" class="btn subm btn-lg pull-left btn-block" id="submitBtn">立即提交</button>
+                </div>
+            </div>
+            <input type="text" name="source" hidden="" id="source" check-type="false">
+            <input type="text" name="source2" hidden="" id="source2" check-type="false">
+        </form>
+        <div class="modal fade" id="creat_success_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:450px; margin-top:150px">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <div class="modal-sign">
+                    <i class="fa fa-check-circle"></i>
+                    <i class="fa fa-times-circle"></i>
+                </div>
+                <h3 class="message-success"></h3>
+                <h3 class="message-fail"></h3>
+            </div>
+            <div class="modal-footer">
+                <div class="text-center">
+                    <button type="button" class="btn btn-default button-fail" data-dismiss="modal">返回</button>
+                    <button type="button" class="btn btn-primary button-success" id="creat_success_redirect">继续</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    </div>
+    </div>
+    <div id="section5">
+        <p>合作伙伴</p>
+        <div class="swiper-container1 swiper-container-horizontal">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide swiper-slide-active" style="width: 997px; "></div>
+                <div class="swiper-slide swiper-slide-next" style="width: 997px; "></div>
+            </div>
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev swiper-button-disabled"></div>
+    </div>
+    <script>
+        var mySwiper = new Swiper ('.swiper-container',{
+            direction:'vertical',
+            pagination:'.swiper-pagination',
+            paginationClickable: true,
+            autoplay : 1800,
+            // effect : 'cube'，
+            speed:800
+
+        });
+        var coperationSwiper = new Swiper('.swiper-container1',{
+            // pagination:'.swiper-pagination',
+            nextButton: '.swiper-button-next',
+            prevButton: '.swiper-button-prev',
+            paginationClickable: true,
+             pagination:'.swiper-pagination',
+        });
+        var Swiper = new Swiper('.swiper-container2',{
+            paginationClickable: true,
+            pagination:'.swiper-pagination'
+        });
+    </script>
+    <script>
+        function login_with_connect(type){
+            var sina = {
+                    action: 'sina_auth',
+                    connect_url: "http://toutiao.com/auth/connect/?platform=sina_weibo&type=toutiao&next="
+                },
+                qq = {
+                    action: 'qq_auth',
+                    connect_url: "http://toutiao.com/auth/connect/?platform=qq_weibo&type=toutiao&next="
+                },
+                qzone = {
+                    action: 'qzone_sns',
+                    connect_url: "http://toutiao.com/auth/connect/?platform=qzone_sns&type=toutiao&next="
+                };
+            window.location =  {'qq':qq, 'sina':sina, 'qzone':qzone}[type].connect_url+encodeURIComponent(location.href.replace("login/",""));
+        }
+        var $form = $("#form"),
+            $email = $form.find("[name=email]"),
+            $tip  = $(".error_tip"),
+            hideTip,
+            email_reg = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+        function showTip(s){
+            clearTimeout(hideTip);
+            $tip.text(s).show();
+            hideTip = setTimeout(function(){
+                $tip.hide();
+            },2000);
+        }
+        $form.ajaxForm({
+            beforeSend: function(){
+                var email = $email.val(),
+                    password = $form.find("[name=password]").val();
+
+                if(!email_reg.test(email)){
+                    showTip("请输入合法的邮箱");
+                    return false;
+                }
+                if(!password){
+                    console.log(password);
+                    showTip("请输入密码");
+                    return false;
+                }
+            },
+            success: function(d){
+                if(d.message == 'error'){
+                    showTip(d.reason);
+                }else if(d.message == 'success') {
+                    window.location.href = d.redirect_uri;
+                }
+            },
+            error : function(){
+                showTip("网络错误,请稍后重试");
+            }
+        });
+</script>
+
+
+    </div>
+
+                <!-- content -->
+            </div>
+        </div>
+
+        
+        <!-- footer -->
+        <footer class="footer">
+            <div class="container">
+                <div class="row">
+                    <a href="http://www.toutiao.com/about/" target="_blank">关于今日头条</a>
+                    <a href="http://www.toutiao.com/user_agreement/" target="_blank">用户协议</a>
+                    <a href="http://www.toutiao.com/contact/" target="_blank">联系我们</a>
+                    <span>
+                        <script>document.write('&copy;' + new Date().getFullYear() + ' toutiao.com');</script>©2017 toutiao.com
+                    </span>
+                </div>
+            </div>
+        </footer>
+        <!-- footer -->
+        
+
+        <script type="text/x-jquery-tmpl" id="notification-tmpl">
+            <li class="notify__list__item clearfix">
+                <span class="notify__list__item__date">${create_time}</span>
+                <span class="notify__list__item__title">${title}</span>
+            </li>
+        </script>
+
+
+        <script>
+            
+        </script>
+        
+    <script src="//ad.toutiao.com/static/libs/angularjs/1.3.15/i18n/angular-locale_zh-cn.js?v=c7488aefb6"></script>
+    <script src="//ad.toutiao.com/static/libs/angularjs/angular-ui/ui-bootstrap-tpls-0.13.0.min.js?v=7b53f55234"></script>
+    <script src="//ad.toutiao.com/static/libs/bootstrap/datepicker/bootstrap-datepicker.js?v=3959c15c92"></script>
+    <script src="//ad.toutiao.com/static/ad/js/ad.js?v=b76592b1f4"></script>
+    <script>
+    window.inventoryTypeOptions = [
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+
+        
+    ];
+    window.contentTypeOptions = [
+        {
+            label: "落地页",
+            value: "1-102"
+        },
+        {
+            label: "今日头条文章",
+            value: "1-101"
+        },
+        {
+            label: "录入文章",
+            value: "1-103"
+        },
+        {
+            label: "CallToAction",
+            value: "1-203"
+        },
+        {
+            label: "应用下载",
+            value: "6"
+        },
+        {
+            label: "应用下载-android",
+            value: "6-201"
+        },
+        {
+            label: "应用下载-iOS",
+            value: "6-202"
+        },
+        
+    ];
+    window.imageModeOptions = [
+        {
+            label: "大图",
+            value: 3
+        },
+        {
+            label: "小图",
+            value: 2
+        },
+        {
+            label: "组图",
+            value: 4
+        },
+        
+    ];
+    window.pricingOptions = [
+        
+        {
+            label: "cpm",
+            value: 1
+        },
+        {
+            label: "cpc",
+            value: 2
+        },
+        {
+            label: "gd",
+            value: 6
+        },
+        {
+            label: "ocpm",
+            value: 9
+        },
+        {
+            label: "cpv",
+            value: 10
+        },
+        
+        {
+            label: "cpa",
+            value: 7
+        }
+        
+    ];
+
+    window.searchMapping = {
+        inventoryTypeMapping: {
+            "": {
+                content_type: [
+                    {
+                        label: "落地页",
+                        value: "1-102"
+                    },
+                    {
+                        label: "今日头条文章",
+                        value: "1-101"
+                    },
+                    {
+                        label: "录入文章",
+                        value: "1-103"
+                    },
+                    {
+                        label: "CallToAction",
+                        value: "1-203"
+                    },
+                    {
+                        label: "应用下载",
+                        value: "6"
+                    },
+                    {
+                        label: "应用下载-android",
+                        value: "6-201"
+                    },
+                    {
+                        label: "应用下载-iOS",
+                        value: "6-202"
+                    },
+                    
+                ],
+                image_mode: [
+                    {
+                        label: "大图",
+                        value: 3
+                    },
+                    {
+                        label: "小图",
+                        value: 2
+                    },
+                    {
+                        label: "组图",
+                        value: 4
+                    },
+                    
+                ],
+                pricing: [
+                    
+                    {
+                        label: "cpm",
+                        value: 1
+                    },
+                    {
+                        label: "cpc",
+                        value: 2
+                    },
+                    {
+                        label: "ocpm",
+                        value: 9
+                    },
+                    {
+                        label: "cpv",
+                        value: 10
+                    },
+                    {
+                        label: "gd",
+                        value: 6
+                    }
+                ]
+            },
+            "1": {
+                content_type: [
+                    {
+                        label: "落地页",
+                        value: "1-102"
+                    },
+                    {
+                        label: "今日头条文章",
+                        value: "1-101"
+                    },
+                    {
+                        label: "录入文章",
+                        value: "1-103"
+                    },
+                    {
+                        label: "CallToAction",
+                        value: "1-203"
+                    },
+                    {
+                        label: "应用下载",
+                        value: "6"
+                    },
+                    {
+                        label: "应用下载-android",
+                        value: "6-201"
+                    },
+                    {
+                        label: "应用下载-iOS",
+                        value: "6-202"
+                    },
+                    
+                ],
+                image_mode: [
+                    {
+                        label: "大图",
+                        value: 3
+                    },
+                    {
+                        label: "小图",
+                        value: 2
+                    },
+                    {
+                        label: "组图",
+                        value: 4
+                    },
+                    
+                ],
+                pricing: [
+                    
+                    {
+                        label: "cpm",
+                        value: 1
+                    },
+                    {
+                        label: "cpc",
+                        value: 2
+                    },
+                    {
+                        label: "gd",
+                        value: 6
+                    },
+                    
+                    {
+                        label: "cpa",
+                        value: 7
+                    },
+                    
+                    {
+                        label: "ocpm",
+                        value: 9
+                    },
+                    {
+                        label: "cpv",
+                        value: 10
+                    }
+                ]
+            },
+            "2": {
+                image_mode: [
+                    {
+                        label: "静态",
+                        value: 0
+                    },
+                    {
+                        label: "动态",
+                        value: 1
+                    },
+                    {
+                        label: "全屏视频",
+                        value: 2
+                    },
+                    {
+                        label: "插屏视频",
+                        value: 3
+                    }
+                ],
+                pricing: [
+                    
+                ]
+            },
+            "3": {
+                pricing: [
+                    {
+                        label: "cpm",
+                        value: 1
+                    },
+                    {
+                        label: "cpc",
+                        value: 2
+                    }
+                ]
+            },
+            "6": {
+                image_mode: [
+                    {
+                        label: "小图",
+                        value: 2
+                    }
+                ],
+                pricing: [
+                    
+                ]
+            },
+            "11": {
+                pricing: [
+                    
+                    {
+                        label: "cpm",
+                        value: 1
+                    },
+                    {
+                        label: "cpc",
+                        value: 2
+                    }
+                ],
+                content_type: [
+                    {
+                        label: "落地页",
+                        value: "10"
+                    },
+                    {
+                        label: "应用下载",
+                        value: "2"
+                    },
+                    {
+                        label: "应用下载-android",
+                        value: "2-201"
+                    },
+                    {
+                        label: "应用下载-iOS",
+                        value: "2-202"
+                    }
+                ]
+            },
+            "12": {
+                pricing: [
+                    
+                ]
+                // content_type: [
+                //     {
+                //         label: "落地页",
+                //         value: "4-10"
+                //     },
+                //     {
+                //         label: "应用下载",
+                //         value: "4-2"
+                //     },
+                //     {
+                //         label: "应用下载-android",
+                //         value: "4-201"
+                //     },
+                //     {
+                //         label: "应用下载-iOS",
+                //         value: "4-202"
+                //     }
+                // ]
+            },
+            "21": {
+                content_type: [
+                    {
+                        label: "落地页",
+                        value: "1-102"
+                    },
+                    {
+                        label: "今日头条文章",
+                        value: "1-101"
+                    },
+                    {
+                        label: "录入文章",
+                        value: "1-103"
+                    },
+                    {
+                        label: "CallToAction",
+                        value: "1-203"
+                    },
+                    {
+                        label: "应用下载",
+                        value: "6"
+                    },
+                    {
+                        label: "应用下载-android",
+                        value: "6-201"
+                    },
+                    {
+                        label: "应用下载-iOS",
+                        value: "6-202"
+                    },
+                    
+                ],
+                image_mode: [
+                    {
+                        label: "大图",
+                        value: 3
+                    },
+                    {
+                        label: "小图",
+                        value: 2
+                    },
+                    {
+                        label: "组图",
+                        value: 4
+                    },
+                    
+                ],
+                pricing: [
+                    
+                    {
+                        label: "cpm",
+                        value: 1
+                    },
+                    {
+                        label: "cpc",
+                        value: 2
+                    },
+                    {
+                        label: "gd",
+                        value: 6
+                    },
+                    
+                    {
+                        label: "cpa",
+                        value: 7
+                    },
+                    
+                ]
+            },
+            "31": {
+                image_mode: [
+                    {
+                        label: "大图",
+                        value: 3
+                    }
+                ],
+                pricing: [
+                    {
+                        label: "cpt",
+                        value: 3
+                    }
+                ]
+            }
+        },
+        contentTypeMapping: {
+            "" : {
+                image_mode: [
+                    {
+                        label: "大图",
+                        value: 3
+                    },
+                    {
+                        label: "小图",
+                        value: 2
+                    },
+                    {
+                        label: "组图",
+                        value: 4
+                    },
+                    
+                ],
+                pricing: [
+                    
+                    {
+                        label: "cpm",
+                        value: 1
+                    },
+                    {
+                        label: "cpc",
+                        value: 2
+                    },
+                    {
+                        label: "gd",
+                        value: 6
+                    },
+                    {
+                        label: "ocpm",
+                        value: 9
+                    },
+                    {
+                        label: "cpv",
+                        value: 10
+                    }
+                ]
+            },
+            "1-102": {
+                image_mode: [
+                    {
+                        label: "大图",
+                        value: 3
+                    },
+                    {
+                        label: "小图",
+                        value: 2
+                    },
+                    {
+                        label: "组图",
+                        value: 4
+                    },
+                    
+                ],
+                pricing: [
+                    
+                    {
+                        label: "cpm",
+                        value: 1
+                    },
+                    {
+                        label: "cpc",
+                        value: 2
+                    },
+                    {
+                        label: "gd",
+                        value: 6
+                    },
+                    {
+                        label: "ocpm",
+                        value: 9
+                    },
+                    {
+                        label: "cpv",
+                        value: 10
+                    }
+                ]
+            },
+            "1-101": {
+                image_mode: [
+                    {
+                        label: "大图",
+                        value: 3
+                    },
+                    {
+                        label: "小图",
+                        value: 2
+                    },
+                    {
+                        label: "组图",
+                        value: 4
+                    }
+                ],
+                pricing: [
+                    
+                    {
+                        label: "cpm",
+                        value: 1
+                    },
+                    {
+                        label: "cpc",
+                        value: 2
+                    },
+                    {
+                        label: "gd",
+                        value: 6
+                    }
+                ]
+            },
+            "1-103": {
+                image_mode: [
+                    {
+                        label: "大图",
+                        value: 3
+                    },
+                    {
+                        label: "小图",
+                        value: 2
+                    },
+                    {
+                        label: "组图",
+                        value: 4
+                    }
+                ],
+                pricing: [
+                    
+                    {
+                        label: "cpm",
+                        value: 1
+                    },
+                    {
+                        label: "cpc",
+                        value: 2
+                    },
+                    {
+                        label: "gd",
+                        value: 6
+                    }
+                ]
+            },
+            "1-203": {
+                image_mode: [
+                    {
+                        label: "大图",
+                        value: 3
+                    },
+                    {
+                        label: "小图",
+                        value: 2
+                    }
+                ],
+                pricing: [
+                    
+                    {
+                        label: "cpm",
+                        value: 1
+                    },
+                    {
+                        label: "cpc",
+                        value: 2
+                    },
+                    {
+                        label: "gd",
+                        value: 6
+                    }
+                ]
+            },
+            "6": {
+                image_mode: [
+                    {
+                        label: "大图",
+                        value: 3
+                    },
+                    {
+                        label: "小图",
+                        value: 2
+                    }
+                ],
+                pricing: [
+                    {
+                        label: "cpm",
+                        value: 1
+                    },
+                    {
+                        label: "cpc",
+                        value: 2
+                    },
+                    {
+                        label: "gd",
+                        value: 6
+                    },
+                    {
+                        label: "ocpm",
+                        value: 9
+                    },
+                    {
+                        label: "cpv",
+                        value: 10
+                    },
+                    
+                    {
+                        label: "cpa",
+                        value: 7
+                    },
+                    
+                ]
+            },
+            "6-201": {
+                image_mode: [
+                    {
+                        label: "大图",
+                        value: 3
+                    },
+                    {
+                        label: "小图",
+                        value: 2
+                    }
+                ],
+                pricing: [
+                    
+                    {
+                        label: "cpm",
+                        value: 1
+                    },
+                    {
+                        label: "cpc",
+                        value: 2
+                    },
+                    {
+                        label: "gd",
+                        value: 6
+                    },
+                    {
+                        label: "ocpm",
+                        value: 9
+                    },
+                    {
+                        label: "cpv",
+                        value: 10
+                    },
+                    
+                    {
+                        label: "cpa",
+                        value: 7
+                    },
+                    
+                ]
+            },
+            "6-202": {
+                image_mode: [
+                    {
+                        label: "大图",
+                        value: 3
+                    },
+                    {
+                        label: "小图",
+                        value: 2
+                    }
+                ],
+                pricing: [
+                    
+                    {
+                        label: "cpm",
+                        value: 1
+                    },
+                    {
+                        label: "cpc",
+                        value: 2
+                    },
+                    {
+                        label: "gd",
+                        value: 6
+                    },
+                    {
+                        label: "ocpm",
+                        value: 9
+                    },
+                    {
+                        label: "cpv",
+                        value: 10
+                    }
+                    // {
+                    //     label: "cpa",
+                    //     value: 7
+                    // }
+                ]
+            },
+            "2": {
+                pricing: [
+                    
+                    {
+                        label: "cpm",
+                        value: 1
+                    },
+                    {
+                        label: "cpc",
+                        value: 2
+                    },
+                    {
+                        label: "gd",
+                        value: 6
+                    },
+                    {
+                        label: "ocpm",
+                        value: 9
+                    },
+                    {
+                        label: "cpv",
+                        value: 10
+                    }
+                ]
+            }
+        }
+    };
+</script>
+
+    
+<script src="//ad.toutiao.com/static/libs/jquery/jquery.ui.widget.js?v=59e54f72ef"></script>
+<script src="//ad.toutiao.com/static/ad/js/common/cityUtil.js?v=1e5c1b6a20"></script>
+<script src="//ad.toutiao.com/static/ad/js/register_extend.js?v=2cf5f6b1b1"></script>
+
+
+    
+</body></html>

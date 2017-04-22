@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<!--[if !IE]>
+	<html class="no-js non-ie" lang="zh-CN" prefix="og: http://ogp.me/ns#"> <![endif]-->
+<!--[if IE 7 ]>
+	<html class="no-js ie7" lang="zh-CN" prefix="og: http://ogp.me/ns#"> <![endif]-->
+<!--[if IE 8 ]>
+	<html class="no-js ie8" lang="zh-CN" prefix="og: http://ogp.me/ns#"> <![endif]-->
+<!--[if IE 9 ]>
+	<html class="no-js ie9" lang="zh-CN" prefix="og: http://ogp.me/ns#"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-js" lang="zh-CN" prefix="og: http://ogp.me/ns#">
+ <!--<![endif]-->
+ <head> 
+  <meta charset="UTF-8" /> 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+  <link rel="profile" href="http://gmpg.org/xfn/11" /> 
+  <link rel="pingback" href="http://blog.lxx1.com/xmlrpc.php" /> 
+  <!-- favicon --> 
+  <!--[if IE]><![endif]--> 
+  <!-- This site is optimized with the Yoast SEO plugin v4.4 - https://yoast.com/wordpress/plugins/seo/ --> 
+  <title>在Ubuntu 15下搭建VPN服务器pptpd安装和配置 | 科技爱好者博客</title> 
+  <link rel="canonical" href="http://blog.lxx1.com/1209" /> 
+  <link rel="publisher" href="https://plus.google.com/u/0/b/115865259084001109143/dashboard/overview" /> 
+  <meta property="og:locale" content="zh_CN" /> 
+  <meta property="og:type" content="article" /> 
+  <meta property="og:title" content="在Ubuntu 15下搭建VPN服务器pptpd安装和配置 | 科技爱好者博客" /> 
+  <meta property="og:description" content="在ubuntu下配置vpn的方式有很多种，其中比较常见的是pptpd,它配置简单，但是安全性不高，不过对于一般 …" /> 
+  <meta property="og:url" content="http://blog.lxx1.com/1209" /> 
+  <meta property="og:site_name" content="科技爱好者博客" /> 
+  <meta property="article:publisher" content="https://www.facebook.com/pages/科技爱好者/676052465874631?ref=profile" /> 
+  <meta property="article:author" content="https://www.facebook.com/lixinxing8" /> 
+  <meta property="article:tag" content="pptpd" /> 
+  <meta property="article:tag" content="ubuntu" /> 
+  <meta property="article:tag" content="vpn" /> 
+  <meta property="article:tag" content="vpn搭建" /> 
+  <meta property="article:tag" content="vpn无法连接" /> 
+  <meta property="article:section" content="Linux" /> 
+  <meta property="article:published_time" content="2015-12-29T17:27:34+08:00" /> 
+  <meta property="article:modified_time" content="2016-02-17T00:07:36+08:00" /> 
+  <meta property="og:updated_time" content="2016-02-17T00:07:36+08:00" /> 
+  <meta property="og:image" content="http://blog.lxx1.com/wp-content/uploads/2015/12/vpn.png" /> 
+  <meta property="og:image:width" content="1441" /> 
+  <meta property="og:image:height" content="1440" /> 
+  <meta name="twitter:card" content="summary_large_image" /> 
+  <meta name="twitter:description" content="在ubuntu下配置vpn的方式有很多种，其中比较常见的是pptpd,它配置简单，但是安全性不高，不过对于一般 […]" /> 
+  <meta name="twitter:title" content="在Ubuntu 15下搭建VPN服务器pptpd安装和配置 | 科技爱好者博客" /> 
+  <meta name="twitter:site" content="@lxx1995" /> 
+  <meta name="twitter:image" content="http://blog.lxx1.com/wp-content/uploads/2015/12/vpn.png" /> 
+  <meta name="twitter:creator" content="@lxx1995" /> 
+  <!-- / Yoast SEO plugin. --> 
+  <link rel="dns-prefetch" href="//fonts.googleapis.com" /> 
+  <link rel="dns-prefetch" href="//s.w.org" /> 
+  <link rel="alternate" type="application/rss+xml" title="科技爱好者博客 &raquo; Feed" href="http://blog.lxx1.com/feed" /> 
+  <link rel="alternate" type="application/rss+xml" title="科技爱好者博客 &raquo; 评论Feed" href="http://blog.lxx1.com/comments/feed" /> 
+  <link rel="alternate" type="application/rss+xml" title="科技爱好者博客 &raquo; 在Ubuntu 15下搭建VPN服务器pptpd安装和配置评论Feed" href="http://blog.lxx1.com/1209/feed" /> 
+  <script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.2.1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/2.2.1\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/blog.lxx1.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.7.3"}};
+			!function(a,b,c){function d(a){var b,c,d,e,f=String.fromCharCode;if(!k||!k.fillText)return!1;switch(k.clearRect(0,0,j.width,j.height),k.textBaseline="top",k.font="600 32px Arial",a){case"flag":return k.fillText(f(55356,56826,55356,56819),0,0),!(j.toDataURL().length<3e3)&&(k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57331,65039,8205,55356,57096),0,0),b=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55356,57331,55356,57096),0,0),c=j.toDataURL(),b!==c);case"emoji4":return k.fillText(f(55357,56425,55356,57341,8205,55357,56507),0,0),d=j.toDataURL(),k.clearRect(0,0,j.width,j.height),k.fillText(f(55357,56425,55356,57341,55357,56507),0,0),e=j.toDataURL(),d!==e}return!1}function e(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g,h,i,j=b.createElement("canvas"),k=j.getContext&&j.getContext("2d");for(i=Array("flag","emoji4"),c.supports={everything:!0,everythingExceptFlag:!0},h=0;h<i.length;h++)c.supports[i[h]]=d(i[h]),c.supports.everything=c.supports.everything&&c.supports[i[h]],"flag"!==i[h]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[i[h]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script> 
+  <style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style> 
+  <link rel="stylesheet" id="bbp-default-css" href="http://blog-qiniu.lxx1.com/wp-content/plugins/bbpress/templates/default/css/bbpress.css?ver=2.5.12-6148" type="text/css" media="screen" /> 
+  <link rel="stylesheet" id="crp-style-rounded-thumbs-css" href="http://blog-qiniu.lxx1.com/wp-content/plugins/contextual-related-posts/css/default-style.css?ver=4.7.3" type="text/css" media="all" /> 
+  <style id="crp-style-rounded-thumbs-inline-css" type="text/css">
+
+.crp_related a {
+  width: 150px;
+  height: 150px;
+  text-decoration: none;
+}
+.crp_related img {
+  max-width: 150px;
+  margin: auto;
+}
+.crp_related .crp_title {
+  width: 150px;
+}
+                
+</style> 
+  <link rel="stylesheet" id="wp-pagenavi-css" href="http://blog-qiniu.lxx1.com/wp-content/plugins/wp-pagenavi/pagenavi-css.css?ver=2.70" type="text/css" media="all" /> 
+  <link rel="stylesheet" id="sparkling-bootstrap-css" href="http://blog-qiniu.lxx1.com/wp-content/themes/sparkling/inc/css/bootstrap.min.css?ver=4.7.3" type="text/css" media="all" /> 
+  <link rel="stylesheet" id="sparkling-icons-css" href="http://blog-qiniu.lxx1.com/wp-content/themes/sparkling/inc/css/font-awesome.min.css?ver=4.7.3" type="text/css" media="all" /> 
+  <link rel="stylesheet" id="sparkling-style-css" href="http://blog-qiniu.lxx1.com/wp-content/themes/sparkling/style.css?ver=4.7.3" type="text/css" media="all" /> 
+  <script type="text/javascript" src="http://blog-qiniu.lxx1.com/wp-includes/js/jquery/jquery.js?ver=1.12.4"></script> 
+  <script type="text/javascript" src="http://blog-qiniu.lxx1.com/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1"></script> 
+  <script type="text/javascript" src="http://blog-qiniu.lxx1.com/wp-content/themes/sparkling/inc/js/modernizr.min.js?ver=4.7.3"></script> 
+  <script type="text/javascript" src="http://blog-qiniu.lxx1.com/wp-content/themes/sparkling/inc/js/bootstrap.min.js?ver=4.7.3"></script> 
+  <script type="text/javascript" src="http://blog-qiniu.lxx1.com/wp-content/themes/sparkling/inc/js/functions.min.js?ver=4.7.3"></script> 
+  <link rel="https://api.w.org/" href="http://blog.lxx1.com/wp-json/" /> 
+  <link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://blog.lxx1.com/xmlrpc.php?rsd" /> 
+  <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://blog.lxx1.com/wp-includes/wlwmanifest.xml" /> 
+  <meta name="generator" content="WordPress 4.7.3" /> 
+  <link rel="shortlink" href="http://blog.lxx1.com/?p=1209" /> 
+  <link rel="alternate" type="application/json+oembed" href="http://blog.lxx1.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fblog.lxx1.com%2F1209" /> 
+  <link rel="alternate" type="text/xml+oembed" href="http://blog.lxx1.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fblog.lxx1.com%2F1209&amp;format=xml" /> 
+  <style type="text/css">.entry-content {font-family: Open Sans; font-size:14px; font-weight: normal; color:#6B6B6B;}</style> 
+  <style type="text/css">.recentcomments a{display:inline !important;padding:0 !important;margin:0 !important;}</style> 
+  <style type="text/css" id="custom-background-css">
+body.custom-background { background-color: #f2f2f2; }
+</style> 
+  <link href="/wp-content/themes/prism.css" rel="stylesheet" /> 
+ </head> 
+ <body class="post-template-default single single-post postid-1209 single-format-standard custom-background group-blog"> 
+  <div id="page" class="hfeed site"> 
+   <header id="masthead" class="site-header" role="banner"> 
+    <nav class="navbar navbar-default" role="navigation"> 
+     <div class="container"> 
+      <div class="row"> 
+       <div class="site-navigation-inner col-sm-12"> 
+        <div class="navbar-header"> 
+         <button type="button" class="btn navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> 
+         <div id="logo"> 
+          <span class="site-name"><a class="navbar-brand" href="http://blog.lxx1.com/" title="科技爱好者博客" rel="home">科技爱好者博客</a></span> 
+         </div>
+         <!-- end of #logo --> 
+        </div> 
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+         <ul id="menu-%e9%a1%b6%e9%83%a8%e8%8f%9c%e5%8d%95" class="nav navbar-nav">
+          <li id="menu-item-961" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-has-children menu-item-961 dropdown"><a title="技术分享" href="#" data-toggle="dropdown" class="dropdown-toggle">技术分享 <span class="caret"></span></a> 
+           <ul role="menu" class=" dropdown-menu"> 
+            <li id="menu-item-965" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-965"><a title="服务器" href="http://blog.lxx1.com/topics/tech/server">服务器</a></li> 
+            <li id="menu-item-964" class="menu-item menu-item-type-taxonomy menu-item-object-category current-post-ancestor current-menu-parent current-post-parent menu-item-964"><a title="Linux" href="http://blog.lxx1.com/topics/tech/linux">Linux</a></li> 
+            <li id="menu-item-963" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-963"><a title="git指南" href="http://blog.lxx1.com/topics/tech/git">git指南</a></li> 
+            <li id="menu-item-962" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-962"><a title="docker" href="http://blog.lxx1.com/topics/tech/docker">docker</a></li> 
+           </ul> </li> 
+          <li id="menu-item-969" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-969"><a title="程序编码" href="http://blog.lxx1.com/topics/code">程序编码</a></li> 
+          <li id="menu-item-970" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-970"><a title="网站建设" href="http://blog.lxx1.com/topics/web">网站建设</a></li> 
+          <li id="menu-item-966" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-966 dropdown"><a title="硬件产品" href="#" data-toggle="dropdown" class="dropdown-toggle">硬件产品 <span class="caret"></span></a> 
+           <ul role="menu" class=" dropdown-menu"> 
+            <li id="menu-item-967" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-967"><a title="树莓派" href="http://blog.lxx1.com/topics/hard/raspberry-pi">树莓派</a></li> 
+            <li id="menu-item-968" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-968"><a title="装备" href="http://blog.lxx1.com/topics/hard/equipment">装备</a></li> 
+            <li id="menu-item-1107" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1107"><a title="树莓派（raspberrypi）常用镜像高速下载" href="http://blog.lxx1.com/raspberrypi-jingxiang">树莓派（raspberrypi）常用镜像高速下载</a></li> 
+           </ul> </li> 
+          <li id="menu-item-971" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-has-children menu-item-971 dropdown"><a title="默认分类" href="#" data-toggle="dropdown" class="dropdown-toggle">默认分类 <span class="caret"></span></a> 
+           <ul role="menu" class=" dropdown-menu"> 
+            <li id="menu-item-972" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-972"><a title="科技知识" href="http://blog.lxx1.com/topics/uncategorized/technology">科技知识</a></li> 
+            <li id="menu-item-973" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item-973"><a title="随笔录" href="http://blog.lxx1.com/topics/uncategorized/notes">随笔录</a></li> 
+           </ul> </li> 
+          <li id="menu-item-920" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-920"><a title="git指南" href="http://blog.lxx1.com/git">git指南</a></li> 
+          <li id="menu-item-1089" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-1089"><a title="Forums" href="http://blog.lxx1.com/forums">Forums</a></li> 
+          <li id="menu-item-921" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-921"><a title="关于我" href="http://blog.lxx1.com/about-us">关于我</a></li> 
+         </ul>
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+    </nav>
+    <!-- .site-navigation --> 
+    <link id="favicon" href="http://blog.lxx1.com/favicon.ico" rel="icon" type="image/x-icon" /> 
+   </header>
+   <!-- #masthead --> 
+   <div id="content" class="site-content"> 
+    <div class="top-section"> 
+    </div> 
+    <div class="container main-content-area"> 
+     <div class="row"> 
+      <div id="content" class="main-content-inner col-sm-12 col-md-8 pull-left"> 
+       <div id="primary" class="content-area"> 
+        <main id="main" class="site-main" role="main"> 
+         <article id="post-1209" class="post-1209 post type-post status-publish format-standard has-post-thumbnail hentry category-linux category-tech category-server tag-pptpd tag-ubuntu tag-vpn"> 
+          <img width="750" height="410" src="http://blog-qiniu.lxx1.com/wp-content/uploads/2015/12/vpn-750x410.png" class="single-featured wp-post-image" alt="" /> 
+          <div class="post-inner-content"> 
+           <header class="entry-header page-header"> 
+            <h1 class="entry-title ">在Ubuntu 15下搭建VPN服务器pptpd安装和配置</h1> 
+            <div class="entry-meta"> 
+             <span class="posted-on"><i class="fa fa-calendar"></i> <a href="http://blog.lxx1.com/1209" rel="bookmark"><time class="entry-date published" datetime="2015-12-29T17:27:34+00:00">2015年12月29日</time><time class="updated" datetime="2016-02-17T00:07:36+00:00">2016年2月17日</time></a></span>
+             <span class="byline"> <i class="fa fa-user"></i> <span class="author vcard"><a class="url fn n" href="http://blog.lxx1.com/author/admin">科技爱好者</a></span></span> 
+             <span class="cat-links"><i class="fa fa-folder-open-o"></i> <a href="http://blog.lxx1.com/topics/tech/linux" rel="category tag">Linux</a>, <a href="http://blog.lxx1.com/topics/tech" rel="category tag">技术分享</a>, <a href="http://blog.lxx1.com/topics/tech/server" rel="category tag">服务器</a> </span> 热度：1,742℃ 
+            </div>
+            <!-- .entry-meta --> 
+           </header>
+           <!-- .entry-header --> 
+           <div class="entry-content"> 
+            <p>在ubuntu下配置vpn的方式有很多种，其中比较常见的是pptpd,它配置简单，但是安全性不高，不过对于一般使用来说足够了，我按照程搭建了一个VPN的服务器，但是由于服务器系统是ubuntu 15.10，按照ubuntu 12.04或者ubuntu 12.10的教程搭建，总是出现无法连接服务器，后来经过查看服务器的日志，终于找到了解决在ubuntu 15下无法安装配置VPN的方法，现在将<a href="http://blog.lxx1.com/1209" target="_blank">ubuntu使用pptpd搭建vpn服务器</a>的完整方法分享出来。<span id="more-1209"></span></p> 
+            <h1>一、vpn搭建方法</h1> 
+            <h3>1.安装pptpd</h3> 
+            <pre>sudo apt-get install pptpd</pre> 
+            <h3>2.配置内网ip策略</h3> 
+            <pre>sudo nano /etc/pptpd.conf</pre> 
+            <p>1、注释logwtmp，即在logwtmp这一行前面添加一个#号。</p> 
+            <p>2、在# TAG: localip后增加2行</p> 
+            <pre>localip 192.168.0.1</pre> 
+            <pre>remoteip 192.168.0.234-238,192.168.0.245</pre> 
+            <p>上面配置的localip为服务器的ip地址，在搭建vpn的时候要根据自己服务器的地址来设置。</p> 
+            <p>remoteip为连接vpn的客户端ip地址，一般情况下不需要更改。</p> 
+            <h3>3.配置dns</h3> 
+            <pre>sudo nano /etc/ppp/pptpd-options</pre> 
+            <p>在#ms-dns后增加2行，也可以配置其他dns</p> 
+            <pre>ms-dns 121.42.42.51</pre> 
+            <pre>ms-dns 114.114.114.114</pre> 
+            <h3>4.配置VPN帐号</h3> 
+            <pre>sudo nano /etc/ppp/chap-secrets</pre> 
+            <p>在其中依次添加账号、服务器名、密码和IP限制，一个帐号一行，每个参数中间用tab或者空格间隔。如：</p> 
+            <pre>zhangsan pptpd 123456 *</pre> 
+            <pre>lisi pptpd 123456 *</pre> 
+            <p>其中user、passwd为自己设置的账户名以及密码</p> 
+            <h3>5. 设置TCP/IP数据转发</h3> 
+            <pre>sudo nano /etc/sysctl.conf</pre> 
+            <p>插入一行：</p> 
+            <pre>net.ipv4.ip_forward=1</pre> 
+            <p>保存并退出vim</p> 
+            <p>执行</p> 
+            <pre>sudo sysctl –p</pre> 
+            <p>提示net.ipv4.ip_forward = 1，说明配置生效</p> 
+            <h3>6.开放网络端口</h3> 
+            <p>安装iptables(已安装请忽略)</p> 
+            <pre>sudo apt-get install iptables</pre> 
+            <p>开放1723端口</p> 
+            <pre>sudo iptables -I INPUT -p tcp –dport 1723 -j ACCEPT</pre> 
+            <h3>7.配置NAT网络地址转换</h3> 
+            <pre>sudo iptables –table nat –append POSTROUTING –out-interface eth0 –jump MASQUERADE</pre> 
+            <h3>8.重启pptpd</h3> 
+            <pre>sudo /etc/init.d/procps restart</pre> 
+            <p>搭建完毕。</p> 
+            <p>注：如果6、7、8这三个步骤执行不成功，可以用以下方法代替：</p> 
+            <blockquote>
+             <p>6、然后我们需要安装iptables，用来实现请求的NAT转发</p> 
+             <div> 
+              <div id="highlighter_329195" class="syntaxhighlighter  shell"> 
+               <pre class="toolbar"><span style="line-height: 1.5;"><code class="shell functions">sudo</code>&nbsp;<code class="shell plain">apt-get&nbsp;</code><code class="shell functions">install</code>&nbsp;<code class="shell plain">iptables</code></span></pre> 
+               <div class="toolbar">
+                <span style="line-height: 1.5;">7、然后开启NAT转发.</span>
+               </div> 
+              </div> 
+             </div> 
+             <pre><code class="shell functions">sudo</code>&nbsp;<code class="shell plain">iptables&nbsp;-t&nbsp;nat&nbsp;-A&nbsp;POSTROUTING&nbsp;-s&nbsp;192.168.0.0</code><code class="shell plain">/24</code>&nbsp;<code class="shell plain">-o&nbsp;eth0&nbsp;-j&nbsp;MASQUERADE</code></pre> 
+             <p>192.168.0.0/24是你在上面设置的IP段，让这个段转发</p> 
+             <p>注意eth0是你连接外网的那块网卡，不一定是0也有可能是1或者看你的机器哪块网卡连的外网了。这样就以NAT的方式请求外网的东西了。不知道你的机器哪块网卡连的外网的话ifconfig一下看看哪个网卡是外网IP就知道了。</p> 
+             <p>8、最后，我们需要重启服务，让配置生效 .</p> 
+             <pre><code class="shell functions">sudo</code>&nbsp;<code class="shell plain">service&nbsp;pptpd&nbsp;restart</code></pre> 
+            </blockquote> 
+            <h1>二、设置失败的解决办法</h1> 
+            <p><strong>问题</strong>：搭建后连接vpn服务器失败，提示“无法连接vpn服务器，连接端口已经关闭”。</p> 
+            <p><strong>日志</strong>：使用 tail -f /var/log/ syslog 来查看日志，提示如下：</p> 
+            <pre>Dec 29 09:39:33 linux-server pptpd[2228]: CTRL: Client 10.12.8.197 control connection started
+Dec 29 09:39:33 linux-server pptpd[2228]: CTRL: Starting call (launching pppd, opening GRE)
+Dec 29 09:39:33 linux-server pptpd[2156]: /usr/sbin/pppd: Plugin /usr/lib/pptpd/pptpd-logwtmp.so is for pppd version 2.4.5, this is 2.4.6
+Dec 29 09:39:33 linux-server pppd[2229]: Plugin /usr/lib/pptpd/pptpd-logwtmp.so is for pppd version 2.4.5, this is 2.4.6
+Dec 29 09:39:33 linux-server pptpd[2228]: GRE: read(fd=6,buffer=800cb480,len=8196) from PTY failed: status = -1 error = Input/output error, usually caused by unexpected termination of pppd, check option syntax and pppd logs
+Dec 29 09:39:33 linux-server pptpd[2228]: CTRL: PTY read or GRE write failed (pty,gre)=(6,7)
+Dec 29 09:39:33 linux-server pptpd[2228]: CTRL: Reaping child PPP[2229]
+Dec 29 09:39:33 linux-server pptpd[2228]: CTRL: Client 10.12.8.197 control connection finished</pre> 
+            <p><strong>解决办法</strong>：</p> 
+            <p>这是由于服务器升级到ubuntu 15 后引起的，在配置pptpd 时需要注释logwtmp，即在logwtmp这一行前面添加一个#号。</p> 
+            <hr /> 
+            <div style="margin-top: 15px; font-style: italic"> 
+             <p><strong>原创文章，转载请注明：</strong> 转载自<a href="http://blog.lxx1.com/">科技爱好者博客【http://blog.lxx1.com】</a></p> 
+             <p></p> 
+             <p><strong>本文地址:</strong> <a href="http://blog.lxx1.com/1209">在Ubuntu 15下搭建VPN服务器pptpd安装和配置 </a></p> 
+             <p><strong>链接:</strong> <a href="http://blog.lxx1.com/1209">http://blog.lxx1.com/1209</a></p> 
+             <p><br /></p> 
+             <p><strong>如果我的文章对你有帮助，请给我<a href="http://blog.lxx1.com/reward"> 打赏</a></strong></p>
+             <a href="http://blog.lxx1.com/reward"> </a>
+             <p><a href="http://blog.lxx1.com/reward"></a> </p>
+            </div> 
+            <div class="crp_related ">
+             <hr />
+             <h3>相关文章:</h3>
+             <ul>
+              <li><a href="http://blog.lxx1.com/414" target="_blank"><img src="http://blog-qiniu.lxx1.com/wp-content/plugins/contextual-related-posts/default.png" alt="第三篇 Git进阶 —— 3.2 打标签" title="第三篇 Git进阶 —— 3.2 打标签" width="150" height="150" class="crp_thumb crp_default" /></a><a href="http://blog.lxx1.com/414" target="_blank" class="crp_title">第三篇 Git进阶 —— 3.2 打标签</a></li>
+              <li><a href="http://blog.lxx1.com/1347" target="_blank"><img src="http://blog-qiniu.lxx1.com/wp-content/uploads/2016/03/634961P08Q83_13445R462-0-150x150.jpg" alt="Linux中使用Samba搭建文件服务器详解" title="Linux中使用Samba搭建文件服务器详解" width="150" height="150" class="crp_thumb crp_featured" /></a><a href="http://blog.lxx1.com/1347" target="_blank" class="crp_title">Linux中使用Samba搭建文件服务器详解</a></li>
+              <li><a href="http://blog.lxx1.com/744" target="_blank"><img src="http://blog-qiniu.lxx1.com/wp-content/plugins/contextual-related-posts/default.png" alt="Nginx上安装phpMyAdmin" title="Nginx上安装phpMyAdmin" width="150" height="150" class="crp_thumb crp_default" /></a><a href="http://blog.lxx1.com/744" target="_blank" class="crp_title">Nginx上安装phpMyAdmin</a></li>
+              <li><a href="http://blog.lxx1.com/893" target="_blank"><img src="http://blog-qiniu.lxx1.com/wp-content/uploads/2015/09/blog.jpg" alt="WordPress开发团队发布新版WordPress 4.3.1 正式版,修复26个安全问题" title="WordPress开发团队发布新版WordPress 4.3.1 正式版,修复26个安全问题" width="150" height="150" class="crp_thumb crp_featured" /></a><a href="http://blog.lxx1.com/893" target="_blank" class="crp_title">WordPress开发团队发布新版WordPress 4.3.1…</a></li>
+              <li><a href="http://blog.lxx1.com/1378" target="_blank"><img src="http://blog-qiniu.lxx1.com/wp-content/uploads/2016/03/安装squid-150x150.png" alt="Centos下搭建Squid代理服务器详细教程" title="Centos下搭建Squid代理服务器详细教程" width="150" height="150" class="crp_thumb crp_featured" /></a><a href="http://blog.lxx1.com/1378" target="_blank" class="crp_title">Centos下搭建Squid代理服务器详细教程</a></li>
+              <li><a href="http://blog.lxx1.com/free-computer-books" target="_blank"><img src="http://blog-qiniu.lxx1.com/wp-content/plugins/contextual-related-posts/default.png" alt="免费的编程类中文书籍索引" title="免费的编程类中文书籍索引" width="150" height="150" class="crp_thumb crp_default" /></a><a href="http://blog.lxx1.com/free-computer-books" target="_blank" class="crp_title">免费的编程类中文书籍索引</a></li>
+             </ul>
+             <div class="crp_clear"></div>
+            </div> 
+           </div>
+           <!-- .entry-content --> 
+           <footer class="entry-meta"> 
+            <!-- tags --> 
+            <div class="tagcloud"> 
+             <a href="http://blog.lxx1.com/tag/pptpd">pptpd</a> 
+             <a href="http://blog.lxx1.com/tag/ubuntu">ubuntu</a> 
+             <a href="http://blog.lxx1.com/tag/vpn">vpn</a> 
+             <a href="http://blog.lxx1.com/tag/vpn%e6%90%ad%e5%bb%ba">vpn搭建</a> 
+             <a href="http://blog.lxx1.com/tag/vpn%e6%97%a0%e6%b3%95%e8%bf%9e%e6%8e%a5">vpn无法连接</a> 
+            </div> 
+            <!-- end tags --> 
+           </footer>
+           <!-- .entry-meta --> 
+          </div> 
+          <div class="post-inner-content secondary-content-box"> 
+           <!-- author bio --> 
+           <div class="author-bio content-box-inner"> 
+            <!-- avatar --> 
+            <div class="avatar"> 
+            </div> 
+            <!-- end avatar --> 
+            <!-- user bio --> 
+            <div class="author-bio-content"> 
+             <h4 class="author-name"><a href="http://blog.lxx1.com/author/admin">科技爱好者</a></h4> 
+             <p class="author-description"> 工科学生大四在读，专业嵌入式开发，喜欢计算机，喜欢单片机，喜欢各种各样美好的东西，相信科技正在改变世界！ 这是我的<a href="http://blog.lxx1.com"> 个人博客 </a> </p> 
+            </div> 
+            <!-- end author bio --> 
+           </div> 
+           <!-- end author bio --> 
+          </div> 
+         </article>
+         <!-- #post-## --> 
+         <div id="comments" class="comments-area"> 
+          <h2 class="comments-title"> 2 thoughts on “<span>在Ubuntu 15下搭建VPN服务器pptpd安装和配置</span>” </h2> 
+          <ol class="comment-list"> 
+           <li id="comment-503" class="comment even thread-even depth-1"> 
+            <article id="div-comment-503" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn"><a href="http://blog.lxx1.com" rel="external nofollow" class="url">曼云</a></b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://blog.lxx1.com/1209#comment-503"> <time datetime="2016-01-03T01:49:14+00:00"> 2016年1月3日 上午1:49 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p>我觉得挺好的，大家的看法呢</p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://blog.lxx1.com/1209?replytocom=503#respond" onclick="return addComment.moveForm( &quot;div-comment-503&quot;, &quot;503&quot;, &quot;respond&quot;, &quot;1209&quot; )" aria-label="回复给曼云">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> </li>
+           <!-- #comment-## --> 
+           <li id="comment-583" class="comment byuser comment-author-admin bypostauthor odd alt thread-odd thread-alt depth-1"> 
+            <article id="div-comment-583" class="comment-body"> 
+             <footer class="comment-meta"> 
+              <div class="comment-author vcard"> 
+               <b class="fn"><a href="http://blog.lxx1.com/" rel="external nofollow" class="url">红颜美今生醉</a></b>
+               <span class="says">说道：</span> 
+              </div>
+              <!-- .comment-author --> 
+              <div class="comment-metadata"> 
+               <a href="http://blog.lxx1.com/1209#comment-583"> <time datetime="2016-06-22T14:12:08+00:00"> 2016年6月22日 下午2:12 </time> </a> 
+              </div>
+              <!-- .comment-metadata --> 
+             </footer>
+             <!-- .comment-meta --> 
+             <div class="comment-content"> 
+              <p> <img src="http://img.t.sinajs.cn/t35/style/images/common/face/ext/normal/41/zz2_org.gif" /> </p> 
+             </div>
+             <!-- .comment-content --> 
+             <div class="reply">
+              <a rel="nofollow" class="comment-reply-link" href="http://blog.lxx1.com/1209?replytocom=583#respond" onclick="return addComment.moveForm( &quot;div-comment-583&quot;, &quot;583&quot;, &quot;respond&quot;, &quot;1209&quot; )" aria-label="回复给红颜美今生醉">回复</a>
+             </div> 
+            </article>
+            <!-- .comment-body --> </li>
+           <!-- #comment-## --> 
+          </ol>
+          <!-- .comment-list --> 
+          <div id="respond" class="comment-respond"> 
+           <h3 id="reply-title" class="comment-reply-title">发表评论 <small><a rel="nofollow" id="cancel-comment-reply-link" href="/1209?pk_campaign=feed&amp;pk_kwd=docker-%25e5%2585%25a5%25e9%2597%25a8%25e6%258c%2587%25e5%258d%2597%25ef%25bc%2588%25e4%25b8%2580%25ef%25bc%2589%25ef%25bc%259a%25e5%25ae%2589%25e8%25a3%2585-docker#respond" style="display:none;">取消回复</a></small></h3> 
+           <form action="http://blog.lxx1.com/wp-comments-post.php" method="post" id="commentform" class="comment-form" novalidate=""> 
+            <p class="comment-notes"><span id="email-notes">电子邮件地址不会被公开。</span> 必填项已用<span class="required">*</span>标注</p>
+            <p class="comment-form-comment"><label for="comment">评论</label> <textarea id="comment" name="comment" cols="45" rows="8" maxlength="65525" aria-required="true" required="required"></textarea></p>
+            <p class="comment-form-author"><label for="author">姓名 <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" maxlength="245" aria-required="true" required="required" /></p> 
+            <p class="comment-form-email"><label for="email">电子邮件 <span class="required">*</span></label> <input id="email" name="email" type="email" value="" size="30" maxlength="100" aria-describedby="email-notes" aria-required="true" required="required" /></p> 
+            <p class="comment-form-url"><label for="url">站点</label> <input id="url" name="url" type="url" value="" size="30" maxlength="200" /></p> 
+            <p class="form-submit"><input name="submit" type="submit" id="submit" class="submit" value="发表评论" /> <input type="hidden" name="comment_post_ID" value="1209" id="comment_post_ID" /> <input type="hidden" name="comment_parent" id="comment_parent" value="0" /> </p>
+            <p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="10719f492d" /></p>
+            <p style="display: none;"><input type="hidden" id="ak_js" name="ak_js" value="188" /></p> 
+           </form> 
+          </div>
+          <!-- #respond --> 
+         </div>
+         <!-- #comments --> 
+         <nav class="navigation post-navigation" role="navigation"> 
+         </nav>
+         <!-- .navigation --> 
+        </main>
+        <!-- #main --> 
+       </div>
+       <!-- #primary --> 
+      </div> 
+      <div id="secondary" class="widget-area col-sm-12 col-md-4" role="complementary"> 
+       <div class="well"> 
+        <aside id="search-2" class="widget widget_search">
+         <form method="get" class="form-search" action="http://blog.lxx1.com/"> 
+          <div class="row"> 
+           <div class="col-lg-12"> 
+            <div class="input-group"> 
+             <input type="text" class="form-control search-query" value="" name="s" id="s" placeholder="Search..." /> 
+             <span class="input-group-btn"> <button type="submit" class="btn btn-default" name="submit" id="searchsubmit" value="Go"><span class="glyphicon glyphicon-search"></span></button> </span> 
+            </div> 
+           </div> 
+          </div> 
+         </form>
+        </aside>
+        <aside id="text-2" class="widget widget_text"> 
+         <div class="textwidget">
+          推荐使用 
+          <a href="https://bwh1.net/aff.php?aff=3611">搬瓦工(bandwagonhost)</a> 服务器 
+         </div> 
+        </aside> 
+        <aside id="recent-posts-2" class="widget widget_recent_entries"> 
+         <h3 class="widget-title">近期文章</h3> 
+         <ul> 
+          <li> <a href="http://blog.lxx1.com/2457">树莓派3.5英寸屏幕安装显示驱动，解决白屏问题</a> <span class="post-date">2017年3月17日</span> </li> 
+          <li> <a href="http://blog.lxx1.com/2436">windows远程桌面控制树莓派</a> <span class="post-date">2017年3月11日</span> </li> 
+          <li> <a href="http://blog.lxx1.com/2422">树莓派上安装Pi-hole搭建DNS服务器，过滤网页广告</a> <span class="post-date">2017年3月11日</span> </li> 
+          <li> <a href="http://blog.lxx1.com/2403">使用安卓手机控制树莓派</a> <span class="post-date">2017年3月5日</span> </li> 
+          <li> <a href="http://blog.lxx1.com/2390">用树莓派做FM发射器架设小型电台（支持所有的树莓派型号）</a> <span class="post-date">2017年2月26日</span> </li> 
+          <li> <a href="http://blog.lxx1.com/2385">《Kindle 用户指南》重点标注</a> <span class="post-date">2017年2月25日</span> </li> 
+          <li> <a href="http://blog.lxx1.com/2364">家用多功能电子钟的设计</a> <span class="post-date">2017年2月17日</span> </li> 
+          <li> <a href="http://blog.lxx1.com/2317">无显示器通过网线连接笔记本电脑玩转树莓派</a> <span class="post-date">2017年2月12日</span> </li> 
+          <li> <a href="http://blog.lxx1.com/2309">密码保护：翻过墙上任何网站（密码请联系博主）</a> <span class="post-date">2017年2月9日</span> </li> 
+          <li> <a href="http://blog.lxx1.com/2297">树莓派配置文件config.txt详细介绍</a> <span class="post-date">2017年2月9日</span> </li> 
+         </ul> 
+        </aside> 
+        <aside id="recent-comments-2" class="widget widget_recent_comments">
+         <h3 class="widget-title">近期评论</h3>
+         <ul id="recentcomments">
+          <li class="recentcomments"><span class="comment-author-link"><a href="http://samara.vescort.ru" rel="external nofollow" class="url">Williamsig</a></span>发表在《<a href="http://blog.lxx1.com/2457#comment-1299">树莓派3.5英寸屏幕安装显示驱动，解决白屏问题</a>》</li>
+          <li class="recentcomments"><span class="comment-author-link">Ddavidkip</span>发表在《<a href="http://blog.lxx1.com/2457#comment-1290">树莓派3.5英寸屏幕安装显示驱动，解决白屏问题</a>》</li>
+          <li class="recentcomments"><span class="comment-author-link">Stevvenliaig</span>发表在《<a href="http://blog.lxx1.com/2457#comment-1289">树莓派3.5英寸屏幕安装显示驱动，解决白屏问题</a>》</li>
+          <li class="recentcomments"><span class="comment-author-link">Peddrohob</span>发表在《<a href="http://blog.lxx1.com/2457#comment-1282">树莓派3.5英寸屏幕安装显示驱动，解决白屏问题</a>》</li>
+          <li class="recentcomments"><span class="comment-author-link"><a href="http://36voronezh.ru/" rel="external nofollow" class="url">Brendabiff</a></span>发表在《<a href="http://blog.lxx1.com/2457#comment-1215">树莓派3.5英寸屏幕安装显示驱动，解决白屏问题</a>》</li>
+          <li class="recentcomments"><span class="comment-author-link"><a href="http://lixix.lofter.com" rel="external nofollow" class="url">科技爱好者</a></span>发表在《<a href="http://blog.lxx1.com/about-us#comment-1207">关于我们</a>》</li>
+          <li class="recentcomments"><span class="comment-author-link"><a href="http://blog.lxx1.com/" rel="external nofollow" class="url">红颜美今生醉</a></span>发表在《<a href="http://blog.lxx1.com/1995#comment-804">树莓派使用DS1302实现实时时钟功能</a>》</li>
+          <li class="recentcomments"><span class="comment-author-link"><a href="http://blog.lxx1.com/" rel="external nofollow" class="url">红颜美今生醉</a></span>发表在《<a href="http://blog.lxx1.com/raspberrypi-jingxiang#comment-803">树莓派（raspberrypi）常用镜像高速下载</a>》</li>
+         </ul>
+        </aside>
+        <aside id="bbp_topics_widget-2" class="widget widget_display_topics">
+         <h3 class="widget-title">最新讨论</h3> 
+         <ul> 
+          <li> <a class="bbp-forum-title" href="http://blog.lxx1.com/topic/%e5%81%87%e6%9c%9f%e7%bb%93%e6%9d%9f%ef%bc%8c%e5%bc%80%e5%a7%8b%e4%b8%8a%e8%af%be">假期结束，开始上课</a> 
+           <div>
+            2 weeks, 2 days ago
+           </div> </li> 
+          <li> <a class="bbp-forum-title" href="http://blog.lxx1.com/topic/windows-windows-server-%e7%b3%bb%e7%bb%9f%e9%95%9c%e5%83%8f%e7%ba%af%e5%87%80%e7%89%88%e6%9c%ac-%e4%b8%8b%e8%bd%bd">windows windows server 系统镜像纯净版本 下载</a> 
+           <div>
+            1 month, 1 week ago
+           </div> </li> 
+          <li> <a class="bbp-forum-title" href="http://blog.lxx1.com/topic/windows-server-2003-r2-%e7%ae%80%e4%bd%93%e4%b8%ad%e6%96%87%e4%bc%81%e4%b8%9a%e7%89%88-x86-x64%ef%bc%88%e8%bd%ac%ef%bc%89">Windows.Server.2003.R2 简体中文企业版 x86 x64（转）</a> 
+           <div>
+            1 month, 1 week ago
+           </div> </li> 
+          <li> <a class="bbp-forum-title" href="http://blog.lxx1.com/topic/25%e5%a4%a9%e5%90%8e%e6%94%be%e5%81%87%e5%9b%9e%e5%ae%b6%ef%bc%81">25天后放假回家！</a> 
+           <div>
+            1 month, 1 week ago
+           </div> </li> 
+          <li> <a class="bbp-forum-title" href="http://blog.lxx1.com/topic/%e6%9f%a5%e6%96%b0%e5%90%8e%e7%bc%80%e6%b3%a8%e5%86%8c%e3%80%81%e5%9f%9f%e5%90%8d%e6%b3%a8%e5%86%8c%e5%b1%80%e6%b3%a8%e5%86%8c%e9%87%8f%ef%bc%8c%e6%96%b0%e5%9f%9f%e5%90%8d%e7%83%ad%e5%ba%a6%e7%9a%84">查新后缀注册、域名注册局注册量，新域名热度的网站</a> 
+           <div>
+            2 months, 4 weeks ago
+           </div> </li> 
+         </ul> 
+        </aside>
+        <aside id="views-2" class="widget widget_views">
+         <h3 class="widget-title">浏览最多</h3>
+         <ul> 
+          <li><a href="http://blog.lxx1.com/502" title="自建DNS缓存服务器加快上网速度">自建DNS缓存服务器加快上网速度</a> - 4,396 views</li>
+          <li><a href="http://blog.lxx1.com/912" title="比树莓派还便宜的开发板 Orange Pi PC(香橙派)问世">比树莓派还便宜的开发板 Orange Pi PC(香橙派)问世</a> - 3,334 views</li>
+          <li><a href="http://blog.lxx1.com/896" title="使用DaoCloud免费Docker容器搭建自己的WordPress博客">使用DaoCloud免费Docker容器搭建自己的WordPress博客</a> - 3,258 views</li>
+          <li><a href="http://blog.lxx1.com/1420" title="Centos 7中安装Python包管理工具——Pip">Centos 7中安装Python包管理工具——Pip</a> - 2,673 views</li>
+          <li><a href="http://blog.lxx1.com/982" title="KeePass终极指南——好用的密码管理软件 KeePass 使用教程">KeePass终极指南——好用的密码管理软件 KeePass 使用教程</a> - 2,517 views</li>
+          <li><a href="http://blog.lxx1.com/1336" title="树莓派设置静态IP地址">树莓派设置静态IP地址</a> - 2,319 views</li>
+          <li><a href="http://blog.lxx1.com/439" title="如何写PAC自动代理配置文件">如何写PAC自动代理配置文件</a> - 2,268 views</li>
+          <li><a href="http://blog.lxx1.com/592" title="Piwik——最好用的开源网站统计系统">Piwik——最好用的开源网站统计系统</a> - 2,180 views</li>
+          <li><a href="http://blog.lxx1.com/785" title="云并不能够做到100%可靠">云并不能够做到100%可靠</a> - 1,878 views</li>
+          <li><a href="http://blog.lxx1.com/1209" title="在Ubuntu 15下搭建VPN服务器pptpd安装和配置">在Ubuntu 15下搭建VPN服务器pptpd安装和配置</a> - 1,742 views</li>
+         </ul> 
+        </aside>
+        <aside id="archives-2" class="widget widget_archive">
+         <h3 class="widget-title">文章归档</h3> 
+         <ul> 
+          <li><a href="http://blog.lxx1.com/date/2017/03">2017年三月</a>&nbsp;(4)</li> 
+          <li><a href="http://blog.lxx1.com/date/2017/02">2017年二月</a>&nbsp;(6)</li> 
+          <li><a href="http://blog.lxx1.com/date/2016/12">2016年十二月</a>&nbsp;(2)</li> 
+          <li><a href="http://blog.lxx1.com/date/2016/11">2016年十一月</a>&nbsp;(2)</li> 
+          <li><a href="http://blog.lxx1.com/date/2016/10">2016年十月</a>&nbsp;(1)</li> 
+          <li><a href="http://blog.lxx1.com/date/2016/09">2016年九月</a>&nbsp;(1)</li> 
+          <li><a href="http://blog.lxx1.com/date/2016/08">2016年八月</a>&nbsp;(1)</li> 
+          <li><a href="http://blog.lxx1.com/date/2016/07">2016年七月</a>&nbsp;(11)</li> 
+          <li><a href="http://blog.lxx1.com/date/2016/06">2016年六月</a>&nbsp;(16)</li> 
+          <li><a href="http://blog.lxx1.com/date/2016/05">2016年五月</a>&nbsp;(5)</li> 
+          <li><a href="http://blog.lxx1.com/date/2016/04">2016年四月</a>&nbsp;(6)</li> 
+          <li><a href="http://blog.lxx1.com/date/2016/03">2016年三月</a>&nbsp;(13)</li> 
+          <li><a href="http://blog.lxx1.com/date/2016/02">2016年二月</a>&nbsp;(2)</li> 
+          <li><a href="http://blog.lxx1.com/date/2016/01">2016年一月</a>&nbsp;(5)</li> 
+          <li><a href="http://blog.lxx1.com/date/2015/12">2015年十二月</a>&nbsp;(7)</li> 
+          <li><a href="http://blog.lxx1.com/date/2015/11">2015年十一月</a>&nbsp;(1)</li> 
+          <li><a href="http://blog.lxx1.com/date/2015/10">2015年十月</a>&nbsp;(12)</li> 
+          <li><a href="http://blog.lxx1.com/date/2015/09">2015年九月</a>&nbsp;(7)</li> 
+          <li><a href="http://blog.lxx1.com/date/2015/08">2015年八月</a>&nbsp;(10)</li> 
+          <li><a href="http://blog.lxx1.com/date/2015/07">2015年七月</a>&nbsp;(6)</li> 
+          <li><a href="http://blog.lxx1.com/date/2015/06">2015年六月</a>&nbsp;(14)</li> 
+          <li><a href="http://blog.lxx1.com/date/2015/05">2015年五月</a>&nbsp;(5)</li> 
+          <li><a href="http://blog.lxx1.com/date/2015/04">2015年四月</a>&nbsp;(9)</li> 
+          <li><a href="http://blog.lxx1.com/date/2015/03">2015年三月</a>&nbsp;(20)</li> 
+          <li><a href="http://blog.lxx1.com/date/2015/02">2015年二月</a>&nbsp;(3)</li> 
+          <li><a href="http://blog.lxx1.com/date/2015/01">2015年一月</a>&nbsp;(3)</li> 
+          <li><a href="http://blog.lxx1.com/date/2014/12">2014年十二月</a>&nbsp;(4)</li> 
+          <li><a href="http://blog.lxx1.com/date/2014/11">2014年十一月</a>&nbsp;(23)</li> 
+         </ul> 
+        </aside>
+        <aside id="categories-5" class="widget widget_categories">
+         <h3 class="widget-title">分类</h3> 
+         <ul> 
+          <li class="cat-item cat-item-127"><a href="http://blog.lxx1.com/topics/tech">技术分享</a> (72) 
+           <ul class="children"> 
+            <li class="cat-item cat-item-130"><a href="http://blog.lxx1.com/topics/tech/docker">docker</a> (6) </li> 
+            <li class="cat-item cat-item-38"><a href="http://blog.lxx1.com/topics/tech/git">git指南</a> (12) </li> 
+            <li class="cat-item cat-item-8"><a href="http://blog.lxx1.com/topics/tech/linux">Linux</a> (29) </li> 
+            <li class="cat-item cat-item-59"><a href="http://blog.lxx1.com/topics/tech/server">服务器</a> (24) </li> 
+           </ul> </li> 
+          <li class="cat-item cat-item-129"><a href="http://blog.lxx1.com/topics/hard">硬件产品</a> (38) 
+           <ul class="children"> 
+            <li class="cat-item cat-item-253"><a href="http://blog.lxx1.com/topics/hard/embedded">嵌入式</a> (3) </li> 
+            <li class="cat-item cat-item-131"><a href="http://blog.lxx1.com/topics/hard/raspberry-pi">树莓派</a> (30) </li> 
+            <li class="cat-item cat-item-132"><a href="http://blog.lxx1.com/topics/hard/equipment">装备</a> (2) </li> 
+           </ul> </li> 
+          <li class="cat-item cat-item-128"><a href="http://blog.lxx1.com/topics/code">程序编码</a> (1) </li> 
+          <li class="cat-item cat-item-2"><a href="http://blog.lxx1.com/topics/web">网站建设</a> (51) </li> 
+          <li class="cat-item cat-item-18"><a href="http://blog.lxx1.com/topics/hot">首页推荐</a> (9) </li> 
+          <li class="cat-item cat-item-1"><a href="http://blog.lxx1.com/topics/uncategorized">默认分类</a> (57) 
+           <ul class="children"> 
+            <li class="cat-item cat-item-11"><a href="http://blog.lxx1.com/topics/uncategorized/technology">科技知识</a> (1) </li> 
+            <li class="cat-item cat-item-19"><a href="http://blog.lxx1.com/topics/uncategorized/notes">随笔录</a> (20) </li> 
+           </ul> </li> 
+         </ul> 
+        </aside>
+        <aside id="meta-2" class="widget widget_meta">
+         <h3 class="widget-title">功能</h3> 
+         <ul> 
+          <li><a rel="nofollow" href="http://blog.lxx1.com/wp-login.php?action=register">注册</a></li> 
+          <li><a rel="nofollow" href="http://blog.lxx1.com/wp-login.php">登录</a></li> 
+          <li><a href="http://blog.lxx1.com/feed">文章<abbr title="Really Simple Syndication">RSS</abbr></a></li> 
+          <li><a href="http://blog.lxx1.com/comments/feed">评论<abbr title="Really Simple Syndication">RSS</abbr></a></li> 
+          <li><a href="https://cn.wordpress.org/" title="基于WordPress，一个优美、先进的个人信息发布平台。">WordPress.org</a></li> 
+         </ul> 
+        </aside> 
+       </div> 
+      </div>
+      <!-- #secondary --> 
+     </div>
+     <!-- close .*-inner (main-content or sidebar, depending if sidebar is used) --> 
+    </div>
+    <!-- close .row --> 
+   </div>
+   <!-- close .container --> 
+  </div>
+  <!-- close .main-content --> 
+  <div id="footer-area"> 
+   <div class="container footer-inner"> 
+    <div class="row"> 
+     <div class="footer-widget-area"> 
+      <div class="col-sm-4 footer-widget" role="complementary"> 
+       <div id="search-4" class="widget widget_search">
+        <h3 class="widgettitle">搜索</h3>
+        <form method="get" class="form-search" action="http://blog.lxx1.com/"> 
+         <div class="row"> 
+          <div class="col-lg-12"> 
+           <div class="input-group"> 
+            <input type="text" class="form-control search-query" value="" name="s" id="s" placeholder="Search..." /> 
+            <span class="input-group-btn"> <button type="submit" class="btn btn-default" name="submit" id="searchsubmit" value="Go"><span class="glyphicon glyphicon-search"></span></button> </span> 
+           </div> 
+          </div> 
+         </div> 
+        </form>
+       </div> 
+      </div>
+      <!-- .widget-area .first --> 
+      <div class="col-sm-4 footer-widget" role="complementary"> 
+       <div id="meta-5" class="widget widget_meta">
+        <h3 class="widgettitle">功能</h3> 
+        <ul> 
+         <li><a rel="nofollow" href="http://blog.lxx1.com/wp-login.php?action=register">注册</a></li> 
+         <li><a rel="nofollow" href="http://blog.lxx1.com/wp-login.php">登录</a></li> 
+         <li><a href="http://blog.lxx1.com/feed">文章<abbr title="Really Simple Syndication">RSS</abbr></a></li> 
+         <li><a href="http://blog.lxx1.com/comments/feed">评论<abbr title="Really Simple Syndication">RSS</abbr></a></li> 
+         <li><a href="https://cn.wordpress.org/" title="基于WordPress，一个优美、先进的个人信息发布平台。">WordPress.org</a></li> 
+        </ul> 
+       </div> 
+      </div>
+      <!-- .widget-area .second --> 
+      <div class="col-sm-4 footer-widget" role="complementary"> 
+       <div id="tag_cloud-7" class="widget widget_tag_cloud">
+        <h3 class="widgettitle">标签</h3>
+        <div class="tagcloud">
+         <a href="http://blog.lxx1.com/tag/2015" class="tag-link-33 tag-link-position-1" title="6个话题" style="font-size: 13.029126213592pt;">2015</a> 
+         <a href="http://blog.lxx1.com/tag/bpc" class="tag-link-273 tag-link-position-2" title="2个话题" style="font-size: 8pt;">BPC</a> 
+         <a href="http://blog.lxx1.com/tag/dns" class="tag-link-142 tag-link-position-3" title="4个话题" style="font-size: 10.990291262136pt;">dns</a> 
+         <a href="http://blog.lxx1.com/tag/docker" class="tag-link-120 tag-link-position-4" title="7个话题" style="font-size: 13.708737864078pt;">docker</a> 
+         <a href="http://blog.lxx1.com/tag/gitlab" class="tag-link-283 tag-link-position-5" title="2个话题" style="font-size: 8pt;">gitlab</a> 
+         <a href="http://blog.lxx1.com/tag/git%e6%8c%87%e5%8d%97" class="tag-link-40 tag-link-position-6" title="8个话题" style="font-size: 14.388349514563pt;">git指南</a> 
+         <a href="http://blog.lxx1.com/tag/gpio" class="tag-link-305 tag-link-position-7" title="3个话题" style="font-size: 9.631067961165pt;">GPIO</a> 
+         <a href="http://blog.lxx1.com/tag/jekyll" class="tag-link-299 tag-link-position-8" title="2个话题" style="font-size: 8pt;">jekyll</a> 
+         <a href="http://blog.lxx1.com/tag/kindle" class="tag-link-325 tag-link-position-9" title="2个话题" style="font-size: 8pt;">kindle</a> 
+         <a href="http://blog.lxx1.com/tag/linux-2" class="tag-link-9 tag-link-position-10" title="15个话题" style="font-size: 17.78640776699pt;">LINUX</a> 
+         <a href="http://blog.lxx1.com/tag/markdown" class="tag-link-41 tag-link-position-11" title="2个话题" style="font-size: 8pt;">markdown</a> 
+         <a href="http://blog.lxx1.com/tag/osmc" class="tag-link-282 tag-link-position-12" title="2个话题" style="font-size: 8pt;">OSMC</a> 
+         <a href="http://blog.lxx1.com/tag/phpmyadmin" class="tag-link-100 tag-link-position-13" title="2个话题" style="font-size: 8pt;">phpmyadmin</a> 
+         <a href="http://blog.lxx1.com/tag/piwik" class="tag-link-68 tag-link-position-14" title="4个话题" style="font-size: 10.990291262136pt;">Piwik</a> 
+         <a href="http://blog.lxx1.com/tag/raspberry" class="tag-link-277 tag-link-position-15" title="5个话题" style="font-size: 12.077669902913pt;">raspberry</a> 
+         <a href="http://blog.lxx1.com/tag/root" class="tag-link-79 tag-link-position-16" title="2个话题" style="font-size: 8pt;">root</a> 
+         <a href="http://blog.lxx1.com/tag/smtp" class="tag-link-15 tag-link-position-17" title="3个话题" style="font-size: 9.631067961165pt;">SMTP</a> 
+         <a href="http://blog.lxx1.com/tag/ss" class="tag-link-219 tag-link-position-18" title="3个话题" style="font-size: 9.631067961165pt;">SS</a> 
+         <a href="http://blog.lxx1.com/tag/stm32" class="tag-link-259 tag-link-position-19" title="2个话题" style="font-size: 8pt;">STM32</a> 
+         <a href="http://blog.lxx1.com/tag/ubuntu" class="tag-link-63 tag-link-position-20" title="8个话题" style="font-size: 14.388349514563pt;">ubuntu</a> 
+         <a href="http://blog.lxx1.com/tag/v2ex" class="tag-link-78 tag-link-position-21" title="2个话题" style="font-size: 8pt;">V2EX</a> 
+         <a href="http://blog.lxx1.com/tag/windows-10" class="tag-link-93 tag-link-position-22" title="2个话题" style="font-size: 8pt;">windows 10</a> 
+         <a href="http://blog.lxx1.com/tag/wordpress" class="tag-link-3 tag-link-position-23" title="12个话题" style="font-size: 16.563106796117pt;">WordPress</a> 
+         <a href="http://blog.lxx1.com/tag/yeelink" class="tag-link-261 tag-link-position-24" title="2个话题" style="font-size: 8pt;">yeelink</a> 
+         <a href="http://blog.lxx1.com/tag/%e5%8d%87%e7%ba%a7" class="tag-link-64 tag-link-position-25" title="5个话题" style="font-size: 12.077669902913pt;">升级</a> 
+         <a href="http://blog.lxx1.com/tag/%e5%8d%9a%e5%ae%a2" class="tag-link-27 tag-link-position-26" title="6个话题" style="font-size: 13.029126213592pt;">博客</a> 
+         <a href="http://blog.lxx1.com/tag/%e5%ae%89%e8%a3%85" class="tag-link-94 tag-link-position-27" title="3个话题" style="font-size: 9.631067961165pt;">安装</a> 
+         <a href="http://blog.lxx1.com/tag/%e5%ae%b6%e5%ba%ad%e5%bd%b1%e9%99%a2" class="tag-link-281 tag-link-position-28" title="2个话题" style="font-size: 8pt;">家庭影院</a> 
+         <a href="http://blog.lxx1.com/tag/%e5%af%86%e7%a0%81" class="tag-link-80 tag-link-position-29" title="2个话题" style="font-size: 8pt;">密码</a> 
+         <a href="http://blog.lxx1.com/tag/%e6%90%ad%e5%bb%ba" class="tag-link-170 tag-link-position-30" title="3个话题" style="font-size: 9.631067961165pt;">搭建</a> 
+         <a href="http://blog.lxx1.com/tag/%e6%96%b0%e5%b9%b4" class="tag-link-32 tag-link-position-31" title="3个话题" style="font-size: 9.631067961165pt;">新年</a> 
+         <a href="http://blog.lxx1.com/tag/%e6%9c%8d%e5%8a%a1%e5%99%a8" class="tag-link-25 tag-link-position-32" title="8个话题" style="font-size: 14.388349514563pt;">服务器</a> 
+         <a href="http://blog.lxx1.com/tag/%e6%a0%91%e8%8e%93%e6%b4%be" class="tag-link-23 tag-link-position-33" title="31个话题" style="font-size: 22pt;">树莓派</a> 
+         <a href="http://blog.lxx1.com/tag/%e6%af%95%e4%b8%9a%e8%ae%be%e8%ae%a1" class="tag-link-260 tag-link-position-34" title="2个话题" style="font-size: 8pt;">毕业设计</a> 
+         <a href="http://blog.lxx1.com/tag/%e6%b8%97%e9%80%8f%e6%b5%8b%e8%af%95" class="tag-link-242 tag-link-position-35" title="3个话题" style="font-size: 9.631067961165pt;">渗透测试</a> 
+         <a href="http://blog.lxx1.com/tag/%e6%b8%a9%e5%ba%a6" class="tag-link-292 tag-link-position-36" title="2个话题" style="font-size: 8pt;">温度</a> 
+         <a href="http://blog.lxx1.com/tag/%e7%94%b5%e6%b3%a2%e9%92%9f" class="tag-link-272 tag-link-position-37" title="2个话题" style="font-size: 8pt;">电波钟</a> 
+         <a href="http://blog.lxx1.com/tag/%e7%a7%91%e5%ad%a6%e4%b8%8a%e7%bd%91" class="tag-link-126 tag-link-position-38" title="3个话题" style="font-size: 9.631067961165pt;">科学上网</a> 
+         <a href="http://blog.lxx1.com/tag/%e7%a7%91%e6%8a%80" class="tag-link-12 tag-link-position-39" title="3个话题" style="font-size: 9.631067961165pt;">科技</a> 
+         <a href="http://blog.lxx1.com/tag/%e7%a7%91%e6%8a%80%e7%88%b1%e5%a5%bd%e8%80%85%e5%8d%9a%e5%ae%a2" class="tag-link-118 tag-link-position-40" title="5个话题" style="font-size: 12.077669902913pt;">科技爱好者博客</a> 
+         <a href="http://blog.lxx1.com/tag/%e7%bd%91%e7%ab%99" class="tag-link-4 tag-link-position-41" title="5个话题" style="font-size: 12.077669902913pt;">网站</a> 
+         <a href="http://blog.lxx1.com/tag/%e8%87%aa%e5%8a%a8%e5%af%b9%e6%97%b6" class="tag-link-274 tag-link-position-42" title="2个话题" style="font-size: 8pt;">自动对时</a> 
+         <a href="http://blog.lxx1.com/tag/%e8%af%bb%e4%b9%a6" class="tag-link-39 tag-link-position-43" title="2个话题" style="font-size: 8pt;">读书</a> 
+         <a href="http://blog.lxx1.com/tag/%e8%bf%9c%e7%a8%8b%e7%99%bb%e9%99%86" class="tag-link-208 tag-link-position-44" title="3个话题" style="font-size: 9.631067961165pt;">远程登陆</a> 
+         <a href="http://blog.lxx1.com/tag/%e9%85%8d%e7%bd%ae" class="tag-link-168 tag-link-position-45" title="4个话题" style="font-size: 10.990291262136pt;">配置</a>
+        </div> 
+       </div> 
+      </div>
+      <!-- .widget-area .third --> 
+     </div> 
+    </div> 
+   </div> 
+   <footer id="colophon" class="site-footer" role="contentinfo"> 
+    <div class="site-info container"> 
+     <div class="row"> 
+      <div class="social-icons">
+       <a href="https://www.facebook.com/profile.php?id=100009350565676" title="Follow us on Facebok" class="facebook" target="_blank"><i class="social_icon fa fa-facebook"></i></a>
+       <a href="https://twitter.com/lxx1995" title="Follow us on Twitter" class="twitter" target="_blank"><i class="social_icon fa fa-twitter"></i></a>
+       <a href="https://plus.google.com/u/0/116303301197432435632" title="Follow us on Google+" class="googleplus" target="_blank"><i class="social_icon fa fa-googleplus"></i></a>
+       <a href="http://blog.lxx1.com/rss" title="Follow us on RSS" class="rss" target="_blank"><i class="social_icon fa fa-rss"></i></a>
+       <a href="https://github.com/xinxingli" title="Follow us on GitHub" class="github" target="_blank"><i class="social_icon fa fa-github"></i></a>
+      </div> 
+      <nav role="navigation" class="col-md-6"> 
+       <ul id="menu-%e5%ba%95%e9%83%a8%e8%8f%9c%e5%8d%95" class="nav footer-nav clearfix">
+        <li id="menu-item-138" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-138"><a href="http://www.gitos.net">科技爱好者</a></li> 
+        <li id="menu-item-139" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-139"><a href="http://blog.lxx1.com/about-us">关于我</a></li> 
+       </ul> 
+      </nav> 
+      <div class="copyright col-md-6"> 
+       <a href="http://blog.lxx1.com/" title="科技爱好者博客">科技爱好者博客</a> All rights reserved. 
+      </div> 
+     </div> 
+    </div>
+    <!-- .site-info --> 
+    <div class="scroll-to-top">
+     <i class="fa fa-angle-up"></i>
+    </div>
+    <!-- .scroll-to-top --> 
+   </footer>
+   <!-- #colophon --> 
+  </div> 
+  <!-- #page --> 
+  <!-- Piwik --> 
+  <script type="text/javascript">
+  var _paq = _paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(['trackPageView']);
+_paq.push(['trackVisibleContentImpressions']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="//tongji.lxx1.com/";
+    _paq.push(['setTrackerUrl', u+'piwik.php']);
+    _paq.push(['setSiteId', '3']);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+  })();
+</script> 
+  <!-- End Piwik Code --> 
+  <script type="text/javascript" src="http://blog-qiniu.lxx1.com/wp-content/plugins/akismet/_inc/form.js?ver=3.3"></script> 
+  <script type="text/javascript" src="http://blog-qiniu.lxx1.com/wp-content/plugins/bbpress/templates/default/js/editor.js?ver=2.5.12-6148"></script> 
+  <script type="text/javascript">
+/* <![CDATA[ */
+var viewsCacheL10n = {"admin_ajax_url":"http:\/\/blog.lxx1.com\/wp-admin\/admin-ajax.php","post_id":"1209"};
+/* ]]> */
+</script> 
+  <script type="text/javascript" src="http://blog-qiniu.lxx1.com/wp-content/plugins/wp-postviews/postviews-cache.js?ver=1.68"></script> 
+  <script type="text/javascript" src="http://blog-qiniu.lxx1.com/wp-content/themes/sparkling/inc/js/skip-link-focus-fix.js?ver=20140222"></script> 
+  <script type="text/javascript" src="http://blog-qiniu.lxx1.com/wp-includes/js/comment-reply.min.js?ver=4.7.3"></script> 
+  <script type="text/javascript" src="http://blog-qiniu.lxx1.com/wp-includes/js/wp-embed.min.js?ver=4.7.3"></script> 
+  <script src="/wp-content/themes/prism.js"></script>  
+ </body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html><html><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>绑定成功</title>
+    <link href="/MUI/css/style.css" rel="stylesheet">
+    <link href="/Content/base.css" rel="stylesheet">
+    <script src="/Scripts/jquery-1.7.1.min.js"></script>
+    <script src="http://mp.gtimg.cn/open/js/openApi.js"></script>
+</head>
+<body>
+    <img src="/Images/MUI/tel_bj.png" style="width: 100%;">
+    <div style="padding: 20px 10%; text-align: center; font-size: 15px;">
+        您已成功绑定尾号为<span style="color: #F55521; padding: 0px 3px"></span>的手机号码
+    </div>
+    <div class="box">
+        <button class="btn" id="resetMobile">重新绑定</button>
+    </div>
+    <div class="box">
+        <button class="btn" id="rssSetting">订阅设置</button>
+    </div>
+    <div class="box">
+        <button class="btn" id="billSearch">快件查询</button>
+    </div>
+    <div class="box">
+        <button class="btn" id="btnVip">我的主页</button>
+    </div>
+    <script>
+        //配置config
+        var imgUrl = "~/Images/sto_logo.jpg";
+        // 必填，需要使用的JS接口列表，所有JS接口列表见附录2。详见：
+        mqq.config( {
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: '200574429', // 必填，公众号的唯一标识
+            timestamp: '1491057575', // 必填，生成签名的时间戳
+            nonceStr: '98B297950041A42470269D56260243A1', // 必填，生成签名的随机串
+            signature: 'b39b05f15bf088ef9213c7bdf7685350e87b95a0', // 必填，签名
+            jsApiList: [
+                'checkJsApi',
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage',
+                'onMenuShareQQ',
+                'onMenuShareWeibo'
+            ]
+        } );
+
+        mqq.error(function (res)
+        {
+            console.log( res );
+        } );
+
+        mqq.ready(function ()
+        {
+            var shareData = {
+                title: '绑定手机号 - 申通快递',
+                desc: '申通快递官方微信为您提供在线查件、寄件、网点查询、价格时效查询等服务！',
+                link: 'http://qq.sto.cn/MUI/Index?state=2',
+                imgUrl: imgUrl
+            };
+            mqq.onMenuShareAppMessage(shareData); //分享给朋友
+            mqq.onMenuShareTimeline(shareData); //分享到朋友圈
+            mqq.onMenuShareQQ(shareData); //分享到QQ
+            mqq.onMenuShareWeibo(shareData); //分享到微博
+            mqq.onMenuShareQZone(shareData); //分享到QZone
+        } );
+    </script>
+    <script>
+        $( function ()
+        {
+            // 重新绑定
+            $( '#resetMobile' ).click( function ()
+            {
+                var url = "http://qq.sto.cn/MUI/Contact?openId=" + '' + "&resetMobile=true";
+                window.location.href = url;
+            } );
+
+            // 订阅设置，设置微信用户默认想订阅单号的哪些状态
+            $( '#rssSetting' ).click( function ()
+            {
+                var url = "http://qq.sto.cn/MUI/RssSetting?openId=" + '';
+                window.location.href = url;
+            } );
+
+            // 快件查询
+            $( '#billSearch' ).click( function ()
+            {
+                var url = "http://qq.sto.cn/Track/Index?openId=" + '';
+                window.location.href = url;
+            } );
+
+            // 我的主页
+            $( '#btnVip' ).click( function ()
+            {
+                var url = "http://qq.sto.cn/Vip/Index?openId=" + '';
+                window.location.href = url;
+            } );
+        } )
+    </script>
+
+</body></html>

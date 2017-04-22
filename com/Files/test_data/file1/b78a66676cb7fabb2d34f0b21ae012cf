@@ -1,0 +1,155 @@
+<!DOCTYPE html><html><head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black"> 
+<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+<title>找回密码</title>
+<link rel="stylesheet" type="text/css" href="/Public/Wap/css/base.css">
+<link rel="stylesheet" type="text/css" href="/Public/Wap/css/login.css">
+<script type="text/javascript" src="/Public/js/jquery.min.js"></script>
+<link rel="stylesheet" href="http://xt.szgs.gov.cn/Public/js/artDialog/skins/home.css?4.1.6"><script type="text/javascript" src="/Public/js/artDialog/jquery.artDialog.js?skin=home"></script>
+<script type="text/javascript" src="/Public/js/artDialog/plugins/iframeTools.js"></script>
+<script type="text/javascript" src="/Public/js/jquery.form.js"></script>
+<script type="text/javascript" src="/Public/js/formValidator.js"></script>
+<script type="text/javascript" src="/Public/js/formValidatorRegex.js"></script>	
+<script type="text/javascript">
+	$(document).ready(function(){
+		$.formValidator.initConfig({formid:"myform",autotip:true,onerror:function(msg,obj){
+			window.art.dialog({content:msg,lock:true,ok:function(){$(obj).focus();}});
+		},onsuccess:function(){return ajaxToserver();},submitOnce:false,debug:false});
+		
+		//用户名称的校验
+		$("#username").formValidator({onshow:"请输入用户名",onfocus:"请输入用户名",oncorrect:"输入正确"}).inputValidator({min:6,max:16,onerror:"请输入正确的用户名"}).ajaxValidator({
+			datatype : "json",
+			async : true,
+			url : "/Wap/Findpass/usernameExists.html",
+			success : function(data){
+				if(data.status == '1'){ 
+					return true;
+				}else{
+					return false;
+				}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown){
+				alert("服务器没有返回数据，可能服务器忙，请重试"+errorThrown);
+			},
+			onerror : "该用户名不存在",
+			onwait : "正在进行检测，请稍候..."
+		});
+		
+		$("#userPhone").formValidator({onshow:"请输入手机号码",onfocus:"请输入手机号码"}).inputValidator({min:11,max:11,onerror:"请输入手机号码"}).regexValidator({regexp:"mobile",datatype:"enum",onerror:"请输入正确手机号"}).ajaxValidator({
+			datatype : "json",
+			async : true,
+			url : "/Wap/Findpass/userphoneExists.html",
+			success : function(data){
+				if(data.status == '1'){ 
+					return true;
+				}else{
+					return false;
+				}
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown){
+				alert("服务器没有返回数据，可能服务器忙，请重试"+errorThrown);
+			},
+			onerror : "手机号码不存在",
+			onwait : "正在校验，请稍候..."
+		});
+		$("#vpass").formValidator({onshow:"请输入验证码",onfocus:"请输入验证码"}).inputValidator({min:6,max:6,onerror:"请输入正确的验证码"});
+		$("#sendCode").click(function(){
+			userPhone = $("#userPhone").val();
+			var re =new RegExp("^(1)[0-9]{10}$"); 
+			if(!re.test(userPhone)){
+				$("#userPhone").focus();
+				window.art.dialog({content:'请输入正确的手机号码',lock:true,width:250,height:100}).time(3);
+				return false;
+			}
+			sendsmscode();
+			<!-- window.parent.top.art.dialog.open("/Home/Public/sendcodeverify.html?from=findpass",{id:"sendSmSCodeWin",title: '验证码输入', width: 340, height: 150,lock:true}); -->
+		});
+		
+		function ajaxToserver(){
+			$("#myform").ajaxSubmit({
+				beforeSubmit:function(){
+				},
+				success:function(state){
+					if(state.status=='1'){
+						document.forms['myform'].action	= "/Wap/Findpass/getpass2.html";
+						document.forms['myform'].submit();
+						return false;
+					}else{
+						window.art.dialog({content:state.info,lock:true}).time(3);
+						return false;
+					}
+				},
+				dataType:'json'
+			});
+			return false;
+		}	
+	});
+	var t = 120;
+	function dotime(){
+		t-=1;
+		$("#leftTime").html(t+"秒后重发");
+		if(t>0){
+			setTimeout('dotime()',1000);
+		}else{
+			$("#sendCode").show();
+			$("#leftTime").hide();
+		}
+	}
+	
+	function sendsmscode(sendcode){
+		var userPhone = $("#userPhone").val();
+		$.post("/Wap/Findpass/passSmsSend.html",{'phone':userPhone,'sendcode':sendcode},function(data){
+			if( data.status == 1){ 
+				$("#sendCode").hide();
+				$("#leftTime").show();
+				t=120;
+				dotime();
+			}else{
+				window.art.dialog({content:data.info,lock:true,width:250,height:100}).time(3);
+			}
+		},"json");
+	}
+</script>
+</head>
+<body>
+<header>
+	<div class="headerTop clearfix">
+		<a href="javascript:window.history.go(-1);" class="back"></a>
+		<div class="headerText">找回密码</div>
+	</div>
+</header>
+<div class="loginBlock">
+	<form action="/Wap/Findpass/checkUsername.html" method="post" name="myform" id="myform">
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" style="margin-top:20px;">
+		<tbody><tr>
+			<td align="right" width="80px">用户名：</td>
+			<td>
+				<input name="username" type="text" class="normal-input" id="username" placeholder=""> 
+			<div id="usernameTip" class="onShow">请输入用户名</div></td>
+		</tr>
+		<tr>
+			<td align="right">手机号：</td>
+			<td><input name="userPhone" type="text" class="normal-input" id="userPhone" placeholder=""><div id="userPhoneTip" class="onShow">请输入手机号码</div></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<input type="text" name="vpass" id="vpass" class="normal-input" placeholder="" style="width:98px; margin-right:10px; float:left;">
+				<a id="sendCode">获取验证码</a>
+				<span id="leftTime" style="display:none; float:left; font-size:14px;">120秒</span>
+			<div id="vpassTip" class="onShow">请输入验证码</div></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<input type="submit" name="dosubmit" value="下一步" style="width:100px; margin-left:10px;">
+			</td>
+		</tr>
+	</tbody></table>
+	</form>
+</div>
+
+<div style="display: none; position: fixed; left: 0px; top: 0px; width: 100%; height: 100%; cursor: move; opacity: 0; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial; "></div></body></html>

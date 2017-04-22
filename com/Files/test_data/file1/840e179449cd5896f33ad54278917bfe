@@ -1,0 +1,413 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+    <meta name="keywords" content="厦门市对公综合服务平台,厦门,对公服务,就业登记,失业登记,招聘求职,社保补贴,工资手册,小额贷款">
+	<meta name="description" content="厦门市对公综合服务平台是厦门市人力资源和社会保障局为全市用人单位提供一站式人社业务经办服务的网上平台。平台首先实现公共就业服务功能一站式办理，并逐步将人社部门的其他对公业务整合到此平台">
+    <title>厦门市对公综合服务平台</title>
+	<link rel="stylesheet" type="text/css" href="/cas0/js/jquery-ui/themes/base/jquery.ui.all.css">
+    <link rel="stylesheet" type="text/css" href="/cas0/css/style_emplyee.css">
+    <link rel="stylesheet" type="text/css" href="/cas0/css/style_iframe.css">
+    <style>
+		.red{font-weight: bold;font-size: 11pt;text-decoration: underline;color: red}
+		.blue{font-weight: bold;font-size: 11pt;text-decoration: underline;color: blue}
+		.login-form { padding: 10px 20px; font-size: 14px; height: 170px;}
+
+		#fullbg {
+			background-color:gray;
+			left:0;
+			opacity:0.5;
+			position:absolute;
+			top:0;
+			z-index:3;
+			filter:alpha(opacity=50);
+			-moz-opacity:0.5;
+			-khtml-opacity:0.5;
+		}
+		#dialog {
+			background-color:#fff;
+			border:5px solid rgba(0,0,0, 0.4);
+			height:450px;
+			left:50%;
+			margin:-200px 0 0 -200px;
+			padding:1px;
+			position:fixed !important; /* 浮动对话框 */
+			position:absolute;
+			top:50%;
+			width:600px;
+			z-index:5;
+			border-radius:5px;
+			display:none;
+		}
+		#dialog p {
+			margin:0 0 12px;
+			height:24px;
+			line-height:24px;
+			background:#CCCCCC;
+		}
+		#dialog p.close {
+			text-align:right;
+			padding-right:10px;
+		}
+		#dialog p.close a {
+			color:#fff;
+			text-decoration:none;
+		}
+		#isupdate {
+			background-color:#fff;
+			border:5px solid rgba(0,0,0, 0.4);
+			height:450px;
+			left:50%;
+			margin:-200px 0 0 -200px;
+			padding:1px;
+			position:fixed !important; /* 浮动对话框 */
+			position:absolute;
+			top:50%;
+			width:600px;
+			z-index:6;
+			border-radius:5px;
+			display:none;
+			text-align: center;
+			line-height:450px;
+			font-size: 20px;
+			color: red;
+		} 
+		#islogin {
+			background-color:#fff;
+			border:5px solid rgba(0,0,0, 0.4);
+			height:150px;
+			left:50%;
+			padding:1px;
+			position:fixed !important; /* 浮动对话框 */
+			position:absolute;
+			top:50%;
+			width:600px;
+			z-index:7;
+			border-radius:5px;
+			display:none;
+			text-align: center;
+			line-height:150px;
+		}
+		 
+	</style>
+	<script type="text/javascript" src="/cas0/js/jquery-1.8.0.min.js"></script>
+	<script type="text/javascript" src="/cas0/js/jquery-ui/ui/jquery.ui.core.js"></script>
+	<script type="text/javascript" src="/cas0/js/jquery-ui/ui/jquery.ui.widget.js"></script>
+	<script type="text/javascript" src="/cas0/js/jquery-ui/ui/jquery.ui.position.js"></script>
+
+	<script type="text/javascript" src="/cas0/js/jquery-ui/ui/jquery.ui.tooltip.js"></script>
+    <script type="text/javascript" src="/cas0/js/jquery.superslide.js"></script>
+    <script type="text/javascript">
+    $(function(){
+    	shake($("#wjmm"),"blue",1000);
+    	$(document).tooltip();
+    	$(".login-tab").slide( { mainCell:".bd", titCell: ".tab-head li",autoPlay:false, trigger : "click"} );
+    	
+    	$('#vcode').click(function(){
+    		this.src = '/cas0/code.jpg?t=' + new Date().getTime();
+    	});
+     	justZhsj();
+
+
+
+    });
+    //获取url参数
+    function GetRequest() {
+    	var url = location.search; //获取url中"?"符后的字串
+    	var theRequest = new Object();
+    	if (url.indexOf("?") != -1) {
+    	var str = url.substr(1);
+    	strs = str.split("&");
+	    	for(var i = 0; i < strs.length; i ++) {
+	    		theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);
+	    	}
+    	}
+    	return theRequest;
+    }
+    //判断是否是帐号升级，如果是帐号升级则显示升级页签
+    function justZhsj(){
+    	var myType = GetRequest();
+    	if (typeof(myType["type"]) == "undefined") {
+    		$('#zhsjli').hide();
+        }else{
+        	$('#yhdl').hide();
+        	$('#yhzc').hide();
+        	$('#yhdl').removeClass("on");
+        	$('#zhsjli').addClass("on");
+        	$('#loginFrame').hide();
+        	clickzhsj();
+        	$('#zhsjli').show();
+        	$('#zhsjFrame').show();
+        }   
+    }
+   
+    function clickyhzc(){
+    	setTimeout("$('#yhdl').trigger('click')", 1000 );
+    }
+    function clickzhsj(){
+    	$("#zhsjiframe").attr("src","https://app2.xmhrss.gov.cn/jypub0/zhsj/step1");
+    }
+ 
+    function shake(ele,cls,times){
+		var i = 0,t= false ,o = ele.attr("class")+" ",c ="",times = times || 2;
+		if(t) return;
+		t= setInterval(function(){
+			i++;
+			c = i%2 ? o+cls : o;
+			ele.attr("class",c);
+			if(i==2*times){
+				clearInterval(t);
+				ele.removeClass(cls);
+			}
+		},500);
+	}
+    //弹出对话框
+    function showBg() {
+		var bh = $("body").height();
+		var bw = $("body").width();
+		$("#fullbg").css({
+		height:bh,
+		width:bw,
+		display:"block"
+		});
+		$("#dialog").show();
+		$("#isupdate").hide();
+	}
+	function closeBg() {
+		$("#fullbg,#dialog").hide();
+	}
+	function checkUser(){
+		$("#islogin").show();
+		var username = $("input[name='username']").val();
+		var password = $("input[name='password']").val();
+		if(username!=null&&username!=""&&password!=null&&password!=""){
+			var myurl = document.location.origin + '/jypub0/dwzhxx/findXgzhxx/'+username+'/'+password;
+		    var is_exit=false;
+			$.ajax({  
+		          type : "post",  
+		          dataType : "json",
+		          url :  myurl,  
+		          async : false,  
+		          success : function(data){  
+		        	  is_exit =data.succed;
+		          }  
+		     });
+			 if(is_exit==true||is_exit=="true"){
+				 $("#islogin").hide();
+				 $("input[name='usernameOld']").val(username);	
+				 $("input[name='passwordOld']").val(password);
+				 $("input[name='usernameNew']").val("");
+				 $("input[name='passwordNew']").val("");
+				 $("input[name='passwordSecond']").val("");
+				 showBg();
+				 return false;
+			 }
+		}
+		//$("#islogin").hide();
+	 }
+	function updateXgzhxx(){
+		var usernameOld = $("input[name='usernameOld']").val();
+		var passwordOld = $("input[name='passwordOld']").val();
+		var usernameNew = $("input[name='usernameNew']").val();
+		var passwordNew = $("input[name='passwordNew']").val();
+		var passwordSecond = $("input[name='passwordSecond']").val();
+		if(usernameOld==null||usernameOld==""){
+			 alert("旧用户名不能为空!");
+			 return false;
+		}
+		if(passwordOld==null||passwordOld==""){
+			 alert("旧密码不能为空!");
+			 return false;
+		}
+		if(usernameNew==null||usernameNew==""){
+			 alert("新用户名不能为空!");
+			 return false;
+		}
+		if(passwordNew==null||passwordNew==""){
+			 alert("密码不能为空!");
+			 return false;
+		}
+		if(passwordSecond==null||passwordSecond==""){
+			 alert("确认密码不能为空!");
+			 return false;
+		}
+		if(usernameOld==usernameNew){
+			 alert("旧用户名与新用户名不能一样!");
+			 return false;
+		}
+		if(passwordNew!=passwordSecond){
+			 alert("密码与确认密码不一致!");
+			 return false;
+		}
+		$("#isupdate").show();
+		var myurl = document.location.origin + '/jypub0/dwzhxx/updateXgzhxx/'+usernameOld+'/'+passwordOld+'/'+usernameNew+'/'+passwordNew;
+	    var is_exit=false;
+	    var msg="";
+		$.ajax({  
+	          type : "post",  
+	          dataType : "json",
+	          url :  myurl,  
+	          async : false,  
+	          success : function(data){  
+	        	  is_exit =data.succed;
+	        	  msg = data.msg;
+	          }  
+	     });
+		 if(is_exit==false||is_exit=="false"){
+			 $("#isupdate").hide();
+			 alert(msg);
+			 return false;
+		 }else{
+			 $("#isupdate").hide();
+			 $("input[name='username']").val("");
+			 $("input[name='password']").val("");
+			 alert("保存成功，请登陆!");
+			 closeBg();
+		 }
+	 }
+	 
+    </script>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+<body>
+<div class="w">
+    <div class="header">
+        <img src="/cas0/images/logo.jpg" alt="厦门市对公综合服务平台" title="厦门市对公综合服务平台">
+    </div>
+    <!--for login body-->
+    <div class="login-container">
+        <div class="login-tab">
+            <div class="tab-head hd">
+                <ul>
+                    <li id="yhdl" class="on"><a href="#" class="bfont">用户登录</a></li>
+                    <li id="yhzc" onclick="clickyhzc()"><a href="http://app2.xmhrss.gov.cn/jypub0/reg/license" class="bfont" target="_blank">用户注册</a></li>
+                    <!-- <li id='zhsjli'  onclick="clickzhsj()" title="原厦漳泉（闽南）人力资源网、厦漳泉公共招聘网、集美区政府官方网站账号停止登录，使用原账号进行升级入口"><a href="#" class="bfont">账号升级</a></li>-->
+                    <li id="zhma" onclick="clickyhzc()"><a href="http://app2.xmhrss.gov.cn/jypub0/findzh/index" class="bfont" target="_blank">找回密码</a></li>
+                </ul>
+            </div>
+            <div class="login-frame-container bd" style="height: 255px;">
+                <div class="login-frame" id="loginFrame">
+					<form id="reg_form" class="fm-v clearfix" action="/cas0/login;jsessionid=N6LlYfHQQpVkx6N2tgWpsqc5J9wJZHnlLPvKY7jnGp0dLxTnnGJ9!1228183059?service=http%3A%2F%2Fapp2.xmhrss.gov.cn%2Fxmdgpt%2Fuser%2Fexport%2Fexport4EXCEl%2Fexportygbbxls%3FXMDGPTSESSION%3DnlTLYfHHRvBLpDtwRNh5t7vDYRw5NrtczT1Y8n8s2cDNgTnp1T1J%211749501124" method="post" onsubmit="return checkUser();">
+						<input type="hidden" name="type" value="1">
+						<div class="login-form">
+						    <div class="input-group">
+						        <label>用户名：</label>
+						        <input type="text" class="input" name="username" value="" title="">
+						    </div>
+						    <div class="input-group" style="display:none;">
+						        <label>子账号：</label>
+						        <input type="text" class="input" name="subusername" value="" title="">
+						    </div>
+						    <div class="input-group">
+						        <label>密&nbsp;&nbsp;码：</label>
+						        <input type="password" class="input" name="password" title="">
+						    </div>
+						    <div class="input-group">
+						        <label>验证码：</label>
+						        <input type="text" class="input" name="vcode" title="">
+						        <img id="vcode" src="/cas0/code.jpg" alt="验证码" title="点击更换" height="25">
+						    </div>
+							
+						</div>
+						<div class="input-command">
+						    <button type="submit" class="btn-login"></button>
+						    <div>
+						    	<!-- 
+						    	<p>
+						    	<a href="http://app2.xmhrss.gov.cn/jypub0/findzh/index" target="_blank">忘记密码?</a>
+						    	</p>
+						    	
+							    <p>
+							    <a href="http://app2.xmhrss.gov.cn/jypub0/ywjd/" target="_blank">
+							    	<font class="red" id="wjmm">忘记用户名密码？无法注册？点这里哦~</font>
+							    </a>
+							    </p>
+							   -->
+						    </div>
+						</div>
+					    <input type="hidden" name="lt" value="LT-20603-2Eq2gjSAbulXVktdJAxkxUKe3YdrSO">
+					    <input type="hidden" name="execution" value="e1s1">
+					    <input type="hidden" name="_eventId" value="submit">
+					</form>
+                </div>
+                <div class="login-frame" style="display: none; ">
+                </div>
+                <div class="login-frame" id="zhsjFrame" style="display: none; ">
+                    <iframe frameborder="0" scrolling="no" width="100%" height="355px" src="" id="zhsjiframe"></iframe>
+                </div>
+            </div>
+            <div class="login-frame-footer"></div>
+        </div>
+    </div>
+   <div class="copyright">
+        版权所有(c)2013 厦门市劳动就业管理中心
+    </div>
+	<div id="fullbg"></div>
+	<div id="isupdate">资料正在保存中，请耐心等待，保存成功前不要关闭浏览器！</div>
+	<div id="islogin">
+		<img src="/cas0/images/ProgressBar.gif" alt="系统正在登录中，请耐心等待，如果长时间未登录成功，请关闭浏览器重新登录">
+	</div>
+	<div id="dialog">
+	<p class="close"><span style="float: left;font-size: 15px"><b style="color: blue">请您配合完成以下工作：</b></span><a href="#" onclick="closeBg();">关闭</a></p>
+		<form id="userMange_form" class="fm-v clearfix" action="/cas0/login;jsessionid=N6LlYfHQQpVkx6N2tgWpsqc5J9wJZHnlLPvKY7jnGp0dLxTnnGJ9!1228183059?service=http%3A%2F%2Fapp2.xmhrss.gov.cn%2Fxmdgpt%2Fuser%2Fexport%2Fexport4EXCEl%2Fexportygbbxls%3FXMDGPTSESSION%3DnlTLYfHHRvBLpDtwRNh5t7vDYRw5NrtczT1Y8n8s2cDNgTnp1T1J%211749501124" method="post">
+			<div class="login-frame">
+				<div>
+			        <label style="width:600px;text-align:left;margin-left:30px"><b>用户您好，为提升系统安全水平，请先修改您的用户名及密码再登录使用。</b></label>
+			        <br>
+					<label style="width:600px;text-align:left;margin-left:30px"><b>对此给您带来的不便敬请谅解，让我们共同打造一个安全放心的网络平台！</b></label>
+				</div>
+				<div class="input-group">
+			        <label style="width:100px"><font color="red">*</font>旧用户名：</label>
+			        <input type="text" class="input" name="usernameOld" readonly="readonly" title="">
+				</div>
+				<div class="input-group">
+			        <label style="width:100px"><font color="red">*</font>旧密码：</label>
+			        <input type="password" class="input" name="passwordOld" readonly="readonly" title="">
+				</div>
+				<div class="input-group">
+			        <label style="width:100px"><font color="red">*</font>新用户名：</label>
+			        <input type="text" class="input" name="usernameNew" title="">
+			        <label style="width:200px;text-align:left;font-size: 12px;color: blue;">6-15位,数字、字母、下划线至少2种</label>
+				</div>
+				<div class="input-group">
+			        <label style="width:100px"><font color="red">*</font>新密码：</label>
+			        <input type="password" class="input" name="passwordNew" title="">
+			        <label style="width:200px;text-align:left;font-size: 12px;color: blue;">请填写6-15位</label>
+				</div>
+				<div class="input-group">
+			        <label style="width:100px"><font color="red">*</font>确认密码：</label>
+			        <input type="password" class="input" name="passwordSecond" title="">
+			        <label style="width:200px;text-align:left;font-size: 12px;color: blue;">确认密码要与新密码一样</label>
+				</div>
+				<div>
+				    <br>
+			        <label style="width:600px;text-align:left;margin-left:55px"><b>&nbsp;提示：请牢记您的新用户名及密码！</b></label>
+				</div>
+				<br>
+				<div align="center">
+					 <input type="button" value="保  存" onclick="updateXgzhxx();">&nbsp;&nbsp;
+					 <input type="button" value="关   闭" onclick="closeBg();">
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+<div id="message" style="display:none;">
+	<h3>关于厦门市单位统一注册登录平台暂停子账号管理的通知</h3>
+	<p>由于厦门市单位统一注册登录平台的子账号管理部分功能仍需完善，故暂停该功能，待系统完善后，再重新上线，届时会另行通知，由此引起的不便，敬请见谅。</p>
+	<p>&nbsp;</p>
+	<p style="text-align:right;">厦门市劳动就业管理中心</p>
+	<p style="text-align:right;">2013年12月18日</p>
+</div>
+
+</body></html>

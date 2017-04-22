@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+  <title>
+        选择银行-pay789支付平台
+    </title> 
+  <link href="/assets/paycenter/css/common.css" rel="stylesheet" media="screen,projection" /> 
+  <style type="text/css">
+        .help-error {
+            color: red;
+        }
+    </style> 
+ </head> 
+ <body> 
+  <div class="header"> 
+   <div class="bar"> 
+    <a id="logo" href="#"></a> 
+    <p><a href="/Query.aspx">订单查询</a> </p> 
+   </div> 
+  </div> 
+  <div class="bar"> 
+   <div class="side"> 
+    <div class="box" id="dhxx"> 
+     <p class="boxT">兑换信息</p> 
+     <div class="boxM"> 
+      <p>分区名称：<span class="font1">風雲傳世25日合区</span></p> 
+      <p>兑换比例：<span class="font1"> 1RMB：15000元宝</span></p> 
+     </div> 
+    </div> 
+    <div class="box" id="jlzs"> 
+     <p class="boxT">奖励赠送</p> 
+     <ul class="boxM"> 
+      <li id="tdfj"> <p> 充值1元赠送1游戏点 </p> </li> 
+     </ul> 
+    </div> 
+    <div class="box" id="zysx"> 
+     <p class="boxT">注意事项</p> 
+     <ul class="boxM"> 
+      <li>请仔细检查选择或输入的信息是否准确，以免造成不必要的麻烦。</li> 
+      <li>如果发现充错区或者帐号填写错误，请不要领取游戏币，及时与平台客服联系。</li> 
+      <li>兑换前请关闭不相关的软件，例如：网络加速器、IP加速器、游戏外挂等，以免充值失败或导致金额被转移。</li> 
+      <li>如果使用IE或360安全浏览器无法充值，请更换其他浏览器，例如：搜狗、傲游。</li> 
+     </ul> 
+    </div> 
+   </div> 
+   <div class="main"> 
+    <div class="buzhou"> 
+     <i class="bor"></i> 
+     <p class="bg"><span>1</span><b>输入兑换信息</b></p> 
+     <p class="bg"><span>2</span><b>输入金额/卡密</b></p> 
+     <p><span>3</span><b>等待系统处理</b></p> 
+     <p><span>4</span><b>显示结果</b></p> 
+    </div> 
+    <div id="news" class="news">
+     充值金额不接受小数点，只能为整数。（例：输入“10.23”，后面的“.23”将被忽略，您实际支付的金额为“10”元）
+    </div> 
+    <form method="post" id="form_Pay"> 
+     <input type="hidden" id="txtGId" value="A0D36C0B539425DF" name="GId" /> 
+     <input type="hidden" value="2A4038ED4CC1CBCF" name="GameAccount" id="txtGameAccount" /> 
+     <input type="hidden" value="B12DC6EA91CF7835" name="ConQQ" id="txtConQQ" /> 
+     <input type="hidden" value="" name="PayTypeDetail" id="txtPayTypeDetail" /> 
+     <div class="box"> 
+      <p class="boxT">网上银行</p> 
+      <div class="boxM"> 
+       <div class="money"> 
+        <p style="display:inline-block"> <span>充值金额：</span> <input name="amount" type="text" id="txtAmount" onblur="checkAmount()" /> <span id="txtAmount_error" class="help-error" style="display: none;">请输入支付金额</span> </p> 
+       </div> 
+       <div class="zfbor"></div> 
+       <ul id="bankU2"> 
+        <li> <input id="alicheck" name="PayMethod" data-ptdetail="503" value="503" checked="" type="radio" /> <span>微信支付</span> </li> 
+       </ul> 
+      </div> 
+     </div> 
+     <div class="btnBox"> 
+      <input type="button" name="banknext" value="下一步" onclick="formSubmit()" id="banknext" class="btn" /> 
+     </div> 
+    </form> 
+   </div> 
+   <div class="footer">
+    Copyright &copy; 2009-2015 All Rights Reserved
+   </div> 
+  </div> 
+  <script language="javascript" type="text/javascript">
+        var balance = parseInt(10);
+        function checkAmount() {
+            var amountobj = document.getElementById("txtAmount");
+            var txtAmountError = document.getElementById("txtAmount_error");
+            if (!amountobj.value) {
+                txtAmountError.innerText = "请输入支付金额";
+                txtAmountError.style.display = "block";
+                return false;
+            }
+            if (parseInt(amountobj.value) < balance) {
+                txtAmountError.innerText = "充值金额至少" + balance + "元";
+                txtAmountError.style.display = "block";
+                return false;
+            }
+            txtAmountError.style.display = "none";
+            return true;
+        }
+        function formSubmit() {
+            if (!checkAmount()) {
+                return false;
+            }
+            var payMethodObjs = document.getElementsByName("PayMethod");
+            var payTypeObj = document.getElementById("txtPayTypeDetail");
+            for (var i = 0; i < payMethodObjs.length; i++) {
+                if (payMethodObjs[i].checked) {
+                    var parentPay = payMethodObjs[i].getAttribute("data-ptdetail");
+                    payTypeObj.value = parentPay;
+                    var payForm = document.getElementById("form_Pay");
+                    payForm.submit();
+                    break;
+                }
+            }
+        }
+
+
+        //jQuery.validator.addMethod("checkBalance", function (value, element) {
+        //    if (isNaN(balance))
+        //        balance = 10;
+        //    return this.optional(element) || value >= balance;
+        //}, $.validator.format("充值金额至少" + balance));
+
+        //$(document).ready(function () {
+        //    $("#goback").click(function () {
+        //        window.history.go(-1);
+        //    });
+        //    $("#bankgoback").click(function () {
+        //        window.history.go(-1);
+        //    });
+        //    $("#bankUl li").click(function () {
+        //        var input = $(this).find("input:radio");
+        //        input.click();
+        //    });
+        //    $(":radio").click(function (e) {
+        //        if (!$(this).attr("disabeld")) {
+        //            if (!$(this).parent().is(".selectBank")) {
+        //                $("#bankUl").find(".selectBank").addClass("bankItem").removeClass("selectBank");
+        //                $(this).parent().removeClass("bankItem").addClass("selectBank");
+        //            }
+        //        } else {
+        //            alert("[" + $(this).parent().attr("title") + "]正在维护");
+        //        }
+        //        e.stopPropagation();
+        //    });
+        //    $("li.selectBank").addClass("bankItem").removeClass("selectBank");
+        //    pageFuncs.init();
+        //});
+
+        //var pageFuncs = function () {
+        //    return {
+        //        init: function () {
+        //            pageFuncs.handleValidate();
+        //        },
+        //        handleValidate: function () {
+        //            var form = $('#form1');
+        //            form.validate({
+        //                errorElement: 'span', //default input error message container
+        //                errorClass: 'help-block help-block-error help-error', // default input error message class
+        //                focusInvalid: false, // do not focus the last invalid input
+        //                ignore: "",  // validate all fields including form hidden input
+        //                rules: {
+        //                    amount: {
+        //                        required: true,
+        //                        digits: true,
+        //                        checkBalance: true
+        //                    }
+        //                },
+        //                invalidHandler: function (event, validator) { //display error alert on form submit
+        //                    //success1.hide();
+        //                    //error1.show();
+        //                    //Metronic.scrollTo(error1, -200);
+        //                },
+        //                highlight: function (element) { // hightlight error inputs
+        //                    $(element)
+        //                        .closest('.form-group').addClass('has-error'); // set error class to the control group
+        //                },
+        //                unhighlight: function (element) { // revert the change done by hightlight
+        //                    $(element)
+        //                        .closest('.form-group').removeClass('has-error'); // set error class to the control group
+        //                },
+        //                success: function (label) {
+        //                    label
+        //                        .closest('.form-group').removeClass('has-error'); // set success class to the control group
+        //                },
+        //                submitHandler: function (form) {
+        //                    $selected = $('input:radio[name="PayMethod"]:checked');
+        //                    var selectedPay = $selected.val();
+        //                    var selectedParentPay = $selected.attr('data-ptdetail');
+        //                    if (typeof selectedPay == "undefined" || typeof selectedParentPay == "undefined") {
+        //                        alert("请选择支付方式!");
+        //                        return false;
+        //                    }
+        //                    $('#txtPayTypeDetail').val(selectedParentPay);
+        //                    form.submit();
+        //                }
+        //            });
+        //        }
+        //    };
+        //}();
+    </script>   
+ </body>
+</html>

@@ -1,0 +1,152 @@
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<style type="text/css">
+	body{
+		font-size: 16px;background-color: #F9F9F9;margin: 0;padding: 0;
+	}
+	a{text-decoration:none; color: #616161;}
+	img{max-width: 100%; height: auto;}
+	.weixin-tip{display: none; position: fixed; left:0; top:0; bottom:0; background: rgba(0,0,0,0.8); filter:alpha(opacity=90);  height: 100%; width: 100%; z-index: 100;}
+	.weixin-tip p{text-align: center; margin-top: 10%; padding:0 5%;}
+	.container{
+		text-align: center;
+	}
+	.sfim img{
+		width: 5rem;
+    	margin-top: 3rem;
+	}
+	.sfim span{
+		display: block;
+	    font-size: 2.05rem;
+	    margin-top: 0.38rem;
+	    color: #525252;
+	}
+	.mtitle{
+	    color: #2485FE;
+	    font-size: 1.0rem;
+	    width: 80%;
+	    margin: 2.5rem auto;
+	    margin-bottom: 1.0rem;
+	}
+	.module_android a, .module_ios a{
+		border: 1px solid #D8D8D8;
+	    display: block;
+	    border-radius: 8px;
+	    background-color: #fff;
+	    width: 70%;
+    	margin: 0 auto;
+    	height: 9.5rem;
+    	text-align: center;
+	}
+	.module_ios a img, .module_android a img{
+		width: 3.4rem;
+    	line-height: 8.0rem;
+    	height: 6.0rem;
+	}
+	.module_ios a span, .module_android a span{
+		display: block;
+	    position: relative;
+	    top: -0.3rem;
+	    font-size: 1.0rem;
+	}
+	.module_android a p, .module_ios a p{
+		margin: 0 auto;
+	    font-size: 1.0rem;
+	}
+	.unsupport{
+		color: #FF5056;
+	}
+</style>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript">
+		//判断手机系统及版本号
+		function checkPkatform () {
+			var u = window.navigator.userAgent;
+			if(!!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)){
+				//ios
+				if(u.indexOf('iPhone') > -1 || u.indexOf('iPod') > -1){
+					//iphone,ipod,ipad
+					num = u.substring(u.indexOf('CPU iPhone OS') + 13, u.indexOf('like'));
+				}else if (u.indexOf('iPad') > -1) {
+					num = u.substring(u.indexOf('CPU OS') + 6, u.indexOf('like'));
+				}
+				if(parseInt(num.split('_')[0])<8){
+					$('.unsupport').show();
+				}else{
+					$('.module_ios').show();
+				}
+				return {type:'apple', version: num};
+			}else if(u.indexOf('Android') > -1 || u.indexOf('Linux') > -1){
+				//Android
+				num = u.substr(u.indexOf('Android') + 8, 3);
+				var tempNum = num.split('.');
+				if(parseInt(tempNum[0])<4 || (parseInt(tempNum[0])== 4 && parseInt(tempNum[1])<4)){
+					$('.unsupport').show();
+				}else{
+					$('.module_android').show();
+				}
+				return {type:'Android', version: num};
+			}else{
+				$('.module_android').show();
+				$('.module_ios').show();
+				return 'else';
+			}
+
+		}
+        $(window).on("load",function(){
+        	var msg = checkPkatform ();
+	        var winHeight = $(window).height();
+			function is_weixin() {
+			    var ua = navigator.userAgent.toLowerCase();
+			    if (ua.match(/MicroMessenger/i) == "micromessenger") {
+			        return true;
+			    } else {
+			        return false;
+			    }
+			}
+			var isWeixin = is_weixin();
+			if(isWeixin){
+				$(".weixin-tip").css("height",winHeight);
+	            $(".weixin-tip").show();
+			}
+        })
+</script>
+<meta name="viewport" content="initial-scale=1.0, width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+
+
+
+<title>丰声手机客户端下载</title>
+</head>
+
+<body>
+ <div id="tip" class="weixin-tip" onclick="$(&quot;#tip&quot;).hide();">
+		<p>
+			<img src="images/live_weixin.png" alt="微信打开">
+		</p>
+</div>
+	<div class="container">
+		<div class="sfim">
+			<img src="images/sfim_logo.png" alt="">
+			<span>丰声</span>
+		</div>
+		
+		<p class="mtitle">注意：丰声仅支持android 4.4及以上，ios 8.0及以上</p>
+		<p class="unsupport" style="display:none;">当前系统版本不支持</p>
+		<div class="module_ios" style="">
+			<a href="attention.html"><img src="images/apple_logo.svg" alt=""><span>Iphone</span><p>点击下载</p></a>
+		</div>
+		<div class="module_android" style="">
+			<a href="https://sfim-update.sf-express.com/android/sfim_android.apk"><img src="images/android_logo.svg" alt=""><span>Android</span><p>点击下载</p></a>
+			
+		</div>
+	</div>
+<br>
+
+
+
+
+
+
+
+
+</body></html>

@@ -1,0 +1,2072 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+	
+
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="keywords" content="内蒙电子税务局,国税地税综合办公,便民办税，春风行动，深入贯彻国地税合作">
+<meta name="description" content="国地税共建电子税务生态，税企共享诚信纳税平台">
+<title>内蒙古自治区国地税联合网上办税服务平台</title>
+	<link rel="shortcut icon" href="http://nm12366.net:80/images/favicon.ico" type="images/x-icon">
+	<link href="http://nm12366.net:80/resources/dzswj/nmgs/electronic.min.css" rel="stylesheet" type="text/css">
+	<link href="http://nm12366.net:80/resources/dzswj/nmgs/style.css" rel="stylesheet" type="text/css">
+	 <script language="javascript" src="http://nm12366.net:80/js/all_dzswj.js"></script> 
+	 <script type="text/javascript" src="http://nm12366.net:80/js/layer/layer.js"></script><link type="text/css" rel="stylesheet" href="http://nm12366.net/js/layer/skin/layer.css" id="skinlayercss">
+	 
+<script type="text/javascript">
+	function checkTerinal(){    
+		var flag =true;
+		var browser = {
+	        versions: function () {
+	            var u = navigator.userAgent, app = navigator.appVersion;
+	            return {//移动终端浏览器版本信息
+	                trident: u.indexOf('Trident') > -1, //IE内核
+	                presto: u.indexOf('Presto') > -1, //opera内核
+	                webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+	                gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+	                mobile: !!u.match(/AppleWebKit.*Mobile.*/) , //是否为移动终端
+	                ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+	                android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1 || u.indexOf('UCBrowser')>-1, //android终端或者uc浏览器
+	                iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者QQHD浏览器
+	                iPad: u.indexOf('iPad') > -1, //是否iPad
+	                webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
+	            };
+	        }(),
+	        language: (navigator.browserLanguage || navigator.language).toLowerCase()
+	    }
+	    if (browser.versions.mobile == true || browser.versions.ios == true || browser.versions.android == true) {
+	       flag =false;
+	    }else{
+	    	flag =true;
+	    }
+	    return flag;
+	}
+	if(!checkTerinal()){
+		window.location.href="http://nm12366.net:80//xiazai.jsp";
+	}
+
+	var lhdj_app=new Array();
+	var sbgx_app=new Array();
+	var ssfp_app=new Array();
+	var spba_app=new Array();
+	var bsq_app=new Array();
+	var fwq_app=new Array();
+	var cxq_app=new Array();
+	var xxq_app=new Array();
+	
+	function Apps(id,name,app_id,apply_url,islogin,photo_url,forward_url){
+		this.id=id;
+		this.name=(name&&name!="undefined")?name:"";
+		this.app_id=app_id;
+		this.apply_url=apply_url;
+		this.islogin=islogin;
+		this.photo_url=photo_url;
+		this.forward_url=forward_url;
+	}
+	
+	$(function(){
+		//loadCmsHtml();
+		ieTest();
+		//showLeftLinkLists();
+		qryAppRelation();
+		qryNotice();
+		showLinkLists("links");
+	});
+
+		
+	/*加载围群cms的静态页面*/
+	function loadCmsHtml(){
+		$.ajax({
+			url:"http://nm12366.net:80/org/cmsTempleteUrl",
+			type:'POST',
+			data:{"siteroot":"31500000000","sitetype":"GW"},
+			dataType: "xml",
+			beforeSend:function(){
+				layer.load(2);
+			},
+			success: function(data) {
+				var code=$(data).find("RETURN_CODE").text();
+				var msg=$(data).find("RETURN_MSG").text();
+				var url=$(data).find("URL").text();
+				if("0000"==code&&null!=url&&""!=url){
+					$.ajax({
+						url:"http://nm12366.net:80/"+url,
+						dataType: "html",
+						success:function(htm){
+							$("#con_show").html(htm);
+						}
+					});
+					layer.closeAll();
+				}else{
+					alert(msg);
+					$("#con_show").html(msg);
+					layer.closeAll();
+				}
+			},
+			error:function(XMLHttpRequest, textStatus, errorThrown){
+				//console.log(XMLHttpRequest.status);
+				//console.log(XMLHttpRequest.readyState);
+				//console.log(textStatus);
+				//console.log(errorThrown);
+				layer.closeAll(2);
+			},
+			complete:function(XMLHttpRequest, textStatus){
+				
+			}
+		});
+	}
+
+	function showLogin(){
+		$.ajax({
+			url: "http://nm12366.net:80/login/sessionCheck",
+			contentType: "application/x-www-form-urlencoded; charset=utf-8", 
+			type:'POST',
+			dataType: "JSON",
+			timeout:1000,
+			success: function(data) {
+				if("401" == data.code){//显示登录窗口
+					$("#user_login").css("display","block");
+					$("#user_join").css("display","none");
+					
+				}else{//显示登录提示信息
+					var user_state=data.user_org_state;
+					if(null!=user_state && "1"==user_state){//用户已在围中，跳转到围门户。但是并不会走到这一步
+						window.location.href="http://nm12366.net:80/org/index?org_id="+data.current_org_id; 
+					}else{//显示用户加入围提示
+						$("#user_login").css("display","none");
+						$("#user_join").css("display","block");
+					}
+					showTopUserInfo(data);
+				}
+			},
+			error:function(xml){
+				//layer.msg("服务器繁忙，请稍候重试",2, {type:2});
+			}
+		});
+	}
+  		
+	function register(){
+		window.location.href="http://nm12366.net:80/login/register";
+	}
+	function wjmm(){
+		window.location.href="http://nm12366.net:80/login/findPassword";
+	}
+	function to_search_index(){ 
+		window.location.href="http://nm12366.net:80/org/searchindex?topSearchText="+$("#top_search").val(); 
+	}
+	function chage(id){
+		  try{
+			   if(window.parent.op_src && typeof(window.parent.op_src) == "function"){
+				   window.parent.location.href = 'http://nm12366.net:80/main/main?chageOrg='+id;
+			   }else{
+				   location.href =  'http://nm12366.net:80/org/index?org_id='+id;
+			   }
+			  }catch(e){
+				  location.href =  'http://nm12366.net:80/org/index?org_id='+id;
+			  }
+	}
+	var basePath='http://nm12366.net:80/';
+	var cur_user_id="";
+	var user_type="";
+	var state='';
+
+	
+
+
+	/*
+	 * 头部登录后
+	 */
+	function showTopUserInfo(data){
+		var mrw = data.seesion_org_id;
+		cur_user_id=data.user_id;
+		var html = '<ul>';
+		html+='<li class="grzx"><a href="'+basePath+'main/myIndex"> '+data.realname+' </a></li>';
+		$.each(JSON.parse(data.items),function(idx,obj){
+			if(mrw == obj.id){
+				html+='<li class="w_topbar" onmouseover="displaySubMenu(this)" onmouseout="hideSubMenu(this)" >'+obj.jc;
+			}
+		});
+		html+='<ul class="w_barlist">';
+		$.each(JSON.parse(data.items),function(idx,obj){
+				html+='<li><a onclick="chage(\''+obj.id+'\');" href="javascript:void(0);">'+obj.jc+'</a></li>';
+		});
+		html+='</ul></li>'+
+		        '</li>'+
+		 		'<li><a href="javascript:void(0);" onclick="javascript:window.top.location.href=\'http://nm12366.net:80/login/loginout?loginout=true\'">[退出]</a></li>'+
+			     '<div class="clearfix"></div>'+
+			 '</ul>';
+			$(".user_msg").html(html);
+	}
+
+
+
+
+
+	/**
+	 * 申请加入外围
+	 */
+	function joinOrg(){
+		console.log("cur_user_id="+cur_user_id);
+		if(""==cur_user_id){
+			window.location.href="http://nm12366.net:80/org/index?org_id=31500000000";
+		}else{
+			if(state=='2'){//审核中
+				alert("您已经申请加入此组织，申请正在审核中！");
+				return;
+			}else if(state=='3'){//拒绝
+				alert("对不起，您已经被拒绝加入此组织！");
+				return;
+			}else if(state=='4'){//停用
+				alert("对不起，您在此组织中已经被停用！");
+				return;
+			}
+			$.ajax({
+				url: 'http://nm12366.net:80/org/sUserOrgDepRole',
+				data:{"opt_flag":"save","type":"2","org_id":"31500000000","user_id":cur_user_id,"role_id":"NORMAL"},
+				async: false,
+				cache: false, 
+				type:'POST',
+				dataType :"xml",
+				success:function(msg){
+					var code = $(msg).find("code").text();
+					var message = $(msg).find("message").text();
+					var htmlStr="";
+					if("0000"==code){
+						alert("申请加入组织成功！");
+						window.location.href="http://nm12366.net:80/org/index?org_id=31500000000";
+					}else{
+						alert(message);
+						return;
+					}
+				}
+			});
+		}
+	}
+	
+	
+	/**
+	通知公告
+	**/
+	function qryNotice(){
+	$.ajax({
+		url: 'http://nm12366.net:80/cms/getCurOrgAndPriorOrgNotice',
+		data:{"pageNo":"1","pageSize":"4","siteroot":"31500000000","sitetype":"WW"},
+		type:'POST',
+		dataType :"xml",
+		success:function(msg){
+			var code = $(msg).find("RETURN_CODE").text();
+			var message = $(msg).find("RETURN_MSG").text();
+			if("0000"==code){//接口调用成功
+				var htmlStr_loop = "";
+				var htmlStr_more = "";
+				$(msg).find("Info").each(function(i){
+					var id=$(this).find("id").text();
+					var title=$(this).find("title").text();
+					var fabutime=$(this).find("fabutime").text();
+					var siteroot=$(this).find("siteroot").text();
+					var sitetype=$(this).find("sitetype").text();
+					var outurl=$(this).find("outurl").text();
+					var title_str="";
+					if(title.length>18){
+						title_str=title.substring(0,18);
+					}else{
+						title_str=title;
+					}
+					if(title.length>26){
+						title=title.substring(0,26)+"...";
+					}
+					if(fabutime.length>10){
+						fabutime=fabutime.substring(0,10);
+					}
+					
+					if(i==0){
+						if(null!=outurl && ''!=outurl){
+							htmlStr_loop+=" <li>"+
+				                 "   <a href=\"javascript:void(0);\" onclick=\"window.location.href='"+outurl+"'\">"+
+				                 fabutime+"  "+title_str+
+				                 "	</a>"+
+				                 " <a href=\"http://nm12366.net:80/cms/list?menuid=33150&siteroot=31500000000&sitetype=GW\" class=\"more\">更多&gt;</a> "+
+				                 "</li>";
+							htmlStr_more+=" <li>"+
+			                 " <span>"+fabutime+"</span> "+
+			                 "   <a href=\"javascript:void(0);\" onclick=\"window.location.href='"+outurl+"'\">"+
+			                 title+
+			                 "	</a>"+
+			                 "</li>";
+						}else{
+							htmlStr_loop+=" <li>"+
+			                 "   <a href=\"javascript:void(0);\" onclick=\"window.location.href='http://nm12366.net:80/cms/infoDetail?siteroot="+siteroot+"&sitetype="+sitetype+"&infoid="+id+"'\">"+
+			                 fabutime+"  "+title_str+
+			                 "	</a>"+
+			                 " <a href=\"http://nm12366.net:80/cms/list?menuid=33150&siteroot=31500000000&sitetype=GW\" class=\"more\">更多&gt;</a> "+
+			                 "</li>";
+							htmlStr_more+=" <li>"+
+			                 " <span>"+fabutime+"</span> "+
+			                 "   <a href=\"javascript:void(0);\" onclick=\"window.location.href='http://nm12366.net:80/cms/infoDetail?siteroot="+siteroot+"&sitetype="+sitetype+"&infoid="+id+"'\">"+
+			                 title+
+			                 "	</a>"+
+			                 "</li>";
+						}
+					}else{
+						if(null!=outurl && ''!=outurl){
+							htmlStr_more+=" <li>"+
+			                 " <span>"+fabutime+"</span> "+
+			                 "   <a href=\"javascript:void(0);\" onclick=\"window.location.href='"+outurl+"'\">"+
+			                 title+
+			                 "	</a>"+
+			                 "</li>";	
+						}else{
+							htmlStr_more+=" <li>"+
+			                 " <span>"+fabutime+"</span> "+
+			                 "   <a href=\"javascript:void(0);\" onclick=\"window.location.href='http://nm12366.net:80/cms/infoDetail?siteroot="+siteroot+"&sitetype="+sitetype+"&infoid="+id+"'\">"+
+			                 title+
+			                 "	</a>"+
+			                 "</li>";	
+						}
+					}
+				});
+				$("#modWqNotice-1").html(htmlStr_loop);
+				$("#orgNotice").html(htmlStr_more);
+			}else{
+				//alert("服务器繁忙，请稍候重试");
+			}
+		},
+		error:function(){
+			//alert("服务器繁忙，请稍候重试");
+		}
+	});
+	}
+	  		
+
+	  		/**打开外部应用**/
+	  		function op_app(apply_url,apply_id){
+	  			window.open("http://nm12366.net:80/org/showApp?url="+apply_url+"&apply_id="+apply_id+"&apply_flag=1",'_blank','height=600,width=1000,top=50,left=10,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,status=no');
+	  		}
+			
+			function qryAppRelation(){
+				$.ajax({
+					url: 'http://nm12366.net:80/org/getAppRelationByType',
+					data:{"org_type":"2","target_type":"1","target_id":"31500000000"},
+					type:'POST',
+					dataType :"xml",
+					success:function(msg){
+						var code = $(msg).find("code").text();
+						var message = $(msg).find("message").text();
+						var pageNo = $(msg).find("pageNo").text();
+						var pageSize = $(msg).find("pageSize").text();
+					    var totalPage = $(msg).find("totalPage").text();
+						if("0000"==code){//接口调用成功
+							lhdj_app.splice(0,lhdj_app.length);
+							spba_app.splice(0,spba_app.length);
+							ssfp_app.splice(0,ssfp_app.length);
+							sbgx_app.splice(0,sbgx_app.length);
+							bsq_app.splice(0,bsq_app.length);
+							fwq_app.splice(0,fwq_app.length);
+							cxq_app.splice(0,cxq_app.length);
+							xxq_app.splice(0,xxq_app.length);
+							$(msg).find("AppRelation").each(function(i){
+								var id=$(this).find("id").text();
+								var app_id=$(this).find("app_id").text();
+								var name=$(this).find("name").text();
+								var group_url=$(this).find("group_url").text();
+								var personal_url=$(this).find("personal_url").text();
+								var photo=$(this).find("photo").text();
+								var forward_url=$(this).find("forward_url").text();
+								var islogin=$(this).find("islogin").text();
+								var type_id=$(this).find("type_id").text();
+								var apply_url="";
+								if("" != forward_url && null != forward_url){
+									apply_url=forward_url;
+								}else{
+									if(null != personal_url && "" != personal_url){
+										apply_url="http://nm12366.net:80/"+personal_url.split("/")[0]+"/index";
+									}
+								}
+								var photo_url="";//图片地址
+								if(null!=photo && ""!=photo){
+									if(photo.indexOf("http") > -1){
+										if(photo.indexOf("UploadModule")>-1){
+											photo_url=photo.substr(photo.indexOf("UploadModule/uploads")+22,photo.length);
+											photo_url ="http://www.nm12366.net/UploadModule/uploads/"+photo_url;
+										}else{
+											photo_url =photo;
+										}
+									}else{
+										photo_url ="http://www.nm12366.net/UploadModule/uploads/"+photo;
+									}
+								}else{
+									photo_url ="http://nm12366.net:80/images/app_icon.png";
+								}
+								var apps=new Apps(id,name,app_id,apply_url,islogin,photo_url,forward_url);
+								if(type_id=='105000'){
+									lhdj_app.push(apps);
+								}else if(type_id=='106000'){
+									sbgx_app.push(apps);
+								}else if(type_id=='107000'){
+									ssfp_app.push(apps);
+								}else if(type_id=='108000'){
+									spba_app.push(apps);
+								}else if(type_id=='101000'){
+									bsq_app.push(apps);
+								}else if(type_id=='102000'){
+									fwq_app.push(apps);
+								}else if(type_id=='103000'){
+									xxq_app.push(apps);
+								}else if(type_id=='104000'){
+									cxq_app.push(apps);
+								}
+							});
+							qryAppRelationByType('lhdj','105000');
+							qryAppRelationByType('sbgx','106000');
+							qryAppRelationByType('ssfp','107000');
+							qryAppRelationByType('spba','108000');
+							qryNfAppByType('bsq_nf','101000');
+							qryNfAppByType('fwq_nf','102000');
+							qryNfAppByType('cxq_nf','104000');
+							qryNfAppByType('xxq_nf','103000');
+							
+						}else{
+							//alert("服务器繁忙，请稍候重试");
+						}
+					},
+					error:function(){
+						//alert("服务器繁忙，请稍候重试");
+					}
+				});
+			}
+			
+			
+			
+			//IE 版本检测
+			function ieTest() {
+				if($("#iealert").length != 0){
+					var isIE=!!window.ActiveXObject; 
+					var isIE6=isIE&&!window.XMLHttpRequest; 
+					var isIE8=isIE&&!!document.documentMode; 
+					var isIE7=isIE&&!isIE6&&!isIE8; 
+					if (isIE){ 
+						var browser=navigator.appName 
+	  					var b_version=navigator.appVersion 
+	  					var version=b_version.split(";"); 
+	  					var trim_Version=version[1].replace(/[ ]/g,""); 
+	  					if(browser=="Microsoft Internet Explorer" && trim_Version=="MSIE6.0") 
+	  					{ 
+	  						showIET();
+	  					} 
+	  					else if(browser=="Microsoft Internet Explorer" && trim_Version=="MSIE7.0") 
+	  					{ 
+	  						showIET();
+	  					} 
+					} 
+				}
+			}
+
+
+			function showIET() {
+				if($("#iealert").length != 0){
+					$("#iealert").show()
+					setTimeout(function(){$("#iealert").hide()}, 5000)
+				}
+			}
+			
+			/**取当前围的所有服务链列表**/
+			function showLinkLists(showDivId){
+			 $.ajax({
+					url: 'http://nm12366.net:80/org/sLink',
+					data:"opt_flag=qry&if_flag=one&org_id=31500000000&type=1&scope=2&islink=1",
+					type:'POST',
+					dataType :"xml",
+					success:function(msg){
+						var code = $(msg).find("code").text();
+						var message = $(msg).find("message").text();
+						if("0000"==code){//接口调用成功
+							var htmlStr = "";
+							var htmlStr_left = "";
+							var link_l=$(msg).find("Link").length;
+							$(msg).find("Link").each(function(i){
+								var id=$(this).find("id").text();
+								var name=$(this).find("name").text();
+								var photo=$(this).find("photo").text();
+								var intro=$(this).find("intro").text();
+								var linkns=name.split("/");
+								if(linkns&&linkns.length==2){
+									if(user_type=="2"){
+										name=linkns[0];											
+									}else{
+										name=linkns[1];
+									}
+								}
+								var photo_url="";
+								if(null!=photo && ""!=photo){
+									if(photo.indexOf("http") > -1){
+										if(photo.indexOf("UploadModule")>-1){
+											photo_url=photo.substr(photo.indexOf("UploadModule/uploads")+21,photo.length);
+											photo_url ="http://www.nm12366.net/UploadModule/uploads/"+photo_url;
+										}else{
+											photo_url =photo;
+										}
+									}else{
+										photo_url ="http://www.nm12366.net/UploadModule/uploads/"+photo;
+									}
+								}else{
+										photo_url="http://nm12366.net:80/images/nmgs/icon_zx.png";
+									}
+								if(i==0){
+									htmlStr+="<ul class=\"qie_roll qie_roll_rgzz\"><li>"+
+									  "      <a href=\"javascript:void(0);\" onclick=\"startLink('"+id+"','"+name+"');\"> "+
+			                             "   <img src=\""+photo_url+"\" />"+
+			                            "    <b>"+name+"</b>"+
+			                           " </a></li>";
+								}else if(i%5==0){
+									htmlStr+="</ul><ul class=\"qie_roll qie_roll_rgzz\"><li>"+
+									 "      <a href=\"javascript:void(0);\" onclick=\"startLink('"+id+"','"+name+"');\"> "+
+		                             "   <img src=\""+photo_url+"\" />"+
+		                            "    <b>"+name+"</b>"+
+		                           " </a></li>";
+								}else{
+									htmlStr+="<li><a href=\"javascript:void(0);\" onclick=\"startLink('"+id+"','"+name+"');\"> "+
+		                             "   <img src=\""+photo_url+"\" />"+
+			                            "    <b>"+name+"</b>"+
+			                           " </a></li>";
+								}
+
+								if(((i+1)%10)==1){
+									htmlStr_left+="<ul class=\"qie_con\"><li><a href=\"javascript:void(0)\" onclick=\"startLink('"+id+"','"+name+"');\">"+name+"</a></li>";
+								}else if(((i+1)%10)==0){
+									htmlStr_left+="<li><a href=\"javascript:void(0)\" onclick=\"startLink('"+id+"','"+name+"');\">"+name+"</a></li></ul>";
+								}else{
+									htmlStr_left+="<li><a href=\"javascript:void(0)\" onclick=\"startLink('"+id+"','"+name+"');\">"+name+"</a></li>";
+								}
+							});
+							if(null!=htmlStr && ''!=htmlStr){
+								$("#"+showDivId).html(htmlStr+"</ul>");
+							}else{
+								$("#"+showDivId).html(htmlStr);
+							}
+							dzswj_yy_new_link();
+							if(null==htmlStr || ''==htmlStr){
+								$("#links_left").remove();
+							}else{
+								if(link_l%10==0){
+								}else{
+									htmlStr+="</ul>";
+								}
+								$("#links_left").html(htmlStr_left);
+								left_link_qiehuan();
+							}
+						}else{
+							alert("服务链出现异常："+message);
+						}
+					}
+				});
+			}
+
+
+			function startLink(id,name){
+				if(null==cur_user_id || ''==cur_user_id){
+					showLoginTips();
+					 return;
+				}else{
+					var id=$('input[name="link_radio"]:checked').val();
+					var name=$('input[name="link_radio"]:checked').text();
+					if(null==id || ""==id){
+						alert("请选择咨询服务链！");
+						return;
+					}else{
+						parent.showDialogue('5',id,name,true);
+					}
+				}
+			}
+
+			function showLoginTips(){
+				//scrollTo(0,0);
+				$('.login-box-gs,.loginbg-gs').show();
+			}
+
+
+			function qryAppRelationByType(showDivId,type_id){
+				var temp=new Array();
+				if(type_id=='105000'){
+					temp=lhdj_app;
+				}else if(type_id=='106000'){
+					temp=sbgx_app;
+				}else if(type_id=='107000'){
+					temp=ssfp_app;
+				}else if(type_id=='108000'){
+					temp=spba_app;
+				}
+				var show_app="";
+				var htmlStr="";
+				if(temp.length>0){
+					for(var i = 0;i < temp.length; i++) {
+						var id=temp[i].id;
+						var name=temp[i].name;
+						var app_id=temp[i].app_id;
+						var apply_url=temp[i].apply_url;
+						var islogin=temp[i].islogin;
+						var photo_url=temp[i].photo_url;
+						var forward_url=temp[i].forward_url;
+						if(null!=forward_url && ''!=forward_url && islogin=='1'){
+							show_app=" onclick=\"javascript:showApp('"+forward_url+"','"+app_id+"','"+islogin+"')\"";
+							show_app+=" href=\"javascript:void(0);\" ";
+						}else{
+							if(null==apply_url || ""==apply_url){
+								show_app="  target=\"_blank\" ";
+							}else{
+								show_app=" href=\""+apply_url+"\" target=\"_blank\" ";
+							}
+						}
+						var span_styles="";
+						if(name.length<6 || name.length==6){
+							span_styles=" class=\"big_line\" ";
+						}
+						if(i==0){
+							htmlStr+="<ul class=\"qie_roll\"><li>"+
+							"<a "+show_app+">"+
+							"<img src=\""+photo_url+"\" height=\"36\" width=\"36\"/><b "+span_styles+">"+name+"</b></a></li>";
+						}else if(i%4==0){
+							htmlStr+="</ul><ul class=\"qie_roll\"><li>"+
+							"<a "+show_app+">"+
+							"<img src=\""+photo_url+"\" height=\"36\" width=\"36\"/><b "+span_styles+" >"+name+"</b></a></li>";
+						}else{
+							htmlStr+="<li><a "+show_app+">"+
+							"<img src=\""+photo_url+"\" height=\"36\" width=\"36\"/><b "+span_styles+">"+name+"</b></a></li>";
+						}
+					}
+					if(null!=htmlStr && ''!=htmlStr){
+						$("#"+showDivId).html(htmlStr+"</ul><div class=\"clearfix\"></div>");
+					}else{
+						$("#"+showDivId).html(htmlStr+"<div class=\"clearfix\"></div>");
+					}
+					dzswj_yy_new(showDivId);
+				}
+				
+			}
+			
+			function qryNfAppByType(showDivId,type_id){
+				var temp=new Array();
+				if(type_id=='101000'){
+					temp=bsq_app;
+				}else if(type_id=='102000'){
+					temp=fwq_app;
+				}else if(type_id=='103000'){
+					temp=xxq_app;
+				}else if(type_id=='104000'){
+					temp=cxq_app;
+				}
+				var show_app="";
+				var htmlStr="";
+				if(temp.length>0){
+					for(var i = 0;i < temp.length; i++) {
+						var id=temp[i].id;
+						var name=temp[i].name;
+						var app_id=temp[i].app_id;
+						var apply_url=temp[i].apply_url;
+						var islogin=temp[i].islogin;
+						var photo_url=temp[i].photo_url;
+						var forward_url=temp[i].forward_url;
+						
+						if(null!=forward_url && ''!=forward_url && islogin=='1'){
+							show_app=" onclick=\"javascript:showApp('"+forward_url+"','"+app_id+"','1');\"";
+							show_app+=" href=\"javascript:void(0);\" ";
+						}else{
+							if(null==apply_url || ""==apply_url){
+								show_app="  target=\"_blank\" ";
+							}else{
+								show_app=" href=\""+apply_url+"\" target=\"_blank\" ";
+							}
+						}
+						var span_styles="";
+						if(name.length<6 || name.length==6){
+							span_styles=" class=\"big_line\" ";
+						}
+						/**
+						if(i==0){
+							htmlStr+="<li> <a "+show_app+"><img src=\""+photo_url+"\" style=\"width:33px;height:33px;\"/><span "+span_styles+">"+name+"</span></a>";
+						}else if((i+1)%2==0 && i==temp.length-1){
+							htmlStr+="<a "+show_app+"><img src=\""+photo_url+"\" style=\"width:33px;height:33px;\"/><span "+span_styles+">"+name+"</span></a></li>";
+						}else if((i+1)%2==0 && i!=temp.length-1){
+							htmlStr+="<a "+show_app+"><img src=\""+photo_url+"\" style=\"width:33px;height:33px;\"/><span "+span_styles+">"+name+"</span></a></li><li>";
+						}else{
+							htmlStr+="<a "+show_app+"><img src=\""+photo_url+"\" style=\"width:33px;height:33px;\"/><span "+span_styles+">"+name+"</span></a>";
+						}**/
+						if(i==0){
+							htmlStr+="<ul class=\"qie_roll\"><li>"+
+							"<a "+show_app+">"+
+							"<img src=\""+photo_url+"\" height=\"42\" width=\"40\"/><b "+span_styles+">"+name+"</b></a></li>";
+						}else if(i%4==0){
+							htmlStr+="</ul><ul class=\"qie_roll\"><li>"+
+							"<a "+show_app+">"+
+							"<img src=\""+photo_url+"\" height=\"42\" width=\"40\"/><b "+span_styles+">"+name+"</b></a></li>";
+						}else{
+							htmlStr+="<li><a "+show_app+">"+
+							"<img src=\""+photo_url+"\" height=\"42\" width=\"40\"/><b "+span_styles+">"+name+"</b></a></li>";
+						}
+					}
+				}
+				if('cxq_nf'==showDivId){
+					if(temp.length%4==0){
+						$("#"+showDivId).html(htmlStr+"</ul><ul class=\"qie_roll\"><li><a  href=\"javascript:void(0);\" onclick=\"javascript:showApp('','','1');\"><img src=\"http://nm12366.net:80/images/li_three_02.png\" /><b>群组交流</b></a></li></ul><div class=\"clearfix\"></div>");
+					}else{
+						$("#"+showDivId).html(htmlStr+"<li><a  href=\"javascript:void(0);\" onclick=\"javascript:showApp('','','1');\"><img src=\"http://nm12366.net:80/images/li_three_02.png\" /><b>群组交流</b></a></li></ul><div class=\"clearfix\"></div>");
+					}
+				}else{
+					$("#"+showDivId).html(htmlStr);
+				}
+				dzswj_yy_new(showDivId);
+		}
+	</script>
+</head>
+<body>
+	
+		
+<!-- 登录前头部，包含返回首页 -->
+
+
+
+
+<script type="text/javascript" src="http://nm12366.net:80/js/layer/layer.js"></script>
+<script type="text/javascript" src="http://nm12366.net:80/js/wq/common.js"></script>
+
+<style type="text/css">
+/*顶部公共部分*/
+/*head*/
+body {
+	font: 12px/26px Microsoft YaHei,SimSun, Arial;
+	color: #303030;}
+body, div, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, select, textarea, p, blockquote, th, td {
+	margin: 0px;
+	padding: 0px;}
+.clearfix {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+	clear: both;}
+ol, dl, ul, li, dl, dd, dt {
+	list-style: none outside none;
+	padding: 0px;
+	margin: 0px;}
+a {
+	text-decoration: none;
+	text-decoration: none;
+	cursor: pointer;
+	color:#333;}
+a:hover {
+	text-decoration: none;}
+a img {
+	border: 0px;}
+img {
+	vertical-align: middle;}
+.mgt10px{
+	margin-top:10px;}
+.fl{
+	float:left;}
+.fr{
+	float:right;}
+	/*主体样式开始*/
+/*头部样式*/
+.mg_center{
+    width:1000px;
+    margin:0 auto;
+}
+.header{
+    height: 35px;
+    line-height: 35px;
+    background:#fff;
+    overflow:hidden;
+}
+.header_left{
+    float:left;
+}
+.header_left a,.header_right a{
+    display:inline-block;
+    width:115px;
+    text-align: center;
+    color:#494949;
+    font-size: 14px;
+}
+.header_left a img,.header_right a img{
+    margin-right: 6px;
+}
+.header_right{
+    float:right;
+}
+
+/*导航样式*/
+.nav_bg{
+    background:#1b72dd;
+    height:120px;
+}
+.nav_left{
+    float:left; 
+    padding-top: 20px;
+}
+.nav_left dl dt{
+    float:left;
+}
+.nav_left dl dd{
+    float:left;
+    margin-left: 5px;
+    margin-top: 5px;
+}
+.nav_left dl dd h3{
+    font-size: 24px;
+    color:#fff;
+    height:38px;
+    line-height: 38px;
+}
+.nav_left dl dd p{
+    color:#fff;
+    font-size: 12px;
+}
+.nav_right{
+    float:right;
+}
+.nav_right ul li{
+    float:left;
+    position:relative;
+}
+.nav_right ul li a{
+    display:block;
+    height:120px;
+    line-height: 120px;
+    width:92px;
+    text-align: center;
+    font-size: 16px;
+    color:#fff;
+}
+.nav_right ul li a:hover{
+    color:#005bcc;
+    background:url(http://nm12366.net:80//images/dzswj/nav_a_hover.jpg) no-repeat left center;
+}
+.nav_right ul li.selected a{
+    color:#005bcc!important;
+    background:url(http://nm12366.net:80//images/dzswj/nav_a_hover.jpg) no-repeat left center;
+}
+.nav_right ul li ul li{
+    border-bottom: 1px solid #dbdbdb;
+    float:none;
+}
+.nav_right ul li ul li a{
+    font-size: 11px;
+    color:#626262;
+}
+.nav_right ul li ul li a{
+    display:block;
+    height:32px;
+    line-height: 32px;
+}
+.nav_right ul li ul{
+    background:#fff;
+    display:none;
+    position:absolute;
+}
+.nav_right ul li ul li a:hover{
+    background:none;
+    color:#626262;
+}
+.nav_right ul li.pxfd:hover ul{
+    display:block;
+}
+/*顶部公共部分*/
+
+/*登陆弹窗*/
+.loginbg-gs {
+    background-color: #666;
+	display:none;
+	width: 100%;
+	height: 100%;
+	left:0;
+	top:0;/*FF IE7*/
+	filter:alpha(opacity=50);/*IE*/
+	opacity:0.5;/*FF*/
+	z-index:999;
+	position:fixed!important;/*FF IE7*/
+	position:absolute;/*IE6*/
+	_top: expression(eval(document.compatMode &&
+	document.compatMode=='CSS1Compat') ?
+	documentElement.scrollTop + (document.documentElement.clientHeight-this.offsetHeight)/2 :/*IE6*/
+	document.body.scrollTop + (document.body.clientHeight - this.clientHeight)/2);/*IE5 IE5.5*/}
+.login-box-gs{
+    position: absolute;
+    top: 108px;
+    left: 36%;
+    z-index: 999;
+    display: none;
+    width: 428px;
+    height: 340px;
+}
+.login-box-gs h2{
+    font-size:28px;
+    font-weight: 700;
+    text-align: center;
+    color:#fff;
+    height: 40px;
+    line-height: 40px;
+}
+.login-window-gs {
+    background: url("http://nm12366.net:80/images/nmgs/loginbg.jpg") no-repeat;
+    width: 428px;
+    height: 360px;
+    margin-top: 12px;
+}
+.close-login {
+    cursor: pointer;
+    border: 1px solid #DADADA;
+    position: absolute;
+    right: 2px;
+    top: 14px;
+    z-index: 99;
+   }
+.close-login:hover {
+    border: 1px solid #666;
+}
+.login-ul {
+    width: 265px;
+    margin: 0px auto;
+	margin-top:20px;
+}
+.login-ul li {
+    height: 31px;
+    position: relative;
+    margin-bottom: 12px;
+}
+.login-ul li.login-name {
+    background: url("http://nm12366.net:80/images/nmgs/yh1.jpg") no-repeat 1px 1px #fff;
+}
+.login-ul li.login-password {
+    background: url("http://nm12366.net:80/images/nmgs/yh2.jpg") no-repeat 1px 1px #fff;
+}
+.login-ul li.login-yz {
+    background: url("http://nm12366.net:80/images/nmgs/yh3.jpg") no-repeat 1px 1px #fff;
+}
+.login-ul li.login-li {
+    padding: 1px 0px 1px 40px;
+}
+.login-ul li.login-li input {
+    height: 31px;
+    line-height: 31px;
+    width: 224px;
+    border: 0px none;
+    color: #3A3838;
+}
+.login-ul li.login-yz input {
+    width: 120px;
+}
+.log-em {
+    position: absolute;
+    left: 40px;
+    top: 5px;
+    color: #999;
+}
+.login-mima a {
+    float: right;
+    color: #1869cf;
+}
+.login-mima label input {
+    margin-right: 4px;
+    vertical-align: middle;
+}
+.login-button input {
+    border: 0px none;
+    background: #db493a url(http://nm12366.net:80/images/nmgs/dl.jpg) no-repeat center center;
+    width: 265px;
+    height: 33px;
+    cursor: pointer;
+}
+.login-button input.login-zc {
+    background: url("http://nm12366.net:80/images/nmgs/zc.jpg") no-repeat;
+    margin-left: 10px;
+}
+.red_zi {
+    color: #df303c !important;
+}
+.login-ul li.login-li input.photo_yz{
+	width:93px;
+	height:28px;
+	line-height:28px;
+	background:#ffb11d;
+	color:#fff;
+	cursor:pointer;
+	float:right;
+	margin-right: 4px; margin-top: 1px}
+.bangzhu a{
+	background:url("http://nm12366.net:80/images/dzswj/help_01.png") no-repeat left center;}
+	
+	/*登录切换*/
+.dl_tabt{
+	position:relative;}
+.dl_tabt ul{
+	position:relative;
+	top:2px;
+	height:47px;
+	margin-left:2px;}
+.dl_tabt ul li{
+	text-align:center;
+	line-height:47px;
+	font-size:16px;
+	float:left;
+	width:212px;
+	height:47px;	
+	background:url(../images/sign_tab.jpg) repeat-x top left;}
+.dl_tabt ul li a{
+	color:#626262;
+	display:block;}
+.dl_tabt ul li.seletTag{
+	width:211px;
+	border-right:1px solid #fff;
+	background:url(../images/sign_tabxz.jpg) repeat-x top left;}
+/*登陆弹窗end*/
+
+.xlej ul li a{text-decoration:none;color:#2961b8;}
+.xlej{ width:142px; overflow:hidden;  background:#fff;}
+.xlej ul{ text-align:center;list-style: none;margin:0px auto; width:142px; background:#fff; z-index:999; position:absolute;}
+.xlej ul li{ font-size:14px; color:#2961b8;line-height:36px; border-bottom:solid 1px #96ccfa; text-decoration:none;width:142px;background:none;}
+.xlej ul li a:hover{ color:#000; }
+</style>
+
+<!--顶部logo和登录注册信息-->
+ <div class="header">
+       <div class="mg_center">
+           <div class="header_left">
+               <a href="javascript:void(0);" onclick="window.open('http://nm12366.net:80/WQNFApp/dzswj/checkVPDN.jspx','_blank','height=600,width=1000,top=50,left=10,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,status=no');"><img src="http://nm12366.net:80/images/dzswj/hjjc_01.png" height="20" width="20">环境检测</a>
+			    <a href="javascript:void(0);" onclick="window.location.href='http://nm12366.net:80/foot/cjwt'"><img src="http://nm12366.net:80/images/dzswj/help_01.png" height="21" width="21">常见问题</a>
+               <a href="javascript:void(0);" onclick="window.location.href='http://nm12366.net:80/foot/spxz'"><img src="http://nm12366.net:80/images/dzswj/shipinxz_01.png" height="21" width="21">操作视频下载</a>
+                
+           </div>
+           <div class="header_right">
+               <a href="#" id="login_dl"><img src="http://nm12366.net:80/images/dzswj/login_01.png" height="22" width="18">登录</a>
+               <a href="http://nm12366.net:80/login/register"><img src="http://nm12366.net:80/images/dzswj/register_01.png" height="21" width="21">注册</a>
+           </div>
+           <div class="clearfix"></div>
+       </div>
+   </div>
+<!-- 导航 -->
+    <div class="nav_bg">
+        <div class="mg_center">
+            <div class="nav_left">
+            	<a href="http://nm12366.net:80/org/index">
+                <dl>
+                    <dt><img src="http://nm12366.net:80/images/dzswj/index_logo.png" height="71" width="55"></dt>
+                    <dd>
+                        <h3>内蒙古自治区国地税联合网上办税服务厅</h3>
+                        <p> The Inner Mongolia Autonomous Region's tax joint online tax service hall</p>
+                        
+                    </dd>
+                    <div class="clearfix"></div>
+                </dl>
+                </a>
+            </div>
+            <div class="nav_right">
+                <ul>
+                    <li class="selected" id="index_top"><a href="http://nm12366.net:80/org/index">首页</a></li>
+                    <li id="swxc_top"><a href="http://nm12366.net:80/cms/list?menuid=33110&amp;siteroot=31500000000">税务宣传</a></li>
+                    <li class="pxfd">
+                         <a href="#" class="pxfd_bg">培训辅导</a>
+                        <ul>
+                            <li><a href="javascript:void(0);" onclick="$('.login-box-gs,.loginbg-gs').show();">培训课程通知</a></li>
+                            <li><a href="http://www.nm-n-tax.gov.cn/netschool/" target="_blank">纳税人学堂(国税)</a></li>
+                            <li><a href="http://wlpx.tax-edu.net/jsp/portal2/nmgdswx.jsp" target="_blank">纳税人学堂(地税)</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="javascript:void(0);" onclick="window.open('http://nm12366.net:80/WQNFApp/lhxypj_index.jsp','_blank','height=600,width=1000,top=50,left=10,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,status=no');">信用评价</a></li>
+                    <li id="android_top"><a href="http://nm12366.net:80/foot/sjfw">APP下载</a></li>
+                    <div class="clearfix"></div>
+                </ul>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+<!--/导航-->
+<!--登陆弹窗-->
+<div class="loginbg-gs"></div>
+<div class="login-box-gs">
+    <!-- h2>内蒙古自治区国地税联合网上办税服务平台登陆</h2-->
+    <div class="login-window-gs">
+        <img src="http://nm12366.net:80//images/nmgs/close.jpg" class="close-login" alt="关闭">
+       <div class="dl_tabt"><!-- style="visibility:hidden" -->
+        	<ul style="visibility: hidden">
+                <li id="signtab1" onclick="setTab5('signtab',1,2);" class="seletTag"><a href="javascript:void(0);">纳税人员登录</a></li>
+                <li id="signtab2" onclick="setTab5('signtab',2,2);" class=""><a href="javascript:void(0);">税务人员登录</a></li>
+            </ul>
+        </div>
+        <div class="clearfix"></div>
+        <form id="login_form" method="post" action="http://nm12366.net:80/login/login?org_id=1">
+        <div id="g5_signtab_1" style="display: block;">
+        <ul class="login-ul">
+            <li class="login-li login-name">
+                <input type="text" id="nsrsbh" value="手机号码" onfocus="if(value=='手机号码'){value =''}" onblur="if(value==''){value='手机号码'}">
+            </li>
+            <li class="login-li login-password">
+                <input type="text" name="nsrsbh_pwd" value="密码" onfocus="updInput(this,'nsrsbh_pwd')" onblur="if(value==''){value='密码';}">
+                <input type="password" style="display:none;" name="nsrsbh_pwd" value="" onfocus="if(value=='密码'){value ='';}" onblur="updInput(this,'nsrsbh_pwd')">
+            </li>
+            <li class="login-li login-yz">
+                <input type="text" maxlength="4" name="yzm" id="yzm" value="验证码" onfocus="if(value=='验证码'){value =''}" onblur="if(value==''){value='验证码'}">
+                <img style="float: right; margin-right: 4px; margin-top: 1px;width: 73px; height: 28px;" onclick="reloadYZM(this)" src="http://nm12366.net:80/login/vcode" id="yzm_img" alt="">
+            </li>            
+            <li class="login-button">
+                <input type="button" class="login-dl" name="login_btn" id="login_btn_nsr" onclick="loginCheck('0');">
+            </li>
+            <li class="login-mima">
+                <!-- <label><input type="checkbox"/>记住密码</label> -->
+               <a style="float:left;" href="http://nm12366.net:80/login/register">注册 </a>
+                <a href="http://nm12366.net:80/login/findPassword">忘记密码？</a>
+            </li>
+        </ul>
+        </div>
+        <div id="g5_signtab_2" style="display:none;">
+        	<ul class="login-ul">
+                <li class="login-li login-name">
+                    <input type="text" id="swrybm" value="税务人员编码" onfocus="if(value=='税务人员编码'){value =''}" onblur="if(value==''){value='税务人员编码'}">
+                </li>
+                <li class="login-li login-password">
+                    <input type="text" name="swrybm_pwd" value="密码" onfocus="updInput(this,'swrybm_pwd')" onblur="if(value==''){value='密码';}">
+                    <input type="password" name="swrybm_pwd" style="display:none;" value="密码" onfocus="if(value=='密码'){value ='';}" onblur="updInput(this,'swrybm_pwd')">
+                </li>
+                <!-- 
+                <li class="login-li login-yz">
+                    <input type="text" id="dx_yzm" value="短信验证码" onfocus="if(value=='短信验证码'){value =''}" onblur="if(value==''){value='短信验证码'}" />
+                    <input id="dx_btn" type="button" onclick="loginCheck('1')" value="获取手机验证码" class="photo_yz" />
+                </li>   
+                 -->             
+                <li class="login-button">
+                    <input type="button" class="login-dl" id="login_btn_swr" onclick="loginCheck('3')">
+                </li>
+                <li class="login-mima">
+                    <!--label><input type="checkbox">记住密码</label-->
+                   
+                    <a href="http://nm12366.net:80/login/findPassword">忘记密码？</a>
+                </li>
+        	</ul>
+        </div>
+        </form>
+    </div>
+</div>
+
+<!--登陆弹窗end-->
+<script type="text/javascript">
+	function showApp(apply_url,apply_id,islogin){
+		if(null!=islogin&&"1"==islogin){//需要登录
+			$(".login-box-gs,.loginbg-gs").show();
+			scrollTo(0,0);
+		}else{//不需要登录
+			window.open("http://nm12366.net:80/org/showApp?url="+apply_url+"&apply_id="+apply_id+"&apply_flag=1",'_blank','height=600,width=1000,top=50,left=10,toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,status=no');
+		}
+	}
+
+	function downHelp(file_url){
+		window.location.href="http://nm12366.net:80/upload/download?filepath="+encodeURI(file_url)+"&rm="+new Date().getTime();
+	}
+    //登陆弹窗
+    $(function (){
+        // 关闭
+        $(".close-login").click(function () {
+            $(".login-box-gs,.loginbg-gs").hide();
+        })
+        //显示
+        $("#login_dl").click(function () {
+            $(".login-box-gs,.loginbg-gs").show();
+        })
+    })
+	function reloadYZM(obj){
+		$(obj).attr("src",'http://nm12366.net:80/login/vcode?r='+Math.random());
+	}
+
+     /*修改input的type  IE8*/
+     /*text是点击时触发此事件，password是离开是触发*/
+	function updInput(obj,className){
+		if(null!=obj && null!=className && ""!=className){
+			var value=obj.value;
+			var type=obj.type;
+			if(type=="password"){
+				if(value==''){
+					$("input[name='"+className+"'][type='password']").css("display","none");
+					$("input[name='"+className+"'][type='text']").css("display","block");
+				}
+			}
+			if(type=="text"){
+				$("input[name='"+className+"'][type='text']").css("display","none");
+				$("input[name='"+className+"'][type='password']").css("display","block");
+				$("input[name='"+className+"'][type='password']").focus();
+			}
+
+		}
+	}
+	
+	function removeSendTimes(){
+			var mobile=$("#mobile").val();
+			$.ajax({ 
+	    	url:'http://nm12366.net:80/login/removeSendCodeTimes',
+	    	async: false,
+		    cache: false, 
+		    type:'POST',
+		    data:{'mobile':mobile},
+	    	dataType: "xml",
+	    	success: function(xml) {
+	    		var code=$(xml).find("code").text();
+		       if("0000" == code){
+		       		
+		       }
+	   	 	} 
+	 	});	
+	}
+	
+	/**
+	 * 登录验证
+	 * flag:3税务人员内网登录，2税务人员登录，1税务人员获取验证码，0纳税人登录
+	 */
+	var login_u="";
+	var login_p="";
+	function loginCheck(flag){
+		var u_n;
+		var u_p;
+		if("3"==flag){
+			u_n=$("#swrybm").val();
+			u_p=$("input[name='swrybm_pwd'][type='password']").val();
+			if("税务人员编码"==u_n){
+				u_n="";
+			}
+			if(u_n&&cTrim(u_n,0)!=""){
+			}else{
+				layer.alert("请输入税务人员编码！",8);
+				return false;
+			}
+			if(u_n.length!=11){
+				layer.alert("请输入合法的税务人员编码！",8);
+				return false;
+			}
+			if("密码"==u_p){
+				u_p="";
+			}
+			if(u_p&&cTrim(u_p,0)!=""){
+			}else{
+				layer.alert("请输入密码！",8);
+				return false;
+			}
+			$.ajax({
+	            url:"http://nm12366.net:80/login/loginDx",
+	        	async: false,
+			    cache: false, 
+			    type:'POST',
+			    data:{"username":u_n,"password":u_p,"flag":"3"},
+	        	dataType: "xml",
+	        	beforeSend:function(){
+					layer.load(10, 0); //如不想让加载自动关闭，第一个参数设置0即可，如：layer.load(0);
+				},
+	    		success: function(msg) {
+					var code = $(msg).find("code").first().text();
+					var message = $(msg).find("message").text();
+					layer.closeAll();
+	    			if("0000"==code){
+	    				var l_form = $("#login_form");
+						l_form[0].submit();
+	    			}else{
+	    				layer.alert(message,8);
+	    			}
+	   	 		} ,
+	    		error:function(msg){
+	   	 			layer.alert("服务器繁忙，请稍候重试!",8);
+	    		}
+			});
+		}else if("2"==flag){
+			u_n=$("#swrybm").val();
+			u_p=$("input[name='swrybm_pwd'][type='password']").val();
+			if("税务人员编码"==u_n){
+				u_n="";
+			}
+			if(u_n&&cTrim(u_n,0)!=""){
+			}else{
+				layer.alert("请输入税务人员编码！",8);
+				return false;
+			}
+			if(u_n.length!=11){
+				layer.alert("请输入合法的税务人员编码！",8);
+				return false;
+			}
+			if(login_u==""){
+				layer.alert("请先获取短信验证码",8);
+				return false;
+			}
+			if(login_u!=u_n){
+				layer.alert("您输入的税务人员编码已更改，请重新获取短信验证码",8);
+				return false;
+			}
+			if("密码"==u_p){
+				u_p="";
+			}
+			if(u_p&&cTrim(u_p,0)!=""){
+			}else{
+				layer.alert("请输入密码！",8);
+				return false;
+			}
+			if(u_p==""){
+				layer.alert("请先获取短信验证码",8);
+				return false;
+			}
+			if(login_p!=u_p){
+				layer.alert("您输入的密码已更改，请重新获取短信验证码",8);
+				return false;
+			}
+			var u_dx=$("#dx_yzm").val();
+			if("短信验证码"==u_dx){
+				u_dx="";
+			}
+			if(""==u_dx){
+				layer.alert("请输入您收到的短信验证码",8);
+				return false;
+			}
+			/*获取短信验证码*/
+			$.ajax({
+	            url:"http://nm12366.net:80/login/loginDx",
+	        	async: false,
+			    cache: false, 
+			    type:'POST',
+			    data:{"username":u_n,"password":u_p,"flag":"2","dx_yzm":u_dx},
+	        	dataType: "xml",
+	        	beforeSend:function(){
+					layer.load(10, 0); //如不想让加载自动关闭，第一个参数设置0即可，如：layer.load(0);
+				},
+	    		success: function(msg) {
+					var code = $(msg).find("code").first().text();
+					var message = $(msg).find("message").text();
+					layer.closeAll();
+	    			if("0000"==code){
+	    				var l_form = $("#login_form");
+						l_form[0].submit();
+	    			}else{
+	    				layer.alert(message,8);
+	    			}
+	   	 		} ,
+	    		error:function(msg){
+	   	 			layer.alert("服务器繁忙，请稍候重试!",8);
+	    		}
+			});
+		}else if("1"==flag){
+			u_n=$("#swrybm").val();
+			u_p=$("input[name='swrybm_pwd'][type='password']").val();
+			if("税务人员编码"==u_n){
+				u_n="";
+			}
+			if(u_n&&cTrim(u_n,0)!=""){
+			}else{
+				layer.alert("请输入税务人员编码！",8);
+				return false;
+			}
+			if(u_n.length!=11){
+				layer.alert("请输入合法的税务人员编码！",8);
+				return false;
+			}
+			login_u=u_n;
+			if("密码"==u_p){
+				u_p="";
+			}
+			if(u_p&&cTrim(u_p,0)!=""){
+			}else{
+				layer.alert("请输入密码！",8);
+				return false;
+			}
+			login_p=u_p;
+			/*获取短信验证码*/
+			$.ajax({
+	            url:"http://nm12366.net:80/login/loginDx",
+	        	async: false,
+			    cache: false, 
+			    type:'POST',
+			    data:{"username":u_n,"password":u_p,"flag":"1"},
+	        	dataType: "xml",
+	        	beforeSend:function(){
+					layer.load(10, 0); //如不想让加载自动关闭，第一个参数设置0即可，如：layer.load(0);
+				},
+	    		success: function(msg) {
+					var code = $(msg).find("code").first().text();
+					var message = $(msg).find("message").text();
+					layer.closeAll();
+	    			if("0000"==code){
+	    				sendtime(100,"shouji");//倒计时
+	    			}else{
+	    				layer.alert(message,8);
+	    			}
+	   	 		} ,
+	    		error:function(msg){
+	   	 			layer.alert("服务器繁忙，请稍候重试!",8);
+	    		}
+			});
+		}else if("0"==flag){
+			u_n = $("#nsrsbh").val();
+			if("手机号码" == u_n){
+				u_n="";
+			} 
+			if(u_n&&cTrim(u_n,0)!=""){
+			}else{
+				layer.alert("请输入手机号码！",8);
+				return false;
+			}
+			u_p = $("input[name='nsrsbh_pwd'][type='password']").val();
+			if("密码"==u_p){
+				u_p="";
+			}
+			if(u_p&&cTrim(u_p,0)!=""){
+			}else{
+				layer.alert("请输入密码！",8);
+				return false;
+			}
+			var u_m = $("input[name=yzm]").val();
+			if("验证码"==u_m){
+				u_m="";
+			}
+			if(u_m&&cTrim(u_m,0)!=""){
+				var y_l = len(u_m);
+				if(y_l==4){
+					$.post('http://nm12366.net:80/login/checkVcode',{yzm:u_m},function(data){
+						var json =null;
+						try{
+							json = eval("("+data+")")
+						}catch(e){
+						}
+						var state = json.state;
+						if(0==state){
+						
+							//页面数据进行验证之后，判断登录
+				  			var org_id="";
+				  			var org_name="";
+					 		$.ajax({
+					            url:"http://nm12366.net:80/login/loginCheck",
+							    cache: false, 
+							    type:'POST',
+							    data:{"username":u_n,"password":u_p,"flag":"0","r":Math.random()},
+					        	dataType: "text",
+					        	beforeSend:function(){
+									layer.load(10,0); //如不想让加载自动关闭，第一个参数设置0即可，如：layer.load(0);
+								},
+				        		success: function(msg) {
+									if(msg=='用户被冻结'){
+				        				layer.alert('用户被冻结，请点击激活！',8,function(){
+				        					window.location.href="http://nm12366.net:80/login/activateUser";
+					        			});
+				        			}else if(msg=='yes'){
+				        				var l_form = $("#login_form");
+										l_form[0].submit();
+				        			}else{
+				        				layer.closeAll();
+				        				alert(msg);
+				        				$("#nsrsbh_pwd").val("");
+				        				$("#yzm").val("");
+				        				reloadYZM($("#yzm_img")[0]);
+				        			}
+				       	 		} ,
+				        		error:function(msg){
+				       	 			layer.alert("服务器繁忙，请稍候重试!",8);
+					    		}
+							});
+							
+						}else{
+							layer.alert(json.msg,8);
+							reloadYZM($("#yzm_img")[0]);
+						}
+					},'text');
+				}else{
+					layer.alert("请输入正确的验证码！",8);
+					return false;
+				}
+			}else{
+				layer.alert("请输入验证码！",8);
+				$("#yzm").focus();
+				return false;
+			}
+		}else{
+			layer.alert("非法登录",8);
+		}
+	}
+	
+	//点击按钮后倒计时
+	var secs;
+	var againSend; 
+	function sendtime(obj,type){
+		secs=obj;
+		againSend = document.getElementById('dx_btn');
+		againSend.disabled=true;
+		for(i=1;i<=secs;i++) { 
+			window.setTimeout("update(" + i + ")", i * 1000); 
+		} 
+	}
+	function update(num) { 
+		if(num == secs) { 
+			againSend.value ="获取手机验证码"; 
+			againSend.disabled=false; 
+		}else{ 
+			printnr = secs-num; 
+			againSend.value = "("+printnr+")秒后重试"; 
+		} 
+	} 
+	
+	$(function(){
+		// 绑定回车事件 
+		$('#yzm').keypress(function(e){
+			if(e.keyCode==13){
+				$('#login_btn_nsr').click();
+			}
+		});
+		$("#dx_btn").keypress(function(e){
+			if(e.keyCode==13){
+				$('#login_btn_swr').click();
+			}
+		});
+		
+		/**
+			培训辅导下拉二级菜单显示
+		**/
+		 $(".pxfd").mousemove(function(event) {
+		        /* Act on the event */
+		        $(this).css('background','url(http://nm12366.net:80//images/dzswj/nav_a_hover.jpg) no-repeat');
+		        $(this).children('.pxfd_bg').css('color','#005bcc');
+		    });
+		    $(".pxfd").mouseleave(function(event) {
+		        /* Act on the event */
+		        $(this).css('background','none');
+		        $(this).children('.pxfd_bg').css('color','#fff');
+		    });
+		  /**
+		  	菜单切换
+		  **/
+		 $(".nav_right a").click(function(event){
+		        /* Act on the event */
+		        $(this).parent().addClass('selected');
+		        $(this).parent().siblings().removeClass('selected');
+		    });
+	});
+</script>
+
+	
+    <!--围公众门户-->
+   <div id="iealert" style=" display:none ;height: 37px;text-align: center;background-color: #EEE9E9;width:100%;border-bottom: 2px solid #00CC00;font-size:14px; position:absolute; top:0; z-index:100;">
+        你的IE浏览器版本过低，建议你升级到IE8或 IE8以上
+   </div>
+   <!-- 正文开始 -->
+   <div id="bg_div" class="all_bg">
+   <!-- 主要内容 上边部分 -->
+    <div class="main_top">
+        <div class="mg_center">
+            <div class="main_top_left">
+                <ul id="modWqNotice-1"> <li>   <a href="javascript:void(0);" onclick="window.location.href='http://nm12366.net:80/cms/infoDetail?siteroot=31500000000&amp;sitetype=GW,WN,WW,&amp;infoid=148344'">2017-03-30  联合网厅“环境检测”升级通知	</a> <a href="http://nm12366.net:80/cms/list?menuid=33150&amp;siteroot=31500000000&amp;sitetype=GW" class="more">更多&gt;</a> </li></ul>
+            </div>
+            <div class="main_top_right">
+                <div id="Scroll">
+                    <ul id="ScrollMe" style="overflow: hidden; height: 75px; width: 418px; ">
+                        <li><img src="http://nm12366.net:80/images/dzswj/wzlb_01.png" height="75" width="418"></li>
+                        <li><img src="http://nm12366.net:80/images/dzswj/wzlb_02.png" height="75" width="418"></li>
+                        <li><img src="http://nm12366.net:80/images/dzswj/wzlb_03.png" height="75" width="418"></li>
+                    
+                        <li><img src="http://nm12366.net:80/images/dzswj/wzlb_01.png" height="75" width="418"></li>
+                        <li><img src="http://nm12366.net:80/images/dzswj/wzlb_02.png" height="75" width="418"></li>
+                        <li><img src="http://nm12366.net:80/images/dzswj/wzlb_03.png" height="75" width="418"></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <!-- 主要三个切换的部分 -->
+
+    <!-- 左边切换 -->
+    <div class="main_contant">
+    <div class="mg_center">
+        <div class="main_left">
+            <div class="tabs">          
+                    <ul class="thumb">
+                        <li id="group1" onmouseover="setTab_yy('group',1,3)" class="selectTag">
+                            <a href="javascript:void(0);" class="">
+                                <img src="http://nm12366.net:80/images/dzswj/dzbscs.png" height="47" width="43">
+                                <b>电子办税超市</b>
+                                <p>Electronic tax supermarket</p>
+                            </a>
+                            <em><img src="http://nm12366.net:80/images/dzswj/dzbscs_hover.png"></em>
+                        </li>
+                        <li id="group2" onmouseover="setTab_yy('group',2,3)" class="">
+                            <a href="javascript:void(0);" class="">
+                                <img src="http://nm12366.net:80/images/dzswj/nsfw_01.png" height="47" width="43">
+                                <b>纳税服务</b>
+                                <p>Tax service </p>
+                            </a>
+                            <em><img src="http://nm12366.net:80/images/dzswj/nsfw_hover.png"></em>
+                        </li>
+                        <li id="group3" onmouseover="setTab_yy('group',3,3)" class="">
+                            <a href="javascript:void(0);" class="">
+                                <img src="http://nm12366.net:80/images/dzswj/qtyy.png" height="47" width="43">
+                                <b>其他应用</b>
+                                <p>Other applications</p>
+                            </a>
+                            <em><img src="http://nm12366.net:80/images/dzswj/qtyy_hover.png"></em>
+                        </li>
+                    </ul>
+                </div>
+        </div>
+        <div class="main_right">
+            <!-- 电子办税超市 -->
+            <div class="dzbscs" id="g5_group_1" style="display:block;">
+            <!-- 联合登记 -->
+                <div class="lhdj">
+                     <div class="lhdj_left">
+                        <h2><span>联合登记</span></h2>
+                     </div>
+                    <div class="lhdj_right">
+                        <div class="qptx">
+                            <div class="remind">
+                                <div class="qie_text" style="position: relative; width: 716px; " id="lhdj"><ul class="qie_roll"><li><a onclick="javascript:showApp('http://www.nm12366.net/WQNFApp/sfbd/getSF.jspx?opt=LHZX','105004','1')" href="javascript:void(0);"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/zhuxiao.png" height="36" width="36"><b>联合注销税务登记</b></a></li><li><a onclick="javascript:showApp('http://www.nm12366.net/WQNFApp/wcjyhdkj/index.jspx','111020','1')" href="javascript:void(0);"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/wcjyhdsqkj_icon.png" height="36" width="36"><b>外出经营活动申请开具</b></a></li><li><a onclick="javascript:showApp('http://www.nm12366.net/WQNFApp/sfbd/getSF.jspx?opt=JZYXMDJ','105007','1')" href="javascript:void(0);"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/jzyxmdj_icon_ww.png" height="36" width="36"><b>建筑业项目登记</b></a></li><li><a onclick="javascript:showApp('http://www.nm12366.net/WQNFApp/wcnsrbydj/WcbydjNsrIndex.jspx','105006','1')" href="javascript:void(0);"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/icon_bydj.png" height="36" width="36"><b>外埠纳税人经营地报验登记申请</b></a></li></ul><ul class="qie_roll"><li><a onclick="javascript:showApp('http://www.nm12366.net/WQNFApp/lhszhy/listIndex.jspx','105002','1')" href="javascript:void(0);"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/icon_lhszhybl.png" height="36" width="36"><b>联合三证合一补录</b></a></li><li><a onclick="javascript:showApp('http://www.nm12366.net/WQNFApp/wcjyzmjx/getSF.jspx','118010','1')" href="javascript:void(0);"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/wcjyzmjx_icon.png" height="36" width="36"><b>外出经营证明缴销</b></a></li></ul><div class="clearfix"></div></div>
+                                <div class="qie_roll_bg"></div>
+                                <div class="qie_left"></div>
+                                <div class="qie_right qie_right1"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>  
+                </div>
+                <!-- 申报共享 -->
+                <div class="lhdj sbgx">
+                     <div class="lhdj_left">
+                        <h2><span>申报共享</span></h2>
+                     </div>
+                    <div class="lhdj_right">
+                        <div class="qptx">
+                            <div class="remind">
+                                <div class="qie_text" style="position: relative; width: 716px; " id="sbgx"><ul class="qie_roll"><li><a onclick="javascript:showApp('http://www.nm12366.net/WQNFApp/sfbd/getSF.jspx?opt=DQDE','106003','1')" href="javascript:void(0);"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/icon_dqdecx.png" height="36" width="36"><b class="big_line">定期定额查询</b></a></li><li><a onclick="javascript:showApp('http://www.nm12366.net/WQNFApp/dswb/nsrindex.jspx','106002','1')" href="javascript:void(0);"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/icon_dswb.png" height="36" width="36"><b class="big_line">地税网报</b></a></li><li><a onclick="javascript:showApp('http://www.nm12366.net/WQNFApp/gswb/nsrindex.jspx','106001','1')" href="javascript:void(0);"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/icon_gswb.png" height="36" width="36"><b class="big_line">国税网报</b></a></li><li><a onclick="javascript:showApp('http://www.nm12366.net/WQNFApp/dssbfwb/index.jspx','106004','1')" href="javascript:void(0);"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/icon_sbfwb.png" height="36" width="36"><b class="big_line">社保费网报</b></a></li></ul><ul class="qie_roll"><li><a onclick="javascript:showApp('http://www.nm12366.net/WQNFApp/wchdjyqksb/getWcjyhdqksbSF.jspx','106008','1')" href="javascript:void(0);"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/sbqk_nsr.png" height="36" width="36"><b>外出经营活动情况申报</b></a></li></ul><div class="clearfix"></div></div>
+                                <div class="qie_roll_bg"></div>
+                                <div class="qie_left"></div>
+                                <div class="qie_right qie_right1"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>  
+                </div>
+            <!-- 涉税发票 -->
+                <div class="lhdj ssfp">
+                     <div class="lhdj_left">
+                        <h2><span>涉税发票</span></h2>
+                     </div>
+                    <div class="lhdj_right">
+                        <div class="qptx">
+                            <div class="remind">
+                                <div class="qie_text" style="position: relative; width: 716px; " id="ssfp"><ul class="qie_roll"><li><a href="http://www.nm12366.net/WQNFApp/fapiao/index.jspx" target="_blank"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/icon_fpcy.png" height="36" width="36"><b class="big_line">发票查验</b></a></li><li><a onclick="javascript:showApp('http://www.nm12366.net/WQNFApp/sfbd/getSF.jspx?opt=WLGP','107001','1')" href="javascript:void(0);"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/icon_gsfplg.png" height="36" width="36"><b class="big_line">国税发票领购</b></a></li><li><a onclick="javascript:showApp('http://www.nm12366.net/WQNFApp/sfbd/getSF.jspx?opt=FPYJ','107002','1')" href="javascript:void(0);"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/icon_gsfpyj.png" height="36" width="36"><b class="big_line">国税发票验旧</b></a></li><li><a onclick="javascript:showApp('http://www.nm12366.net/WQNFApp/fapiao/zzszyfpdkIndex.jspx','107005','1')" href="javascript:void(0);"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/zzszyfpdk_icon.png" height="36" width="36"><b>增值税专用发票代开</b></a></li></ul><ul class="qie_roll"><li><a onclick="javascript:showApp('http://www.nm12366.net/WQNFApp/fapiao/fapiaonsr.jspx','107004','1')" href="javascript:void(0);"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/icon_wdfpxx.png" height="36" width="36"><b class="big_line">我的发票信息</b></a></li><li><a onclick="javascript:showApp('http://www.nm12366.net/WQNFApp/sbyy/zzsptfpdk.jspx','107006','1')" href="javascript:void(0);"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/icon_zzsptfpdk.png" height="36" width="36"><b>增值税普通发票代开</b></a></li></ul><div class="clearfix"></div></div>
+                                <div class="qie_roll_bg"></div>
+                                <div class="qie_left"></div>
+                                <div class="qie_right qie_right1"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>  
+                </div>
+
+
+                <!-- 审批备案 -->
+                <div class="lhdj spba">
+                     <div class="lhdj_left">
+                        <h2><span>审批备案</span></h2>
+                     </div>
+                    <div class="lhdj_right">
+                        <div class="qptx">
+                            <div class="remind">
+                                <div class="qie_text" style="position: relative; width: 358px; " id="spba"><ul class="qie_roll"><li><a onclick="javascript:showApp('http://www.nm12366.net/WQNFApp/jmba/rjcpZzsIndex.jspx','106006','1')" href="javascript:void(0);"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/icon_zzsjzjt.png" height="36" width="36"><b>增值税即征即退</b></a></li><li><a onclick="javascript:showApp('http://www.nm12366.net/WQNFApp/sfbd/getSF.jspx?opt=ZZS','108003','1')" href="javascript:void(0);"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/icon_zzsybnsrba.png" height="36" width="36"><b>增值税一般纳税人登记</b></a></li><li><a onclick="javascript:showApp('http://www.nm12366.net/WQNFApp/sfbd/getXzxkspSF.jspx','108004','1')" href="javascript:void(0);"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/icon_zzszyfpzgxesp.png" height="36" width="36"><b class="big_line">税务行政许可</b></a></li><li><a onclick="javascript:showApp('http://www.nm12366.net/WQNFApp/jmba/jmbaIndex.jspx','108002','1')" href="javascript:void(0);"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/icon_jmsba.png" height="36" width="36"><b class="big_line">减免税备案</b></a></li></ul><div class="clearfix"></div></div>
+                                <div class="qie_roll_bg"></div>
+                                <div class="qie_left"></div>
+                                <div class="qie_right qie_right1"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>  
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <!-- 纳税服务部分 -->
+            <div class="dzbscs" id="g5_group_2" style="display:none;">
+            <!--  办税区部分-->
+                <div class="lhdj bsq">
+                     <div class="lhdj_left">
+                        <h2><span>办税区</span></h2>
+                     </div>
+                    <div class="lhdj_right">
+                        <div class="qptx">
+                            <div class="remind">
+                                <div class="qie_text" style="position: relative; width: 716px; " id="bsq_nf"><ul class="qie_roll"><li><a onclick="javascript:showApp('http://www.nm12366.net/WQNFApp/ysq/index.jspx','101001','1');" href="javascript:void(0);"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/nf_ysq.png" height="42" width="40"><b class="big_line">预申请</b></a></li><li><a onclick="javascript:showApp('http://www.nm12366.net/WQNFApp/wsyy/index.jspx','101002','1');" href="javascript:void(0);"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/nf_wsyy.png" height="42" width="40"><b class="big_line">网上预约</b></a></li><li><a href="http://cktsys.nm-n-tax.gov.cn/ycsb/pages/login.jsp" target="_blank"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/bs4.png" height="42" width="40"><b>出口退税远程申报</b></a></li><li><a href="http://www.nm-n-tax.gov.cn/nmgsj/bsfw/wsbs/wsbst/index.shtml" target="_blank"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/bs3.png" height="42" width="40"><b class="big_line">网络发票</b></a></li></ul><ul class="qie_roll"><li><a href="http://www.nm-n-tax.gov.cn/nmgsj/bsfw/wsbs/wsbst/index.shtml" target="_blank"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/bs2.png" height="42" width="40"><b class="big_line">发票认证</b></a></li></ul></div>
+                                <div class="qie_roll_bg"></div>
+                                <div class="qie_left"></div>
+                                <div class="qie_right qie_right1"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>  
+                </div>
+
+                <!-- 服务区 -->
+                <div class="lhdj bsq mgl">
+                     <div class="lhdj_left">
+                        <h2><span>服务区</span></h2>
+                     </div>
+                    <div class="lhdj_right">
+                        <div class="qptx">
+                            <div class="remind">
+                                <div class="qie_text" style="position: relative; width: 716px; " id="fwq_nf"><ul class="qie_roll"><li><a href="http://www.nm12366.net/WQNFApp/navigation/index.jspx" target="_blank"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/nf_bstdh.png" height="42" width="40"><b class="big_line">办税厅导航</b></a></li><li><a onclick="javascript:showApp('http://www.nm12366.net/WQNFApp/jy/index.jspx','102006','1');" href="javascript:void(0);"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/nf_jy.png" height="42" width="40"><b class="big_line">建议</b></a></li><li><a onclick="javascript:showApp('http://www.nm12366.net/wap/surveylist','102003','1');" href="javascript:void(0);"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/nf_wjdc.png" height="42" width="40"><b class="big_line">问卷调查</b></a></li><li><a href="https://www.nmgyshd.com" target="_blank"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/app_yshd.png" height="42" width="40"><b class="big_line">银税互动</b></a></li></ul><ul class="qie_roll"><li><a href="http://www.nm-n-tax.gov.cn/nmgsj/bsfw/cybszn/list_1.shtml" target="_blank"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/fw4.png" height="42" width="40"><b class="big_line">办税指南</b></a></li><li><a href="http://www.nm-n-tax.gov.cn/nmgsj/bsfw/bzds/list_1.shtml" target="_blank"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/fw5.png" height="42" width="40"><b class="big_line">文书下载</b></a></li><li><a href="http://zskww.nm-n-tax.gov.cn:7001/nmggs12366web/ZssyBLH_index.do" target="_blank"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/fw1.png" height="42" width="40"><b>12366网上服务平台</b></a></li></ul></div>
+                                <div class="qie_roll_bg"></div>
+                                <div class="qie_left"></div>
+                                <div class="qie_right qie_right1"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>  
+                </div>
+
+
+                <!-- 办税区 -->
+                <div class="lhdj bsq mgt">
+                     <div class="lhdj_left">
+                        <h2><span>查询区</span></h2>
+                     </div>
+                    <div class="lhdj_right">
+                        <div class="qptx">
+                            <div class="remind">
+                                <div class="qie_text" style="position: relative; width: 358px; " id="cxq_nf"><ul class="qie_roll"><li><a onclick="javascript:showApp('http://www.nm12366.net/WQNFApp/nsrssinfor/index.jspx','104001','1');" href="javascript:void(0);"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/nf_nsrxx.png" height="42" width="40"><b class="big_line">我的涉税信息</b></a></li><li><a href="http://nmgs.china12366.org/" target="_blank"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/fw3.png" height="42" width="40"><b class="big_line">税法查询</b></a></li><li><a href="http://www.nm12366.net/WQNFApp/nsrxxcx/index.jspx" target="_blank"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/nsrztcx_icon.png" height="42" width="40"><b>纳税人状态查询</b></a></li><li><a href="javascript:void(0);" onclick="javascript:showApp('','','1');"><img src="http://nm12366.net:80/images/li_three_02.png"><b>群组交流</b></a></li></ul><div class="clearfix"></div></div>
+                                <div class="qie_roll_bg"></div>
+                                <div class="qie_left"></div>
+                                <div class="qie_right qie_right1"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>  
+                </div>
+
+                <!-- 服务区 -->
+                <div class="lhdj bsq mgt mgl">
+                     <div class="lhdj_left">
+                        <h2><span>消息区</span></h2>
+                     </div>
+                    <div class="lhdj_right">
+                        <div class="qptx">
+                            <div class="remind">
+                                <div class="qie_text" style="position: relative; width: 358px; " id="xxq_nf"><ul class="qie_roll"><li><a onclick="javascript:showApp('http://www.nm12366.net/immessage/linkhistory','103002','1');" href="javascript:void(0);"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/nf_xxgl.png" height="42" width="40"><b class="big_line">消息管理</b></a></li><li><a href="http://www.nm12366.net/link/knowledge12366" target="_blank"><img src="http://www.nm12366.net/UploadModule/uploads/app_icon/nf_zncx.png" height="42" width="40"><b class="big_line">智能咨询</b></a></li></ul></div>
+                                <div class="qie_roll_bg"></div>
+                                <div class="qie_left"></div>
+                                <div class="qie_right qie_right1"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>  
+                </div>
+
+
+            </div>
+            <!-- 其他业务部分 -->
+            <div class="dzbscs" id="g5_group_3" style="display:none;">
+                <div class="otbuss">
+                    <div class="otherl">
+                    <!--通知公告 start-->
+                        <div class="tzgg tzgg_bg">
+                            <img src="http://nm12366.net:80/images/dzswj/icon_tzg.png">
+                            <h3>通知公告</h3>
+                            <!--公告列表 start-->
+                            <div class="gglist">
+                                <ul id="orgNotice"> <li> <span>2017-03-30</span>    <a href="javascript:void(0);" onclick="window.location.href='http://nm12366.net:80/cms/infoDetail?siteroot=31500000000&amp;sitetype=GW,WN,WW,&amp;infoid=148344'">联合网厅“环境检测”升级通知	</a></li> <li> <span>2017-03-27</span>    <a href="javascript:void(0);" onclick="window.location.href='http://nm12366.net:80/cms/infoDetail?siteroot=31500000000&amp;sitetype=GW,WN,WW,&amp;infoid=148339'">手机端ios版本上线、安卓版本更新通知	</a></li> <li> <span>2017-03-23</span>    <a href="javascript:void(0);" onclick="window.location.href='http://nm12366.net:80/cms/infoDetail?siteroot=31500000000&amp;sitetype=GW,WN,WW,&amp;infoid=148315'">关于阿拉善地区目前无法拨打400电话的通知	</a></li> <li> <span>2017-03-22</span>    <a href="javascript:void(0);" onclick="window.location.href='http://nm12366.net:80/cms/infoDetail?siteroot=31500000000&amp;sitetype=GW,WN,WW,&amp;infoid=148312'">联合网厅内容升级通知	</a></li></ul>
+                            </div>
+                            <!--公告列表 end-->
+                        </div>
+                        <div class="qie_roll_bg"></div>
+                        <!--/通知公告 end-->
+                         <!--人工咨询 start-->
+                        <div class="tzgg rgzx">
+                            <img src="http://nm12366.net:80/images/dzswj/icon_rgzx.png">
+                            <h3>人工咨询</h3>
+                            <div class="remind zxlist_remind">
+                                <div class="qie_text_zxlist zxlist" id="links" style="width: 527px; "><ul class="qie_roll qie_roll_rgzz"><li>      <a href="javascript:void(0);" onclick="startLink('511b36aac8fe4a9cb79e88938d63853c','咨询服务');">    <img src="http://nm12366.net:80/images/nmgs/icon_zx.png">    <b>咨询服务</b> </a></li><li><a href="javascript:void(0);" onclick="startLink('8d3f23cdc41e46f491fd9068f07b69ed','审批备案');">    <img src="http://www.nm12366.net/UploadModule/uploads/files/2015/11/26/1448504624619.png">    <b>审批备案</b> </a></li><li><a href="javascript:void(0);" onclick="startLink('ee61c77489484b7c96a6f04be40e3430','涉税发票');">    <img src="http://www.nm12366.net/UploadModule/uploads/files/2015/11/26/1448504547138.png">    <b>涉税发票</b> </a></li><li><a href="javascript:void(0);" onclick="startLink('4d0a8cef06884aa38d3e9f60128b80fa','申报共享');">    <img src="http://www.nm12366.net/UploadModule/uploads/files/2015/11/26/1448504444561.png">    <b>申报共享</b> </a></li><li><a href="javascript:void(0);" onclick="startLink('3958bb749b7b4a7c907ba78102c63269','联合登记');">    <img src="http://www.nm12366.net/UploadModule/uploads/files/2015/11/26/1448504489139.png">    <b>联合登记</b> </a></li></ul></div>
+                                <div class="qie_left_rgzx"></div>
+                                <div class="qie_right_rgzx"></div>
+                            </div>
+                            
+                        </div>
+                        <!--/人工咨询 end-->
+                    </div>
+                    <div class="otherr">
+                        <div class="tzgg fssyw">
+                            <img src="http://nm12366.net:80/images/dzswj/icon_fsyw.png">
+                            <h3>非涉税业务</h3>
+                            <div class="zxlist fssyw2">
+                                <ul>
+                                    <li>
+                                        <a href="javascript:showApp('http://nm12366.net:80/WQNFApp/sfbd/getSF.jspx?opt=DZDA','108001','1')">
+                                            <img src="http://nm12366.net:80/images/dzswj/icon_dzdak.png">
+                                            <b>电子档案库</b>
+                                        </a>
+                                        </li>
+                                        <li class="mar0">
+                                        <a href="http://nm12366.net:80/foot/report">
+                                            <img src="http://nm12366.net:80/images/dzswj/icon_zxly.png">
+                                            <b>在线留言</b>
+                                        </a>
+                                        </li>
+                                </ul>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    </div>
+  
+	<!--底部版权信息-->
+	
+<style type="text/css">
+/*footer_dzswj*/
+.footer_dzswj{
+    width:100%;
+    text-align: center;
+    position:relative;
+}
+.footer_dzswj p{
+    color:#fff;
+    height:26px;
+    line-height: 26px;
+    margin-bottom: 3px;
+}
+.footer_dzswj p.p_bg{
+     background:#000;
+    filter: alpha(opacity=80);
+    -moz-opacity: 0.8;
+    -khtml-opacity: 0.8;
+    opacity: 0.8;
+    position:absolute;
+    bottom:-6px;
+    height:70px;
+    width:100%;
+    z-index: -1;
+    margin:0px;
+}
+/*footer--end*/
+
+
+.footer{
+	background:#7fbff6;
+	text-align:center;
+	font-size:13px;
+	line-height:22px;
+	padding:12px 0px;}
+</style>
+<!--底部版权信息-->
+<div class="footer" id="xm_p" style="display:none;">
+	<p>锡林郭勒盟地方税务局主办  北京佳网科技有限责任公司提供技术支持<br>
+                  技术支持电话：400-700-6330<br>
+                  投诉电话：010-53930046<br>
+                   京ICP备15000037号-2<br>                  
+             建议使用IE8以上版本的浏览器查看</p>
+ </div>
+<div class="footer_dzswj" id="wsbs_p">
+       <p>内蒙古自治区国家税务局、内蒙古自治区地方税务局共同主办&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;北京佳网科技有限公司提供平台服务</p>
+      <p>技术支持电话：400-700-6330&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;投诉电话：010-53930046&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;蒙ICP备1100266&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;建议使用IE8以上版本的浏览器查看</p>
+       <p class="p_bg"></p>
+	<!-- 站长统计，内网不要加，切记！ --><!--
+	<script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1256673150'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1256673150' type='text/javascript'%3E%3C/script%3E"));</script>
+--></div>
+<script type="text/javascript">
+$(function(){
+	if(window.frames.length != parent.frames.length){
+	$(window.parent.document).find("img").each(function(){
+			if(null!=this.src && ''!=this.src && 'undefined'!=this.src){
+				if(this.src.indexOf("xm_wsbs_10.png")>-1){
+					$("#xm_p").css("display","block");
+					$("#wsbs_p").css("display","none");
+					return false;
+				}
+			}
+		})
+	}else{
+		$("img").each(function(){
+			if(null!=this.src && ''!=this.src && 'undefined'!=this.src){
+					if(this.src.indexOf("xm_wsbs_10.png")>-1){
+						$("#xm_p").css("display","block");
+						$("#wsbs_p").css("display","none");
+						return false;
+					}
+			}
+		})
+	}
+});
+</script>
+<!--/底部版权信息-->
+
+	<!--/底部版权信息-->
+    
+    <!-- 左侧悬浮 咨询助手-->
+    <div class="zxzs">
+        <ul>
+            <li class="zxzs_cf">
+                <a href="#"><img src="http://nm12366.net:80/images/dzswj/zxzs_logo.png" height="24" width="24">咨询助手</a>
+                <div class="zxzs_right" style="display:none;">
+                    <div class="zxzs_arrow"></div>
+                    <div class="zxzs_text">
+                        <ul>
+                            <li class="sildbeltit">咨询助手
+                                <div class="qiehuan">
+                                    <div class="zxzs_qie_left zxzs_qie_left1"></div>
+                                    <div class="zxzs_qie_right"></div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="zxzs_con" id="links_left" style="width: 210px; "><ul class="qie_con"><li><a href="javascript:void(0)" onclick="startLink('511b36aac8fe4a9cb79e88938d63853c','咨询服务');">咨询服务</a></li><li><a href="javascript:void(0)" onclick="startLink('8d3f23cdc41e46f491fd9068f07b69ed','审批备案');">审批备案</a></li><li><a href="javascript:void(0)" onclick="startLink('ee61c77489484b7c96a6f04be40e3430','涉税发票');">涉税发票</a></li><li><a href="javascript:void(0)" onclick="startLink('4d0a8cef06884aa38d3e9f60128b80fa','申报共享');">申报共享</a></li><li><a href="javascript:void(0)" onclick="startLink('3958bb749b7b4a7c907ba78102c63269','联合登记');">联合登记</a></li></ul></div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- 咨询助手结束 -->
+    
+    </div>
+	
+	<script>new srcMarquee("ScrollMe",0,1,418,75,3,2000,2000,75);
+	
+	function dzswj_yy_new(obj){
+		 var len=$('.qie_roll').width();
+		    var wall=0;
+		    $('#'+obj).each(function(){
+		        var b=$(this).find('.qie_roll').length;
+		        wall=len*b; 
+		        $(this).width(wall);
+		    })
+		    $('#'+obj).siblings('.qie_right').click(function(){
+		            var sz=$(this).parents('.remind').find('.qie_roll').length;
+		            var wh=len*(sz-2);
+		            var wid=len*(sz-1);
+		            $(this).parents('.remind').find('.qie_left').removeClass('qie_left1');
+		            var l=$(this).parents('.remind').find('.qie_text').css('right');
+		            if(Math.abs(parseInt(l))>=wh){
+		                $(this).addClass('qie_right1');
+		                $(this).parents('.remind').find('.qie_text').animate({'right':'+'+wid+'px'})
+		            }else{
+		                $(this).parents('.remind').find('.qie_text').animate({'right':'+='+len+'px'})
+		            }
+		        })
+		     $('#'+obj).siblings('.qie_left').click(function(){
+		            $(this).parents('.remind').find('.qie_right').removeClass('qie_right1');
+		            var l=$(this).parents('.remind').find('.qie_text').css('right');
+		            var wh=len*(-1);
+		            if(l>=wh+"px"){
+		                $(this).addClass('qie_left1');
+		                $(this).parents('.remind').find('.qie_text').animate({'right':'0px'})
+		            }else{
+		                $(this).parents('.remind').find('.qie_text').animate({'right':'+='+len+'px'})
+		            }
+		        })
+		}
+
+	function dzswj_yy_new_link(){
+		var len=$('.qie_roll_rgzz').width();
+        var wall=0;
+        $('.qie_text_zxlist').each(function(){
+            var b=$(this).find('.qie_roll_rgzz').length;
+            wall=len*b; 
+            $(this).width(wall);
+        })
+        $('.qie_right_rgzx').click(function(){
+                var sz=$(this).parents('.zxlist_remind').find('.qie_roll_rgzz').length;
+                var wh=len*(sz-2);
+                var wid=len*(sz-1);
+                $(this).parents('.zxlist_remind').find('.qie_left_rgzx').removeClass('qie_left_rgzx1');
+                var l=$(this).parents('.zxlist_remind').find('.qie_text_zxlist').css('right');
+                if(Math.abs(parseInt(l))>=wh){
+                    $(this).addClass('qie_right_rgzx1');
+                    $(this).parents('.zxlist_remind').find('.qie_text_zxlist').animate({'right':'+'+wid+'px'})
+                }else{
+                    $(this).parents('.zxlist_remind').find('.qie_text_zxlist').animate({'right':'+='+len+'px'})
+                }
+            })
+        $('.qie_left_rgzx').click(function(){
+                $(this).parents('.zxlist_remind').find('.qie_right_rgzx').removeClass('qie_right_rgzx1');
+                var l=$(this).parents('.zxlist_remind').find('.qie_text_zxlist').css('right').replace("px","");
+                if(l>=len){
+	                var wh=len*(-1);
+                    $(this).addClass('qie_left_rgzx1');
+                    $(this).parents('.zxlist_remind').find('.qie_text_zxlist').animate({'right':Math.abs(parseInt(l)+wh)+'px'})
+                }else{
+                    $(this).parents('.zxlist_remind').find('.qie_text_zxlist').animate({'right':'0px'})
+                }
+            })
+		}
+
+	if(null!=cur_user_id && ''!=cur_user_id && 'undefined'!=cur_user_id){
+		$(".zxzs").remove();
+		$("#bg_div").removeAttr("class")
+	}else{
+		$("#bg_div").attr("class","all_bg")
+		}
+
+	$(function(){
+        /**
+        	气泡提示
+        **/
+	    $(".zxzs_cf").hover(function(){
+	        $(".zxzs_right",this).show();
+	    });
+	    $(".zxzs_cf").mouseleave(function(){
+	        $(".zxzs_right",this).hide();
+	    });
+	});
+
+	function left_link_qiehuan(){
+		 var len=$('.qie_con').width();
+	        var wall=0;
+	        $('.zxzs_con').each(function(){
+	            var b=$(this).find('.qie_con').length;
+	            wall=len*b; 
+	            $(this).width(wall);
+	        })
+	        $('.zxzs_qie_right').click(function(){
+	                var sz=$(this).parents('.zxzs_text').find('.qie_con').length;
+	                var wh=len*(sz-2);
+	                var wid=len*(sz-1);
+	                $(this).parents('.zxzs_text').find('.zxzs_qie_left').removeClass('zxzs_qie_left1');
+	                var l=$(this).parents('.zxzs_text').find('.zxzs_con').css('left');
+	                if(Math.abs(parseInt(l))>=wh){
+	                    $(this).addClass('zxzs_qie_right1');
+	                    $(this).parents('.zxzs_text').find('.zxzs_con').animate({'left':'-'+wid+'px'})
+	                }else{
+	                    $(this).parents('.zxzs_text').find('.zxzs_con').animate({'left':'-='+len+'px'})
+	                }
+	            })
+	        $('.zxzs_qie_left').click(function(){
+	                $(this).parents('.zxzs_text').find('.zxzs_qie_right').removeClass('zxzs_qie_right1');
+	                var l=$(this).parents('.zxzs_text').find('.zxzs_con').css('left');
+	                var wh=len*(-1);
+	                if(l>=wh+"px"){
+	                    $(this).addClass('zxzs_qie_left1');
+	                    $(this).parents('.zxzs_text').find('.zxzs_con').animate({'left':'0px'})
+	                }else{
+	                    $(this).parents('.zxzs_text').find('.zxzs_con').animate({'left':'+='+len+'px'})
+	                }
+	            });
+		}
+
+	</script>
+	<script type="text/javascript">
+		 
+	     document.onreadystatechange = showDiv;//当页面加载状态改变的时候执行这个方法. 
+			function showDiv(){ 
+				if(document.readyState == "complete"){
+					if(null=='null' || ''=='null' || 'null'=='null'){
+						$.layer({
+						    type: 2,
+						    shade: [0],
+						    fix: false,
+						    title: '温馨提示',
+						    maxmin: true,
+						    iframe: {src : 'http://nm12366.net:80/jsp/showTips.jsp'},
+						    area: ['850px', '550px'],
+						});
+					}
+				}
+			}
+	     
+	</script>
+ 
+	
+<div times="1" showtime="0" style="z-index: 19891015; width: 850px; height: 550px; position: absolute; margin-left: -425px; top: 6px; left: 50%; " id="xubox_layer1" class="xubox_layer" type="iframe"><div style="background-color:#fff; z-index:19891015" class="xubox_main"><iframe scrolling="auto" allowtransparency="true" id="xubox_iframe1" name="xubox_iframe1" onload="this.className='xubox_iframe'" class="xubox_iframe" frameborder="0" src="http://nm12366.net:80/jsp/showTips.jsp" style="width: 850px; height: 515px; top: 35px; "></iframe><div class="xubox_title" move="ok" style="cursor: move; "><em>温馨提示</em></div><span class="xubox_setwin"><a class="xubox_min" href="javascript:;"><cite></cite></a><a class="xubox_max xulayer_png32" href="javascript:;"></a><a class="xubox_close xulayer_png32 xubox_close0" href="javascript:;" style=""></a></span><span class="xubox_botton"></span></div><div id="xubox_border1" class="xubox_border" style="z-index: 19891014; background-color: rgb(0, 0, 0); opacity: 0.3; top: -6px; left: -6px; width: 862px; height: 562px; "></div></div></body></html>

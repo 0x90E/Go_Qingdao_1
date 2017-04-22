@@ -1,0 +1,870 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<title>政府采购机票管理网站</title>
+<link rel="stylesheet" type="text/css" href="/static/css/style_new.css"><!-- 主要 -->
+<link rel="stylesheet" type="text/css" href="/static/css/fuyu_style.css"><!-- 主要 -->
+<script type="text/javascript" src="/static/js/jquery-1.6.3.min.js"></script>
+<script type="text/javascript" src="/static/gp/msgAlert/js/msgbox.js"></script>
+<link rel="stylesheet" href="/static/gp/msgAlert/css/style.css">
+<script type="text/javascript" src="/static/js/comm.js"></script><!-- 基本JS -->
+
+<link rel="stylesheet" type="text/css" href="/static/css/login_style/login_style.css?version=2014101401">
+<script type="text/javascript" src="https://tajs.qq.com/stats?sId=32356122" charset="UTF-8"></script>
+<script type="text/javascript" src="/static/js/emailAutoComplete.js?version=2014101102"></script>
+<style type="text/css">
+.input_file {
+	width: 150px;
+	margin-left: -160px;
+	filter: alpha(opacity =   0);
+	opacity: 0;
+	height: 35px;
+}
+
+.submitInputBtn4 {
+	width: 140px;
+	height: 27px;
+	line-height: 27px;
+	border: none;
+	background: url(../images/submit4.gif) left top;
+	color: white;
+	margin-right: 10px;
+}
+
+.commRight_Register {
+	border: 1px #7CBAEC solid;
+	float: right;
+	width: 906px;
+}
+*{margin:0;padding:0;} 
+
+ul,li{list-style:none;background:white;} 
+
+.parentCls{width:200px;}
+
+.auto-tip li{width:100%;height:22px;line-height:22px;font-size:14px;} 
+
+.auto-tip li.hoverBg{background:#ddd;cursor:pointer;} 
+
+.red{} 
+
+.hidden {display:none;} 
+
+.successResetOk{ width:100%; float:left; font-size:24px; color:#003366; line-height:80px; margin-top:15px;}
+
+.slider{padding-top:2px;}
+.slider li{height:16px;line-height:16px;margin-right:40px;}
+.slider li font{float:right;}
+</style>
+<script type="text/javascript"> 
+window.onload = function (){
+	document.getElementById('username').focus();
+}
+
+$(function() {
+	
+	//帮助中心new图标显示
+	
+	    /* $.ajax({
+	    	url:'http://'
+		   type:
+			  data:
+				success:function(data){
+					data.msg==1;
+					
+				},
+				error:function(){}
+	    	
+		}); */
+	
+	
+	
+
+/* 	$('#header_menu_pic1').attr('src','/static/images/login/gpIndex2.png');
+	$('#header_menu_pic1').attr('onMouseOut',''); */
+	$('#header_menu_pic1').css('background-color','#ffa900');
+	$('#header_menu_pic1').attr('onMouseOut','');
+
+	//用户是否需要修改密码
+	/* var msg = '';
+	if(msg == '0') {
+		if(confirm("你已超过三个月未修改密码，为保证你的账号安全，请重新设置密码！")) {
+			ShowCommDialog('DialogDiv',500);
+		} else {
+			updateLoginDate();
+		}
+	} */
+
+	//$(".loginFrameOut").css("padding-top","" + ($(window).height()-530)/2 + "px")
+	/* $(".loginFrameOut").css("padding-top","" + 40 + "px") */
+	
+	var sWidth = $("#focus").width(); //获取焦点图的宽度（显示面积）
+	var len = $("#focus ul li").length; //获取焦点图个数
+	var index = 0;
+	var picTimer;
+	
+	$("#staffType").change(function(){
+		if($("#staffType").val() == 0 || $("#staffType").val() == 'KH'){
+			$("#staffTypeValye").hide();
+		}else{
+			$("#staffTypeValye").show();
+		}
+	})
+	
+	//以下代码添加数字按钮和按钮后的半透明条，还有上一页、下一页两个按钮
+	var btn = "<div class='btnBg'></div><div class='btn'>";
+	for(var i=0; i < len; i++) {
+		btn += "<span></span>";
+	}
+	btn += "</div>";
+	$("#focus").append(btn);
+	$("#focus .btnBg").css("opacity",0.8);
+ 
+	//为小按钮添加鼠标滑入事件，以显示相应的内容
+	$("#focus .btn span").css("opacity",0.4).mouseover(function() {
+		index = $("#focus .btn span").index(this);
+		showPics(index);
+	}).eq(0).trigger("mouseover");
+ 
+	//上一页、下一页按钮透明度处理
+	$("#focus .preNext").css("opacity",0.2).hover(function() {
+		$(this).stop(true,false).animate({"opacity":"0.5"},300);
+	},function() {
+		$(this).stop(true,false).animate({"opacity":"0.2"},300);
+	});
+ 
+	//上一页按钮
+	$("#focus .pre").click(function() {
+		index -= 1;
+		if(index == -1) {index = len - 1;}
+		showPics(index);
+	});
+ 
+	//下一页按钮
+	$("#focus .next").click(function() {
+		index += 1;
+		if(index == len) {index = 0;}
+		showPics(index);
+	});
+ 
+	//本例为左右滚动，即所有li元素都是在同一排向左浮动，所以这里需要计算出外围ul元素的宽度
+	$("#focus ul").css("width",sWidth * (len));
+	
+	//鼠标滑上焦点图时停止自动播放，滑出时开始自动播放
+	$("#focus").hover(function() {
+		clearInterval(picTimer);
+	},function() {
+		picTimer = setInterval(function() {
+			showPics(index);
+			index++;
+			if(index == len) {index = 0;}
+		},5000); //此4000代表自动播放的间隔，单位：毫秒
+	}).trigger("mouseleave");
+	
+	//显示图片函数，根据接收的index值显示相应的内容
+	function showPics(index) { //普通切换
+		var nowLeft = -index*sWidth; //根据index值计算ul元素的left值
+		$("#focus ul").stop(true,false).animate({"left":nowLeft},0); //通过animate()调整ul元素滚动到计算出的position
+		$("#focus .btn span").stop(true,false).animate({"opacity":"0.4"},300).eq(index).stop(true,false).animate({"opacity":"1"},300); //为当前的按钮切换到选中的效果
+	}
+});
+
+
+function doSubmit1(){
+	clearErrorMsg();
+	var username = document.getElementById('username').value;
+	username = username.replace(/(^\s*)|(\s*$)/g,'');//清理空格
+	$('#username').val(username);
+	
+	var password = document.getElementById('password').value;
+	var captcha = document.getElementById('captcha').value;
+	captcha = captcha.replace(/(^\s*)|(\s*$)/g,'');//清理空格
+	$('#captcha').val(captcha);
+	
+	if(''==username){
+		$('#indexMsg').show();
+		$('#indexMsgHtml').html("请输入邮箱");
+		$("#username").css("border","1px solid red");
+		return false;
+	} else if(''==password){
+		$('#indexMsg').show();
+		$('#indexMsgHtml').html("请输入密码");
+		$("#password").css("border","1px solid red");
+		return false;
+	} else if(''==captcha){
+		$('#indexMsg').show();
+		$('#indexMsgHtml').html("请输入验证码");
+		$('#validatecode').attr('src','/servlet/validatecode.jsp?'+Math.random());
+		$("#captcha").css("border","1px solid red");
+		return false;
+	}
+	
+	$('#userType').val('1');
+	$('#frmlogin').attr("action","/login.action").submit();
+}
+function doSubmit2(){
+	clearErrorMsg();
+	$('#userType').val('2');
+	$('#frmlogin').attr("action","/register/init.action").submit();
+}
+
+//zhulei 20121226 add 键盘enter事件 
+function enterkey(event) {
+	event = (event) ? event : ((window.event) ? window.event : "")
+	keyCode = event.keyCode ? event.keyCode : (event.which ? event.which : event.charCode);
+	if (keyCode == 13) {
+		doSubmit1();
+	}
+}
+function clearBorder(){
+	$('#indexMsg').hide();
+	$('#errorMessage').hide();
+	$('#username').attr('style','width:236px; height:30px; border: 1px #999 solid; adding-left:2px;');
+	$('#password').attr('style','width:236px; height:30px; border: 1px #999 solid; adding-left:2px;');
+	$('#captcha').attr('style','width:186px; height:30px; border: 1px #999 solid; adding-left:2px;');
+}
+
+function clearErrorMsg(){
+	$('#errorMessage').hide();
+	$('#indexMsg').hide();
+	$("#username").css("border","1px #999 solid");
+	$("#password").css("border","1px #999 solid");
+	$("#captcha").css("border","1px #999 solid");
+}
+
+//打开采购人注册界面
+function openPurchaseRegisterPage(){
+	//alert('采购人信息注册、修改');
+	$('#frmlogin').attr("action","/purchaseRegister/init.action").submit();
+}
+
+//打开采购人注册修改界面
+function openPurchaseRegisterUpdatePage(){
+	//alert('采购人信息注册、修改');
+	$('#frmlogin').attr("action","/purchaseRegister/initEdit.action").submit();
+}
+	function changeImage(flag){
+		if (flag == "1") {
+			$('.submitBtn').css("background",
+					"url(/static/images/login/btn44.png)");
+		} else {
+			$('.submitBtn').css("background",
+					"url(/static/images/login/loginBtn33.png)");
+		}
+	}
+
+	function changeColor(flag){
+		if (flag == "1") {
+			$('.submitBtn_New').css("background-color",
+					"#0085ce");
+		} else {
+			$('.submitBtn_New').css("background-color",
+					"#ffa900");
+		}
+	}
+	//修改密码
+	/* function save() {
+		$.ajax({ 
+			url: '/loginUser/updatePwd.action',
+			type: "post",
+			data: $('#saveForm').serialize(), 
+			cache : false,
+			dataType: "json",
+			success: function(dataJson) {
+				if(dataJson.result == '0'){
+					ZENG.msgbox.show(dataJson.msg, 4, 5000, '');
+					closeCommDialog2('DialogDiv');
+				} else if(dataJson.result == '1'){
+					$('#addErrorMsg').show();
+					$('#addErrorMsgHtml').html(dataJson.msg);
+					$("#userSave").attr("class", "submitType_3").removeAttr("disabled");
+				} else {
+					$('#addErrorMsg').show();
+					$('#addErrorMsgHtml').html('密码修改失败，请稍后再试！');
+					$("#userSave").attr("class", "submitType_3").removeAttr("disabled");
+				}
+			}
+		});
+	}
+	function clickClear() {
+		
+	} */
+</script>
+<style type="text/css">
+a {
+	color: #125591;
+}
+
+a:hover {
+	text-decoration: underline;
+	color: #FF6600;
+}
+
+li a{
+	font-size:14px;
+}
+
+</style>
+</head>
+
+<body>
+
+
+
+
+
+
+<style type="text/css">
+#loginInfo a {color:white}
+
+.dropdown{
+	background:url("/static/images/drop.png") 0px 0px no-repeat scroll right -25px;
+	color:#008ED0;
+	margin-right:7px;
+}
+.dropup{ background-position:right 5px}
+.showContact{ 
+	position:absolute;
+	background:#fff;
+	z-index:200;
+	border:#BFD6E8 1px solid;
+	padding:5px;
+	right:25px;
+	top:45px;
+	display:none;
+}
+.showContact p{ 
+	margin:0;
+	line-height:24px;
+	color:#666;
+	text-align:left;
+}
+.showContact p a:link,.showContact p a:active,.showContact p a:visited{
+	color:#008ED0;
+}
+.index_2{ text-indent:2em;}
+
+			.home_banner_tips{
+		     	background: #e6f5fc;
+	            font-size: 12px;
+		     	text-align: center;
+		     	color:#008DD3;
+		     	line-height: 30px;
+		     	height:30px;
+		     	width:1200px;
+		     	margin-left:auto;
+		     	margin-right:auto;
+		     }       
+		     .home_banner_tips img{
+		     	padding-top: 5px;
+				padding-bottom: 5px;
+				width:20px;
+		     }
+			 .home_banner_clearit { clear:both;display: block;} 
+			 .home_banner_img_right {
+			 	float: right;
+			 }
+#commonInfoM_down>li{
+height: 20px;
+line-height: 20px;
+width: 100%;
+padding: 5px 0;
+font-weight: normal;
+border-top:1px solid #ffffff;
+}
+#commonInfoM_down div{
+ font-size:14px !important;
+}
+#commonInfoM_down>li:hover{
+background-color: rgb(255, 169, 0);
+}
+#commonInfoM_down{
+ border-bottom:1px solid #ffffff;
+ border-left:1px solid #ffffff;
+ border-right:1px solid #ffffff;
+
+}	 
+</style>
+<script type="text/javascript">
+$(document).ready(function(){
+
+	$("#commonInfo").hover(function(){
+		 $("#commonInfoM_down").show();
+	},function(){
+		 $("#commonInfoM_down").hide();
+	});
+
+});
+function closeHBT(){
+   	$(".home_banner_tips").css("display","none");	      
+   	$.ajax({ 
+		url: '/indexTipsShow.action',
+		type: "post",
+		cache : false,
+		dataType: "json",
+		success: function(dataJson) {
+		}
+	});
+ }
+
+function changeToYellow(var1){
+	$(var1).css("background-color","#ffa900");
+}
+function changeToBlue(var2){
+	$(var2).css("background-color","#0085ce");
+}
+
+function showdropdown1(){
+           var $this = $("#dropdown1");
+			var $con = $this.closest(".loginInfo").find(".showContact");
+			$con.show().bind("mouseover",function(){
+				$(this).show();
+				$this.addClass("dropup");
+			}).bind("mouseout",function(){
+				$(this).hide();
+				$this.removeClass("dropup");
+			});
+			$this.addClass("dropup");
+			$this.bind("mouseout",function(){
+				$con.hide();
+				$this.removeClass("dropup");
+			});
+}
+
+function showdropdown2(){
+    var $this = $("#dropdown1");
+		var $con = $this.closest(".loginInfo2").find(".showContact");
+		$con.show().bind("mouseover",function(){
+			$(this).show();
+			$this.addClass("dropup");
+		}).bind("mouseout",function(){
+			$(this).hide();
+			$this.removeClass("dropup");
+		});
+		$this.addClass("dropup");
+		$this.bind("mouseout",function(){
+			$con.hide();
+			$this.removeClass("dropup");
+		});
+}
+
+function gpIndex(){
+	window.location.href = "/login.action";
+}
+function gpMobileClient() {
+	window.location.href = "/mobileClient/getMobileClient.action";
+}
+function gpSupplier() {
+	window.location.href = "/gpSupplier/initSupplier.action";
+}
+function gpProvider() {
+	window.location.href = "/provider/loginProvider.action";
+}
+function gpEleTktVerify() {
+	//modified by hongxp 20140916  修改为在新页面打开
+	///window.location.href = "http://119.254.233.14/OpenGP/eleprint/eleTktVerify.action";
+	window.open("http://119.254.233.14/OpenGP/eleprint/eleTktVerify.action");
+}
+function gpBudgetUnit() {
+	window.location.href = "/announcement/getBudgetUnit.action";
+}
+</script>
+<div class="fuyu_commWidth2">
+	<div id="fuyu_headerLeft2">
+		<div id="logo">
+			
+			
+			
+			
+				<img src="/static/images/login/headerImg.jpg">
+			
+		</div>
+	</div>
+	<div id="fuyu_headerRight2">
+		<div class="loginInfo2">
+			<font color="black">
+			<font color="white">
+			欢迎您, 
+			
+			
+			|
+				<a href="#" class="dropdown" id="dropdown1" onmouseover="showdropdown2();" style="text-decoration:none;padding-bottom:0px;border-bottom:1px solid black;">反馈建议</a>|
+			
+			
+				
+					<a href="/login.action" style="text-decoration:none;padding-bottom:0px;border-bottom:1px solid black;">首页</a>
+				
+				
+					<a href="/orderManage/orderQuery.action" style="text-decoration:none;padding-bottom:0px;border-bottom:1px solid white;">返回</a>
+				
+				
+				<div class="showContact"><p>意见反馈邮件：<a href="mailto:jipiaocg@163.com" style="text-decoration:none;padding-bottom:-2px;border-bottom:1px solid #008dd3;">jipiaocg@163.com</a></p><p class="index_2">客服电话：400-818-6686 </p></div>
+			</font>
+			
+			     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			
+		</font></div><font color="black">
+		
+	</font></div><font color="black">
+</font></div><font color="black">
+<div style="clear:both;"></div>
+
+<div class="loginMain2">
+<div id="header_navs" style="z-index:1;">
+		<div style="width:1000px;margin-left:auto;margin-right:auto;">
+		<ul id="header_navsList">
+						<!-- <li id="header_menu_0"
+							onclick="gpIndex();" class="current"><a href="#"
+							style="margin-left: 30px; margin-right: 30px;"
+							"  onclick="gpIndex();"><font
+								style="font-weight: bold; font-size: 15px;">首页</font></a></li> -->
+								
+								
+
+							
+							
+							
+							<!-- <li><div style="width:1px;background-color:#dedede;">&nbsp;</div></li> -->
+							<li sytle="height:40px;background-color:#ffa900;"><a href="#" onclick="gpIndex();" style="text-decoration: none;"><div id="header_menu_pic1" style="width: 90px; background-color: rgb(255, 169, 0); " onmouseover="changeToYellow(this);" onmouseout="">首页</div>
+								</a></li>
+							
+							
+														
+							<!-- <li><div style="width:1px;background-color:#dedede;">&nbsp;</div></li> -->
+							<li><a href="#" id="#header_menu_1" onclick="gpSupplier();"><div id="header_menu_pic2" style="width:130px;" onmouseover="changeToYellow(this);" onmouseout="changeToBlue(this)">供应商查询</div></a></li>
+							<!-- <li><div style="width:1px;background-color:#dedede;">&nbsp;</div></li> -->
+							<li><a href="#" onclick="gpProvider();" style="text-decoration: none;"><div id="header_menu_pic3" style="width:130px;" onmouseover="changeToYellow(this);" onmouseout="changeToBlue(this)">服务商查询</div></a></li>
+							<!-- <li><div style="width:1px;background-color:#dedede;">&nbsp;</div></li> -->
+							<li><a href="#" onclick="gpEleTktVerify();" style="text-decoration: none;"><div id="header_menu_pic4" style="width:160px;" onmouseover="changeToYellow(this);" onmouseout="changeToBlue(this)">机票查验单查询</div></a></li>
+							<!-- <li><div style="width:1px;background-color:#dedede;">&nbsp;</div></li> -->
+							
+							<li><a href="#" onclick="gpBudgetUnit();" style="text-decoration: none;"><div id="header_menu_pic5" style="width:160px;" onmouseover="changeToYellow(this);" onmouseout="changeToBlue(this)">预算单位信息报送</div></a></li>
+								
+							
+							<li><a href="#" id="#header_menu_1" onclick="gpMobileClient();"><div id="header_menu_pic8" style="width:160px;" onmouseover="changeToYellow(this);" onmouseout="changeToBlue(this)">手机端下载</div></a></li>
+							<!-- <li><div style="width:1px;background-color:#dedede;">&nbsp;</div></li> -->
+							
+							
+					</ul>
+				</div>
+    	</div>
+    
+	    <div class="home_banner_tips">
+			<img src="/static/images/login/cancleIndexTips.png" class="home_banner_img_right" onclick="closeHBT();">
+			
+				
+				
+					<center>
+						<span style="length:980">
+							【通知】尊敬的用户：公务行APP在IOS系统上，验证码存在问题，现阶段可以通过多次刷新暂时解决，安卓用户不受影响。我们会尽快修复，给您带来的不便敬请谅解。  
+						</span>
+					</center>
+				
+			
+			<div class="home_banner_clearit"></div>
+		</div>
+	
+</div>
+
+<div id="msg_alert_dialogBG"></div>
+<div class="loginFrameOut" style="padding-top: 0px;"><div class="loginFrame">
+
+	<div class="loginMain">
+    	<div class="loginForm" style="padding-top:30px;">
+    		<div style="text-align:left;line-height:25px;height:25px;">
+    			<span style="font-size:25px;color:#0085ce;font-family:微软雅黑;">购票登录</span>
+    		</div>
+    		<div style="height:10px;"></div>
+    		<hr color="#0085ce" size="2px" style="margin:0.5;padding:0.5;">
+			<form name="loginForm" method="post" action="/login.action" id="frmlogin">
+        	<div class="loginFormInner" id="loginForm">
+               		<input type="hidden" name="userType" id="userType">
+                <div class="loginFormInnerItem">
+                	<div class="loginFormTips"></div>
+                    <div class="loginFormInputArea">
+                    	<table><tbody><tr><td class="parentCls" style="*border-top:1px #999 solid">
+							<input id="username" title="请输入邮箱" name="username" placeholder="请输入邮箱" onclick="clearBorder();" value="" type="text" class="textInput" autocomplete="off">
+							</td></tr>
+						<tr><td>
+						
+                    	</td></tr></tbody></table>
+                    </div>
+                </div><!--loginFormInnerItem-->
+                
+                <div class="loginFormInnerItem">
+                	<div class="loginFormTips"></div>
+                    <div class="loginFormInputArea">
+					<input id="password" title="请输入密码" name="password" placeholder="请输入密码" type="password" autocomplete="off" onclick="clearBorder();" class="textInput">
+                    </div>
+                </div><!--loginFormInnerItem-->
+                <div class="loginFormInnerItem" style="height:30px;">
+                	<div class="loginFormTips"></div>
+                    <div class="loginFormInputArea">
+                    	<table>
+                    		<tbody><tr>
+                    			<td style="*border-top:1px #999 solid">
+                    				 <input id="captcha" name="captcha" title="请输入验证码" placeholder="请输入验证码" type="text" onclick="clearBorder();" onkeypress="enterkey(event)" autocomplete="off">
+                    			</td>
+                    			<td>
+                    				<img src="/servlet/validatecode.jsp" style="width:60px; height:24px;line-height:24px; padding-top:5px;padding-left: 20px;" id="validatecode" title="不清楚请点击刷新" onclick="this.src='/servlet/validatecode.jsp?'+Math.random()" width="72" align="absmiddle">
+                    			</td>
+                    		</tr>
+                    	</tbody></table>   
+	                        <span class="field-validation-valid" data-valmsg-for="Email" data-valmsg-replace="true"></span>
+		            	
+                    </div>
+                    
+                </div><!--loginFormInnerItem-->
+                <div style="clear:both;"></div>
+                <div class="loginFormInnerItem" style="height: 80px;*margin-left:-32px;">
+                	<table>
+                	<tbody><tr>
+                	<td>
+                		<input id="submitType" name="submitType" value="" style="display:none">
+                		<!-- <input type="button" class="submitBtn" onmousemove="changeImage(0)"  onmouseout="changeImage(1)"  onclick="doSubmit1();" /> -->
+                		<input type="button" class="submitBtn_New" value="登&nbsp;&nbsp;录" onmousemove="changeColor(0)" onmouseout="changeColor(1)" onclick="doSubmit1();">
+                	</td>
+                	</tr>
+                	<tr>
+                	<td>
+                		<div class="loginFormInnerItem" style="height:20px;">
+	                	<a href="#" onclick="doSubmit2();" id="regPasswordBtn" style="float:left;margin-left:70px;"><font size="2">购票注册</font></a>
+	                	<a href="/reset.action" id="regPasswordBtn" tabindex="-1" style="float:right;margin-right:40px;"><font size="2">忘记密码</font></a>
+	                	</div>
+                	</td>
+                	</tr>
+                	</tbody></table>
+                	
+	            	<div style="clear:both;"></div>
+	            	<div id="errorMessage" style="margin-top:-5px;">
+						<font color="red"></font>
+					</div>
+					<div id="indexMsg" display="none">
+						<font id="indexMsgHtml" color="red"></font>
+					</div>
+                </div>
+                
+            </div><!--loginFormInner-->
+        	</form>
+        	
+            
+        </div><!--loginForm-->
+        <div class="loginSlide">
+        	<div id="focus">
+				<ul style="left: -1710px; width: 3420px; ">
+					<li><a href="/mobileClient/getMobileClient.action">
+					<img style="display:inline;" src="/static/images/login/index_ad_10.jpg" alt="">
+					</a>
+					</li>
+					<li><a href="javascript:void(0)">
+					<img style="display:inline;" src="/static/images/login/index_ad_09.jpg" alt="">
+					</a>
+					</li>
+					<li><a href="javascript:void(0)">
+					<img style="display:inline;" src="/static/images/login/index_ad_04.jpg" alt="">
+					</a>
+					</li>
+					<li><a href="/announcement/gpInterAirlineRules.action">
+					<img style="display:inline;" src="/static/images/login/index_ad_07.jpg" alt="">
+					</a>
+					</li>
+					<li><a href="javascript:void(0)">
+					<img style="display:inline;" src="/static/images/login/index_ad_08.jpg" alt="">
+					</a>
+					</li>
+					<li><a href="/announcement/TicketReimburse.action">
+					<img style="display:inline;" src="/static/images/login/index_ad_02.jpg" alt="">
+					</a>
+					</li>
+				</ul>
+			<div class="btnBg" style="opacity: 0.8; "></div><div class="btn"><span style="opacity: 0.4; "></span><span style="opacity: 0.4; "></span><span style="opacity: 0.4; "></span><span style="opacity: 0.4000000059604645; "></span><span style="opacity: 0.4; "></span><span style="opacity: 0.4; "></span></div></div>
+        </div><!--loginSlide-->
+    
+    <div class="ctr"></div>
+			<div class="announcementIndex" style="margin-bottom:35px;">
+					<div class="classh2" style="background-color:#0085ce;">
+						<div class="first-img" style="float: left; background-color:#0085ce;margin-left:25px;">
+							<font style="color: #FFFFFF;">帮助中心</font>
+						</div>
+						
+					</div>
+					<div class="ctr"></div>
+					<div class="announcementContent" style=" border: 2px #BED5E8 solid; height:179px; border-top:0px;">
+						<ul id="announcementSlider" class="slider">
+							
+								<li style="line-height: 20px;">
+									<a href="/helpcenter/listWeb.action?category=1">最新公告</a>
+									 
+								</li>
+							
+								<li style="line-height: 20px;">
+									<a href="/helpcenter/listWeb.action?category=2">购票渠道与方式</a>
+									 
+								</li>
+							
+								<li style="line-height: 20px;">
+									<a href="/helpcenter/listWeb.action?category=3">公务机票票价</a>
+									 
+								</li>
+							
+								<li style="line-height: 20px;">
+									<a href="/helpcenter/listWeb.action?category=4">退票及行程变更</a>
+									 
+								</li>
+							
+								<li style="line-height: 20px;">
+									<a href="/helpcenter/listWeb.action?category=5">公务机票报销</a>
+									 
+								</li>
+							
+								<li style="line-height: 20px;">
+									<a href="/helpcenter/listWeb.action?category=6">预算单位改革前准备</a>
+									 
+								</li>
+							
+								<li style="line-height: 20px;">
+									<a href="/helpcenter/listWeb.action?category=7">公务卡</a>
+									 
+								</li>
+							
+						</ul>
+					</div>
+			</div>
+			<div class="policyInfoIndex">
+					<div class="classh2" style="background-color:#0085ce;">
+						<div class="second-img" style="float: left;background-color:#0085ce;">
+							<font style="color: white;">政策信息</font>
+						</div>
+						<div style="float: right;" class="moreContent">
+							
+						</div>
+					</div>
+					<div class="ctr"></div>
+				<div class="announcementContent" style="border: 2px #BED5E8 solid; height:179px; border-top:0px;">
+					<ul id="announcementSlider" class="slider">
+					
+							
+								
+									<li>
+										<font style="color:#125591; font-size: 14px;">
+											2015-11-06 
+										</font>
+										<a href="/policyInfo/detailPolicyInfo.action?policyInfoId=61" announcementid="61" name="detailAnnouncement">关于北京至澳门的地区航线购买说明</a>
+									</li>
+								
+							
+							
+							<li style="line-height: 20px;">
+								<font style="color:#125591; font-size: 14px;">2014-11-15</font>
+										<a href="/policyInfo/officialFileSecond.action">关于加强公务机票购买管理有关事项的补充通知</a>
+							</li>
+							
+							
+							<li style="line-height: 20px;">
+								<font style="color:#125591; font-size: 14px;">2014-05-25</font>
+										<a href="/policyInfo/officialFile.action">关于加强公务机票购买管理有关事项的通知</a>
+							</li>
+							
+							
+							<li style="line-height: 20px;">
+								<font style="color:#125591; font-size: 14px;">2014-05-25</font>
+										<a href="/policyInfo/officialAnswerToJournalist.action">两部门就有关问题答记者问</a>
+							</li>
+							
+					</ul>
+				</div>
+			</div>
+    </div>
+    <div class="ctr"></div>
+   <!--  <div class="foot">
+	    <div style="float:left; padding-left:25px;">
+		  <a href="http://download.microsoft.com/download/1/6/1/16174D37-73C1-4F76-A305-902E9D32BAC9/IE8-WindowsXP-x86-CHS.exe">
+				点击下载IE8浏览器	
+		    </a> 
+	    </div>
+	    <div style="float:right">
+	    	政府机票采购系统 版权所有
+	    </div>
+     </div> -->
+    <div class="ctr"></div>
+</div></div><!--loginFrame-->
+    <div class="onfoot" align="center" style="margin-top:15px;">
+    	<br>
+    	<hr color="#0186ce">
+    	<div style="margin-top:14px;margin-bottom:18px;color:#909090;family-font: Arial,宋体;font-size: 12px;align: center;">
+			&nbsp;&nbsp;<a href="/login.action" style="color:#909090;">首页</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
+			<a href="/gpSupplier/initSupplier.action" style="color:#909090;">供应商查询</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
+			<a href="/provider/loginProvider.action" style="color:#909090;">服务商查询</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
+			<a href="http://119.254.233.14/OpenGP/eleprint/eleTktVerify.action" style="color:#909090;">机票查验单查询</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
+			<a href="/announcement/getBudgetUnit.action" style="color:#909090;">预算单位信息报送</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;					
+		    <a href="/mobileClient/getMobileClient.action" style="color:#909090;">手机端下载</a>		
+		</div>
+    	<table style="align:center;text-align:center;">
+    	<tbody><tr><td>
+    	<span style="color: #909090;line-height: 24px;family-font: 宋体;font-size:12px;">
+    	Copyright(C) 2014 CAAC Settlement Center, All rights reserved. 中国民用航空局清算中心版权所有
+			<br>意见邮箱：<font color="#008ED0">jipiaocg@163.com</font> | 客服电话：<font color="#008ED0">400-818-6686</font><a href="http://www.miibeian.gov.cn" target="_blank" class="a03" style="padding-left: 50px;"><font color="#008ED0">京ICP备07001632号</font></a>
+			<br>地址：北京市朝阳区惠新东街4号富盛大厦2座11层    邮编：100029
+		</span>
+		</td><td>
+			<span id="_ideConac"></span>
+		</td></tr>
+    	</tbody></table>
+    </div>
+<!--遮罩层开始-->
+	<!-- <div id="dialogBG"></div>
+    <div id="DialogDiv" style="display:none">
+        <div id="dialogTitle" class="dialogTitle"><strong><font id="titleText">修改密码</font></strong><div onclick="closeCommDialog2('DialogDiv')" title="关闭窗口"></div></div>
+        <div class="dialogData">
+        	<form action="#" method="POST" id="saveForm">
+				<table class="commLeftAndRightTbl" width="100%">
+					<tr>
+						<td class="left"><font color="red"style="font-weight: bold">*</font>账号：</td>
+						<td class="right">
+							<input class="fuyu_inputTextGp" name="account" id="account" type="text" onclick="clickClear();"/>
+						</td>
+					</tr>
+					<tr>
+						<td class="left"><font color="red"style="font-weight: bold">*</font>旧密码：</td>
+						<td class="right"><input type="password"
+							class="fuyu_inputTextGp" id="oldPassword" name="oldPassword" onclick="clickClear();"/></td>
+					</tr>
+					<tr>
+						<td class="left"><font color="red"style="font-weight: bold">*</font>新密码：</td>
+						<td class="right">
+							<input class="fuyu_inputTextGp" id="newPassword" name="newPassword" type="password" onclick="clickClear();"/>
+						</td>
+					</tr>
+					<tr>
+						<td class="left"><font color="red"style="font-weight: bold">*</font>新密码确认：</td>
+						<td class="right">
+							<input class="fuyu_inputTextGp" id="newPassword1" name="newPassword1" type="password" onclick="clickClear();"/>
+						</td>
+					</tr>  
+					<tr>
+						<table align="center" style="margin-top: 10px;">
+							<tr>
+								<td class="left">
+								<td class="right" width="104"><input id="userSave" type="button"
+									class="submitType_3" value="保存"
+									onclick="save()" /></td>
+								<td class="left">
+								<td class="right" width="104"><input type="reset"
+									class="submitType_3" value="取消"
+									onclick="closeCommDialog2('DialogDiv')" /></td>
+							</tr>
+							<tr>
+								<td colspan="4">
+									<div id="addErrorMsg" display="none">
+										<font id="addErrorMsgHtml" color="red"></font>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</tr>
+				</table>
+			</form>
+        </div>
+    </div> -->
+
+<!-- <script type="text/javascript">document.write(unescape("%3Cspan id='_ideConac' %3E%3C/span%3E%3Cscript src='http://dcs.conac.cn/js/33/000/0000/60515311/CA330000000605153110002.js' type='text/javascript'%3E%3C/script%3E"));</script> -->
+
+ </font></body></html>

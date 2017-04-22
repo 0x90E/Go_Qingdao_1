@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head> 
+  <title>机器之心 | 让老司机告别快进，Miles Deep使用CNN截取色情视频的关键部分</title> 
+  <meta name="keywords" content="机器之心是国内领先的前沿科技媒体和产业服务平台，关注人工智能、机器人和神经认知科学，坚持为从业者提供高质量内容和多项产业服务。" /> 
+  <meta name="description" content="人工智能、机器学习、深度学习、强化学习、神经网络、计算机视觉、自然语言处理、机器人" /> 
+  <meta charset="UTF-8" /> 
+  <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+  <meta name="renderer" content="webkit" /> 
+  <meta http-equiv="Cache-Control" content="no-siteapp" /> 
+  <meta property="qc:admins" content="2730241627614573405516636" /> 
+  <meta property="wb:webmaster" content="583726572eb89687" /> 
+  <link rel="stylesheet" href="/frontEnd//assets/css/amazeui.min.css" /> 
+  <link rel="stylesheet" href="/frontEnd//assets/css/app.min.css" /> 
+  <link rel="stylesheet" href="/frontEnd//assets/css/index.css" /> 
+  <link rel="stylesheet" href="/frontEnd//css/smohan.face.css" /> 
+  <style>
+        .jiathis_button_weixin:hover{
+            background: url('/frontEnd/images/al_share_weixin.png') no-repeat top center !important;
+            background-size: 100% !important;
+        }
+        .jiathis_button_qzone:hover{
+            background: url('/frontEnd/images/al_share_qqkj.png') no-repeat top center !important;
+            background-size: 100% !important;
+        }
+        .jiathis_button_tsina:hover{
+            background: url('/frontEnd/images/al_share_weibo.png') no-repeat top center !important;
+            background-size: 100% !important;
+        }
+    </style> 
+ </head> 
+ <body class="al-index"> 
+  <div style="height:81px;"> 
+   <!--做个判断这里如果没有广告就是 81px--> 
+  </div> 
+  <header class="al-header am-topbar" id="amz-header"> 
+   <div class="am-container am-cf" style="position:relative;"> 
+    <span class="am-show-sm-show al-hide-lg-hide am-icon-search al-sm-search"></span> 
+    <h1><a href="/"><img src="/frontEnd//images/logo_index.png" alt="机器之心" /></a></h1> 
+    <!--<button class="am-btn am-btn-primary am-show-sm-only" data-am-collapse="{target: '.amz-header-nav'}">--> 
+    <!--<span class="am-sr-only">导航切换</span>--> 
+    <!--<span class="am-icon-bars"></span>--> 
+    <!--</button>--> 
+    <nav class="al-ft"> 
+     <ul class="amz-header-nav am-collapse"> 
+      <!--class="am-active"--> 
+      <li class="am-show-sm-show al-hide-lg-hide al-mobile-search"> 
+       <form action="/portal/search/index" method="get" target="_blank"> 
+        <input type="hidden" name="entry" value="669590d753c7c50422c64977ef5df114" /> 
+        <input type="text" required="" name="keyword" placeholder="搜索" autocomplete="off" value="" />
+        <button><span class="am-icon-search"></span></button> 
+       </form> </li> 
+      <li><a href="/edge" target="">资讯</a></li>
+      <li><a href="/insights" target="">深度</a></li>
+      <li><a href="/list/index/id/8" target="">思想</a></li>
+      <li><a href="/science" target="">科学</a></li>
+      <li><a href="/life" target="">生活</a></li>
+      <li><a href="/video" target="">视频</a></li>
+      <li class="am-active"><a href="http://jiqizhixin.com/portal/list/index/id/11" target="">资源</a></li>
+      <li><a href="/special" target="">专题</a></li> 
+      <li class="amz-cse" style="margin-left: 20px;"> 
+       <form action="/portal/search/index" method="get" class="cse-form"> 
+        <input type="text" required="" name="keyword" placeholder="搜索" autocomplete="off" value="" /> 
+        <button><span class="am-icon-search"></span></button> 
+       </form> </li> 
+      <!-- 登录前 --> 
+      <li class="al-nologin"> <a href="/user/register?redirect_url=http%3A%2F%2Fjiqizhixin.com%2Farticle%2F1839" target="_blank"><i class="am-icon am-icon-edit"></i> 注册</a> </li> 
+      <li class="am-fr al-nologin"> 
+       <!--<a href="/user/login/redirect_url/http%253A%252F%252Fjiqizhixin.com%252Farticle%252F1839" target="_blank">登录</a>--> <a href="/user/login?redirect_url=http%3A%2F%2Fjiqizhixin.com%2Farticle%2F1839" target="_blank"><i class="am-icon am-icon-user"></i> 登录</a> </li> 
+     </ul> 
+    </nav> 
+    <nav data-am-widget="menu" class="am-menu am-menu-offcanvas1 am-no-layout" data-am-menu-offcanvas=""> 
+     <a href="javascript: void(0)" class="am-menu-toggle" style="position:absolute !important;"> <i class="am-menu-toggle-icon am-icon-bars"></i> </a> 
+     <div class="am-offcanvas"> 
+      <div class="am-offcanvas-bar am-offcanvas-bar-flip" style="width:150px;"> 
+       <ul class="am-menu-nav am-avg-sm-1"> 
+        <li><a href="/edge" target="">资讯</a></li>
+        <li><a href="/insights" target="">深度</a></li>
+        <li><a href="/list/index/id/8" target="">思想</a></li>
+        <li><a href="/science" target="">科学</a></li>
+        <li><a href="/life" target="">生活</a></li>
+        <li><a href="/video" target="">视频</a></li>
+        <li class="am-active"><a href="http://jiqizhixin.com/portal/list/index/id/11" target="">资源</a></li>
+        <li><a href="/special" target="">专题</a></li> 
+        <li class="amz-cse al-ft" style="margin-left: 20px;"> 
+         <form action="/portal/search/index" method="get" target="_blank" class="cse-form"> 
+          <input type="hidden" name="entry" value="669590d753c7c50422c64977ef5df114" /> 
+          <input type="text" required="" name="keyword" placeholder="搜索" autocomplete="off" value="" /> 
+          <button><span class="am-icon-search"></span></button> 
+         </form> </li> 
+        <!-- 登录前 --> 
+        <li class="am-fr al-nologin"> <a href="/user/login" target="_blank"><i class="am-icon am-icon-user"></i> 登录</a> </li> 
+        <li class="al-nologin"> <a href="/user/register" target="_blank"><i class="am-icon am-icon-edit"></i> 注册</a> </li> 
+       </ul> 
+      </div> 
+     </div> 
+    </nav> 
+   </div> 
+  </header> 
+  <div class="am-show-sm-show al-hide-lg-hide al-sm-search-form"> 
+   <form action="/portal/search/index" method="get" target="_blank"> 
+    <input type="hidden" name="entry" value="669590d753c7c50422c64977ef5df114" /> 
+    <input type="text" required="" name="keyword" placeholder="搜索" autocomplete="off" value="" />
+    <button><span class="am-icon-search"></span></button> 
+   </form> 
+  </div> 
+  <!--<div class="al-search-mask">--> 
+  <!--<input type="text" class="al-search-box"/>--> 
+  <!--</div>--> 
+  <!--content begin--> 
+  <!--<div class="am-g am-g-fixed">--> 
+  <div class="am-container"> 
+   <div class="al-crumbs"> 
+    <a href="/">首页</a> &gt; 
+    <a href="">资源</a> &gt; 让老司机告别快进，Miles Deep使用CNN截取色情视频的关键部分 
+   </div> 
+   <!--专题不显示h2--> 
+   <h2 class="al-column-title">资源</h2> 
+   <div class="am-g"> 
+    <div class="am-u-md-9"> 
+     <div class="al-article-main"> 
+      <div class="al-article-header"> 
+       <h2 class="al-article-title"> 让老司机告别快进，Miles Deep使用CNN截取色情视频的关键部分 </h2> 
+       <div class="al-clearfix al-article-msg"> 
+        <div class="am-fl">
+          2016-11-18 10:06:09 &nbsp;&nbsp; 
+         <span class="al-article-tag">人工智能应用</span> &nbsp;&nbsp;
+         <span class="al-article-tag">卷积神经网络</span> &nbsp;&nbsp; 
+        </div> 
+        <div class="am-fr al-article-share-msg al-ft"> 
+         <a class="tag js-favorite-btn" href="/user/favorite/do_favorite/id/12626" data-postid="12626" data-title="让老司机告别快进，Miles Deep使用CNN截取色情视频的关键部分" data-url="/portal/article/index/id/1839" data-key="51dfMqSmX42OoCFss/a1vvVnqbRpwq3GsYCogkR4YpZbvEE2+cA2dTW6eEng0RCBGYwVotBSrEW3vGY"> <span class="am-icon am-icon-heart-o am-icon-sm al-pl-0"></span><b>0</b> </a> 
+         <a class="tag al-go-comment" href="javascript:void(0);"><span class="am-icon am-icon-commenting am-icon-sm"></span>0</a> 
+         <a class="tag al_share_btn" href="javascript:void(0);"><span class="am-icon am-icon-share-alt am-icon-sm"></span>0</a> 
+        </div> 
+       </div> 
+      </div> 
+      <!--<div class="al-article-content" style="text-indent: 30px;min-height: auto;">--> 
+      <!--Miles Deep使用了一个带有残差连接的深度卷积神经网络，可以基于性行为将一段色情视频的每一秒分类成 6 种类别--> 
+      <!--</div>--> 
+      <div class="al-article-content"> 
+       <blockquote>
+        <p class="md_block">在「非法」查看色情视频时，你是否也为其「漫长」的铺垫和前奏感到懊恼呢？前几天，<a href="https://github.com/ryanjay0/miles-deep" target="_self"><span style="color: rgb(192, 0, 0);">GitHub 用户 ryanjay0 开源了一个可以用来识别色情视频中特定类型的场景的人工智能项目 Miles Deep</span></a>。该算法可以将你想看的类型的片段从完整视频中截取出来并生成一个集合了这些片段的新视频，让你可以不再为那些多余的片段烦恼。</p>
+       </blockquote>
+       <p class="md_block"><span class="md_line">Miles Deep 使用了一个带有残差连接（residual connections）的深度卷积神经网络，可以基于性行为（sexual act）将一段色情视频的每一秒分类成 6 种类别，其准确度高达 95%。然后它可以使用这种分类来自动编辑该视频。它可以移除所有不包含性接触的场景，或者编辑去掉一种特定的性行为。</span></p>
+       <p class="md_block"><span class="md_line">Miles Deep 和雅虎最近发布的 NSFW 模型（见机器之心报道《<a class="md_compiled" href="http://mp.weixin.qq.com/s?src=3&amp;timestamp=1479180346&amp;ver=1&amp;signature=gNkHjxyIfDfLuuR8Vmxxt4Q-Lqz0a2MHtWDTW807L*PUQCBpEvlOLk4ejLbJcSUR-uOggMINAD-fnOOqUDhXNzIOuWYTMAYiEwTKQLAXrLMstcwpOBwfLaoRM8ZsDHqrIHHAN4KQRC8RhWzamIL-cWYOXSbnTWpwxCg*YhIuIJY=" style="color: rgb(192, 0, 0); text-decoration: underline;"><span style="color: rgb(192, 0, 0);">雅虎开源首个色情图像检测深度学习解决方案</span></a>》）使用了类似的架构，但不一样的是 Miles Deep 还能够区分裸体和多种特定的性行为之间的不同。就我所知，这是第一个公开的色情视频分类或编辑工具。</span></p>
+       <p class="md_block md_has_block_below md_has_block_below_ul"><span class="md_line">这个程序可以说是使用 Caffe 模型进行视频分类的一种通用框架，其使用了 C++ 的 batching 和 threading。通过替换权重、模型定义和 mean file，它可以立即被用于编辑其它类型的视频，而不需要重新编译。下面会介绍一个例子。</span></p>
+       <ul class=" list-paddingleft-2">
+        <li><p><strong>Miles Deep项目地址：</strong><a href="https://github.com/ryanjay0/miles-deep" style="color: rgb(192, 0, 0); text-decoration: underline;"><span style="color: rgb(192, 0, 0);"><strong>https://github.com/ryanjay0/miles-deep</strong></span></a></p></li>
+        <li><p><strong>雅虎 NSFW 模型地址：</strong><a class="md_compiled" href="https://github.com/yahoo/open_nsfw" style="color: rgb(192, 0, 0); text-decoration: underline;"><span style="color: rgb(192, 0, 0);"><strong>https://github.com/yahoo/open_nsfw</strong></span></a></p></li>
+       </ul>
+       <h2 id="toc_1">安装</h2>
+       <h3 id="toc_2">Ubuntu 安装（16.04）</h3>
+       <p class="md_block"><span class="md_line">依赖包（Dependencies）</span></p>
+       <p class="md_block"><span class="md_line"><span style="color: rgb(51, 51, 51); font-family: Consolas, &quot;Liberation Mono&quot;, Menlo, Courier, monospace; font-size: 13.6px; background-color: rgba(0, 0, 0, 0.0392157);">sudo apt install ffmpeg libopenblas-base libhdf5-serial-dev libgoogle-glog-dev libopencv-dev</span></span></p>
+       <p class="md_block"><span class="md_line">额外的 14.04 依赖包</span></p>
+       <p class="md_block"><span class="md_line"><span style="color: rgb(51, 51, 51); font-family: Consolas, &quot;Liberation Mono&quot;, Menlo, Courier, monospace; font-size: 13.6px; background-color: rgba(0, 0, 0, 0.0392157);">sudo apt install libgflags-dev</span></span></p>
+       <p class="md_block"><span class="md_line md_line_dom_embed"><strong>CUDA（推荐）</strong></span></p>
+       <p class="md_block"><span class="md_line">如果要使用 GPU，你需要 Nvidia GPU 和 CUDA 8.0 驱动。强烈推荐；可提速 10 倍以上。这可以通过软件包安装或直接从 NVIDIA 下载：<a href="https://developer.nvidia.com/cuda-downloads" style="color: rgb(192, 0, 0); text-decoration: underline;"><span style="color: rgb(192, 0, 0);">https://developer.nvidia.com/cuda-downloads</span></a></span></p>
+       <p class="md_block"><span class="md_line md_line_dom_embed"><strong>CUDNN（可选）</strong></span></p>
+       <p class="md_block"><span class="md_line">这是来自 NVIDIA 的额外的驱动，可以让 CUDA GPU 支持更快。在这里下载（需要注册）：<a href="https://developer.nvidia.com/cudnn" style="color: rgb(192, 0, 0); text-decoration: underline;"><span style="color: rgb(192, 0, 0);">https://developer.nvidia.com/cudnn</span></a></span></p>
+       <p class="md_block md_has_block_below md_has_block_below_ul"><span class="md_line md_line_dom_embed"><strong>下载 Miles Deep</strong></span></p>
+       <ul class=" list-paddingleft-2">
+        <li><p><a href="https://github.com/ryanjay0/miles-deep/releases/download/v0.4/miles-deep-xxx.v0.4.tgz" style="box-sizing: border-box; text-decoration: underline; color: rgb(192, 0, 0);"><span style="color: rgb(192, 0, 0);">miles-deep (GPU + CuDNN)</span></a></p></li>
+        <li><p><a href="https://github.com/ryanjay0/miles-deep/releases/download/v0.4/miles-deep-gpu.v0.4.tgz" style="box-sizing: border-box; text-decoration: underline; color: rgb(192, 0, 0);"><span style="color: rgb(192, 0, 0);">miles-deep (GPU)</span></a></p></li>
+        <li><p><a href="https://github.com/ryanjay0/miles-deep/releases/download/v0.4/miles-deep-cpu.v0.4.tgz" style="box-sizing: border-box; text-decoration: underline; color: rgb(192, 0, 0);"><span style="color: rgb(192, 0, 0);">miles-deep (CPU)</span></a></p></li>
+       </ul>
+       <p class="md_block"><span class="md_line">也要下载这个模型（<a href="https://github.com/ryanjay0/miles-deep/files/587616/model.v0.1.tar.gz" style="color: rgb(192, 0, 0); text-decoration: underline;"><span style="color: rgb(192, 0, 0);">https://github.com/ryanjay0/miles-deep/files/587616/model.v0.1.tar.gz</span></a> ）。将 miles-deep 与该模型的文件夹放在同一个位置（而不是在模型文件里面）。</span></p>
+       <p class="md_block"><span class="md_line"></span></p>
+       <table width="888" style="width: 535px;">
+        <thead style="box-sizing: border-box;">
+         <tr style="box-sizing: border-box; background-color: rgb(255, 255, 255); border-top: 1px solid rgb(204, 204, 204);" class="firstRow">
+          <th align="center" style="box-sizing: border-box; padding: 6px 13px; border-top-color: rgb(221, 221, 221);">Version</th>
+          <th align="right" style="box-sizing: border-box; padding: 6px 13px; border-top-color: rgb(221, 221, 221);">Runtime</th>
+         </tr>
+        </thead>
+        <tbody style="box-sizing: border-box;">
+         <tr style="box-sizing: border-box; background-color: rgb(255, 255, 255); border-top: 1px solid rgb(204, 204, 204);">
+          <td align="center" style="box-sizing: border-box; padding: 6px 13px;">GPU + CuDNN</td>
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">15s</td>
+         </tr>
+         <tr style="box-sizing: border-box; background-color: rgb(248, 248, 248); border-top: 1px solid rgb(204, 204, 204);">
+          <td align="center" style="box-sizing: border-box; padding: 6px 13px;">GPU</td>
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">19s</td>
+         </tr>
+         <tr style="box-sizing: border-box; background-color: rgb(255, 255, 255); border-top: 1px solid rgb(204, 204, 204);">
+          <td align="center" style="box-sizing: border-box; padding: 6px 13px;">CPU</td>
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">1m 59s<br /><br /></td>
+         </tr>
+        </tbody>
+       </table>
+       <p class="md_block"><span class="md_line"></span><br /></p>
+       <p class="md_block"><span class="md_line">注：是在一个 GTX 960 4GB 上测试了一段 24.5 分钟长的视频</span></p>
+       <h3 id="toc_3">Windows 和 OSX</h3>
+       <p class="md_block"><span class="md_line">我目前还在开发用于 Windows 的版本。但我没有 Mac，不过应该只需要做一些小修改就可以在 OSX 上运行。编译指令如下。<a href="https://github.com/ryanjay0/miles-deep#compiling"><span style="color: rgb(192, 0, 0);">https://github.com/ryanjay0/miles-deep#compilin</span>g</a></span></p>
+       <h2 id="toc_4">使用方法</h2>
+       <p class="md_block"><span class="md_line">例子：</span></p>
+       <pre>miles-deep&nbsp;-t&nbsp;sex_back,sex_front&nbsp;movie.mp4</pre>
+       <!--block_code_end-->
+       <p class="md_block"><span class="md_line">这能找到后向和前向的性爱（sex from the back or front）场景，并输出结果到 movie.cut.avi</span></p>
+       <p class="md_block"><span class="md_line">例子：</span></p>
+       <pre>miles-deep&nbsp;-x&nbsp;movie.avi</pre>
+       <!--block_code_end-->
+       <p class="md_block"><span class="md_line">这能编辑去除 movie.avi 中所有的非性爱场景，并将结果输出到 movie.cut.avi。</span></p>
+       <p class="md_block"><span class="md_line">例子：</span></p>
+       <pre>miles-deep&nbsp;-b&nbsp;16&nbsp;-t&nbsp;cunnilingus&nbsp;-o&nbsp;/cut_movies&nbsp;movie.mkv</pre>
+       <!--block_code_end-->
+       <p class="md_block"><span class="md_line">这能将批大小（batch size）减小到 16（默认为 32）。筛选出舔阴（cunnilingus）的场景，结果输出到 /cut_movies/movie.cut.mkv</span></p>
+       <p class="md_block"><span class="md_line"></span></p>
+       <table width="888" style="width: 535px;">
+        <thead style="box-sizing: border-box;">
+         <tr style="box-sizing: border-box; background-color: rgb(255, 255, 255); border-top: 1px solid rgb(204, 204, 204);" class="firstRow">
+          <th align="right" style="box-sizing: border-box; padding: 6px 13px; border-top-color: rgb(221, 221, 221);">VRAM(GB)</th>
+          <th align="right" style="box-sizing: border-box; padding: 6px 13px; border-top-color: rgb(221, 221, 221);">batch_size</th>
+          <th align="right" style="box-sizing: border-box; padding: 6px 13px; border-top-color: rgb(221, 221, 221);">run time</th>
+         </tr>
+        </thead>
+        <tbody style="box-sizing: border-box;">
+         <tr style="box-sizing: border-box; background-color: rgb(255, 255, 255); border-top: 1px solid rgb(204, 204, 204);">
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">3.5</td>
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">32</td>
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">14.9s</td>
+         </tr>
+         <tr style="box-sizing: border-box; background-color: rgb(248, 248, 248); border-top: 1px solid rgb(204, 204, 204);">
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">1.9</td>
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">16</td>
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">15.7s</td>
+         </tr>
+         <tr style="box-sizing: border-box; background-color: rgb(255, 255, 255); border-top: 1px solid rgb(204, 204, 204);">
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">1.2</td>
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">8</td>
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">16.9s</td>
+         </tr>
+         <tr style="box-sizing: border-box; background-color: rgb(248, 248, 248); border-top: 1px solid rgb(204, 204, 204);">
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">0.8</td>
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">4</td>
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">19.5s</td>
+         </tr>
+         <tr style="box-sizing: border-box; background-color: rgb(255, 255, 255); border-top: 1px solid rgb(204, 204, 204);">
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">0.6</td>
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">2</td>
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">24.3s</td>
+         </tr>
+         <tr style="box-sizing: border-box; background-color: rgb(248, 248, 248); border-top: 1px solid rgb(204, 204, 204);">
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">0.1</td>
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">1</td>
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">36.2s<br /><br /></td>
+         </tr>
+        </tbody>
+       </table>
+       <p class="md_block">注：如果你的内存不够，可以减小批大小<br /></p>
+       <p class="md_block"><span class="md_line">在多种批大小情况下的 GPU VRAM 用量和运行时间：</span></p>
+       <p class="md_block"><span class="md_line">该结果是在带有 4GB VRAM 的 Nvidia GTX 960 上测试得到的，样本是一段 24.5 分钟的视频文件。当 batch_size = 32 时，处理 1 分钟的输入视频大约需要 0.6 秒，也就是说每小时大约 36 秒。</span></p>
+       <p class="md_block"><span class="md_line">除了 batching 之外，Miles Deep 还使用了 threading，这让其可以在分类的过程中截取和处理截图（screenshot）。</span></p>
+       <h2 id="toc_5">预测权重</h2>
+       <p class="md_block"><span class="md_line">这里是一个预测一段视频中每一秒的例子：</span></p>
+       <p class="md_block" style="text-align: center;"><span class="md_line"><img src="http://jiqizhixin.com/data/upload/ueditor/20161118/582e6173af926.jpg" title="Synced (211).jpg" alt="Synced (211).jpg" /></span></p>
+       <p class="md_block"><span class="md_line">通过你自己的 Caffe 模型使用 Miles Deep</span></p>
+       <p class="md_block"><span class="md_line">找猫</span></p>
+       <p class="md_block"><span class="md_line">下面这个例子是如果通过你自己的模型（或一个预训练的模型）使用这个程序：</span></p>
+       <pre>MODEL_PATH=/models/bvlc_reference_caffenet/&nbsp;
+
+miles-deep&nbsp;-t&nbsp;n02123045&nbsp;\
+-p&nbsp;caffe/${MODEL_PATH}/deploy.prototxt&nbsp;\
+-m&nbsp;caffe/data/ilsvrc12/imagenet_mean.binaryproto&nbsp;\
+-w&nbsp;caffe/${MODEL_PATH/bvlc_reference_caffenet.caffemodel&nbsp;\&nbsp;-l&nbsp;caffe/data/ilsvrc12/synsets.txt&nbsp;\&nbsp;movie.mp4</pre>
+       <!--block_code_end-->
+       <p class="md_block"><span class="md_line">这能找到在 movie.mp4 中的所有带有虎斑猫（tabby cat）的场景，并返回仅带有这些部分的结果 movie.cut.mp4。</span></p>
+       <p class="md_block"><span class="md_line">代码中的 n02123045 是虎斑猫的类别。你可以在 caffe/data/ilsvrc12/synset_words.txt 查找这些类别的代码。你也可以使用一个来自 model zoo 的预训练的模型：<a href="https://github.com/BVLC/caffe/wiki/Model-Zoo" style="color: rgb(192, 0, 0); text-decoration: underline;"><span style="color: rgb(192, 0, 0);">https://github.com/BVLC/caffe/wiki/Model-Zoo</span></a></span></p>
+       <p class="md_block"><span class="md_line">注：这个例子只是展示了其中的句法。但不知怎的，在我的经历中它的表现很差，很可能是因为分类有 1000 个。这个程序也能完美适合带有一个“other”类别的分类数量更小的模型。</span></p>
+       <h2 id="toc_6">模型</h2>
+       <p class="md_block"><span class="md_line">该模型是一个用 pynetbuilder （<a href="https://github.com/jay-mahadeokar/pynetbuilder/tree/master/models/imagenet" style="color: rgb(192, 0, 0); text-decoration: underline;"><span style="color: rgb(192, 0, 0);">https://github.com/jay-mahadeokar/pynetbuilder/tree/master/models/imagenet</span></a>）创建的带有残差连接（residual connections）的卷积神经网络（CNN）。这些模型都是 ImageNet 上预训练的。然后其最终层经过调整以适应新的分类数量和微调（fine-tuned）。</span></p>
+       <p class="md_block"><span class="md_line">正如 Karpathy et al 的论文《Large-scale Video Classification with Convolutional Neural Networks》建议的那样，我训练了最上面 3 层的权重而不只是最顶层的，这稍微提升了一些准确度：</span></p>
+       <p class="md_block"><span class="md_line"></span></p>
+       <table width="888" style="width: 535px;">
+        <thead style="box-sizing: border-box;">
+         <tr style="box-sizing: border-box; background-color: rgb(255, 255, 255); border-top: 1px solid rgb(204, 204, 204);" class="firstRow">
+          <th style="box-sizing: border-box; padding: 6px 13px; border-top-color: rgb(221, 221, 221);">RetunedLayers</th>
+          <th style="box-sizing: border-box; padding: 6px 13px; border-top-color: rgb(221, 221, 221);">Accuracy</th>
+         </tr>
+        </thead>
+        <tbody style="box-sizing: border-box;">
+         <tr style="box-sizing: border-box; background-color: rgb(255, 255, 255); border-top: 1px solid rgb(204, 204, 204);">
+          <td style="box-sizing: border-box; padding: 6px 13px;">Top3</td>
+          <td style="box-sizing: border-box; padding: 6px 13px;">94.6</td>
+         </tr>
+         <tr style="box-sizing: border-box; background-color: rgb(248, 248, 248); border-top: 1px solid rgb(204, 204, 204);">
+          <td style="box-sizing: border-box; padding: 6px 13px;">Top1</td>
+          <td style="box-sizing: border-box; padding: 6px 13px;">93.9<br /><br /></td>
+         </tr>
+        </tbody>
+       </table>
+       <p class="md_block"><span class="md_line"></span><br /></p>
+       <p class="md_block"><span class="md_line">下面使用不同的模型微调最上面 3 层所得到的结果，该结果是在 2500 张训练图像上测试得到的，这些图像来自与训练集不同的视频。</span></p>
+       <p class="md_block"><span class="md_line"></span></p>
+       <table width="888" style="width: 535px;">
+        <thead style="box-sizing: border-box;">
+         <tr style="box-sizing: border-box; background-color: rgb(255, 255, 255); border-top: 1px solid rgb(204, 204, 204);" class="firstRow">
+          <th style="box-sizing: border-box; padding: 6px 13px; border-top-color: rgb(221, 221, 221);">Model</th>
+          <th align="right" style="box-sizing: border-box; padding: 6px 13px; border-top-color: rgb(221, 221, 221);">Accuracy(%)</th>
+          <th align="right" style="box-sizing: border-box; padding: 6px 13px; border-top-color: rgb(221, 221, 221);">Flops(millions)</th>
+          <th align="right" style="box-sizing: border-box; padding: 6px 13px; border-top-color: rgb(221, 221, 221);">Params(millions)</th>
+         </tr>
+        </thead>
+        <tbody style="box-sizing: border-box;">
+         <tr style="box-sizing: border-box; background-color: rgb(255, 255, 255); border-top: 1px solid rgb(204, 204, 204);">
+          <td style="box-sizing: border-box; padding: 6px 13px;">resnet50</td>
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">80.0</td>
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">3858</td>
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">25.5</td>
+         </tr>
+         <tr style="box-sizing: border-box; background-color: rgb(248, 248, 248); border-top: 1px solid rgb(204, 204, 204);">
+          <td style="box-sizing: border-box; padding: 6px 13px;">resnet50_1by2</td>
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">94.6</td>
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">1070</td>
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">6.9</td>
+         </tr>
+         <tr style="box-sizing: border-box; background-color: rgb(255, 255, 255); border-top: 1px solid rgb(204, 204, 204);">
+          <td style="box-sizing: border-box; padding: 6px 13px;">resnet77_1by2</td>
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">95.7</td>
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">1561</td>
+          <td align="right" style="box-sizing: border-box; padding: 6px 13px;">9.4</td>
+         </tr>
+        </tbody>
+       </table>
+       <p class="md_block">训练损失和测试精度：<br /><span class="md_line"></span></p>
+       <p class="md_block" style="text-align: center;"><strong><span class="md_line"><img src="http://jiqizhixin.com/data/upload/ueditor/20161118/582e61dec2a87.png" title="blob.png" alt="blob.png" /></span></strong></p>
+       <p class="md_block"><span class="md_line">在所有测试的模型中，resnet50_1by2 在运行时间、内存和准确度上表现出了最佳的平衡。我认为全 resnet50 的低精度是因为过拟合（overfitting）的关系，因为它有更多的参数，也许其训练可以按不同的方式完成。</span></p>
+       <p class="md_block"><span class="md_line">上面的结果是通过 mirroring 而非 cropping 得到的。使用 cropping 能够将在 resnet50_1by2 上的结果稍微提升至 95.2%，因此它被用作了最终的模型。</span></p>
+       <p class="md_block"><span class="md_line">使用 TensorFlow 微调（fine-tuning） Inception V3 也能实现 80% 的准确度。但是，这是使用 299x299 的图像大小，而不是 224x224 的大小，也没有 mirroring 或 cropping，所以它们的结果不能直接进行比较。这个模型可能也会有过拟合的问题。</span></p>
+       <h2 id="toc_7">编辑电影</h2>
+       <p class="md_block"><span class="md_line">给定对于每一秒的帧的预测，它会获取这些预测的 argmax（最大值参数）并创建这段影片的截断块（cut blocks），其中的 argmax 等于目标（target），而其分数（score）也比一些阈值要大。其中的差距大小、匹配每个模块中目标的帧的最小比例（minimum fraction）和分数阈值（score threshold）都是可以调整的。FFmpeg 支持很多编解码器（codecs），包括 mp4、avi、flv、mkv、wmv 等等。</span></p>
+       <h2 id="toc_8">单帧 vs 多帧</h2>
+       <p class="md_block"><span class="md_line">这个模型并不使用任何时间信息，因为它分别处理每一张图像。Karpathy et al 的论文表明其它使用多帧（multiple frames）的模型的表现并不会好很多。它们难以应对相机的移动。将它们的慢融合模型（slow fusion model）与这里的结果进行比较仍然是很有趣的。</span></p>
+       <h2 id="toc_9">数据</h2>
+       <p class="md_block md_has_block_below md_has_block_below_ol"><span class="md_line">其训练数据库包含了 36,000（和 2500 测试图像）张图像，分成了 6 个类别：</span></p>
+       <ol class=" list-paddingleft-2">
+        <li><p>blowjob_handjob（口交和手淫）</p></li>
+        <li><p>cunnilingus（舔阴）</p></li>
+        <li><p>other（其它）</p></li>
+        <li><p>sex_back（后向）</p></li>
+        <li><p>sex_front（前向）</p></li>
+        <li><p>titfuck（乳交）</p></li>
+       </ol>
+       <p class="md_block"><span class="md_line">这些图像的大小都调整为了 256x256，并且带有水平镜像（horizontal mirroring），并且为了数据增强（data augmentation）还随机剪切（cropping）成了 224&times;224 的大小。有很多实验没有剪切，但这能稍微提升 resnet50_1by2 的结果。</span></p>
+       <p class="md_block"><span class="md_line">目前来说，这个数据集还受限于两个异性恋表演者。但鉴于这种方法的成功，我计划扩大分类的数量。因为这些训练很敏感，我个人并不会放出这些数据库；而只会提供训练出来的模型。</span></p>
+       <h2 id="toc_10">前向和后向性爱</h2>
+       <p class="md_block"><span class="md_line">这里的前向和后向性爱（sex front and back）是由相机的位置决定的，而非表演者的方向。如果女性表演者的身体面向相机，那么阴道的前面就展示了出来，这就是前向性爱（sex front）。如果女性的后面被展示了出来，就是后向性爱（sex back）。这创造了两种在视觉上不同的分类。其中在阴道性交和肛交之间不做区分；前向性爱和后向性爱可能两者都包含。</span></p>
+       <h2 id="toc_11">编译</h2>
+       <p class="md_block"><span class="md_line">克隆包含 Caffe 作为外部依赖包的 git repository<br /></span> &nbsp; &nbsp;<span class="md_line">按步骤指令（<a href="http://caffe.berkeleyvision.org/installation.html" style="color: rgb(192, 0, 0); text-decoration: underline;"><span style="color: rgb(192, 0, 0);">http://caffe.berkeleyvision.org/installation.html</span></a>）安装 Caffe 依赖包以用于你的平台。Ubuntu 指令（<a class="md_compiled" href="http://caffe.berkeleyvision.org/install_apt.html" style="color: rgb(192, 0, 0); text-decoration: underline;"><span style="color: rgb(192, 0, 0);">http://caffe.berkeleyvision.org/install_apt.html</span></a> ）。默认的是 OpenBlas。不要担心编辑 Makefile.config 或使用 Caffe 的问题。在 Ubuntu 16.04 上尝试这个，并在其上附加依赖包：</span></p>
+       <pre>sudo&nbsp;apt&nbsp;install&nbsp;libprotobuf-dev&nbsp;libleveldb-dev&nbsp;libsnappy-dev&nbsp;libopencv-dev&nbsp;libhdf5-serial-dev&nbsp;protobuf-compiler
+sudo&nbsp;apt&nbsp;install&nbsp;--no-install-recommends&nbsp;libboost-all-dev
+sudo&nbsp;apt&nbsp;install&nbsp;libopenblas-dev&nbsp;python-numpy
+#Add&nbsp;symbolic&nbsp;links&nbsp;for&nbsp;hdf5&nbsp;library#(not&nbsp;necessary&nbsp;on&nbsp;LinuxMint&nbsp;18)cd&nbsp;/usr/lib/x86_64-linux-gnu
+sudo&nbsp;ln&nbsp;-s&nbsp;libhdf5_serial.so&nbsp;libhdf5.so
+sudo&nbsp;ln&nbsp;-s&nbsp;libhdf5_serial_hl.so&nbsp;libhdf5_hl.so</pre>
+       <!--block_code_end-->
+       <ul class=" list-paddingleft-2">
+        <li><p>默认的是不带 CuDNN 的 GPU。如果你想用其它的工具，请编辑 Makefile 和 Makefile.caffe。注释掉和取消注释这两个文件中对应的行即可。</p></li>
+        <li><p>make</p></li>
+       </ul>
+       <h2 id="toc_12">证书</h2>
+       <p class="md_block"><span class="md_line">代码（包括训练好的模型）按 GPLv3 授权。Caffe 使用的是 BSD 2 授权。</span></p> 
+      </div> 
+      <div class="al-allow-reproduced"> 
+       <!--<p>--> 
+       <!--声明：本文由机器之心原创出品，版权归作者所有，转载请<a href="javascript:void(0);" class="al-allow-reproduced-click">点击此处</a>查看要求，机器之心对于违规侵权--> 
+       <!--者保有法律追诉权。--> 
+       <!--</p>--> 
+       <p style="font-style:italic; color:#999;"> 声明：本文由机器之心编译出品，原文来自Github，<a href="javascript:void(0);" class="al-allow-reproduced-click">转载请查看要求</a>，机器之心对于违规侵权者保有法律追诉权。 </p> 
+       <div class="al-allow-reproduced-rule"> 
+        <ol> 
+         <!--<li>网站转载请在文章开头粗体注明：本文转载自机器之心，标明作者，并附上本文链接；</li>--> 
+         <!--<li>微信公众号转载请在开头粗体注明：本文转载自机器之心，标明作者，并设置阅读原文链接为本文链接，微博转载请附上本文链接并@机器之心synced；</li>--> 
+         <!--<li>网站和微信转载具体文章后需来信至邮箱operation@jiqizhixin.com说明，备注转载文章标题、转载的微信号名称和转载日期。</li>--> 
+         <!--<li>机器之心只接受如上几种转载方式，其余均视为侵权，如需商业合作请致信bd@jiqizhixin.com。</li>--> 
+         <li>网站转载请在文章开头粗体注明：本文转载自机器之心，标明作者，并附上本文链接。</li>
+         <li>微信公众号转载请在开头粗体注明：本文转载自机器之心，标明作者，并设置阅读原文链接为本文链接，微博转载请附上本文链接并@机器之心synced。</li>
+         <li>网站和微信转载具体文章后需来信至邮箱operation@jiqizhixin.com说明，备注转载文章标题、转载的微信号名称和转载日期。</li>
+         <li>机器之心只接受如上几种转载方式，其余均视为侵权，如需商业合作请致信bd@jiqizhixin.com。</li> 
+        </ol> 
+       </div> 
+      </div> 
+     </div> 
+     <!--文章底部 相关文章begin--> 
+     <div class="al-article-nexus al-md20"> 
+      <h2>相关文章</h2> 
+      <div class="al-article-nexus-content am-g"> 
+       <a target="_blank" href="/article/2313" class="am-u-md-4"> <img src="/data/upload/20170218/58a7e06094eb9.png" alt="河南最快超算平台启用，加速智慧城市和人工智能应用" /> <p>河南最快超算平台启用，加速智慧城市和人工智能应用</p> </a>
+       <a target="_blank" href="/article/1947" class="am-u-md-4"> <img src="/data/upload/20161206/58465ebb131fb.png" alt="吴恩达NIPS 2016演讲现场直击：如何使用深度学习开发人工智能应用" /> <p>吴恩达NIPS 2016演讲现场直击：如何使用深度学习开发人工智能应用</p> </a>
+       <a target="_blank" href="/article/2325" class="am-u-md-4"> <img src="/data/upload/20170220/58aa92f224288.jpeg" alt="YodaNN：一个用于超低功耗二值卷积神经网络加速的框架" /> <p>YodaNN：一个用于超低功耗二值卷积神经网络加速的框架</p> </a> 
+      </div> 
+     </div> 
+     <!--文章底部 相关文章end--> 
+     <!--评论开始---> 
+     <a name="#comment"></a> 
+     <div class="al-article-comment"> 
+      <h2>评论</h2> 
+      <div class="al-article-comment-content"> 
+       <p> <span class="am-icon am-icon-commenting-o"></span>共有0条评论，<a href="javascript:void(0);" class="al-commentlist-show" data-closed="1">点击展开</a> </p> 
+       <div class="al-article-comment-content-main al-clearfix"> 
+        <div class="al-sendmsg-main-item al-sendmsg-main-item-show al-comment-input-big"> 
+         <div class="al-sendmsg-main-item-show-bd al-clearfix Smohan_FaceBox"> 
+          <div class="am-u-md-2 user-comment-headimg"> 
+           <a href=""><img style="margin:0;" src="/public//images/headicon.png" alt="" /></a> 
+          </div> 
+          <div class="am-u-md-10"> 
+           <div class="al-comment-box al-clearfix" style="margin-bottom:1rem;"> 
+            <textarea id="new_comment_content" name="" cols="30" rows="10" class="am-fl input-emoji" data-row="1"></textarea> 
+            <input type="hidden" name="post_title" id="hid_post_title" value="让老司机告别快进，Miles Deep使用CNN截取色情视频的关键部分" /> 
+            <input type="hidden" name="post_table" id="hid_post_table" value="posts" /> 
+            <input type="hidden" name="post_id" id="hid_post_id" value="12626" /> 
+            <input type="hidden" name="to_uid" id="hid_to_uid" value="0" /> 
+            <input type="hidden" name="parentid" id="hid_parentid" value="0" /> 
+            <input type="hidden" name="url" id="hid_url" value="/comment/comment/post" /> 
+            <a href="javascript:void(0);" class="am-fl al-sendmsg-emoji-btn al-comment-new">评论</a> 
+           </div> 
+           <div class="al-clearfix"> 
+            <a href="javascript:void(0);" class="face am-fl" title="表情"></a> 
+            <div class="am-fr"> 
+             <input type="checkbox" class="al-ansyc-weibo" /> 同步到新浪微博 
+            </div> 
+           </div> 
+          </div> 
+         </div> 
+        </div> 
+        <div class="al-article-comment-list"> 
+         <!--comment begin---> 
+         <!--comment begin---> 
+         <!--<div class="al-article-comment-item al-clearfix">--> 
+         <!--<div class="am-u-sm-2 user-comment-headimg">--> 
+         <!--<a href="">--> 
+         <!--<img src="http://s1.dwstatic.com/group1/M00/FA/2B/8644fcac578495cdccf2dce8777ec637.jpg" alt=""/>--> 
+         <!--</a>--> 
+         <!--</div>--> 
+         <!--<div class="am-u-sm-10">--> 
+         <!--<h3>username</h3>--> 
+         <!--<p>评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容评论内容</p>--> 
+         <!--<div class="al-article-comment-item-fn">--> 
+         <!--<span>六个小时前</span>--> 
+         <!--<span class="al-comment-other">--> 
+         <!--<i class="am-icon am-icon-commenting-o"></i> 回复--> 
+         <!--</span>--> 
+         <!--<span>--> 
+         <!--<i class="am-icon am-icon-trash-o"></i> 删除--> 
+         <!--</span>--> 
+         <!--<div class="al-comment-report">--> 
+         <!--<span class="al-fc-red">举报</span>--> 
+         <!--<ul class="al-comment-report-main">--> 
+         <!--<li><input type="radio" name="report"/> 色情</li>--> 
+         <!--<li><input type="radio" name="report"/> 暴力</li>--> 
+         <!--<li><input type="radio" name="report"/> 黄赌毒</li>--> 
+         <!--<li><input type="radio" name="report"/> 其他</li>--> 
+         <!--<li><input type="submit" value="提交"/></li>--> 
+         <!--</ul>--> 
+         <!--</div>--> 
+         <!--</div>--> 
+         <!--</div>--> 
+         <!--</div>--> 
+         <!-- --> 
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+     <!--评论结束---> 
+    </div> 
+    <div class="am-u-md-3"> 
+     <!--作者信息 begin--> 
+     <div class="side-box al-mb20 al-article-author"> 
+      <div class="al-send-msg-btn-wrap"> 
+       <div class="al-send-msg-btn"> 
+        <i class="am-icon-envelope-o al-send-msg-anchor"></i> 
+       </div> 
+      </div> 
+      <div class="al-send-msg-to-anchor Smohan_FaceBox al-clearfix"> 
+       <h2>吴攀<span class="close-author-msg am-fr">&times;</span></h2> 
+       <textarea name="" id="" cols="30" rows="10" placeholder="有什么想对作者说的话？" class="input-emoji"></textarea> 
+       <div class="al-send-msg-to-anchor-fn"> 
+        <div class="am-fl"> 
+         <a href="javascript:void(0);" class="face_send_author"></a> 
+        </div> 
+        <button class="am-btn am-btn-default al-send-msg-anchor-btn am-fr" data-uid="63">发送</button> 
+       </div> 
+       <!--<button class="am-btn am-btn-defalut al-close-msg-anchor-btn">取消</button>--> 
+      </div> 
+      <div class="al-article-authon-header-img"> 
+       <a href="/user/author/index/pid/NajnMFO0O0O6"> <img src="/data/upload/avatar/57bab6b3b4a48.jpg?t=1490560725" alt="" /> </a> 
+      </div> 
+      <span>吴攀</span> 
+      <p>邮箱：wupan@jiqizhixin.com</p> 
+      <div class="am-g"> 
+       <div class="am-u-sm-4"> 
+        <a href="/user/author/index/pid/NajnMFO0O0O6"> <strong>175</strong><br /> 文章 </a> 
+       </div> 
+       <div class="am-u-sm-4"> 
+        <a href="/user/author/comment/pid/NajnMFO0O0O6"> <strong>0</strong><br /> 评论 </a> 
+       </div> 
+       <div class="am-u-sm-4"> 
+        <a href="/user/author/favorite/pid/NajnMFO0O0O6"> <strong>0</strong><br /> 收藏 </a> 
+       </div> 
+      </div> 
+     </div> 
+     <!--作者信息 end--> 
+     <!--最热 begin--> 
+     <div class="side-box al-index-hot al-list-hot"> 
+      <div class="am-tabs" data-am-tabs=""> 
+       <ul class="am-tabs-nav am-nav am-nav-tabs"> 
+        <li class="am-active"> <a href="#tab1">24小时最热</a> </li> 
+        <li> <a href="#tab2">一周最热</a> </li> 
+       </ul> 
+       <div class="am-tabs-bd"> 
+        <div class="am-tab-panel am-fade am-in am-active" id="tab1"> 
+         <a target="_blank" href="/article/2530" class="al-index-hot-item"> 
+          <div class="am-fl am-hot-img"> 
+           <span class="al-replace-img" style="background-image: url(/data/upload/20170325/58d6476bc9589.jpg);"></span> 
+          </div> 
+          <div> 
+           <h3>傅盛：从互联网+到AI+，认知是人类前进的唯...</h3> 
+           <p><span>2017年03月25日</span></p> 
+          </div> </a>
+         <a target="_blank" href="/article/2524" class="al-index-hot-item"> 
+          <div class="am-fl am-hot-img"> 
+           <span class="al-replace-img" style="background-image: url(/data/upload/20170325/58d60b82e0103.png);"></span> 
+          </div> 
+          <div> 
+           <h3>机器之心深度研学社每周干货：2017年第12...</h3> 
+           <p><span>2017年03月25日</span></p> 
+          </div> </a>
+         <a target="_blank" href="/article/2522" class="al-index-hot-item"> 
+          <div class="am-fl am-hot-img"> 
+           <span class="al-replace-img" style="background-image: url(/data/upload/20170323/58d37f996339e.png);"></span> 
+          </div> 
+          <div> 
+           <h3>Yann LeCun清华演讲：深度学习与人工...</h3> 
+           <p><span>2017年03月23日</span></p> 
+          </div> </a>
+         <a target="_blank" href="/article/2541" class="al-index-hot-item"> 
+          <div class="am-fl am-hot-img"> 
+           <span class="al-replace-img" style="background-image: url(/data/upload/20170326/58d77ddda7c5d.png);"></span> 
+          </div> 
+          <div> 
+           <h3>2017电圣人机大战：腾讯「绝艺」再添胜利奖...</h3> 
+           <p><span>约13时前</span></p> 
+          </div> </a>
+         <a target="_blank" href="/article/2520" class="al-index-hot-item"> 
+          <div class="am-fl am-hot-img"> 
+           <span class="al-replace-img" style="background-image: url(/data/upload/20170323/58d376bb47c37.png);"></span> 
+          </div> 
+          <div> 
+           <h3>机器之心专访腾讯「绝艺」团队负责人：用全新强...</h3> 
+           <p><span>2017年03月23日</span></p> 
+          </div> </a> 
+        </div> 
+        <div class="am-tab-panel am-fade" id="tab2"> 
+         <a target="_blank" href="/article/2465" class="al-index-hot-item"> 
+          <div class="am-fl am-hot-img"> 
+           <span class="al-replace-img" style="background-image: url(/data/upload/20170314/58c7873b32771.jpg"></span> 
+          </div> 
+          <div> 
+           <h3>只需十四步：从零开始掌握Python机器学习...</h3> 
+           <p><span>2017年03月14日</span></p> 
+          </div> </a>
+         <a target="_blank" href="/article/2522" class="al-index-hot-item"> 
+          <div class="am-fl am-hot-img"> 
+           <span class="al-replace-img" style="background-image: url(/data/upload/20170323/58d37f996339e.png"></span> 
+          </div> 
+          <div> 
+           <h3>Yann LeCun清华演讲：深度学习与人工...</h3> 
+           <p><span>2017年03月23日</span></p> 
+          </div> </a>
+         <a target="_blank" href="/article/2498" class="al-index-hot-item"> 
+          <div class="am-fl am-hot-img"> 
+           <span class="al-replace-img" style="background-image: url(/data/upload/20170320/58cf6e0685321.jpg"></span> 
+          </div> 
+          <div> 
+           <h3>TensorFlow极简教程：创建、保存和恢...</h3> 
+           <p><span>2017年03月20日</span></p> 
+          </div> </a>
+         <a target="_blank" href="/article/2506" class="al-index-hot-item"> 
+          <div class="am-fl am-hot-img"> 
+           <span class="al-replace-img" style="background-image: url(http://jiqizhixin.com/data/upload/ueditor/20170320/58cf91cc301ea.jpg"></span> 
+          </div> 
+          <div> 
+           <h3>DeepMind与NHS合作引论文质疑：作者...</h3> 
+           <p><span>2017年03月20日</span></p> 
+          </div> </a>
+         <a target="_blank" href="/article/2500" class="al-index-hot-item"> 
+          <div class="am-fl am-hot-img"> 
+           <span class="al-replace-img" style="background-image: url(/data/upload/20170320/58cf733c82b89.png"></span> 
+          </div> 
+          <div> 
+           <h3>Uber动荡加剧，总裁Jeff Jones宣...</h3> 
+           <p><span>2017年03月20日</span></p> 
+          </div> </a> 
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+     <!--最热 end--> 
+     <!----> 
+     <!--<div class="side-box al-mb20 al-article-nexus-special">--> 
+     <!--<h2>相关文章</h2>--> 
+     <!--<div class="al-index-hot">--> 
+     <!----> 
+     <!--<a href="/article/2313" class="al-index-hot-item">--> 
+     <!--&lt;!&ndash;<img src="/frontEnd//images/default/no_pic.jpg" alt="" class="am-fl"/>&ndash;&gt;--> 
+     <!--<div class="am-fl am-hot-img">--> 
+     <!--<span class="al-replace-img" style="background-image: url(/data/upload/20170218/58a7e06094eb9.png);"></span>--> 
+     <!--</div>--> 
+     <!--<div>--> 
+     <!--<h3>河南最快超算平台启用，加速智慧城市和人工智能应用</h3>--> 
+     <!--<p><span>2017年02月18日</span></p>--> 
+     <!--</div>--> 
+     <!--</a>--> 
+     <!----> 
+     <!--<a href="/article/1947" class="al-index-hot-item">--> 
+     <!--&lt;!&ndash;<img src="/frontEnd//images/default/no_pic.jpg" alt="" class="am-fl"/>&ndash;&gt;--> 
+     <!--<div class="am-fl am-hot-img">--> 
+     <!--<span class="al-replace-img" style="background-image: url(/data/upload/20161206/58465ebb131fb.png);"></span>--> 
+     <!--</div>--> 
+     <!--<div>--> 
+     <!--<h3>吴恩达NIPS 2016演讲现场直击：如何使用深度学习开发人...</h3>--> 
+     <!--<p><span>2016年12月06日</span></p>--> 
+     <!--</div>--> 
+     <!--</a>--> 
+     <!----> 
+     <!--<a href="/article/2325" class="al-index-hot-item">--> 
+     <!--&lt;!&ndash;<img src="/frontEnd//images/default/no_pic.jpg" alt="" class="am-fl"/>&ndash;&gt;--> 
+     <!--<div class="am-fl am-hot-img">--> 
+     <!--<span class="al-replace-img" style="background-image: url(/data/upload/20170220/58aa92f224288.jpeg);"></span>--> 
+     <!--</div>--> 
+     <!--<div>--> 
+     <!--<h3>YodaNN：一个用于超低功耗二值卷积神经网络加速的框架</h3>--> 
+     <!--<p><span>2017年02月20日</span></p>--> 
+     <!--</div>--> 
+     <!--</a>--> 
+     <!----> 
+     <!--</div>--> 
+     <!--</div>--> 
+     <!----> 
+     <!--文章页页广告位 begin--> 
+     <!--文章页广告位 end--> 
+    </div> 
+   </div> 
+  </div> 
+  <div class="al-mask"></div> 
+  <iframe class="al-index-center-in share_weibo_word" style="width:800px;height:350px; overflow:auto;display: none;"></iframe> 
+  <!-- JiaThis Button BEGIN --> 
+  <div class="jiathis_share_slide jiathis_share_32x32" id="jiathis_share_slide" style="top:40%;left:calc((100% - 1180px)/2 + 20px);border:0;background:none;width: 58px !important; z-index:900 !important;"> 
+   <div class="jiathis_share_slide_top" id="jiathis_share_title" style="display: none;"></div> 
+   <div class="jiathis_share_slide_inner jiathis_share_slide_inner_define" style="width:58px !important; height:200px !important;"> 
+    <div class="jiathis_style_32x32"> 
+     <a class="jiathis_button_weixin" style="display:block;width:35px;height:35px;background: url('/frontEnd//images/al_share_default_weixin.png') no-repeat top center;background-size: cover;"></a> 
+     <a class="jiathis_button_tsina" style="display:block;margin-bottom: .5rem;width:35px;height:35px;background: url('/frontEnd//images/al_share_default_weibo.png') no-repeat top center; background-size:cover; "></a> 
+     <a class="jiathis_button_qzone" style="display:block;width:35px;margin-bottom: .5rem;height:35px;background: url('/frontEnd//images/al_share_default_qqkj.png') no-repeat top center; background-size: cover"></a> 
+     <!--<a class="jiathis_button_tqq"></a>--> 
+     <!--<a class="jiathis_button_renren"></a>--> 
+     <!--<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>--> 
+     <script type="text/javascript">
+                var jiathis_config = {
+                    slide:{
+                        divid:'jiathis_main',
+                        pos:'right'
+                    }
+                };
+            </script> 
+     <script type="text/javascript" src="http://v3.jiathis.com/code/jia.js" charset="utf-8"></script> 
+     <script type="text/javascript" src="http://v3.jiathis.com/code/jiathis_slide.js" charset="utf-8"></script> 
+    </div>
+   </div>
+  </div> 
+  <!-- JiaThis Button END --> 
+  <!--content end--> 
+  <footer class="al-footer"> 
+   <div class="am-container am-footer-con"> 
+    <div class="am-u-md-8"> 
+     <div class="am-u-md-2"> 
+      <h2 class="al-footer-logo"><img src="/frontEnd//images/logo_index.png" alt="" /></h2> 
+     </div> 
+     <div class="am-u-md-10 al-ft"> 
+      <p> <a href="/about#aboutus" target="">关于我们</a> &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="/about#joinus" target="">加入我们</a> &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="/about#report" target="">寻求报道</a> &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="/about#business" target="">商务合作</a> &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<a href="http://www.jsform.com/web/formview/5833f3670cf29ca54bda9068" target="_blank">Newsletter</a> </p> 
+      <p> <span>友情链接：</span> <a href="https://syncedreview.com/" target="_blank">Synced Global</a> &nbsp;&nbsp;<a href="https://medium.com/@Synced" target="_blank">机器之心Medium博客</a> &nbsp;&nbsp;<a href="http://www.vcbeat.net/" target="_blank">动脉网</a> &nbsp;&nbsp;<a href="http://tech.163.com/smart" target="_blank">网易智能</a> &nbsp;&nbsp;<a href="http://rsarxiv.github.io/" target="_blank">PaperWeekly</a> &nbsp;&nbsp; </p> 
+     </div> 
+    </div> 
+    <div class="am-u-md-2"> 
+     <div class="al-footer-link al-ft"> 
+      <a href="javascript:void(0)" class="am-btn-sm" title="扫描关注我们"> <i class="am-icon-weixin am-icon-sm"></i> 
+       <div class="al-qrcode"> 
+        <img class="arr-img" src="/frontEnd//images/triangle.png" alt="扫描关注我们" /> 
+        <img class="qrcode-img" src="/frontEnd//images/weixinQR.jpg" alt="扫描关注我们" /> 
+       </div> </a> 
+      <a href="http://weibo.com/synced" target="_blank" class="am-btn-sm" title="点击查看我们的官方微博"> <i class="am-icon-weibo am-icon-sm"></i> </a> 
+      <a href="http://wpa.qq.com/msgrd?v=1&amp;uin=2378836078&amp;site=jiqizhxin.com&amp;menu=yes" target="_blank" title="点击联系我们" class="am-btn-sm"> <i class="am-icon-qq am-icon-sm"></i> </a> 
+      <a href="/rss" target="_blank" title="点击订阅" class="am-btn-sm"> <i class="am-icon-rss am-icon-sm"></i> </a> 
+     </div> 
+    </div> 
+   </div> 
+   <p class="am-cf am-container al-footer-foot"> <span class="am-fl al-ft">Copyright 2017 版权所有 jiqizhixin.com 京ICP备12027496</span> <span class="am-fr al-footer-name">机器之心（北京）科技有限公司</span> </p>  
+  </footer> 
+  <div data-am-widget="gotop" class="am-gotop am-gotop-fixed"> 
+   <a href="#top" title="返回顶部"> </a> 
+  </div> 
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?c6f55accf7113c5ebd548c79a5f529d4";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+  <script type="text/javascript">
+//全局变量
+var GV = {
+    DIMAUB: "/",
+    JS_ROOT: "public/js/",
+    TOKEN: ""
+};
+</script> 
+  <!-- Le javascript
+    ================================================== --> 
+  <!-- Placed at the end of the document so the pages load faster --> 
+  <script src="/public//js/jquery.js"></script> 
+  <script src="/frontEnd//assets/js/amazeui.min.js"></script> 
+  <script src="/frontEnd//assets/js/app.js"></script> 
+  <script src="/public//js/cookie.js"></script> 
+  <script src="/public//js/wind.js"></script> 
+  <script src="/themes/simplebootx/Public/simpleboot/bootstrap/js/bootstrap.min.js"></script> 
+  <script src="/public//js/frontend.js"></script> 
+  <script src="/frontEnd//js/searchbox.js"></script> 
+  <script src="/frontEnd//js/bindShare.js"></script> 
+  <script src="/frontEnd//js/common.js"></script> 
+  <script>
+$(function(){
+    $('body').on('touchstart.dropdown', '.dropdown-menu', function (e) { e.stopPropagation(); });
+
+    $("#main-menu li.dropdown").hover(function(){
+        $(this).addClass("open");
+    },function(){
+        $(this).removeClass("open");
+    });
+    (function($){
+        $.fn.totop=function(opt){
+            var scrolling=false;
+            return this.each(function(){
+                var $this=$(this);
+                $(window).scroll(function(){
+                    if(!scrolling){
+                        var sd=$(window).scrollTop();
+                        if(sd>100){
+                            $this.fadeIn();
+                        }else{
+                            $this.fadeOut();
+                        }
+                    }
+                });
+
+                $this.click(function(){
+                    scrolling=true;
+                    $('html, body').animate({
+                        scrollTop : 0
+                    }, 500,function(){
+                        scrolling=false;
+                        $this.fadeOut();
+                    });
+                });
+            });
+        };
+        $('input.search').searchbox({
+            url: '/your/search/url',
+            param: 'q',
+            dom_id: '#thumbnails',
+            delay: 250,
+            loading_css: '#spinner'
+        });
+    })(jQuery);
+    $('.amz-cse').on({
+        'mouseenter': function () {
+            $(this).addClass('am-active');
+        },
+        'mouseleave':function(){
+            $(this).removeClass('am-active');
+            $(this).find('input').val('');
+        }
+    });
+
+    $('.amz-cse input[type="text"]').on('blur', function () {
+      $(this).closest('.amz-cse').removeClass('am-active');
+    });
+    });
+</script> 
+  <script src="/frontEnd//js/smohan.face.js"></script> 
+  <script src="/frontEnd//js/article_imglist.js"></script> 
+  <script src="/frontEnd//js/article_comment.js"></script> 
+  <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script> 
+  <script>
+    ;(function () {
+        //ajax获取服务器端配置
+        var URL = window.location.href;
+        $.post('/Portal/Jssdk/share', {url:encodeURIComponent(URL)},function (data) {
+            if (data.state === 'success') {
+                console.log(data);
+                wx.config({
+                    debug: false, //是否开启debug
+                    appId: 'wxb0f6ea4f05e88ae0', //appId
+                    timestamp: data.timestamp,
+                    nonceStr: data.nonceStr,
+                    signature: data.signature,
+                    jsApiList: [
+                        'onMenuShareTimeline',
+                        'onMenuShareAppMessage',
+                        'onMenuShareQQ',
+                        'onMenuShareWeibo',
+                        'onMenuShareQZone'
+                    ]
+                });
+                wx.ready(function () {
+                    console.log('wx is ready');
+                    var obj = {
+                        title: document.title, //分享标体
+                        desc: $('.al-article-content p').eq(0).text().slice(0, 30) + '...',
+                        link: location.href,
+                        imgUrl: 'http://jiqizhixin.com/data/upload/20161118/582e6252da08e.jpg', //分享图标 封面图， 可以页面中存个地址取一下
+                        success: function () {
+
+                        },
+                        cancel: function () {
+
+                        }
+                    };
+                    wx.onMenuShareTimeline(obj);
+                    wx.onMenuShareAppMessage(obj);
+                    wx.onMenuShareQQ(obj);
+                    wx.onMenuShareWeibo(obj);
+                    wx.onMenuShareQZone(obj);
+                });
+            }
+        })
+    })();
+</script>  
+ </body>
+</html>

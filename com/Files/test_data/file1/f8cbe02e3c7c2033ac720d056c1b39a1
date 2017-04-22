@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<title>商家开放平台 - 聚美优品</title>
+<script type="text/javascript" src="/static/js/jquery-1.9.1.min.js"></script>
+<link href="/static/css/login.css" type="text/css" rel="stylesheet">
+ <link rel="shortcut icon" href="/static/icon/favicon.ico" type="image/x-icon">
+
+ <style type="text/css">
+     .language_wrap{position: absolute;top: 30px;right: 30px; width: 220px;height: 80px;}
+     .lan_icon{background: url("/static/img/national_flag.jpg") no-repeat;width: 30px;height: 20px;display: inline-block; margin-right:5px;  float: left;}
+     .icon_en{background-position: -30px 0;}
+     .language_wrap ul,.language_wrap li{list-style-type:none}
+     .language_wrap li{float:left;padding-right:10px;}
+     .language_wrap li{margin-bottom:5px;}
+     .language_wrap a,.language_wrap a:hover{text-decoration:none; color:#fff;font-size:14px;line-height:16px;display: inline-block; }
+ </style>
+ 
+</head>
+
+<body id="login-body"><div id="browser">
+    <a class="close-word" href="#">我知道了</a>
+    <strong>我知道了</strong> 当前浏览器版本过低，可能导致部分功能出现问题。推荐下载使用简单高效的<a href="https://www.google.com/intl/zh-CN/chrome/browser/" target="_blank">谷歌</a>浏览器</div>
+    
+<script type="text/javascript">
+</script>
+
+<script type="text/javascript">
+	//浏览器检测
+	
+function browserCheck(){
+        var browser=navigator.appName;
+        if(browser=="Microsoft Internet Explorer"){
+            var b_version=navigator.appVersion
+            var version=b_version.split(";");
+            var trim_Version=version[1].replace(/[ ]/g,"");
+            var domain = document.domain;
+
+            if(trim_Version=="MSIE6.0" || trim_Version=="MSIE7.0"){
+                return "ltrIE7";
+            }else if(trim_Version=="MSIE8.0"){
+                return "isIE8";
+            }else if(trim_Version=="MSIE9.0"){
+                return "isIE9";
+            }else {
+                return "standard";
+            }
+        }else{
+            return "standard";
+        }
+    }
+	
+	 $(".close-word").click(function(){
+        //SetCookie("dealman_browser_tip","off");
+        $("#browser").hide();
+        return false;
+    });
+	
+	$(function() {
+			//$("#browser").show();
+            if(browserCheck() !== "standard"){  
+            	$("#browser").show();
+            }
+	});
+
+</script>
+
+	<div class="login-content">
+		<h2 style="font-family: 'Times New Roman',serif;color:#f5eceb;font-size:26px;">
+			Welcome to Jumei —  JLS新物流系统
+		</h2>
+		<form class="login-form" id="login-form" action="" method="post" onsubmit="submitLogin();return false;">			
+			<input type="hidden" name="encryptParam" value="62831d5874a7c21118b9c135baa68067">
+			<div class="input-wrap">
+				<div class="input-username">
+					<input type="text" id="userName" name="userName" value="" class="input" autocomplete="off"> <label for="userName">用户名</label>
+				</div>
+				<div class="input-password">
+					<input type="password" id="password" name="password" value="" class="input" autocomplete="off"> <label for="password">密码</label>
+					<p class="form-supply">
+						<a href="/findPwd?app_id=60f072cb58ed" class="fgt" id="forgetPwd">忘记密码?</a>
+					</p>
+				</div>
+				<div class="input-captcha" style="display: none">
+					<input type="text" id="captcha_input" name="captcha" value="" class="input" autocomplete="off"> <label for="captcha_input" class="captcha_label">验证码</label> <img src="" id="captcha">
+					<p class="form-supply1">
+						看不清? <a href="javascript: void(0);" onclick="changeCaptcha();" id="change-image" class="fgt">换一张</a>
+					</p>
+				</div>
+				<div class="notification" id="errorMsg" style="display: none">
+				</div>
+			</div>
+
+			<div class="input-button">
+				<input type="submit" id="submit-btn" value="登  录">
+			</div>
+		</form>		
+		
+		<div class="tip_msg">
+			<span>
+							</span>
+		</div>
+	</div>	
+	
+	<div class="language_wrap">
+	<ul>
+	    <li><i class="lan_icon icon_ch"></i><a href="javascript:changeLanguage('en');">English</a></li>
+	    <li><i class="lan_icon icon_en"></i><a href="javascript:changeLanguage('zh');">中文</a></li>
+	</ul>
+	</div>
+
+
+	
+	<script type="text/javascript">
+		var isShowCaptcha ="false";
+		
+		$(function() {
+			if (isShowCaptcha == 'true') {
+				showCaptcha();
+			}
+			setForgetPwdUrl();
+		});
+
+		function setForgetPwdUrl() {
+			var search = window.location.search;
+			var app_id = search.slice(search.search('app_id') + 7, search
+					.search('&'));
+			$('#forgetPwd').attr('href', '/findPwd?app_id=' + app_id);
+		}
+
+		function showCaptcha() {
+			$('#captcha').attr('src',
+					'/Captcha/generateApiCaptcha?' + Math.random());
+			$('.input-captcha').css('display', 'block');
+		}
+
+		function changeCaptcha() {
+			document.getElementById('captcha').src = '/Captcha/generateApiCaptcha?'
+					+ Math.random();
+			document.getElementById('captcha_input').focus();
+		}
+
+		function submitLogin() {
+			$('.notification').hide();
+			$('#submit-btn').attr('disabled',"true");
+			//alert($('#login-form').serializeArray());
+			$.post('/v1/api/login.do' + location.search, $('#login-form')
+					.serializeArray(), function(data) {
+			$('#submit-btn').attr('disabled',"true");
+				// 显示返回信息
+				if (data.error == 1
+						&& $('.input-captcha').css('display') == 'block') {
+					if (data.isShowCaptcha) {
+						changeCaptcha();
+					}
+					
+						var tmp='<div class="alert alert-danger" id="timer_wrap" >' +data.message+ '</div>';
+						$('#errorMsg').html(tmp).show();
+						 var time1 = $("#timer_wrap span").text();
+						 if(time1){
+						 clearInterval(timer); 
+						 var timer = setInterval(function(){
+                              $("#timer_wrap span").text(--time1);
+							   console.log(time1);
+                               if(time1 == 0){
+							   clearInterval(timer); 
+							   $('#errorMsg').hide();
+							   $('#submit-btn').removeAttr("disabled"); 
+							   }
+                        },1000);
+            			timer();
+						 }
+						 $('#submit-btn').removeAttr("disabled"); 
+					$('#errorMsg').html(data.message).show();
+				} else if (data.error == 1
+						&& $('.input-captcha').css('display') == 'none') {
+					if (data.isShowCaptcha) {
+						showCaptcha();
+					}
+						var tmp='<div class="alert alert-danger" id="timer_wrap" >' +data.message+ '</div>';
+						$('#errorMsg').html(tmp).show();
+						 var time1 = $("#timer_wrap span").text();
+						 if(time1){
+						 clearInterval(timer); 
+						 var timer = setInterval(function(){
+                              $("#timer_wrap span").text(--time1);
+							   console.log(time1);
+                               if(time1 == 0){
+							   clearInterval(timer); 
+							   $('#errorMsg').hide();
+							   $('#submit-btn').removeAttr("disabled"); 
+							   }
+                        },1000);
+            			timer();
+						 }
+						 $('#submit-btn').removeAttr("disabled"); 
+				} else if (data.error == 0) {
+					window.location.href = data.callbackUrl;
+				} else {
+					$('#errorMsg').html("数据错误").show();
+				}
+			}, 'json');
+			$('#submit-btn').removeAttr("disabled"); 
+			return true;
+		}
+		
+		var input = $(".input");
+		input.each(function() {
+			if ($(this).val() !== "") {
+				$(this).next().addClass("hide");
+			}
+		});
+		input.keydown(function() {
+			var label = $(this).next();
+			label.addClass("hide");
+		});
+		//propertychange for IE8
+		input.on("input propertychange blur", function(e) {
+			var label = $(this).next();
+			if ($(this).val() != "") {
+				label.addClass("hide");
+			} else {
+				label.removeClass("hide");
+			}
+		});
+		
+
+	    function changeLanguage(language){
+	        $.ajax({
+	            type:"post",
+	            url:"/v1/api/changeLanguage",
+	            data:{local:language},
+	            success:function(out){
+	                location.reload();
+	            }
+	        });
+	    }
+	</script>
+
+
+</body></html>

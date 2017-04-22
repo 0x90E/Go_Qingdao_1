@@ -1,0 +1,665 @@
+<!DOCTYPE html><html><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width， initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="format-detection" content="telephone=no">
+<meta http-equiv="Expires" content="-1">
+<meta http-equiv="Cache-Control" content="no-cache">
+<meta http-equiv="Pragma" content="no-cache">
+<title>流量超市</title>
+<!--
+<script type="text/javascript" src="/e/statics/link3/js/jquery.pack.js"></script>
+-->
+<link rel="stylesheet" href="/e/css/style.css">
+<link rel="stylesheet" href="/e/statics/admin/theme/default/css/global.css">
+<script type="text/javascript" src="/e/statics/js/jquery/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="/e/statics/link3/js/swipe.js"></script>
+<script type="text/javascript" src="/e/statics/link3/js/new_iscroll.js"></script>
+<script type="text/javascript" src="/e/statics/link3/js/jquery.messager.js"></script>
+<script type="text/javascript" src="/e/statics/js/jQuery.md5.js"></script>
+<script type="text/javascript" src="/e/statics/link3/js/link.js"></script>
+<link rel="stylesheet" href="/e/statics/js/jquery-ui-1.11.0/jquery-ui.min.css">
+<script type="text/javascript" src="/e/statics/js/jquery-ui-1.11.0/jquery-ui.min.js"></script>
+<script type="text/javascript" src="/e/statics/js/webutil.js"></script>
+<script>
+var show_count = 15;
+	function loadmy(objValue,all,hot_text){
+		for(var i=0;i<=show_count;i++){
+			$(".hot_list"+i).hide();
+			$("#more"+i).hide();
+			$("#hide"+i).hide();
+		}
+		$(".hot_listlast").hide();
+		$("#morelast").hide();
+		$("#hidelast").hide();
+		
+		if(all==''){//不是点击“更多”、“收起”
+		    var len = $(".hot_list"+objValue).length; 
+		    if(len>show_count) len = show_count;
+			if(objValue=='0'){
+				for(var i=0;i<len;i++){
+				    $(".hot_list"+objValue)[i].style.display="block";
+				}
+			}
+			else{
+				for(var i=1;i<=show_count;i++){
+					$("#hot_list"+objValue+i).show();
+				}
+			}
+			if( $(".hot_list"+objValue).length > show_count){
+				$("#more"+objValue).show();
+			}
+			
+		}else{
+		    if(all=='more'){//点击“更多”
+		    	$(".hot_list"+objValue).show();
+				$("#more"+objValue).hide();
+				$("#hide"+objValue).show();
+		    }else if(all=='hide'){//点击“收起”
+		    	$("#hide"+objValue).hide();
+		    	$(".hot_list"+objValue).hide();
+		    	var len = $(".hot_list"+objValue).length;
+		    	if(len>show_count) len = show_count; 
+				if(objValue=='0'){
+					for(var i=0;i<len;i++){
+					    $(".hot_list"+objValue)[i].style.display="block";
+					}
+				}else{
+			    	for(var i=1;i<=show_count;i++){
+						$("#hot_list"+objValue+i).show();
+					}
+				}
+				$("#more"+objValue).show();
+		    }
+			
+		}	
+		if(hot_text!=''){
+			$('#hot_text').html(hot_text);
+		}
+		
+	}
+	function init(){
+	    loadmy('0','','');
+	    linkToken();
+		var len = $(".imgList li").length;
+		if(len!=0){
+			$(".imgList").find("li").eq(0).find("a").find("img").show();
+			$(".infoList").find("li").removeClass("infoOn").eq(0).addClass("infoOn");
+			
+		}
+		var goodsLen = $('.hot_listlast').length;
+		for(var i=1;i<=goodsLen;i++){
+			$('#goodsDesc'+i).html($('#goodsDesc'+i).attr("attdVal"));
+		}
+	}
+	//获取用户流量信息
+function queryUserFlow(mobile) {
+	var url = "/e/tglj/queryUserFlow.do";
+	$.ajax( {
+			type : 'post',
+			url : url,
+			dataType : 'json',
+			data : {mobile:mobile},
+			success : function(data) {
+				if (data!=null&&data.userNetType!=null){
+					if(data.userNetType=='1') {
+						alert("尊敬的"+mobile+"用户，您主套餐已用流量"+data.gprsUsed+"M，剩余流量"+data.gprsLeavings+"M。");
+					} else {	
+						if(data.moneyFlag=='true') {
+							alert("尊敬的"+mobile+"用户，您本月的流量费消费金额已大于20元。");
+						}				
+					}
+				}
+			}
+	});
+}
+
+$(function(){
+	getLocation();
+	Axon_key=$("#user_Axon_key").val();
+	returl=$("#user_returl").val();
+	spreadid=$("#spreadid").val();
+	mobile=$("#svcnum").val();
+	bk=$("#bk").val();
+	var hasMsisdn = $("#hasMsisdn").val();
+	console.info(spreadid);
+	if (mobile==""||mobile=="输入手机号码"){//号码未知才需要去取号
+		if (returl!="" && hasMsisdn=='false') {//已经知道要取得手机号需要访问的url了
+			urlv2='crossurl='+returl+Axon_key;
+			urlv3='/e/tglj/getcrossdata.do?'+urlv2;
+	    			$.ajax( {
+						type : 'post',
+						url : urlv3,
+						dataType : 'json',
+						//jsonp: "callback",
+						success : function(data) {
+							if (data!=null&&data.msisdn!=null&&data.msisdn.length>2){
+								var qhnum=data.msisdn.substring(2);
+								$("#svcnum").val(qhnum);//设置手机号，要去掉86
+								//$("#nocodemobile").val(qhnum);设置手机号，要去掉86
+								
+								var issuccessgetmobile = $("#issuccessgetmobile").val();
+								if(issuccessgetmobile!='0') {
+									$("#issuccessgetmobile").val(1);
+									//$("#userqhhm").show();切换号码按钮可见
+									queryUserFlow(qhnum);
+								}
+							}
+						}
+					});
+		}else if (bk!="1") {//没有重定向过则需要重定向，否则不要去重定向，免得取不到号一直跳
+			Axon_key=newGuid();
+			times=Math.round(new Date().getTime()/1000);
+			md5key='wotglm'+times+'njaction';
+			resp=$.md5(md5key);
+			sip=$("#sourceip").val();
+			//1.全网nqs查询接口-查询当前用户归属
+			paramvalue='Axon_key='+Axon_key+'&spID=wotglm&timestamp='+times+'&response='+resp+'&sourceIP='+sip;
+			requesturl='http://mob.kk3g.net/GetHome?'+paramvalue;//要访问的url，因为跨域无法取数据，所以改用httpclient来获取数据
+			//console.info("requesturl:"+requesturl);//后台httpclient访问该url,返回对方的string
+			paramvalue+= '&seq_linkid='+$('#seq_linkid').val();
+			selfurl='/e/tglj/getcrossdata.do?crossurl=http://mob.kk3g.net/GetHome&'+paramvalue;//传给后台让后台去访问对方的url，访问json结果
+					$.ajax( {
+						type : 'post',
+						url : selfurl,
+						dataType : 'json',
+						//jsonp: "callback",
+						success : function(data) {
+							if (data!=null&&data.retCode==0&&data.url!="") {//可以解析url
+								var pre_linkid = $("#seq_linkid").val();
+								reqparam='spreadid='+spreadid+'&bk=1&pre_linkid='+pre_linkid;
+								base64req=base64encode(reqparam);
+								backurl=base64encode('/e/tglj/link.do?'+base64req);
+								//2.sp会话标识接口-sp本身的重定向接口 backurl 系统回调地址，returl 用户所在省的会话标识接口地址
+								location='/e/tglj/GetMsisdn.do?Axon_key='+Axon_key+'&backurl='+backurl+'&returl='+data.url;
+							}
+							//console.info(data);
+							//alert(data.retCode);//0
+							//alert(data.url);//http://220.249.191.188:1180/Axon_key/
+						}
+					});
+		}
+	}
+});
+	var layer;
+    var dialog;
+	function pcdlxxx(id){
+        layer = "lay_" + id;
+        dialog = $("#" + layer).dialog({
+            autoOpen:false,
+            height:120,
+            width:200,
+            modal: true,
+            draggable: false,
+            resizable: false,
+            position: {
+                my: "center",
+                //at: "right+150px top+75px ",
+                of: $(this)
+            },
+            buttons: {}
+        });
+        $("#" + layer).dialog("open");
+    }
+    function openWx(url, id, os){
+    	var seq_linkid = $("#seq_linkid").val();
+        dlapp(id, os);
+        javascript:window.open(url);
+    }
+    $(document).ready(function(){
+        $(".clickApp").click(function(){
+            var appId = $(this).attr("id");
+            var os = $(this).attr("os"); // 1=ios, 2=android
+
+            dlapp(appId, os);
+        });
+    });
+    function dlapp(appId, os){
+    	var seq_linkid = $("#seq_linkid").val();
+    	 var partnerid = $("#partnerid").val();
+    	 var geolocation = $("#geolocation").val();
+    	 var spreadid = $("#spreadid").val();
+    	 var sourceip = $("#sourceip").val();
+    	 
+        jQuery.ajax({
+            url : "/e/app/dl.do",
+            data : {
+                appId : appId,
+                appOs : os,
+                seq_linkid : seq_linkid,
+                partnerid : partnerid,
+                geolocation : geolocation,
+                spreadid : spreadid,
+                sourceip : sourceip
+            },
+            type : 'POST',
+            success : function(data) {
+            }
+        });
+    }
+function linkToken() {
+	var url = "/e/nsl/linkToken.do";
+	$.ajax( {
+		type : 'post',
+		url : url,
+		dataType : 'text',
+		data : '',
+		success : function(data) {
+			if (data!=null){
+				var dataval=data.split("@@");
+				//$("#token").val(dataval[0]);
+				$("#seq_linkid").val(dataval[1]);
+				$("#sourceip").val(dataval[2]);
+				
+			}
+		}
+	});
+	}
+	//获取用户的地理位置
+    function getLocation() {
+    	if (window.navigator.geolocation) {
+    		//enableHighAcuracy指示浏览器获取高精度的位置，默认为false
+    		//timeout指定获取地理位置的超时时间，默认不限时，单位为毫秒
+    		//maximumAge最长有效期，在重复获取地理位置时，此参数指定多久再次获取位置
+    		var options = {enableHighAccuracy: true, timeout: 5000, maximumAge: 300000};
+    		window.navigator.geolocation.getCurrentPosition(handleSuccess, handleError, options);
+    	} else {
+    		//alert("浏览器不支持html5来获取地理位置信息");
+    	}
+    }
+    function handleSuccess(position) {
+    	var lng = position.coords.longitude;
+        var lat = position.coords.latitude;
+        //alert("纬度："+lat+";经度"+lng);
+    	$("#geolocation").val(lat+","+lng);
+    }
+    function ckdg(proMainId){
+        
+        var subproids = $("#subproids"+proMainId).val();
+        $("#subproids").val(subproids);
+        var errMsg = $("#errMsg"+proMainId).val();
+        $("#errMsg").val(errMsg);
+        var valid = $("#valid"+proMainId).val();
+        $("#valid").val(valid);
+        var attdCode = $("#attdCode"+proMainId).val();
+        $("#attdCode").val(attdCode);
+        var proname = $("#proname"+proMainId).val();
+        $("#proname").val(proname);
+        $("#proid").val(proMainId);
+        var proDesc = $("#proDesc"+proMainId).attr("attdVal");
+        $("#proDesc").val(proDesc);
+        var proImg = $("#proImg"+proMainId).val();
+        $("#proImg").val(proImg);
+        var salePrice = $("#salePrice"+proMainId).val();
+        $("#salePrice").val(salePrice);
+        var spreadnote = $("#spreadnote").attr("attdVal");
+        $("#spreadnote").val(spreadnote);
+        var productgnote = $("#productgnote").attr("attdVal");
+        $("#productgnote").val(productgnote);
+        $('#proForm').submit();
+        
+        
+    }
+    function toLogin(){
+    	location="/e/nsl/toLogin.do";
+    }
+</script>
+</head>
+<body onload="init()">
+<!--头部-->
+<div class="top">
+<div class="top_con">流量超市
+<a onclick="toLogin();"><div class="top_right"><img src="/e/images/user.png" width="100%" alt=""></div></a>
+</div>
+</div>
+<!--右侧固定-->
+<div class="right_fixed">
+<a class="right_fixed_top" href=""><img src="/e/images/top.png" width="100%" alt=""></a>
+</div>
+<!--banner-->
+<div class="banner">
+	<ul class="imgList"><!-- 图片部分 -->
+                	<li><a onclick="javascript:window.open('http://www.10010fj.cn/sx/NDAx')"><img src="/e/file/banner/55fab0b579ef4d8690c39a9a04d55113.jpg" alt="视听定向流量包" width="100%" style=""></a></li>
+            </ul> 
+    <!--<img src="/e/img/prev.jpg" width="20px" height="40px" id="prev" style="display:none">
+    <img src="/e/img/next.jpg" width="20px" height="40px" id="next" style="display:none">-->
+    <div class="bg"></div> <!-- 图片底部背景层部分-->
+    <ul class="infoList"><!-- 图片左下角文字信息部分 -->
+            	<li class="infoOn">视听定向流量包</li>
+          </ul>
+    <!-- 图片右下角序号部分 -->
+    <ul class="indexList">
+               <li class="indexOn">1</li>
+           </ul>
+</div>
+<!--内容-->
+<div class="menu">
+	<ul class="menuList">
+	    <li class="menu_li">
+	    	<a onclick="loadmy('0','','销售排行榜');"><img src="/e/images/icon6.png" width="100%"><br><p>销售排行榜</p></a>
+	    </li>
+				    		    		        	    		    		    		        	    		    		    	        			<li class="menu_li">
+            			<a onclick="loadmy('3','','影音定向包');"><img src="/e/images/icon6.png" width="100%"><br><p>影音定向包</p></a>
+	        		</li>
+	            	        	    		    		    		        	    		    		    		        	    	    	</ul>
+<div class="clear"></div>
+</div>
+<div class="grey_bg"></div>
+<!--火爆热销-->
+<div class="hot">
+<div class="hot_title"><i><img src="/e/images/hot.png" width="100%" alt=""></i><span id="hot_text">销售排行榜</span></div>
+<div class="hot_list_con" id="top_pro">
+	                                  	 			         <div class="hot_list0" id="hot_list01" style="display: block; ">
+				        <div class="hot_list_img">
+				        	<img src="/e//file/main/1789d34a499a4ddda1ddfabf0fb14c5b.png">
+				        </div>
+				        <div class="hot_list_right"><p>WO+视频腾讯定向流量包</p><h2>15<i>元</i></h2>
+				        	<a class="hot_list_btn" onclick="ckdg('283')">订购</a>
+				        </div>
+				     </div>
+				     <div class="clear"></div>
+				     <div>
+				    	<input type="hidden" id="subproids283" value="167,304">
+				        <input type="hidden" id="errMsg283" value="您不符合本产品订购条件，详询10010！">
+				        <input type="hidden" id="valid283" value="1">
+				        <input type="hidden" id="attdCode283" value="">
+				        <input type="hidden" id="proname283" value="WO+视频腾讯定向流量包">
+				        <input type="hidden" id="proDesc283" attdval="&lt;p style=&quot;LINE-HEIGHT: normal&quot;&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun&quot;&gt;&lt;strong&gt;&lt;span style=&quot;FONT-FAMILY: 宋体,SimSun; COLOR: rgb(0,0,0)&quot;&gt;&lt;/span&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun&quot;&gt;&lt;strong&gt;&nbsp; 即日起至2017年6月30日，活动期内订购的用户，在订购成功后可获得额外赠送的腾讯视频VIP会员及1G省内当月通用流量月包（若不退订，活动期内从订购成功后的当月起连续2个月每月赠送1G省内当月通用流量月包，活动期内从订购成功后的当月起每月赠送31天腾讯视频VIP会员权益直至2017年12月31日）。&nbsp;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;LINE-HEIGHT: normal&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;p style=&quot;LINE-HEIGHT: normal&quot;&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun; COLOR: rgb(0,0,0)&quot;&gt;&lt;strong&gt;&lt;span style=&quot;FONT-SIZE: 18px; FONT-FAMILY: 微软雅黑, 'Microsoft YaHei'; COLOR: rgb(0,0,0)&quot;&gt;资费说明：&lt;/span&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;LINE-HEIGHT: normal&quot;&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun; COLOR: rgb(0,0,0)&quot;&gt;1、15元/月，订购立即生效，次月自动续订。&lt;br/&gt;2、本产品仅适用于福建联通手机用户。3G预付费20元卡、上网卡及数据副卡除外。&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;LINE-HEIGHT: normal&quot;&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun; COLOR: rgb(0,0,0)&quot;&gt;&lt;br/&gt;&lt;strong&gt;&lt;span style=&quot;FONT-SIZE: 18px; FONT-FAMILY: 微软雅黑, 'Microsoft YaHei'; COLOR: rgb(0,0,0)&quot;&gt;温馨提示：&lt;/span&gt;&lt;/strong&gt;&lt;br/&gt;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;LINE-HEIGHT: normal&quot;&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun; COLOR: rgb(0,0,0)&quot;&gt;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;LINE-HEIGHT: normal&quot;&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun; COLOR: rgb(0,0,0)&quot;&gt;1、本流量包月业务订购、使用按照手机号码识别，以订购号码的实际使用为准，不可共享，不可结转。&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;LINE-HEIGHT: normal&quot;&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun; COLOR: rgb(0,0,0)&quot;&gt;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun&quot;&gt;&lt;span style=&quot;FONT-SIZE: 16px; FONT-FAMILY: 微软雅黑, 'Microsoft YaHei'; COLOR: rgb(0,0,0)&quot;&gt;2、务必下载安装最新客户端，&lt;/span&gt;&lt;strong&gt;&lt;span style=&quot;FONT-SIZE: 16px; FONT-FAMILY: 微软雅黑, 'Microsoft YaHei'; COLOR: rgb(0,0,0)&quot;&gt;登陆激活方可使用本流量包月业务。&lt;/span&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun; COLOR: rgb(0,0,0)&quot;&gt;3、请使用3GNET接入点访问本产品，使用其他接入点访问本产品会照常收取流量费用。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun; COLOR: rgb(0,0,0)&quot;&gt;4、请不要安装和使用任何流量监控、上网代理及VPN类软件和插件。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun; COLOR: rgb(0,0,0)&quot;&gt;5、登录客户端时请确认本机是“已订购”或“已开通”状态。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun; COLOR: rgb(0,0,0)&quot;&gt;6、本业务所提供的定向流量为国内流量，在港澳台、国外使用本业务会照常收取流量费用。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun; COLOR: rgb(0,0,0)&quot;&gt;7、更换手机之后，需重新在新手机上进行绑定操作，确认本机是“已订购”或“已开通”状态，才可享受免流量服务。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun; COLOR: rgb(0,0,0)&quot;&gt;8、本业务的定向免流流量，遵守套餐流量封顶规则，用户使用总流量（含免费流量）超过套餐流量上限之后系统将自动关闭上网功能，不能再使用本产品，下月自动开通。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;">
+				        <input type="hidden" id="proImg283" value="/file/main/1789d34a499a4ddda1ddfabf0fb14c5b.png">
+				        <input type="hidden" id="salePrice283" value="15">
+				    </div>
+				  		                  	 		     		                          	 		                  	 			         <div class="hot_list0" id="hot_list02" style="display: block; ">
+				        <div class="hot_list_img">
+				        	<img src="/e//file/main/2f6824374fff42afac39b9307e6193a4.jpg">
+				        </div>
+				        <div class="hot_list_right"><p>WO+视频乐视定向流量包月</p><h2>15<i>元</i></h2>
+				        	<a class="hot_list_btn" onclick="ckdg('373')">订购</a>
+				        </div>
+				     </div>
+				     <div class="clear"></div>
+				     <div>
+				    	<input type="hidden" id="subproids373" value="352,351">
+				        <input type="hidden" id="errMsg373" value="您不符合本产品订购条件，详询10010！">
+				        <input type="hidden" id="valid373" value="1">
+				        <input type="hidden" id="attdCode373" value="">
+				        <input type="hidden" id="proname373" value="WO+视频乐视定向流量包月">
+				        <input type="hidden" id="proDesc373" attdval="&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun&quot;&gt;&lt;strong&gt;&lt;span style=&quot;FONT-SIZE: 20px&quot;&gt;&nbsp; 即日起至2017年6月30日，活动期内订购的用户，在订购成功后可获得额外赠送的乐次元影视会员及1G省内当月通用流量月包（若不退订，活动期内从订购成功后的当月起连续2个月每月赠送1G省内当月通用流量月包，活动期内从订购成功后的当月起每月赠送31天乐次元影视会员权益直至2017年12月31日）。&lt;/span&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun&quot;&gt;&lt;strong&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体, SimSun&quot;&gt;&lt;br/&gt;&lt;/span&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun&quot;&gt;&lt;strong&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体, SimSun&quot;&gt;资费说明：&lt;/span&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 18px; FONT-FAMILY: 宋体,SimSun&quot;&gt;1、15元/月，订购立即生效，次月自动续订。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 18px; FONT-FAMILY: 宋体,SimSun&quot;&gt;2、本产品仅适用于福建联通手机用户。3G预付费20元卡、上网卡及数据副卡除外。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun&quot;&gt;&lt;strong&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体, SimSun&quot;&gt;温馨提示：&lt;/span&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 18px; FONT-FAMILY: 宋体,SimSun&quot;&gt;1、本流量包月业务订购、使用按照手机号码识别，以订购号码的实际使用为准，不可共享，不可结转。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 18px; FONT-FAMILY: 宋体,SimSun&quot;&gt;2、务必下载安装最新客户端，登陆激活方可使用本流量包月业务。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 18px; FONT-FAMILY: 宋体,SimSun&quot;&gt;3、请使用3GNET接入点访问本产品，使用其他接入点访问本产品会照常收取流量费用。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 18px; FONT-FAMILY: 宋体,SimSun&quot;&gt;4、请不要安装和使用任何流量监控、上网代理及VPN类软件和插件。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 18px; FONT-FAMILY: 宋体,SimSun&quot;&gt;5、登录客户端时请确认本机是“已订购”或“已开通”状态。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 18px; FONT-FAMILY: 宋体,SimSun&quot;&gt;6、本业务所提供的定向流量为国内流量，在港澳台、国外使用本业务会照常收取流量费用。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 18px; FONT-FAMILY: 宋体,SimSun&quot;&gt;7、更换手机之后，需重新在新手机上进行绑定操作，确认本机是“已订购”或“已开通”状态，才可享受免流量服务。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 18px; FONT-FAMILY: 宋体,SimSun&quot;&gt;8、本业务的定向免流流量，遵守套餐流量封顶规则，用户使用总流量（含免费流量）超过套餐流量上限之后系统将自动关闭上网功能，不能再使用本产品，下月自动开通。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;">
+				        <input type="hidden" id="proImg373" value="/file/main/2f6824374fff42afac39b9307e6193a4.jpg">
+				        <input type="hidden" id="salePrice373" value="15">
+				    </div>
+				  		     				<a id="more0" onclick="loadmy('0','more','')" style="display: none; "><div class="hot_list_more">点击加载更多↓</div></a>
+	<a id="hide0" onclick="loadmy('0','hide','')" style="display: none; "><div class="hot_list_more">收起↑</div></a>
+</div>
+<div class="hot_list_con" id="cls_pro">
+	                 <div class="hot_list3" id="hot_list31" style="display: none; ">
+	        <div class="hot_list_img">
+	        	<img src="/e//file/main/1789d34a499a4ddda1ddfabf0fb14c5b.png">
+	        </div>
+	        <div class="hot_list_right"><p>WO+视频腾讯定向流量包</p><h2>15<i>元</i></h2>
+	        	<a class="hot_list_btn" onclick="ckdg('283')">订购</a>
+	        </div>
+			<div class="clear"></div>
+	    </div>
+	    <div>
+	    	<input type="hidden" id="subproids283" value="167,304">
+	        <input type="hidden" id="errMsg283" value="您不符合本产品订购条件，详询10010！">
+	        <input type="hidden" id="valid283" value="1">
+	        <input type="hidden" id="attdCode283" value="">
+	        <input type="hidden" id="proname283" value="WO+视频腾讯定向流量包">
+	        <input type="hidden" id="proDesc283" attdval="&lt;p style=&quot;LINE-HEIGHT: normal&quot;&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun&quot;&gt;&lt;strong&gt;&lt;span style=&quot;FONT-FAMILY: 宋体,SimSun; COLOR: rgb(0,0,0)&quot;&gt;&lt;/span&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun&quot;&gt;&lt;strong&gt;&nbsp; 即日起至2017年6月30日，活动期内订购的用户，在订购成功后可获得额外赠送的腾讯视频VIP会员及1G省内当月通用流量月包（若不退订，活动期内从订购成功后的当月起连续2个月每月赠送1G省内当月通用流量月包，活动期内从订购成功后的当月起每月赠送31天腾讯视频VIP会员权益直至2017年12月31日）。&nbsp;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;LINE-HEIGHT: normal&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;p style=&quot;LINE-HEIGHT: normal&quot;&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun; COLOR: rgb(0,0,0)&quot;&gt;&lt;strong&gt;&lt;span style=&quot;FONT-SIZE: 18px; FONT-FAMILY: 微软雅黑, 'Microsoft YaHei'; COLOR: rgb(0,0,0)&quot;&gt;资费说明：&lt;/span&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;LINE-HEIGHT: normal&quot;&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun; COLOR: rgb(0,0,0)&quot;&gt;1、15元/月，订购立即生效，次月自动续订。&lt;br/&gt;2、本产品仅适用于福建联通手机用户。3G预付费20元卡、上网卡及数据副卡除外。&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;LINE-HEIGHT: normal&quot;&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun; COLOR: rgb(0,0,0)&quot;&gt;&lt;br/&gt;&lt;strong&gt;&lt;span style=&quot;FONT-SIZE: 18px; FONT-FAMILY: 微软雅黑, 'Microsoft YaHei'; COLOR: rgb(0,0,0)&quot;&gt;温馨提示：&lt;/span&gt;&lt;/strong&gt;&lt;br/&gt;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;LINE-HEIGHT: normal&quot;&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun; COLOR: rgb(0,0,0)&quot;&gt;&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;LINE-HEIGHT: normal&quot;&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun; COLOR: rgb(0,0,0)&quot;&gt;1、本流量包月业务订购、使用按照手机号码识别，以订购号码的实际使用为准，不可共享，不可结转。&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;LINE-HEIGHT: normal&quot;&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun; COLOR: rgb(0,0,0)&quot;&gt;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun&quot;&gt;&lt;span style=&quot;FONT-SIZE: 16px; FONT-FAMILY: 微软雅黑, 'Microsoft YaHei'; COLOR: rgb(0,0,0)&quot;&gt;2、务必下载安装最新客户端，&lt;/span&gt;&lt;strong&gt;&lt;span style=&quot;FONT-SIZE: 16px; FONT-FAMILY: 微软雅黑, 'Microsoft YaHei'; COLOR: rgb(0,0,0)&quot;&gt;登陆激活方可使用本流量包月业务。&lt;/span&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun; COLOR: rgb(0,0,0)&quot;&gt;3、请使用3GNET接入点访问本产品，使用其他接入点访问本产品会照常收取流量费用。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun; COLOR: rgb(0,0,0)&quot;&gt;4、请不要安装和使用任何流量监控、上网代理及VPN类软件和插件。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun; COLOR: rgb(0,0,0)&quot;&gt;5、登录客户端时请确认本机是“已订购”或“已开通”状态。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun; COLOR: rgb(0,0,0)&quot;&gt;6、本业务所提供的定向流量为国内流量，在港澳台、国外使用本业务会照常收取流量费用。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun; COLOR: rgb(0,0,0)&quot;&gt;7、更换手机之后，需重新在新手机上进行绑定操作，确认本机是“已订购”或“已开通”状态，才可享受免流量服务。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun; COLOR: rgb(0,0,0)&quot;&gt;8、本业务的定向免流流量，遵守套餐流量封顶规则，用户使用总流量（含免费流量）超过套餐流量上限之后系统将自动关闭上网功能，不能再使用本产品，下月自动开通。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;">
+	        <input type="hidden" id="proImg283" value="/file/main/1789d34a499a4ddda1ddfabf0fb14c5b.png">
+	        <input type="hidden" id="salePrice283" value="15">
+	    </div>
+	             <div class="hot_list3" id="hot_list32" style="display: none; ">
+	        <div class="hot_list_img">
+	        	<img src="/e//file/main/2f6824374fff42afac39b9307e6193a4.jpg">
+	        </div>
+	        <div class="hot_list_right"><p>WO+视频乐视定向流量包月</p><h2>15<i>元</i></h2>
+	        	<a class="hot_list_btn" onclick="ckdg('373')">订购</a>
+	        </div>
+			<div class="clear"></div>
+	    </div>
+	    <div>
+	    	<input type="hidden" id="subproids373" value="352,351">
+	        <input type="hidden" id="errMsg373" value="您不符合本产品订购条件，详询10010！">
+	        <input type="hidden" id="valid373" value="1">
+	        <input type="hidden" id="attdCode373" value="">
+	        <input type="hidden" id="proname373" value="WO+视频乐视定向流量包月">
+	        <input type="hidden" id="proDesc373" attdval="&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun&quot;&gt;&lt;strong&gt;&lt;span style=&quot;FONT-SIZE: 20px&quot;&gt;&nbsp; 即日起至2017年6月30日，活动期内订购的用户，在订购成功后可获得额外赠送的乐次元影视会员及1G省内当月通用流量月包（若不退订，活动期内从订购成功后的当月起连续2个月每月赠送1G省内当月通用流量月包，活动期内从订购成功后的当月起每月赠送31天乐次元影视会员权益直至2017年12月31日）。&lt;/span&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun&quot;&gt;&lt;strong&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体, SimSun&quot;&gt;&lt;br/&gt;&lt;/span&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun&quot;&gt;&lt;strong&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体, SimSun&quot;&gt;资费说明：&lt;/span&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 18px; FONT-FAMILY: 宋体,SimSun&quot;&gt;1、15元/月，订购立即生效，次月自动续订。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 18px; FONT-FAMILY: 宋体,SimSun&quot;&gt;2、本产品仅适用于福建联通手机用户。3G预付费20元卡、上网卡及数据副卡除外。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体,SimSun&quot;&gt;&lt;strong&gt;&lt;span style=&quot;FONT-SIZE: 20px; FONT-FAMILY: 宋体, SimSun&quot;&gt;温馨提示：&lt;/span&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 18px; FONT-FAMILY: 宋体,SimSun&quot;&gt;1、本流量包月业务订购、使用按照手机号码识别，以订购号码的实际使用为准，不可共享，不可结转。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 18px; FONT-FAMILY: 宋体,SimSun&quot;&gt;2、务必下载安装最新客户端，登陆激活方可使用本流量包月业务。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 18px; FONT-FAMILY: 宋体,SimSun&quot;&gt;3、请使用3GNET接入点访问本产品，使用其他接入点访问本产品会照常收取流量费用。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 18px; FONT-FAMILY: 宋体,SimSun&quot;&gt;4、请不要安装和使用任何流量监控、上网代理及VPN类软件和插件。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 18px; FONT-FAMILY: 宋体,SimSun&quot;&gt;5、登录客户端时请确认本机是“已订购”或“已开通”状态。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 18px; FONT-FAMILY: 宋体,SimSun&quot;&gt;6、本业务所提供的定向流量为国内流量，在港澳台、国外使用本业务会照常收取流量费用。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 18px; FONT-FAMILY: 宋体,SimSun&quot;&gt;7、更换手机之后，需重新在新手机上进行绑定操作，确认本机是“已订购”或“已开通”状态，才可享受免流量服务。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;FONT-SIZE: 18px; FONT-FAMILY: 宋体,SimSun&quot;&gt;8、本业务的定向免流流量，遵守套餐流量封顶规则，用户使用总流量（含免费流量）超过套餐流量上限之后系统将自动关闭上网功能，不能再使用本产品，下月自动开通。&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;">
+	        <input type="hidden" id="proImg373" value="/file/main/2f6824374fff42afac39b9307e6193a4.jpg">
+	        <input type="hidden" id="salePrice373" value="15">
+	    </div>
+	    	    <a id="more3" onclick="loadmy('3','more','')" style="display: none; "><div class="hot_list_more">点击加载更多↓</div></a>
+	    <a id="hide3" onclick="loadmy('3','hide','')" style="display: none; "><div class="hot_list_more">收起↑</div></a>
+	
+	</div>
+</div>
+<div class="grey_bg"></div>
+<!--热门下载-->
+<div class="hot">
+<div class="hot_title"><i><img src="/e/images/download.png" width="100%" alt=""></i>热门下载</div>
+<div class="download_list_con">
+        <!-- App下载展示 -->
+                        <ul>
+                                                                                                <div class="download_list">
+                                    	<a href="javascript:pcdlxxx('3')">
+                                    		<img src="/e/file/app/cdbcacf3330b4ce0ad32941a8cbd155e.png" border="0"><br>手机营业厅
+                                    	</a>
+                                    </div>
+                                        
+                                    <div id="lay_3" style="display: none" title="提示">
+                                            	请选择一个版本下载: <br>
+                                            <b>
+                                                                                                    <a href="#" onclick="openWx(&quot;http://ad.10010.com/uniAdms_2.0/ad/urlProxy?placeCode=WT_AD_004&amp;&amp;targetUrl=http://itunes.apple.com/cn/app/id416457422&amp;&amp;areaCode=098&amp;&amp;targetId=8a948d8c40819425014106881416007c&amp;&amp;placeId=4028b8813ecad797013ecadd1adc0009&amp;&amp;sysId=WT&quot;,&quot;3&quot;,&quot;1&quot;)">IOS</a>
+                                                                                                &nbsp;&nbsp;
+                                                                                                    <a href="#" onclick="openWx(&quot;http://ad.10010.com/uniAdms_2.0/ad/urlProxy?placeCode=WT_AD_004&amp;&amp;targetUrl=http://info.10010.com/database/clientdownload/clientfiles/unicomClient_AndroidV2_4.apk&amp;&amp;areaCode=098&amp;&amp;targetId=8a948d8c4081953d014099711eae0005&amp;&amp;placeId=4028b8813ecad797013ecadd1adc0009&amp;&amp;sysId=WT&quot;,&quot;3&quot;,&quot;2&quot;)">Android</a>
+                                                                                            </b>
+                                        </div>
+                                    
+                                
+                                
+                                                                                                                                <div class="download_list">
+                                    	<a href="javascript:pcdlxxx('4')">
+                                    		<img src="/e/file/app/adc13afebaaf459dbb61b8bab597e2d2.png" border="0"><br>116114
+                                    	</a>
+                                    </div>
+                                        
+                                    <div id="lay_4" style="display: none" title="提示">
+                                            	请选择一个版本下载: <br>
+                                            <b>
+                                                                                                    <a href="#" onclick="openWx(&quot;https://itunes.apple.com/cn/app/116114-cha-hao-men-piao-jiu/id472137863?mt=8&quot;,&quot;4&quot;,&quot;1&quot;)">IOS</a>
+                                                                                                &nbsp;&nbsp;
+                                                                                                    <a href="#" onclick="openWx(&quot;http://app.wo116114.com/publish/getnewversion?n=mlifeAnd&amp;onlyurl=1&amp;download=1&quot;,&quot;4&quot;,&quot;2&quot;)">Android</a>
+                                                                                            </b>
+                                        </div>
+                                    
+                                
+                                
+                                                                                                                                <div class="download_list">
+                                    	<a href="javascript:pcdlxxx('5')">
+                                    		<img src="/e/file/app/90c525ef1b264d61b8670dd9965b898e.png" border="0"><br>微信
+                                    	</a>
+                                    </div>
+                                        
+                                    <div id="lay_5" style="display: none" title="提示">
+                                            	请选择一个版本下载: <br>
+                                            <b>
+                                                                                                    <a href="#" onclick="openWx(&quot;https://itunes.apple.com/cn/app/wei-xin/id414478124?mt=8&quot;,&quot;5&quot;,&quot;1&quot;)">IOS</a>
+                                                                                                &nbsp;&nbsp;
+                                                                                                    <a href="#" onclick="openWx(&quot;http://weixin.qq.com/cgi-bin/download302?check=false&amp;uin=&amp;stype=&amp;promote=&amp;fr=www.baidu.com&amp;lang=zh_CN&amp;ADTAG=&amp;url=android16&quot;,&quot;5&quot;,&quot;2&quot;)">Android</a>
+                                                                                            </b>
+                                        </div>
+                                    
+                                
+                                
+                                                                                                                                <div class="download_list">
+                                    	<a href="javascript:pcdlxxx('2')">
+                                    		<img src="/e/file/app/bbe0c0b0666347adaca3507d53e30619.png" border="0"><br>PPTV
+                                    	</a>
+                                    </div>
+                                        
+                                    <div id="lay_2" style="display: none" title="提示">
+                                            	请选择一个版本下载: <br>
+                                            <b>
+                                                                                                    <a href="#" onclick="openWx(&quot;https://itunes.apple.com/cn/app/pptv-wang-luo-dian-shi/id438426078?mt=8&quot;,&quot;2&quot;,&quot;1&quot;)">IOS</a>
+                                                                                                &nbsp;&nbsp;
+                                                                                                    <a href="#" onclick="openWx(&quot;http://download.pplive.com/android/PPTV_aPhone_3.8.3_pptv.apk&quot;,&quot;2&quot;,&quot;2&quot;)">Android</a>
+                                                                                            </b>
+                                        </div>
+                                    
+                                
+                                
+                                                                                                                                <div class="download_list">
+                                    	<a href="javascript:pcdlxxx('6')">
+                                    		<img src="/e/file/app/2501b87616974d40bafb32c954f59614.png" border="0"><br>淘宝
+                                    	</a>
+                                    </div>
+                                        
+                                    <div id="lay_6" style="display: none" title="提示">
+                                            	请选择一个版本下载: <br>
+                                            <b>
+                                                                                                    <a href="#" onclick="openWx(&quot;https://itunes.apple.com/cn/app/tao-bao/id387682726?mt=8&quot;,&quot;6&quot;,&quot;1&quot;)">IOS</a>
+                                                                                                &nbsp;&nbsp;
+                                                                                                    <a href="#" onclick="openWx(&quot;http://download.taobaocdn.com/wireless/taobao4android/latest/702757.apk?spm=0.0.0.0.NINZXV&amp;amp;amp;file=702757.apk&quot;,&quot;6&quot;,&quot;2&quot;)">Android</a>
+                                                                                            </b>
+                                        </div>
+                                    
+                                
+                                
+                                                                                                                                <div class="download_list">
+                                    	<a href="javascript:pcdlxxx('7')">
+                                    		<img src="/e/file/app/27b2336f548d4b0981c4acf6fe844d68.png" border="0"><br>360手机安全卫士
+                                    	</a>
+                                    </div>
+                                        
+                                    <div id="lay_7" style="display: none" title="提示">
+                                            	请选择一个版本下载: <br>
+                                            <b>
+                                                                                                    <a href="#" onclick="openWx(&quot;https://itunes.apple.com/cn/app/360shou-ji-wei-shi/id441216572?mt=8&quot;,&quot;7&quot;,&quot;1&quot;)">IOS</a>
+                                                                                                &nbsp;&nbsp;
+                                                                                                    <a href="#" onclick="openWx(&quot;http://msoftdl.360.cn/mobilesafe/shouji360/360safesis/360MobileSafe_5.3.1.1013.apk&quot;,&quot;7&quot;,&quot;2&quot;)">Android</a>
+                                                                                            </b>
+                                        </div>
+                                    
+                                
+                                
+                                                                                    </ul>
+</div>
+</div>
+<div>
+<form id="proForm" method="post" action="/e/tglj/toOrder.do">
+	<input type="hidden" name="partnerid" id="partnerid" value="P100000174">
+	<input type="hidden" name="spreadid" id="spreadid" value="9528">
+	<input type="hidden" name="seq_linkid" id="seq_linkid" value="464119">
+	<input type="hidden" name="source_ip" id="source_ip" value="">
+	<input type="hidden" name="geolocation" id="geolocation" value="">
+	<input type="hidden" name="subproids" id="subproids" value="">
+	<input type="hidden" name="proid" id="proid" value="">
+	<input type="hidden" name="errMsg" id="errMsg" value="">
+	<input type="hidden" name="valid" id="valid" value="">
+	<input type="hidden" name="attdCode" id="attdCode" value="">
+	<input type="hidden" name="proname" id="proname" value="">
+	<input type="hidden" name="dgpageversion" id="dgpageversion" value="2016-11-8">
+	<input type="hidden" name="proDesc" id="proDesc" value="">
+	<input type="hidden" name="channelId" id="channelId" value="2294">
+	<input type="hidden" name="proMainId" id="proMainId" value="265">
+	<input type="hidden" name="proImg" id="proImg" value="">
+	<input type="hidden" name="salePrice" id="salePrice" value="">
+	<input type="hidden" name="spreadnote" id="spreadnote" attdval="">
+	<input type="hidden" name="productgnote" id="productgnote" attdval="">
+	<input type="hidden" name="bk" id="bk" value="">
+	<input type="hidden" name="svcnum" id="svcnum" value="">
+	<input type="hidden" name="hasMsisdn" id="hasMsisdn" value="false">
+	<input type="hidden" name="issuccessgetmobile" id="issuccessgetmobile" value="0">
+	<input type="hidden" name="returl" id="user_returl" value="">
+	<input type="hidden" name="Axon_key" id="user_Axon_key" value="">
+	  
+	
+</form>			    	
+</div>
+<script>
+var curIndex = 0; //当前index
+	var imgLen = $(".imgList li").length; //图片总数      // 定时器自动变换2.5秒每次 
+    var autoChange = setInterval(function(){
+	if(curIndex < imgLen-1){
+		curIndex ++;
+	}else{
+		curIndex = 0; 
+	} 
+	//调用变换处理函数
+	changeTo(curIndex);
+    },2500); 
+    //左箭头滑入滑出事件处理
+	$("#prev").hover(function(){
+	//滑入清除定时器
+		clearInterval(autoChange); 
+	},function(){
+		//滑出则重置定时器
+		autoChangeAgain();
+	});
+	//左箭头点击处理
+	$("#prev").click(function(){ 
+	//根据curIndex进行上一个图片处理
+		curIndex = (curIndex > 0) ? (--curIndex) : (imgLen - 1);
+		changeTo(curIndex);
+	}); 
+	//右箭头滑入滑出事件处理
+	$("#next").hover(function(){
+	//滑入清除定时器
+	clearInterval(autoChange);
+	},function(){
+	//滑出则重置定时器
+		autoChangeAgain(); 
+	}); 
+	//右箭头点击处理
+	$("#next").click(function(){
+	curIndex = (curIndex < imgLen - 1) ? (++curIndex) : 0;
+	changeTo(curIndex);
+	});
+    //清除定时器时候的重置定时器--封装
+	function autoChangeAgain(){
+		autoChange = setInterval(function(){
+		if(curIndex < imgLen-1){
+			curIndex ++;
+		}else{ 
+			curIndex = 0; 
+		}
+		//调用变换处理函数
+		changeTo(curIndex);
+	    },2500);
+	} 
+    function changeTo(num){
+	    /*var goLeft = 0;
+	    if(num==0){
+    		goLeft = 0;
+    	}else{
+    	    for(var i=0;i<=num-1;i++){
+    	    	goLeft += $(".imgList").find("li").eq(i).find("a").find("img").width();
+    	    }
+	    }*/
+	    var len = $(".imgList li").length;
+		for(var i=0;i<len;i++){
+			$(".imgList").find("li").eq(i).find("a").find("img").hide();
+			//$(".imgList li")[i].hide();
+		}
+	    $(".imgList").find("li").eq(num).find("a").find("img").show();
+		//$(".imgList").animate({left: "-" + goLeft + "px"},500); 
+	    $(".infoList").find("li").removeClass("infoOn").eq(num).addClass("infoOn");
+        $(".indexList").find("li").removeClass("indexOn").eq(num).addClass("indexOn");
+	} 
+	$(".indexList").find("li").each(function(item){
+		$(this).hover(function(){
+		clearInterval(autoChange);
+		changeTo(item);
+		curIndex = item; 
+	  },function(){ 
+		autoChangeAgain();
+	  }); 
+	}); 
+	
+</script>
+
+  
+</body></html>

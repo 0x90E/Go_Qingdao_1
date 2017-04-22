@@ -1,0 +1,54 @@
+<html><head></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">;(function($) {
+    //载入幻灯第一张
+    $(".index-slide-box img.cur").LoadImage();
+    var timer = null,
+        time = 3000,
+        nav = $(".index-slide-nav");
+    function main_slider(_this) {
+        var parent = $(".index-slide-box");
+        var cur_img = parent.find("img.cur");
+        var cur_rel = parseInt(cur_img.attr("data-rel"));
+        parent.find("img.loading").remove();
+        if (_this == "prev") {
+            if (cur_rel &lt;= parent.find("img").first().attr("data-rel")) {
+                cur_rel = parent.find("img").last().attr("data-rel");
+            } else {
+                cur_rel = cur_rel - 1;
+            }
+        } else if (_this == "next") {
+            if (cur_rel &gt;= parent.find("img").last().attr("data-rel")) {
+                cur_rel = parent.find("img").first().attr("data-rel");
+            } else {
+                cur_rel = cur_rel + 1;
+            }
+        } else {
+            cur_rel = _this;
+        }
+        cur_img.removeClass("cur").finish();
+        nav.find("a").removeClass("cur");
+        parent.find("img[data-rel='" + cur_rel + "']").addClass("cur").LoadImage();
+        nav.find("a[data-rel='" + cur_rel + "']").addClass("cur");
+    }
+    // $(".prev").on("click",function(){
+    //     main_slider($(this));
+    // })
+    // $(".next").on("click",function(){
+    //     main_slider($(this));
+    // })
+    nav.find("a").on("click", function() {
+        if ($(this).hasClass("cur")) {
+            return;
+        }
+        main_slider($(this).attr("data-rel"));
+    })
+    timer = setInterval(function() {
+        main_slider("next");
+    }, time);
+    $(".index-slide").hover(function() {
+        clearInterval(timer);
+    }, function() {
+        timer = setInterval(function() {
+            main_slider("next");
+        }, time);
+    })
+}(jQuery));</pre></body></html>

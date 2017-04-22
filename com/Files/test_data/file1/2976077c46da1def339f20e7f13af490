@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+        img {
+            display: block;
+        }
+        .button {
+            left: 8.6%;
+            position: relative;
+            margin-top: -47%;
+        }
+    </style>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+    <script src="jquery.min.js"></script>
+    <script>
+        $(document).ready(function(e) {
+            url = location.href;
+            $.ajax({
+                type: 'get',
+                url: 'http://waveapi.xiaojukeji.com/wechat/driver/jssdk/?url=' + url,
+                dataType: 'jsonp',
+                jsonpCallback: 'success_jsonpCallback',
+                success: function(data) {
+                    wx.config({
+                        appId: data.appId,
+                        timestamp: data.timestamp,
+                        nonceStr: data.nonceStr,
+                        signature: data.signature,
+                        jsApiList: ['onMenuShareTimeline', 'onMenuShareAppMessage', 'onMenuShareQQ', 'onMenuShareWeibo', 'onMenuShareQZone']
+                    });
+                },
+                error: function(data) {
+
+                }
+            });
+        });
+        wx.ready(function() {
+            var shareData = {
+                title: '上司机帮，看我的流水排名',
+                imgUrl: 'http://http://wave.xiaojukeji.com/v2/res/index/sijibang/sijibang20161107_share.jpg',
+                desc: '【1600万滴滴车主的温馨之家】司机帮是官方出品的着力于加强司机间沟通互动的应用，在这里你可以感受到像家一般的感觉。'
+            }
+            wx.onMenuShareAppMessage(shareData);
+            wx.onMenuShareTimeLine(shareData);
+            wx.onMenuShareQQ(shareData);
+            wx.onMenuShareWeibo(shareData);
+        });
+        function redirect2() {
+            window.location.href = "http://a.app.qq.com/o/simple.jsp?pkgname=com.didichuxing.drivercommunity";
+        }
+    </script>
+    <title>上司机帮，看我的流水排名</title>
+</head>
+<body style="margin:0px;">
+<img width="100%" src="sijibang20161107_background.jpg">
+<img onclick="redirect2()" class="button" width="83.8%" src="sijibang20161107_button.jpg">
+
+</body></html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html><html><head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <meta name="MobileOptimized" content="320">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>古诗词典，不一样的诗词</title>
+    <link href="css/app.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<img src="img/icons.png" class="hide" width="0" height="0">
+<div class="user-main">
+    <div class="user-main-t">
+        <div class="user-img" id="author">
+            <img src="img/img3.jpg">
+        </div>
+        <p class="user-name" id="user"></p>
+        <p class="user-date" id="date"></p>
+        <div class="play-icon" id="play-btn">
+            <img class="plays hide" src="img/btn.png">
+            <img class="stops" src="img/btn2.png">
+        </div>
+    </div>
+    <div class="user-main-m">
+
+        <p id="title"></p>
+        <p class="author-main"></p>
+        <p class="contents"></p>
+
+        <div class="data-menu">
+            <p class="listen-time"></p>
+            <p class="comment"><i></i><span>00</span></p>
+            <p class="likes"><i></i><span>00</span></p>
+        </div>
+    </div>
+</div>
+
+<div class="float-window">
+    <a id="btnDownload">
+        <img src="img/xz.png">
+    </a>
+    <div class="titles">
+        <img src="img/img.jpg">
+    </div>
+</div>
+<div id="mask"></div>
+<div id="tips">
+    <img src="http://img.dwstatic.com/caishe/m/img/tips.png">
+</div>
+<audio id="audio" src=""></audio>
+<script src="js/zepto.min.js"></script>
+<script src="js/md5.js"></script>
+<script>
+    var articleId;
+function content(){
+
+    $.ajax({
+        url:"http://kkpoembbs.duowan.com/api/article/get.do",
+        type:"get",
+        data:{articleId:getParams("articleId")},
+        dataType:"jsonp",
+        success:function(d){
+            var poemId=getParams("poemId");
+            var data= d.data;
+            var date=new Date(data.createdTime);
+            $("#audio").attr("src",data.audio);
+            $("#date").text(date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds());
+            $("#user").text(data.createdNickname);
+            $(".audio-title").text(data.content);
+            $("#author img").attr("src",data.createdPortrait);
+            $(".listen-time").text(data.view+"次收听");
+            $(".likes span").text(data.praise);
+            $(".comment span").text(data.comment);
+            var play=false;
+            $("#play-btn").tap(function(){
+                var muisc=document.getElementById("audio");
+                if(play==false){
+                    play=true;
+                    $(".plays").show();
+                    $(".stops").hide();
+                    muisc.play();
+                    return false;
+                }else{
+                    play=false;
+                    $(".plays").hide();
+                    $(".stops").show();
+                    muisc.pause();
+                    return false;
+                }
+            })
+        }
+    });
+}
+/**
+**诗句正文
+**/
+function textEvent(){
+    var poemId=getParams("poemId");
+    var key="6d767896a2e4b60d";
+    var md5s=md5(poemId+key);
+    $.ajax({
+        url:"http://kkpoem.duowan.com/api/poem/get.do",
+        type:"get",
+        dataType:"jsonp",
+        data:{id:poemId,sign:md5s},
+        success:function(d){
+            var html="";
+            if(d.status==200 && d.data!=null){
+                var w= d.data.yuanwen.split("。");
+                $("#title").text(d.data.mingcheng);
+                $("title").text(d.data.mingcheng);
+                setTimeout(function(){
+                    $("title").text(d.data.mingcheng);
+                },2000);
+                $(".author-main").text("["+ d.data.chaodai+"]"+ d.data.zuozhe);
+                for(var i= 0;i< (w.length-1);i++){
+                    if(i%2==0){
+                        html+= w[i]+',<br/>'
+                    }else{
+                        html+= w[i]+'.<br/>'
+                    }
+                }
+                $(".contents").html(html)
+            }
+        }
+    })
+}
+
+    //view
+    //praise
+    //comment
+function userEvent(){
+    $.ajax({
+        url:"http://kkpoembbs.duowan.com/api/comment/list.do",
+        type:"get",
+        data:{articleId:getParams("articleId"),pageNo:1,pageSize:10},
+        dataType:"jsonp",
+        success:function(d){
+
+            var data= d.data;
+            var html="";
+            for(var i= 0,len=data.length;i<len;i++){
+                var date=new Date(data[i].createdTime);
+                html+='<div class="user-main2">\
+                    <div class="user-img">\
+                    <img src="'+data[i].createdPortrait+'">\
+                    </div>\
+            <p class="user-name">'+data[i].createdNickname+'</p>\
+            <p class="user-date">'+date.getFullYear()+"-"+date.getMonth()+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()+'</p>\
+            <p class="comment-text">'+data[i].content+'</p>\
+            </div>'
+            }
+            $(".user-main").after(html);
+        }
+    })
+}
+    content();
+    userEvent();
+    textEvent();
+
+    /**
+     * 获取页面参数
+     * @param key
+     * @param url
+     * @returns {*}
+     */
+    function getParams(key, url) {
+        var search = url || location.search;
+        if(search.indexOf('?')>=0){
+            search=search.slice(1);
+        }
+        var paramsArray = search.split('&'), params , tmp;
+        if (paramsArray && paramsArray.length) {
+            params={};
+            for (var i = 0, len = paramsArray.length; i < len; i++) {
+                tmp = paramsArray[i];
+                tmp && (tmp = tmp.split('='));
+                if (tmp && tmp.length) {
+                    params[tmp[0]] = (tmp[1]&&decodeURIComponent(tmp[1]))||'';
+                }
+            }
+        }
+        if (key) {
+            return params[key];
+        }
+        return params;
+    }
+
+
+    var ua  = window.navigator.userAgent.toLowerCase();
+    var isAndroid = ua.indexOf('android') > -1 || ua.indexOf('linux') > -1;
+    var isIOS = /ipad/i.test(ua) || /iphone/i.test(ua);
+    //微信
+    if(!(isIOS || isAndroid)){
+        $('#btnDownload').bind('touchstart', function(){
+            window.open("http://resupgrade.duowan.com/client/dispatch.do?app=kkcpub&resource=kkpoem&channel=official&versionCode=1","_blank");
+            return false;
+        });
+    }else{
+        $('#btnDownload').bind('touchstart', function(){
+            if (isAndroid) {
+                // Android
+                if (/micromessenger/i.test(ua)) {
+                    // 微信
+                    $('#mask,#tips').show();
+                    return false;
+                }
+
+                // QQ、QZone、浏览器等直接下载
+                window.open("http://resupgrade.duowan.com/client/dispatch.do?app=kkcpub&resource=kkpoem&channel=official&versionCode=1","_blank");
+                return false;
+
+            } else if (isIOS) {
+                // iOS
+                if (/micromessenger/i.test(ua)) {
+                    // 微信
+                    window.location.href="http://a.app.qq.com/o/simple.jsp?pkgname=com.kk.poem";
+                    return false;
+                }
+
+                // QQ、QZone、浏览器等直接导入AppStore
+                window.location.href = "https://itunes.apple.com/us/app/gu-shi-ci-dian/id991718070?l=zh&ls=1&mt=8";
+                return false;
+
+
+            } else {
+                // 认为所有其他平台皆为PC
+                window.open("http://resupgrade.duowan.com/client/dispatch.do?app=kkcpub&resource=kkpoem&channel=official&versionCode=1","_blank");
+                return false;
+            }
+        });
+    }
+</script>
+
+</body></html>

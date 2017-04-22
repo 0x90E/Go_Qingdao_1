@@ -1,0 +1,564 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head> 
+  <meta charset="utf-8" /> 
+  <meta name="viewport" content="width=device-width" /> 
+  <title>聪明的狐狸_Q啦网</title> 
+  <meta name="keywords" content="" /> 
+  <meta name="description" content="从前有一座美丽的森林，森林里有一只聪明的狐狸叫聪聪，还有一只小白狐狸叫小白。有一天，聪聪和小白在一起玩，玩着玩着到了一个美丽的花园，花园里有各种各样的花和菜，还有许许多多大大小小的兔子。聪聪和小白都想吃花园里的兔子。聪聪想了想对小白说：我们就这样这样。聪聪和小白开始抓了，小白按照聪聪说的去做，果然抓了好多兔子。它们俩人正高兴的吃着，忽然，森林里跑出一只老虎。它们看见老虎撒腿就跑，跑着跑着老虎趁着它" /> 
+  <meta name="mobile-agent" content="format=xhtml;url=http://m.qzone.la/rizhi/290250.html" /> 
+  <link href="/Theme/qzone/Images/global.css" rel="stylesheet" /> 
+  <link href="/Theme/qzone/Images/reset.css" rel="stylesheet" /> 
+  <link href="/Theme/qzone/Images/style.css" rel="stylesheet" /> 
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" /> 
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" /> 
+  <script src="/Scripts/jquery-1.8.2.min.js"></script> 
+  <script src="/Scripts/head.js"></script> 
+  <script src="/Scripts/ExtendJs.js"></script> 
+  <script src="/Scripts/ZeroClipboard.min.js"></script> 
+  <script src="/Scripts/CheckMobile.js"></script> 
+  <script src="/layer/layer.js"></script> 
+  <script src="/Scripts/m.js"></script> 
+  <script>
+        $(function () {
+            var catName = "日志";
+            $('.nav_main ul li a').each(function () {
+                if ($(this).text()==catName) {
+                    $(this).parent().addClass("on");
+                }
+            });
+            $('.sbtn').click(function () {
+                $('#soForm').submit();
+            });
+ 	   if ($(window).width()< 1240) {
+                $('.duilian').hide();
+            }
+            $(window).resize(function () {
+                if ($(window).width() < 1240) {
+                    $('.duilian').hide();
+                }
+                else {
+                    $('.duilian').show();
+                }
+            });
+            $('.photo').hover(function () {
+                var obj = this;
+                var url1 = '/APII/UserTip/' + $(this).attr('data-id') + '/';
+                if (url == url1) {
+                    var t = $(obj).offset().top + $(obj).height();
+                    var l = $(obj).offset().left;
+                    $('#tip').css({ top: t, left: l });
+                    $('#tip').show();
+                }
+                else {
+                    url = url1;
+                    $.post(url, null, function (data) {
+                        $('#tip').html(data);
+                        var t = $(obj).offset().top + $(obj).height();
+                        var l = $(obj).offset().left;
+                        $('#tip').css({ top: t, left: l });
+                        $('#tip').show();
+
+                    });
+                }
+
+            });
+            $('#tip').hover(function () { }, function () {
+                $('#tip').hide();
+            })
+            $('.btn5').click(function () {
+                var obj = $(this);
+                var num = parseInt($(this).parent().find('em').text()) + 1;
+                if (CheckCookie('like', $(this).attr('data-id'))) {
+                    $.post('/Apii/Like/' + $(this).attr('data-id'), null, function (data) {
+                        $(obj).parent().find('em').text(num);
+                        $.tipsBox({
+                            obj: $(obj),
+                            str: "赞+1",
+                            callback: function () {
+                            }
+                        });
+                    }, 'json')
+                }
+                else {
+                    //alert('!');
+                    $.tipsBox({
+                        obj: $(obj),
+                        str: "今天点过赞了!",
+                        callback: function () {
+
+                        }
+                    });
+                }
+            });
+            $('.btn6').click(function () {
+                var obj = $(this);
+                var num = parseInt($(this).parent().find('em').text()) + 1;
+                if (CheckCookie('unlike', $(this).attr('data-id'))) {
+                    $.post('/Apii/unLike/' + $(this).attr('data-id'), null, function (data) {
+                        $(obj).parent().find('em').text(num);
+                        $.tipsBox({
+                            obj: $(obj),
+                            str: "厌+1",
+                            callback: function () {
+                            }
+                        });
+                    }, 'json')
+                }
+                else {
+                    //alert('!');
+                    $.tipsBox({
+                        obj: $(obj),
+                        str: "今天点过踩了!",
+                        callback: function () {
+
+                        }
+                    });
+                }
+            });
+            var clip = new ZeroClipboard(document.getElementsByClassName('c'));
+            clip.on("copy", function (e) {
+                e.clipboardData.setData("text/plain", e.target.getAttribute('data-title'));
+                layer.tips('复制成功！', '#' + e.target.getAttribute('id'), {
+                    tips: [1, '#ff677f'] //还可配置颜色
+                });
+            });
+            $('.groups>dl>dt>ul>li').hover(function () {
+                $(this).find('.c').show();
+            }, function () {
+                $(this).find('.c').hide();
+            });
+            $('.groups3 h3').hover(function () {
+                $(this).children('.c').show();
+            }, function () {
+                $(this).children('.c').hide();
+            });
+        });
+    </script> 
+  <script src="/Scripts/Info.js"></script> 
+  <script>
+            $(function () {
+                $('.gz').click(function () {
+                    $.post('/UserInfo/gz/'+$(this).attr('data-id'), null, function (data) {
+                        if (data.sucess) {
+                            layer.alert(data.msg, { icon: 1 });
+
+                        }
+                        else {
+                            layer.alert(data.msg, { icon: 2 });
+
+                        }
+                    }, 'json');
+                });
+            });
+    </script> 
+ </head> 
+ <body> 
+  <div class="login"> 
+   <div class="login-box clearfix"> 
+    <div class="r">
+     <script src="/UserInfo/IsLogin"></script>
+    </div> 
+    <div class="l">
+     <a href="#">关注我们</a>
+     <a href="http://m.qzone.la" class="mobile"></a>
+    </div> 
+   </div> 
+  </div> 
+  <div class="wrapper"> 
+   <div class="header"> 
+    <div class="header_main"> 
+     <div class="logo">
+      <a href="http://www.qzone.la/"><img src="http://www.qzone.la/html/images/logo.jpg" /></a>
+     </div> 
+     <div class="search"> 
+      <form method="post" action="/So" target="_blank" id="soForm"> 
+       <input id="search" type="text" name="SearchKey" placeholder="输入关键字..." value="" /> 
+       <a href="javascript:;" class="sbtn"></a> 
+      </form> 
+      <a href="/UserInfo/Add/" target="_blank" class="post-btn">我要发布</a> 
+      <a href="/Default/Prize/" target="_blank" class="dh-btn">我要兑换</a> 
+     </div> 
+     <div class="user_main"> 
+      <div class="bdsharebuttonbox">
+       <a href="#" class="bds_more" data-cmd="more"></a>
+       <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+       <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+       <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+      </div> 
+      <script>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "2", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "32" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];</script> 
+     </div> 
+     <div class="login2" style="display:none;"> 
+      <dl> 
+       <dt>
+        <img src="http://www.qzone.la/html/images/qoobee.jpg" />
+       </dt> 
+       <dd> 
+        <h3>丘比龙</h3> 
+        <p>LV1</p> 
+       </dd> 
+      </dl> 
+     </div> 
+    </div> 
+   </div> 
+  </div> 
+  <div class="nav"> 
+   <div class="nav_main"> 
+    <ul> 
+     <li><a href="http://www.qzone.la/" target="_blank">Q啦首页</a></li> 
+     <li><a href="/qqtouxiang/" target="_blank">QQ头像</a></li> 
+     <li><a href="/wangming/" target="_blank">QQ网名</a></li> 
+     <li><a href="/qianming/" target="_blank">个性签名</a></li> 
+     <li><a href="/qq/fenzu.htm" target="_blank">QQ分组</a></li> 
+     <li><a href="/moban/" target="_blank">QQ皮肤</a></li> 
+     <li><a href="/qqbiaoqing/" target="_blank">QQ表情</a></li> 
+     <li><a href="/qzone/" target="_blank">QQ空间</a></li> 
+     <li><a href="/qq/ziliao.htm" target="_blank">QQ说说</a></li> 
+     <li><a href="javascript:;" class="d_menu">更多个性<img src="http://www.qzone.la/html/images/icon.jpg" /></a></li> 
+    </ul> 
+    <div class="second_menu" id="second_menu"> 
+     <p><a href="/yulu/" target="_blank">经典语录</a></p> 
+     <p><a href="/qqyinxiang/" target="_blank">好友印象</a></p> 
+     <p><a href="/game/" target="_blank">QQ游戏</a></p> 
+     <p><a href="/xiaoyou/" target="_blank">QQ校友</a></p> 
+     <p><a href="/news/" target="_blank">QQ新闻</a></p> 
+     <p><a href="/down/" target="_blank">QQ下载</a></p> 
+     <p><a href="/qqcanting/" target="_blank">QQ餐厅</a></p> 
+     <p><a href="/fzl/" target="_blank">非主流美图</a></p> 
+    </div> 
+   </div> 
+  </div> 
+  <div class="container clearfix"> 
+   <div class="ad2 clearfix"> 
+    <script>indexTop();</script> 
+   </div> 
+   <div class="ad2 clearfix"> 
+    <script>TagBottom();</script> 
+   </div> 
+   <div class="contLeft"> 
+    <div class="box clearfix"> 
+     <div class="art-top clearfix"> 
+      <div class="art-l">
+       <a href="/UserInfo/Home/14/"><img src="/UserPhoto/20141231/lx9y8iq8.png" /></a>
+      </div> 
+      <ul class="art-m"> 
+       <li><em>不堪寂寞╮的</em> &nbsp;&nbsp;<span class="man"></span> &nbsp;&nbsp; &nbsp;&nbsp;</li> 
+       <li><img src="/Theme/qzone/Images/level/34.gif" /> &nbsp;&nbsp;粉丝：<i>8</i> &nbsp;&nbsp;关注：<i>0</i><span class="gz" data-id="14">加关注</span></li> 
+      </ul> 
+      <div class="sign">
+       <img src="/Theme/qzone/Images/sign_t.gif" />
+      </div> 
+     </div> 
+     <div class="art-bottom clearfix"> 
+      <dl class="art-content clearfix"> 
+       <dt>
+        聪明的狐狸
+       </dt> 
+       <dd class="clearfix"> 
+        <h3>篇一：聪明的狐狸 </h3> 
+        <p>　　从前有一座美丽的森林，森林里有一只聪明的狐狸叫聪聪，还有一只小白狐狸叫小白。</p> 
+        <p>　　有一天，聪聪和小白在一起玩，玩着玩着到了一个美丽的花园，花园里有各种各样的花和菜，还有许许多多大大小小的兔子。聪聪和小白都想吃花园里的兔子。聪聪想了想对小白说：“我们就这样&middot;&middot;&middot;&middot;&middot;&middot;这样&middot;&middot;&middot;&middot;&middot;&middot;”。聪聪和小白开始抓了，小白按照聪聪说的去做，果然抓了好多兔子。</p> 
+        <p>　　它们俩人正高兴的吃着，忽然，森林里跑出一只老虎。它们看见老虎撒腿就跑，跑着跑着老虎趁着它们俩不注意就跑回了公园吃它们剩下的兔子。聪聪跑到家发现老虎不再抓它们，聪聪和小白伤心的说“好不容易抓的兔子就被老虎吃了”。小朋友你说，聪聪聪明吗？</p> 
+        <h3>篇二：狐狸和葡萄 李钊贤 </h3> 
+        <p>　　有一只饿慌的狐狸，它看见了葡萄架上的紫葡萄，它试了各种各样的方法都没有吃到葡萄。突然有一阵风吹过来，狐狸心想肯定有熟透的葡萄会掉下来，可是一个都没掉下来，狐狸吃葡萄的愿望没实现。</p> 
+        <p>　　狐狸可真笨，应该找一个梯子爬上去摘葡萄。</p> 
+        <h3>篇三：做好事的蓝狼和狐狸读后感</h3> 
+        <p>　　森林里有一只蓝狼和一只狐狸。</p> 
+        <p>　　蓝狼每天到河马爷爷的果园除草、浇水、捉虫&middot;&middot;&middot;&middot;&middot;&middot;一天他发现每棵桃树都有一个洞，他就在去找坏蛋，不多一会就抓到了，坏蛋一只狐狸。蓝狼说：“你知不知道这是河马爷爷的桃树，是他千辛万苦才种出来的，你知道吗？”</p> 
+        <p>　　“我们一起保护桃树吧！”狐狸惭愧得说。几天后，桃树结果了。河马爷爷准备了两筐鲜美的桃子，给蓝狼和狐狸他们开心的回家了！</p> 
+        <p>　　这个故事告诉我们要帮所有需要帮助的人，不能见了人有困难不管。</p> 
+        <h3>篇四：《了不起的狐狸爸爸》读后感 张芮尔</h3> 
+        <p>　　我觉得狐狸爸爸很聪明，虽然他偷别人的东西是不对的，但是因为他是为了她的孩子和妻子，所以我很同情他，我觉得他是一个好爸爸。博吉斯、邦斯、比恩都是大坏蛋，他们很小气很卑鄙，也很狡猾。</p> 
+        <p>　　我们人类应该保护动物，关爱动物，不能像博吉斯、邦斯、比恩他们那样小气、自私、残忍，没有同情心。</p> 
+        <p>　　<br /> </p>
+        <h3>篇五：狡猾的狐狸</h3> 
+        <p>　　一天，狐狸和小山羊、小白兔在森林里遇见了。</p> 
+        <p>　　小山羊和小白兔是一对好朋友，他们经常一起到森林里去采蘑菇。狡猾的狐狸可不是他们的好朋友啊！它很是狡猾，每次都想方设法要吃掉小白兔，当然这次也不例外。可是要吃到小白兔，必须要把这两个好朋友分开才行啊，怎么办呢？诡计多端的狐狸眼珠骨碌一转：“有了！我只要假装跟它们做好朋友，让它们放松警惕，就一定能如愿以偿的。”于是狐狸假惺惺的对小白兔和小山羊说：“小白兔、小山羊，我改过自新了，我决定再也不吃小动物了，我们做好朋友吧！今天天气这么好，不如我们一起玩躲猫猫好吗？”小白兔和小山羊看狐狸挺诚恳的样子异口同声地回答：“好呀，好呀！”“哈哈！它们上当了！”狐狸暗自窃喜：“我终于可以饱餐一顿了。”游戏刚开始，小白兔和小山羊就分开了，狐狸看到了，忙跑到胆小的兔子身边，想要一口吞下小白兔，小白兔一见情况不妙，于是撒腿就跑，一边跑一边喊救命。在这紧急关头，小山羊冲了过来，用它头上的尖角和狐狸勇敢的作战，狐狸被羊角刺到了好几下，疼的嗷嗷只叫，只好灰溜溜的逃回家去了。</p> 
+        <p>　　获救的小白兔松了口气，这时它们俩也明白了一个道理，狐狸是本性难改的，以后不能再相信它的话了。</p> 
+        <h3>篇六：《了不起的狐狸爸爸》读后感[] 陈柏羽</h3> 
+        <p>　　《了不起的狐狸爸爸》这本书，是让大人有点害怕，让小朋友们疯狂着迷的罗尔德&middot;达尔写的，在美国、英国、荷兰、德国、法国、澳大利亚和新西兰，现在当然也包括中国，他的作品都很受欢迎。</p> 
+        <p>　　博吉斯、邦斯和比恩是你所能预想到的最卑鄙、最小气的人，他们憎恨狐狸先生，是因为狐狸先生偷了他们的东西，他们才憎恨狐狸先生。博吉斯、邦斯和比恩可不是那么宽宏大量的人，你从他们那儿拿走一丁点东西他们都不愿意，一根鸡毛都不行，何况狐狸先生还偷走整整的一只鸡、鸭、鹅、火鸡。他们气得要死，所以他们要杀了狐狸先生一家。博吉斯、邦斯和比恩他们手拿铁锹，背着双管猎枪，开着挖掘机，狐狸先生一家和装备齐全的博吉斯、邦斯和比恩咱卡了输死的挖掘赛！，最终狐狸先生一家获胜了，博吉斯、邦斯和比恩下了决心要把狐狸先生干掉所以，他们在对峙着，至今还在对峙着。</p> 
+        <p>　　读了这本书，我最重要的认识是遇到困难要冷静思考、多动脑筋，有的时候，遇到困难，多动脑筋，还要把想的化为现实，坏事可能就变成了好事了。</p>
+        <br /> 篇三：《了不起的狐狸爸爸》读后感[300字] 陈礡添
+        <br /> &nbsp;
+        <br /> 　　《了不起的狐狸爸爸》 这本书的作者是罗尔德，达尔，里面的人物有三个饲养场场主：爱吃布丁鸡的博吉斯，瘦得像铅笔的比恩，大腹便便的邦斯，还有聪明狐狸先生和身体虚弱的狐狸太太与他们的四个孩子。
+        <p></p> 
+        <p>　　这本书讲的是狐狸爸爸每天的食物都是从三个饲养场带的，有一天三个饲养场主说：“我们一定要把偷我们东西的狐狸捉出来。”比恩想了一个办法他说：“我们躲在他们的洞口，晚上那只狐狸来拿我们的东西是，一枪打死他！”可是他们只打掉了狐狸爸爸的尾巴。他们又想把狐狸一家挖出来，可人挖洞没有狐狸挖洞快呀！他们的这个计划也没有成功。他们又想用挖掘机把狐狸一家挖出来，狐狸一家像通了电似得，飞快的往前挖，渐渐的挖掘机的声音没有了，他们的计划有失败了。他们又想把狐狸洞围住，狐狸一跑出来就把他们捉住。狐狸爸爸破实了他们的计划，狐狸先生和四只小狐狸在三个饲养场的仓库里挖了一条地道，他们每天都走他们的地道取食物，而且还把所有的动物都召集到一起吃饭，他们就这样活了下去。而三个厂主还在等狐狸一家出来。</p> 
+        <p>　　我最喜欢的人物是狐狸爸爸因为他懂得分享，而且还很聪明。</p> 
+        <h3>篇七：了不起的狐狸爸爸读后感</h3> 
+        <p>　　这三个人里面，比恩是最聪明的。我没有去过养鸡场，也没有去过苹果园，我没有见过喂饲料，但妈妈养过鸡，妈妈也去过苹果园。</p> 
+        <p>　　妈妈给我讲了怎样给鸡喂饲料，苹果园里的一些东西。</p>
+        <br /> 
+        <h3>篇八：狐狸和猫</h3> 
+        <p>　　星期六，狐狸吃完早餐，在公园里和小猫相遇。</p> 
+        <p>　　狐狸看了看小猫，说“：我身上的毛纹是举世无双，你看，五颜六色的，多漂亮！你看你，没毛纹，丑死了。”小猫说“：我的美在脑子里，并不在外表。”狐狸听了，不服气，去找老马。老马听了，说“：小猫说得对，智慧胜于外表美。”狐狸听了，去找小猫，说“：对不起，我不应该这样，你原谅我吧！”小猫说“：没关系，我原谅你，但你别自恃美丽。”“好，我不会了！” 狐狸说完，拉着小猫的手去玩耍。</p> 
+        <p>　　这个故事告诉大家不要自恃美丽而看不起别人，要知道智慧胜于外表美。</p> 
+        <h3>篇九：读了不起的狐狸爸爸有感 </h3> 
+        <p>　　我和羊羔按照李老师的推荐在寒假刚开始就读起来《了不起的狐狸爸爸》。这本书与孩子以前读过的书的不同之处就是：目录前一页是人物介绍（故事中的每个人物的名字和形象）。这样，孩子们读起来就不那么吃力了 （因为外国人的名字是那么的长而且难记）。</p> 
+        <p>　　当我们读到第二个小节《狐狸先生》时，我们对狐狸爸爸的“了不起”有了初步的了解。“狐狸先生简直是太聪明了。他在接近饲养场时，总是逆风而行，这就是说，如果有人潜伏在前面的暗处，风就会把这个人的气味 带到与他相距还很远的狐狸先生的鼻子里。于是，他会迅速改变前进的方向……”</p> 
+        <p>　　羊羔啊，这么聪明的策略你能想到吗？</p>
+        <br /> 篇三：读了不起的狐狸爸爸有感&nbsp;&nbsp;&nbsp; 王觉恒&nbsp;
+        <p></p> 
+        <p>　　这个假期我读了《了不起的狐狸爸爸》 这本书，这个故事情主要讲了狐狸一家与三个农场主之间的斗争。平时多么坏的狐狸在这篇故事中而是一个聪明、善良、机智勇敢的狐狸爸爸。它们为了逃脱博吉斯、邦斯和比恩等 人的捕杀，一家人相互团结、互相鼓励并和其它一些动物开始了艰辛的求生的历程，最终它们取得了胜利，得到了美味的食物。</p> 
+        <p>　　通过这个故事让我懂得了遇到什么困难都不能放弃，应该向狐狸爸爸及一家人学习，机智、勇敢、不怕苦、不怕累。人们不能像三个自私的农场主一样残暴，要善待大自然，要爱护动物。</p> 
+        <p>　　　<br /> 篇四：读了不起的狐狸爸爸有感&nbsp;&nbsp;&nbsp; 吴思涵&nbsp;</p> 
+        <p>　　这本《了不起的狐狸爸爸》是（英）罗尔德。达尔的作品。这本书讲的是有三个饲养主，分别是邦斯、博吉斯他们三个没有一个不贪财的。每当夜幕降临狐狸爸爸总会悄悄的溜进他们的饲养场。对于这件事他们三个准备把狐狸爸爸干掉……</p> 
+        <p>　　于是一场智慧和力量的较量开始了……三个凶狠贪婪的饲养场主和狐狸一家追捕的故事，被罗尔德。达尔用搞笑轻松的笔调讲来，让人爱不释手。</p> 
+        <p>　　读完这本书让我明白遇到困难要自己想办法，不能依靠别人。生活中我们遇到困难要自己解决，不能依靠老师、家长。</p> 
+        <h3>篇十：狐狸</h3> 
+        <p>　　在一片茂密的森林里，住着形形色色的动物。有威风凛凛的狮子王，有诡计多端的狐狸，有长着粗角的鹿，有浑身是刺的刺猬……还有细长的蛇在树林深处隐蔽的游走。</p> 
+        <p>　　有一天，万兽之王——狮子王掉进了河里，淹死了。狡猾的狐狸看到了，他从河里捞起了狮子，披上他的皮，大摇大摆地走向别的动物。大家吓得拔腿就跑，狐狸在得意洋洋的时候不小心拌了一跤，狮子皮掉了下来。他怕动物们发现他的秘密，马上又披好了，可是，还是被精明的鹿发现了。</p> 
+        <p>　　鹿把发现的秘密告诉了大家，大家又跑了回来，壮着胆子仔细看，真的是狐狸披着狮子的皮。大家对着狐狸一顿猛揍，狐狸逃跑了……</p> 
+        <p>　　森林里，从此以后再也看不见狐狸的影子了。</p>
+        <br /> 
+       </dd> 
+      </dl> 
+      <div class="pages"> 
+       <a href="/rizhi/318865.html">第一页</a> 
+       <a href="/rizhi/327592.html">1</a> 
+       <a href="/rizhi/338416.html">2</a> 
+       <a href="/rizhi/338995.html">3</a> 
+       <a href="/rizhi/255847.html">4</a> 
+       <a href="/rizhi/282724.html">5</a> 
+       <a href="/rizhi/276918.html">6</a> 
+       <a href="/rizhi/312598.html">下一页</a> 
+      </div> 
+      <div class="a-b"> 
+       <div class="like"> 
+        <a class="btn3 d" data-option="290250|0" href="javascript:;"><span>0个赞</span></a> 
+        <a class="btn4 cai" href="javascript:;"><span>0个厌</span></a> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div class="ad3"> 
+     <script>InfoBottom();</script> 
+    </div> 
+    <div class="about_article"> 
+     <p>上一篇：<a target="_blank" href="/wangming/290249.html">古风网名-羌管弄晴&lt;古风网名&gt;</a></p> 
+     <p>下一篇：<a target="_blank" href="/wangming/290251.html">女生可爱网名-这个夏天有我ｉ&lt;女生可爱网名&gt;</a></p> 
+    </div> 
+    <div class="about_img clearfix"> 
+     <div style="width:650px;"> 
+      <dl> 
+       <dt>
+        <a target="_blank" href="/wangming/40637.html"><img title="〆我玩命ヾ你随意    霸气非主流qq网名" alt="〆我玩命ヾ你随意    霸气非主流qq网名" src="http://img.qzone.la/html/uploads/20141226/e87a0605bfa0093dc35f4f0d9f79c19d.jpg" /></a>
+       </dt> 
+       <dd>
+        <a title="〆我玩命ヾ你随意    霸气非主流qq网名" target="_blank" href="/wangming/40637.html">〆我玩命ヾ你随意 霸气非主流qq网名</a>
+       </dd> 
+      </dl> 
+      <dl> 
+       <dt>
+        <a target="_blank" href="/qianming/40392.html"><img title="雨水降落的季节，快乐开始瓦解  伤感个性签名" alt="雨水降落的季节，快乐开始瓦解  伤感个性签名" src="http://img.qzone.la/html/uploads/20141218/7e602455c46f48d9652da3006b8a1227.jpg" /></a>
+       </dt> 
+       <dd>
+        <a title="雨水降落的季节，快乐开始瓦解  伤感个性签名" target="_blank" href="/qianming/40392.html">雨水降落的季节，快乐开始瓦解 伤感个性签名</a>
+       </dd> 
+      </dl> 
+      <dl> 
+       <dt>
+        <a target="_blank" href="/qq/40420.htm"><img title="※爱情的温暖︵。    好看的情侣qq分组" alt="※爱情的温暖︵。    好看的情侣qq分组" src="http://img.qzone.la/html/uploads/20141219/5b4d137c9a04f1f99f3d2e9a8612c611.jpg" /></a>
+       </dt> 
+       <dd>
+        <a title="※爱情的温暖︵。    好看的情侣qq分组" target="_blank" href="/qq/40420.htm">※爱情的温暖︵。 好看的情侣qq分组</a>
+       </dd> 
+      </dl> 
+      <dl> 
+       <dt>
+        <a target="_blank" href="/yulu/40430.html"><img title="阳光暖去了不知名的疼痛   经典人生语录" alt="阳光暖去了不知名的疼痛   经典人生语录" src="http://img.qzone.la/html/uploads/20141219/26e49fde0a8df2a4d0d5eb34cce77b35.jpg" /></a>
+       </dt> 
+       <dd>
+        <a title="阳光暖去了不知名的疼痛   经典人生语录" target="_blank" href="/yulu/40430.html">阳光暖去了不知名的疼痛 经典人生语录</a>
+       </dd> 
+      </dl> 
+     </div> 
+    </div> 
+    <div class="about_list clearfix"> 
+     <div style="width:650px;"> 
+      <ul> 
+       <li><span class="no1">1</span><a title="我的媳妇用不着蓝颜宠    霸气超拽qq网名" target="_blank" href="/wangming/40638.html">我的媳妇用不着蓝颜宠 霸气超拽qq网名</a></li> 
+       <li><span>2</span><a title="我爱你▓丶仅此而已     霸气个性qq网名" target="_blank" href="/wangming/40598.html">我爱你▓丶仅此而已 霸气个性qq网名</a></li> 
+       <li><span>3</span><a title="阳光切割了记忆的角度﹎   好听个性的qq网名" target="_blank" href="/wangming/40599.html">阳光切割了记忆的角度﹎ 好听个性的qq网名</a></li> 
+       <li><span>4</span><a title="陌路繁華ヌ終成傷    唯美诗意qq网名" target="_blank" href="/wangming/40600.html">陌路繁華ヌ終成傷 唯美诗意qq网名</a></li> 
+       <li><span>5</span><a title="墨壹世魂入眼眸&deg;    唯美好听的诗意网名" target="_blank" href="/wangming/40601.html">墨壹世魂入眼眸&deg; 唯美好听的诗意网名</a></li> 
+      </ul> 
+      <ul> 
+       <li><span class="no1">1</span><a title="坚强只是我的幻觉   爱情伤感qq个性签名" target="_blank" href="/qianming/40393.html">坚强只是我的幻觉 爱情伤感qq个性签名</a></li> 
+       <li><span>2</span><a title="你给的伤疤，让我哭不出来   伤感个性签名" target="_blank" href="/qianming/40394.html">你给的伤疤，让我哭不出来 伤感个性签名</a></li> 
+       <li><span>3</span><a title="泛滥的泪水，留不住的爱情   伤感个性签名" target="_blank" href="/qianming/40396.html">泛滥的泪水，留不住的爱情 伤感个性签名</a></li> 
+       <li><span>4</span><a title="没有谁能读懂谁的心    伤感哲理qq个性签名" target="_blank" href="/qianming/40355.html">没有谁能读懂谁的心 伤感哲理qq个性签名</a></li> 
+       <li><span>5</span><a title="别用耳朵去了解我   经典霸气qq个性签名" target="_blank" href="/qianming/40356.html">别用耳朵去了解我 经典霸气qq个性签名</a></li> 
+      </ul> 
+      <ul> 
+       <li><span class="no1">1</span><a title="一个人，一颗心    情侣简单qq分组" target="_blank" href="/qq/40421.htm">一个人，一颗心 情侣简单qq分组</a></li> 
+       <li><span>2</span><a title="不如就给莪祝福゛   情侣个性qq分组" target="_blank" href="/qq/40422.htm">不如就给莪祝福゛ 情侣个性qq分组</a></li> 
+       <li><span>3</span><a title="學着去忘記   非主流个性qq分组" target="_blank" href="/qq/40423.htm">學着去忘記 非主流个性qq分组</a></li> 
+       <li><span>4</span><a title="希望∝迩能看透莪旳逞强    非主流qq分组" target="_blank" href="/qq/40424.htm">希望∝迩能看透莪旳逞强 非主流qq分组</a></li> 
+       <li><span>5</span><a title="一起疯的，闺蜜    姐妹扣扣分组" target="_blank" href="/qq/40384.htm">一起疯的，闺蜜 姐妹扣扣分组</a></li> 
+      </ul> 
+      <ul> 
+       <li><span class="no1">1</span><a title="彼此留下的只有怨念    经典伤感爱情语录" target="_blank" href="/yulu/40391.html">彼此留下的只有怨念 经典伤感爱情语录</a></li> 
+       <li><span>2</span><a title="多谢你的绝情，让我学会死心   经典伤感语录" target="_blank" href="/yulu/40346.html">多谢你的绝情，让我学会死心 经典伤感语录</a></li> 
+       <li><span>3</span><a title="偷吃不是我的错是我嘴巴的寂寞   经典搞笑语录" target="_blank" href="/yulu/40307.html">偷吃不是我的错是我嘴巴的寂寞 经典搞笑语录</a></li> 
+       <li><span>4</span><a title="瞥见绝美的阳光     几米经典语录" target="_blank" href="/yulu/40006.html">瞥见绝美的阳光 几米经典语录</a></li> 
+       <li><span>5</span><a title="来是偶然的，走是必然的 经典语录" target="_blank" href="/yulu/40028.html">来是偶然的，走是必然的 经典语录</a></li> 
+      </ul> 
+     </div> 
+    </div> 
+   </div> 
+   <div class="contRight"> 
+    <div> 
+     <script>InfoRight1();</script> 
+    </div> 
+    <div class="list2"> 
+     <div style="border-bottom:1px solid #e1e1e1;" class="cont_menu2"> 
+      <h3><a title="热门QQ头像" target="_blank" href="/qqtouxiang/">热门QQ头像</a></h3> 
+      <a title="更多&gt;&gt;" class="more" target="_blank" href="/qqtouxiang/">更多&gt;&gt;</a> 
+     </div> 
+     <div class="cont_main_m"> 
+      <div style="width:350px;"> 
+       <dl> 
+        <dt>
+         <a target="_blank" href="/qqtouxiang/8106.htm"><img title="非主流伤感头像_女生伤感头像" alt="非主流伤感头像_女生伤感头像" src="http://img.qzone.la/uploads/userup/0910/030521236425.jpg" /></a>
+        </dt> 
+        <dd>
+         <a title="非主流伤感头像_女生伤感头像" target="_blank" href="/qqtouxiang/8106.htm">非主流伤感头像_女生伤感头像</a>
+        </dd> 
+       </dl> 
+       <dl> 
+        <dt>
+         <a target="_blank" href="/qqtouxiang/9791.htm"><img title="最新2010qq情侣头像一对" alt="最新2010qq情侣头像一对" src="http://img.qzone.la/img/userup/1003/231J4554C6.jpg" /></a>
+        </dt> 
+        <dd>
+         <a title="最新2010qq情侣头像一对" target="_blank" href="/qqtouxiang/9791.htm">最新2010qq情侣头像一对</a>
+        </dd> 
+       </dl> 
+       <dl> 
+        <dt>
+         <a target="_blank" href="/qqtouxiang/17179.htm"><img title="够成熟稳重的男人头像图片" alt="够成熟稳重的男人头像图片" src="http://img.qzone.la/uploads/allimg/120309/co12030Z22020-8.jpg" /></a>
+        </dt> 
+        <dd>
+         <a title="够成熟稳重的男人头像图片" target="_blank" href="/qqtouxiang/17179.htm">够成熟稳重的男人头像图片</a>
+        </dd> 
+       </dl> 
+       <dl> 
+        <dt>
+         <a target="_blank" href="/qqtouxiang/14346.htm"><img title="最新的姐妹头像一左一右_刻骨铭心的情感纠结" alt="最新的姐妹头像一左一右_刻骨铭心的情感纠结" src="http://img.qzone.la/uploads/allimg/110531/co110531095055-18.jpg" /></a>
+        </dt> 
+        <dd>
+         <a title="最新的姐妹头像一左一右_刻骨铭心的情感纠结" target="_blank" href="/qqtouxiang/14346.htm">最新的姐妹头像一左一右_刻骨铭心的情感纠结</a>
+        </dd> 
+       </dl> 
+       <dl> 
+        <dt>
+         <a target="_blank" href="/qqtouxiang/14876.htm"><img title="性感妩媚女生头像大全_夜巴黎丶你看不透旳美" alt="性感妩媚女生头像大全_夜巴黎丶你看不透旳美" src="http://img.qzone.la/uploads/allimg/110722/1-110H2035152.gif" /></a>
+        </dt> 
+        <dd>
+         <a title="性感妩媚女生头像大全_夜巴黎丶你看不透旳美" target="_blank" href="/qqtouxiang/14876.htm">性感妩媚女生头像大全_夜巴黎丶你看不透旳美</a>
+        </dd> 
+       </dl> 
+       <dl> 
+        <dt>
+         <a target="_blank" href="/qqtouxiang/13702.htm"><img title="百度贴吧头像 百度贴吧专用的头像图片" alt="百度贴吧头像 百度贴吧专用的头像图片" src="http://img.qzone.la/img/allimg/110331/0226140_lit.jpg" /></a>
+        </dt> 
+        <dd>
+         <a title="百度贴吧头像 百度贴吧专用的头像图片" target="_blank" href="/qqtouxiang/13702.htm">百度贴吧头像 百度贴吧专用的头像图片</a>
+        </dd> 
+       </dl> 
+      </div> 
+     </div> 
+    </div> 
+    <div class="ad4"> 
+     <div class="ad4_main"> 
+      <script>InfoRight2();</script> 
+     </div> 
+    </div> 
+    <div class="list2"> 
+     <div style="border-bottom:1px solid #e1e1e1;" class="cont_menu2"> 
+      <h3><a title="热门排行" target="_blank" href="/qqtouxiang/">热门排行</a></h3> 
+      <a title="更多&gt;&gt;" class="more" target="_blank" href="/qqtouxiang/">更多&gt;&gt;</a> 
+     </div> 
+     <ul> 
+      <li><span>11-30</span><a title="《童年》读后感" target="_blank" href="/rizhi/354808.html">《童年》读后感</a></li> 
+      <li><span>11-30</span><a title="夏天来了" target="_blank" href="/rizhi/354848.html">夏天来了</a></li> 
+      <li><span>11-30</span><a title="青春飞扬演讲稿" target="_blank" href="/rizhi/354875.html">青春飞扬演讲稿</a></li> 
+      <li><span>11-30</span><a title="新年愿望" target="_blank" href="/rizhi/354795.html">新年愿望</a></li> 
+      <li><span>11-29</span><a title="高兴的一件事汪毓帆" target="_blank" href="/rizhi/354175.html">高兴的一件事汪毓帆</a></li> 
+      <li><span>11-30</span><a title="读《热爱生命》有感" target="_blank" href="/rizhi/354776.html">读《热爱生命》有感</a></li> 
+      <li><span>11-30</span><a title="小鸟的流浪作文" target="_blank" href="/rizhi/354617.html">小鸟的流浪作文</a></li> 
+     </ul> 
+    </div> 
+    <div class="ad4 fix"> 
+     <div class="ad4_main"> 
+      <script>InfoRight3();</script> 
+     </div> 
+    </div> 
+   </div> 
+  </div> ﻿
+  <div class="footer"> 
+   <div class="f_main2 clearfix"> 
+    <div class="links2"> 
+     <a class="close"></a> 
+     <ul> 
+      <li><a href="http://www.qzone.la/qqtouxiang/weixin/" target="_blank" class="no1" title="微信头像">微信头像</a></li> 
+      <li><a href="http://www.qzone.la/qqtouxiang/koukou/" target="_blank" title="扣扣头像">扣扣头像</a></li> 
+      <li><a href="http://www.qzone.la/qqtouxiang/nvsheng/" target="_blank" title="女生头像">女生头像</a></li> 
+     </ul> 
+     <ul> 
+      <li><a href="http://www.qzone.la/qqtouxiang/qinglv.html" target="_blank" class="no1" title="情侣头像">情侣头像</a></li> 
+      <li><a href="http://www.qzone.la/qqtouxiang/katong/" target="_blank" title="卡通头像">卡通头像</a></li> 
+      <li><a href="http://www.qzone.la/qqtouxiang/nansheng/" target="_blank" title="男生头像">男生头像</a></li> 
+     </ul> 
+     <ul> 
+      <li><a href="http://www.qzone.la/wangming/qinglv/" target="_blank" class="no1" title="情侣网名">情侣网名</a></li> 
+      <li><a href="http://www.qzone.la/wangming/nvsheng/" target="_blank" title="女生网名">女生网名</a></li> 
+      <li><a href="http://www.qzone.la/wangming/haoting/" target="_blank" title="好听的网名">好听的网名</a></li> 
+     </ul> 
+     <ul> 
+      <li><a href="http://www.qzone.la/wangming/koukou/" target="_blank" class="no1" title="扣扣网名">扣扣网名</a></li> 
+      <li><a href="http://www.qzone.la/wangming/yingwen/" target="_blank" title="英文网名">英文网名</a></li> 
+      <li><a href="http://www.qzone.la/wangming/shanggan/" target="_blank" title="伤感网名">伤感网名</a></li> 
+     </ul> 
+     <ul> 
+      <li><a href="http://www.qzone.la/qianming/shanggan/" target="_blank" class="no1" title="伤感个性签名">伤感个性签名</a></li> 
+      <li><a href="http://www.qzone.la/qianming/koukou/" target="_blank" title="扣扣个性签名">扣扣个性签名</a></li> 
+      <li><a href="http://www.qzone.la/qianming/chaozhuai/" target="_blank" title="超拽个性签名">超拽个性签名</a></li> 
+     </ul> 
+     <ul> 
+      <li><a href="http://www.qzone.la/fenzu/jiandan/" target="_blank" class="no1" title="简单分组">简单分组</a></li> 
+      <li><a href="http://www.qzone.la/fenzu/koukou/" target="_blank" title="扣扣分组">扣扣分组</a></li> 
+      <li><a href="http://www.qzone.la/fenzu/qinglv/" target="_blank" title="情侣分组">情侣分组</a></li> 
+     </ul> 
+     <ul> 
+      <li><a href="http://www.qzone.la/moban/nvsheng/" target="_blank" class="no1" title="qq皮肤女生">qq皮肤女生</a></li> 
+      <li><a href="http://www.qzone.la/moban/nansheng/" target="_blank" title="qq皮肤男生">qq皮肤男生</a></li> 
+      <li><a href="http://www.qzone.la/moban/qinglv/" target="_blank" title="qq皮肤情侣">qq皮肤情侣</a></li> 
+     </ul> 
+    </div> 
+   </div> 
+   <div class="f_main2 copy "> 
+    <p> <a href="#">设为首页</a> | <a href="#">关于我们</a> | <a href="#">广告联系</a> | <a href="#">友情链接</a> | <a href="#">版权申明</a></p> 
+    <p> Copyright 2009-2015 All Right Reserved [黔ICP备15010827号-1] <script>duilian();tongji();</script> </p> 
+   </div> 
+  </div> 
+  <script src="/Scripts/common.js"></script> 
+  <div id="tip"></div> 
+  <div class="fixbottom">
+   <a href="/Default/Prize/" target="_blank"><img src="/Theme/qzone/Images/PointAd.jpg" /></a>
+  </div> 
+  <script>
+(function() {
+    var s = "_" + Math.random().toString(36).slice(2);
+    document.write('<div id="' + s + '"></div>');
+    (window.slotbydup=window.slotbydup || []).push({
+        id: '',
+        container: s,
+        size: '300,260',
+        display: 'float'
+    });
+})();
+</script> 
+  <script src="http://dup.baidustatic.com/js/os.js"></script>   
+ </body>
+</html>

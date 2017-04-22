@@ -1,0 +1,372 @@
+<!DOCTYPE html><html><head>
+<!--
+<script type="text/javascript">
+if(self.location!=top.location) { top.location.href=self.location.href;}
+</script>
+-->
+<meta charset="utf-8">
+<title>登录</title>
+<link type="text/css" href="/css/base.css" rel="stylesheet">
+<link type="text/css" href="/css/login.css" rel="stylesheet">
+  <link type="text/css" href="/css/tipsy.css" rel="stylesheet">
+ <link type="text/css" href="/css/tipsy.css" rel="stylesheet">
+    <script src="//hm.baidu.com/hm.js?b0155cd5ae135b5a8922f46a10fe14a0"></script><script src="/js/jquery-1.9.1.min.js"></script>
+    <script src="/js/jquery.cookie.js"></script>
+    <script src="/js/jquery.validate.js"></script>
+    <script src="/js/jquery.validate.wrapper.js"></script>
+    <script src="/js/jquery.form.js"></script>
+    <script src="/js/common.js"></script>
+    <script src="/js/jquery.tipsy.js"></script>
+    <script src="/js/mootools.js"></script>
+    <script src="/js/string.md5.js"></script>
+    <script src="/js/string.utf8.js"></script>
+ <script>
+		var _hmt = _hmt || [];
+		(function() {
+		  var hm = document.createElement("script");
+		  hm.src = "//hm.baidu.com/hm.js?b0155cd5ae135b5a8922f46a10fe14a0";
+		  var s = document.getElementsByTagName("script")[0]; 
+		  s.parentNode.insertBefore(hm, s);
+		})();
+	</script>
+	<style>
+	 .jzbtn{display: block;height: 47px;background: #25a9d4;border: 2px solid #64c1e0;}
+	 .jzbtn span{cursor: pointer;width: 336px; height: 51px;line-height: 47px;display: block; border: none;background: none; color: #fff;
+    font-size:18px;text-align:center;display:block;}
+	</style>
+</head>
+<body>
+	<div class="logoheader m0">
+		<h1 class="fl">
+			<a href="javascsript:;"><img src="images/logo_06.png" alt="logo"></a>
+		</h1>
+		<p class="fr">客服热线：400-0666-099</p>
+	</div>
+	<div class="mainwrap">
+		<!--login-->
+		<div id="bad_news" style="display: none;">  </div>
+		<div class="mainbox m0">
+			<div class="login fr">
+				<div class="qrswitch" id="qrswitch">
+					<a class="qrswitch_logo" id="qrswitch_logo" href="javascript:void(0)" title="二维码登录"></a>
+				</div>
+				<div class="log-user">
+				 <form method="post" id="loginForm" novalidate="novalidate">
+				 <input type="hidden" name="From" value="2">
+					<h2>用户登录</h2>
+					<p>请保护你账号和密码的安全，不要泄露给他人</p>
+					<div class="userinput">
+					 <div class="cb">
+						<div class="username mb15 mt15">
+							<span class="fl"> <img src="/images/ursename_03.png" alt="账户">
+							</span><input type="text" name="UserName" id="UserName" style="color: rgb(160, 160, 160);width:288px;height:38px;" placeholder=" 账户">
+						</div>
+						<div class="userpw">
+							<span class="fl"> <img src="images/password_07.png" alt="密码"></span>
+								<input name="Password" placeholder=" 密码" id="Password" type="password" style="color: rgb(160, 160, 160);width:288px;height:38px;">
+						</div>
+					 </div>
+						<div class="identifying-code mt15 cb">
+							<a><input name="Captcha" type="text" class="yzm" style="color: rgb(160, 160, 160);" id="Captcha"></a>
+								 <a href="javascript:reloadVerifyCode();">
+								<img id="safecode" src="/servlet/Image.Servlet?d=1491041627891" alt="二维码" style="width:80px;height:32px;">
+								</a> <a class="footsize ml10" href="javascript:reloadVerifyCode();" id="huanyizhang">换一张</a>
+						</div>
+						<div class="auto mt40">
+							<span><a href="http://yun.chinahrt.com/userbase/findpassword">忘记密码?</a></span>
+							<input type="checkbox" name="checkbox" id="checkbox">自动登录
+						</div>
+						<div class="logbtn cb mt10">
+							<input value=" 登    录 " class="btn" type="button" id="logbtn" style="cursor:pointer;width:336px;height:51px;line-height: 47px;display: block;border: none;background: none;color: #fff;margin: 0 auto;font-size: 20px;">
+						</div>
+						<div id="loadImg" style="display:none" class="jzbtn mt10">
+						    <span>加载中 ...</span>
+						</div>
+					</div>
+					 </form>
+				</div>
+				<!--二维码-->
+				<div class="qr-code">
+					<h4>手机扫描&nbsp;&nbsp;安全快捷</h4>
+					<p>使用融学客户端扫描二维码</p>
+					<p class="qr-line">
+						<img src="images/rongxue_erweima.jpg" alt="二维码">
+					</p>
+					<p class="qr-psw">
+						<a href="javascript:;">忘记密码 | </a><a href="javascript:;">下载融学移动端</a>
+						<a class="ts"><img src="images/ts_03.jpg" alt="提示"></a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--footer-->
+	<div class="loginfooter">
+		<p class="m0 mt15">版权所有：中国国家人事人才培训网 京ICP：备11042657号
+			京公网备案： <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11010102002485" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="" style="float:left;"></a></p><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;"><a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11010102002485" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">京公网安备 11010102002485号</a></p><p></p>
+	</div>
+	<!--意见反馈-->
+	<div class="feedback">
+		<div class="feedback-icon">意见反馈</div>
+		<div class="feedback-cont">
+			<textarea onfocus="if (this.value == '请输入反馈意见的内容... ') { this.value = '' }; this.style.color = '#333';" onblur="    if (this.value == '' || this.value == '请输入反馈意见的内容... ') { this.value = '请输入反馈意见的内容... '; this.style.color = '#a0a0a0'; }" style="color: rgb(160, 160, 160);">请输入反馈意见的内容... </textarea>
+			<div class="file-wrap">
+				<input type="text" class="file-txt"><input type="button" class="file-btn">
+				<div class="cb"></div>
+			</div>
+
+			<div class="inputs">
+				<p class="file-tit">感谢您的反馈！我们将尽快回复，并以消息通知。</p>
+				<input type="submit" value="提交" class="blue-btn"> <input type="reset" value="取消" class="wihte-btn">
+			</div>
+		</div>
+		<div class="arrow"></div>
+	</div>
+	<script type="text/javascript">
+	$(document).ready(function(){ 
+		var chinahrtorg= $.cookie('chinahrtorg');
+		if(chinahrtorg && typeof(chinahrtorg)!="undefined" && chinahrtorg!=""){
+			$("#checkbox").prop("checked",true);
+			var strs= new Array();
+			strs=decodeURI(chinahrtorg).split(",");
+			$("#UserName").val(strs[0]);
+			$("#Password").val(strs[1]);
+		}
+	}); 
+	
+	
+	var timenow = new Date().getTime();
+	document.getElementById("safecode").src = "/servlet/Image.Servlet?d="
+			+ timenow;
+		function reloadVerifyCode() {
+			var timenow = new Date().getTime();
+			document.getElementById("safecode").src = "/servlet/Image.Servlet?d="
+					+ timenow;
+		}
+		// 1. prepare the validation rules and messages.
+		var rules = {
+			"UserName" : {
+				required : true
+			},
+			"Password" : {
+				required : true,
+				minlength : 6
+			},
+			"Captcha" : {
+				required : true
+			}
+		};
+		var messages = {
+			"UserName" : {
+				required : "请输入用户名！"
+			},
+			"Password" : {
+				required : "请输入密码！",
+				minlength : "至少6个字符！"
+			},
+			"Captcha" : {
+				required : "请输入验证码！"
+			}
+
+		};
+		
+		
+		var errorPlacement = function(error, element) {
+			if (element.is(":input[name='Captcha']")) {
+				
+				$("#huanyizhang").tipsy({
+					trigger : 'manual',
+					gravity : 'w',
+					fallback : error[0].innerText
+				});
+				$("#huanyizhang").tipsy("setOption",error[0].innerText);
+				$("#huanyizhang").tipsy("show");
+			} else {
+				//$(element).tipsy({fallback: error[0].innerText,trigger: 'focus'});
+				$(element).tipsy({
+					trigger : 'manual',
+					gravity : 'w',
+					fallback : error[0].innerText
+				});
+				$(element).tipsy("setOption",error[0].innerText);
+				$(element).tipsy("show");
+			}
+		};
+		function tipsyA(id ,msg){
+			$("#"+id).tipsy({
+				trigger : 'manual',
+				gravity : 'w',
+				fallback : msg
+			});
+			$("#"+id).tipsy("setOption",msg);
+			$("#"+id).tipsy("show");
+		}
+		// 2. Initiate the validator
+		var validator = new jQueryValidatorWrapper("loginForm", rules,
+				messages, errorPlacement);
+		var beforeFn=function(){return true;}
+		var errorFn= function (XMLHttpRequest, textStatus, errorThrown) {
+			  alert("网络不给力，请稍后重试．．．"+textStatus+errorThrown)		
+			return true;
+		}
+		// 3. Set the click event to do the validation
+		$(".logbtn").click(function() {
+			$(":input").each(function() {
+				$(this).tipsy("hide");
+			});
+			$("#huanyizhang").tipsy("hide");
+			if (!validator.validate()) {
+					
+				return;
+			}
+			$('.logbtn').hide();
+			$('#loadImg').show();
+			 var flag=$.ajax({
+	     		   type: "POST",
+	     		   async:false,
+	     		   url: "/checkCaptcha?t="+new Date().getTime(),
+	     		   data: "Captcha="+$('#Captcha').val(),
+	     		   error:function (XMLHttpRequest, textStatus, errorThrown) {
+		     			  alert("网络不给力，请稍后重试．．．"+textStatus+errorThrown)	
+		     		   }
+	     		   
+	     		}).responseText; 
+	     		if(flag!="true"){
+	     		 reloadVerifyCode();
+	     		 $("#Captcha").val("");
+	     		 $("#Captcha").focus();
+	     		tipsyA("huanyizhang","验证码不正确");
+     			  	$('#loadImg').hide();
+					$('.logbtn').show();
+	     		 return;
+	     		
+	     		}
+	     		var flag=$.ajax({
+		     		   type: "POST",
+		     		   async:false,
+		     		   url: "/checkUser?t="+new Date().getTime(),
+		     		   data: "UserName="+$('#UserName').val()+"&Password="+$('#Password').val().toMD5(),
+		     		  error:function (XMLHttpRequest, textStatus, errorThrown) {
+		     			  alert("网络不给力，请稍后重试．．．"+textStatus+errorThrown)	
+		     		   }
+		     		   
+		     		}).responseText; 
+		     		if(flag!="true"){
+		     			if(flag=="4"){
+		     			tipsyA("UserName","用户名冻结");
+		     			}else{
+		     			tipsyA("UserName","用户名或密码不正确");
+		     			}
+		     			  	$('#loadImg').hide();
+							$('.logbtn').show();
+		     		 return;
+		     		}
+		     		var urldata="UserName="+$('#UserName').val()+"&Password="+$('#Password').val().toMD5()+"&From=2&staff=1";
+		     		if($("#checkbox").is(':checked')){
+		     			urldata="UserName="+$('#UserName').val()+"&Password="+$('#Password').val().toMD5()+"&From=2&staff=1&org="+$('#Password').val();
+		     			
+		     		}
+		     		
+		     		
+		     		$.ajax({
+			     		   type: "POST",
+			     		   async:true,
+			     		   dataType:"json",
+			     		   url: "/login.do?t="+new Date().getTime(),
+			     		   data: urldata,
+			     		   error:function (XMLHttpRequest, textStatus, errorThrown) {
+			     			  	$('#loadImg').hide();
+								$('.logbtn').show();
+				     			  alert("网络不给力，请稍后重试．．．"+textStatus+errorThrown)	
+				     		   },
+				     		   success:function (data, textStatus) {
+				     			 if (data.result == 1) {
+								     window.location.href = data.message;
+				  				} else {
+				     			  	$('#loadImg').hide();
+									$('.logbtn').show();
+				  						if(data.code=="5"){
+				  							tipsyA("UserName",data.message);
+				  						}else{
+				  							
+				  						$("#huanyizhang").tipsy({
+				  							trigger : 'manual',
+				  							gravity : 'w',
+				  							fallback : data.message
+				  						});
+				  						$("#huanyizhang").tipsy("show");
+				  						}
+				  					
+				  					
+				  				}
+				     			}
+			     		   
+			     		}); 
+			
+
+		});
+		
+
+		
+
+		if (document.addEventListener) {// 如果是Firefox
+			document.addEventListener("keypress", fireFoxHandler, true);
+		} else {
+			document.attachEvent("onkeypress", ieHandler);
+		}
+
+		function fireFoxHandler(evt) {
+			if (evt.keyCode == 13
+					&& document.getElementById("loginForm") != null) {
+				$(".logbtn").click();
+			}
+		}
+		function ieHandler(evt) {
+			if (evt.keyCode == 13
+					&& document.getElementById("loginForm") != null) {
+				$(".logbtn").click();
+			}
+		}
+		jQuery(function($) {
+			$('#UserName').focus();
+			$('#qrswitch_logo').click(
+					function() {
+						if ($('.log-user').is(":hidden")) {
+							$(this).css('background',
+									'url("images/pull_2.gif") no-repeat');
+						} else {
+							$(this).css('background',
+									'url("images/pull_3.gif") no-repeat');
+						}
+						$('.log-user').toggle();
+						$('.qr-code').toggle();
+					});
+			//意见反馈
+			$(".feedback-icon").mouseover(function() {
+				$(this).css({
+					"background" : "#666"
+				});
+				$(".feedback-cont").show();
+				$(".arrow").show();
+			});
+			$(".feedback-cont").mouseout(function() {
+				$(".feedback-icon").css({
+					"background" : "#3399cc"
+				});
+				$(this).hide();
+				$(".arrow").hide();
+			});
+			$(".feedback-cont").mouseover(function() {
+				$(".feedback-icon").css({
+					"background" : "#666"
+				});
+				$(this).show();
+				$(".arrow").show();
+			});
+		});
+		
+		
+	</script><div id="V_dia_log1000000000" title="Please correct the errors ..."><ul></ul></div>
+
+
+</body></html>

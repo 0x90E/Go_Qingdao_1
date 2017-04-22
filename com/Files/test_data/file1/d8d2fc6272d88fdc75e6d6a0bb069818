@@ -1,0 +1,268 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<title>天天领鱼丸-斗鱼游戏</title>
+<style type="text/css">
+    body {
+        background-color: #000;
+        font-size: 12px;
+    }
+
+    td img {
+        display: block;
+    }
+
+    input {
+        width: 150px;
+        height: 16px;
+    }
+	ul,li,ol{ list-style:none; }
+
+    
+	.main_cm {
+        width: 1024px;
+        margin: 0 auto;
+    }
+
+    .show_cm {
+        position: relative;
+        top: 185px;
+        left: -200px;
+		margin-left:10px;
+        width: 480px;
+        height: 400px;
+    }
+    
+    .main_full {
+        width: auto;
+        margin: 0 auto;
+    }
+    
+	.show_full {
+        position: absolute;
+        top: 185px;
+        left: 50%;
+		margin-left:-200px;
+        width: 480px;
+        height: 400px;
+		padding-left: 18px;
+    }
+
+    .normal {
+        padding-left: 15px;
+        color: black;
+    }
+
+    .error {
+        padding-left: 15px;
+        color: red;
+    }
+	
+	.loginon{background-position: 0 0;}
+	#show_register{clear:both;height:100%;width:100%;}
+</style>
+<script type="text/javascript" charset="utf-8" src="http://wan.douyu.com/action/user_info.php?rt=5"></script>
+<script type="text/javascript">
+    document.domain = "douyu.com";
+    var uri = window.location.pathname;
+    var uriInfo = uri.split("/");
+    var platformId = parseInt(uriInfo[2]);
+    var unionId = parseInt(uriInfo[3]);
+    var linkId = parseInt(uriInfo[4].substring(0, uriInfo[4].indexOf(".")));
+
+    var _title = '天天领鱼丸-斗鱼游戏';
+    var adParam = '36025xlalagd';
+    var flashPath = 'http://cdn.g.wan.douyu.com/swfs/41/36025xlalagd/';
+    var flashFile = flashPath + 'index.swf';
+	var silent = (getParam('silent') == '1') ? 1 : 0;
+	var flashVars = "path=" + flashPath + "&silent=" + silent;
+	
+	var game_alias = 'lycq';
+	var sid = '573';
+	var ad_name = '啦啦啦攻城全屏 (战略-斗鱼礼物版)';
+	if(ad_name.indexOf('全屏') < 0){
+		var _width = '1400';
+	}else{
+		var _width = '100%';
+	}
+	
+    var _height = '700';
+    var gameId = '5003';
+    var gameServerId = '6516';
+    var referer = 'zbj';
+    /* var uid = getParam("frm").replace(/\./g,'_'); */
+    var frm = getParam("frm").replace(/\./g,'_');
+	var ext = encodeURIComponent(platformId + "|" + unionId + "|" + linkId + "|" + frm)
+	var TimeTemp = 1491038909;
+	var platformId = 1;
+	var platformDeploy=1;
+	var platformDomain='reg.wan.douyu.com';
+	document.write('<script type="text/javascript" charset="utf-8" src="/js/'+platformDeploy+'/g.js?'+Math.random()+'"><\/script>');	
+	
+	var step = 0;
+    var space = '';
+    for (var i = 0; i <= _title.length; i++)space += '　';
+
+    function $(id) {
+        return document.getElementById(id);
+    }
+
+    function getParam(param) {
+		try{
+        var uri = window.location.search;
+        var re = new RegExp("" + param + "=([^&?]*)", "ig");
+        return ((uri.match(re)) ? (decodeURIComponent(uri.match(re)[0].substr(param.length + 1))) : '');
+		}catch(_e){return '';}
+    }
+
+    function flash_title() {
+        step++;
+        if (step == 3) {
+            step = 1
+        }
+        if (step == 1) {
+            document.title = space
+        }
+        if (step == 2) {
+            document.title = _title
+        }
+        setTimeout("flash_title()", 500);
+    }
+    flash_title();
+
+	function loadAdTrack() {Jsonp("/s/" + platformId + "/" + unionId + "/" + linkId + "/5.js?frm=" + frm, null);}
+
+    function loadTrack() {
+        Jsonp("/s/" + platformId + "/" + unionId + "/" + linkId + "/2.js?frm=" + frm, null);
+        window.moveTo(0, 0);
+        window.resizeTo(screen.width, screen.height);
+        
+    }
+
+    function openDiv() {
+        Jsonp("/s/" + platformId + "/" + unionId + "/" + linkId + "/3.js?frm=" + frm, null);
+        if(typeof(user.uid) != 'undefined' && user.uid !=''){
+            window.location = game+"&frm="+encodeURIComponent(frm)+"&fdata="+encodeURIComponent(fdata);
+        }else{
+            $('registerFrame').src = goreg;
+            $('show').style.display = "block";
+        }
+    }
+
+    var CallBackHandler = {
+        tid: 0,
+        callbacks: {},
+        getTid: function() {
+            return ++this.tid;
+        },
+        registerCallBack: function(tid, func) {
+            this.callbacks[tid] = func;
+        },
+        handleCallBack: function(tid, data) {
+            var func = this.callbacks[tid];
+            if (func && (typeof func == 'function')) func(data);
+            var script = document.getElementById('jsonp_invoker_' + tid);
+            if (script) try {
+                script.parentNode.removeChild(script);
+            } catch(e) {
+            }
+        }
+    };
+
+var Jsonp = function(url, callback) {
+    var tid = CallBackHandler.getTid();
+    var script = document.createElement('script');
+    with (script) {
+        id = 'jsonp_invoker_' + tid;
+        type = 'text/javascript';
+        src = url.indexOf('?') > 0 ? (url + '&tid=' + tid+'&'+Math.random()) : (url + '?tid=' + tid+'&'+Math.random());
+    }
+    if (callback) CallBackHandler.registerCallBack(tid, callback);
+    var head = document.getElementsByTagName('head');
+    if (head[0]) {
+        head[0].appendChild(script);
+    } else {
+        document.body.appendChild(script);
+    }
+};
+
+function setClass(obj,className){
+	return obj.setAttribute(navigator.appName == 'Microsoft Internet Explorer'?'className':'class',className);
+}
+
+function SetCookie(sName, sValue){
+	   date = new Date();
+	   date.setDate(date.getDate()+30);
+	   document.cookie = sName+'='+escape(sValue)+'; expires='+date.toGMTString();
+	}
+
+
+</script><script type="text/javascript" charset="utf-8" src="/js/1/g.js?0.4459959629457444"></script><script type="text/javascript" charset="utf-8" src="/api/c_v2.php?platform_id=1&amp;union_id=1258&amp;link_id=148&amp;game_id=5003&amp;0.969831757247448"></script>
+<script id="jsonp_invoker_1" type="text/javascript" src="/s/1/1258/148/2.js?frm=&amp;tid=1&amp;0.3031474449671805"></script></head>
+<!--[if IE 6]>
+<script type="text/javascript" src="/js/FixPNG.js"></script>
+<script type="text/javascript">
+	DD_belatedPNG.fix(".tabs");
+</script>
+<![endif]-->
+<body onload="loadTrack();loadOther();">
+<div id="main" class="main_full">
+    <div id="flash">
+        <table id="tb" border="0" cellpadding="0" cellspacing="0" width="100%" align="center">
+            <tbody><tr>
+                <td>
+                    <script type="text/javascript">
+                        document.write('<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" width="' + _width + '" height="' + _height + '" id="game" align="middle">');
+                        document.write('<param name="allowScriptAccess" value="always" />');
+                        document.write('<param name="movie" value="' + flashFile + '" />');
+                        document.write('<param name="quality" value="high" />');
+                        document.write('<param name="bgcolor" value="#000000" />');
+                        document.write('<param name="FlashVars" value="' + flashVars + '" />');
+                        document.write('<param name="wmode" value="transparent" />');
+                        document.write('<embed src="' + flashFile + '"  FlashVars="' + flashVars + '" quality="high" bgcolor="#000000" width="' + _width + '" height="' + _height + '" name="game" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"  wmode="transparent" />');
+                        document.write('</object>');
+                    </script><object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0" width="100%" height="700" id="game" align="middle"><param name="allowScriptAccess" value="always"><param name="movie" value="http://cdn.g.wan.douyu.com/swfs/41/36025xlalagd/index.swf"><param name="quality" value="high"><param name="bgcolor" value="#000000"><param name="FlashVars" value="path=http://cdn.g.wan.douyu.com/swfs/41/36025xlalagd/&amp;silent=0"><param name="wmode" value="transparent"><embed src="http://cdn.g.wan.douyu.com/swfs/41/36025xlalagd/index.swf" flashvars="path=http://cdn.g.wan.douyu.com/swfs/41/36025xlalagd/&amp;silent=0" quality="high" bgcolor="#000000" width="100%" height="700" name="game" align="middle" allowscriptaccess="always" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" wmode="transparent"></object>
+                </td>
+            </tr>
+        </tbody></table>
+    </div>
+    <div id="show" class="show_full" style="display:none;">
+		<!--show_register-->
+		<div id="show_register">
+			<script type="text/javascript">
+				var m = document.getElementById("main");
+				var s = document.getElementById("show");
+				if(ad_name.indexOf('全屏') < 0){
+					//普屏
+					m.className = "main_cm";
+					s.className = "show_cm";
+					$('flash').style.position='absolute';
+					$('tb').width = '900';
+				}else{
+					//全屏
+					m.className = "main_full";
+					s.className = "show_full";
+					$('tb').width = '100%';
+				}
+
+                var game =  'http://wan.douyu.com/game_frame/tg_play_'+ gameId + '.php?sid='+sid;
+                gameurl = encodeURIComponent(game);
+                var fdata = encodeURIComponent(referer)+"||;"+encodeURIComponent(frm)+"||;"+getParam('ad_type')+"||;"+encodeURIComponent(adParam)+"||;"+gameId+"||;"+gameServerId +"||;"+ext;
+
+                Cookies.set('frm',frm);
+                Cookies.set('ext',ext);
+                Cookies.set('fdata',fdata);
+
+
+                var goreg = "http://www.douyu.com/member/login/to37wan/adlogin?forward="+gameurl;
+
+
+				
+			</script>
+			<iframe src="about:blank" name="registerFrame" id="registerFrame" allowtransparency="true" marginwidth="0" marginheight="0" scrolling="no" frameborder="0" width="400" height="290"></iframe>
+		</div>
+		<!--show_register-->
+    </div>
+</div>
+
+
+</body></html>

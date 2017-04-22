@@ -1,0 +1,499 @@
+<!DOCTYPE html><html><head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+        <meta charset="utf-8">
+
+        <meta name="format-detection" content="telephone=no">
+        <!--禁用手机号码链接(for iPhone)-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+        <!--自适应设备宽度-->
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <!--控制全屏时顶部状态栏的外，默认白色-->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <!--是否允许全屏显，只有在桌面启动时可用-->
+
+        <link rel="shortcut icon" href="/resources/images/icon.jpg">
+        <link rel="apple-touch-icon" href="/resources/images/icon.jpg">
+
+        <title>基金品种页</title>
+
+        <!-- loading popup  disappear before document loaded -->
+        <script>
+            var loadingContent='<div id="loadingContent" style="position: absolute;left: 0;top: 0;width: 100%;height: 100%;background: rgba(0,0,0,0.5);z-index: 99999;display: none;"></div><div style="display: table; background: rgba(0, 0, 0, 0);"><div class="inner" style="display: table-row;width: 100%;height: 100%;position: relative;"><div ui="" class="_maskload_" style="height: 92px;width: 100px;position: absolute;left: 50%;top: 50%;overflow: hidden;background: rgba(0,0,0,0.85);padding: 20px 0 8px 0;margin: -90px 0 0 -45px;border-radius: 5px;"><div class="loading" type="12" style="margin: 0 auto 10px auto;"></div><span style="display: block;width: 100%;text-align: center;color: #fff;font-size: 14px;height: 22px;line-height: 22px;">加载中</span></div></div></div></div>';
+            document.write(loadingContent);
+        </script></head><body style=""><div id="loadingContent" style="position: absolute;left: 0;top: 0;width: 100%;height: 100%;background: rgba(0,0,0,0.5);z-index: 99999;display: none;"></div><div style="display: table; background: rgba(0, 0, 0, 0);"><div class="inner" style="display: table-row;width: 100%;height: 100%;position: relative;"><div ui="" class="_maskload_" style="height: 92px;width: 100px;position: absolute;left: 50%;top: 50%;overflow: hidden;background: rgba(0,0,0,0.85);padding: 20px 0 8px 0;margin: -90px 0 0 -45px;border-radius: 5px;"><div class="loading" type="12" style="margin: 0 auto 10px auto;"></div><span style="display: block;width: 100%;text-align: center;color: #fff;font-size: 14px;height: 22px;line-height: 22px;">加载中</span></div></div></div>
+
+
+        <!--项目完成时再压缩-->
+        <link href="./resources/css/fundTypeInit.css" rel="stylesheet" type="text/css">
+
+    
+
+    
+
+
+        <div id="fundTypeView" pid="root/1" style="display: block; ">
+            <div class="pageHeader removeHeader">
+                <header>
+                    <div class="headerLeft">
+                        <p class="back iconfont" id="fundTypeBackBtn">返回</p>
+                    </div>
+                    <h1>基金</h1>
+                    <h2 class="h2"></h2>
+                </header>
+            </div>
+
+            <div id="searchbar">
+                <div class="ipt-wrapper">
+                    <span class="ipt iconfont">
+                        <input id="ipt-search" type="text" placeholder="请输入基金代码、简称或者名称" maxlength="20">
+                    </span>
+                    <a href="javascript:void(0)" class="cancle">取消</a>
+                </div>
+
+                <script type="text/template" id="search-template">
+                    <% if(success){ %>
+                        <% _.each(data,function(fund){%>
+                            <li>
+                                <a href="<%=fund.detailurl%>">
+                                    <p class="fname"><%=fund.SHORTNAME.replace(keyword,'<b>'+keyword+'</b>')%></p>
+                                    <p class="finfo">
+                                        <span class="fcode"><%=fund.FCODE.replace(keyword,'<b>'+keyword+'</b>')%></span>
+                                        <span class="ftype"><%=fund.FTYPE.replace(keyword,'<b>'+keyword+'</b>')%></span>
+                                    </p>
+                                </a>
+                            </li>
+                        <% })%>
+                    <% }else{ %>
+                        <li class="noresult fullpage">
+                            暂无<span class="keyword"><%= keyword%></span>的匹配信息，请重新输入
+                        <li>
+                    <% } %>
+                </script>
+            </div>
+
+
+            <div id="fundTypePageScroller" class="iscroll-box" style="height: 0px; ">
+                <div class="pageContent"></div>
+            </div>
+
+            <div class="fixContent animfooter" id="fixContent">
+                <div class="ui-grid-row ui_h2">
+                    <div class="ui-grid-7">
+                        <p>状态：<span id="buyState">--</span></p>
+                        <p>费率：<span class="red" id="buyRate">--</span></p>
+                    </div>
+                    <div class="ui-grid-3">
+                       <a href="javascript:;" target="_self" class="ui-btn btn-inline ui-btn-orange" id="buyJJ">购买</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="noticeDetailView" pid="root/2">
+            <div class="pageHeader removeHeader">
+                <header>
+                    <div class="headerLeft">
+                        <p class="back iconfont" id="noticeDetailBackBtn">返回</p>
+                    </div>
+                    <h1>基金公告</h1>
+                </header>
+            </div>
+
+
+            <div id="noticeDetailPageScroller" class="iscroll-box" style="height: 0px; ">
+                <div class="pageContent">
+                    
+                </div>
+            </div>
+
+
+        </div>
+
+
+                
+
+        <script src="./seajs/sea.js" data-config="config" data-main="fundType"></script>
+
+        <script type="text/template" id="lssyl_template">
+            <div  id="LSSYL_scroll">
+                <table class="ui-table">
+                    <thead>
+                        <tr>
+                        <%
+                        if(!type){
+                        %>
+                            <th>日期</th>
+                            <th>单位净值</th>
+                            <th>累计净值</th>
+                            <th>日增长</th>
+                      
+                        <%
+                        }else{
+                        %>
+                            <th>日期</th>
+                            <th><%= feature %></th>
+                            <th>7日年化</th>
+                        <%
+                        }
+                        %>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <%
+                        for(var i = data.length-1; i>=0; i--){
+                            if(!type){
+                    %>
+                        <tr>
+                            <td><%= data[i].date %></td>
+                            <td><%= data[i].DWJZ %></td>
+                            <td><%= data[i].LJJZ %></td>
+                            <td class="<%= data[i].JZZZL_class %>"><%= data[i].JZZZL %></td>
+                            
+
+                        </tr>
+                    <%
+                        }else{
+                    %>
+                        <tr>
+                            <td><%= data[i].date %></td>
+                            <td><%= data[i].DWJZ %></td>
+                            <td><%= data[i].LJJZ %>%</td>
+                        </tr>
+                    <%
+                        }} 
+                    %>
+                    </tbody>
+                </table>
+            </div>
+        </script>
+        <script type="text/template" id="fhps_template">
+            <div class="fhpsContent">
+                <p class="ui_remark">成立以来，总计分红<%= data.fh %>次，拆分<%= data.zf %>次</p>
+
+                <%
+                    for(var i = 0; i<data.o.length; i++){
+                %>
+                    <div class="ui-grid-row">
+                        <p class="ui-grid-3"><%= data.o[i].date %></p>
+                        <p class="ui-grid-7"><%= data.o[i].Remarks %></p>
+                    </div>
+                <%
+                    }
+                %>
+                    
+                
+            </div>
+        </script>
+        <script type="text/template" id="jjjl_template">
+            <% if(type==='list'){ %>
+                <h3>基金经理变动一览</h3>
+                <div id="gotoJJJL_scroll">
+                    <table class="ui-table">
+                        <thead>
+                            <tr>
+                                <th>起始期</th>
+                                <th>截止期</th>
+                                <th>基金经理</th>
+                                <th>任期时间</th>
+                                <th>任期回报</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <%
+                            for(var i = 0; i<data.length; i++){
+                        %>
+                            <tr>
+                                <td><%= data[i]["sDate"] %></td>
+                                <td><%= data[i]["eDate"] %></td>
+                                <td><%= data[i]["name"] %></td>
+                                <td><%= data[i]["date"] %></td>
+                                <td class="<%= data[i]['cash_class'] %>"><%= data[i]["cash"] %></td>
+                            </tr>
+                        <%
+                            }
+                        %>
+                        </tbody>
+                    </table>
+                </div>
+            <% }else if(type==='detail'){ %>    
+
+                <h3>现任基金经理简介</h3>
+                <%
+                    for(var i = 0; i<data.length; i++){
+                %>
+                    <div class="ui-grid-row">
+                        <div class="ui-grid-4">
+                        <img width="80" src="<%= data[i]['photo'] %>" onerror="this.src='https://j5.dfcfw.com/avatar/nopic.gif'">
+                        </div>
+                        <div class="ui-grid-6 jjjlInfo">
+                            <p>姓名：<span><%= data[i]["name"] %></span></p>
+                            <p>上任日期：<span><%= data[i]["sDate"] %></span></p>
+                    
+                            <p>管理年限<span><%= data[i]["date"] %></span></p>
+                        </div>
+                         <div class="ui-grid-10 jjjltxt">
+                            <p class="on"><%= data[i]["txt"] %></p>
+                            <a href="javascript:;" target="_self" class="down">全部简介</a>
+                        </div>
+                    </div>
+                <%
+                    }
+                %>    
+                
+            <% } %>    
+        </script>
+        <script type="text/template" id="jjgg_template">
+            <div class="jjggContent">
+
+                <%
+                    if(!data.length){
+                %>
+                    <p class="tip ui_remark">暂无基金公告</p>
+                <%
+                    }else{
+                    for(var i = 0; i<data.length; i++){
+                %>
+                    <div class="ui-grid-row" data-id="<%= data[i].id%>">
+
+                        <p class="ui-grid-2"><%= data[i].date%></p>
+                        <p class="ui-grid-8"><%= data[i].title%></p>
+                    </div>
+                <%
+                    }}
+                %>
+                    
+                
+            </div>
+        </script>
+        <script type="text/template" id="head_template_sg">
+            <div class="ui_outer ">
+                <div class="ui_inner ui-grid-row ui_h2 ui_inner_m15">
+                    <div class="ui-grid-5">
+                       <p class="ui_m ui_gray"><%= obj.h1[0] %></p>
+                       <%= obj.h1[1] %>
+                    </div>
+                    <div class="ui-grid-5">
+                       <p class="ui_m ui_gray"><%= obj.h2[0] %></p>
+                       <%= obj.h2[1] %>
+                    </div>
+                </div>
+            </div>
+            <div class="ui_outer ">
+                <div class="ui_inner ui-grid-row ui_h2 ui_inner_m15 paddingRight ">
+                    <% for(var i=0, l=obj.content.length; i<l; i++){%>
+                        <div class="ui-grid-5">
+                           <p class="ui_m ui_gray"><%= obj.content[i] %></p>
+                        </div>
+                    <% } %>
+                    
+                    <div class="<%= obj.className %>"  id="Info_url">
+                       <p class="ui_m ui_gray ui_alignRight" style="padding:0px;">更多阶段涨幅 ></p>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="ui_outer  ui_blank"  id="buyInfo_url">
+                <div class="ui_inner ui-grid-row ui_h1 ui_inner_m15 anotherPadding">
+                    <p class="ui-grid-6 ">购买信息</p>
+                    <div class="ui-grid-4 ui_arr iconfont">
+                        <p class="ui_alignRight ui_gray ui_m">更多</p>
+                    </div>
+                </div>
+            </div>
+            <div class="ui_outer ">
+                <div class="ui_inner ui-grid-row ui_h2 ui_inner_m15 paddingRight">
+                    <div class="ui-grid-5">
+                       <p class="ui_m ui_gray">申购起点：<span class="ui_black"><%= obj.buyInfo[0]%></span></p>
+                    </div>
+                    <div class="ui-grid-5">
+                       <p class="ui_m ui_gray">费率：<span class="ui_red"><%= obj.buyInfo[1]%></span></p>
+                    </div>
+                    <div class="ui-grid-5">
+                       <p class="ui_m ui_gray">申购确认日：<span class="ui_black"><%= obj.buyInfo[2]%></span></p>
+                    </div>
+                    <div class="ui-grid-5">
+                       <p class="ui_m ui_gray">赎回确认日：<span class="ui_black"><%= obj.buyInfo[3]%></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="ui_outer  ui_blank" id="tab">
+                <%= obj.tabContent %>
+            </div>
+            <div class="ui_outer ui_blank"  id="baseInfo_url">
+                <div class="ui_inner ui-grid-row ui_h1 ui_inner_m15 anotherPadding">
+                    <p class="ui-grid-6 ">基本信息</p>
+                    <div class="ui-grid-4 ui_arr iconfont">
+                        <p class="ui_alignRight ui_gray ui_m">更多</p>
+                    </div>
+                </div>
+            </div>
+            <div class="ui_outer ">
+                <div class="ui_inner ui-grid-row ui_h2 ui_inner_m15 paddingRight">
+                    <div class="ui-grid-5">
+                       <p class="ui_m ui_gray">类型：<span class="ui_black"><%= obj.baseInfo[0]%></span></p>
+                    </div>
+                    <div class="ui-grid-5">
+                       <p class="ui_m ui_gray">风险等级：<span class="ui_black"><%= obj.baseInfo[1]%></span></p>
+                    </div>
+                    <div class="ui-grid-5">
+                       <p class="ui_m ui_gray">规模：<span class="ui_black"><%= obj.baseInfo[2]%></span></p>
+                    </div>
+                    <div class="ui-grid-5">
+                       <p class="ui_m ui_gray">评级：<span class="ui_black"><%= obj.baseInfo[3]%></span></p>
+                    </div>
+                    <div class="ui-grid-5">
+                       <p class="ui_m ui_gray">管理人：<span class="ui_black ui-text-overflow" style="max-width:55%"><%= obj.baseInfo[4]%></span></p>
+                    </div>
+                    <div class="ui-grid-5">
+                       <p class="ui_m ui_gray">成立日：<span class="ui_black"><%= obj.baseInfo[5]%></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui_outer  ui_blank" id="gotoLSSYL">
+                <div class="ui_inner ui-grid-row ui_h1 ui_inner_m15">
+                    <div class="ui-grid-8">
+                        <p>历史净值</p>
+                    </div>
+                    <div class="ui-grid-2 ui_unfold iconfont">
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui_outer  "  id="gotoFHPS">
+                <div class="ui_inner ui-grid-row ui_h1 ui_inner_m15">
+                    <div class="ui-grid-8">
+                        <p>分红配送</p>
+                    </div>
+                    <div class="ui-grid-2 ui_unfold iconfont">
+                    </div>
+                </div>
+            </div>
+            <div class="ui_outer  " id="gotoJJJL">
+                <div class="ui_inner ui-grid-row ui_h1 ui_inner_m15">
+                    <div class="ui-grid-8">
+                        <p>基金经理</p>
+                    </div>
+                    <div class="ui-grid-2 ui_unfold iconfont">
+                    </div>
+                </div>
+            </div>
+            <div class="ui_outer  " id="gotoJJGG">
+                <div class="ui_inner ui-grid-row ui_h1 ui_inner_m15">
+                    <div class="ui-grid-8">
+                        <p>基金公告</p>
+                    </div>
+                    <div class="ui-grid-2 ui_unfold iconfont">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="titleFooter">
+                <p class="ui_remark ui_alignCenter">数据来源：东方财富Choice数据</p>
+                <p class="ui_remark ui_alignCenter">
+                    <a href="javascript:;" id="gotoSafe">民生银行全程保证交易资金安全</a>
+                </p> 
+            </div>
+        </script>
+        <script type="text/template" id="head_template_rg">
+            <div class="ui_outer ">
+                <div class="ui_inner ui-grid-row ui_h2 ui_inner_m15">
+                    <div class="ui-grid-10">
+                       <%= rg%>
+                       <% if(!!time) {%>
+                       <p class="djs ui_s ui_gray ui_alignCenter" id="djs">
+                       <%= time%>
+                       </p>
+                       <% }%>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui_outer  ui_blank" id="buyInfo_url">
+                <div class="ui_inner ui-grid-row ui_h1 ui_inner_m15 anotherPadding">
+                    <p class="ui-grid-6 ">购买信息</p>
+                    <div class="ui-grid-4 ui_arr iconfont">
+                        <p class="ui_alignRight ui_gray ui_m">更多</p>
+                    </div>
+                </div>
+            </div>
+            <div class="ui_outer ">
+                <div class="ui_inner ui-grid-row ui_h2 ui_inner_m15 paddingRight">
+                    <div class="ui-grid-5">
+                       <p class="ui_m ui_gray">申购起点：<span class="ui_black"><%= obj.buyInfo[0]%></span></p>
+                    </div>
+                    <div class="ui-grid-5">
+                       <p class="ui_m ui_gray">费率：<span class="ui_red"><%= obj.buyInfo[1]%></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui_outer  ui_blank" id="baseInfo_url">
+                <div class="ui_inner ui-grid-row ui_h1 ui_inner_m15 anotherPadding">
+                    <p class="ui-grid-6 ">基本信息</p>
+                    <div class="ui-grid-4 ui_arr iconfont">
+                        <p class="ui_alignRight ui_gray ui_m">更多</p>
+                    </div>
+                </div>
+            </div>
+            <div class="ui_outer ">
+                <div class="ui_inner ui-grid-row ui_h2 ui_inner_m15 paddingRight">
+                    <div class="ui-grid-5">
+                       <p class="ui_m ui_gray">类型：<span class="ui_black"><%= obj.baseInfo[0]%></span></p>
+                    </div>
+                    <div class="ui-grid-5">
+                       <p class="ui_m ui_gray">风险等级：<span class="ui_black"><%= obj.baseInfo[1]%></span></p>
+                    </div>
+                    <div class="ui-grid-5">
+                       <p class="ui_m ui_gray">规模：<span class="ui_black"><%= obj.baseInfo[2]%></span></p>
+                    </div>
+                    <div class="ui-grid-5">
+                       <p class="ui_m ui_gray">评级：<span class="ui_black"><%= obj.baseInfo[3]%></span></p>
+                    </div>
+                    <div class="ui-grid-5">
+                       <p class="ui_m ui_gray">管理人：<span class="ui_black ui-text-overflow" style="max-width:55%"><%= obj.baseInfo[4]%></span></p>
+                    </div>
+                    <div class="ui-grid-5">
+                       <p class="ui_m ui_gray">成立日：<span class="ui_black"><%= obj.baseInfo[5]%></span></p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="ui_outer  ui_blank" id="gotoJJJL">
+                <div class="ui_inner ui-grid-row ui_h1 ui_inner_m15">
+                    <div class="ui-grid-8">
+                        <p>基金经理</p>
+                    </div>
+                    <div class="ui-grid-2 ui_unfold iconfont">
+                    </div>
+                </div>
+            </div>
+            <div class="ui_outer  " id="gotoJJGG">
+                <div class="ui_inner ui-grid-row ui_h1 ui_inner_m15">
+                    <div class="ui-grid-8">
+                        <p>基金公告</p>
+                    </div>
+                    <div class="ui-grid-2 ui_unfold iconfont">
+                    </div>
+                </div>
+            </div>
+
+            <div class="titleFooter">
+                <p class="ui_remark ui_alignCenter">数据来源：东方财富Choice数据</p>
+                <p class="ui_remark ui_alignCenter">
+                    <a href="javascript:;" id="gotoSafe">民生银行全程保证交易资金安全</a>
+                </p> 
+            </div>
+
+                    
+        </script>
+        <script src="https://img.1234567.com.cn/counter.js"></script>
+
+        
+
+    
+	
+<div id="_successMaskUI_"><div class="inner"><div ui="" class="_mask_"><div class="iconfont _success_"></div><span>成功</span></div></div></div><div id="_loadingMaskUI_"><div class="inner"><div ui="" class="_maskload_"><div class="loading" type="12"></div><span>加载中</span></div></div></div><div class="alertMasker" id="_alertMaskerUI_"><div><div class="alert"><div class="inner"><p></p><footer><a href="javascript:void(null)" class="button" for="yes">确定</a></footer></div></div></div></div><div class="confirmMasker" id="_confirmMaskerUI_"><div><div class="confirm"><div class="inner"><p></p><footer><a class="button" for="no">取消</a><a class="button" for="yes">确定</a></footer></div></div></div></div><div class="PasswordMasker" id="_PasswordMaskerUI_"><div><div class="Password"><div class="inner"><h2>输入交易密码</h2><div class="Lcontent"><p>景顺长城沪深300增强</p><p><span>100.00</span> 元</p><input class="account" placeholder=" 交易密码（非银行卡密码）" type="password" id="pwdInput"></div><footer><a href="javascript:void(null)" class="button" for="no">取消</a><a href="javascript:void(null)" class="button" for="yes">确认</a></footer></div></div></div></div><div id="_TipMaskUI_"><div class="inner"><div ui="" class="_mask_"><span>成功</span></div></div></div><div class="TTfundMasker" id="_TTfundMaskerUI_"><div><div class="TTfund"><div class="inner"><h2>完整版天天基金网</h2><div class="Lcontent"><p>1、自选基金云端同步</p><p>2、随时随地查净值、看估值</p><p>3、主题基金助您轻松选基金</p><p>4、基金定投、预约买，交易更便捷</p><p>5、更多活动，更多惊喜</p><footer><a href="javascript:void(null)" class="button" for="no">取消</a><a href="javascript:void(null)" class="button" for="yes">下载查看</a></footer></div></div></div></div></div></body></html>

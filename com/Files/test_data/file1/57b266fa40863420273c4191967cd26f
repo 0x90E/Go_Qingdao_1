@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+
+
+
+
+
+
+
+
+
+
+
+<link id="themestyleIdex" rel="stylesheet" type="text/css" href="/skins/css/L5-mems.css">
+<link id="themestyleIdex" rel="stylesheet" type="text/css" href="/skins/css/L5-mems-default.css">
+<title></title>
+<script type="text/javascript" src="/jsp/bsp/md5.js"></script>
+<script type="text/javascript" src="/skins/js/des.js"></script>  
+<script language="javascript">
+function doSession(){
+if(window.dialogArguments!=null){
+  window.dialogArguments.location=self.location;
+  window.returnValue="aa";
+  parent.close();
+  return;
+ }
+ if(self!=top){top.location=self.location;}
+}
+doSession();
+var salt = "1#2$3%4(5)6@7!poeeww$3%4(5)djjkkldss";
+function doLogin(){
+	if(!check()) return;
+    document.forms[0].action ="/j_bsp_security_check/caLdap";
+	var _username = document.getElementsByName("_j_username")[0];
+  	var username = document.getElementsByName("j_username")[0];
+  	username.value = strEnc(_username.value,'c316e97c-9b6c-4f12-82d3-7b97ac21f704','f119bd1f-577e-445a-929d-b55a083ce4fb','4318db24-a0c7-4c79-9681-2d3d263f95b3');
+	_username.value="";
+  	var password = document.getElementsByName("j_password")[0];
+	password.value = hex_md5(password.value + "{" + salt + "}");
+    document.forms[0].submit();
+}
+
+window.onload = function(){
+/*  	L5.Ajax.request({
+	url : L5.webPath + "/command/dispatcher/org.loushang.bsp.security.web.MyRandomCodeCommand",
+	sync : false,
+		callback : successHandler
+	});	
+	function successHandler(options,success,response){
+		var o = L5.decode(response.responseText);
+		document.getElementById("rdmCode").value = o.code;	
+	}   */
+
+	document.getElementById("resetButton").onclick = function(){
+	document.getElementsByName("j_username")[0].value = "";
+	document.getElementsByName("_j_username")[0].value = "";
+	document.getElementsByName("j_password")[0].value = "";
+	document.getElementsByName("rdmCode")[0].value = "";
+	}
+}
+
+function check(){
+	var j_username = document.forms[0]._j_username;
+	if(j_username.value==""){
+		alert("用户名不能为空!");
+		j_username.focus();
+		return false;
+	}
+	j_username.value = j_username.value;
+	var j_password = document.forms[0].j_password;
+	if(j_password.value==""){
+		alert("密码不能为空");
+		j_password.focus();
+		return false;
+	}
+	var rdmCode=document.forms[0].rdmCode;
+	if(rdmCode.value==""){
+		alert("验证码不能为空");
+		rdmCode.focus();
+		return false;
+	}
+	return true;
+
+}
+//'enter' key,/=47,*=42,+=43
+function keypress(e){
+	if(!window.event){
+		e = e.which;
+	}else{
+		e = window.event.keyCode;
+	}
+	if(e==13||e==42)	//'enter' key,*
+	{
+		doLogin();
+	}
+}
+
+ //重新生成验证码
+function changeCheckCodeImg(){
+	var image = document.getElementById("checkcodeimg");
+	image.src = "/jsp/public/imagegen.jsp"+"?time="+ new Date().getTime();
+	return false;
+}
+document.oncontextmenu=function(e){return false;} 
+</script>
+</head>
+<body onkeydown="keypress(event);">
+<form name="frmLogin" method="post" action="">
+
+<div class="login_main">
+ 	<div class="login_tip">
+	     <ul style="list-style-type: none">
+	     	<!-- <li>系统将 06:00:00 ~ 08:00:00 此间段作为数据维护时间！</li>
+	     	<li>请操作员注意协调时间，感谢您的合作 ！</li> -->
+	     	<li><div class="login_title"><font color="#FF0000" size="6" style="font-weight: bold;">湖北省学籍系统</font></div></li>
+	     	<li><div class="login_title"></div></li>
+	     </ul>
+	</div>
+	<div class="login_con">
+        <div class="login_user">
+       <input type="text" maxlength="20" name="_j_username" autocomplete="off" style="font-size: 14px">
+       <input type="hidden" name="j_username">
+        </div>
+        <div class="login_psw">
+       <input type="password" maxlength="30" name="j_password" autocomplete="off">
+        </div>
+        <div class="login_ca">
+       <input type="text" maxlength="4" name="rdmCode" id="rdmCode" autocomplete="off" style="font-size: 14px">
+       <img id="checkcodeimg" style="cursor:hand;" border="0" src="/jsp/public/imagegen.jsp">
+       <a href="#" onclick="changeCheckCodeImg()"><span>换一张</span></a>
+        </div>
+		<div class="btn_2"><a href="#"><img style="cursor:hand;" src="/skins/images/l5/re.png" border="0" id="resetButton"></a>
+        </div>
+        <div class="btn_1"><a href="#"><img style="cursor:hand;" src="/skins/images/l5/ok.png" border="0" onclick="doLogin();"></a>
+        </div>
+	<div unselectable="on" style="width:400;font-size:12px;color:#FF0000;font-weight:bold;margin-bottom:25;"></div>
+    </div>
+</div>
+
+</form></body></html>

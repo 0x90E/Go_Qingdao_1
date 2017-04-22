@@ -1,0 +1,224 @@
+<!--?xml version="1.0" encoding="utf-8"?--><!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+  <meta http-equiv="Cache-control" content="no-cache" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" /> 
+  <meta name="format-detection" content="telephone=no" /> 
+  <meta name="keywords" content="思科认证之介绍三层MPLS VPN常见的故障" /> 
+  <meta name="description" content="思科认证之介绍三层MPLS VPN常见的故障 ,暗客安全网" /> 
+  <title>思科认证之介绍三层MPLS VPN常见的故障-CCNA学习资料-暗客安全网 -  手机版 - Powered by Discuz!</title> 
+  <link rel="stylesheet" href="static/image/mobile/style.css" type="text/css" media="all" /> 
+  <script src="static/js/mobile/jquery-1.8.3.min.js?Dy5" type="text/javascript"></script> 
+  <script type="text/javascript">var STYLEID = '1', STATICURL = 'static/', IMGDIR = 'static/image/common', VERHASH = 'Dy5', charset = 'gbk', discuz_uid = '0', cookiepre = 'AK81_2132_', cookiedomain = '', cookiepath = '/', showusercard = '1', attackevasive = '0', disallowfloat = 'newthread', creditnotice = '1|暗度|℃,2|暗豆|颗,7|暗币|枚,8|最佳答案|个', defaultstyle = '', REPORTURL = 'aHR0cDovL2Jicy5ha2hhY2suY29tL2ZvcnVtLnBocD9tb2Q9dmlld3RocmVhZCZ0aWQ9MjQzMw==', SITEURL = 'http://bbs.akhack.com/', JSPATH = 'data/cache/';</script> 
+  <script src="static/js/mobile/common.js?Dy5" type="text/javascript" charset="gbk"></script> 
+ </head> 
+ <body class="bg"> 
+  <!-- header start --> 
+  <header class="header"> 
+   <div class="nav"> 
+    <span class="y"> <button class="btn_pn btn_pn_blue" id="replyid"><span>回复</span></button> </span> 
+    <a href="forum.php?mod=forumdisplay&amp;fid=176&amp;&amp;mobile=2" class="z"><img src="static/image/mobile/images/icon_back.png" /></a> 
+    <span class="name">CCNA学习资料</span> 
+   </div> 
+  </header> 
+  <!-- header end --> 
+  <!-- main postlist start --> 
+  <div class="postlist"> 
+   <h2> [分享] 思科认证之介绍三层MPLS VPN常见的故障 <a href="forum.php?mod=viewthread&amp;tid=2433&amp;page=1&amp;authorid=1&amp;mobile=2" rel="nofollow" class="blue" style="font-size:12px;font-weight:normal;margin-left:10px;">只看楼主</a> </h2> 
+   <div class="plc cl" id="pid2840"> 
+    <span class="avatar"><img src="http://bbs.akhack.com/uc_server/avatar.php?uid=1&amp;size=small" style="width:32px;height:32px;" /></span> 
+    <div class="display pi" href="#replybtn_2840"> 
+     <ul class="authi"> 
+      <li class="grey"> <em> 楼主</em><b> <a href="home.php?mod=space&amp;uid=1&amp;mobile=2" class="blue">admin</a></b> </li> 
+      <li class="grey rela"> <em><a href="home.php?mod=spacecp&amp;ac=favorite&amp;type=thread&amp;id=2433&amp;mobile=2" class="favbtn blue">收藏</a></em> 2015-2-24 01:14:54</li> 
+     </ul> 
+     <div class="message">
+       简单介绍三层MPLS　VPN常见故障
+      <br /> 
+      <br /> &nbsp; &nbsp; 简单介绍三层MPLS VPN常见故障，朋友向我推荐的三层MPLS VPN解决方案，不知道哪一个更适合我，希望广大网友给我一些建议，最好是那些体验过的网友的建议，谢谢。
+      <br /> 
+      <br /> &nbsp; &nbsp; MPLS VPN分为二层MPLS VPN和三层MPLS VPN两种。二层MPLS VPN适合于能自行组建三层网络的大型企业；三层MPLS VPN适合于
+      <a href="http://www.akhack.com/forum-467-1.html" target="_blank">维护</a>路由等复杂工作交由
+      <a href="http://www.akhack.com/forum-223-1.html" target="_blank">运营</a>商负责的中小企业。本文简单介绍三层MPLS VPN的组网及其故障处理。
+      <br /> 
+      <br /> &nbsp; &nbsp; 三层MPLS VPN简介
+      <br /> 
+      <br /> &nbsp; &nbsp; 三层MPLS VPN又称BGP MPLS VPN，是一种基于路由方式的MPLS VPN解决方案。IETF RFC 2547中对该技术做了规定。三层MPLS VPN的网络结构，主要由PE（Provider Edge Device，运营商边缘设备）、P（Provide Device，运营商设备）和CE（Customer Edge Device，用户边缘设备）3种设备组成。
+      <br /> 
+      <br /> &nbsp; &nbsp; 下面简要介绍上述设备所实现的功能
+      <br /> 
+      <br /> &nbsp; &nbsp; CE：通过连接到PE的数据链路为用户**网络服务，CE与PE建立邻接关系，将本地的VPN路由广播给PE，并从PE学习远端VPN路由。PE：维护与之相连站点的VPN路由，为每个VPN建立一个VRF（Virtual Route Forwarding Table，虚拟路由转发表）。在从CE那里学习到本地路由信息后，PE使用IBGP与其它PE路由器交换VPN路由信息。同时，在VPN业务穿越骨干网时，入口/出口PE分别相当于入口/出口LSR（Lable Switch Router，标签交换路由器），需要为IP包进行封装/解封装。
+      <br /> 
+      <br /> &nbsp; &nbsp; P：运营商网络中不直接连接CE的路由器，仅负责MPLS标签的交换，不需要维护VPN路由信息。三层MPLS VPN通过多协议扩展BGP（MP-iBGP）承载携带标签的VPN IPv4路由信息。每个VRF通过配置响应策略来规定各VPN可以接收和向外发布站点的路由信息。每个PE根据BGP扩展发布的信息进行路由计算，生成并维护VPN路由表。
+      <br /> 
+      <br /> &nbsp; &nbsp; 三层MPLS VPN故障的排除
+      <br /> 
+      <br /> &nbsp; &nbsp; 三层MPLS VPN的故障主要可归纳为路由信息方面的故障和MPLS数据流方面的故障两种。下面以Cisco路由器为例，简单介绍如何排除三层MPLS VPN故障。 2.1 路由信息方面故障的处理。
+      <br /> 
+      <br /> &nbsp; &nbsp; 我们可以采用逐步排除法来解决路由信息方面的故障，即根据三层MPLS VPN路由的交换过程逐步排查，最后确定故障所在位置。我们把这种故障处理的流程大致分成7步。以下是各个步骤具体所要执行的操作。
+      <br /> 
+      <br /> &nbsp; &nbsp; ◆在PE-1上使用命令“show ip route vrf name”验证PE-1是否收到CE-1的路由信息。若收到了来自CE-1的路由信息，则转到步骤（2）；否则，采用传统的路由排障方法查找PE与CE之间的物理层或路由协议（PE与CE之间可运行各种路由协议，如RIP、OSPF、eBGP或静态路由协议）是否有问题。
+      <br /> 
+      <br /> &nbsp; &nbsp; ◆在PE-1上使用命令“show ip bgp vpnv4 vrf name”验证该路由是否正确地发布到MP-BGP中并带有正确的扩展属性。若正确，则转到步骤（3）；否则，可确定路由的重发布等方面存在问题（可使用“debug ip bgp”等命令排障）。
+      <br /> 
+      <br /> &nbsp; &nbsp; ◆在PE-2上使用命令“show ip bgp vpnv4 all”验证其它VPNv4路由是否已通过MP-iBGP传送过来。若已经收到了其它VPNv4的路由信息，则转到步骤（4）；否则，应采用传统的BGP路由排障方法查找PE-2与其它PE之间的连接是否有问题（可使用“show ip bgp neighbor”等命令）。
+      <br /> 
+      <br /> &nbsp; &nbsp; ◆在PE-2上使用命令“show ip bgp vpnv4 vrf name”验证BGP的路由选择是否正确，即属于该VPN的路由信息是否都被正确地接收了，而不属于该VPN的路由信息是否被阻止了。若正确，则转到步骤（5）；否则，应采用传统的BGP路由排障方法来解决，必要时，可更改“local preference”和“weight”等BGP参数。
+      <br /> 
+      <br /> &nbsp; &nbsp; ◆在PE-2上使用命令“show ip route vrf name”验证PE-2路由表中是否已存在正确的VPNv4路由信息。若正确，则转到步骤（6）；否则，说明PE-2上存在问题（可使用“show ip vrf detail”和传统的路由排障方法来解决）。
+      <br /> 
+      <br /> &nbsp; &nbsp; ◆在CE-2上使用“show ip route，ping”等命令验证CE-2是否已接收到其它CE的路由信息。若正确，则转到步骤（7）；否则，应查看PE-2上的路由重发布是否设置正确、PE-2与CE-2之间的物理层或路由协议是否有问题。
+      <br /> 
+      <br /> &nbsp; &nbsp; ◆从CE-2到CE-1，可采用相同的方法来排除路由交换方面的故障。
+      <br /> 
+      <br /> &nbsp; &nbsp; 三层MPLS VPN数据流方面故障的处理
+      <br /> 
+      <br /> &nbsp; &nbsp; 对于MPLS数据流方面的故障，可从以下4个方面来定位：
+      <br /> 
+      <br /> &nbsp; &nbsp; ◆入口PE路由器上CEF（Cisco Express For-warding，思科快速转发）端口是否打开；
+      <br /> 
+      <br /> &nbsp; &nbsp; ◆入口PE路由器上的CEF条目是否正确；
+      <br /> 
+      <br /> &nbsp; &nbsp; ◆PE路由器之间是否有端到端的LSP（La-bel Switch Path，标签交换路径），这包括检查中间的P路由器；
+      <br /> 
+      <br /> &nbsp; &nbsp; ◆出口PE路由器上的标签转发表的条目是否正确。
+      <br /> 
+      <br /> 
+     </div> 
+    </div> 
+   </div> 
+   <div id="post_new"></div> 
+   <div class="plc cl"> 
+    <form method="post" autocomplete="off" id="fastpostform" action="forum.php?mod=post&amp;action=reply&amp;fid=176&amp;tid=2433&amp;extra=&amp;replysubmit=yes&amp;mobile=2"> 
+     <input type="hidden" name="formhash" value="dc1c0cde" /> 
+     <span class="avatar"><img style="height:32px;width:32px;" src="http://bbs.akhack.com/uc_server/avatar.php?uid=0&amp;size=small" /></span> 
+     <div class="pi"> 
+      <ul class="fastpost"> 
+       <li><input type="text" value="我也说一句" class="input grey" color="gray" name="message" id="fastpostmessage" /></li> 
+       <li id="fastpostsubmitline" style="display:none;">
+        <div class="sec_code vm"> 
+         <input name="seccodehash" type="hidden" value="SpB6B" /> 
+         <input type="text" class="txt px vm" style="ime-mode:disabled;width:115px;background:white;" autocomplete="off" value="" id="seccodeverify_SpB6B" name="seccodeverify" placeholder="验证码" fwin="seccode" /> 
+         <img src="misc.php?mod=seccode&amp;update=62438&amp;idhash=SpB6B&amp;mobile=2" class="seccodeimg" /> 
+        </div> <script type="text/javascript">
+(function() {
+$('.seccodeimg').on('click', function() {
+$('#seccodeverify_SpB6B').attr('value', '');
+var tmprandom = 'S' + Math.floor(Math.random() * 1000);
+$('.sechash').attr('value', tmprandom);
+$(this).attr('src', 'misc.php?mod=seccode&update=62438&idhash='+ tmprandom +'&mobile=2');
+});
+})();
+</script> <input type="button" value="回复" class="button2" name="replysubmit" id="fastpostsubmit" /><a href="forum.php?mod=post&amp;action=reply&amp;fid=176&amp;tid=2433&amp;reppost=2840&amp;page=1&amp;mobile=2" class="y" style="height:30px;width:30px;margin-top:7px;background:url(static/image/mobile/images/icon_photo.png) no-repeat"><span class="none">回复</span></a></li> 
+      </ul> 
+     </div> 
+    </form> 
+   </div> 
+   <script type="text/javascript">
+(function() {
+var form = $('#fastpostform');
+$('#fastpostmessage').on('focus', function() {
+popup.open('您还未登录，立即登录?', 'confirm', 'member.php?mod=logging&action=login');
+this.blur();
+});
+$('#fastpostsubmit').on('click', function() {
+var msgobj = $('#fastpostmessage');
+if(msgobj.val() == '我也说一句') {
+msgobj.attr('value', '');
+}
+$.ajax({
+type:'POST',
+url:form.attr('action') + '&handlekey=fastpost&loc=1&inajax=1',
+data:form.serialize(),
+dataType:'xml'
+})
+.success(function(s) {
+evalscript(s.lastChild.firstChild.nodeValue);
+})
+.error(function() {
+window.location.href = obj.attr('href');
+popup.close();
+});
+return false;
+});
+
+$('#replyid').on('click', function() {
+$(document).scrollTop($(document).height());
+$('#fastpostmessage')[0].focus();
+});
+
+})();
+
+function succeedhandle_fastpost(locationhref, message, param) {
+var pid = param['pid'];
+var tid = param['tid'];
+if(pid) {
+$.ajax({
+type:'POST',
+url:'forum.php?mod=viewthread&tid=' + tid + '&viewpid=' + pid + '&mobile=2',
+dataType:'xml'
+})
+.success(function(s) {
+$('#post_new').append(s.lastChild.firstChild.nodeValue);
+})
+.error(function() {
+window.location.href = 'forum.php?mod=viewthread&tid=' + tid;
+popup.close();
+});
+} else {
+if(!message) {
+message = '本版回帖需要审核，您的帖子将在通过审核后显示';
+}
+popup.open(message, 'alert');
+}
+$('#fastpostmessage').attr('value', '');
+if(param['sechash']) {
+$('.seccodeimg').click();
+}
+}
+
+function errorhandle_fastpost(message, param) {
+popup.open(message, 'alert');
+}
+</script> 
+  </div> 
+  <!-- main postlist end --> 
+  <script type="text/javascript">
+$('.favbtn').on('click', function() {
+var obj = $(this);
+$.ajax({
+type:'POST',
+url:obj.attr('href') + '&handlekey=favbtn&inajax=1',
+data:{'favoritesubmit':'true', 'formhash':'dc1c0cde'},
+dataType:'xml',
+})
+.success(function(s) {
+popup.open(s.lastChild.firstChild.nodeValue);
+evalscript(s.lastChild.firstChild.nodeValue);
+})
+.error(function() {
+window.location.href = obj.attr('href');
+popup.close();
+});
+return false;
+});
+</script> 
+  <a href="javascript:;" title="返回顶部" class="scrolltop bottom"></a>
+  <img src="http://pingtcss.qq.com/pingd?r2=37055809&amp;ui=0&amp;rt=forum&amp;md=viewthread&amp;fi=176&amp;ti=2433&amp;pn=1&amp;qq=000&amp;logo=11&amp;url=/forum.php&amp;arg=mod%3Dviewthread%26tid%3D2433&amp;tz=-8&amp;dm=bbs.akhack.com&amp;pvi=1397674929&amp;si=s802227790&amp;rnd=144249744&amp;ext=mt=0" height="1" width="1" style="float:right" noerror="true" /> 
+  <div id="mask" style="display:none;"></div> 
+  <div class="footer"> 
+   <div> 
+    <a href="forum.php?mobile=2">首页</a> | 
+    <a href="member.php?mod=logging&amp;action=login&amp;mobile=2" title="登录">登录</a> | 
+    <a href="member.php?mod=register&amp;mobile=2" title="点我注册">注册</a> 
+   </div> 
+   <div> 
+    <a href="http://bbs.akhack.com/forum.php?mod=viewthread&amp;tid=2433&amp;mobile=1&amp;simpletype=no">标准版</a> | 
+    <a href="javascript:;" style="color:#D7D7D7;">触屏版</a> | 
+    <a href="http://bbs.akhack.com/forum.php?mod=viewthread&amp;tid=2433&amp;mobile=no">电脑版</a> | 
+   </div> 
+   <p>&copy; Comsenz Inc.</p> 
+  </div>  
+ </body>
+</html>

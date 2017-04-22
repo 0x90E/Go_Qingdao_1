@@ -1,0 +1,74 @@
+<!DOCTYPE html><html style="font-size: 0px; "><head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Cache" content="no-cache">
+    <meta content="yes" name="apple-touch-fullscreen">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <meta name="App-Config" content="fullscreen=yes,useHistoryState=yes,transition=yes">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title></title>
+  <link rel="stylesheet" rev="stylesheet" type="text/css" media="screen" href="//mjrhd.vipstatic.com/v2/dist/mobile/mobile-bundle.2800dd08.css"><script type="text/javascript" src="//mjrhd.vipstatic.com/v2/dist/mobile/vendor.1c3e7351.js"></script><script type="text/javascript" src="//mjrhd.vipstatic.com/v2/dist/mobile/mobile-bundle.b9d89f98.js"></script></head>
+  <body>
+    <div id="app"><!----></div>
+    <div id="entryChunks"><iframe id="entryIframe" style="display:none;" src="/pages/json/entrychunks.html?t=1491076192784"></iframe></div>
+    <script type="text/javascript">
+    (function() {
+        var entryNode = document.querySelector('#entryChunks');
+
+        // cashloan
+        if (window.location.pathname.indexOf('/pages/cashloan/') !== -1) {
+            entryNode.innerHTML = '<iframe id="entryIframe" style="display:none;" src="/pages/json/cashloan_entrychunks.html?t='  + (new Date).getTime() +  '"></iframe>';
+        }else{
+            entryNode.innerHTML = '<iframe id="entryIframe" style="display:none;" src="/pages/json/entrychunks.html?t='  + (new Date).getTime() +  '"></iframe>';
+        }
+
+        var iframe = document.querySelector('#entryIframe');
+        function loadjs(url, callback){
+            var script = document.createElement ("script");
+            callback = callback || function(){};
+            script.type = "text/javascript";
+            if(script.readyState){
+                script.onreadystatechange = function(){
+                    if(script.readyState == "loaded" || script.readyState == "complete"){
+                        script.onreadystatechange = null;
+                        callback();
+                    }
+                };
+            } else {
+                script.onload = function(){
+                    callback();
+                };
+            }
+            script.src = url;
+            document.getElementsByTagName("head")[0].appendChild(script);
+        }
+        function loadcss(url){
+            var cssLink = document.createElement("link");
+            cssLink.rel = "stylesheet";
+            cssLink.rev = "stylesheet";
+            cssLink.type = "text/css";
+            cssLink.media = "screen";
+            cssLink.href = url;
+            document.getElementsByTagName("head")[0].appendChild(cssLink);
+        }
+        iframe.onload = function() {
+            var doc = iframe.contentDocument;
+            var html = doc.body.innerHTML;
+            var json = JSON.parse(html);
+            var jsEntry = json.chunks;
+            loadcss(json.css[0]);
+            loadjs(jsEntry.vendor.entry, function() {
+                loadjs(jsEntry['mobile-bundle'].entry);
+            });
+        }
+
+    })();
+    </script>
+  
+
+</body></html>

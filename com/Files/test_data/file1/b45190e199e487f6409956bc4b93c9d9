@@ -1,0 +1,602 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-CN" lang="zh-CN">
+ <head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=gb2312" /> 
+  <meta name="description" content="台湾动态线路VPN原理说明及详细功能介绍 风机技术论坛" /> 
+  <title>
+		台湾动态线路VPN原理说明及详细功能介绍 - 风机技术论坛 - Powered by LeadBBS 6.0
+	</title> 
+  <link rel="stylesheet" id="css" type="text/css" href="../inc/style0.css?17766.35" title="cssfile0" /> 
+  <script type="text/javascript">
+	<!--
+	var DEF_MasterCookies = "leadbbs";
+	var GBL_Style = "0";
+	-->
+	</script> 
+  <script src="../inc/js/common.js" type="text/javascript"></script> 
+ </head> 
+ <body id="body"> 
+  <a name="top"></a> 
+  <div class="area"> 
+   <div class="head_top"> 
+    <div class="head_top_loginform" id="head_top_loginform"> 
+     <ul class="list_line"> 
+      <li><a href="../User/Register.asp">注册</a></li> 
+      <li><a href="../User/Login.asp">登录</a></li> 
+     </ul> 
+    </div> 
+    <div class="head_top_string"> 
+     <script type="text/javascript">
+<!--
+function fAddFavorite(Tl, UL)
+{
+if(document.all)
+    window.external.AddFavorite(UL, Tl);
+else
+    window.sidebar.addPanel(Tl, UL, "");
+}
+-->
+</script> 
+     <ul class="list_line"> 
+      <li><a href="http://www.cftn.cn" target="_top">网站首页</a></li> 
+      <li><a href="#33" onclick="fAddFavorite('风机技术论坛','http://bbs.cftn.cn/a/a.asp?B=100&amp;ID=36440&amp;RootID=12124&amp;p=7')">加入收藏</a></li> 
+      <li><a href="../User/help/help.asp">使用帮助</a></li> 
+      <li><a href="../User/help/about.asp">联系我们</a></li> 
+     </ul> 
+    </div> 
+   </div> 
+   <div class="head_banner"> 
+    <span class="head_banner_logo"><a href="../"><img src="../images/style/0/logo.GIF" alt="返回论坛首页" /></a></span> 
+    <span class="head_banner_ad"><a href="http://www.cftn.cn/" target="_blank"><img src="/images/temp/banner17.gif" width="468" height="60" border="0" /></a></span> 
+   </div> 
+   <div class="head_sty"> 
+    <div class="munu_nav2 fire"> 
+     <div class="menu_nav"> 
+      <div class="layer_item2"> 
+       <a href="../User/UserTop.asp"><span class="layer_item_title">论坛导航</span></a> 
+       <div class="layer_iteminfo2"> 
+        <ul class="menu_list"> 
+         <li><a href="../User/UserTop.asp?S">积分排行榜</a></li> 
+         <li><a href="../Search/List.asp?1">最新主题</a></li> 
+         <li><a href="../Search/List.asp?2">精华区</a></li> 
+         <li><a href="../User/Help/Help.asp">帮助中心</a></li> 
+         <li><a href="../b/B.asp?E=1">总专题区</a></li> 
+         <li><a href="../Search/UploadList.asp">查看论坛附件</a></li> 
+         <li><a href="../User/Help/About.asp">论坛管理团队</a></li> 
+        </ul> 
+       </div> 
+      </div> 
+     </div> 
+     <div class="menu_nav"> 
+      <div class="layer_item2"> 
+       <a href="../Plug-Ins/bbschat/"><span class="layer_item_title">工具箱</span></a> 
+       <div class="layer_iteminfo2"> 
+        <div class="layer_iteminfo2_box"> 
+         <ul class="menu_list"> 
+          <li><a href="../Plug-Ins/bbschat/">LeadChat</a></li> 
+          <li><a href="../plug-ins/ChineseCode/">简繁转换</a></li> 
+          <li><a href="../plug-ins/LeadCard/">LeadCard</a></li> 
+         </ul> 
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+     <div class="layer_item3">
+      <a href="../Search/Search.asp" class="head_search"><span class="head_item_title">搜索</span></a> 
+     </div> 
+     <a href="#bottom" title="转到页面底部"><img src="../images/blank.gif" class="head_gobottom" alt="转到页面底部" /></a> 
+     <a href="../Other/RSS.asp?b=100" title="RSS订阅此版新信息"><img src="../images/blank.gif" class="head_rss" alt="rss" /></a> 
+     <a href="../MINI/default.asp?100-36440-0-0-0-0-0-a-.htm" title="迷你方式显示论坛"><img src="../images/blank.gif" class="head_mini" alt="mini" /></a> 
+    </div> 
+   </div> 
+  </div> 
+  <div id="winBox" class="winBox"></div> 
+  <div class="area"> 
+   <div class="navigate_sty"> 
+    <div class="navigate_string"> 
+     <span class="navigate_string_home"><a href="../Boards.asp">风机技术论坛</a></span>
+     <span class="navigate_string_step"><a href="../Boards.asp?Assort=1">风机技术论坛</a></span>
+     <span class="navigate_string_step"><a href="../b/b.asp?B=100&amp;p=7&amp;RootID=12124">技术交流、资源共享</a></span>
+     <span class="navigate_string_step">查看帖子</span> 
+    </div> 
+   </div> 
+  </div> 
+  <div class="area"> 
+   <div class="main"> 
+    <div class="content_main_close"> 
+     <div class="content_main_2_close"> 
+      <div class="content_main_body"> 
+       <div class="b_box_none fire"> 
+        <div class="a_headinfo"> 
+         <ul>
+          <li>主题：<b><a href="a.asp?B=100&amp;ID=36440">台湾动态线路VPN原理说明及详细功能介...</a></b></li>
+          <li>暂无回复</li>
+         </ul>
+        </div> 
+        <div class="a_box_list"> 
+         <ul> 
+          <li><a href="a.asp?B=100&amp;ID=36440&amp;ac=pre&amp;rd=12112&amp;p=7&amp;RootID=12124">上篇</a></li>
+          <li> <a href="../b/b.asp?B=100&amp;p=7&amp;RootID=12124">返回版面</a></li>
+          <li> <a href="a.asp?B=100&amp;ID=36440&amp;ac=nxt&amp;rd=12112&amp;p=7&amp;RootID=12124">下篇</a></li>
+         </ul> 
+        </div> 
+       </div> 
+       <div class="b_box_none fire"> 
+        <div class="a_post_image"> 
+         <div class="layer_item"> 
+          <div>
+           <a href="../a/a2.asp?B=100"><img src="../images/blank.gif" title="发新帖" alt="发新帖" class="b_post" /></a>
+          </div> 
+          <div class="layer_iteminfo"> 
+           <ul class="menu_list">
+            <li><a href="../a/a2.asp?B=100">发表新主题</a></li> 
+            <li><a href="../a/a2.asp?B=100&amp;VoteFlag=yes">发起投票</a></li> 
+           </ul> 
+          </div> 
+         </div> 
+        </div> 
+        <div class="a_post_image"> 
+         <a href="a2.asp?B=100&amp;ID=36440&amp;submitflag=first"><img src="../images/blank.gif" title="回帖子" alt="回帖子" class="b_repost" /></a> 
+        </div>
+        <div class="j_page">
+         <b>1</b>
+        </div> 
+       </div> 
+       <div class="stylebox">
+        <div class="nonestylebox"> 
+         <script src="../inc/js/p_list.js?ver=20090601.2" type="text/javascript"></script> 
+         <script type="text/javascript">
+function delbody_view(obj)
+{
+	$('anc_msgbody').innerHTML="<a href=\"javascript:;\" onclick=\"layer_view($('" + obj.id + "'),'','','anc_delbody','Processor.asp?AjaxFlag=1&amp;action=Del&amp;b=100&amp;ID='+p_getselected()+'','',1,'',1);\">批量删除，已选择 <b id=layer_selectnum>" + p_getnum() + "</b> 条记录</a><br><input class=\"fmchkbox\" type=\"checkbox\" name=\"selmsg\" id=\"selmsg\" value=\"1\" onclick=\"achoose();\" />选择全部";
+	layer_view(obj,'','','anc_msgbody','','');
+}
+
+function layer_outmsg(obj,str,fresh)
+{
+	var menuobj_get,tmp;
+	tmp = $(obj).childNodes;
+	menuobj_get=obj;
+	if(tmp.length==2)
+	if(tmp[0].className=="ajaxitemtitle")
+	menuobj_get=tmp[1];
+	
+	menuobj_get.innerHTML=str;
+	if(fresh==1)
+	this.location="a.asp?b=100&id=36440";
+	else
+	{
+		setTimeout("$('" + obj + "').style.display='none';",3000);
+	}
+}
+
+var layer_num=0,layer_olditem;
+/*
+obj 受点击对象
+w 显示层宽
+h 层高
+menu 显示层对象ID
+file 执行导入文件地址
+js 执行导入的js文件
+fresh 是否强制刷新
+filepara 导入文件相应的post数据
+center 是否居中 1.居中 0.显示在点击对象之下
+*/
+function layer_view(obj,w,h,menu,file,js,fresh,filepara,center)
+{
+	if(menu=="anc_msgbody")
+	$("anc_delbody").style.display="none";
+	else
+	$("anc_msgbody").style.display="none";
+
+	var menuobj=$(menu);
+	
+	if(w!="")menuobj.style.width = w;
+	if(h!="")menuobj.style.height = h;
+	
+	var menuobj_get,tmp,menu_get;
+	tmp = menuobj.childNodes;
+	
+	menuobj_get=menuobj;
+	menu_get = menu;
+	if(tmp.length==2)
+	{
+		if(tmp[0].className=="ajaxitemtitle")
+		{
+			menuobj_get=tmp[1];
+			menu_get=menuobj_get.id;
+			if(menuobj_get.id=="")
+			{
+				menuobj_get.id="ajaxitem_body"+layer_num;
+				menu_get = "ajaxitem_body"+layer_num;
+				layer_num++;
+			}
+		}
+	}
+
+	if(obj.id==""){obj.id="ajaxitem_view"+layer_num;layer_num++;}
+	if(fresh==1 || (file && menuobj_get.innerHTML=="loading..."))
+	{
+		if(fresh==1)menuobj_get.innerHTML="loading..."
+		if(!isUndef(filepara))
+		getAJAX(file,filepara,menu_get);
+		else
+		getAJAX(file,"",menu_get);
+		if(js)editor_inputjs(menu_get,js);
+	}
+	if(fresh==1 || file=="" && js)
+	{$import(js,"js");}
+
+	if(fresh!=1)
+	{
+		if(menuobj.style.display != 'none')
+		{
+			//menuobj.style.display = 'none';
+			if(layer_olditem==obj.id)return;
+		}
+	}
+	if(center==1)
+	{
+		setCenterDiv(menuobj);
+	}
+	else
+	{
+		var x = getX(obj);
+		var y = getY(obj)-1;
+		var distHeight = obj.clientHeight;
+		if(!distHeight)distHeight+=obj.offsetHeight;
+		y += distHeight;
+		menuobj.style.top = y + 'px';
+		menuobj.style.left = x + 'px';
+	}
+	menuobj.style.display = 'block';
+	relocationxy(obj.id,menuobj.id,0,center);
+	layer_olditem = obj.id;
+}
+</script> 
+         <div id="anc_delbody" class="layer_ajaxitem" unselectable="on">
+          <div class="ajaxitemtitle"> 
+           <img src="../images/blank.gif" class="layer_close" alt="close" onclick="$('anc_delbody').style.display='none';" /> 
+          </div>
+          <div class="ajaxitembody">
+           loading...
+          </div>
+         </div> 
+         <div id="anc_msgbody" class="layer_ajaxmsg" unselectable="on">
+          loading...
+         </div> 
+         <iframe name="hidden_frame" id="hidden_frame" style="display:none" '=""></iframe> 
+         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tablebox"> 
+          <tbody>
+           <tr class="tbhead"> 
+            <td> 
+             <div class="value" style="float:left"> 
+              <a href="javascript:void(0)" onclick="copyClipboard('Text',location.href,'帖子地址已复制到您的剪帖板!','../');"> 复制本帖地址</a> 
+             </div> 
+             <div class="value" style="float:right"> 
+              <span class="layerico"> </span> 
+             </div> </td>
+           </tr>
+          </tbody>
+         </table> 
+         <script src="inc/leadcode.js?ver=20080728.225" type="text/javascript"></script> 
+         <script type="text/javascript">
+var GBL_domain="cftn.cn";
+var DEF_DownKey="sLvGA3pLXuii",HU="../";
+
+function appandOpinion(obj,id,num)
+{
+	if($('opinion' + id))return;
+	var tmp = document.createElement("div");
+	tmp.setAttribute('id','opinion' + id);
+	getAJAX('a.asp','ol=5&B=100&ID=' + id + '&num=' + num,'opinion' + id);
+	insertAfter(tmp,obj.parentNode.parentNode);
+}
+function insertAfter(newElement,targetElement)
+{
+	var parent = targetElement.parentNode;    
+	if(parent.lastChild == targetElement)
+	{
+		parent.appendChild(newElement);    
+	}
+	else
+	{
+		parent.insertBefore(newElement,targetElement.nextSibling);    
+	}
+}
+</script> 
+         <div class="contentbox"> 
+          <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tablebox"> 
+           <tbody>
+            <tr> 
+             <td width="180" class="tdleft a_userinfotd"> 
+              <div class="a_author"> 
+               <a href="../User/LookUserInfo.asp?ID=28513" class="uname"><b>zgqy6gQa</b></a> 
+              </div> <img src="../images/sxmg/OfMale.gif" title="离线" class="a_seximg" alt="在线情况" /> </td> 
+             <td class="tdright a_ancinfotd"> 
+              <div class="a_ancinfo"> 
+               <ul> 
+                <li><img src="../images/bf/face1.gif" align="absmiddle" alt="表情" /></li> 
+                <li><em>2013-04-07 15:49:32</em></li> 
+                <li>人气:4148</li>
+                <li><a href="a2.asp?b=100&amp;ID=36440&amp;submitflag=first&amp;repost=1"><img src="../images/re.gif" alt="引用回复此帖" class="absmiddle" />引用</a></li>
+               </ul> 
+              </div> 
+              <div class="a_floor">
+               <a href="javascript:void(0)" oncontextmenu="copyClipboard('text',$('Content36440').innerHTML,'帖子内容成功复制至剪帖板!','../');return(false);" onclick="var clipdata='';if(event.ctrlKey){clipdata=$('Content36440').innerHTML;}else{clipdata=$('Content36440').innerText;};copyClipboard('text',clipdata,'帖子内容成功复制至剪帖板!','../');" title="点击复制帖子内容(右击或ctrl+左击复制源码)" class="grayfont"><b>楼主</b></a>
+              </div> </td> 
+            </tr> 
+            <tr> 
+             <td width="180" valign="top" class="tdleft" rowspan="2"> 
+              <div class="a_userinfo"> 
+               <ul>
+                <li><img class="a_faceimg" src="../images/face/0003.gif" alt="头像" /></li>
+                <li><img src="../images/lvstar/level0.gif" class="a_levelimg" title="级别 新手上路" alt="级别" /></li>
+                <li>
+                 <div class="name">
+                  积分
+                 </div>
+                 <div class="value">
+                  2
+                 </div></li>
+                <li>
+                 <div class="name">
+                  经验
+                 </div>
+                 <div class="value">
+                  14
+                 </div></li>
+                <li>
+                 <div class="name">
+                  文章
+                 </div>
+                 <div class="value">
+                  2
+                 </div></li>
+                <li>
+                 <div class="name">
+                  注册
+                 </div>
+                 <div class="value">
+                  2013-03-06
+                 </div></li>
+                <li><a href="../User/SendMessage.asp?SdM_ToUser=zgqy6gQa"><img src="../images/message.GIF" alt="给zgqy6gQa发消息" class="absmiddle" /></a></li>
+               </ul>
+              </div> </td> 
+             <td class="tdright a_topiccontent" valign="top"> 
+              <div class="a_topicad">
+               <a href="http://www.cftn.cn" target="_blank">中国风机技术网</a>
+              </div>
+              <div class="a_anctitle word-break-all">
+               <b><span class="word-break-all">台湾动态线路VPN原理说明及详细功能介绍</span></b>
+              </div> 
+              <div class="a_content">
+               <table width="100%" border="0" cellspacing="0" cellpadding="0" style="table-layout:fixed; word-break:break-all;word-wrap:break-word;">
+                <tbody>
+                 <tr>
+                  <td>
+                   <div style="font-size:14px;font-family:宋体;">
+                    <div id="Content36440" class="word-break-all">
+                     VPN 众所周知是用来进行IP隐藏及2次代理外链的功能。而此次我们介绍的动态线路VPN其作用也是与普通VPN相同，只是在功能和用途上更为强大。
+                     <br /> 首先 该产品使用的是多IP目标请求拨号，有5-15个可供请求拨号的连接IP，在使用上就避免了特定线路访问某些IP不畅或无法访问的问题。
+                     <br /> 第二 动态IP 区别于以往使用的固定IP vpn，该产品下有近5000个IP的IP池供抓取。在拨号连接完成后随机在IP池内抓取IP使用。如果出现IP重复等问题后断开拨号，3至5秒后重连。VPN外网IP就会重新抓取分配到另一个IP。
+                     <br /> 
+                     <br /> 该产品在实际使用用途和功能上是对传统产品进行了一次彻底的革新。是对传统产品的一个突破。
+                    </div>
+                   </div></td>
+                 </tr>
+                </tbody>
+               </table>
+              </div></td>
+            </tr>
+            <tr>
+             <td valign="bottom" class="tdbottom">
+              <div class="a_contentbottom"></div> </td> 
+            </tr> 
+           </tbody>
+          </table> 
+          <script type="text/javascript">
+	<!--
+	leadcode('Content36440');
+	-->
+	</script> 
+         </div> 
+        </div>
+       </div> 
+       <div class="b_box_none2 fire"> 
+        <div class="a_post_image"> 
+         <div class="layer_item"> 
+          <div>
+           <a href="../a/a2.asp?B=100"><img src="../images/blank.gif" title="发新帖" alt="发新帖" class="b_post" /></a>
+          </div> 
+          <div class="layer_iteminfo"> 
+           <ul class="menu_list">
+            <li><a href="../a/a2.asp?B=100">发表新主题</a></li> 
+            <li><a href="../a/a2.asp?B=100&amp;VoteFlag=yes">发起投票</a></li> 
+           </ul> 
+          </div> 
+         </div> 
+        </div> 
+        <div class="a_post_image"> 
+         <a href="a2.asp?B=100&amp;ID=36440&amp;submitflag=first"><img src="../images/blank.gif" title="回帖子" alt="回帖子" class="b_repost" /></a> 
+        </div>
+        <div class="j_page">
+         <b>1</b>
+        </div> 
+       </div> 
+       <script type="text/javascript">
+<!--
+	var ValidationPassed = true;
+	function submitonce(theform)
+	{	
+		
+		if(theform.ForumNumber.value=="")
+		{
+			alert("请输入验证码!\n");
+			ValidationPassed = false;
+			theform.ForumNumber.focus();
+			return;
+		}
+		
+		
+		if(typeof(edt_init)=="function")
+		{
+			edt_checkContent();
+		}
+			
+		ValidationPassed = true;
+		submit_disable(theform);
+	}
+	
+	var escflag = 0;
+	function edt_disabl_esc()
+	{
+		if(event.keyCode==27)return(false);
+	}
+	function edt_disablesc_sim()
+	{
+		if(escflag==1)return;
+		escflag = 1;
+		edt_import();
+	}
+
+	function edt_import()
+	{
+		$import("inc/leadedit.js?ver=20080729.32","js");
+		edt_heigh = 110;
+		getAJAX("a2.asp","ol=1","$('leadeditor').innerHTML=tmp;edt_import_init();",1);
+	}
+	var loopf;
+	function edt_import_init()
+	{
+		edt_heigh = 110;
+		if(typeof(edt_init)!="function")
+		{
+			clearTimeout(loopf);
+			loopf = setTimeout("edt_import_init();",100);
+		}
+		else
+		{
+		edt_init();
+		edt_setmode(0);
+		edt_setmode(0);
+		new LayerMenu('layer_item','layer_iteminfo');
+		edt_initdone=1;
+		}
+	}
+-->
+</script> 
+       <div class="stylebox">
+        <div class="nonestylebox"> 
+         <div class="contentbox"> 
+          <div id="editor_symbol" class="layer_onclickitem" unselectable="on">
+           loading...
+          </div> 
+          <div id="editor_selcolor" class="layer_onclickitem" style="z-index:500;" unselectable="on">
+           loading...
+          </div> 
+          <div id="editor_fontbgcolor" class="layer_onclickitem" unselectable="on">
+           loading...
+          </div> 
+          <div id="editor_insttable" class="layer_onclickitem" unselectable="on">
+           loading...
+          </div> 
+          <div id="editor_img" class="layer_onclickitem" unselectable="on">
+           loading...
+          </div> 
+          <div id="editor_media" class="layer_onclickitem" unselectable="on">
+           loading...
+          </div> 
+          <form action="a2.asp" method="post" id="LeadBBSFm" name="LeadBBSFm" onsubmit="submitonce(this);return ValidationPassed;"> 
+           <table border="0" cellpadding="0" cellspacing="0" width="100%" class="tablebox"> 
+            <tbody>
+             <tr class="tbhead"> 
+              <td>
+               <div class="value">
+                回复帖子 注意: *为必填项
+               </div></td> 
+             </tr> 
+            </tbody>
+           </table> 
+           <table border="0" cellpadding="0" cellspacing="0" width="100%" class="tablebox"> 
+            <tbody>
+             <tr> 
+              <td width="180" class="tdleft">*验证信息</td> 
+              <td class="tdright"> 用户名 <input maxlength="20" name="User" value="" size="14" class="fminpt input_2" /> 密码 <input maxlength="20" type="password" name="Pass" value="" size="14" class="fminpt input_2" /> 验证码 <script type="text/javascript">
+<!--
+var verifyload = 0;
+function verify_load()
+{
+	if(verifyload==1)return;
+	verifyload = 1;
+	verify_view();
+}
+function verify_view(){$('verifycode').src='../User/number.asp?r=1&' + Math.random();$('verifycode').className="verifycode";}
+-->
+</script> <input name="ForumNumber" id="ForumNumber" maxlength="4" value="" onfocus="verify_load();" class="fminpt input_1" /> <img src="../images/blank.gif" id="verifycode" align="middle" onclick="verify_view();" /> 
+               <noscript> 
+                <div class="verifycode">
+                 <img src="../User/number.asp?r=1" id="verifycode" class="verifycode" align="middle" onclick="verify_view();" />
+                </div> 
+               </noscript> <a href="../User/Register.asp">注册新用户</a> </td> 
+             </tr> 
+             <tr> 
+              <td width="180" class="tdleft">*帖子名称</td> 
+              <td class="tdright"> <input name="submitflag" value="true" type="hidden" /> <input name="LMT_DefaultEdit" value="1" type="hidden" /> <input name="BoardID" value="100" type="hidden" /> <input name="ID" value="36440" type="hidden" /> <input maxlength="255" name="Form_Title" size="55" value="Re:台湾动态线路VPN原理说明及详细功能介绍" tabindex="1" class="fminpt input_4" /> 长度不得超过255字</td> 
+             </tr> 
+             <tr> 
+              <td valign="top" width="180" class="tdleft"> 内容(最大25K)<br /> <input class="fmchkbox" type="checkbox" name="Form_HTMLFlag" value="2" checked="checked" />是否是UBB代码<br /> <a href="../User/Help/Ubb.asp" target="_blank">内容支持插入UBB标签<br />使用方法请参考帮助</a> </td> 
+              <td class="tdright"> 
+               <div id="leadeditor">
+                <textarea cols="80" name="Form_Content" rows="6" tabindex="2" onfocus="edt_disablesc_sim();" class="fmtxtra"></textarea>
+               </div> </td> 
+             </tr> 
+             <tr> 
+              <td class="tdleft">其它选项</td> 
+              <td class="tdright"> <input class="fmchkbox" type="checkbox" name="Form_NoUserUnderWriteFlag" value="checkbox" checked="checked" style="vertical-align: middle" />显示签名 <input class="fmchkbox" type="checkbox" name="Form_NotReplay" value="checkbox" />锁定帖子 Alt+S或Ctrl+Enter快速提交 </td> 
+             </tr> 
+             <tr> 
+              <td class="tdleft">&nbsp;</td> 
+              <td class="tdright"> <input name="submit2" type="submit" value="立即回复" class="fmbtn btn_3" /> </td> 
+             </tr> 
+            </tbody>
+           </table> 
+          </form> 
+         </div> 
+        </div>
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+   </div> 
+  </div> 
+  <div class="area"> 
+   <a name="bottom"></a> 
+   <div class="bottominfo"> 
+    <div class="copyright">
+      Copyright 
+     <span style="font:11px Tahoma,Arial,sans-serif;">&copy;</span>2003-2017&nbsp;风机技术论坛 
+    </div> 
+    <div class="version">
+      Powered by 
+     <a href="http://www.leadbbs.com/" target="_blank"><b>LeadBBS 6.0</b></a>. 
+    </div> 
+    <div class="createtime">
+      Page created in 0.0938 seconds with 9 queries. 
+    </div> 
+   </div> 
+  </div> 
+  <script type="text/javascript">
+	<!--
+		new LayerMenu('layer_item','layer_iteminfo');
+		new LayerMenu('layer_item2','layer_iteminfo2');
+		
+		var alls = document.getElementsByTagName('form'); 
+		for(var i=0; i<alls.length; i++)
+		{
+			submit_disable(alls[i],1);
+		}
+	-->
+	</script>  
+ </body>
+</html>

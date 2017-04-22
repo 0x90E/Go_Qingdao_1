@@ -1,0 +1,185 @@
+<!DOCTYPE html><html><head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<meta name="msapplication-tap-highlight" content="no">
+<meta name="viewport" content="user-scalable=no">
+<meta name="version" content="V1.0.8">
+<title>Huawei HiLink(RuMate) download</title>
+<script> 
+var adaptUILayout = (function(){    
+    var regulateScreen = (function(){
+        var cache = {};
+        var defSize = {
+            width  : window.screen.width,
+            height : window.screen.height
+        };
+        var ver = window.navigator.appVersion;
+        var _ = null;
+        var check = function(key){
+            return key.constructor == String ? ver.indexOf(key) > -1 : ver.test(key);
+        };
+        var add = function(name, key, size){
+            if(name && key)
+                cache[name] = {
+                    key : key,
+                    size : size
+                };
+        };
+        var del = function(name){
+            if(cache[name])
+                delete cache[name];
+        };
+        var cal = function(){
+            if(_ != null)
+                return _;      
+            for(var name in cache){
+                if(check(cache[name].key)){
+                    _ = cache[name].size;
+                    break;
+                }
+            }
+            if(_ == null)
+                _ = defSize;
+            return _;
+        };
+        return {
+            add : add,
+            del : del,
+            cal : cal
+        };
+    })();
+    var adapt = function(uiWidth){
+        var 
+        deviceWidth,
+        devicePixelRatio,
+        targetDensitydpi,
+        //meta,
+        initialContent,
+        head,
+        viewport,
+        ua;
+        ua = navigator.userAgent.toLowerCase();
+        //whether it is the iPhone or iPad
+        isiOS = ua.indexOf('ipad') > -1 || ua.indexOf('iphone');
+        devicePixelRatio = window.devicePixelRatio;
+        deviceWidth      = regulateScreen.cal().width; 
+        targetDensitydpi = uiWidth / deviceWidth * devicePixelRatio * 160;
+        //use viewport width attribute on the iPhone or iPad device
+        //use viewport target-densitydpi attribute on the Android device
+        initialContent   = isiOS 
+            ? 'target-densitydpi=device-dpi, width=' + uiWidth + 'px, user-scalable=no'
+            : 'target-densitydpi=' + targetDensitydpi + ', width=device-width, user-scalable=no';
+        //add a new meta node of viewport in head node
+        head = document.getElementsByTagName('head');
+        viewport = document.createElement('meta');
+        viewport.name = 'viewport';
+        viewport.content = initialContent;
+        head.length > 0 && head[head.length - 1].appendChild(viewport);                
+    };
+    return {
+        regulateScreen : regulateScreen,
+        adapt : adapt
+    };
+})();
+function checkInit(){
+    if (Math.abs(window.orientation) != 90) {
+        adaptUILayout.adapt(720);
+    } else {    
+        adaptUILayout.adapt(1280);
+    }
+}
+
+if(window.addEventListener){
+    window.addEventListener("orientationchange", function() {
+        checkInit();
+    }, false)
+}else{
+    window.attachEvent('orientationchange',function(){
+        checkInit();
+    });
+}
+var languageinfo = [{key:"en",value:[{"title":"Huawei HiLink(RuMate)"},{"download":"Download Now"},{"android":"Android version"},{"iphone":"iPhone version"}]},
+                    {key:"zh",value:[{"title":"Huawei HiLink(RuMate)"},{"download":"立即下载"},{"android":"Android版"},{"iphone":"iPhone版"}]}];
+checkInit();
+var ua = navigator.userAgent;
+var language = (navigator.browserLanguage || navigator.language).toLowerCase();
+
+function isWeixin(){
+	var ua = navigator.userAgent.toLowerCase();
+    if(ua.match(/MicroMessenger/i)=="micromessenger") {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function iphonelink(){
+    if (language == "zh-cn"){
+        window.location.href="https://itunes.apple.com/cn/app/huawei-hilink-mobile-wifi/id546979875?l=zh&ls=1&mt=8";
+    }
+    else{
+        window.location.href="https://itunes.apple.com/app/huawei-mobile-wifi/id546979875?ls=1&mt=8";
+    }    
+}
+function androidlink(){
+	if (language == "zh-cn"){
+		window.location.href="http://appstore.huawei.com/app/C191359";
+	}
+    else{
+		window.location.href="https://play.google.com/store/apps/details?id=com.huawei.mw";  
+	}
+}
+
+function weixinlink(){
+	window.location.href="https://home.hicloud.com/app/weixin.htm";
+}
+
+if (isWeixin()){
+	weixinlink();
+}
+else if(!!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)){
+	iphonelink();
+}
+else if(ua.indexOf('Android') > -1 || ua.indexOf('android') > -1){
+	androidlink();
+}
+
+window.setTimeout(function(){
+    if(language == "zh-cn"){
+        document.getElementById("pagetitle").innerHTML = languageinfo[1].value[0].title;
+        document.getElementById("androiddown").innerHTML = languageinfo[1].value[1].download;
+        document.getElementById("androidversion").innerHTML = languageinfo[1].value[2].android;
+        document.getElementById("iphonedown").innerHTML = languageinfo[1].value[1].download;
+        document.getElementById("iphoneversion").innerHTML = languageinfo[1].value[3].iphone;
+    }else{
+       document.getElementById("pagetitle").innerHTML = languageinfo[0].value[0].title;
+        document.getElementById("androiddown").innerHTML = languageinfo[0].value[1].download;
+        document.getElementById("androidversion").innerHTML = languageinfo[0].value[2].android;
+        document.getElementById("iphonedown").innerHTML = languageinfo[0].value[1].download;
+        document.getElementById("iphoneversion").innerHTML = languageinfo[0].value[3].iphone;
+    }
+},100)
+
+</script><meta name="viewport" content="target-densitydpi=device-dpi, width=720px, user-scalable=no">
+</head>
+<body>
+    <div class="container" id="content">
+        <div class="title" style="width:100%;margin-top:15px;"><table style="width:100%;"><tbody><tr><td style="width:80px;"><img src="./images/Rumate.jpg" style="width:80px;" border="0"></td><td style="height:30px;width:100%;" id="pagetitle">Huawei HiLink(RuMate)</td></tr></tbody></table></div>
+    </div>
+    <div class="list" style="text-align:center;">
+        <div class="bs-example" style="text-align:center;">
+            <table style="width:100%;"><tbody><tr><td>
+                <a id="androidlink" href="javaScript:void(0)" onclick="androidlink()" class="btn btn-primary btn-lg active" role="button" style="text-align:left;">
+                    <table style="width:100%;"><tbody><tr><td style="width:90px;"><img src="./images/android.jpg" border="0"></td><td><span style="font-size:36px;" id="androiddown">Download Now</span><br><span id="androidversion">Android version</span></td></tr></tbody></table>
+                </a>
+            </td></tr></tbody></table>
+            <br><br>
+            <table style="width:100%;"><tbody><tr><td>
+                <a id="iphonelink" href="javaScript:void(0)" onclick="iphonelink()" class="btn btn-primary btn-lg active" role="button" style="text-align:left;">
+                    <table style="width:100%;"><tbody><tr><td style="width:90px;"><img src="./images/iphone.jpg" border="0"></td><td><span style="font-size:36px;" id="iphonedown">Download Now</span><br><span id="iphoneversion">iPhone version</span></td></tr></tbody></table>
+                </a>
+            </td></tr></tbody></table>
+        </div>
+    </div>
+
+
+</body></html>

@@ -1,0 +1,463 @@
+<!DOCTYPE html><html><head autoconcat="1">
+            <meta charset="utf-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+            <meta name="renderer" content="webkit">
+            <meta http-equiv="Cache-Control" content="no-transform ">
+            <title>用户登录-猪八戒网</title>
+            <meta name="keywords" content="">
+            <meta name="description" content="">
+            
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0,minimal-ui">
+
+            
+<link rel="shortcut icon" href="//as.zbjimg.com/static/login/common/img/favicon.ico" type="image/x-icon">
+
+            
+                <script type="text/javascript" async="" src="https://ssl.google-analytics.com/ga.js"></script><script async="" src="//www.google-analytics.com/analytics.js"></script><script type="text/javascript" async="" src="https://login.zbj.com/v5style/t5s/output/common/js/count.js?201731121"></script><script>
+                    (function(w,d,m){
+                        w[m]=w[m]||function(){(w[m].q=w[m].q||[]).push(arguments)}, w[m].r = +new Date;
+                    })(window,document,"MonitorHD");
+                </script>
+            
+            
+                            
+            <script>MonitorHD.sh = +new Date;</script>
+            <script>
+    (function(global){
+
+        var dbg = getCookie('ga_enabled');
+
+        var reportUrl = 'http://web.app.zbjwork.com/dot.gif?info=';
+        global.gMonitor = {
+            checkCdn: function(){
+                if(checkOk()){
+                    return;
+                }
+                var err = {
+                    'log-type': 'cdn-error'
+                };
+                this.report(err);
+            },
+            imgError: function(imgUrl){
+                var err = {
+                    'log-type': 'img-error',
+                    'img-url': imgUrl
+                };
+                this.report(err);
+            },
+            report: function(data){
+                if(!window.ZBJInfo
+                    || (window.ZBJInfo.runtime != 'product' && !dbg)
+                    || document.location.protocol == 'https:'){
+                    return;
+                }
+
+                var info = this.serialize(data);
+                var img = new Image();
+                img.src = reportUrl + encodeURIComponent(info);
+            },
+            serialize: function(data){
+                data['uid'] = getCookie('userid');
+
+                var rs = ['{'];
+                var idx = 0;
+                for(var i in data){
+                    if(idx > 0){
+                        rs.push(',');
+                    }
+                    rs.push('"'+ i +'": "' + data[i] + '"');
+                    idx++;
+                }
+                rs.push('}');
+                return rs.join('');
+            }
+        };
+
+        function checkOk(){
+            var isJsOK = typeof window.seajs !== 'undefined';
+
+            var margin;
+            if(window.getComputedStyle){
+                margin = window.getComputedStyle(document.body, null).margin;
+            }else if(document.body.currentStyle){
+                margin = document.body.currentStyle.margin;
+            }
+
+            var isCssOk = parseInt(margin) == 0;
+            return isCssOk && isJsOK;
+        }
+
+        function getCookie(name){
+            var value = document.cookie;
+            var start = value.indexOf(" " + name + "=");
+            if(start == -1){
+                start = value.indexOf(name + "=");
+                if(start > 0){
+                    return null;
+                }
+            }
+            if(start == -1){
+                return null;
+            }
+
+            start = value.indexOf("=", start) + 1;
+            var end = value.indexOf(";", start);
+            if(end == -1){
+                end = value.length;
+            }
+            return decodeURIComponent(value.substring(start, end));
+        }
+    })(window);
+</script>        <link rel="stylesheet" type="text/css" href="//as.zbjimg.com/??/static/as-common/global/global_6b21b07.css"><link rel="stylesheet" type="text/css" href="//as.zbjimg.com/??/static/login/widget/common/login-register/header/header_11e3831.css,/static/login/widget/login/login-header/login-header_02f8dd0.css,/static/login/widget/login/login-by-account-top/login-by-account-top_3138a31.css,/static/login/widget/login/login-form/verifty-login/verify-code-login_13e584f.css,/static/login/widget/login/login-form/login-password-form/login-password-form_504977c.css,/static/login/widget/login/login-form/login-mobile-form/login-mobile-form_90769d2.css,/static/login/widget/login/login-form/login-form_f7a5893.css,/static/login/widget/common/login-register/authorize-login/authorize-login_bd479cb.css,/static/login/widget/common/scan-code/scan-code_bae63a5.css,/static/login/widget/login/login-app-code/login-app-code_4f72d23.css,/static/login/widget/login/login-scan-code/login-scan-code_87e1139.css,/static/login/widget/common/login-register/footer/footer_451e4ca.css"><link rel="stylesheet" type="text/css" href="//as.zbjimg.com/??/static/login/common/common_d06e649.css"><link rel="stylesheet" type="text/css" href="//as.zbjimg.com/??/static/login/login/login_4d553b2.css"><link charset="utf-8" rel="stylesheet" href="//as.zbjimg.com/static/as-common/??widget/ui/components/poptip/poptip_f8ac239.css"><link charset="utf-8" rel="stylesheet" href="//as.zbjimg.com/static/as-common/??widget/ui/components/captchable/captcha_70a3c66.css"><link charset="utf-8" rel="stylesheet" href="//as.zbjimg.com/static/as-common/widget/ui/components/new-right-toolbar/??new-right-toolbar_02fce70.css"><link charset="utf-8" rel="stylesheet" href="//as.zbjimg.com/static/as-common/widget/ui/components/right-toolbar/??right-toolbar_fedae08.css"><link charset="utf-8" rel="stylesheet" href="//as.zbjimg.com/static/as-common/??widget/ui/components/paidan-tip/paidan-tip_ad0ca3f.css"><link charset="utf-8" rel="stylesheet" href="//as.zbjimg.com/static/as-common/??widget/ui/components/dialog/dialog_2799208.css"><link charset="utf-8" rel="stylesheet" href="//as.zbjimg.com/static/as-common/widget/ui/components/search-box/search-box_f82bf14.css"><style>.arale-dialog-1_3_0 .ui-dialog{background-color:rgba(0,0,0,.5);border:0;FILTER:progid:DXImageTransform.Microsoft.Gradient(startColorstr=#88000000, endColorstr=#88000000);padding:6px;outline:0}.arale-dialog-1_3_0 .ui-dialog-content{background:#fff}:root .arale-dialog-1_3_0 .ui-dialog{FILTER:none\9}.arale-dialog-1_3_0 .ui-dialog-close{color:#999;cursor:pointer;display:block;font-family:tahoma;font-size:24px;font-weight:700;height:18px;line-height:14px;position:absolute;right:16px;text-decoration:none;top:16px;z-index:10}.arale-dialog-1_3_0 .ui-dialog-close:hover{color:#666;text-shadow:0 0 2px #aaa}.arale-dialog-1_3_0 .ui-dialog-title{height:45px;font-size:16px;font-family:'微软雅黑','黑体',Arial;line-height:46px;border-bottom:1px solid #E1E1E1;color:#4d4d4d;text-indent:20px;background-color:#f9f9f9;background:-webkit-gradient(linear,left top,left bottom,from(#fcfcfc),to(#f9f9f9));background:-moz-linear-gradient(top,#fcfcfc,#f9f9f9);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fcfcfc', endColorstr='#f9f9f9');background:-o-linear-gradient(top,#fcfcfc,#f9f9f9);background:-ms-linear-gradient(top,#fcfcfc,#f9f9f9);background:linear-gradient(top,#fcfcfc,#f9f9f9)}.arale-dialog-1_3_0 .ui-dialog-container{padding:15px 20px 20px;font-size:12px}.arale-dialog-1_3_0 .ui-dialog-message{margin-bottom:15px}.arale-dialog-1_3_0 .ui-dialog-operation{zoom:1}.arale-dialog-1_3_0 .ui-dialog-confirm,.arale-dialog-1_3_0 .ui-dialog-cancel{display:inline}.arale-dialog-1_3_0 .ui-dialog-operation .ui-dialog-confirm{margin-right:4px}.arale-dialog-1_3_0 .ui-dialog-button-orange,.arale-dialog-1_3_0 .ui-dialog-button-white{display:inline-block;*display:inline;*zoom:1;text-align:center;text-decoration:none;vertical-align:middle;cursor:pointer;font-size:12px;font-weight:700;border-radius:2px;padding:0 12px;line-height:23px;height:23px;*overflow:visible;background-image:none}.arale-dialog-1_3_0 a.ui-dialog-button-orange:hover,.arale-dialog-1_3_0 a.ui-dialog-button-white:hover{text-decoration:none}.arale-dialog-1_3_0 .ui-dialog-button-orange{color:#fff;border:1px solid #d66500;background-color:#f57403}.arale-dialog-1_3_0 .ui-dialog-button-orange:hover{background-color:#fb8318}.arale-dialog-1_3_0 .ui-dialog-button-white{border:1px solid #afafaf;background-color:#f3f3f3;color:#777}.arale-dialog-1_3_0 .ui-dialog-button-white:hover{border:1px solid #8e8e8e;background-color:#fcfbfb;color:#676d70}</style><link charset="utf-8" rel="stylesheet" href="//as.zbjimg.com/static/as-common/widget/ui/components/localize/??localize_48ff023.css"><script charset="utf-8" async="" src="//as.zbjimg.com/static/as-common/widget/ui/components/message/??tpl-message_9773991.js"></script><link charset="utf-8" rel="stylesheet" href="//as.zbjimg.com/static/as-common/widget/ui/components/message/??message_e3be121.css"></head>
+
+        <body class="login-register-content">
+            
+<div class="header">
+<div class="zbj-grid">
+<div class="logo">
+<a href="http://www.zbj.com/" class="logo-img" title="猪八戒网"></a>
+<h1 class="login-title">欢迎登录</h1>
+<a href="https://sojump.com/jq/12803377.aspx" class="feedBack" target="_blank"><img src="//as.zbjimg.com/static/login/widget/common/login-register/header/img/icon-607055_ee33a3e.gif" width="18px">“登录页面”意见反馈</a>
+</div>
+</div>
+</div>
+            
+<input type="hidden" id="yfb" value="">
+<div class="j-content content" title="" style="background-image:url('https://bgl.zbjimg.com/bgl%2Fbjclound%2F1920x550.png%2Forigine%2Fe9467470-81c6-4cd5-95a0-5e4947905dfa?imageMogr2/auto-orient/strip/quality/90')">
+<div class="zbj-grid">
+<a href="http://zt.tianpeng.com/ztoper/tp/20170313gifttwo" class="mask" title="天蓬引流" target="_blank" data-linkid="10023061"></a>
+<div class="box-warp" id="login-register-common-wrap">
+<div class="box-form-wrap">
+<div class="box-form">
+<div class="form-wrap">
+
+<div class="login-tabs">
+<div class="login-tab-con zbj-tabs-content">
+<div class="j-login-content-item login-content-item login-form-content zbj-tabs-panel login-con-panel login-content-active zbj-tabs" data-widget-cid="widget-0">
+<div class="login-header">
+<ul class="clearfix zbj-tabs login-by-account-ways zbj-tabs-nav">
+<ol class="scan">
+<span class="scan-tip">
+<img src="//as.zbjimg.com/static/login/widget/login/login-by-account-top/img/scan-tip_8bee6e1.png" width="97px">
+</span>
+<a class="login-by-item-app hiddenAccount" href="javascript:void(0)">
+<span class="scan-right" data-linkid="10101305">
+<img src="//as.zbjimg.com/static/login/widget/login/login-by-account-top/img/scan_ec8538d.png" width="52px">
+</span>
+</a>
+</ol>
+<li class="login-by-account-item login-by-accountpassword zbj-tabs-active zbj-tabs-trigger">
+<a class="login-by-item-a" href="javascript:void(0)">
+<span class="login-by-item-title login-by-password " data-linkid="10101295">账号密码登录</span>
+<span class="login-ways-separate"></span>
+</a>
+</li>
+<li class="login-by-account-item login-by-phone zbj-tabs-trigger" data-linkid="10101302">
+<a class="login-by-item-a" href="javascript:void(0)">
+<span class="login-by-item-title">手机动态登录</span>
+</a>
+</li>
+</ul>
+<div class="line"></div>
+</div><div class="j-login-form zbj-tabs-content needError">
+<div class="zbj-tabs-panel login-password-panel" style="">
+<form id="login" class="login-form" action="/login/dologin/" method="post" data-type="json" novalidate="novalidate" data-widget-cid="widget-1">
+<div class="j-login-by login-by-username login-by-active">
+<div class="zbj-form-item zbj-form-username">
+<input id="vid" type="hidden" name="vid" value="">
+<div class="visibilityWarning input-new" id="accent-pas-tip">
+<label><img src="//as.zbjimg.com/static/login/widget/login/login-form/login-password-form/img/username-input_4485dfc.png" width="37px"><input id="username" name="username" class="zbj-inp-log username-input right zbj-input j-zbj-form-username" type="text" placeholder="手机号/邮箱/用户名" tabindex="1"></label></div>
+<div class="visibilityError"></div>
+<input id="kid" type="hidden" name="kid" value="">
+<input id="vf_id" type="hidden" name="vf_id" value="">
+<input id="key" type="hidden" name="key" value="">
+<input id="l" type="hidden" name="l" value="1">
+</div>
+<div class="zbj-form-item zbj-form-password">
+<div class="input-new" id="accent-password-tip">
+<label><img src="//as.zbjimg.com/static/login/widget/login/login-form/login-password-form/img/password-input_d4f84c3.png" width="37px">
+<input id="password" name="password" class="zbj-inp-log username-input right zbj-input" type="password" placeholder="密码" tabindex="2"></label></div>
+<div class="visibilityError"></div>
+</div>
+<div class="j-catcha-div zbj-form-item verify-module" data-tabindex="3">
+</div>
+<div class="zbj-form-item login-other-info">
+<label data-linkid="10101297"><input type="checkbox" name="cache" value="1" tabindex="4">
+<span>两周内自动登录</span></label>
+<a class="forget-password" href="/retrieve/index.html?mode=1&amp;from=" data-linkid="10101299">忘记密码</a>
+</div>
+<div class="zbj-form-item login-form-button">
+<input type="hidden" name="fromurl" value="">
+<button class="zbj-btn zbj-btn-primary j-login-btn linear-gradient-btn" tabindex="5" type="button" data-linkid="10101304">登&nbsp;录</button>
+</div>
+</div>
+</form></div>
+<div class="zbj-tabs-panel login-mobile-panel">
+<form id="login-mobile" class="login-form" action="/login/quickLogin/" method="post" data-type="json" novalidate="novalidate" data-widget-cid="widget-2">
+<div class="j-login-by login-by-mobile">
+<div class="zbj-form-item">
+<div class="visibilityWarning input-new" id="mob-inp-tip">
+<label><img src="//as.zbjimg.com/static/login/widget/login/login-form/login-mobile-form/img/telephone-input_e76bdd6.png" width="37px">
+<input id="telephone" name="mobile" class="zbj-inp-log username-input right zbj-input" type="text" value="" placeholder="手机号" tabindex="6"></label></div>
+</div>
+<div class="j-catcha-div zbj-form-item verify-module" data-tabindex="7">
+</div>
+<div class="zbj-form-item dynamic-code input-new" id="dynamic-inp-foc">
+<label><img src="//as.zbjimg.com/static/login/widget/login/login-form/login-mobile-form/img/dynamic-input_ca88868.png" width="37px" class="input-img-left">
+<input id="dynamic-code" name="key" class="dt username-input zbj-input right dynamic-input-bg" type="text" placeholder="动态码" tabindex="8" data-widget-cid="widget-3"></label>
+<a class="get-dynamic-code j-get-dynamic-code" data-linkid="10101303">获取动态码</a>
+</div>
+<div class="visibilityError"></div>
+<div class="zbj-form-item login-form-button">
+<button class="zbj-btn zbj-btn-primary j-login-btn-mobile linear-gradient-btn" tabindex="9" type="button" data-linkid="10101304">登&nbsp;录</button>
+</div>
+</div>
+</form></div>
+</div>
+</div>
+<div class="zbj-tabs-panel login-con-panel">
+</div>
+<div class="zbj-tabs-panel login-con-panel">
+</div>
+</div>
+</div>
+</div>
+<div class="login-other-ways-login login-other-ways">
+<div class="authorize-login ">
+<p class="clearfix authorize-login-title">
+<span class="authorize-login-title-left">
+使用第三方账号登录</span>
+<span class="authorize-login-title-right authorize-login-title-right-sty">
+<a class="authorize-link" href="/register/?key=&amp;fromurl=http://kc.zbj.com/Cost/" data-linkid="10101298">注册新账号&gt;</a>
+</span>
+</p>
+<ul class="clearfix authorize-login-list">
+<li class="authorize-login-item" data-linkid="10101301">
+<a href="javascript:void(0)" class="j-authorize-login-item sina-login oauth-param" data-href="/oauth/redirect/act/sina" title="微博登录"></a>
+</li>
+<li class="authorize-login-item" data-linkid="10101300">
+<a href="javascript:void(0)" class="j-authorize-login-item qq-login oauth-param" data-href="/oauth/redirect/act/QQ" title="QQ登录"></a>
+</li>
+<li class="authorize-login-item" data-linkid="10101308">
+<span class="j-authorize-login-item wechat-login" title="微信登录"></span>
+</li>
+</ul>
+</div></div>
+</div>
+<div class="app-hidden-novisibility">
+<div class="scan">
+<span class="scan-tip">
+<img src="//as.zbjimg.com/static/login/widget/login/login-app-code/images/scan-account-tip_f2f00ba.png" width="120px">
+</span>
+<a class="login-by-item-app hiddenAppScan" href="javascript:void(0)">
+<span class="scan-right">
+<img src="//as.zbjimg.com/static/login/widget/login/login-app-code/images/app-scan_f92c7e9.png" width="52px">
+</span>
+</a>
+</div>
+<div class="scan-content-sty">
+<div class="scan-main-mar">
+<div class="scan-title-sty">App扫码登录</div>
+<div id="app">
+<div class="login-app-code">
+<p class=""><span class="scan-tip-mar"><img src="//as.zbjimg.com/static/login/widget/login/login-app-code/images/square-scan_5fe6ba0.png" class="scan-tip-img">猪八戒APP<br><span class="scan-tip-orange">扫码登录</span>方便快捷</span></p>
+<div class="qrcode-wrap j-qrcode-wrap">
+<div class="qrcode-img j-qrcode-img">
+<img id="appWeiImg" class="wei-img">
+<div class="wei-zbj"></div>
+<div class="wei-zbj rake"></div></div>
+<div class="qrcode-help j-qrcode-help app_help"></div>
+</div>
+<div class="upload-link">
+<span>下载<a href="http://app.zbj.com/bz/pc/" target="_blank">手机猪八戒</a>或<a href="http://app.zbj.com/wk/pc/" target="_blank">钉耙</a>扫码登录</span>
+</div>
+</div>
+<div class="login-scan-fail">
+<div class="login-fail-main">
+<h3>
+<i></i>
+<span>登录失败</span>
+</h3>
+<p class="fail-note">
+请刷新二维码后重新扫描</p>
+<a href="javascript:void(0)" class="btn-refresh-code" id="login-refresh">
+刷新二维码</a>
+</div>
+</div>
+</div><input type="hidden" id="tokenApp" value="">
+<input type="hidden" id="srcApp" value="">
+</div>
+</div></div>
+<div class="wei-hidden-novisibility">
+<div class="scan-wechat">
+<a class="login-by-item-app hiddenWechatScan" href="javascript:void(0)">
+<span class="scan-right">
+<img src="//as.zbjimg.com/static/login/widget/login/login-scan-code/img/closeWechat_0e855d9.png" width="20px">
+</span>
+</a>
+</div>
+<div class="scan-content-sty">
+<div class="scan-main-mar">
+<div class="scan-title-sty marbu">微信扫码登录</div>
+<div id="wei">
+<div class="login-app-code">
+<p class=""></p>
+<div class="qrcode-wrap j-qrcode-wrap">
+<div class="qrcode-img j-qrcode-img">
+<img id="appWeiImg" class="wei-img">
+</div>
+<div class="qrcode-help j-qrcode-help "></div>
+</div>
+<div class="upload-link">
+<span>下载<a href="http://app.zbj.com/bz/pc/" target="_blank">手机猪八戒</a>或<a href="http://app.zbj.com/wk/pc/" target="_blank">钉耙</a>扫码登录</span>
+</div>
+</div>
+<div class="login-scan-fail">
+<div class="login-fail-main">
+<h3>
+<i></i>
+<span>登录失败</span>
+</h3>
+<p class="fail-note">
+请刷新二维码后重新扫描</p>
+<a href="javascript:void(0)" class="btn-refresh-code" id="login-refresh">
+刷新二维码</a>
+</div>
+</div>
+</div><input type="hidden" id="token" value="">
+<input type="hidden" id="src" value="">
+</div>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+
+            
+<div class="zbj-footer">
+<div class="grid zbj-grid zbj-footer-bd">
+<div class="zbj-footer-sitelink">
+<a rel="nofollow" href="http://www.zbj.com/about/index.html" target="_blank">关于我们</a><span class="split">|</span>
+<a rel="nofollow" href="http://www.zbj.com/about/contactus.html" target="_blank">联系方式</a><span class="split">|</span>
+<a rel="nofollow" href="http://zt.zbj.com/ztold/adhelp/" target="_blank">广告服务</a><span class="split">|</span>
+<a href="http://news.zbj.com/" target="_blank">新闻中心</a><span class="split">|</span>
+<a href="http://www.zbj.com/main/map/" target="_blank">网站地图</a><span class="split">|</span>
+<a rel="nofollow" href="http://www.zbj.com/zizhi/gszz.html" target="_blank">公司资质</a><span class="split">|</span>
+<a rel="nofollow" href="http://job.zbj.com/" target="_blank">加入我们</a><span class="split">|</span>
+<a rel="nofollow" href="http://www.zbj.com/about/payment.html" target="_blank">支付方式</a><span class="split">|</span>
+<a rel="nofollow" href="http://zt.zbj.com/ztold/zbjhezuo/" target="_blank">我也要与猪八戒网合作</a><span class="split">|</span>
+<a target="_blank" href="http://search.zbj.com/ser/">热门服务</a><span class="split">|</span>
+<a rel="nofollow" href="http://m.zbj.com/" target="_blank">猪八戒网移动版</a>
+</div>
+<p class="gray zbj-footer-copyright">
+Copyright 2005-2017zbj.com  版权所有<a rel="nofollow" href="http://www.miitbeian.gov.cn" target="_blank">渝ICP备10202274-1号</a><a rel="nofollow" href="http://www.cqca.gov.cn/" target="_blank">渝B2-20080005</a>
+</p>
+<div class="zbj-footer-gov">
+<a href="http://www.cqgseb.cn/ztgsgl/WebMonitor/GUILayer/eImgMana/dztbInfo.aspx?sfdm=120090611153726046127" target="_blank" rel="nofollow">
+<img src="//as.zbjimg.com/static/login/widget/common/login-register/footer/img/ebs_f4a49dc.png" alt="市场监督管理局企业主体身份公示"><span class="item-txt">工商网监电子标识</span>
+</a>
+<a rel="nofollow" href="http://www.cqgseb.cn/ztgsgl/WebSiteMonitoring/WebUI/XFWQ/Index.aspx?xh=19" target="_blank">
+<img src="//as.zbjimg.com/static/login/widget/common/login-register/footer/img/xfz_ad6bc96.jpg" alt="消费维权服务"><span class="item-txt">消费者维权服务站</span>
+</a>
+<a rel="nofollow" href="http://kxlogo.knet.cn/verifyseal.dll?sn=e13091311010042477ead0000000" target="_blank">
+<img src="//as.zbjimg.com/static/login/widget/common/login-register/footer/img/time_cnnic_f555083.jpg" width="128" height="47" alt="可信网站身份验证"><span class="item-txt">可信网站身份验证</span>
+</a>
+<a id="___szfw_logo___" rel="nofollow" href="https://credit.szfw.org/CX20150930011538030188.html" target="_blank">
+<img src="//as.zbjimg.com/static/login/widget/common/login-register/footer/img/chengxin_c4e50cf.png" border="0" width="130" height="47">
+</a>
+</div>
+</div>
+</div>
+            
+                <script>
+    window.ZBJInfo = {
+        pageDomain: "zbj.com",
+        baseURI: "zbj.com",
+        newStaticLibURI: "//as.zbjimg.com",
+        asStaticLibURI: "//as.zbjimg.com",
+        rakeProject: true,
+        upFileUrl : "http://p7.zbjimg.com/",
+        t6Url: "http://t6.zbjimg.com",
+        t5Url: "https://login.zbj.com/v5style",
+        webIMToken: "bg1ob1wnoiu4kf7nts8hm9k32ium8742",
+        isTianpengSite: 0,
+        isIPRSite: false,
+        qiniuUploadTokenUrl: "http://rms.zhubajie.com",
+        runtime: "product",
+        tpWWWUrl: "http://www.tianpeng.com",
+        zhubiaojuURI: "http://ipr.zbj.com"
+
+                    ,searchCfg: {"witkey":{"placeholder":"\u597d\u7684\u5305\u88c5\u589e\u52a0\u89c6\u89c9\u9500\u552e\u529b","def_keyword":"\u5305\u88c5\u8bbe\u8ba1"},"service":{"placeholder":"\u597d\u7684\u5305\u88c5\u589e\u52a0\u89c6\u89c9\u9500\u552e\u529b","def_keyword":"\u5305\u88c5\u8bbe\u8ba1"},"task":{"placeholder":"","def_keyword":""}}
+        
+            };
+    window.monitorConfig = {
+        product: 'zhubajie'
+    };
+</script>
+<script>
+    //判断是否支持WebP
+    (function(window){
+        if(!window.ZBJInfo.sWebP){
+            var img = new Image();
+            img.onload = img.onerror = function () {
+                window.ZBJInfo.sWebP = (img.width > 0) && (img.height > 0);
+            };
+            img.src = 'data:image/webp;base64,UklGRkoAAABXRUJQVlA4WAoAAAAQAAAAAAAAAAAAQUxQSAwAAAARBxAR/Q9ERP8DAABWUDggGAAAABQBAJ0BKgEAAQAAAP4AAA3AAP7mtQAAAA==';
+        }
+    }(window));
+</script>
+<script>
+    </script>
+
+    
+    
+    <script id="seajsnode" type="text/javascript" src="//as.zbjimg.com/??/static/as-common/lib/jquery/jquery171.js,static/as-common/lib/seajs/seajs/2.1.1/sea-debug.js,static/as-common/lib/seajs/seajs-combo/1.0.1/seajs-combo-debug.js,static/as-common/lib/seajs/seajs-style/1.0.0/seajs-style-debug.js,static/as-common/lib/seajs/seajs-text/1.0.3/seajs-text-debug.js"></script>
+
+<script src="//as.zbjimg.com/static/as-common/seajs-config_a010d39.js"></script>
+    <script src="//as.zbjimg.com/static/login/seajs-config_c25ba9a.js"></script>
+            
+            
+<script>
+        window.ZBJInfo.currentPage = "login";
+        window.ZBJInfo.needCaptcha =0;
+    </script>
+
+        <script type="text/javascript" src="//as.zbjimg.com/??/static/login/widget/login/login-header/login-header_8a4a86f.js,/static/login/widget/login/login-by-account-top/login-by-account-top_e946775.js,/static/login/widget/login/login-form/verifty-login/template/verify-code-login_61b838f.js,/static/login/widget/login/login-form/verifty-login/verify-code-login_7dfe7d9.js,/static/login/widget/login/login-form/template/login-dialog-mobile_9f313c8.js,/static/login/widget/login/login-form/src/dialog_7a1cce6.js,/static/login/widget/login/login-form/src/validator_6b40baf.js,/static/login/widget/login/login-form/login-form_9ec8c03.js,/static/login/widget/common/login-register/authorize-login/authorize-login_e3d3a37.js,/static/login/widget/common/scan-code/scan-code_58097f2.js,/static/login/widget/login/login-app-code/login-app-code_a036edf.js,/static/login/widget/login/login-scan-code/login-scan-code_6867107.js"></script><script type="text/javascript">!function(){seajs.use(["login:static/common/common.js","login:static/login/login.js"])}();</script>
+        
+        
+            <script>
+    var date = new Date();
+
+    //添加时间戳，精确到小时，便于文件更新
+    var timestamp = '' + date.getFullYear() + date.getMonth() + 1 + date.getDate() + date.getHours();
+
+    var scriptUrl = 'https://login.zbj.com/v5style/t5s/output/common/js/count.js?' + timestamp;
+
+    var countScript = document.createElement('script');
+    countScript.type = 'text/javascript';
+    countScript.async = 1;
+    countScript.src = scriptUrl;
+
+    var sourceScript = document.getElementsByTagName('script')[0];
+    sourceScript.parentNode.insertBefore(countScript, sourceScript);
+</script>
+<script>
+    MonitorHD.sd = +new Date;
+    seajs.use("as-common:components/sai/seer/seer.js");
+
+    // 通过判断 seajs 是否加载，来检测 js 加载情况
+    if(window.gMonitor){window.gMonitor.checkCdn();}
+</script>
+        
+
+        
+            
+<div class="zbj-poptipnoc work-status-rake" id="work-rake-wei"><div class="zbj-poptipnoc-arrow"><i></i></div><div class="zbj-poptipnoc-bd"><div><div class="item-weixin-fws"><img src="https://login.zbj.com/v5style/t5s/lib/img/weixin-rake.png" width="100"></div><p class="item-fws-weitxt">下载APP<br>手机轻松上下班</p></div></div></div><iframe src="https://api.zbj.com/union/index?pmcode=&amp;fromcode=&amp;un_rid=&amp;adunion_lead_id=&amp;stt=&amp;first_page=https%3A%2F%2Flogin.zbj.com%2F%3Ffromurl%3Dhttp%3A%2F%2Fkc.zbj.com%2FCost%2F&amp;domain=zbj.com&amp;isOuterRefer=&amp;refer=" style="display: none; " data-store="1"></iframe><div class="arale-dialog-1_3_0 login-dialog"><div class="ui-dialog" tabindex="-1" style="width: 392px; z-index: 999; display: none; position: absolute; left: -9999px; top: -9999px; " data-widget-cid="widget-1">
+    <a class="ui-dialog-close" title="Close" href="javascript:;" data-role="close" style="">×</a>
+    <div class="ui-dialog-content" data-role="content" style="height: 100%; zoom: 1; "><div class="ui-dialog-title" data-role="title">登录保护</div>
+
+<div class="ui-dialog-container">
+    <div class="ui-dialog-message" data-role="message"><div class="msg-content">    <div class="tips-head tips-mobile">        <p class="tips-title">您开通了登录保护，请验证手机！</p>        <p class="tips-help-info">短信验证码已发送至            <span class="black-str" id="secure-login-mobile"></span>        </p>    </div>    <div class="tips-main">        <div class="verify-group">            <input id="code" class="zbj-input mobile-ticket" name="code" type="text" tabindex="1">            <button id="verify-btn" class="zbj-btn verify-btn" type="button" tabindex="2">验证</button> <br>        </div>        <div class="verify-footer">                <span class="j-gain-ticket gain-ticket re-getting" disabled="disabled">(<span class="seconds-left">60</span>)秒后重新发送</span>        </div>    </div></div></div>
+    
+</div></div>
+</div></div><div style="visibility: hidden; position: absolute; " id="userdata_el"></div></body></html>

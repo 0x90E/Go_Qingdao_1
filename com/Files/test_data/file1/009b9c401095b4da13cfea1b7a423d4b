@@ -1,0 +1,648 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head> 
+  <link href="http://c.csdnimg.cn/public/favicon.ico" rel="SHORTCUT ICON" /> 
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+  <title>谷歌推出Cloud Dataproc，缩短集群启动时间至90秒-CSDN.NET </title> 
+  <meta name="description" content="谷歌为Hadoop和Spark推出了Cloud Dataproc服务的beta版本，这个新版本有着什么样的新功能与优势，就由这篇文章告诉你。" /> 
+  <meta name="keywords" content="spark,Hadoop,Google,数据分析,SDK" /> 
+  <meta name="author" content="CSDN.NET" /> 
+  <meta name="Copyright" content="CSDN.NET" /> 
+  <meta name="image" content="" /> 
+  <!-- toolbar start --> 
+  <link href="http://c.csdnimg.cn/public/common/toolbar/css/index.css" type="text/css" rel="stylesheet" /> 
+  <script src="http://c.csdnimg.cn/public/common/libs/jquery/jquery-1.9.1.min.js" type="text/javascript"></script> 
+  <!-- toolbar end --> 
+  <link href="http://news.csdn.net/css/content.css" rel="stylesheet" type="text/css" /> 
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?6275c7f2c7d9617f47b5ea3c72633374";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+  <script src="http://ads.csdn.net/js/tracking.js" type="text/javascript"></script> 
+ </head> 
+ <body> 
+  <script type="text/javascript">
+  var protocol = window.location.protocol;
+  document.write('<script type="text/javascript" src="' +protocol+ '//c.csdnimg.cn/pubfooter/js/repoAddr2.js?v=' + Math.random() + '"></'+'script>');
+</script> 
+  <script src="http://c.csdnimg.cn/public/common/toolbar/js/html.js" type="text/javascript" id="toolbar-tpl-scriptId" prod="news" skin="black" domain="http://cloud.csdn.net"></script> 
+  <script type="text/javascript" src="http://cbjs.baidu.com/js/m.js"></script> 
+  <div class="wrap"> 
+   <!-- 间歇滚动 --> 
+   <script language="javascript">function T(n){document.getElementById("ArticleCnt").style.fontSize=n+"px";}</script> 
+   <script src="http://news.csdn.net/js/jquery.autoscroll.js" type="text/javascript"></script>
+   <!--滚动js--> 
+   <!-- //间歇滚动 --> 
+   <script type="text/javascript">BAIDU_CLB_preloadSlots("421718","421717","421715","421714","421712","445821","421709","119835");</script> 
+  </div> 
+  <!-- nav --> 
+  <div id="xcx_tabmenu" class="nav"> 
+   <div id="cx_tabmenu" class="cx_tabmenu"> 
+    <!-- lev one --> 
+    <div id="ddimagetabs" class="lev_1"> 
+     <ul> 
+      <li><a href="http://news.csdn.net" id="sclink1" target="_blank" onclick="LogClickCount(this, 392);">业界</a></li> 
+      <li><a href="http://mobile.csdn.net" id="sclink2" target="_blank" onclick="LogClickCount(this, 393);">移动开发</a></li> 
+      <li><a href="http://cloud.csdn.net" id="sclink3" target="_blank" onclick="LogClickCount(this, 394);">云计算</a></li> 
+      <li><a href="http://sd.csdn.net" id="sclink4" target="_blank" onclick="LogClickCount(this, 395);">软件研发</a></li> 
+      <li><a href="http://programmer.csdn.net/" id="sclink6" target="_blank">程序员</a></li> 
+      <li><a href="http://geek.csdn.net/" id="sclink7" target="_blank">极客头条</a></li> 
+      <li><a href="http://special.csdn.net/newssubject/index.html" id="sclink5" target="_blank">专题</a></li> 
+      <!--<li><a href="http://share.csdn.net" id="sclink8" target="_blank">CSDN Share</a></li>
+				<li><a href="http://read.csdn.net/" id="sclink9" target="_blank">我的Tag</a></li>--> 
+     </ul> 
+    </div> 
+    <!-- lev two --> 
+    <div id="tabcontentcontainer" class="lev_2"> 
+     <div class="tabcontent" id="sc1"> 
+      <ul> 
+       <li><a href="http://www.csdn.net/tag/cto/news" target="_blank">CTO</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E4%BA%A7%E5%93%81/news" target="_blank">产品</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E5%88%9B%E4%B8%9A/news" target="_blank">创业</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E8%81%8C%E5%9C%BA/news" target="_blank">职场</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E4%BA%BA%E7%89%A9/news" target="_blank">人物</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E7%A4%BE%E5%8C%BA%E4%B9%8B%E6%98%9F/news" target="_blank">社区之星</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E5%AF%B9%E8%AF%9Dcto/news" target="_blank">对话CTO</a></li> 
+      </ul> 
+     </div> 
+     <div class="tabcontent" id="sc2"> 
+      <ul> 
+       <li><a href="http://www.csdn.net/tag/android/news" target="_blank">Android</a></li> 
+       <li><a href="http://www.csdn.net/tag/ios/news" target="_blank">iOS</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E7%A7%BB%E5%8A%A8%E6%B8%B8%E6%88%8F/news" target="_blank">移动游戏</a></li> 
+       <li><a href="http://www.csdn.net/tag/html5/news" target="_blank">HTML5</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E8%BF%91%E5%8C%A0/news" target="_blank">近匠</a></li> 
+       <li><a href="http://www.csdn.net/tag/swift/news" target="_blank">Swift</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%99%BA%E8%83%BD%E7%A1%AC%E4%BB%B6/news" target="_blank">智能硬件</a></li> 
+      </ul> 
+     </div> 
+     <div class="tabcontent" id="sc3"> 
+      <ul> 
+       <li><a href="http://www.csdn.net/tag/%E5%A4%A7%E6%95%B0%E6%8D%AE/news" target="_blank">大数据</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E4%B8%AD%E5%BF%83/news" target="_blank">数据中心</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%9C%8D%E5%8A%A1%E5%99%A8/news" target="_blank">服务器</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E5%AD%98%E5%82%A8/news" target="_blank">存储</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E8%99%9A%E6%8B%9F%E5%8C%96/news" target="_blank">虚拟化</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E5%AE%89%E5%85%A8/news" target="_blank">安全</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E4%BA%91%E5%85%88%E9%94%8B/news" target="_blank">云先锋</a></li> 
+       <li><a href="http://www.csdn.net/tag/nosql/news" target="_blank">NoSQL</a></li> 
+      </ul> 
+     </div> 
+     <div class="tabcontent" id="sc4"> 
+      <ul> 
+       <li><a href="http://www.csdn.net/tag/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/news" target="_blank">编程语言</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E5%BC%80%E6%94%BE%E5%B9%B3%E5%8F%B0/news" target="_blank">开放平台</a></li> 
+       <li><a href="http://www.csdn.net/tag/html5/news" target="_blank">HTML5</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/news" target="_blank">前端开发</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E5%BC%80%E6%BA%90/news" target="_blank">开源</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%9E%B6%E6%9E%84/news" target="_blank">架构</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%99%BA%E8%83%BD%E7%AE%97%E6%B3%95/news" target="_blank">智能算法</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E5%BA%93/news" target="_blank">数据库</a></li> 
+      </ul> 
+     </div> 
+     <div class="tabcontent" id="sc5"> 
+      <ul> 
+       <li><a href="http://www.csdn.net/tag/%E5%B0%81%E9%9D%A2%E7%A7%80/news" target="_blank">封面秀</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E7%89%B9%E5%88%AB%E7%AD%96%E5%88%92/news" target="_blank">特别策划</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/news" target="_blank">管理实践</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84/news" target="_blank">技术架构</a></li> 
+      </ul> 
+     </div> 
+    </div> 
+   </div> 
+  </div> 
+  <script type="text/javascript">
+	// The idea borrowed from dynamicDrive.com
+	
+	var initialtab = [1, "sc1"]
+	
+	var previoustab = "";
+	var intv;
+	function expandcontent(cid, aobject) {
+	    stopTimer();
+	    highlighttab(aobject);
+	    if (previoustab != ""){
+	         document.getElementById(previoustab).style.display = "none";
+	    }
+	    document.getElementById(cid).style.display = "block";
+	    previoustab = cid;
+	}
+	
+	function highlighttab(aobject) {
+	    stopTimer();
+	
+	   if (typeof tabobjlinks == "undefined"){
+	         collectddimagetabs();
+	    }
+	   for (i = 0; i < tabobjlinks.length; i++){
+	    	tabobjlinks[i].className = "";   
+	    }
+	    aobject.className = "current";
+	}
+	
+	function collectddimagetabs() {
+	    var tabobj = document.getElementById("ddimagetabs");
+	    tabobjlinks = tabobj.getElementsByTagName("A");
+	}
+	
+	function startTimer() {
+	    intv = setTimeout("expandcontent(initialtab[1], tabobjlinks[initialtab[0]-1])", 2000);
+	}
+	
+	function stopTimer() {
+	    clearTimeout(intv);
+	}
+	
+	$(document).ready(function(){ 
+		collectddimagetabs();
+		var domain = new Array('news.','mobile.','cloud.','sd.','programmer.');
+		for(var i=0;i<domain.length;i++){
+			if(window.location.href.indexOf(domain[i]) > 0){
+				expandcontent('sc'+(i+1), tabobjlinks[i]);
+			}
+		}
+		$('#button_both').click(function(){
+			var key=$('#queries_searchfield_query-new').val();
+			key = $.trim(key);
+			if(key==""){
+				alert("关键字不能为空！");
+			}
+			else{
+				key =  encodeURIComponent(key)
+				var url="http://so.csdn.net/search?sort=created_at&t=news&q="+key;
+				window.location.href=url;
+			}
+			return false;
+		});
+	});
+	
+	</script> 
+  <div class="wrap"> 
+   <div class="ad_960"> 
+    <ins data-revive-zoneid="94" data-revive-id="8c38e720de1c90a6f6ff52f3f89c4d57"></ins> 
+   </div> 
+   <div class="brea_nav"> 
+    <span class="fr"> <a href="http://news.csdn.net/rss_cloud.html" class="rss" target="_blank">订阅云计算RSS</a> </span>
+    <a href="http://www.csdn.net/">CSDN首页</a>
+    <em>&gt;</em> 
+    <a href="http://cloud.csdn.net" target="_blank">云计算</a> 
+   </div> 
+   <div class="content"> 
+    <div class="left"> 
+     <div class="detail"> 
+      <h1 class="title">谷歌推出Cloud Dataproc，缩短集群启动时间至90秒</h1> 
+      <h4> 
+       <div class="tit_bar">
+         发表于
+        <span class="ago">2015-09-25 14:35</span>| 
+        <span class="view_time">次阅读</span>| 来源
+        <span class="ago">ComputerWorld</span>| 
+        <span class="num_recom"><font id="remark_count1" class="cmtcount" style="font-size:12px;color:#c00;">0</font> 条评论</span>| 作者
+        <span class="ago">Katherine Noyes</span> 
+       </div> </h4> 
+      <div class="tag">
+       <a href="http://www.csdn.net/tag/spark/news">spark</a>
+       <a href="http://www.csdn.net/tag/hadoop/news">Hadoop</a>
+       <a href="http://www.csdn.net/tag/google/news">Google</a>
+       <a href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/news">数据分析</a>
+       <a href="http://www.csdn.net/tag/sdk/news">SDK</a>
+      </div> 
+      <div class="summary"> 
+       <input type="hidden" id="article_description" name="article_description" value="谷歌为Hadoop和Spark推出了Cloud Dataproc服务的beta版本，这个新版本有着什么样的新功能与优势，就由这篇文章告诉你。" /> 
+       <script type="text/javascript" charset="utf-8">
+(function(){
+  var _w = 22 , _h = 16;
+  var article_description=$("#article_description").val();
+  var param = {
+    url:location.href,
+    type:'3',
+    count:'', /**是否显示分享数，1显示(可选)*/
+    appkey:'', /**您申请的应用appkey,显示分享来源(可选)*/
+    title:article_description, /**分享的文字内容(可选，默认为所在页面的title)*/
+    pic:'', /**分享图片的路径(可选)*/
+    ralateUid:'', /**关联用户的UID，分享微博会@该用户(可选)*/
+	language:'zh_cn', /**设置语言，zh_cn|zh_tw(可选)*/
+    rnd:new Date().valueOf()
+  }
+  var temp = [];
+  for( var p in param ){
+    temp.push(p + '=' + encodeURIComponent( param[p] || '' ) )
+  }
+  document.write('<iframe allowTransparency="true" frameborder="0" scrolling="no" src="http://hits.sinajs.cn/A1/weiboshare.html?' + temp.join('&') + '" width="'+ _w+'" height="'+_h+'"></iframe>')
+})()
+</script>
+       <strong>摘要：</strong>谷歌为Hadoop和Spark推出了Cloud Dataproc服务的beta版本，这个新版本有着什么样的新功能与优势，就由这篇文章告诉你。 
+      </div> 
+      <div class="con news_content"> 
+       <p style="text-align: center;"><img src="http://img.ptcms.csdn.net/article/201509/25/5604e9365660c_middle.jpg?_=36630" style="float: none; margin: 0px;" alt="" /><br /></p>
+       <p>本周三谷歌为<span>Hadoop和Spark推出了Cloud Dataproc服务的beta版本，这项服务旨在帮助用户快速创建和关闭Hadoop和Spark集群，因为很多企业用户发现对Hadoop和Spark的安装和使用比想象的困难很多，尤其是当两者一起使用时。</span></p>
+       <p>谷歌声称使用<span>Cloud Dataproc每一个集群操作至多只需要90秒，这对于企业用户来说是很有吸引力的，因为企业可以花更多时间在真正有价值的数据分析上面而不用花太多心思在集群的各种操作。</span></p>
+       <p>传统方式每次对<span>Spark和Hadoop集群的启动扩容或关闭等操作需要五至三十分钟不等的时间，因此谷歌宣称Cloud Dataproc相比本地部署或是其他云服务提供商都占有优势。</span></p>
+       <p>价格方面是每个<span>CPU每小时一分，可以精确到分钟而不是惯例的四舍五入到小时，不过Cloud Dataproc有起步价十分钟。此外谷歌还提供了抢占式虚拟机，虽然价格比普通虚拟机低70%，但最多可以使用24小时而且可能随时被关闭。抢占式虚拟机主要适用于容错性强的应用，比如用在批处理任务上，抢占式虚拟机被关闭时批处理任务只是速度变慢而不会完全停止除非你所有的实例都是抢占式虚拟机。</span></p>
+       <p>Cloud Dataproc可以与谷歌云平台的其他服务如<span>BigQuery、Cloud Storage、Cloud BigTable、Cloud Logging和Cloud Monitoring等进行无缝集成，它的出现使谷歌的云平台生态更加完善。</span></p>
+       <p>用户可以使用多种方式来管理集群如<span>Web界面、Cloud SDK、RESTful API和SSH而不需要专业人士或者专门软件的帮助。</span></p>
+       <p>现在<span>beta版本的Cloud Dataproc针对的是Spark 1.5和Hadoop 2.7.1不过谷歌称会根据Spark和Hadoop的版本进行动态更新。</span></p>
+       <p> <b>原文地址：</b><a href="http://www.computerworld.com/article/2985523/big-data/with-cloud-dataproc-google-promises-a-hadoop-or-spark-cluster-in-90-seconds.html" target=" target=&quot;_blank&quot;">With Cloud Dataproc, Google promises a Hadoop or Spark cluster in 90 seconds</a>（译者/刘旭坤&nbsp;校检/朱正贵、李子健 责编/仲浩）<br /></p> 
+       <p class="copyright">本文为CSDN编译整理，未经允许不得转载，如需转载请联系market#csdn.net(#换成@)</p> 
+      </div> 
+      <div class="share"> 
+       <div class="bdsharebuttonbox" style="float:right;"> 
+        <!-- a href="#" class="bds_more" data-cmd="more"></a --> 
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a> 
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a> 
+        <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a> 
+        <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a> 
+       </div> 
+       <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"32"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script> 
+      </div> 
+      <div class="detail"> 
+       <div class="digg"> 
+        <input type="hidden" id="digg_id" value="2825800" /> 
+        <dl class="support"> 
+         <dt>
+          顶
+         </dt> 
+         <dd>
+          0
+         </dd> 
+        </dl> 
+        <dl class="oppose"> 
+         <dt>
+          踩
+         </dt> 
+         <dd>
+          0
+         </dd> 
+        </dl> 
+       </div> 
+      </div> 
+      <div class="ad_600_90"> 
+       <ins data-revive-zoneid="95" data-revive-id="8c38e720de1c90a6f6ff52f3f89c4d57"></ins> 
+      </div> 
+      <div class="related">
+       推荐阅读相关主题： 
+       <a href="http://www.csdn.net/tag/%E9%9B%86%E7%BE%A4/news" title="集群" target="_blank">集群</a> 
+       <a href="http://www.csdn.net/tag/%E8%B0%B7%E6%AD%8C/news" title="谷歌" target="_blank">谷歌</a> 
+       <a href="http://www.csdn.net/tag/hadoop%E9%9B%86%E7%BE%A4/news" title="hadoop集群" target="_blank">hadoop集群</a> 
+       <a href="http://www.csdn.net/tag/%E8%99%9A%E6%8B%9F%E6%9C%BA/news" title="虚拟机" target="_blank">虚拟机</a> 
+       <a href="http://www.csdn.net/tag/%E6%89%B9%E5%A4%84%E7%90%86/news" title="批处理" target="_blank">批处理</a> 
+       <a href="http://www.csdn.net/tag/%E4%BA%91%E5%B9%B3%E5%8F%B0/news" title="云平台" target="_blank">云平台</a> 
+      </div> 
+      <!-- relational article and news --> 
+      <div id="Tab3" class="relational"> 
+       <h2 class="tab_1 Menubox"> 
+        <ul> 
+         <li id="three1" onclick="setTab('three',1,2)" class="hover">相关文章</li> 
+         <li id="three2" onclick="setTab('three',2,2)">最新报道</li> 
+        </ul> </h2> 
+       <div class="con Contentbox"> 
+        <div id="con_three_1" class="hover"> 
+         <ul class="list_1"> 
+          <li><a href="http://www.csdn.net/article/1970-01-01/2825756" title="微店的大数据平台建设实践与探讨" target="_blank">微店的大数据平台建设实践与探讨</a></li> 
+          <li><a href="http://www.csdn.net/article/1970-01-01/2824520" title="【精彩集锦】OpenCloud2015召开 三大技术峰会隆重登场——4月18日Spark专场" target="_blank">【精彩集锦】OpenCloud2015召开 三大技术峰会隆重登场——4月18日Spark专场</a></li> 
+          <li><a href="http://www.csdn.net/article/1970-01-01/2826606" title="关于云上大数据应用开发，IBM Bluemix工程师如是说" target="_blank">关于云上大数据应用开发，IBM Bluemix工程师如是说</a></li> 
+          <li><a href="http://www.csdn.net/article/1970-01-01/2826325" title="Apache Spark数据分析教程（二）：Spark SQL" target="_blank">Apache Spark数据分析教程（二）：Spark SQL</a></li> 
+          <li><a href="http://www.csdn.net/article/1970-01-01/2824081" title="Spark Streaming容错的改进和零数据丢失" target="_blank">Spark Streaming容错的改进和零数据丢失</a></li> 
+          <li><a href="http://www.csdn.net/article/1970-01-01/2824362" title="IBM陈冠诚：如何使用OpenStack、Docker和Spark打造一个云服务" target="_blank">IBM陈冠诚：如何使用OpenStack、Docker和Spark打造一个云服务</a></li> 
+         </ul> 
+        </div> 
+        <div id="con_three_2" style="display:none"> 
+         <ul class="list_1 "> 
+          <li><a href="http://www.csdn.net/article/2017-02-16/2826692" title="2017中国云计算技术大会将于5月18-19日在京召开" target="_blank">2017中国云计算技术大会将于5月18-19日在京召开</a></li> 
+          <li><a href="http://www.csdn.net/article/2016-12-20/2826683" title="亚马逊AWS业务成长最快，下一步转投人工智能" target="_blank">亚马逊AWS业务成长最快，下一步转投人工智能</a></li> 
+          <li><a href="http://www.csdn.net/article/2016-12-20/2826682" title="AWS：云计算发展的新趋势与AWS提供新的云服务" target="_blank">AWS：云计算发展的新趋势与AWS提供新的云服务</a></li> 
+          <li><a href="http://www.csdn.net/article/2016-12-15/2826679" title="专访俞岳：华为如何构建新一代PaaS平台" target="_blank">专访俞岳：华为如何构建新一代PaaS平台</a></li> 
+          <li><a href="http://www.csdn.net/article/2016-12-13/2826678" title="专访Rachel：服务是美团云的核心竞争力" target="_blank">专访Rachel：服务是美团云的核心竞争力</a></li> 
+          <li><a href="http://www.csdn.net/article/2016-11-23/2826673" title="［重磅］懂行的人都在这里，BDTC 2016将于12月8-10日在京举行" target="_blank">［重磅］懂行的人都在这里，BDTC 2016将于12月8-10日在京举行</a></li> 
+         </ul> 
+        </div> 
+       </div> 
+      </div> 
+      <!-- //relational article and news 广告 --> 
+      <!-- comments --> 
+      <div id="comments" class="csdn_comments"></div> 
+      <script type="text/javascript" src="http://c.csdnimg.cn/pig/pubjs/cnick.js"></script> 
+      <script src="http://ptcms.csdn.net/comment/js/comments.js" type="text/javascript"></script> 
+      <script src="http://c.csdnimg.cn/atsuggest/comment_atsuggest.js" type="text/javascript"></script> 
+      <!--script src="js/https://passport.csdn.net/scripts/login.js?v=1.2" type="text/javascript"></script--> 
+      <script type="text/javascript">
+					    //var path = location.protocol +"//"+ location.host+"/comments/";                 //本地测试需要配置一个csdn.net的子域名，以便登录，例:http://comments.csdn.net
+					    var path = "http://ptcms.csdn.net/comment";
+					    csdn.comments = new csdn.comments({
+					        id:"comments",                                                                  //容器ID
+					        path:path,
+					        datapath:"http://ptcms.csdn.net",                                          //数据接口host
+					        cssUrl:path+"/css/comments.css",                                                 //css地址
+					        //loginUrl:path+"/js/login.js",                  //login.js地址
+					        loginUrl:"https://passport.csdn.net/content/loginbox/login.js",
+					        articleURL:"http://www.csdn.net/article/2015-09-25/2825800",
+					        title:"%E8%B0%B7%E6%AD%8C%E6%8E%A8%E5%87%BACloud%20Dataproc%EF%BC%8C%E7%BC%A9%E7%9F%AD%E9%9B%86%E7%BE%A4%E5%90%AF%E5%8A%A8%E6%97%B6%E9%97%B4%E8%87%B390%E7%A7%92",
+					        md5:"http://static.blog.csdn.net/scripts/md5.js",                               //用于计算用户头像的md5.js地址
+					        componentsUrl:path+"/js/componet.js",              //CSDN通用组件地址
+					        toolkitUrl:path+"/js/toolkit.js",                  //CSDN工具包地址
+					        tab:{                                                                           //【通用组件】tab
+					            id:"csdnTab",                                                               //容器ID
+					            highlight:"hover"                                                           //表示当前选择的CSS样式名
+					        },
+					        pagination:{                                                                    //【通用组件】AJAX分页组件
+					            pagesize:50,                                                                //每页多少条数据
+					            showpages:10                                                                //显示多少页
+					        },
+                            oncountchange:function(count){                                                  //评论数chagnge回调
+                                var el = document.getElementById('remark_count1');
+                                if(el){el.innerHTML=count}
+                            }
+					    });
+					</script> 
+      <!-- //comments --> 
+     </div> 
+    </div> 
+    <div class="right"> 
+     <div class="ad_300_250"> 
+      <ins data-revive-zoneid="97" data-revive-id="8c38e720de1c90a6f6ff52f3f89c4d57"></ins> 
+     </div> 
+     <div style="border: 1px #ccc solid; font-size:14px; padding:10px; margin-bottom:20px;"> 
+      <ul style=" float:right; width: 160px; padding:5px;"> 
+       <li style="font-size:16px; font-weight:bold;">CSDN官方微信</li> 
+       <li style="float:left;">扫描二维码,向CSDN吐槽</li> 
+       <li>微信号：CSDNnews</li> 
+      </ul> 
+      <img src="http://articles.csdn.net/uploads/allimg/121116/28_121116100507_1.jpg" width="100" height="100" /> 
+     </div> 
+     <div style="border: 1px #ccc solid; font-size:14px; padding:3px; margin-bottom:20px; font-weight:bold;">
+      <img style="vertical-align:middle; margin-right:10px;" src="http://news.csdn.net/images/icon_ipad.png" />
+      <a href="http://dingyue.programmer.com.cn" target="_blank">程序员移动端订阅下载</a>
+     </div> 
+     <div class="sitemap">
+      <a href="http://www.csdn.net/article/lastnews" target="_blank">每日资讯快速浏览 </a>
+     </div> 
+     <!-- 订阅和关注 --> 
+     <div class="report"> 
+      <h2 class="tit_2"><p>微博关注</p></h2> 
+      <iframe width="100%" height="300" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&amp;width=0&amp;height=300&amp;fansRow=2&amp;ptype=0&amp;speed=0&amp;skin=5&amp;isTitle=0&amp;noborder=0&amp;isWeibo=1&amp;isFans=0&amp;uid=1741045432&amp;verifier=8c7c607d&amp;dpc=1"></iframe> 
+     </div> 
+     <div class="rtbrill" id="digestComment"></div> 
+     <div class="ad_300_250"> 
+      <ins data-revive-zoneid="98" data-revive-id="8c38e720de1c90a6f6ff52f3f89c4d57"></ins> 
+     </div> 
+     <!-- recommend and hot weekly --> 
+     <div id="Tab2" class="hot_weekly"> 
+      <h2 class="tit_2"><p>相关热门文章</p></h2> 
+      <div class="con Contentbox"> 
+       <div id="con_two_2"> 
+        <ul class="list_1 "> 
+        </ul> 
+       </div> 
+      </div> 
+     </div> 
+     <!-- hot tag --> 
+     <div class="hot_tag"> 
+      <h2 class="tit_2"><p><a href="http://www.csdn.net/tag">热门标签</a></p></h2> 
+      <ul class="list_1"> 
+       <li><a href="http://www.csdn.net/tag/hadoop" title="Hadoop" target="_blank">Hadoop</a></li> 
+       <li><a href="http://www.csdn.net/tag/aws" title="AWS" target="_blank">AWS</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E7%A7%BB%E5%8A%A8%E6%B8%B8%E6%88%8F" title="移动游戏" target="_blank">移动游戏</a></li> 
+       <li><a href="http://www.csdn.net/tag/java" title="Java" target="_blank">Java</a></li> 
+       <li><a href="http://www.csdn.net/tag/android" title="Android" target="_blank">Android</a></li> 
+       <li><a href="http://www.csdn.net/tag/ios" title="iOS" target="_blank">iOS</a></li> 
+       <li><a href="http://www.csdn.net/tag/swift" title="Swift" target="_blank">Swift</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%99%BA%E8%83%BD%E7%A1%AC%E4%BB%B6" title="智能硬件" target="_blank">智能硬件</a></li> 
+       <li><a href="http://www.csdn.net/tag/docker" title="Docker" target="_blank">Docker</a></li> 
+       <li><a href="http://www.csdn.net/tag/openstack" title="OpenStack" target="_blank">OpenStack</a></li> 
+       <li><a href="http://www.csdn.net/tag/vpn" title="VPN" target="_blank">VPN</a></li> 
+       <li><a href="http://www.csdn.net/tag/spark" title="Spark" target="_blank">Spark</a></li> 
+       <li><a href="http://www.csdn.net/tag/erp" title="ERP" target="_blank">ERP</a></li> 
+       <li><a href="http://www.csdn.net/tag/ie10" title="IE10" target="_blank">IE10</a></li> 
+       <li><a href="http://www.csdn.net/tag/eclipse" title="Eclipse" target="_blank">Eclipse</a></li> 
+       <li><a href="http://www.csdn.net/tag/crm" title="CRM" target="_blank">CRM</a></li> 
+       <li><a href="http://www.csdn.net/tag/javascript" title="JavaScript" target="_blank">JavaScript</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E5%BA%93" title="数据库" target="_blank">数据库</a></li> 
+       <li><a href="http://www.csdn.net/tag/ubuntu" title="Ubuntu" target="_blank">Ubuntu</a></li> 
+       <li><a href="http://www.csdn.net/tag/nfc" title="NFC" target="_blank">NFC</a></li> 
+       <li><a href="http://www.csdn.net/tag/wap" title="WAP" target="_blank">WAP</a></li> 
+      </ul> 
+     </div> 
+     <!-- //hot tag --> 
+     <!-- share --> 
+     <style>
+.box{ margin-bottom:20px;}
+.box h2{ color:#c00;font:normal 18px/30px "Microsoft YaHei";border-bottom:2px #333 solid;margin-bottom:15px;}
+.box h2 a{ color:#c00;}
+</style> 
+     <div class="box share"> 
+      <h2><a target="_blank" href="http://download.csdn.net/album/list" onclick="LogClickCount(this,342);">下载专辑</a></h2> 
+      <dl> 
+       <dt class="clearfix"> 
+        <a title="【资源优选】20个热门的Unity源码" href="http://download.csdn.net/album/detail/3611" target="_blank" onclick="LogClickCount(this,342);"><img style="height:75px;width:75px;" src="http://images.csdn.net/20170320/unity3D_180x220.png" /></a> 
+        <a title="【资源优选】20个热门的Unity源码" href="http://download.csdn.net/album/detail/3611" target="_blank" onclick="LogClickCount(this,342);"> 【资源优选】20个热门的Unity源码 </a>
+       </dt> 
+       <dt class="clearfix"> 
+        <a title="【资源优选】第十期：20个最热门的cocos2D源码" href="http://download.csdn.net/album/detail/3601" target="_blank" onclick="LogClickCount(this,342);"><img style="height:75px;width:75px;" src="http://images.csdn.net/20170313/cocos2D_180.png" /></a> 
+        <a title="【资源优选】第十期：20个最热门的cocos2D源码" href="http://download.csdn.net/album/detail/3601" target="_blank" onclick="LogClickCount(this,342);"> 【资源优选】第十期：20个最热门的cocos2D源码 </a>
+       </dt> 
+       <dt class="clearfix"> 
+        <a title="【资源优选】CSDN最热门的20个iOS精品源代码" href="http://download.csdn.net/album/detail/3593" target="_blank" onclick="LogClickCount(this,342);"><img style="height:75px;width:75px;" src="http://images.csdn.net/20170306/iOS180x23001.png" /></a> 
+        <a title="【资源优选】CSDN最热门的20个iOS精品源代码" href="http://download.csdn.net/album/detail/3593" target="_blank" onclick="LogClickCount(this,342);"> 【资源优选】CSDN最热门的20个iOS精品源代码 </a>
+       </dt> 
+       <dt class="clearfix"> 
+        <a title="10本python学习经典书" href="http://download.csdn.net/album/detail/3588" target="_blank" onclick="LogClickCount(this,342);"><img style="height:75px;width:75px;" src="http://images.csdn.net/20170303/python电子书.png" /></a> 
+        <a title="10本python学习经典书" href="http://download.csdn.net/album/detail/3588" target="_blank" onclick="LogClickCount(this,342);"> 10本python学习经典书 </a>
+       </dt> 
+       <dt class="clearfix"> 
+        <a title="【python】20个最热门python源码" href="http://download.csdn.net/album/detail/3584" target="_blank" onclick="LogClickCount(this,342);"><img style="height:75px;width:75px;" src="http://images.csdn.net/20170227/python.jpg" /></a> 
+        <a title="【python】20个最热门python源码" href="http://download.csdn.net/album/detail/3584" target="_blank" onclick="LogClickCount(this,342);"> 【python】20个最热门python源码 </a>
+       </dt> 
+      </dl> 
+     </div> 
+     <!-- //share --> 
+    </div> 
+   </div> 
+   <div class="hot_topic"> 
+    <ins data-revive-zoneid="96" data-revive-id="8c38e720de1c90a6f6ff52f3f89c4d57"></ins> 
+   </div> 
+   <script type="text/javascript" src="http://ptcms.csdn.net/like/js/like.js"></script> 
+   <script>
+	/*
+  window.WebSocket = window.WebSocket || window.MozWebSocket;
+  if( window.WebSocket ) {
+    var  wsServer = 'ws://geektest.csdn.net/'; 
+    var websocket = new window.WebSocket(wsServer, 'cmslike');
+
+    websocket.onopen = function (evt) { onOpen(evt) }; 
+    websocket.onclose = function (evt) { onClose(evt) }; 
+    websocket.onmessage = function (evt) { onMessage(evt) }; 
+    websocket.onerror = function (evt) { onError(evt) }; 
+    function onOpen(evt) {
+    } 
+    function onClose(evt) { 
+    } 
+    function onMessage(evt) {
+      var data = JSON.parse(evt.data);
+      var ding = $('.support dd').text();
+      if(ding != '' && data.support > ding){
+        $('.support dd').text(data.support);
+      };
+      var cai = $('.oppose dd').text();
+      if (cai != '' && data.oppose > cai) {
+        $('.oppose dd').text(data.oppose);
+      };
+    } 
+    function onError(evt) { 
+    }
+  }
+  */
+		$(document).ready(function(){
+			var digg_id=$("#digg_id").val();
+			$('.digg').like({
+				article_id: digg_id, // 文章id
+				ding_class: 'support', // 顶的class
+				cai_class: 'oppose', // 踩的class
+        domain: 'news.csdn.net',
+				callback: function(data) //处理数据方法
+				{
+          if(data.succ == 1)
+          {
+            $('.support dd').text(data.info.ding);
+            $('.oppose dd').text(data.info.ding);
+          }
+					if(data.succ == -2)
+					{
+						if(confirm(data.msg)){
+							window.location.href = "https://passport.csdn.net/UserLogin.aspx?from=http://news.csdn.net%2F%2Farticle%2F2015-09-25%2F2825800";
+							return false;
+						}
+					}
+					if(data.succ == -1)
+					{
+						alert(data.msg);
+					}
+				}
+			});
+		});
+	</script> 
+   <script type="text/javascript">
+		$(document).ready(function(){ 
+			var href=document.location.href;	
+
+			if(href.split("/")[6] == undefined){
+				$("#click_"+1).addClass("on");
+			}else{
+				var hrefpageno=href.split("/")[6];		
+				$("#click_"+hrefpageno).addClass("on");
+			}	
+
+			new $.AutoScroll({
+				wrap:$('#job_ul'),scrollCount:1,interval:1500
+			});
+		expandcontent('sc3', tabobjlinks[2]);
+		$.getJSON('http://ptcms.csdn.net/article/service/article_count?preview=1&aid=2825800&jsonpcallback=?',function(data){
+				$('.view_time').html(data+'次阅读');
+			});
+
+		});
+		function linkfirst(arcid){
+			$("#linkfirst").attr("href","article.html?arcid="+arcid+"&pageno=1");			
+		}
+		function preclick(arcid){
+			var href=window.location.href;		
+			var hrefpageno=href.split("&")[1];		
+			var pageno=hrefpageno.split("=")[1];
+			var hrefno=pageno-1;
+			if(hrefno <1){
+				hrefno = 1;
+			}
+			$("#preclick").attr("href","article.html?arcid="+arcid+"&pageno="+hrefno);
+		}
+	
+		function nextclick(total,arcid){
+			var href=window.location.href;		
+			var hrefpageno=href.split("&")[1];		
+			var pageno=hrefpageno.split("=")[1];
+			var hrefno=parseInt(pageno)+1;
+			if(hrefno >total){
+				hrefno = total;
+			}
+			$("#nextclick").attr("href","article.html?arcid="+arcid+"&pageno="+hrefno);
+		}
+	
+		function firstclick(arcid){
+			$("#firstclick").attr("href","article.html?arcid="+arcid+"&pageno=1");	
+		}
+		
+		function lastclick(total,arcid){
+			$("#lastclick").attr("href","article.html?arcid="+arcid+"&pageno="+total);
+		}
+		function linktitle(num,arcid){
+			var numid=parseInt(num)+1;
+			$("#linktitle_"+num).attr("href","article.html?arcid="+arcid+"&pageno="+numid);
+		}
+	</script> 
+   <script>
+	   $(function () {
+	    var wrap = function () {
+	        var elems = document.getElementsByClassName('syntaxhighlighter');
+	        for (var j = 0; j < elems.length; ++j) {
+	            var sh = elems[j];
+	            var gLines = sh.getElementsByClassName('gutter')[0].getElementsByClassName('line');
+	            var cLines = sh.getElementsByClassName('code')[0].getElementsByClassName('line');
+	            var stand = 15;
+	            for (var i = 0; i < gLines.length; ++i) {
+	                var h = $(cLines[i]).height();
+	                if (h != stand) {
+	                    //console.log(i);
+	                    gLines[i].setAttribute('style', 'height: ' + h + 'px !important;');
+	                }
+	            }
+	        }
+	     };
+	    var whenReady = function () {
+	        if ($('.syntaxhighlighter').length === 0) {
+	            setTimeout(whenReady, 0);
+	        } else {
+	            wrap();
+	        }
+	    };
+	    whenReady();
+	});
+	</script> 
+   <script type="text/javascript">
+ 	 document.write('<script src="http' + (/^https/.test(location.href) ? 's' : '') + '://c.csdnimg.cn/public/highlighter/js/highlighter.js?' + (new Date()/300000|0) + '"></'+'script>');
+	</script> 
+   <!-- 广告位：富媒体广告 --> 
+   <script type="text/javascript">BAIDU_CLB_fillSlot("119835");</script> 
+   <script language="javascript" type="text/javascript" src="http://ads.csdn.net/js/async_new.js"></script> 
+   <!-- public footer --> 
+   <script type="text/javascript">
+      document.write('<script type="text/javascript" src="http://c.csdnimg.cn/pubfooter/js/publib_footer.js?' + Math.floor(new Date()/120000).toString(36) + '="></'+'script>');
+      </script> 
+   <!-- //public footer --> 
+  </div> 
+  <!-- tab js --> 
+  <script type="text/javascript">
+<!--
+/*第一种形式 第二种形式 更换显示样式*/
+function setTab(name,cursel,n){
+	for(i=1;i<=n;i++){
+		var menu=document.getElementById(name+i);
+		var con=document.getElementById("con_"+name+"_"+i);
+		menu.className=i==cursel?"hover":"";
+		con.style.display=i==cursel?"block":"none";
+	}
+}
+//-->
+</script> 
+  <script type="text/javascript" src="http://www.csdn.net/ui/scripts/Csdn/counter.js"></script> 
+  <script id="csdn-toolbar-id" btnid="header_notice_num" wrapid="note1" count="5" subcount="5" type="text/javascript" src="http://c.csdnimg.cn/public/common/toolbar/js/toolbar.js"></script>  
+  <!-- ask 全局悬浮按钮  --> 
+  <link href="http://c.csdnimg.cn/comm_ask/css/ask_float_block.css" rel="stylesheet" type="text/css" /> 
+  <script type="text/javascript" src="http://c.csdnimg.cn/comm_ask/js/libs/wmd.js"></script> 
+  <script type="text/javascript" src="http://c.csdnimg.cn/comm_ask/js/libs/showdown.js"></script> 
+  <script type="text/javascript" src="http://c.csdnimg.cn/comm_ask/js/libs/prettify.js"></script> 
+  <script type="text/javascript" src="http://c.csdnimg.cn/comm_ask/js/apps/ask_float_block.js"></script>  
+ </body>
+</html>

@@ -1,0 +1,550 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<title>天津市小客车调控管理信息系统</title>
+<link href="http://www.tjjttk.gov.cn/templates/TJJTTK/css/public.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="http://www.tjjttk.gov.cn/templates/TJJTTK/js/jquery.js"></script>
+<script type="text/javascript" src="http://www.tjjttk.gov.cn/templates/TJJTTK/js/dropdown.js"></script>
+<script type="text/javascript" src="http://www.tjjttk.gov.cn/templates/TJJTTK/js/favor.js"></script>
+<link rel="shortcut icon" href="http://www.tjjttk.gov.cn/templates/TJJTTK/images/favicon.ico">
+
+<script type="text/javascript">
+         //window.open('http://www.tjjttk.gov.cn/ggl/2014829/1409307735842_1.html','_blank');
+	var loc = document.location.href;
+	if(loc.indexOf("message") > 0){
+		var hh = loc.substring(loc.indexOf("message"));
+		if(hh.indexOf("&") > 0)
+			hh = hh.substring(8,hh.indexOf("&"));
+		else
+			hh = hh.substring(8);
+                  alert(decodeURIComponent(hh));
+		window.location.search="";
+	}
+	$(function(){
+		$(".login_t li").click(function(){
+			var $this=$(this);
+			$(".login_cont table").hide();
+			var index=$this.index();
+			$(".login_t li").removeClass('li1_now').removeClass('li2_now');
+			if(index==0){
+				$this.addClass('li1_now');
+				//类型变化
+				$("#loginType").val("MOBILE");
+				$("#type").val("person");
+				
+				showGrName();
+				
+			}
+			else if(index==1){
+				$this.addClass('li1_now');
+				//类型变化
+				$("#loginType").val("MOBILE");
+				$("#type").val("enterprise");
+
+				showQyName();
+				
+		
+			}
+			else {
+				$this.addClass('li2_now');
+				//类型变化
+				$("#loginType").val("MOBILE");
+				$("#type").val("org");
+
+				showSyName()
+				
+			}
+			$(".login_cont table").eq(index).show();
+			
+		});
+		showGrName();
+		$("#grSelect").change(function(){
+			showGrName();
+		});
+		showQyName();
+		$("#qySelect").change(function(){
+			showQyName();
+		});
+		showSyName();
+		$("#sySelect").change(function(){
+			showSyName();
+		});
+		
+		getValidCode('qyGetValidCodeImg');
+		//getValidCode('syGetValidCodeImg');
+		//getValidCode('grGetValidCodeImg');
+	});
+	function showGrName()
+	{
+		var s=$("#grSelect").val();
+		if('MOBILE'==s){
+			$("#grAccount").attr('name',"mobile");
+			$("#loginType").val("MOBILE");
+		}else{
+			$("#grAccount").attr("name","applyCode");
+			$("#loginType").val("APPLYCODE");
+		}
+	}
+	function showQyName()
+	{
+		var s=$("#qySelect").val();
+		if('MOBILE'==s){
+			$("#qyAccount").attr('name',"mobile");
+			$("#loginType").val("MOBILE");
+			$("#qyTr").hide();
+			$("#qyUnitName").attr("disabled",true);
+		}else{
+			$("#qyAccount").attr("name","orgCode");
+			$("#loginType").val("CODE");
+			$("#qyTr").show();
+			$("#qyUnitName").attr('disabled',false);
+		}
+	}
+	function showSyName()
+	{
+		var s=$("#sySelect").val();
+		if('MOBILE'==s){
+			$("#syAccount").attr('name',"mobile");
+			$("#loginType").val("MOBILE");
+			$("#syTr").hide();
+			$("#syUnitName").attr('disabled',true);
+		}else{
+			$("#syAccount").attr('name',"orgCode");
+			$("#loginType").val("CODE");
+			$("#syTr").show();
+			$("#syUnitName").attr('disabled',false);
+		}
+	}
+	function checkSubmit(type){
+		if(type=='gr'){
+			disableGr(false);
+			disableQy(true);
+			disableSy(true);
+		}else if(type=='qy')
+		{
+			disableGr(true);
+			disableQy(false);
+			disableSy(true);
+		}else if(type=='sy')
+		{
+			disableGr(true);
+			disableQy(true);
+			disableSy(false);
+		}
+
+		var account = $("#"+type+"Account").val();
+		if(account == ''){
+			alert('账号不能为空');
+			return false;
+		}
+		var pw=$("#"+type+"Passwd").val();
+		if(pw==''){
+			alert('密码不能为空');
+			return false;
+		}
+		var vc=$("#"+type+"ValidCode").val();
+		if(vc==''){
+			alert('验证码不能为空');
+			return false;
+		}
+		var path=$("#type").val();
+		
+		
+		$("#loginForm").attr('action',"http://apply.tjjttk.gov.cn/apply/"+path+"/login.html");
+		//console.log($("#loginForm").attr('action'));
+		$("#loginForm").submit();	
+	}
+	var i=0;
+	function getValidCode(){
+		i++;
+		if(i>20){
+			//$$(id).innerHTML ="太频繁了";
+			alert("切换验证码太频繁了")
+			return;
+		}
+	    $("#grGetValidCodeImg").html("<img  src='http://apply.tjjttk.gov.cn/apply/validCodeImage.html?r="+Math.random()+"&ee="+i+"' />");
+		var img=$("#grGetValidCodeImg").find('img').attr('src');
+		$("#qyGetValidCodeImg").html("<img  src='"+img+"' />");
+		$("#syGetValidCodeImg").html("<img  src='"+img+"' />");
+
+	}
+
+	function disableGr(type){
+		$("#grAccount").attr("disabled",type);
+		$("#grPasswd").attr("disabled",type);
+		$("#grValidCode").attr("disabled",type);
+	}
+	function disableQy(type){
+		$("#qyAccount").attr("disabled",type);
+		$("#qyUnitName").attr("disabled",type);
+		$("#qyPasswd").attr('disabled',type);
+		$("#qyValidCode").attr("disabled",type);
+	}
+	function disableSy(type){
+		$("#syAccount").attr("disabled",type);
+		$("#syUnitName").attr("disabled",type);
+		$("#syPasswd").attr("disabled",type);
+		$("#syValidCode").attr("disabled",type);
+	}
+	function cleanValue(id){
+		$("#"+id).val("");
+	}
+</script>
+</head>
+<body>
+<!--  top开始  -->
+<!--  top开始  -->
+<div id="top_wrap">
+	<div class="top">
+		<div class="top_logo">
+                   <div class="float_left"><a href="http://www.tjjt.gov.cn/"><img src="http://www.tjjttk.gov.cn/templates/TJJTTK/images/top1_tjjt.png"></a></div>
+	           <div class="float_left"><a href="http://www.tjjttk.gov.cn"><img src="http://www.tjjttk.gov.cn/templates/TJJTTK/images/top1.png"></a></div>
+		</div>
+		
+		<div class="top_right">
+			<div class="top_right1">·<a href="http://www.tjjt.gov.cn/" target="_blank">关于我们</a>    ·<a href="javascript:void(0);" onclick="AddFavorite(window.location,document.title)">加入收藏</a></div>
+			<div class="top_right2"><a href="http://www.tj.gov.cn/" target="_blank"><img src="http://www.tjjttk.gov.cn/templates/TJJTTK/images/logo_tjzww.png" border="0"></a></div>
+		</div>
+	</div>
+</div>
+<!--  top结束  --><!--  top结束  -->
+
+<!--  nav开始  -->
+<div id="nav_wrap">
+	<div id="nav">
+	<div id="navMenu">
+		<ul>
+			<li class="nav_line"><a href="http://www.tjjttk.gov.cn">首页</a></li>
+                        <li class="nav_line"><a href="http://www.tjjttk.gov.cn/glbf">管理办法</a></li>                
+			<li class="nav_line"><a href="http://apply.tjjttk.gov.cn/apply/zczx/result.html">政策咨询</a></li> 
+			<li class="nav_line"><a href="#" rel="dropmenu1">申报流程说明</a></li> 
+			<li class="nav_line"><a href="#" rel="dropmenu2">增量指标申请</a></li> 
+			<li class="nav_line"><a href="#" rel="dropmenu3">更新指标申请</a></li> 
+			<li class="nav_line"><a href="#" rel="dropmenu4">状态查询</a></li> 
+			<li><a href="http://www.tjqcjj.com" target="_blank">竞价平台</a></li> 
+		</ul>
+		</div>
+		
+		<div>
+		<ul id="dropmenu1" class="dropMenu">
+					<li><a href="http://www.tjjttk.gov.cn/sblc/grsblc/index.html">个人申报流程说明</a></li>	
+					<li><a href="http://www.tjjttk.gov.cn/sblc//dwsblc/index.html">企业申报流程说明</a></li>	
+					<li><a href="http://www.tjjttk.gov.cn/sblc//shttjqt/index.html">社会团体及其他申报流程</a></li>	
+					<li><a href="http://www.tjjttk.gov.cn/sblc//gxcllc/index.html">更新车辆申报流程</a></li>	
+			<li class="end"></li>
+		</ul>
+		<ul id="dropmenu2" class="dropMenu">
+					<li><a href="http://apply.tjjttk.gov.cn/apply/person/apply.html">个人申请</a></li>	
+					<li><a href="http://apply.tjjttk.gov.cn/apply/enterprise/apply.html">企业申请</a></li>	
+					<li><a href="http://apply.tjjttk.gov.cn/apply/org/apply.html">社会团体及其他申请</a></li>	
+			<li class="end"></li>
+		</ul>
+		<ul id="dropmenu3" class="dropMenu">
+					<li><a href="http://apply.tjjttk.gov.cn/apply/replace/personApply.html">个人申请</a></li>	
+					<li><a href="http://apply.tjjttk.gov.cn/apply/replace/person.html">个人申请查询</a></li>	
+					<li><a href="http://apply.tjjttk.gov.cn/apply/replace/unitApply.html">单位申请</a></li>	
+					<li><a href="http://apply.tjjttk.gov.cn/apply/replace/unit.html">单位申请查询</a></li>	
+					<li><a href="http://apply.tjjttk.gov.cn/apply/replace/unitNorm/manage.html">指标信息修改</a></li>	
+			<li class="end"></li>
+		</ul>
+	
+		<ul id="dropmenu4" class="dropMenu">
+					<li><a href="http://apply.tjjttk.gov.cn/apply/norm/personQuery.html">中签编码查询</a></li>	
+					<li><a href="http://apply.tjjttk.gov.cn/apply/store/other/manage.html">其他指标查询</a></li>	
+					<li><a href="http://apply.tjjttk.gov.cn/apply/store/just/manage.html">车辆公证信息查询</a></li>	
+					<li><a href="http://apply.tjjttk.gov.cn/apply/store/norm/manage.html">存量备案二手车查询</a></li>	
+					<li><a href="http://apply.tjjttk.gov.cn/apply/other/robbery/query.html">盗抢车查询</a></li>	
+			<li class="end"></li>
+		</ul>
+	<script type="text/javascript">cssdropdown.startchrome("navMenu")</script> 
+	</div>
+	
+	</div>
+</div>
+<!--  nav结束  -->
+
+<!--  内容开始  -->
+<div class="cont_mainbg">
+<div class="cont_mainbg_b">
+<div class="cont_mainbg_t">
+
+	<!--  banner开始  -->
+	<div id="banner">
+		<div class="banner1"></div>
+		<div class="banner2"></div>
+		<div class="banner3"></div>
+	</div>
+	<!--  banner结束  -->
+	
+	<!--  流程图开始  -->
+	<div class="cont_lc"></div>
+	<!--  流程图结束  -->
+
+	<!--  登录和办事指南 开始  -->
+	<div class="wrap1">
+		<!--  登录 开始  -->
+		<form action="http://apply.tjjttk.gov.cn/apply/enterprise/login.html" method="post" name="loginForm" id="loginForm">
+		<input id="loginType" value="MOBILE" name="loginType" type="hidden">
+		<input id="type" value="person" name="type" type="hidden">
+
+		<div class="login">
+			<div class="login_t">
+				<ul>
+					<li class="li1 li1_now"><a href="javascript:void(0);">个人</a></li>
+					<li class="li1"><a href="javascript:void(0);">企业</a></li>
+					<li class="li2"><a href="javascript:void(0);">社会团体及其他</a></li>
+				</ul>
+			</div>
+			<div class="clearboth"></div>
+			<div class="login_cont">
+				<table border="0" cellspacing="0" cellpadding="0" class="windowLoginForm" id="gr">
+				  <tbody><tr>
+					<td width="88" align="right">
+					   <select name="grSelect" id="grSelect">
+						  <option value="MOBILE" selected="">手机号码</option>
+						  <option value="APPLYCODE">申请编码</option>
+					   </select>					
+					</td>
+					<td colspan="3">
+						<div class="input1">
+						  <input type="text" name="mobile" id="grAccount" tabindex="1">
+						</div>
+					</td>
+				  </tr>
+				  <tr>
+					<td align="right">密码：</td>
+					<td colspan="3">
+						<div class="input1">
+						  <input type="password" name="password" id="grPasswd" class="inputbox2" tabindex="1">
+						</div>
+					</td>
+				  </tr>
+				  <tr>
+					<td align="right">验证码：</td>
+					<td width="58">
+						<div class="input2">
+						  <input type="text" name="validCode" id="grValidCode" class="inputbox3" tabindex="1">
+						</div>					
+					</td>
+					<td width="60" id="grGetValidCodeImg"><img src="http://apply.tjjttk.gov.cn/apply/validCodeImage.html?r=0.9958366388455033&amp;ee=1"></td>
+					<td width="54"><a href="javascript:getValidCode()" class="linkred">刷新</a></td>
+				  </tr>
+				  <tr>
+					<td colspan="4" align="center" class="passtd"><a href="http://apply.tjjttk.gov.cn/apply/person/forgetPasswd.html" id="forgetPasswd" class="f12n_white" sl-processed="1">忘记密码?</a>  <a href="#none" onclick="checkSubmit('gr')"><img src="http://www.tjjttk.gov.cn/templates/TJJTTK/images/btn_login.png" alt="登录" width="87" height="30" border="0"></a></td>
+				  </tr>
+				</tbody></table>
+
+				<table border="0" cellspacing="0" cellpadding="0" class="windowLoginForm" style="DISPLAY: none" id="qy">
+				  <tbody><tr>
+					<td width="88" align="right">
+						<select name="qySelect" id="qySelect">
+							<option value="MOBILE" checked="checked">手机号码</option>
+							<option value="CODE">单位证件号</option>
+						</select>					
+					 </td>
+					<td colspan="3">
+						<div class="input1">
+						  <input type="text" id="qyAccount" name="mobile" class="inputbox1" tabindex="1" onfocus="javascript:cleanValue('qyAccount')">
+						</div>
+					</td>
+				  </tr>
+				  <tr id="qyTr" style="display: none; ">
+					<td align="right">单位名称：</td>
+					<td colspan="3">
+						<div class="input1">
+						   <input type="text" id="qyUnitName" name="unitName" class="inputbox2" tabindex="2" disabled="disabled">
+						</div>
+					</td>
+				  </tr>
+				  <tr>
+					<td align="right">密码：</td>
+					<td colspan="3">
+						<div class="input1">
+						  <input type="password" name="password" id="qyPasswd" class="inputbox2" tabindex="3">
+						</div>
+					</td>
+				  </tr>
+				  <tr>
+					<td align="right">验证码：</td>
+					<td width="58">
+						<div class="input2">
+						  <input type="text" name="validCode" id="qyValidCode" class="inputbox3" tabindex="1">
+						</div>					
+					</td>
+					<td width="60" id="qyGetValidCodeImg"><img src="http://apply.tjjttk.gov.cn/apply/validCodeImage.html?r=0.9958366388455033&amp;ee=1"></td>
+					<td width="54"><a href="javascript:getValidCode()" class="linkred">刷新</a></td>
+				  </tr>
+				  <tr>
+					<td colspan="4" align="center" class="passtd"><a href="http://apply.tjjttk.gov.cn/apply/enterprise/forgetPasswd.html" id="forgetPasswd" class="f12n_white" sl-processed="1">忘记密码?</a>  <a href="#none" onclick="checkSubmit('qy')"><img src="http://www.tjjttk.gov.cn/templates/TJJTTK/images/btn_login.png" alt="登录" width="87" height="30" border="0"></a></td>
+				  </tr>
+				</tbody></table>
+
+				<table border="0" cellspacing="0" cellpadding="0" class="windowLoginForm" style="DISPLAY: none" id="sy">
+				  <tbody><tr>
+					<td width="88" align="right">
+						<select name="sySelect" id="sySelect">
+						  <option value="MOBILE">手机号码</option>
+						  <option value="CODE">单位证件号</option>
+					   </select>					
+					</td>
+					<td colspan="3"><div class="input1"><input type="text" id="syAccount" name="mobile" class="inputbox1" tabindex="1" onfocus="javascript:cleanValue('syAccount')"></div></td>
+				  </tr>
+				   <tr id="syTr" style="display: none; ">
+					<td align="right">单位名称：</td>
+					<td colspan="3">
+						<div class="input1">
+							<input type="text" id="syUnitName" name="unitName" class="inputbox2" tabindex="2" disabled="disabled">
+						</div>
+					</td>
+				  </tr>
+				  <tr>
+					<td align="right">密码：</td>
+					<td colspan="3">
+						<div class="input1">
+						  <input type="password" id="syPasswd" name="password" class="inputbox2" tabindex="3">
+						</div>
+					</td>
+				  </tr>
+				  <tr>
+					<td align="right">验证码：</td>
+					<td width="58">
+						<div class="input2">
+						  <input type="text" name="validCode" id="syValidCode" class="inputbox3" tabindex="4">  
+						</div>					
+					</td>
+					<td width="60" id="syGetValidCodeImg"><img src="http://apply.tjjttk.gov.cn/apply/validCodeImage.html?r=0.9958366388455033&amp;ee=1"></td>
+					<td width="54"><a href="javascript:getValidCode()" class="linkred">刷新</a></td>
+				  </tr>
+				  <tr>
+					<td colspan="4" align="center" class="passtd">
+						<a href="http://apply.tjjttk.gov.cn/apply/org/forgetPasswd.html" id="forgetPasswd" class="f12n_white" sl-processed="1">忘记密码?</a>  <a href="#none" onclick="checkSubmit('sy')"><img src="http://www.tjjttk.gov.cn/templates/TJJTTK/images/btn_login.png" alt="登录" width="87" height="30" border="0"></a>
+					</td>
+				  </tr>
+				</tbody></table>
+			</div>
+		</div>
+		</form>
+		<!--  登录 结束  -->
+		
+		<!--  办事指南 开始  -->
+		<div class="bszn">
+			<div class="bszn_t">
+				<dl>
+					<dt>办事指南</dt>
+					<dd><a href="http://www.tjjttk.gov.cn/bszn/index.html" class="linkwhite">更多&gt;&gt;</a></dd>
+				</dl>
+			</div>
+			
+			<div class="bszn_cont">
+				<dl>
+					<dd class="float_left"><a href="http://www.tjjttk.gov.cn/bszn/201733/1488514933796_1.html" target="_blank">节能车、新能源车常见车型</a></dd>
+					<dt class="float_right">2017-03-03</dt>
+				</dl>
+				<dl>
+					<dd class="float_left"><a href="http://www.tjjttk.gov.cn/bszn/2016113/1478166638973_1.html" target="_blank">机动车共同所有人姓名变更登记后更新指标业务办理须知</a></dd>
+					<dt class="float_right">2016-11-03</dt>
+				</dl>
+				<dl>
+					<dd class="float_left"><a href="http://www.tjjttk.gov.cn/bszn/2016524/1464078252732_1.html" target="_blank">关于已取得“统一社会信用代码”的单位自助办理更新指标信息变更的说明</a></dd>
+					<dt class="float_right">2016-10-11</dt>
+				</dl>
+				<dl>
+					<dd class="float_left"><a href="http://www.tjjttk.gov.cn/bszn/2014123/1390470602133_1.html" target="_blank">天津市小客车指标受理窗口一览表</a></dd>
+					<dt class="float_right">2016-03-08</dt>
+				</dl>
+				<dl>
+					<dd class="float_left"><a href="http://www.tjjttk.gov.cn/bszn/201638/1457419678541_1.html" target="_blank">资格复核业务受理温馨提示</a></dd>
+					<dt class="float_right">2016-03-08</dt>
+				</dl>
+				
+			</div>
+		</div><!--  办事指南 结束  -->
+	</div>
+	<!--  登录和办事指南 结束  -->
+	
+	<div style="height:11px"></div>
+	
+	<!--  公布栏和新闻转载 开始  -->
+	<div class="wrap1">
+		<!--  公布栏 开始  -->
+		<div class="gbl" style="margin-right:4px;">
+			<div class="gbl_t">
+				<dl>
+					<dt>公布栏</dt>
+					<dd><a href="http://www.tjjttk.gov.cn/ggl/index.html" class="linkwhite">更多&gt;&gt;</a></dd>
+				</dl>
+		  </div>
+			
+			<div class="gbl_cont">
+				<dl>
+					<dd class="float_left"><a href="http://www.tjjttk.gov.cn/ggl/2017328/1490686652203_1.html" target="_blank">2017年3月天津市小客车摇号指标配置结果</a></dd>
+					<dt class="float_right">2017-03-28</dt>
+				</dl>
+				<dl>
+					<dd class="float_left"><a href="http://www.tjjttk.gov.cn/ggl/2017327/1490579049969_1.html" target="_blank">天津市小客车总量调控增量指标2016年度竞价收入资金征缴和分配使用情况公告</a></dd>
+					<dt class="float_right">2017-03-27</dt>
+				</dl>
+				<dl>
+					<dd class="float_left"><a href="http://www.tjjttk.gov.cn/ggl/201739/1489034169661_1.html" target="_blank">2017年3月天津市小客车增量指标竞价公告</a></dd>
+					<dt class="float_right">2017-03-09</dt>
+				</dl>
+				<dl>
+					<dd class="float_left"><a href="http://www.tjjttk.gov.cn/ggl/201739/1489033845717_1.html" target="_blank">关于2017年3月天津市小客车增量指标配置数量的通告</a></dd>
+					<dt class="float_right">2017-03-09</dt>
+				</dl>
+				<dl>
+					<dd class="float_left"><a href="http://www.tjjttk.gov.cn/ggl/201739/1489033564539_1.html" target="_blank">2017年2月天津市小客车摇号配置结果情况表</a></dd>
+					<dt class="float_right">2017-03-09</dt>
+				</dl>
+			</div>
+		</div>
+		<!--  公布栏 结束  -->
+		
+		<!--  新闻转载 开始  -->
+		<div class="gbl">
+			<div class="gbl_t">
+				<dl>
+					<dt>新闻转载</dt>
+					<dd><a href="http://www.tjjttk.gov.cn/xwzz/index.html" class="linkwhite">更多&gt;&gt;</a></dd>
+				</dl>
+			</div>
+			
+			<div class="gbl_cont">
+				<dl>
+					<dd class="float_left"><a href="http://www.tjjttk.gov.cn/xwzz/2017329/1490748790574_1.html" target="_blank">3月小客车指标摇号结果公布</a></dd>
+					<dt class="float_right">2017-03-29</dt>
+				</dl>
+				<dl>
+					<dd class="float_left"><a href="http://www.tjjttk.gov.cn/xwzz/2017328/1490662280771_1.html" target="_blank">3月小客车指标竞价结果公布</a></dd>
+					<dt class="float_right">2017-03-28</dt>
+				</dl>
+				<dl>
+					<dd class="float_left"><a href="http://www.tjjttk.gov.cn/xwzz/2017324/1490316254307_1.html" target="_blank">3月小客车审核结果公布</a></dd>
+					<dt class="float_right">2017-03-24</dt>
+				</dl>
+				<dl>
+					<dd class="float_left"><a href="http://www.tjjttk.gov.cn/xwzz/201731/1488354423463_1.html" target="_blank">2月小客车指标摇号结果公布</a></dd>
+					<dt class="float_right">2017-03-01</dt>
+				</dl>
+				<dl>
+					<dd class="float_left"><a href="http://www.tjjttk.gov.cn/xwzz/2017228/1488243567161_1.html" target="_blank">2月小客车指标竞价结果公布</a></dd>
+					<dt class="float_right">2017-02-28</dt>
+				</dl>
+			</div>
+		</div>
+		<!--  新闻转载 结束  -->
+	</div>
+	<!--  公布栏和新闻转载 结束  -->
+
+	<div style="height:17px"></div>
+<!-- foot start-->
+<div id="foot">
+	版权所有：天津市小客车调控管理办公室    地址：天津市河东区卫国道169号    <a href="http://www.miibeian.gov.cn" class="linkwhite" style="text-decoration:underline;" target="_blank">津ICP备05003449号</a>
+     咨询电话：022-88908890
+</div>
+<!-- foot end--></div>
+</div>
+</div>
+<!--  内容结束  -->
+
+
+</body></html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html><html lang="en" style="font-size:20px"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<title>泰康尊享岁月保险计划</title>
+<link rel="stylesheet" href="/proposal/LJYL/css/reset.css" type="text/css">
+<link rel="stylesheet" href="/proposal/LJYL/css/style.css" type="text/css">
+<link rel="stylesheet" href="/proposal/LJYL/css/jquery.range.css" type="text/css">
+<script type="text/javascript" src="/proposal/common/com.js"></script><script type="text/javascript" src="/proposal/comm/js/jquery-1.10.2.min.js"></script><script type="text/javascript" src="/proposal/common/base64.js"></script><script type="text/javascript" src="/proposal/common/wxTicket.js"></script><script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script><script type="text/javascript" src="/proposal/common/addVo.js"></script><script type="text/javascript" src="/proposal/common/inputVo.js"></script><script type="text/javascript" src="/proposal/common/validParam.js"></script>
+<script type="text/javascript" src="/proposal/LJYL/js/detail.js"></script>
+<script type="text/javascript" src="/proposal/LJYL/js/adaptational.js"></script>
+<script type="text/javascript" src="/proposal/LJYL/js/jquery.range.js"></script>
+<script type="text/javascript" src="/proposal/LJYL/js/range.js"></script>
+<script type="text/javascript" src="/proposal/LJYL/js/detailShare.js"></script> 
+<script type="text/javascript" src="/proposal/LJYL/js/jquery.fullPage.min.js"></script>
+<script>
+$(document).ready(function(){
+	var width = $('.test_con .slide').width()-50;//滑动条宽度
+	var btn_w = $('.test_con .slide h1').width()*2;
+	var slide = $('.test_con .slide').width();
+	var left = Number((slide-width-btn_w));
+	$('.test_con .slide .progress').css('left',left+'px');
+});
+//function callBack(){
+	//var searchNo = $(".single-slider").val();
+	//$(".my_title span").text(searchNo);
+	/*回调 保险利益明细表ajax请求*/
+//};
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		//定位图片文字位置
+		var vh=$('.pic_box .txt').height();
+		console.log(vh);
+		$('.pic_box .txt').css('margin-top',-vh*0.5-10);	
+		//高中低切换
+		$('.h_con label').click(function(){
+			$(this).addClass('checked').siblings().removeClass('checked');
+		});
+		var inputInfo=JSON.parse(sessionStorage.getItem("LJYLinputInfo"));
+		if(inputInfo.agentName !='' && inputInfo.agentName != null){
+			$("#madeP").text(inputInfo.agentName);
+			$("#person").show();
+		}
+		if(inputInfo.cellNum !='' && inputInfo.cellNum != null){
+			$("#tel").text(inputInfo.cellNum);
+			$("#phone").show();
+		}
+	});
+</script>
+</head>
+<body style="">
+	<h2 class="top_tit">泰康尊享岁月保险计划</h2>
+	<div class="pic_box">
+		<div class="txt">
+			<p>高客专属，养老无忧</p>
+			<p>现价提升，灵活周转</p>
+			<p>优惠费率，享您所想</p>
+		</div>
+		<img src="/proposal/LJYL/images/pic.png" alt="">
+	</div>
+	<div class="detail">
+		<h3 class="d_tit">泰康尊享岁月保险计划概述</h3>
+		<p>“泰康尊享岁月保险计划”是泰康人寿专为高净值人士量身定制的一款养老计划。本计划包含主险“泰康尊享岁月养老年金保险（分红型）”和附加险“泰康附加积极成长年金保险（万能型）”。按照约定，主合同下的生存保险金和红利（如果有）进入附加合同保单账户并按月计息。</p>
+	    <p>“泰康尊享岁月保险计划”专注养老，不仅能根据个人养老需求，匹配灵活多样的交费模式，还能根据未来养老资金需求，规划当下的保费支出，真正帮助您实现富足而退，优雅一生的愿望。</p>
+	</div>
+	<p class="pic2"><img src="/proposal/LJYL/images/pic2.jpg" alt=""></p>
+	<div class="infor_con">
+		<h3 class="n_tit bd">敬呈<input type="text" value="" id="appName"> 先生（女士）</h3>
+		<div class="person_infor bd">
+			<span class="sex">性别<b id="appSex"></b></span>
+			<span class="y_old">年龄<b id="appAge"></b></span>
+		</div>
+		<ul class="p_infor bd">
+			<li><span class="ico c1"></span><p><span id="zbf"></span>元</p><p>年交保费</p></li>
+			<li><span class="ico c2"></span><p>至106岁</p><p>保险期间</p></li>
+			<li><span class="ico c3 "></span><p><span id="payEndYear"></span>年</p><p>交费期间</p></li>
+			<li><span class="ico c4"></span><p><span id="bxje"></span>万元</p><p>保险金额</p></li>
+		</ul>
+		<div class="txt_tip" id="vision_youhui">
+			<p>根据您选择的保额，可享受<span class="s" id="vison"></span>版费率</p>
+			<p id="dicount">可以优惠的保费总额为<span class="b" id="discountValue"></span>元</p>
+		</div>
+	</div>
+	<div class="infor_con">
+		<ul class="on_infor bd">
+			<li><span class="ico c1"></span><div class=""><p>起领年龄</p><p><b class="b" id="getperiodvalue"></b>岁</p></div></li>
+			<li><span class="ico c2"></span><div class=""><p>领取频率</p><b id="getmethodvalue">月领</b></div></li>
+		</ul>
+		<div class="describe_t bd" id="huomian">
+			<h3 class="con_tit">豁免保费</h3>
+			<p class="dash">您选择搭配“泰康健康相伴豁免保险费疾病保险”，年交保费为<span id="bxfy_0JKB"></span>元，交费期间同主险交费期间-1。</p>
+			<p>若投保人意外高残、身故均可豁免还未交纳的保费，免除后顾之忧。</p>
+		</div>
+		<a class="clauses" onclick="clause()">条款注解</a>
+	</div>
+	<p class="pic2" style="margin-top: .5rem;"><img src="/proposal/LJYL/images/pic3.jpg" alt=""></p>
+	<div class="detail">
+		<h3 class="d_tit">尊享岁月养老保险建议书演示</h3>
+		<div class="h_con bd">
+			<div><span class="wid">您希望的分红演示</span><label for=""><input type="radio" name="fenhong" value="0" id="lowhlrate">低</label><label for="" class="checked"><input type="radio" name="fenhong" checked="checked" value="1" id="midhlrate">中</label><label for=""><input type="radio" name="fenhong" value="2" id="highlrate">高</label></div>
+			<div><span class="wid">您希望的万能结算利率</span><label for=""><input type="radio" name="wanneng" value="0" id="lowwnrate">低</label><label for="" class="checked"><input type="radio" name="wanneng" value="1" checked="checked" id="midwnrate">中</label><label for=""><input type="radio" name="wanneng" value="2" id="higwnrate">高</label></div>
+		</div>
+		<div class="test_con">
+			<div class="look">
+				<div class="my_title">被保险人在<span id="insuyear_age"></span>周岁时</div>
+				<div class="slide">
+					<h1 class="reduction" id="btnPlus"><img src="/proposal/LJYL/images/reduction.png"></h1>
+					<input type="hidden" class="single-slider" value="">
+					<h2 class="add" id="btnAdd"><img src="/proposal/LJYL/images/add.png"></h2>
+				</div>
+				<div class="cf"></div>
+			</div>
+		</div>
+	</div>
+	<div class="hidden_aera">
+
+		<div class="main">
+			<span class="close"><img src="/proposal/LJYL/images/close.png" alt="" width="100%" height="100%" onclick="closearea()"></span>
+			<h3>尊享岁月养老年金利益演示表</h3>
+			<div class="form_ly">
+				<table class="my_table" border="0">
+					<thead>
+						<tr>
+							<td>被保险人年度末年龄</td>
+							<td>当年生存保险金</td>
+							<td>累计生存保险金</td>
+							<td>万能账户价值</td>
+							<td>身故总利益（含中档万能账户）</td>
+							<td>退保总利益（含中档万能账户）</td>
+						</tr>
+					</thead>
+					<tbody id="wholeData">
+					</tbody>
+				</table>
+				<div class="clear"></div>
+			</div>
+		</div>
+		</div>
+	<div class="infor_con" style="margin-bottom: .5rem;">
+		<div class="describe_t bd">
+			<h3 class="con_tit">保险利益明细</h3>
+			<a href="#" class="check_all" onclick="wholetable()">查看全表&gt;</a>
+			<div id="wholepage"><table></table></div>
+			<table class="tab_list">
+				<tbody><tr><td>万能账户价值</td><td><span id="wnvalue"></span></td></tr>
+				<tr><td>退保总利益（含中档万能账户）</td><td><span id="tbvalue"></span></td></tr>
+				<tr><td>身故总利益（含中档万能账户）</td><td><span id="sgvalue"></span></td></tr>
+				<tr><td>当年生存保险金</td><td><span id="sc"></span></td></tr>
+				<tr><td>累计生存保险金</td><td><span id="scvalue"></span></td></tr>
+			</tbody></table>
+		</div>
+		<a class="clauses" onclick="clause()">条款注解</a>
+	</div>
+	<div id="person" style="display:none;font-size:.7rem;color:#595757;text-align:center;">
+		<span>制作人：</span><span id="madeP"></span>
+	</div>
+	<div id="phone" style="display:none;font-size:.7rem;color:#595757;text-align:center;">
+		<span>联系方式：</span><span id="tel"></span>
+	</div>
+	<div>
+		<p style="font-size:.7rem;color:#595757;padding:.5rem;">特别声明：本建议书仅供参考，不具法律效力，最终内容以保险合同为准。</p>
+	</div>
+	<p class="end_btn" id="toubao" onclick="Weinsure();">立即投保</p>
+
+</body></html>

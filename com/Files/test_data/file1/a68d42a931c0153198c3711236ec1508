@@ -1,0 +1,48 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"> 
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<title>视频在线播放</title>
+<style type="text/css">
+body,html,div{font:16px/1.5 Tahoma,'Microsoft Yahei','Simsun';color:#999;background-color:black;padding: 0;margin: 0;width:100%;height:100%;}
+a{text-decoration:none;color:#FF920B;font-weight:bold;}
+img{border:none;}
+b{color:#FF920B}
+table{border-collapse:collapse;padding: 0;margin: 0;width:100%;height:100%;color:#999;font-weight:bold;}
+</style>
+<script type="text/javascript" src="/vodyun/ck/jquery.min.js"></script>
+<script type="text/javascript" src="/vodyun/ck/ckplayer.js"></script>
+</head>
+<body style="overflow-y:hidden;">
+<div id="loading" style="font-weight: bold; padding-top: 90px; display: none; " align="center">正在加载播放中,请稍等...</div>
+<div id="a1" style="display: none; "></div>
+<table id="ads" border="0" style="display:none;"><tbody><tr align="center" valign="middle"><td></td></tr></tbody></table>
+<div id="error" style="font-weight: bold; padding-top: 90px; " align="center">URL地址不能为空~！</div>
+<script type="text/javascript" src="/vodyun/ck/vodyun.js?v=1.0"></script>
+<script type="text/javascript">
+var vodyun = {
+	play   : '1|1',
+	cache  : '1',
+	referer: '',
+	errid  : '0',
+	wwwurl : '/vodyun/',
+	url    : '',
+	isiPad : navigator.userAgent.match(/iPad|iPhone|Android|Linux|iPod/i)!=null,
+	ads    : '',
+	adsk  : '0'
+};
+if(!vodyun.url){
+	get_msg('URL地址不能为空~！');
+}else if(!vodyun.referer){
+	get_msg('URL非法访问，403~！');
+}else if(!vodyun.cache){
+	get_msg(vodyun.wwwurl+'cache/ 缓存目录不存在或者不可写~!');
+}else{
+	if(vodyun.ads && vodyun.adsk!=1){
+		play_ad();
+	}else{
+		player(0);
+	}
+}
+</script>
+
+</body></html>

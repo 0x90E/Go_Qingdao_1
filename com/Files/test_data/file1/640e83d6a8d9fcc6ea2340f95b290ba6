@@ -1,0 +1,95 @@
+<html><head></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">/**
+ * Created by qiuhuiqiong on 16/5/3.
+ */
+(function(){
+	function extend (object /*, objectN ... */) {
+		if(arguments.length &lt;= 0) {
+			throw new Error('Missing arguments in extend function');
+		}
+
+		var result = object || {},
+			key,
+			i;
+
+		for (i = 1; i &lt; arguments.length; i++) {
+			var replacement = arguments[i] || {};
+
+			for (key in replacement) {
+				// Recurse into object except if the object is a DOM element
+				if(typeof result[key] === 'object' &amp;&amp; ! isDOMElement(result[key])) {
+					result[key] = extend(result[key], replacement[key]);
+				}
+				else {
+					result[key] = result[key] || replacement[key];
+				}
+			}
+		}
+
+		return result;
+	}
+
+	function Roller( id, options ){
+		options = extend( options, Roller.options );
+
+		this.elem = document.getElementById( id );
+		this.items = this.elem.querySelectorAll(".list-item");
+		this.length = this.items.length;
+		this.top = -parseInt( this.items[0].offsetHeight );
+		this.interval = options.interval;
+
+		this.wrapper = this.elem.parentNode;
+		this.wrapper.style.height = this.top * (-1) + "px";
+	}
+
+	Roller.prototype = {
+		constructor : Roller,
+
+		roll : function(){
+			var that = this;
+
+			function picTurn(){
+				that.elem.style.webkitTransform = "translate3d(" + "0px," + that.top + "px, 0px" + ")";
+				that.elem.style.webkitTransition = "all 0.4s ease-in-out";
+
+				function operateNode(){
+					var firstElem = that.elem.querySelectorAll(".list-item")[0];
+					var copyFirElem = firstElem.cloneNode( true );
+					that.elem.appendChild( copyFirElem );
+					that.elem.removeChild( that.elem.querySelectorAll(".list-item")[0] );
+
+					that.elem.style.webkitTransform = "translate3d( 0px, 0px, 0px )";
+					that.elem.style.webkitTransition = "all 0s ease";
+
+					var timer = function(){
+						setTimeout( picTurn, that.interval );
+						timer = null;
+					}();
+
+					document.removeEventListener("webkitTransitionEnd", operateNode, false );
+				}
+
+				document.addEventListener("webkitTransitionEnd", operateNode, false);
+			}
+
+			picTurn();
+		},
+
+		init : function(){
+			var that = this;
+			if( that.items.length &gt; 1 ){
+				setTimeout( function(){
+					that.roll();
+				}, that.interval );
+			}
+		}
+	}
+
+	Roller.options = {
+		interval : 2500
+	}
+
+
+	window.Q = {
+		Roller : Roller
+	}
+})();</pre></body></html>

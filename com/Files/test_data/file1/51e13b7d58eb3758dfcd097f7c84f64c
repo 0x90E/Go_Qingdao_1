@@ -1,0 +1,130 @@
+<!DOCTYPE html><html><head>
+		<meta charset="utf-8">
+		<title>图片预览</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+		<link rel="stylesheet" href="../content/css/weui.css">
+		<link rel="stylesheet" href="../content/css/layout.css">
+		<link rel="stylesheet" href="../content/js/swiper3.4.0/css/swiper.min.css">
+		<style type="text/css">
+		 html,body,.header-bar,.mui-content{background-color:#000}
+		 html, body {
+	        position: relative;
+	        height: 100%;
+	     }
+	     body {
+	        background: #000;
+	        font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+	        font-size: 14px;
+	        color:#000;
+	        margin: 0;
+	        padding: 0;
+	     }
+	     .swiper-container {
+	        width: 100%;
+	        height: 100%;
+	     }
+	     .swiper-slide {
+	        text-align: center;
+	        font-size: 18px;
+	        background: #000;
+	        
+	     }
+	     .swiper-slide img {
+		      width: auto;
+		      height: auto;
+		      max-width: 100%;
+		      max-height: 100%;
+		      -ms-transform: translate(-50%, -50%);
+		      -webkit-transform: translate(-50%, -50%);
+		      -moz-transform: translate(-50%, -50%);
+		      transform: translate(-50%, -50%);
+		      position: absolute;
+		      left: 50%;
+		      top: 50%;
+	     }
+		</style>
+	</head>
+	<body class="no-border bghui">
+		<header class="header-bar">
+           	<h1 class="header-bar-title"><b id="picCurNum">1</b>/<b id="picTotalNum">1</b></h1>
+           	<a class="goback" href="javascript:history.go(-1)"><i class="iconfont icon-guanbifuzhi"></i></a>
+		</header>
+		<div class="swiper-container">
+         <div id="auction-pic" class="swiper-wrapper"></div>
+         </div>
+         <script id="auction-pic-tmpl" type="text/html">
+            {{each ListPic as value i}}
+            <div class="swiper-slide">
+                <img data-src="{{value.BigSrc}}" class="swiper-lazy">
+                <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+            </div>
+            {{/each}}
+        </script>
+		<script src="../content/js/zepto.min.js"></script>
+		<script src="../content/js/jweixin-1.0.0.js"></script>
+		<script src="../content/js/mhmlan.js"></script>
+		<script src="../content/js/template.js"></script>
+		<script src="../content/js/swiper3.4.0/js/swiper.min.js"></script>
+		<script>
+			function setCurNum(e) {
+			    if(e>total){e=1}else if(e==0){e=total}
+				document.getElementById("picCurNum").innerText = e
+			}
+
+			function setTotalNum(e) {
+				document.getElementById("picTotalNum").innerText = e
+			}
+			
+			var total,mySwiper;
+			var type = getParam("type")||"";
+			function pageInit(){
+				if(type != '1'){
+					var t = JSON.parse(sessionStorage.getItem("auction-info-pic"));
+				    var slideNumber=parseInt(getParam("slideNumber")||"1");
+				    slideNumber = slideNumber-1;
+				    setCurNum(slideNumber+1);
+				    total = t.length;
+				    setTotalNum(total);
+				    document.getElementById("auction-pic").innerHTML=template("auction-pic-tmpl", {ListPic: t});
+					mySwiper = new Swiper('.swiper-container', {
+					    initialSlide:slideNumber,
+				        loop: true,
+				        paginationClickable: true,
+				        preloadImages: false,
+				        lazyLoading: true,
+				        onSlideChangeEnd: function(swiper){
+					       setCurNum(swiper.activeIndex);
+					    }
+				    });
+				}else{
+					var slideNumber=parseInt(getParam("slideNumber")||"1");
+				    var t = getParam("source").split(",");
+				    setCurNum(slideNumber+1);
+				    total = t.length;
+				    setTotalNum(total);
+				    var arr = [];
+					for(var i=0;i<t.length;i++){
+						arr.push({"BigSrc":t[i]});
+					}
+					document.getElementById("auction-pic").innerHTML=template("auction-pic-tmpl", {ListPic:arr});
+					mySwiper = new Swiper('.swiper-container', {
+					    initialSlide:slideNumber,
+				        loop: true,
+				        paginationClickable: true,
+				        preloadImages: false,
+				        lazyLoading: true,
+				        onSlideChangeEnd: function(swiper){
+					       setCurNum(swiper.activeIndex);
+					    }
+				    });
+				}
+			    
+			}
+			pageInit();
+		</script>
+	
+
+</body></html>

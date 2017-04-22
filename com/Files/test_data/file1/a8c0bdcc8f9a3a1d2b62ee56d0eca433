@@ -1,0 +1,54 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head></head><body>﻿
+
+
+
+
+<meta content="zh-cn" http-equiv="Content-Language">
+<meta content="text/html;charset=utf-8;" http-equiv="Content-Type">
+<title>58MIS 下载</title>
+<style type="text/css">
+html {
+	background: url('../meishi/images/download.png') no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+</style>
+<script src="../js/jquery-1.7.2.min.js"></script>
+<script language="javascript" type="text/javascript">
+	$(function() {
+		if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+			$
+					.getJSON(
+							"/about/getVersionInfo?_="
+									+ new Date().getTime(),
+							function(d) {
+								if (d && d.res_code == '0') {
+									var hrefto = "itms-services:///?action=download-manifest&amp;url=https://dn-mis58.qbox.me/mis_"
+											+ d.data.ios_phone_vt + ".plist";
+									$("#toURL").attr("href", hrefto);
+									document.getElementById("toURL").click();
+								}
+							});
+		} else if (/(Android)/i.test(navigator.userAgent)) {
+			$.getJSON("/about/getVersionInfo?_="
+					+ new Date().getTime(), function(d) {
+				if (d && d.res_code == '0') {
+					window.location = d.data.android_phone_url;
+				}
+			});
+		} else {
+			alert("58美事目前只支持IOS和Android设备");
+		}
+	});
+</script>
+
+
+
+
+	<a id="toURL" style="display: none;" href=""></a>
+
+
+
+</body></html>

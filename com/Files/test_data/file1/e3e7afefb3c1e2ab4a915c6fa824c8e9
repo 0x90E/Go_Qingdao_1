@@ -1,0 +1,364 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<title>泰和县相关部门不管事</title>
+
+<link href="http://wz.jxnews.com.cn/css/2011index.css" rel="stylesheet" type="text/css">
+<link href="http://wenz.jxnews.com.cn/ms/css/common.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" async="" charset="utf-8" src="http://c.cnzz.com/core.php?web_id=30059841&amp;t=q"></script><script type="text/javascript" async="" charset="utf-8" src="http://c.cnzz.com/core.php?web_id=30059789&amp;t=q"></script><script src="http://wenz.jxnews.com.cn/ms/js/jquery.min.js"></script>
+<script src="http://wenz.jxnews.com.cn/ms/layer/layer.js"></script><link rel="stylesheet" href="http://wenz.jxnews.com.cn/ms/layer/skin/layer.css" id="layui_layer_skinlayercss" style="">
+<style type="text/css">
+<!--
+.STYLE1 {
+	font-size: 12px;
+	line-height: 22px;
+}
+.STYLE2 {
+	font-size: 14px;
+	text-align: center;
+	line-height: 25px;
+}
+.nTab{
+float: left;
+width: 100%;
+margin: 0 auto;
+border-bottom:1px #C7C7CD solid;
+background:#d5d5d5;
+background-position:left;
+background-repeat:repeat-y;
+margin-bottom:2px;
+}
+.nTab .TabTitle{
+clear: both;
+height: 26px;
+overflow: hidden;
+}
+.nTab .TabTitle ul{
+margin:0;
+padding:0;
+}
+.nTab .TabTitle li{
+float: left;
+width: 20px;
+cursor: pointer;
+padding-top: 6px;
+padding-right: 0px;
+padding-left: 0px;
+padding-bottom: 7px;
+list-style-type: none;
+}
+.nTab .TabTitle .active{ background:url(images/ts.gif) left -25px no-repeat;border-left:1px  #C7C7CD solid;border-top:1px  #C7C7CD solid;border-bottom:1px #fff solid;}
+.nTab .TabTitle .normal{ background:url(images/ts.gif);border-top:1px #C7C7CD solid;border-bottom:1px #C7C7CD solid;}
+.nTab .TabContent{
+width:auto;background:#fff;
+margin: 0px auto;
+padding:10px 0 0 0;
+border-right:1px #C7C7CD solid;border-left:1px #C7C7CD solid;
+}
+.none {display:none;}
+
+-->
+</style>
+<script src="../../hits.php?id=63912" language="javascript"></script>
+<script language="JavaScript">   
+             $(function () {
+                $("#g").click(function () {
+                    layer.open({
+                        type: 1,
+                        closeBtn: 1,
+                        shift: 2,
+					    area: ['770px', '430px'],
+						title:'官方回复',					
+                        shadeClose: true,
+                        content: $("#bt"),
+						scrollbar: false
+                    });
+                });
+				
+			$("#upld").click(function(){
+						var data = new FormData();
+						
+						data.append('upload_file', $('#inputfile')[0].files[0]);
+						
+			//			$.each($('#inputfile')[0].files, function(i, file) {
+			//				data.append('upload_file', file);
+			//			});	
+						
+						$.ajax({
+							url:'http://wenz.jxnews.com.cn/ms/scdo.php',
+							type:'POST',
+							data:data,
+			//				data:$('#inputfile').serialize(),
+							dataType:"text",
+							cache: false,
+							async: true,
+							contentType: false,    //不可缺
+							processData: false,    //不可缺
+							success:function(data){
+								var data = eval('('+data+')');
+								
+								if(data.states == 8){
+									alert('文件类型不符');
+								}
+								if(data.states == 9){
+									alert('图片太大不能上传');
+								}
+								if(data.states == 1){
+									var str = $("#con").text();
+									var sk = str+data.info;
+									$("#con").html(sk);	
+									$('#inputfile').val('');
+								}					
+							},
+							error:function(){
+								alert('error');
+							}
+						});
+					});						
+			$('#clickme').click(function(){
+				if($('#nickname').val() == ''){
+					alert("回复人必须填写");
+					return false;
+				}
+				if($('#phone').val() == ''){
+					alert("电话必须填写");
+					return false;
+				}
+				if($('#con').val() == ''){
+					alert("内容必须填写");
+					return false;
+				}					
+					$.ajax({
+						url:"../../post.php",
+						type:"post",
+						data:$('#myform').serialize(),
+						dataType:"text",
+						success:function(data){
+						var data = eval('('+data+')');
+							if(data.states == 1){
+								alert('提交成功，等待审核');
+							}
+							if(data.states == 2){
+								alert('提交失败');
+							}
+							if(data.states == 3){
+								alert('内容不完整或存在敏感词，不能正常提交');
+							}
+							if(data.states == 4){
+								alert('帖子不存在');
+							}
+							if(data.states == 10){
+								alert('暂时不支持提交');
+							}
+							$("input[type=reset]").trigger("click");
+							layer.closeAll();
+						},
+						error:function(){
+							alert('error');
+							layer.closeAll();
+						},
+					});
+					
+				});				
+            });
+function checkform(){
+	if(document.form1.netname.value.replace(/(^\s*)|(\s*$)/g, "") == "")
+	{
+		alert("昵称未填！");
+		document.form1.netname.focus();
+		return false;
+	}	
+	if(document.form1.message.value.replace(/(^\s*)|(\s*$)/g, "") == "")
+	{
+		alert("内容不能为空！");
+		return false;
+		document.fomr1.message.focus();
+	}
+	return true;
+} 
+</script>
+<script type="text/javascript">
+function nTabs(thisObj,Num){
+if(thisObj.className == "active")return;
+var tabObj = thisObj.parentNode.id;
+var tabList = document.getElementById(tabObj).getElementsByTagName("li");
+for(i=0; i <tabList.length; i++)
+{
+  if (i == Num)
+  {
+   thisObj.className = "active"; 
+      document.getElementById(tabObj+"_Content"+i).style.display = "block";
+  }else{
+   tabList[i].className = "normal"; 
+   document.getElementById(tabObj+"_Content"+i).style.display = "none";
+  }
+} 
+}
+</script>
+<script src="http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=414180"></script><link rel="stylesheet" href="http://bdimg.share.baidu.com/static/api/css/share_style0_32.css?v=4413acf0.css"></head>
+<body oncopy="return false">
+<div align="center"><iframe marginwidth="0" marginheight="0" src="http://wenz.jxnews.com.cn/ms/top-wz.shtml" frameborder="0" width="100%" scrolling="no" height="410" align="center"></iframe></div>
+<div class="center">
+  <div class="left" style="overflow:hidden">
+    <div class="position"><strong>问政江西：</strong></div>
+
+<div class="biaoti" style="background:url(../images/yzj.png) 400px 1px no-repeat; min-height:150px; line-height:50px; height:50px; font-family:'黑体'; font-size:20px; color:#333333;">
+<br>
+泰和县相关部门不管事</div>
+<div class="laiyuan" align="left"><img src="http://wenz.jxnews.com.cn/ms/images/button05.gif">
+<font color="#009966"><b>网友名字</b></font>&nbsp;&nbsp;&nbsp;&nbsp;<font color="#669900"><b>胡先生</b></font>
+&nbsp;&nbsp;
+发表于：2017-03-31 10:59:01</div>
+<div class="wenzhang yzj">
+
+<p>泰和华润天燃气公司在小区安装天然气一年多了，破坏了公共设施，和绿化草坪，如今下雨天到处积水，天晴黄泥到处飞。到处是黄土高坡，和积水水坑。浅水湾后门成了公用物流停车场，大型货车到处停放停放。道路破损严重。再不管理好，发展下去小区居民就无路可走了。建议政府会出钱修路可以停放物流车，不会请禁止一切非法停大车停放。</p></div>
+ 
+
+<div class="xiangguanwen STYLE2"><b><font color="#cc0000">该言论仅代表网友观点。希望相关单位及社会各界直面网友留言，可直接跟帖回复。</font></b></div>
+<div>
+</div>
+
+<div class="xianggg"><span style="float:right; margin-right:10px;"><script type="text/javascript" src="http://www.jxnews.com.cn/first/js/share.js"></script><div class="bdsharebuttonbox bdshare-button-style0-32" data-bd-bind="1491053496392"><a title="分享到江西微博" onclick="postTojxcnWb();" href="#" style="background-image:url(http://www.jxnews.com.cn/first/images/jxcn.gif)"></a><a title="分享到QQ空间" class="bds_qzone" href="#" data-cmd="qzone"></a><a title="分享到新浪微博" class="bds_tsina" href="#" data-cmd="tsina"></a><a title="分享到腾讯微博" class="bds_tqq" href="#" data-cmd="tqq"></a><a title="分享到人人网" class="bds_renren" href="#" data-cmd="renren"></a><a title="分享到微信" class="bds_weixin" href="#" data-cmd="weixin"></a><a title="分享到豆瓣网" class="bds_douban" href="#" data-cmd="douban"></a><a class="bds_more" href="#" data-cmd="more"></a></div>
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"32"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];function postTojxcnWb(){
+var d=document,w=window,f='http://t.jxcn.cn',l=d.location,e=encodeURIComponent,p=''+e(l.href)+'&t='+e(d.title);if(!w.open(f+'/index.php?mod=share&code=share&url='+p)){l.href=f+'.new'+p;};}</script>
+</span><font id="g" style="cursor:pointer">【官方回复入口】</font></div>
+<div class="bdlianj">
+<b><font color="#669900">《问政江西》栏目组</font></b>&nbsp;回复：
+<div class="wenzhang">
+<p>&nbsp;&nbsp;&nbsp; 您好，您所反映的问题已转交至泰和县房管局。<br>&nbsp;</p>
+</div>
+<font color="#CC0000">
+回复时间：2017-03-31 11:12:02
+</font><br><br>
+
+</div>
+<hr>
+<div class="xianggg">【网友留言】</div>
+
+<div style="text-align:center;"><div class="nTab"><div class="TabTitle"><ul id="myTab0"><li class="active" onmouseover="nTabs(this,0);">1</li>
+
+</ul></div><div class="TabContent"><div id="myTab0_Content0"><table style="font-size:12px" width="100%"><tbody><tr align="left"><td><b>网友：啊品</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2017-03-31 11:22:22发表评论：</td>
+</tr><tr align="left"><td colspan="3">期待政府解决</td></tr></tbody></table><hr style="border:1px dashed black">
+</div>
+
+</div></div></div>
+<br>
+<div class="bdlianj" style="margin-bottom:6px;">
+<table>
+<tbody><tr>
+</tr>
+
+<tr><td width="356">
+<form action="http://wenz.jxnews.com.cn/ms/messagedo.php" method="post" name="form1" onsubmit="return checkform();">
+<table>
+<tbody><tr>
+<td width="50">昵称：</td>
+<td>
+<input type="text" name="netname">
+<input type="hidden" name="id" value="63912">
+<input type="hidden" name="title" value="泰和县相关部门不管事"></td>
+</tr>
+<tr>
+<td width="50">内容：</td>
+<td><textarea name="message" rows="10" cols="40"></textarea></td>
+</tr>
+<tr>
+<td colspan="2" align="center"><input type="submit" value="发送"></td>
+</tr>
+</tbody></table>
+</form>
+</td>
+<td>
+  <span class="STYLE1">中国江西网《问政江西》栏目提醒您：<br>
+1、所有内容，一经提交，均无法撤消或修改，请您慎重对待每一次发言；<br>
+2、在必要时，您将承担一切因您的行为而直接或间接引起的法律责任<br>
+3、所有留言本站在未调查核实前，概不负责其真实性。</span><font size="-1"><br>
+</font></td>
+</tr>
+</tbody></table>
+</div>
+
+        <div id="bt">
+			<form action="" id="myform" method="post" onsubmit="return false;">
+				<ul class="list">
+					<li>
+						<strong>回复人<font color="#ff0000">*</font></strong>
+						<div class="fl"><input type="text" name="nickname" id="nickname" value="" class="ipt nickname"></div>
+					</li>
+					<li>
+						<strong>电 话 <font color="#ff0000">*</font></strong>
+						<div class="fl"><input type="text" name="phone" id="phone" value="" class="ipt phone"></div>
+					</li>
+					<li>
+
+						<strong>上传图片</strong>
+
+						<div class="fl">
+						<input type="file" name="upload_file" id="inputfile" size="20" class="ipt">
+						<input type="button" id="upld" value="上传">
+						</div><br>
+						
+					</li>					
+					<li>
+
+						<strong>上传说明</strong>
+						<font color="red">选择好图片点击上传,图片大小必须500KB以内</font>
+						
+					</li>					
+					<li>
+						<strong>内 容 <font color="#ff0000">*</font></strong>
+						<div class="fl">
+                        <textarea name="content" id="con" rows="10" cols="30" class="ipt"></textarea>
+                        </div>
+						<div class="shuoming">
+						<font class="qd">官方回复提交说明</font> <font>(《问政江西》栏目咨询投诉热线：0791—86849600、86847516 传真：0791—86849348 QQ:392994754 邮箱：msrx315@163.com )</font> <br>
+						 <b>1.</b> 官方回复必须是单位名称，并务必如实填写真实的联系电话和电子邮件,以便问题处理部门核实相关情况。若不能提供有效的联系方式，或无具体内容的留言，回复将不予受理（本栏目将对回复单位信息严格保密）；<br>
+						 <b>2.</b>官方回复必须客观、真实，严禁出现侮辱、诽谤、淫秽等言论；<br>
+						 <b>3.</b>回复单位承担一切因回复不当或不实而直接或间接引起的法律责任；<br>
+						 <b>4.</b>官方回复提交内容经审核通过后，工作人员将发布到页面的贴文下方，请您及时关注； <br>
+						 <b>5.</b>官方回复的审核时间为工作日的8：00——17：30；<br>
+						 <b>6.</b>官方回复是指被投诉、举报单位或员工，经调查核实后，以单位名义对投诉内容进行回应，其内容仅代表其单位观点，不代表本栏目立场。
+						</div>						
+					</li>
+					<li>
+                    <input type="hidden" name="tid" value="63912">
+                    <input type="hidden" name="title" value="泰和县相关部门不管事">
+                    <input type="reset" name="reset" style="display: none;">
+                    <input type="submit" value="确认提交" id="clickme" class="submitBtn"></li>
+				</ul>
+			</form>
+        </div>
+
+<iframe marginwidth="0" marginheight="0" src="http://wz.jxnews.com.cn/ds/xg.html" frameborder="0" width="715" scrolling="no" height="300" align="middle"></iframe>
+  </div>
+  <!--文章左侧-->
+ <div style="float:right;"><iframe marginwidth="0" marginheight="0" src="http://wz.jxnews.com.cn/ds/rig.html" frameborder="0" width="250" scrolling="no" height="1260" align="right"></iframe></div>
+
+<!--右侧完-->
+</div>
+
+<div class="foot">
+<table width="980" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tbody><tr>
+    <td height="10" colspan="2"></td>
+    <td width="103" rowspan="2"><a class="dbtop" href="#"><img src="http://wz.jxnews.com.cn/images/fh.jpg" width="63" height="58" border="0"></a></td>
+  </tr>
+  <tr>
+    
+    <td width="578"><span class="STYLE3">&nbsp;&nbsp;&nbsp;&nbsp;江西日报社中国江西网民声 投诉热线：0791-6847829 QQ:392994754</span></td>
+	<td width="299"><span class="STYLE3"><a href="#" onclick="this.style.behavior='url(#default#homepage)';this.setHomePage('http://wz.jxnews.com.cn');"><font color="#FFFFFF">设为首页</font></a> | 联系我们 | <a href="#" tppabs="http://wz.jxnews.com.cn" onclick="window.external.addFavorite('http://wz.jxnews.com.cn','中国江西网·问政江西')" title="中国江西网·江西新闻门户网站"><font color="#FFFFFF">加入收藏</font></a> | 免责声明</span></td>
+    </tr>
+</tbody></table>
+</div>
+<table width="980" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tbody><tr>
+    <td align="center"><iframe marginwidth="0" marginheight="0" src="http://wenz.jxnews.com.cn/ms/bottom.html" frameborder="0" width="778" scrolling="no" height="100" align="center"></iframe>
+</td>
+  </tr>
+</tbody></table>
+<!-- 统计代码 -->
+<script language="JavaScript" src="http://www.jxnews.com.cn/js/msrx.js"></script><script src="http://w.cnzz.com/c.php?id=30059789" language="JavaScript"></script>
+<script src="http://w.cnzz.com/c.php?id=30059841" language="JavaScript"></script>
+
+
+
+</body></html>

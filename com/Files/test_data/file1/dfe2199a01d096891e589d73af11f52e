@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+ <head id="Head1">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="keywords" content="教程,基础教程,菜鸟教程,编程,入门,手册,在线工具,数据库,微信,html,css,php,asp.net,c#,java,python,sql,IT新闻,业界资讯,乐呵,笑话,dongcoder,懂客" />
+  <meta name="description" content="抓取百万知乎用户信息之HttpHelper的迭代之路,    什么是Httphelper？ httpelpers是一个封装好拿来获取网络上资源的工具类。因为是用http协议，故取名httphelper。 httphelper出现的背景 使用WebClient可以很方便获取网络上的资源，例如 这样就可以拿到百度首页的的源代码，由于WebClient封装性太强，有 ..." />
+  <title>
+	抓取百万知乎用户信息之HttpHelper的迭代之路-懂客-dongcoder.com
+</title>
+  <link href="/css/style.css" type="text/css" rel="stylesheet" /> 
+  <script src="/js/jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
+  <link rel="stylesheet" type="text/css" href="/js/kindeditor/plugins/code/prettify.css" /> 
+  <script type="text/javascript" charset="utf-8" src="/js/kindeditor/plugins/code/prettify.js"></script> 
+ </head> 
+ <body> 
+  <div class="dctop"> 
+   <div> 
+    <div class="eleft"> 
+     <a href="/" class="colorhei">[首页]</a>
+     <a href="/jiaocheng/" class="colorhei">[教程]</a>
+     <a href="/info.html" class="colorhei">[文章]</a>
+     <a href="/news/" class="colorhei">[新闻]</a>
+     <a href="/lehe/" class="colorhei">[乐呵]</a> 
+    </div> 
+    <div class="eright" id="logindescription">
+      &nbsp; 
+    </div> 
+   </div> 
+  </div> 
+  <div class="dcinfomenu"> 
+   <ul> 
+    <li class="dcinfomenuleft"><a href="/" title="首页"> <img src="/img/logo.png" alt="" width="120" height="58" border="0" /></a> </li> 
+    <li class="dcinfomenuright"><a id="info_menu_i" href="/info.html" title="文章首页">文章首页</a><a id="info_menu_2" href="/list-2-1.html" title="Web开发"> Web编程</a><a id="info_menu_3" href="/list-3-1.html" title="Windows开发">Windows编程</a><a id="info_menu_4" href="/list-4-1.html" title="编程语言">编程语言</a><a id="info_menu_5" href="/list-5-1.html" title="数据库技术">数据库</a><a id="info_menu_6" href="/list-6-1.html" title="移动平台">移动平台</a><a id="info_menu_8" href="/list-8-1.html" title="系统服务">系统服务</a><a id="info_menu_9" href="/list-9-1.html" title="微信开发">微信平台</a><a id="info_menu_11" href="/list-11-1.html" title="其他">其他</a> </li> 
+   </ul> 
+  </div> 
+  <div class="dcmain"> 
+   <div class="guide"> 
+    <h2> <a href="/" title="懂客首页">首页</a> &gt; <a href="/list-2-1.html" id="atitle1" title="Web编程列表">Web编程</a>&gt; <a href="/detail-335580.html" id="atitle2" title="抓取百万知乎用户信息之HttpHelper的迭代之路">抓取百万知乎用户信息之HttpHelper的迭代之路</a> </h2> 
+   </div> 
+   <ul> 
+    <li class="dcmainleft"> 
+     <div class="listdetail margintop10"> 
+      <div class="marginbottom20"> 
+       <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> 
+       <!-- dc-auto --> 
+       <ins class="adsbygoogle" style="display: block" data-ad-client="ca-pub-8616102841876629" data-ad-slot="2332712282" data-ad-format="auto"></ins> 
+       <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script> 
+      </div> 
+      <div class="detailtitle"> 
+       <h1 id="article_title" class="colorlan">抓取百万知乎用户信息之HttpHelper的迭代之路</h1> 
+      </div> 
+      <div class="detailaaa">
+        时间：
+       <span id="article_time" class="colorhong">2017-01-06 19:32:32</span> &nbsp;&nbsp;&nbsp;&nbsp; 阅读：
+       <span id="article_N" class="colorhong">16</span> &nbsp;&nbsp;&nbsp;&nbsp; 评论：
+       <span id="article_comment" class="colorhong">0</span> &nbsp;&nbsp;&nbsp;&nbsp; 收藏：
+       <span id="article_favorite" class="colorhong">0</span> &nbsp;&nbsp;&nbsp;&nbsp; 
+       <a id="articlefavorite" class="cursorpointer">[点我收藏+]</a> 
+       <span id="spanoldurl"> <br /> 原文：<span id="article_oldurl">http://www.cnblogs.com/zuin/p/6257125.html</span></span> 
+      </div> 
+      <div id="article_content" class="detailtext">
+       <p>&nbsp;</p> 
+       <p><strong>什么是Httphelper？</strong></p> 
+       <p>&nbsp;&nbsp;&nbsp; httpelpers是一个封装好拿来获取网络上资源的工具类。因为是用http协议，故取名httphelper。</p> 
+       <p><strong>httphelper出现的背景</strong></p> 
+       <p>&nbsp; 使用WebClient可以很方便获取网络上的资源，例如</p> 
+       <div class="cnblogs_code"> 
+        <pre>              WebClient client = <span style="color: #0000ff">new</span><span style="color: #000000"> WebClient();
+            </span><span style="color: #0000ff">string</span> html=   client.DownloadString(<span style="color: #800000">&quot;</span><span style="color: #800000">https://www.baidu.com/</span><span style="color: #800000">&quot;</span>);</pre> 
+       </div> 
+       <p>这样就可以拿到百度首页的的源代码，由于WebClient封装性太强，有时候不大灵活，需要对底层有更细致的把控，这个时候就需要打造自己的网络资源获取工具了；</p> 
+       <p><strong>HttpHelper初级</strong></p> 
+       <p>&nbsp; 现在着手打造自己的下载工具，刚开始时候长这样</p> 
+       <div class="cnblogs_code"> 
+        <pre><span style="color: #0000ff">public</span> <span style="color: #0000ff">class</span><span style="color: #000000"> HttpHelp
+  {
+        </span><span style="color: #0000ff">public</span> <span style="color: #0000ff">static</span> <span style="color: #0000ff">string</span> DownLoadString(<span style="color: #0000ff">string</span><span style="color: #000000"> url)
+        {<br /></span></pre> 
+        <pre><span style="color: #000000">               <span style="color: #0000ff">string Source = <span style="color: #0000ff">string<span style="color: #000000">.Empty;</span></span></span></span></pre> 
+        <pre><span style="color: #000000">         HttpWebRequest request</span>=<span style="color: #000000"> (HttpWebRequest)WebRequest.Create(url);<br />         </span><span style="color: #0000ff">using</span> (HttpWebResponse response =<span style="color: #000000"> (HttpWebResponse)request.GetResponse()) <br />        { <br /></span><span style="color: #0000ff">            using</span> (Stream stream = response.GetResponseStream())<span style="color: #008000"><br /></span><span style="color: #000000">            {<br />                </span><span style="color: #0000ff">using</span> (StreamReader reader = <span style="color: #0000ff">new</span><span style="color: #000000"> StreamReader(stream, Encoding.UTF8))<br />                       {<br />                          Source </span>=<span style="color: #000000"> reader.ReadToEnd(); <br />                        } <br />             } <br />        }<br />        return <span style="color: #000000"><span style="color: #0000ff"> Source</span></span>;<br />      }<br /> }<br />程序总会出现各种异常的，这个时候加个Try catch语句<br /></span></pre> 
+        <div class="cnblogs_code"> 
+         <pre><span style="color: #0000ff">public</span> <span style="color: #0000ff">class</span><span style="color: #000000"> HttpHelp
+  {
+        </span><span style="color: #0000ff">public</span> <span style="color: #0000ff">static</span> <span style="color: #0000ff">string</span> DownLoadString(<span style="color: #0000ff">string</span><span style="color: #000000"> url)
+        {
+
+           </span><span style="color: #0000ff">string</span> Source = <span style="color: #0000ff">string</span><span style="color: #000000">.Empty;
+           </span><span style="color: #0000ff">try</span><span style="color: #000000">{
+                HttpWebRequest request</span>=<span style="color: #000000"> (HttpWebRequest)WebRequest.Create(url);
+                </span><span style="color: #0000ff">using</span> (HttpWebResponse response =<span style="color: #000000"> (HttpWebResponse)request.GetResponse()) 
+                { 
+                    </span><span style="color: #0000ff">using</span> (Stream stream =<span style="color: #000000"> response.GetResponseStream())
+                     {
+                        </span><span style="color: #0000ff">using</span> (StreamReader reader = <span style="color: #0000ff">new</span><span style="color: #000000"> StreamReader(stream, Encoding.UTF8))
+                       {
+                          Source </span>=<span style="color: #000000"> reader.ReadToEnd(); 
+                       } 
+                    } 
+                }
+           }
+          </span><span style="color: #0000ff">catch<br /></span><span style="color: #000000">          {
+              Console.WriteLine(</span><span style="color: #800000">&quot;</span><span style="color: #800000">出错了，请求的URL为{0}</span><span style="color: #800000">&quot;</span><span style="color: #000000">, url);
+          }
+        </span><span style="color: #0000ff">return</span><span style="color: #000000">  Source;
+      }
+ }</span></pre> 
+        </div> 
+        <br />请求资源是I/O密集型，特别耗时，这个时候需要异步
+       </div> 
+       <div class="cnblogs_code"> 
+        <div class="cnblogs_code"> 
+         <pre> <span style="color: #0000ff">public</span> <span style="color: #0000ff">static</span> <span style="color: #0000ff">async</span> Task&lt;<span style="color: #0000ff">string</span>&gt; DownLoadString(<span style="color: #0000ff">string</span><span style="color: #000000"> url)
+        {
+            </span><span style="color: #0000ff">return</span> <span style="color: #0000ff">await</span> Task&lt;<span style="color: #0000ff">string</span>&gt;.Run(() =&gt;<span style="color: #000000">
+            {
+                </span><span style="color: #0000ff">string</span> Source = <span style="color: #0000ff">string</span><span style="color: #000000">.Empty;
+                </span><span style="color: #0000ff">try</span><span style="color: #000000">
+                {
+                    HttpWebRequest request </span>=<span style="color: #000000"> (HttpWebRequest)WebRequest.Create(url);
+                    </span><span style="color: #0000ff">using</span> (HttpWebResponse response =<span style="color: #000000"> (HttpWebResponse)request.GetResponse())
+                    {
+                        </span><span style="color: #0000ff">using</span> (Stream stream =<span style="color: #000000"> response.GetResponseStream())
+                        {
+                            </span><span style="color: #0000ff">using</span> (StreamReader reader = <span style="color: #0000ff">new</span><span style="color: #000000"> StreamReader(stream, Encoding.UTF8))
+                            {
+                                Source </span>=<span style="color: #000000"> reader.ReadToEnd();
+                            }
+                        }
+                    }
+                }
+                </span><span style="color: #0000ff">catch</span><span style="color: #000000">
+                {
+                    Console.WriteLine(</span><span style="color: #800000">&quot;</span><span style="color: #800000">出错了，请求的URL为{0}</span><span style="color: #800000">&quot;</span><span style="color: #000000">, url);
+                }
+                </span><span style="color: #0000ff">return</span><span style="color: #000000"> Source;
+            });
+           
+        }</span></pre> 
+        </div> 
+        <p><strong>&nbsp;HttpHelper完善</strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br />为了欺骗服务器，让服务器认为这个请求是浏览器发出的</p> 
+        <div class="cnblogs_code"> 
+         <pre>   request.UserAgent = <span style="color: #800000">&quot;</span><span style="color: #800000">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/49.0</span><span style="color: #800000">&quot;</span>;</pre> 
+        </div> 
+        <p>&nbsp;有些资源是需要权限的，这个时候要伪装成某个用户，http协议是无状态的，标记信息都在cookie上面，给请求加上cookie</p> 
+        <div class="cnblogs_code"> 
+         <pre>    request.Headers.Add(<span style="color: #800000">&quot;</span><span style="color: #800000">Cookie</span><span style="color: #800000">&quot;</span>, <span style="color: #800000">&quot;</span><span style="color: #800000">这里填cookie，从浏览器上面拷贝</span><span style="color: #800000">&quot;</span>)</pre> 
+        </div> 
+        <p>&nbsp;再完善下，设定个超时吧</p> 
+        <div class="cnblogs_code"> 
+         <pre>   request.Timeout = 5<span style="color: #800080">000</span>;</pre> 
+        </div> 
+        <p>&nbsp;</p> 有些网站提供资源是GZIP压缩，这样可以节省带宽，所以请求头再加个
+       </div> 
+       <div class="cnblogs_code">
+        &nbsp; &nbsp;&nbsp; request.Headers.Add(&quot;Accept-Encoding&quot;, &quot; gzip, deflate, br&quot;);
+       </div> 
+       <div class="cnblogs_code">
+        相应的得到相应流要有相对应的解压，这个时候httphelper变成这样了
+       </div> 
+       <div class="cnblogs_code"> 
+        <div class="cnblogs_code"> 
+         <pre>          <span style="color: #000000"> <span style="color: #0000ff">public <span style="color: #0000ff">static <span style="color: #0000ff">string DownLoadString(<span style="color: #0000ff">string<span style="color: #000000"> url)<br /> {<br /> <span style="color: #0000ff">string Source = <span style="color: #0000ff">string<span style="color: #000000">.Empty;<br /> <span style="color: #0000ff">try<span style="color: #000000">{</span></span></span></span></span></span></span></span></span></span></span>    <br />                 HttpWebRequest request =<span style="color: #000000"> (HttpWebRequest)WebRequest.Create(url);
+                request.UserAgent </span>= <span style="color: #800000">&quot;</span><span style="color: #800000">Mozilla/5.0 (Windows NT 10.0; WOW64; rv:49.0) Gecko/20100101 Firefox/49.0</span><span style="color: #800000">&quot;</span><span style="color: #000000">;
+       </span><span style="color: #000000">
+                request.Headers.Add(</span><span style="color: #800000">&quot;</span><span style="color: #800000">Cookie</span><span style="color: #800000">&quot;</span>, <span style="color: #800000">&quot;这里是Cookie</span><span style="color: #800000">&quot;);</span><span style="color: #000000">
+         
+                request.Headers.Add(</span><span style="color: #800000">&quot;</span><span style="color: #800000">Accept-Encoding</span><span style="color: #800000">&quot;</span>, <span style="color: #800000">&quot;</span><span style="color: #800000"> gzip, deflate, br</span><span style="color: #800000">&quot;</span><span style="color: #000000">);
+                request.KeepAlive </span>= <span style="color: #0000ff">true</span>;<span style="color: #008000">//</span><span style="color: #008000">启用长连接</span>
+         
+                <span style="color: #0000ff">using</span> (HttpWebResponse response =<span style="color: #000000"> (HttpWebResponse)request.GetResponse())
+                {
+
+                    </span><span style="color: #0000ff">using</span> (Stream dataStream =<span style="color: #000000"> response.GetResponseStream())
+                    {
+
+                        </span><span style="color: #0000ff">if</span> (response.ContentEncoding.ToLower().Contains(<span style="color: #800000">&quot;</span><span style="color: #800000">gzip</span><span style="color: #800000">&quot;</span>))<span style="color: #008000">//</span><span style="color: #008000">解压</span>
+<span style="color: #000000">                        {
+                            </span><span style="color: #0000ff">using</span> (GZipStream stream = <span style="color: #0000ff">new</span><span style="color: #000000"> GZipStream(response.GetResponseStream(), CompressionMode.Decompress))
+                            {
+                                </span><span style="color: #0000ff">using</span> (StreamReader reader = <span style="color: #0000ff">new</span><span style="color: #000000"> StreamReader(stream, Encoding.UTF8))
+                                {
+                                    Source </span>=<span style="color: #000000"> reader.ReadToEnd();
+                                }
+                            }
+                        }
+                        </span><span style="color: #0000ff">else</span> <span style="color: #0000ff">if</span> (response.ContentEncoding.ToLower().Contains(<span style="color: #800000">&quot;</span><span style="color: #800000">deflate</span><span style="color: #800000">&quot;</span>))<span style="color: #008000">//</span><span style="color: #008000">解压</span>
+<span style="color: #000000">                        {
+                            </span><span style="color: #0000ff">using</span> (DeflateStream stream = <span style="color: #0000ff">new</span><span style="color: #000000"> DeflateStream(response.GetResponseStream(), CompressionMode.Decompress))
+                            {
+                                </span><span style="color: #0000ff">using</span> (StreamReader reader = <span style="color: #0000ff">new</span><span style="color: #000000"> StreamReader(stream, Encoding.UTF8))
+                                {
+                                    Source </span>=<span style="color: #000000"> reader.ReadToEnd();
+                                }
+
+                            }
+                        }
+                        </span><span style="color: #0000ff">else</span><span style="color: #000000">
+                        {
+                            </span><span style="color: #0000ff">using</span> (Stream stream = response.GetResponseStream())<span style="color: #008000">//</span><span style="color: #008000">原始</span>
+<span style="color: #000000">                            {
+                                </span><span style="color: #0000ff">using</span> (StreamReader reader = <span style="color: #0000ff">new</span><span style="color: #000000"> StreamReader(stream, Encoding.UTF8))
+                                {
+
+                                    Source </span>=<span style="color: #000000"> reader.ReadToEnd();
+                                }
+                            }
+                        }
+
+                    }
+                }
+                request.Abort();
+            }
+            </span><span style="color: #0000ff">catch</span><span style="color: #000000">
+            {
+                Console.WriteLine(</span><span style="color: #800000">&quot;</span><span style="color: #800000">出错了，请求的URL为{0}</span><span style="color: #800000">&quot;</span><span style="color: #000000">, url);
+
+            }
+            </span><span style="color: #0000ff">return</span> Source;<br />}<br /><br />请求态度会被服务器拒绝，返回429。这个时候需要设置代理，我们的请求会提交到代理服务器，代理服务器会向目标服务器请求，得到的响应由代理服务器返回给我们。只要不断切换代理，服务器不会因为请求太频繁而拒绝掉程序的请求</pre> 
+         <div class="cnblogs_code"> 
+          <pre>   <span style="color: #0000ff">var</span> proxy = <span style="color: #0000ff">new</span> WebProxy(“Adress”,<span style="color: #800080">8080</span>);<span style="color: #008000">//</span><span style="color: #008000">后面是端口号</span>
+   request.Proxy = proxy;<span style="color: #008000">//</span><span style="color: #008000">为httpwebrequest设置代理</span></pre> 
+         </div> 
+         <p>&nbsp;</p> 
+        </div> 
+        <p>至于如何获取代理，请见后面的博客</p> 
+        <pre></pre> 
+        <p>&nbsp;</p> 
+        <pre><span style="color: #000000">&nbsp;</span></pre> 
+       </div> 
+       <p>&nbsp;</p> 
+       <p>&nbsp;</p> 
+       <p>&nbsp;</p> 
+       <p>&nbsp;</p> 
+       <p>&nbsp;</p> 
+       <p>&nbsp;</p> 
+       <p>&nbsp;&nbsp;&nbsp;</p> 
+       <p>&nbsp;</p>
+       <p>标签：<a href="http://www.dongcoder.com/s/1/%e5%8d%9a%e5%ae%a2" title="标签：博客" target="_blank">博客</a>&nbsp;&nbsp;&nbsp;<a href="http://www.dongcoder.com/s/1/str" title="标签：str" target="_blank">str</a>&nbsp;&nbsp;&nbsp;<a href="http://www.dongcoder.com/s/1/user" title="标签：user" target="_blank">user</a>&nbsp;&nbsp;&nbsp;<a href="http://www.dongcoder.com/s/1/%e8%bf%9e%e6%8e%a5" title="标签：连接" target="_blank">连接</a>&nbsp;&nbsp;&nbsp;<a href="http://www.dongcoder.com/s/1/html" title="标签：html" target="_blank">html</a>&nbsp;&nbsp;&nbsp;<a href="http://www.dongcoder.com/s/1/%e5%88%87%e6%8d%a2" title="标签：切换" target="_blank">切换</a>&nbsp;&nbsp;&nbsp;<a href="http://www.dongcoder.com/s/1/ssi" title="标签：ssi" target="_blank">ssi</a>&nbsp;&nbsp;&nbsp;<a href="http://www.dongcoder.com/s/1/log" title="标签：log" target="_blank">log</a>&nbsp;&nbsp;&nbsp;<a href="http://www.dongcoder.com/s/1/%e5%a6%82%e4%bd%95" title="标签：如何" target="_blank">如何</a>&nbsp;&nbsp;&nbsp;</p>
+      </div> 
+      <div class="detailzan"> 
+       <span id="article_yes_content" class="colorhong"></span>
+       <span class="cursorpointer"> <img id="articleyes" src="/img/up.gif" width="24" height="24" alt="赞" />（<span id="article_yes" class="colorhong">0</span>）</span> 
+      </div> 
+      <div class="margintop20 marginbottom20 divoverflowauto"> 
+       <div class="divfloatleft"> 
+        <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> 
+        <!-- dc-detail-content-middle-left-300x250 --> 
+        <ins class="adsbygoogle" style="display: inline-block; width: 300px; height: 250px" data-ad-client="ca-pub-8616102841876629" data-ad-slot="7881658689"></ins> 
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script> 
+       </div> 
+       <div class="divfloatright marginleft8"> 
+        <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> 
+        <!-- dc-detail-content-middle-right-300x250 --> 
+        <ins class="adsbygoogle" style="display: inline-block; width: 300px; height: 250px" data-ad-client="ca-pub-8616102841876629" data-ad-slot="9358391884"></ins> 
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script> 
+       </div> 
+      </div> 
+      <div id="comment" class="dcdetailpinglun"> 
+       <ul class="title"> 
+        <li class="titleleft">评论</li> 
+        <li class="titleright">一句话评论（<span id="article_comment1" class="colorhong">0</span>）</li> 
+       </ul> 
+       <div class="dcdetailpingluncontent"> 
+        <div id="infocommentno" class="textaligncenter">
+          暂无评论！
+        </div> 
+       </div> 
+       <div class="dcdetailpinglunadd"> 
+        <form method="post" action="/ajaxjs/info_detail_commentadd.aspx"> 
+         <div> 
+          <div id="commenthf"> 
+          </div> 
+          <div> 
+           <textarea name="tbcommentcontent" id="tbcommentcontent" class="tb"></textarea> 
+          </div> 
+         </div> 
+         <div class="dcdetailpinglunaddop"> 
+          <span id="addCommentTishi" class="colorhong">登录后才能评论！</span> 
+          <span id="loginno"><input type="button" class="btn" value="登录" onclick="location.href='http://member.dongcoder.com/login.aspx?returnUrl='+document.URL.replace(new RegExp('&amp;', 'g'), '(_)')" /></span> 
+         </div> 
+        </form> 
+       </div> 
+      </div> 
+     </div> </li> 
+    <li class="dcmainright"> 
+     <div class="marginbottom20"> 
+      <script type="text/javascript">        (function () { document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E')); var bdcs = document.createElement('script'); bdcs.type = 'text/javascript'; bdcs.async = true; bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=6953432671112556687' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date() / 3600000); var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(bdcs, s); })();</script> 
+     </div> 
+     <div class="margintop20 marginbottom20"> 
+      <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> 
+      <!-- dc-right-top-336x280 --> 
+      <ins class="adsbygoogle" style="display: inline-block; width: 336px; height: 280px" data-ad-client="ca-pub-8616102841876629" data-ad-slot="5344643887"></ins> 
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script> 
+     </div> 
+     <div class="section"> 
+      <ul class="titlesmall"> 
+       <li id="infotop1_info_title" class="titlesmallleft">文章昨日排行</li> 
+       <li class="titlesmallright"><a href="/list-top-2-1-1.html" id="infotop1_amore" title="文章昨日排行更多">更多&gt;</a></li> 
+      </ul> 
+      <ul class="listsmall"> 
+       <li class="listsmalltitle"><a href="/detail-1408.html" title="[李景山php]每天laravel-20160901|Dispatcher-1" _self=""> [李景山php]每天laravel-20160901|Dispatcher-1</a> &nbsp;<span>2016-06-16</span> </li> 
+       <li class="listsmalltitle"><a href="/detail-105479.html" title="apache ab压力测试工具需要用户登录才能测得时候怎么办？" _self=""> apache ab压力测试工具需要用户登录才能测得时候怎么办？</a> &nbsp;<span>2016-08-18</span> </li> 
+       <li class="listsmalltitle"><a href="/detail-273340.html" title="ASP.MVC时间类型json数据处理" _self=""> ASP.MVC时间类型json数据处理</a> &nbsp;<span>2016-11-29</span> </li> 
+       <li class="listsmalltitle"><a href="/detail-275373.html" title="必学的几种提高网站收录量的办法" _self=""> 必学的几种提高网站收录量的办法</a> &nbsp;<span>2016-11-30</span> </li> 
+       <li class="listsmalltitle"><a href="/detail-286472.html" title="Mac Aria2 使用Privoxy将socks代理转化为http代理" _self=""> Mac Aria2 使用Privoxy将socks代理转化为http代理</a> &nbsp;<span>2016-12-07</span> </li> 
+       <li class="listsmalltitle"><a href="/detail-338872.html" title="Css3新特性应用之过渡与动画" _self=""> Css3新特性应用之过渡与动画</a> &nbsp;<span>2017-01-09</span> </li> 
+       <li class="listsmalltitle"><a href="/detail-348674.html" title="谷歌和谷歌学术镜像网站" _self=""> 谷歌和谷歌学术镜像网站</a> &nbsp;<span>2017-01-15</span> </li> 
+       <li class="listsmalltitle"><a href="/detail-357565.html" title="js设计模式" _self=""> js设计模式</a> &nbsp;<span>2017-01-21</span> </li> 
+       <li class="listsmalltitle"><a href="/detail-379127.html" title="网站文章若何优化的顶级办法" _self=""> 网站文章若何优化的顶级办法</a> &nbsp;<span>2017-02-10</span> </li> 
+       <li class="listsmalltitle"><a href="/detail-399371.html" title="nginx实现http/2.0实战" _self=""> nginx实现http/2.0实战</a> &nbsp;<span>2017-02-24</span> </li> 
+      </ul> 
+     </div> 
+     <div class="section"> 
+      <ul class="titlesmall"> 
+       <li id="jctop1_info_title" class="titlesmallleft">教程昨日排行</li> 
+       <li class="titlesmallright"></li> 
+      </ul> 
+      <ul class="listsmall"> 
+       <li class="listsmalltitle"><a href="/jiaocheng/detail-5975.html" title="tabsize" _self=""> tabsize</a> &nbsp;<span>2016-09-25</span> </li> 
+       <li class="listsmalltitle"><a href="/jiaocheng/detail-28.html" title="HTML 表格" _self=""> HTML 表格</a> &nbsp;<span>2016-10-11</span> </li> 
+       <li class="listsmalltitle"><a href="/jiaocheng/detail-722.html" title="C++ 函数" _self=""> C++ 函数</a> &nbsp;<span>2016-09-29</span> </li> 
+       <li class="listsmalltitle"><a href="/jiaocheng/detail-2168.html" title="column-gap" _self=""> column-gap</a> &nbsp;<span>2016-10-28</span> </li> 
+       <li class="listsmalltitle"><a href="/jiaocheng/detail-2213.html" title="list-style-type" _self=""> list-style-type</a> &nbsp;<span>2016-09-29</span> </li> 
+       <li class="listsmalltitle"><a href="/jiaocheng/detail-2242.html" title="padding-right" _self=""> padding-right</a> &nbsp;<span>2016-09-30</span> </li> 
+       <li class="listsmalltitle"><a href="/jiaocheng/detail-4194.html" title="HTML DOM 事件对象" _self=""> HTML DOM 事件对象</a> &nbsp;<span>2016-09-26</span> </li> 
+       <li class="listsmalltitle"><a href="/jiaocheng/detail-253.html" title="jQuery AJAX 方法" _self=""> jQuery AJAX 方法</a> &nbsp;<span>2016-10-14</span> </li> 
+       <li class="listsmalltitle"><a href="/jiaocheng/detail-275.html" title="AngularJS                                                            输入验证" _self=""> AngularJS 输入验证</a> &nbsp;<span>2016-09-29</span> </li> 
+       <li class="listsmalltitle"><a href="/jiaocheng/detail-682.html" title="C 输入 &amp; 输出" _self=""> C 输入 &amp; 输出</a> &nbsp;<span>2016-10-17</span> </li> 
+      </ul> 
+     </div> 
+     <div class="section"> 
+      <ul class="titlesmall"> 
+       <li id="newsnew1_news_title" class="titlesmallleft">最新新闻</li> 
+       <li class="titlesmallright"><a href="/news/list-0-1.html" id="newsnew1_amore" title="最新新闻更多">更多&gt;</a></li> 
+      </ul> 
+      <ul class="listsmall"> 
+       <li class="listsmalltitle"><a href="/news/detail-41920.html" title="雷军自曝见印度部长曲折过程：真心不容易" target="_blank"> 雷军自曝见印度部长曲折过程：真心不容易</a> &nbsp;<span>2017-03-28</span> </li> 
+       <li class="listsmalltitle"><a href="/news/detail-41941.html" title="爱立信本季度将减记资产 重组费用或达17亿美元" target="_blank"> 爱立信本季度将减记资产 重组费用或达17亿美元</a> &nbsp;<span>2017-03-28</span> </li> 
+       <li class="listsmalltitle"><a href="/news/detail-41912.html" title="阿里码农一周步数垫底：被罚站着撸码" target="_blank"> 阿里码农一周步数垫底：被罚站着撸码</a> &nbsp;<span>2017-03-28</span> </li> 
+       <li class="listsmalltitle"><a href="/news/detail-41966.html" title="Uber将撤出丹麦：新出租车法规要求安装计价器" target="_blank"> Uber将撤出丹麦：新出租车法规要求安装计价器</a> &nbsp;<span>2017-03-28</span> </li> 
+       <li class="listsmalltitle"><a href="/news/detail-41954.html" title="三星推出全新影院屏幕，支持HDR和4K" target="_blank"> 三星推出全新影院屏幕，支持HDR和4K</a> &nbsp;<span>2017-03-28</span> </li> 
+       <li class="listsmalltitle"><a href="/news/detail-41972.html" title="三星智能手表新专利曝光：表盘侧边可旋转可显示" target="_blank"> 三星智能手表新专利曝光：表盘侧边可旋转可显示</a> &nbsp;<span>2017-03-29</span> </li> 
+       <li class="listsmalltitle"><a href="/news/detail-41895.html" title="三星宣布重卖Note 7官翻版：确定不在美国上市" target="_blank"> 三星宣布重卖Note 7官翻版：确定不在美国上市</a> &nbsp;<span>2017-03-28</span> </li> 
+       <li class="listsmalltitle"><a href="/news/detail-41950.html" title="免下镜像 Windows 10升级助手抢先偷跑正式版" target="_blank"> 免下镜像 Windows 10升级助手抢先偷跑正式版</a> &nbsp;<span>2017-03-28</span> </li> 
+       <li class="listsmalltitle"><a href="/news/detail-41923.html" title="苹果新总部航拍：研发大楼已有人入驻 绿化任务依旧繁重" target="_blank"> 苹果新总部航拍：研发大楼已有人入驻 绿化任务依旧繁重</a> &nbsp;<span>2017-03-28</span> </li> 
+       <li class="listsmalltitle"><a href="/news/detail-41949.html" title="尘埃落定 亚马逊宣布收购中东电商Souq" target="_blank"> 尘埃落定 亚马逊宣布收购中东电商Souq</a> &nbsp;<span>2017-03-28</span> </li> 
+      </ul> 
+     </div> 
+     <div class="section"> 
+      <ul class="titlesmall"> 
+       <li id="infonew1_info_title" class="titlesmallleft">最新文章</li> 
+       <li class="titlesmallright"><a href="/new-1.html" id="infonew1_amore" title="最新文章更多">更多&gt;</a></li> 
+      </ul> 
+      <ul class="listsmall"> 
+       <li class="listsmalltitle"><a href="/detail-445926.html" title="Lucene的安装与CMD中的使用" target="_blank"> Lucene的安装与CMD中的使用</a> &nbsp;<span>2017-03-29</span> </li> 
+       <li class="listsmalltitle"><a href="/detail-445911.html" title="AJax" target="_blank"> AJax</a> &nbsp;<span>2017-03-29</span> </li> 
+       <li class="listsmalltitle"><a href="/detail-445918.html" title="ASP.NET Core：使用Dapper和SwaggerUI来丰富你的系统框架" target="_blank"> ASP.NET Core：使用Dapper和SwaggerUI来丰富你的系统框架</a> &nbsp;<span>2017-03-29</span> </li> 
+       <li class="listsmalltitle"><a href="/detail-445908.html" title="HTML5 调用百度地图API地理定位" target="_blank"> HTML5 调用百度地图API地理定位</a> &nbsp;<span>2017-03-29</span> </li> 
+       <li class="listsmalltitle"><a href="/detail-445941.html" title="SignalR的简单使用()" target="_blank"> SignalR的简单使用()</a> &nbsp;<span>2017-03-29</span> </li> 
+       <li class="listsmalltitle"><a href="/detail-445858.html" title="java中如何实现数组、List、Set、Map之间互相转换。" target="_blank"> java中如何实现数组、List、Set、Map之间互相转换。</a> &nbsp;<span>2017-03-29</span> </li> 
+       <li class="listsmalltitle"><a href="/detail-445851.html" title="kali linux cewl" target="_blank"> kali linux cewl</a> &nbsp;<span>2017-03-29</span> </li> 
+       <li class="listsmalltitle"><a href="/detail-445923.html" title="Tcl与Design Compiler （九）——综合后的形式验证" target="_blank"> Tcl与Design Compiler （九）——综合后的形式验证</a> &nbsp;<span>2017-03-29</span> </li> 
+       <li class="listsmalltitle"><a href="/detail-445900.html" title="和小伙伴的结伴编程" target="_blank"> 和小伙伴的结伴编程</a> &nbsp;<span>2017-03-29</span> </li> 
+       <li class="listsmalltitle"><a href="/detail-445944.html" title="在Build Path中包含其他工程" target="_blank"> 在Build Path中包含其他工程</a> &nbsp;<span>2017-03-29</span> </li> 
+      </ul> 
+     </div> 
+     <div id="xt" class="width336" style="margin:20px 0 0 18px;"> 
+      <script async="" src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> 
+      <!-- dc-right-300x600 --> 
+      <ins class="adsbygoogle" style="display: inline-block; width: 300px; height: 600px" data-ad-client="ca-pub-8616102841876629" data-ad-slot="9862983488"></ins> 
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script> 
+     </div> </li> 
+   </ul> 
+  </div> 
+  <div class="dcmain dcfriendlink"> 
+   <div class="dcfriendlinktitle">
+     友情链接
+   </div> 
+   <div class="dcfriendlinkcontent"> 
+    <a href="http://www.baidu.com/" target="_blank">百度</a>&nbsp;&nbsp; 
+    <a href="http://www.cnzz.com/" target="_blank">站长统计</a>&nbsp;&nbsp; 
+    <a href="http://www.aliyun.com/" target="_blank"> 阿里云</a> 
+   </div> 
+  </div> 
+  <ul class="dcmain dcbottom"> 
+   <li class="list"> 
+    <div> 
+     <a href="/contactus.html" title="dongcoder.com联系我们">联系我们</a> - 
+     <a href="/guest.html" title="dongcoder.com留言反馈">留言反馈</a> 
+    </div> 
+    <div>
+      &copy; 2016 
+     <a href="http://www.dongcoder.com" title="dongcoder.com懂客">dongcoder.com</a> 版权所有 鲁ICP备09046678号-6 
+    </div> 
+    <div> 
+     <script type="text/javascript">                var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://"); document.write(unescape("%3Cspan id='cnzz_stat_icon_1259569311'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s11.cnzz.com/z_stat.php%3Fid%3D1259569311%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script> 
+     <script>
+                var _hmt = _hmt || [];
+                (function () {
+                    var hm = document.createElement("script");
+                    hm.src = "//hm.baidu.com/hm.js?aae6e990f509fada642c1419322837fa";
+                    var s = document.getElementsByTagName("script")[0];
+                    s.parentNode.insertBefore(hm, s);
+                })();
+            </script> 
+    </div> 
+    <div class="textaligncenter margintop20 marginbottom10"> 
+     <a class="btn font18" href="http://www.dongcoder.com">电脑端</a> &nbsp;&nbsp;
+     <a class="btn font18" href="http://m.dongcoder.com">移动端</a> 
+    </div> </li> 
+  </ul> 
+  <script type="text/javascript">        var info_menu_i = "2"; var mid = ''; var id = '335580'; var idm = '74410f'; var commentitemcount = ''; var memberhost = 'http://member.dongcoder.com/'; prettyPrint();
+    </script> 
+  <script src="/js/infodetail.js" type="text/javascript" charset="utf-8"></script> 
+  <script src="/js/member.js" type="text/javascript" charset="utf-8"></script> 
+  <script type="text/javascript" src="/js/dongcoder.js"></script>   
+ </body>
+</html>

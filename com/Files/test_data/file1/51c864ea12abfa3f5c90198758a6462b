@@ -1,0 +1,639 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head>
+    <meta charset="utf-8">
+    <link rel="SHORTCUT ICON" href="http://www.lenovo.com.cn/favicon.ico">
+    <title>联想官网_联想服务_联想驱动、联想驱动下载、联想打印机驱动程序下载、笔记本驱动下载、联想网卡驱动、联想显卡驱动、联想声卡驱动、联想摄像头驱动—联想驱动官网
+    </title>
+    <script src="//hm.baidu.com/hm.js?6c6874f7c8fa50afd794192d311b788c"></script><script src="//hm.baidu.com/hm.js?6c6874f7c8fa50afd794192d311b788c"></script><script type="text/javascript">        window._pt_lt = new Date().getTime();</script>
+    <link href="http://support1.lenovo.com.cn/lenovo/wsi/v/css/global.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="../v/menu/lenovoCss/L_mu_style.css" type="text/css">
+    <script language="JavaScript" type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+    <link href="css/Untitled-1.css" rel="stylesheet" type="text/css">
+    <link href="../v/131211/footer131209/css/footer131209.css" rel="stylesheet" type="text/css">
+    <meta name="keywords" content="联想官网、联想驱动、联想驱动官网、联想驱动下载、联想官网驱动、联想笔记本驱动、联想官方网站驱动下载、联想打印机驱动程序下载、联想网卡驱动、联想显卡驱动、联想摄像头驱动、lenovo官方网站">
+    <meta name="description" content="联想驱动官网为您提供全线联想驱动下载、联想打印机驱动程序下载、联想笔记本驱动下载、联想网卡驱动下载、联想显卡驱动下载、联想声卡驱动、联想台式机驱动、联想平板电脑驱动、联想手机驱动、联想服务器驱动。">
+    <link rel="SHORTCUT ICON" href="http://www.lenovo.com.cn/favicon.ico">
+    <style>
+    #float_wss{
+        display: none!important;
+    }
+</style>
+    <script language="javascript" type="text/javascript">
+
+        $(function () {
+            $("#textfield").focus(function () {
+                if ($(this).val() == '示例:EB10963046')
+                    $(this).val('');
+            }).blur(function () {
+                if ($(this).val() == '')
+                    $(this).val('示例:EB10963046');
+            });
+
+            //add by liujiajun
+            //2015.12.29
+            //如何查看主机编号的hover显示提示框
+            $('#findMachineNumber').mouseover(function () {
+                $('.section_top_content_msg01_p').css('display', 'block');
+            });
+            $('#findMachineNumber').mouseout(function () {
+                $('.section_top_content_msg01_p').css('display', 'none');
+            });
+            $('#findAutoNumber').mouseover(function () {
+                                        $('.section_top_content_msg11_p').css('display', 'block');
+                                    });
+                                    $('#findAutoNumber').mouseout(function () {
+                                        $('.section_top_content_msg11_p').css('display', 'none');
+                                    });
+        });
+
+        /*@cc_on_d = document; eval('var document=_d')@*/
+        var _linkFrom = jsreplace("");
+        var isopenwinok = 0;
+        var isopenwin = 0;
+        var autoTips = "请选择与您输入内容匹配的数据查询驱动 ";
+        var machineName = "<strong><font color=red>[Idea机型]</font></strong>";
+        var driverIdName = "<strong><font color=red>[Idea驱动编号]</font></strong>";
+        var thinkname = "<strong><font color=red>[Think主机编号]</font></strong>";
+        var ideaname = "<strong><font color=red>[Idea主机编号]</font></strong>";
+        var thinkMachineName = "<strong><font color=red>[Think机型]</font></strong>";
+        var fastSearch = "<strong><font color=red>[全站搜索]</font></strong>";
+
+
+        var autoTipsClose = "<img src='../v/images/error.png' width='12' height='12' border='0' alt='关闭'>";
+        function jsreplace(v) {
+            if (v != null && v.length > 0) {
+                v = v.replace(/script/g, '');
+                v = v.replace(/ /g, '');
+                v = v.replace(/</g, '');
+                v = v.replace(/>/g, '');
+                v = v.replace(/script/g, '');
+                v = v.replace(/#/g, '');
+                v = v.replace(/%/g, '');
+                v = v.replace(/&/g, '');
+                v = v.replace(/:/g, '');
+                v = v.replace(/'/g, '');
+                v = v.replace(/"/g, '');
+            }
+            return v;
+        }
+        function CheckProductSn(mNumber, defaultText) {
+            var ret;
+            ret = true;
+            if (mNumber == defaultText || mNumber == "") {
+                alert('请输入主机编号');
+                ret = false;
+            }
+            else if (mNumber.length != 8 && mNumber.length != 4 && mNumber.length != 7 && mNumber.length != 10 && mNumber.length != 14 && mNumber.length != 15 && mNumber.length != 18) {
+                alert('主机编号位数不对');
+                ret = false;
+            }
+            else if (!/^[A-Za-z0-9]+$/.test(mNumber)) {
+                alert('主机编号输入错误，请确保输入的编号由字母及数字组成');
+                ret = false;
+            }
+            return ret;
+        }
+        function GoPage() {
+            var sn = $("#textfield").val();
+            var HomeURL = 'http://' + window.location.host;
+            if (!CheckProductSn(sn, "示例:EB10963046")) {
+                return;
+            }
+            $.ajax({
+                type: "get",
+                url: "manage/getminfobysn.ashx",
+                data: { sn: sn },
+                async: true,
+                dataType: 'json',
+                success: function (info) {
+                    if (info.success) {
+                        if (info.data.BrandTypeId == "120") {
+                            //                            window.location.href="http://think.lenovo.com.cn/support/driver/newdriversdownlist.aspx?categoryid=" + info.data.WebTreeId + "&CODEName=" + sn + "&SearchNodeCC=" + sn + "&SearchType=1&wherePage=1";
+                            window.location.href = "http://think.lenovo.com.cn/support/driver/newdriversdownlist.aspx?categoryid=" + info.data.WebTreeId + "&CODEName=" + info.data.MachineCode + "&SearchNodeCC=" + info.data.MachineCode + "&SearchType=1&wherePage=1";
+                        }
+                        else {
+                            location.href = HomeURL + '/lenovo/wsi/usercenter/computersearch/machinesearch.aspx?intcmp=index&id=' + jQuery.trim(sn.toUpperCase()) + '&showradio=1&showdriver=no';
+                        }
+                    } else {
+                        alert("我们无法验证您所输入的主机编号。请重新输入或查看下方的如何查找主机编号教程。");
+                    }
+
+                }
+            });
+        }
+        function userBrowser() {
+            var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+            if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
+                return "IE";
+            }
+            //判断是否IE浏览器
+
+            var isOpera = userAgent.indexOf("Opera") > -1;
+            if (isOpera) {
+                return "Opera"
+            }
+            //判断是否Opera浏览器
+            if (userAgent.indexOf("Firefox") > -1) {
+                return "Firefox";
+            } //判断是否Firefox浏览器
+            if (userAgent.indexOf("Chrome") > -1) {
+                return "Chrome";
+            }
+            if (userAgent.indexOf("Safari") > -1) {
+                return "Safari";
+            } //判断是否Safari浏览器
+
+            return "unKnow";
+        }
+
+        function submitDriversDownloadCount(DriverId, Title, fileurl, filecount, detailUrl) {
+
+            if (fileurl != "" && filecount != "") {
+                if (filecount == "Y") {
+                    //补丁文件
+                    if (confirm("您当前选择的驱动含有相关程序，建议先下载安装。\r\r点击“确定”进入详细页面下载相关程序,点击“取消”直接下载当前程序")) {
+                        window.open(detailUrl);
+                        return;
+                    } else {
+                        window.open(fileurl);
+                    }
+                }
+            }
+
+            var dataString = '';
+            var CustomerIP = '175.6.10.26';
+            var url = '';
+            var locationUrl = window.location.href;
+            var browser = userBrowser();
+            dataString = 'DriverId=' + DriverId + '&Title=' + Title + '&IP=' + CustomerIP + '&Url=' + url + '&Browser=' + browser + '&locationUrl=' + locationUrl;
+            $.ajax({
+                type: "Post",
+                contentType: "application/html",
+                url: "AjaxDownloadSoftwareCount.aspx?" + dataString,
+                data: "",
+                dataType: 'json',
+                success: function (result) {
+                    var status = parseInt(result.status, 10),
+                                message = result.msg;
+                    if (status != -1) {//
+                        //	alert(message);
+
+                    } else {//错误
+                        //	alert(message);
+                    }
+                },
+                error: function (result, status) {
+
+                    if (status == 'error') {
+                        //alert("网络繁忙，提交信息错误。");
+                    }
+                }
+            });
+
+            // 百度统计“驱动安装工具下载”
+            if (Title == 'DriverLenovo') {
+                _hmt && _hmt.push(['_trackEvent', '按钮：驱动安装工具下载', '下载']);
+            }
+
+        }
+
+
+    </script>
+    <script>
+		var isShowMsg = true;
+		var timeSt;
+		$(function(){
+			$('#findAutoNumber').click(function(){
+				getsn();
+				$('#textfield').css('color','#000');
+			});
+
+		});
+
+		function getsn(){
+			$.ajax({
+				url:"http://127.0.0.1:52131/MachineInfo?callback=showNo",  //注意地址和端口号不要修改，callback后的调用函数名可修改
+				type:'get',
+				cache:false,
+				dataType:'jsonp',
+				jsonpCallback:"showNo",
+				timeout: 2600, // 超时判断，如果超时认为插件未安装
+				error:function(XMLHttpRequest, textStatus, errorThrown){
+					//未安装插件，调用下载方法
+					if(isShowMsg){
+						//alert("请安装XXX，下载地址：XXX");
+						downloadplugin();
+						isShowMsg=false;
+					}
+				}
+			});
+		}
+
+		var x=0;
+		//回调函数
+		function showNo(data){
+			x++;
+			// $('#textfield').val(x);
+			if(data){
+				if(data.ver != MachineInfoVersion){
+					downloadplugin();
+				}else{
+					if(data.sn){
+						$('#textfield').val(data.sn);
+						clearTimeout(timeSt);
+					}else{
+						alert('获取主机编号异常');
+					}
+				}
+
+			}
+		}
+
+		function downloadplugin(){
+			//alert("请安装XXX，下载地址：XXX");
+			if(x > 1) return;
+			timeSt = setInterval(getsn, 1000);
+			alert('使用此功能需要下载检测主机编号插件，下载完成后请点击运行,IE用户请在运行插件后刷新本页面');
+			window.location.href="http://tools.lenovo.com.cn/source/hostnumberPlugin/LenovoServicePluginMain.exe";
+		}
+    </script>
+    <link href="../css/driver/main.css" rel="stylesheet" type="text/css">
+    <script src="../js/driver/jquery.simplemodal.js" type="text/javascript"></script>
+    <link href="../css/frame.css" rel="stylesheet" type="text/css">
+    <link href="../css/right_driver.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="webfeedback/mydialog.js"></script>
+    <script src="../js/driver/dialog.js" type="text/javascript"></script>
+    <script type="text/javascript" src="../js/common.js"></script>
+    <script src="../js/driver/Drive.js?2017/4/2 3:16:47" type="text/javascript"></script>
+    <link href="../css/ModuleProgress.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="../js/productsuit/productSuit.js"></script>
+    <script type="text/javascript" src="../js/MachineSn.js"></script>
+    <!-- V2012新样式 开始 Start-->
+    <link rel="stylesheet" href="../v/css/drivehome.css">
+    <link rel="stylesheet" href="../v/menu/lenovoCss/L_mu_style.css" type="text/css">
+    <script type="text/javascript" src="../v/js/drivet.js"></script>
+    <!--[if lte IE 6]>
+            <script type="text/javascript" src="http://support1.lenovo.com.cn/lenovo/wsi/v/js/DD_belatedPNG_0.0.8a-min.js"></script>
+            <script type="text/javascript">DD_belatedPNG.fix('.png')</script>
+        <![endif]-->
+    <!--[if lt IE 9]>
+            <script type="text/javascript" src="http://support1.lenovo.com.cn/lenovo/wsi/v/indexnew/js/html5.js"></script>
+        <![endif]-->
+    <!--[if IE]>
+            <style type="text/css"> img, #testdiv, .testbox{behavior: url(ie-css3.htc);} </style>
+        <![endif]-->
+    <!-- V2012新样式 结束 End-->
+    <style type="text/css">
+        .crowdfunding
+        {
+            width: 240px;
+            height: 150px;
+            float: left;
+            margin: -35px 0 0 50px;
+        }
+        .crowdfunding a
+        {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+    </style>
+<link rel="SHORTCUT ICON" href="http://www.lenovo.com.cn/favicon.ico"><script type="text/javascript" async="" id="getcookie_id" charset="utf-8" src="//click.lenovo.com.cn/phpstat/getcookie.js.php?website=10000071&amp;prefix=_la_N&amp;jsprefix=LA_&amp;domain=support.lenovo.com.cn&amp;rand=0.6554242435377091"></script></head>
+<body><div class="v_new_top"><div class="v_new_con"><div class="v_con_left"><a class="a_link" href="http://support.lenovo.com.cn">联想服务</a><a class="a_link" href="http://think.lenovo.com.cn">Think服务</a><a class="a_link" href="http://support1.lenovo.com.cn/VipService/Classic/Html/ClassicIndex.html">大客户服务</a><a class="chat_link" href="javascript:void(0);">官方微信<div class="chat_img officer_chat"></div></a><a class="a_link" href="http://www.lenovo.com.cn/">联想官网</a><a class="a_link chat_link" href="http://support.lenovo.com.cn/lenovo/wsi/AppPage/home.html">联想+APP<div class="chat_img app_chat"></div></a></div><div class="site new_site"><span class="user_icon png" id="loginuserinfo"><a href="https://passport.lenovo.com/wauthen2/gateway?lenovoid.action=uilogin&amp;lenovoid.realm=support.lenovo.com.cn&amp;lenovoid.source=support.lenovo.com.cn&amp;lenovoid.thirdname=weixin&amp;lenovoid.qrstate=2&amp;lenovoid.ctx=http://support.lenovo.com.cn/lenovo/wsi/Modules/NewDrive.aspx?intcmp$%E8%81%94%E6%83%B3%E5%AE%98%E7%BD%91_%E8%81%94%E6%83%B3%E6%9C%8D%E5%8A%A1_%E8%81%94%E6%83%B3%E9%A9%B1%E5%8A%A8%E3%80%81%E8%81%94%E6%83%B3%E9%A9%B1%E5%8A%A8%E4%B8%8B%E8%BD%BD%E3%80%81%E8%81%94%E6%83%B3%E6%89%93%E5%8D%B0%E6%9C%BA%E9%A9%B1%E5%8A%A8%E7%A8%8B%E5%BA%8F%E4%B8%8B%E8%BD%BD%E3%80%81%E7%AC%94%E8%AE%B0%E6%9C%AC%E9%A9%B1%E5%8A%A8%E4%B8%8B%E8%BD%BD%E3%80%81%E8%81%94%E6%83%B3%E7%BD%91%E5%8D%A1%E9%A9%B1%E5%8A%A8%E3%80%81%E8%81%94%E6%83%B3%E6%98%BE%E5%8D%A1%E9%A9%B1%E5%8A%A8%E3%80%81%E8%81%94%E6%83%B3%E5%A3%B0%E5%8D%A1%E9%A9%B1%E5%8A%A8%E3%80%81%E8%81%94%E6%83%B3%E6%91%84%E5%83%8F%E5%A4%B4%E9%A9%B1%E5%8A%A8%E2%80%94%E8%81%94%E6%83%B3%E9%A9%B1%E5%8A%A8%E5%AE%98%E7%BD%91" class="login_and_register glogin">登录/注册</a></span></div></div></div>
+    <header class="header" id="header"> 
+  <script src="../v/menu/js/L_mu_showhid.js"></script>
+  <script src="../v/menu/js/LenovoHeader.js" type="text/javascript"></script><div class="head"><div class="logo"> <a href="http://www.lenovo.com.cn/"></a></div></div>  
+   <script src="../v/menu/js/LenovoHeaderMenu.js?v=201701" type="text/javascript"></script><div class="index_menu150112">  <div class="index_menu150112_title index_menu150112_width1"><a class="index_menu150112_title_a" href="http://support.lenovo.com.cn/lenovo/wsi/index.html">首页</a></div>  <div class="index_menu150112_title index_menu150112_width3">    <div class="index_menu150112_title_submenu index_menu150112_width3">      <div class="index_menu150112_title_submenu_icon"></div>      <a class="index_menu150112_title_submenu_a" href="http://support.lenovo.com.cn/lenovo/wsi/Modules/NewDrive.aspx?intcmp=I_F_Fast_Driver_1">驱动下载首页</a><a class="index_menu150112_title_submenu_a" href="http://support.lenovo.com.cn/lenovo/wsi/Modules/newbxpz.aspx">联想驱动管理</a><a class="index_menu150112_title_submenu_a" href="http://support.lenovo.com.cn/lenovo/wsi/Modules/autocd.aspx?from=disc">驱动安装光盘</a><a class="index_menu150112_title_submenu_a" href="http://saas.lenovo.com.cn/#/download?_k=8crfgc">联想应用中心</a></div>    <a class="index_menu150112_title_a">驱动程序下载</a></div>  <div class="index_menu150112_title index_menu150112_width2">    <div class="index_menu150112_title_submenu index_menu150112_width2">      <div class="index_menu150112_title_submenu_icon"></div>      <a class="index_menu150112_title_submenu_a" href="http://support.lenovo.com.cn/lenovo/wsi/station/servicestation/default.aspx">服务网点</a><a class="index_menu150112_title_submenu_a" href="http://support.lenovo.com.cn/lenovo/wsi/Modules/newbxpz.aspx">保修及配置</a><a class="index_menu150112_title_submenu_a" href="http://support.lenovo.com.cn/lenovo/wsi/htmls/policylist_1349943520435.aspx?ref=OK">服务政策</a><a class="index_menu150112_title_submenu_a" href="http://support.lenovo.com.cn/lenovo/wsi/htmls/Serving.aspx">耗材防伪</a><a class="index_menu150112_title_submenu_a" href="http://support.lenovo.com.cn/lenovo/wsi/htmls/Serving.aspx">服务器证书</a></div>    <a class="index_menu150112_title_a">服务查询</a></div>  <div class="index_menu150112_title index_menu150112_width3">    <div class="index_menu150112_title_submenu index_menu150112_width3">      <div class="index_menu150112_title_submenu_icon"></div>      <a class="index_menu150112_title_submenu_a" href="http://support.lenovo.com.cn/lenovo/wsi/wsbx/lenovo/ForTechnicalSupport.aspx">预约技术支持</a><a class="index_menu150112_title_submenu_a" href="http://support.lenovo.com.cn/lenovo/wsi/usercenter/chat/GoChatClient.aspx">在线技术支持</a><a class="index_menu150112_title_submenu_a" href="http://support.lenovo.com.cn/lenovo/wsi/weixin.html" target="_blank">微信支持</a><a class="index_menu150112_title_submenu_a" href="http://robot.lenovo.com.cn/lenovo/?intcmp=I_F_Robot" target="_blank">智能机器人</a></div>    <a class="index_menu150112_title_a">网上支持</a></div>  <div class="index_menu150112_title index_menu150112_width2"><a class="index_menu150112_title_a" href="http://dianping.lenovo.com.cn/">点评平台</a></div>  <div class="index_menu150112_title index_menu150112_width2">    <div class="index_menu150112_title_submenu index_menu150112_width2">      <div class="index_menu150112_title_submenu_icon"></div>      <a class="index_menu150112_title_submenu_a" href="http://ask.lenovo.com.cn/">联想问吧</a><a class="index_menu150112_title_submenu_a" href="http://club.lenovo.com.cn/?from=support1">官方社区</a></div>    <a class="index_menu150112_title_a">社区</a></div>  <div class="index_menu150112_title index_menu150112_width4">    <div class="index_menu150112_title_submenu index_menu150112_width4">      <div class="index_menu150112_title_submenu_icon"></div>      <a class="index_menu150112_title_submenu_a" href="http://think.lenovo.com.cn">Think产品支持首页</a><a class="index_menu150112_title_submenu_a" href="http://think.lenovo.com.cn/support/driver/mainpage.aspx">Think产品驱动下载</a><a class="index_menu150112_title_submenu_a" href="http://think.lenovo.com.cn/service/warranty/newSearchWarranty.aspx">保修期查询</a><a class="index_menu150112_title_submenu_a" href="http://think.lenovo.com.cn/stations/TSStation.aspx">服务网点查询</a></div>    <a class="index_menu150112_title_a" href="http://think.lenovo.com.cn/">Think产品支持</a></div>  <div class="index_menu150112_title index_menu150112_width3">    <div class="index_menu150112_title_submenu index_menu150112_width3">      <div class="index_menu150112_title_submenu_icon"></div>      <a class="index_menu150112_title_submenu_a" target="_blank" href="http://www.lenovo.com.cn/home/serviceindex.html?tag=a111&amp;SourceFlag=Support_Home&amp;CheckCode=Test123">延保服务</a><a class="index_menu150112_title_submenu_a" target="_blank" href="http://www.lenovo.com.cn/product/51640.html?ProductNo=12050300000897&amp;SourceFlag=Support_Home&amp;CheckCode=Test123">驱动安装</a><a class="index_menu150112_title_submenu_a" target="_blank" href="http://www.lenovo.com.cn/home/serviceindex.html?SourceFlag=Support_Home&amp;CheckCode=Test123">微软产品安装</a><a class="index_menu150112_title_submenu_a" target="_blank" href="http://www.lenovo.com.cn/activity/ssdupgrade/index.html?lenovoservice&amp;SourceFlag=Support_Home&amp;CheckCode=Test123">硬盘升级</a><a class="index_menu150112_title_submenu_a" target="_blank" href="http://365.lenovo.com.cn/?from=lenser04">远程专家</a><a class="index_menu150112_title_submenu_a" target="_blank" href="http://www.lenovo.com.cn/product/51641.html?ProductNo=12050300000905&amp;SourceFlag=Support_Home&amp;CheckCode=Test123">专家上门</a><a class="index_menu150112_title_submenu_a" target="_blank" href="http://s.lenovo.com.cn/?index=161&amp;328=0403&amp;fromhomepage&amp;ClassInfoID=e6e84155-d80c-4bc7-98ba-9fb0ab59d28c&amp;SourceFlag=Support_Home&amp;CheckCode=Test123">更多服务</a></div>    <a class="index_menu150112_title_a" href="http://s.lenovo.com.cn/?index=161&amp;329=040102&amp;fromhomepage&amp;bigClassID=&amp;ClassID=37255377-542d-420d-a026-7b83c6120a4f&amp;Year=1&amp;Type=Expend&amp;SourceFlag=Support_Home&amp;CheckCode=Test123&amp;SDIID=">联想增值服务</a></div>  <!--<div class="index_menu150112_win"><a href="/lenovo/wsi/Modules/Win10/win10.html" target="_blank" class="index_menu150112_win_a">免费升级到Windows10</a></div>-->	<div class="index_menu150112_ad" style="display: block; "><a href="http://weixin.lenovo.com.cn/weixin/index.php/qcs_web/index/source/lenovoservice" class="index_menu150112_ad_a"><img src="/lenovo/wsi/v/images/index_gfwx.jpg"></a></div></div><!-- 飘窗2015-07-21  --><!-- <div class="ad150721" style="background: url(/lenovo/wsi/templetes/images/ad20150806.png); margin: 0px 0px 0px 505px; height: 300px; width: 145px; position: fixed; left: 50%; top: 113px; border: 1px solid #ddd;"><i class="ad150721_close" style="color: #ddd; display: block; height: 25px; width: 25px; margin: 0px 0px 0px 120px; font: bold normal 24px/25px 'Microsoft Yahei', 'simhei'; text-align: center; cursor: pointer; position:absolute;">×</i><a target="_blank" href="http://videoservice.lenovo.com.cn/PCWeb/videoweb/pages/index.html" style="display: block; height: 300px; width: 145px;"></a></div>--><!--<script type="text/javascript">$(document).ready(function () {$(".ad150721_close").click(function(){$(this).parent(".ad150721").fadeOut(300);});})</script>--><!-- 飘窗2015-07-21结束  --><!-- 服务站预约新入口2015-07-23  --><script type="text/javascript">$(document).ready(function () {$(".ad-yyfw").click(function(){$(".ad-yyfw_pop").fadeIn(300);$(".ad-yyfw_mask").fadeIn(300);_hmt && _hmt.push(["_trackEvent", "飘窗", "点击", "人工帮助"]);});$(".ad-yyfw_pop_close").click(function(){$(".ad-yyfw_pop").fadeOut(300);$(".ad-yyfw_mask").fadeOut(300);});})</script><div class="ad-yyfw" style="background: url(/lenovo/wsi/v/images/yyfw_bg02.png) no-repeat 0px 0px; margin: 0px 0px 0px -630px; height: 157px; width: 111px; position: fixed; left: 50%; top: 250px; cursor: pointer;"></div><div class="ad-yyfw_mask" style="z-index:1000; height: 100%; width: 100%; position: fixed; left: 0px; top: 0px; background: #000; filter: alpha(opacity=50); opacity: .5; display: none;"></div><div class="ad-yyfw_pop" style="z-index:1001; background: url(/lenovo/wsi/v/images/human-help-bg.png); height: 383px; width: 728px; position: fixed; left: 50%; top: 50%; margin: -200px 0px 0px -374px; display: none;"><div class="ad-yyfw_pop_close" style="margin: 26px 0px 0px 678px; height: 44px; width: 44px; position: absolute; cursor: pointer;"></div><a href="/lenovo/wsi/activity/zzyy/stepone.html?intcmp=fwgw_yywx_20150723" style="display: block; margin: 291px 0px 0px 150px; height: 36px; width: 118px; position: absolute; cursor: pointer;"></a></div><!-- 服务站预约新入口2015-07-23结束  -->	
+  <script src="http://support1.lenovo.com.cn/lenovo/wsi/v/menu/js/SearchXml.js" type="text/javascript"></script> 
+  <script src="../v/js/cds_entry.js" type="text/javascript"></script>
+  <!-- 判断主机编号插件更新 -->
+  <script language="JavaScript" type="text/javascript" src="http://tools.lenovo.com.cn/source/hostnumberPlugin/machineInfo.js"></script>
+</header>
+    <section class="section">
+  <div class="section_top">
+  
+    <div class="section_top_title">
+      <h1 class="section_top_title_h1">确定您的产品</h1>
+    </div>
+    <div class="section_top_content">
+      <a href="../index.html" class="section_top_content_backhome">返回首页</a>
+      <div class="section_top_content_flow02">
+        <div class="section_top_content_flow01_step01">
+          <div class="section_top_content_flow01_step_spot01"><i>1</i>确认产品</div>
+        </div>
+        
+        <div class="section_top_content_flow01_step04">
+          <div class="section_top_content_flow01_step_spot02"><i>2</i>获取帮助</div>
+        </div>
+        <div class="section_top_content_flow01_line"></div>
+      </div>
+      <div class="section_top_content_search">
+        <h1 class="section_top_content_search_h1">通过输入主机编号获得更加精准的产品服务<i class="section_top_content_search_h1_i">(查询服务器需手动选择型号下载驱动程序)</i></h1>
+        <form name="form1" method="post" action="">
+          <table>
+            <tbody><tr>
+              <td class="section_top_content_search_td"><label for="textfield"></label>
+                <input name="textfield" type="text" class="section_top_content_search_td_input" id="textfield" onkeyup="value=value.replace(/[^\w\.\/]/ig,'');if(event.keyCode==13){GoPage();}" onfocus="if(this.value=='示例：EB10963046') this.value=''; this.style.color='#000';" onblur="if(this.value=='') {this.value='示例：EB10963046';this.style.color='#a5a5a5';}" value="示例:EB10963046" onclick="if (this.value=='示例:EB10963046'){this.value='';this.style.color='#000';}" style="color:#a5a5a5" onkeypress="if(event.keyCode==13){GoPage();return false;}"></td>
+              <td class="section_top_content_search_td"><a onclick="  if(document.getElementById('textfield').value==''||document.getElementById('textfield').value=='示例：EB10963046'){alert('请输入主机编号');}else{GoPage();}" href="#" class="section_top_content_search_td_a"></a></td>
+            </tr>
+          </tbody></table>
+        </form><input name="MachineSearchId" id="MachineSearchId" type="hidden">
+        <p class="section_top_content_search_p">
+            <a class="section_top_content_search_p_a" href="http://driverdl.lenovo.com.cn/lenovo/DriverFilesUploadFloder/42226/LenovoDM_Setup.exe" onclick="submitDriversDownloadCount('42226','DriverDownloadByTool')">使用工具自动安装驱动</a>
+            <i class="section_top_content_search_p_i">|</i>
+            <a href="http://www.lenovo.com.cn/product/51640.html?ProductNo=12050300000897&amp;SourceFlag=Support_Driver&amp;CheckCode=Test123"><u>专家帮您装驱动</u></a>
+            <i class="section_top_content_search_p_i">|</i>
+            <a id="findMachineNumber" href="http://support1.lenovo.com.cn/lenovo/wsi/htmls/Machine_No.html"><u>如何查找主机编号？</u></a>
+            <i class="section_top_content_search_p_i">|</i>
+            <a id="findMachineNumber" href="http://iknow.lenovo.com/detail/dc_KB020588.html"><u>windows 10 支持机型</u></a>
+            <i class="section_top_content_search_p_i">|</i>
+            <a id="findAutoNumber" href="javascript:();"><u>自动获取主机编号</u></a>
+            <iframe name="main" height="0px" width="0px" style="display:none"></iframe>
+            </p><p class="section_top_content_msg01_p">由字母及数字组成的主机编号贴在产品底部或背面。</p>
+            <div class="section_top_content_msg11_p">使用此功能需要下载检测主机编号插件，下载完成后请点击运行</div>
+        <p></p>
+      </div>
+      <div class="section_top_content_msg01" style="margin-top:-60px;">
+          <div style="width: 120px;height: 120px;"></div>
+      </div>
+      <div style="clear:both"></div>
+    </div>
+  </div>
+  <div class="section_ledrive">
+    <h1 class="section_top_title_h1">您也可以下载驱动安装工具</h1>
+    <div class="section_ledrive_content">
+      <div class="section_ledrive_content_text">
+        <h1 class="section_ledrive_content_text_h1">联想驱动管理</h1>
+        <p class="section_ledrive_content_text_p01">版本：V2.1.1.3011 | 大小：54.9M | 最后更新：2017-3-2 | 支持系统：Win10/Win8.1/Win8/Win7/XP <i class="section_ledrive_content_text_p01_i"><a href="http://support1.lenovo.com.cn/lenovo/wsi/Modules/autocd.aspx" class="section_ledrive_content_text_p01_i_a">了解更多</a> </i></p>
+        <p class="section_ledrive_content_text_p02">联想驱动自动安装工具仅用于确定您的Lenovo产品，以帮助您更快速准确的定位驱动。<br>
+          不需要、也不会访问您计算机上的任何个人或私人数据。</p>
+      </div><div class="section_ledrive_content_btn"><a href="http://driverdl.lenovo.com.cn/lenovo/DriverFilesUploadFloder/42226/LenovoDM_Setup.exe" onclick="submitDriversDownloadCount('42226','DriverLenovo')" class="section_ledrive_content_btn_a">立即下载</a></div>
+    </div>
+  </div>
+<div class="banner" style="width: 100%;height: 100px">
+    <div class="Advertisement_banner" style="width: 1000px;height: 100px;margin: 0 auto;box-shadow: 0px 0px 2px #ccc;">
+        <a href="https://passport.lenovo.com/wauthen2/preLogin?lenovoid.action=uilogin&amp;lenovoid.realm=support.lenovo.com.cn&amp;lenovoid.ctx=aHR0cDovL3N1cHBvcnQubGVub3ZvLmNvbS5jbi9sZW5vdm8vd3NpL01vZHVsZXMvTmV3RHJpdmUuYXNweCTogZTmg7PlrpjnvZFf6IGU5oOz5pyN5YqhX-iBlOaDs-mpseWKqOOAgeiBlOaDs-mpseWKqOS4i-i9veOAgeiBlOaDs-aJk-WNsOacuumpseWKqOeoi-W6j-S4i-i9veOAgeeslOiusOacrOmpseWKqOS4i-i9veOAgeiBlOaDs-e9keWNoempseWKqOOAgeiBlOaDs-aYvuWNoempseWKqOOAgeiBlOaDs-WjsOWNoempseWKqOOAgeiBlOaDs-aRhOWDj-WktOmpseWKqOKAlOiBlOaDs-mpseWKqOWumOe9kQ&amp;lenovoid.lang=null&amp;lenovoid.uinfo=null&amp;lenovoid.cb=null&amp;lenovoid.vp=null&amp;lenovoid.display=null&amp;lenovoid_idp=null&amp;lenovoid.source=support.lenovo.com.cn&amp;lenovoid.thirdname=weixin&amp;lenovoid.qrstate=2&amp;lenovoid.idreinfo=null&amp;lenovoid.realmImg=null&amp;lenovoid.loginTxt=null&amp;lenovoid.mainColor=null&amp;lenovoid.hideqq=null&amp;lenovoid.hidesina=null&amp;lenovoid.userType=null&amp;lenovoid.uAgreementTxt=null&amp;lenovoid.uAgreementUrl=null&amp;lenovoid.sdk=null&amp;lenovoid.sn=null">
+            <img src="images/banner2016.jpg" id="img_banner" alt="点我让下载速度飞起来！">
+        </a>
+    </div>
+</div>
+  <div class="section_ledrive" style="margin-top: 10px">
+    <h1 class="section_top_title_h1">您还可以下载联想电脑管家</h1>
+    <div class="section_ledrive_content">
+      <div class="section_ledrive_content_text" style="width:430px;">
+        <h1 class="section_ledrive_content_text_h1">联想电脑管家——始终守护你的设备健康</h1>
+        <p class="section_ledrive_content_text_p01">版本：V2.1.2.3211 | 大小：61.1M | 最后更新：2017-3-22 | <br>
+            支持系统：Win10/Win8.1/Win8/Win7 <i class="section_ledrive_content_text_p01_i"><a href="https://pcmgr.lenovo.com.cn" class="section_ledrive_content_text_p01_i_a">了解更多</a> </i></p>
+        <p class="section_ledrive_content_text_p02">提供最纯粹最专业的电脑管家服务，帮你分析和监管电脑健康，提供原厂驱动检测和安装，为硬件保驾护航，随时提供官方服务，以及各类会员专享特权。</p>
+      </div><div class="section_ledrive_content_btn"><a href="https://pcmgr.lenovo.com.cn/download/lenovopcmanager_support.exe" class="section_ledrive_content_btn_a" id="download_lnv_butler">立即下载</a></div>
+      <div class="crowdfunding"><a href="http://www.xiangbangbang.cn/pc?utm_source=lenovoPC&amp;utm_content=NewDrive" target="_blank"><img src="images/xiangbangbang.png"></a></div>
+    </div>
+  </div>
+  <div class="section_nav">
+    <h1 class="section_top_title_h1">手动选择产品类型</h1>
+    <div class="section_nav_content">
+      <ul class="section_nav_content_ul">
+        <li class="section_nav_content_ul_li"><a class="section_nav_content_ul_li_a" href="NewDriverdown.aspx?productTypeId=6215"><img class="section_nav_content_ul_li_a_pic" src="images/help20131211_laptop01.png"><span class="section_nav_content_ul_li_a_text">笔记本</span></a></li>
+        <li class="section_nav_content_ul_li"><a class="section_nav_content_ul_li_a" href="NewDriverdown.aspx?productTypeId=7234"><img class="section_nav_content_ul_li_a_pic" src="images/help20131211_desktop01.png"><span class="section_nav_content_ul_li_a_text">台式机</span></a></li>
+        <li class="section_nav_content_ul_li"><a class="section_nav_content_ul_li_a" href="DriverDownLoadServer.aspx"><img class="section_nav_content_ul_li_a_pic" src="images/help20131211_server01.png"><span class="section_nav_content_ul_li_a_text">服务器</span></a></li>
+        <li class="section_nav_content_ul_li"><a class="section_nav_content_ul_li_a" href="NewDriverdown.aspx?productTypeId=7281"><img class="section_nav_content_ul_li_a_pic" src="images/help20131211_printer01.png"><span class="section_nav_content_ul_li_a_text">打印机及数码选件</span></a></li>
+        <li class="section_nav_content_ul_li"><a class="section_nav_content_ul_li_a" href="http://smarttv.lenovo.com.cn/?intcmp=DH_F_TOP_TV"><img class="section_nav_content_ul_li_a_pic" src="images/help20131211_smarttv01.png"><span class="section_nav_content_ul_li_a_text">智能电视</span></a></li>
+        <li class="section_nav_content_ul_li"><a class="section_nav_content_ul_li_a" href="http://www.lenovocare.com.cn/default.aspx"><img class="section_nav_content_ul_li_a_pic" src="images/help20131211_phone01.png"><span class="section_nav_content_ul_li_a_text">移动设备</span></a></li>
+		<li class="section_nav_content_ul_li"><a class="section_nav_content_ul_li_a" href="NewDriverdown.aspx?productTypeId=11691"><img class="section_nav_content_ul_li_a_pic" src="../v/131211/images/index140305_displayer.png"><span class="section_nav_content_ul_li_a_text">显示器</span></a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+<div id="wx_2dcode" style="position: fixed; left: 50%; margin-left: 500px; top: 230px;">
+        <img src="../Modules/images/website-window2.png">
+    </div>
+    <footer class="footer131209"> 
+  <script src="../v/131211/footer131209/footer131209.js"></script><div class="bottom_links"><span id="span_center"><a href="http://support1.lenovo.com.cn/lenovo/wsi/webfeedback/feedbak.aspx" target="_blank">意见反馈</a> | <a href="http://support1.lenovo.com.cn/lenovo/wsi/contact.html" target="_blank">联系我们</a> | <a href="http://support1.lenovo.com.cn/lenovo/wsi/sitemapnew.html" target="_blank">网站地图</a> | <a href="http://support1.lenovo.com.cn/lenovo/wsi/htmls/policylist_1349943520435.aspx" target="_blank">服务政策</a> | <a href="http://support1.lenovo.com.cn/lenovo/wsi/iws/iws.html" target="_blank">全球联保</a> | <a href="http://iknow.lenovo.com" target="_blank">热门解决方案</a> | <a href="http://zhidao.baidu.com/c/lenovo/" target="_blank">知道企业平台</a> | <a href="http://www.enjoy3c.com/" target="_blank">乐享3C</a> | <a id="lnv_question_a" style="display:none;" target="_blank"></a></span></div><div class="copyright">版权所有©2008-2017联想集团&nbsp;| <font class="monog"><a href="http://www.lenovo.com.cn/Public/public_bottom/legal.shtml" target="_blank">法律公告</a> | <a href="http://www.lenovo.com.cn/Public/public_bottom/privacy.shtml" target="_blank">隐私保护</a> | <a href="http://appserver.lenovo.com.cn/About/" target="_blank">关于联想</a>  </font>&nbsp; &nbsp;<a href="http://www.miibeian.gov.cn/" target="_blank">京ICP备11035381</a><font class="jgwicp">&nbsp; &nbsp;京公网安备110108007970号</font></div><span style="display:none;">1</span><script type="text/javascript" src="http://support.lenovo.com.cn/lenovo/wsi/v/menu/glogin/glogin.js"></script><script type="text/javascript" src="http://support.lenovo.com.cn/lenovo/wsi/v/menu/glogin/jquery.blockUI.js"></script> 
+</footer>
+    <script>
+        function show(tag) {
+            var light = document.getElementById(tag);
+            var fade = document.getElementById('fade');
+            light.style.display = 'block';
+            fade.style.display = 'block';
+        }
+        function hide(tag) {
+            var light = document.getElementById(tag);
+            var fade = document.getElementById('fade');
+            light.style.display = 'none';
+            fade.style.display = 'none';
+        }
+
+        function getOs() {
+            var OsObject = "";
+            if (navigator.userAgent.indexOf("MSIE") > 0) {
+                return "MSIE";
+            }
+            if (isFirefox = navigator.userAgent.indexOf("Firefox") > 0) {
+                return "Firefox";
+            }
+            if (isSafari = navigator.userAgent.indexOf("Safari") > 0) {
+                return "Safari";
+            }
+            if (isCamino = navigator.userAgent.indexOf("Camino") > 0) {
+                return "Camino";
+            }
+            if (isMozilla = navigator.userAgent.indexOf("Gecko/") > 0) {
+                return "Gecko";
+            }
+
+        }
+        //&&getCookie('IsCloseTips')!="1"
+        if (getOs() == "MSIE") {
+            document.getElementById('autoGetSN').style.display = "";
+        } else {
+
+            document.getElementById('getSNDesc').style.paddingLeft = "0px";
+
+        }
+        //检测控件是否安装
+        var snMyReader = null;
+        function checkMyOcxInstall() {  //判断控件是否安装
+            try {
+                return new ActiveXObject("sn.SNReader");
+            } catch (ex) {
+                return false;
+            }
+        }
+        function closeTips() {
+            setCookie("IsCloseTips", "1", 1000);
+            document.getElementById('autoGetSN').style.display = "none";
+            document.getElementById('getSNDesc').style.paddingLeft = "0px";
+        }
+        //针对是否安装完控件，进行判断，并显示不同的按钮
+        //snReader = checkOcxInstall();
+        //checkValue();
+
+        function checkMyValue(txtId, n) {    //参数txtId为输入主机编号的文本框的ID值,和n为截取几位长度
+            snMyReader = checkMyOcxInstall();
+            if (snMyReader) {
+                setTimeout(function () {
+                    var sn = snMyReader.SerialNum;
+                    if (typeof sn != "undefined" && sn.length > 7) {
+                        try {
+                            document.getElementById(txtId).value = sn;
+                            document.getElementById(txtId).style.color = "#000000";
+                            setCookie("AutoGetProductSn", sn, 1);
+                        } catch (e) {
+                            //							if (confirm("主机编号未能正确识别，推荐您查阅“如何查询主机编号”")) {
+                            //								window.open("http://support1.lenovo.com.cn/lenovo/wsi/htmls/Machine_No.html", "new");
+                            //							}
+                        }
+                    }
+                    else {
+                        //alert('主机编号未能正确识别，请核实您的电脑是否为联想产品');
+                        //						if (confirm("主机编号未能正确识别，推荐您查阅“如何查询主机编号”")) {
+                        //							window.open("http://support1.lenovo.com.cn/lenovo/wsi/htmls/Machine_No.html", "new");
+                        //						}
+                    }
+                }, 1000);
+            } else {
+                //如果没有安装控件，则跳转到Idea控件安装页面
+                //检查浏览器，如果是火狐则提示：推荐使用IE
+                if (navigator.userAgent.toLowerCase().indexOf("firefox/3") != -1) {
+                    alert('自动获取主机编号软件不支持火狐浏览器，建议使用IE浏览器安装此软件');
+                    return;
+                }
+
+                //获取当前页面链接地址
+                //var strurl = parent.document.URL;
+                //setCookie("strurl", strurl, 1);
+                //将连接地址写入cookie
+                //setCookie("strurl",strurl,1); 
+                //-----其他网站调用此js，则异步调用写页面链接到cookie保存到wsi站----------
+                //控件安装完成后，则跳转回原页面
+                //---跳转到idea控件安装页面
+                //window.open("http://support1.lenovo.com.cn/lenovo/wsi/support/driver/IdeaSnReader.aspx?strurl=" + strurl, "_top");
+            }
+        }
+        checkMyValue('textfield', '7');
+    </script>
+    <div id="light" class="white_content">
+    </div>
+    <div id="fade" class="black_overlay">
+    </div>
+    <!-- 弹出提示框 -->
+    
+    <!-- SiteCatalyst code version: H.20.3.
+    Copyright 1997-2009 Omniture, Inc. More info available at
+    http://www.omniture.com -->
+    <script type="text/javascript" src="/files/s_code.js"></script>
+
+    <script type="text/javascript">
+        var jsstr = "服务频道:驱动下载首页";
+    </script>
+    <script type="text/javascript" src="/files/omniture.js"></script>
+    <script type="text/javascript">
+        var webSiteId = 4;
+    </script>
+    <script type="text/javascript" src="../questionnaire/js/questionnaire.js"></script>
+    <!-- 调查问卷飘窗 -->
+    <div id="lnv_question_img" style="display: none; position: fixed; width: 86px; height: 75px;
+        left: 50%; margin-left: 503px; top: 420px; background: url('../templetes/images/idea_que_icon.png');
+        cursor: pointer; z-index: 99999">
+        <a style="position: relative; top: 3px; left: 62px;display: none">
+            <img src="../templetes/images/idea_icon_close.png">
+        </a>
+    </div>
+    <!-- End SiteCatalyst code version: H.20.3. -->
+    <script type="text/javascript">
+        var _trackDataType = 'web';         //default variable 
+        var _trackData = _trackData || []; //It is a global variable, 
+        var _la_lenovo_website = 10000071; // default variable 
+        var laurl = ""; // set la.cookie.no.leid.getcookie.js file path 
+        var CONFIGS = { "lenovoid": "", "club_pc_fid": "", "pc_child_id": "lendri" }
+    </script>
+    <script src="/files/la.min.js" type="text/javascript"></script>
+    <script src="../js/driver/auto/jquery.autocomplete.js" type="text/javascript"></script>
+    <link href="../js/driver/auto/jquery.autocomplete.css" rel="stylesheet" type="text/css">
+    <script src="../js/driver/DriveBottom.js" type="text/javascript"></script>
+    <script>
+        if (getCookie('AutoGetProductSn') != null && getCookie('AutoGetProductSn') != undefined && getCookie('AutoGetProductSn') != "") {
+            //document.getElementById('MachineSearchName').value = getCookie('AutoGetProductSn');
+            //document.getElementById('MachineSearchName').focus();
+        }
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.mina_right_box04 div dl dt > a img').mouseover(function () {
+                var path = $(this).attr('src').replace('1', '2');
+                $(this).attr('src', path);
+            });
+            $('.mina_right_box04 div dl dt > a img').mouseout(function () {
+                var path = $(this).attr('src').replace('2', '1');
+                $(this).attr('src', path);
+            })
+            $('#auto-get-machineno').click(function (event, install) {
+                checkValue('textfield', '7');
+                document.getElementById('textfield').focus();
+            });
+            //  点击量
+            $('')
+
+
+
+        });
+	
+    </script>
+    <!-- baidu count js -->
+    <script type="text/javascript">
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?6c6874f7c8fa50afd794192d311b788c";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+    <!-- 智能机器人轻入口 2016-06-15 -->
+    <div class="button_robot" style="position: fixed; left: 50%; margin-left: 503px;
+        top: 500px;">
+        <img src="http://robot.lenovo.com.cn/lenovo/images/robotEnter.gif"></div>
+    <div id="small-robot-div">
+    </div>
+    <script type="text/javascript" src="http://robotbd.ecare365.com/rjfiles/js/small-robot.js"></script><script type="text/javascript" src="http://robotbd.lenovo.com.cn/rjfiles/js/jquery.js"></script><script type="text/javascript" src="http://robotbd.lenovo.com.cn/rjfiles/js/robot.js"></script><script type="text/javascript" src="http://robotbd.lenovo.com.cn/rjfiles/js/jquery-ui-1.10.4.min.js"></script><script type="text/javascript" src="http://robotbd.lenovo.com.cn/rjfiles/js/jquery.mousewheel.min.js"></script><script type="text/javascript" src="http://robotbd.lenovo.com.cn/rjfiles/js/jquery.mCustomScrollbar.min.js"></script><link rel="stylesheet" type="text/css" href="http://robotbd.lenovo.com.cn/rjfiles/css/robot.css"><link rel="stylesheet" type="text/css" href="http://robotbd.lenovo.com.cn/rjfiles/css/jquery.mCustomScrollbar.css">
+    <script type="text/javascript">
+        $(function () {
+            $(".button_robot").click(function () {
+                var id = getUrlParam('id');
+                var welcomeMsg = '你好，我是小乐';
+                var remindMsg = '输入文字提问';
+                var inputTooLongMsg = '输入过长';
+                $ibot.run('small-robot-div', id, 'talk', welcomeMsg, remindMsg, inputTooLongMsg, {
+                    'inputLength': 50,
+                    'maxAnimateLeft': 1000,
+                    'minAnimateLeft': 5,
+                    'maxAnimateTop': 100,
+                    'minAnimateTop': 5,
+                    'robotAskUrl': 'http://robotbd.ecare365.com/JSonpAskService?t=' + new Date().getTime()
+                });
+            });
+        });
+    </script>
+    <!-- 智能机器人轻入口 2016-06-15 -->
+    <script>
+        //点击量
+        $(function () {
+            $('#img_banner').click(function () {
+                _hmt.push(['_trackEvent', '广告:驱动注册引导', 'click']);
+            });
+            // 百度统计“电脑管家下载”
+            $('#download_lnv_butler').click(function () {
+                _hmt && _hmt.push(['_trackEvent', '按钮：电脑管家下载', '下载']);
+            });
+            $('.section_top_content_search_p_a').click(function() {
+              _hmt.push(['_trackEvent', 'Lenovo驱动查询页按钮：使用工具自动安装驱动', 'click']);
+            })
+            $('#findAutoNumber').click(function () {
+               _hmt && _hmt.push(['_trackEvent', '按钮：Lenovo驱动查询获取SN', 'click']);
+//               aaaaa
+            });
+        })
+    </script>
+
+
+<a id="float_wss" href="http://support.lenovo.com.cn/lenovo/wsi//activity/CDSSurvey/webservicesurvey.html?stype=1&amp;intcmp=undefined" style="height: 103px; width: 29px; position: fixed; right: -530.5px; top: 187px; display: inline; " target="_blank">                <img src="http://support.lenovo.com.cn/lenovo/wsi//v/images/wsssurvey.png">            </a></body></html>

@@ -1,0 +1,849 @@
+<html><head></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">//评论参数获取
+function getcommenttype() {
+	var urlparse=ali_comment_app.src.split("\?");
+	var parm = urlparse[1].split("&amp;");
+	var cs = parm[0].split("=");
+	return cs[1];
+}
+
+function getcommentconid() {
+	var urlparse=ali_comment_app.src.split("\?");
+	var parm = urlparse[1].split("&amp;");
+	var cs = parm[1].split("=");
+	return cs[1];
+}
+
+function setyy_zk(zk,zk_dis){
+  var zk_d=document.getElementById(zk);
+  var zk_dis_d=document.getElementById(zk_dis);
+  zk_d.style.display="none";
+  zk_dis_d.style.display="block";
+}
+
+//判断是否登录
+function getcomment_iflogin(){
+	var usernamecookie=document.cookie;
+	var arrCookie=usernamecookie.split("; ");
+	var usernamecookie;
+	//遍历cookie数组，处理每个cookie对
+	for(var i=0;i&lt;arrCookie.length;i++){
+		var arr=arrCookie[i].split("=");
+		//找到名称为userId的cookie，并返回它的值
+		if("passportusername"==arr[0]){
+		   usernamecookie=arr[1];
+		   break;
+		}else{
+		usernamecookie=""
+		}
+	}
+ 
+	if(usernamecookie!=""){
+		return decodeURI(usernamecookie);
+	}else{
+		return "";
+	}	
+}
+
+
+//读取评论
+function comment_read(appid,conid,page,gototop,ztok){
+	COMMENT_PAGE = page;
+	$.ajax({   
+		 type:"GET",
+		 async:false,
+		 url: "http://comment.ali213.net/ali-comment-ajx.php",
+		 data:{
+			action:"display",
+			appid:COMMENT_TYPE,
+			conid:COMMENT_CONID,
+			page:page
+		 },
+		 dataType:"jsonp",
+		 jsonp : 'callback', 
+		 jsonpCallback:"success_jsonpCallbackcontent",
+		 success: function(json){ 
+			if(json[0].str==1){
+				$("#ali_comment_if_content").show();
+				
+				if(appid==1){
+					$("#wypl").html('&lt;a href="#pl"&gt;&lt;font color="#cc1b1b"&gt;我要评论&lt;/font&gt;&lt;/a&gt; &lt;a href="#pl" title="立即评论"&gt;&lt;img src="http://www.ali213.net/news/images/wypl.png" style="vertical-align:middle;"&gt;&lt;/a&gt;');	
+				}
+				
+				if(appid==19){
+					$("#comment_num_mh").html('0');	
+				}
+				
+			}
+			
+			if(json[0].str==2){
+				
+				$("#ali_comment_if_content").hide();
+				$("#ali-comment-plrs").html(json[0].comment_num);
+				$("#ali-comment-cyrs").html(json[0].comment_cy);
+				
+				if(appid==2 &amp;&amp; page==1 &amp;&amp; ztok==1){
+					return false;	
+				}else{
+					$("#ali_comment_body_display").html(json[0].htmllist);		
+				}
+				
+				
+				
+				if(gototop==2){
+					if(COMMENT_URL=="http://u.ali213.net/z/fengyunbang/2016/"){
+						$(".pl-con").animate({scrollTop: 0});	
+					}else{
+					    $("html,body").animate({scrollTop: $("#ALICOMMENTTOP").offset().top});
+					}
+				}
+				
+				//新闻单独判断
+				if(appid==1){
+					if(json[0].comment_num &gt; 0){
+						$("#wypl").html('&lt;a href="#pl"&gt;&lt;font color="#cc1b1b"&gt;'+json[0].comment_num+'人参与评论&lt;/font&gt;&lt;/a&gt; &lt;a href="#pl" title="立即评论"&gt;&lt;img src="http://www.ali213.net/news/images/wypl.png" style="vertical-align:middle;"&gt;&lt;/a&gt;');	
+					}else{
+						$("#wypl").html('&lt;a href="#pl"&gt;&lt;font color="#cc1b1b"&gt;我要评论&lt;/font&gt;&lt;/a&gt; &lt;a href="#pl" title="立即评论"&gt;&lt;img src="http://www.ali213.net/news/images/wypl.png" style="vertical-align:middle;"&gt;&lt;/a&gt;');
+					}	
+				}
+				
+				if(appid==19){
+					if(json[0].comment_num &gt; 0){
+						$("#comment_num_mh").html(''+json[0].comment_num+'');
+					}else{
+						$("#comment_num_mh").html('0');	
+					}
+				}
+				
+				
+				
+			}
+
+		 },
+			error:function(){
+			//alert('ajax error');
+	   }
+
+	 });
+
+}
+
+
+//顶-踩
+function comment_dc(comment_id,tp,conid){
+	
+	var kg_id_ding = 'ali_kg_ding_'+comment_id;
+	var kg_id_cai = 'ali_kg_cai_'+comment_id;
+	
+	if(tp==1){
+		var dc_type = 'ding';
+	}
+	
+	if(tp==2){
+		var dc_type = 'cai';
+	}
+	
+	$.ajax({   
+		 type:"GET",
+		 async:false,
+		 url: "http://comment.ali213.net/ali-comment-ajx.php",
+		 data:{
+			action:"ding_cai",
+			type:dc_type,
+			comment_id:comment_id,
+			conid:COMMENT_CONID,
+			appid:COMMENT_TYPE
+		 },
+		 dataType:"jsonp",
+		 jsonp : 'callback', 
+		 jsonpCallback:"success_jsonpCallback",
+		 success: function(json){ 
+	
+			if(json[0].str==1){
+				alert(json[0].error);
+			}
+			
+			if(json[0].str==2){
+				comment_read(COMMENT_TYPE,COMMENT_CONID,COMMENT_PAGE,1,2);
+				$("#"+kg_id_ding).removeClass("ali-action-ding");
+				$("#"+kg_id_ding).addClass("ali-yjdc");
+				$("#"+kg_id_cai).removeClass("ali-action-cai");
+				$("#"+kg_id_cai).addClass("ali-yjdc");
+			}
+
+		 },
+			error:function(){
+			// alert('ajax error');
+	   }
+
+	 });
+	
+}
+
+
+//评论主体内容写入
+function comment_insert(){
+
+	var comment_body = '';
+	
+	
+	
+	comment_body=comment_body+'&lt;div class="ali-comment-login-tc" id="ali_comment_login_tc"&gt;';
+	
+	comment_body=comment_body+'    &lt;div class="ali-comment-login-tc-title"&gt;';
+	comment_body=comment_body+'    	&lt;div class="ali-comment-login-tc-title-left"&gt;&lt;img src="http://comment.ali213.net/images/comment_yxlogo.jpg" /&gt;&lt;span&gt;游侠论坛用户登录&lt;/span&gt;&lt;/div&gt;';
+	comment_body=comment_body+'        &lt;div class="ali-comment-login-tc-title-right" id="ali_comment_login_tc_close"&gt;&lt;img src="http://comment.ali213.net/images/comment_yx_x.jpg" title="关闭" /&gt;&lt;/div&gt;';
+	comment_body=comment_body+'    &lt;/div&gt;';
+		
+	comment_body=comment_body+'    &lt;div class="ali-comment-login-tc-body"&gt;';
+	comment_body=comment_body+'    	&lt;div class="ali-comment-login-tc-body-list"&gt;';
+	comment_body=comment_body+'        	&lt;div class="ali-comment-login-tc-body-list-left"&gt;帐号&lt;/div&gt;';
+	comment_body=comment_body+'            &lt;div class="ali-comment-login-tc-body-list-right"&gt;&lt;input type="text" id="ali_comment_login_tc_user" class="ali-comment-login-tc-input" /&gt;&lt;/div&gt;';
+	comment_body=comment_body+'        &lt;/div&gt;';
+			
+	comment_body=comment_body+'        &lt;div class="ali-comment-login-tc-body-list"&gt;';
+	comment_body=comment_body+'        	&lt;div class="ali-comment-login-tc-body-list-left"&gt;密码&lt;/div&gt;';
+	comment_body=comment_body+'            &lt;div class="ali-comment-login-tc-body-list-right"&gt;&lt;input type="password" id="ali_comment_login_tc_pwd" class="ali-comment-login-tc-input" /&gt;&lt;/div&gt;';
+	comment_body=comment_body+'        &lt;/div&gt;';
+			
+	comment_body=comment_body+'        &lt;div class="ali-comment-login-tc-body-list"&gt;';
+	comment_body=comment_body+'        	&lt;div class="ali-comment-login-tc-body-list-left"&gt;&amp;nbsp;&lt;/div&gt;';
+	comment_body=comment_body+'            &lt;div class="ali-comment-login-tc-body-list-right-2"&gt;&lt;a href="http://game.ali213.net/member.php?mod=register" target="_blank"&gt;注册&lt;/a&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;a href="http://game.ali213.net/member.php?mod=logging&amp;action=login" target="_blank"&gt;找回密码&lt;/a&gt;&lt;/div&gt;';
+	comment_body=comment_body+'        &lt;/div&gt;';
+			
+	comment_body=comment_body+'        &lt;div class="ali-comment-login-tc-body-list"&gt;';
+	comment_body=comment_body+'        	&lt;div class="ali-comment-login-tc-body-list-left"&gt;&amp;nbsp;&lt;/div&gt;';
+	comment_body=comment_body+'            &lt;div class="ali-comment-login-tc-body-list-right-2"&gt;&lt;input type="button" id="ali_comment_login_tc_sub" class="ali-comment-login-tc-sub" value="" /&gt;&lt;span id="ali_comment_tc_login_error"&gt;&lt;/span&gt;&lt;/div&gt;';
+	comment_body=comment_body+'       &lt;/div&gt;';
+			
+	comment_body=comment_body+'    &lt;/div&gt;';
+		
+	comment_body=comment_body+'&lt;/div&gt;';
+	
+	comment_body=comment_body+'&lt;div class="ali-comment-article"&gt;';
+	comment_body=comment_body+'&lt;div class="ali-comment-article-name-w"&gt;评论&lt;a id="pl" style="width:1px;height:1px;overflow:hidden;"&gt;&lt;/a&gt;&lt;/div&gt;';
+	comment_body=comment_body+'&lt;div class="ali-comment-article-join-w"&gt;(&lt;em id="ali-comment-cyrs"&gt;0&lt;/em&gt;人参与 , &lt;em id="ali-comment-plrs"&gt;0&lt;/em&gt;条评论)&lt;/div&gt;';
+	comment_body=comment_body+'&lt;/div&gt;';
+	
+	comment_body=comment_body+'&lt;div class="ali-comment-post"&gt;';
+		
+	comment_body=comment_body+'&lt;div class="ali-comment-post-wrap-area-w"&gt;';
+	comment_body=comment_body+'&lt;div class="ali-comment-post-area-textarea-w" style="position:relative;zoom:1;z-index:9;"&gt;';
+	comment_body=comment_body+'&lt;textarea name="" class="ali-comment-post-textarea-fw" id="ali-comment-post-textarea" focucmsg="来说两句吧..."&gt;&lt;/textarea&gt;';
+	comment_body=comment_body+'&lt;/div&gt;';
+	comment_body=comment_body+'&lt;/div&gt;';
+		
+	comment_body=comment_body+'&lt;div class="ali-comment-post-wrap-action"&gt;';
+	comment_body=comment_body+'&lt;div class="ali-comment-post-userinfo"&gt;';
+	comment_body=comment_body+'&lt;a id="ali-comment-add-face"&gt;&lt;i class="ali-comment-face"&gt;&lt;/i&gt;&lt;/a&gt;';	
+	
+	
+	if(COMMENT_USER==""){
+		comment_body=comment_body+'&lt;span class="ali-comment-add-user"&gt;&lt;i class="ali-comment-user" onclick="ali_comment_login_alert();"&gt;&lt;/i&gt;&lt;/span&gt;';
+		comment_body=comment_body+'&lt;span class="ali-comment-username" &gt;&lt;em onclick="ali_comment_login_alert();"&gt;登录&lt;/em&gt;&lt;/span&gt;';
+		comment_body=comment_body+'&lt;span class="ali-comment-logout"&gt;&lt;/span&gt;';
+	}else{
+		comment_body=comment_body+'&lt;span class="ali-comment-add-user"&gt;&lt;img src="'+COMMENT_PIC+'" width="30" height="30"&gt;&lt;a href="http://i.ali213.net/image.html" target="_blank"&gt;&lt;label&gt;&lt;/label&gt;&lt;/a&gt;&lt;/span&gt;';
+		comment_body=comment_body+'&lt;span class="ali-comment-username-ydl"&gt;&lt;a href="http://i.ali213.net/" target="_blank"&gt;'+COMMENT_USER+'&lt;/a&gt;&lt;/span&gt;';
+		comment_body=comment_body+'&lt;span class="ali-comment-logout"&gt;&lt;a href="javascript:void(0);" class="loginBtn"&gt;退出&lt;/a&gt;&lt;/span&gt;';
+		
+	}
+	
+	comment_body=comment_body+'&lt;/div&gt;';
+			
+	comment_body=comment_body+'&lt;div class="ali-comment-face-list" id="ali-pl-face"&gt;';
+	comment_body=comment_body+'&lt;ul&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/嘻嘻" title="嘻嘻" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/1.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/色" title="色" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/2.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/卖萌" title="卖萌" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/3.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/哈哈" title="哈哈" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/4.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/调皮" title="调皮" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/5.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/呆萌" title="呆萌" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/6.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/亲亲" title="亲亲" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/7.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/啵一个" title="啵一个" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/8.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/鬼脸" title="鬼脸" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/9.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li style="border-right:0px;"&gt;&lt;a data_ubb="/呵呵" title="呵呵" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/10.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/傻笑" title="傻笑" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/11.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/笑尿了" title="笑尿了" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/12.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/沉思" title="沉思" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/13.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/失望" title="失望" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/14.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/困惑" title="困惑" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/15.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/鄙视" title="鄙视" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/16.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/大哭" title="大哭" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/17.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/伤心" title="伤心" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/18.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/无聊" title="无聊" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/19.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li style="border-right:0px;"&gt;&lt;a data_ubb="/汗" title="汗" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/20.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li style="border-bottom:0px;"&gt;&lt;a data_ubb="/糟糕" title="糟糕" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/21.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li style="border-bottom:0px;"&gt;&lt;a data_ubb="/冷汗" title="冷汗" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/22.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li style="border-bottom:0px;"&gt;&lt;a data_ubb="/苦恼" title="苦恼" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/23.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li style="border-bottom:0px;"&gt;&lt;a data_ubb="/疲惫" title="疲惫" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/24.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li style="border-bottom:0px;"&gt;&lt;a data_ubb="/害怕" title="害怕" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/25.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li style="border-bottom:0px;"&gt;&lt;a data_ubb="/惊恐" title="惊恐" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/26.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li style="border-bottom:0px;"&gt;&lt;a data_ubb="/生气" title="生气" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/27.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li style="border-bottom:0px;"&gt;&lt;a data_ubb="/愤怒" title="愤怒" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/28.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li style="border-bottom:0px;"&gt;&lt;a data_ubb="/气炸了" title="气炸了" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/29.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li style="border-right:0px;border-bottom:0px;"&gt;&lt;a data_ubb="/难受" title="难受" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/30.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;/ul&gt;';
+	comment_body=comment_body+'&lt;/div&gt;';
+			
+	comment_body=comment_body+'&lt;div class="ali-comment-sub"&gt;&lt;button class="ali-comment-sub-button" style="display: inline-block;" id="ali_comment_fabu"&gt;发布&lt;/button&gt;&lt;/div&gt;';
+	
+	comment_body=comment_body+'&lt;div class="ali-comment-nm-yzm"&gt;';
+	comment_body=comment_body+'&lt;input type="text" id="ali_comment_yzm" name="ali_comment_yzm" value="" /&gt;';
+	comment_body=comment_body+'&lt;img style="cursor:hand;border:0px;" src="http://comment.ali213.net/inc/code.php" id="ali-comment-yzm-url" onclick="this.src=\'http://comment.ali213.net/inc/code.php?\'+Math.random()"&gt;';
+	comment_body=comment_body+'&lt;/div&gt;';
+			
+	comment_body=comment_body+'&lt;/div&gt;';
+		
+	comment_body=comment_body+'&lt;/div&gt;';
+	
+	if(COMMENT_USER==""){
+	comment_body=comment_body+'&lt;div class="ali-comment-post-login"&gt;';
+	comment_body=comment_body+'&lt;a href="javascript:void(0);" onclick="ali_comment_login_alert();" class="ali-comment-post-login-a"&gt;&lt;/a&gt;';
+	comment_body=comment_body+'&lt;a href="http://game.ali213.net/member.php?mod=register" class="ali-comment-post-regester-a" target="_blank"&gt;注册&lt;/a&gt;';
+	comment_body=comment_body+'&lt;/div&gt;';
+	}
+	
+	comment_body=comment_body+'&lt;div class="ali-comment-alert" id="ali_comment_alert"&gt;';
+	comment_body=comment_body+'&lt;span&gt;未输入评论内容&lt;/span&gt;';
+	comment_body=comment_body+'&lt;/div&gt;';
+	
+	comment_body=comment_body+'&lt;div class="ali-comment-no" id="ali_comment_if_content"&gt;';
+	comment_body=comment_body+'&lt;span&gt;还没有评论内容，快来抢沙发吧！&lt;/span&gt;';
+	comment_body=comment_body+'&lt;/div&gt;';
+	
+	if(COMMENT_TYPE!=2){
+	comment_body=comment_body+'&lt;div class="ali-comment-box" id="ali_comment_body_display"&gt;';
+	comment_body=comment_body+'&lt;/div&gt;';
+	}
+	
+	if(COMMENT_TYPE==2){
+		$("#ALI213COMMENT_ZT").html(comment_body);
+		
+		//评论内容载入
+		comment_read(COMMENT_TYPE,COMMENT_CONID,1,1,1);
+		
+	}else{
+		$("#ALI213COMMENT").html(comment_body);	
+		
+		//评论内容载入
+		comment_read(COMMENT_TYPE,COMMENT_CONID,1,1,2);
+		
+	}
+	
+	
+	
+	
+}
+
+//回复评论框插入
+function comment_hf_input(hf_id){
+	
+	var comment_body = '';
+	comment_body=comment_body+'&lt;div class="ali-comment-post ali-padding-top"&gt;';
+		
+	comment_body=comment_body+'    &lt;div class="ali-comment-post-wrap-area-w"&gt;';
+	comment_body=comment_body+'        &lt;div class="ali-comment-post-area-textarea-w" style="position:relative;zoom:1;z-index:9;"&gt;';
+	comment_body=comment_body+'        &lt;textarea name="" class="ali-comment-post-textarea-fw" id="ali-comment-post-textarea-hf"&gt;&lt;/textarea&gt;';
+	comment_body=comment_body+'        &lt;/div&gt;';
+	comment_body=comment_body+'    &lt;/div&gt;';
+		
+	comment_body=comment_body+'    &lt;div class="ali-comment-post-wrap-action"&gt;';
+	comment_body=comment_body+'    	&lt;div class="ali-comment-post-userinfo"&gt;';
+	comment_body=comment_body+'        	&lt;a id="ali-comment-add-face-hf" style="border:0px;"&gt;&lt;i class="ali-comment-face"&gt;&lt;/i&gt;&lt;/a&gt;';	
+	
+	if(COMMENT_USER==""){
+		//comment_body=comment_body+'            &lt;span class="ali-comment-add-user"&gt;&lt;i class="ali-comment-user"&gt;&lt;/i&gt;&lt;/span&gt;';
+		//comment_body=comment_body+'&lt;span class="ali-comment-username"&gt;&lt;em onclick="ali_comment_login_alert();"&gt;登录&lt;/em&gt;&lt;/span&gt;';
+		//comment_body=comment_body+'&lt;span class="ali-comment-logout"&gt;&lt;/span&gt;';
+	}else{
+		//comment_body=comment_body+'            &lt;span class="ali-comment-add-user"&gt;&lt;img src="http://comment.ali213.net/images/normal.png" width="30" height="30"&gt;&lt;label&gt;&lt;/label&gt;&lt;/span&gt;';
+		//comment_body=comment_body+'&lt;span class="ali-comment-username-ydl"&gt;'+COMMENT_USER+'&lt;/span&gt;';
+		//comment_body=comment_body+'&lt;span class="ali-comment-logout"&gt;&lt;a href="javascript:void(0);" onclick="ali_comment_logout_alert();"&gt;退出&lt;/a&gt;&lt;/span&gt;';
+	}
+	
+	
+	comment_body=comment_body+'        &lt;/div&gt;';
+			
+	comment_body=comment_body+'&lt;div class="ali-comment-face-list" id="ali-pl-face-hf" style="display: none;"&gt;';
+	comment_body=comment_body+'&lt;ul&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/嘻嘻" title="嘻嘻" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/1.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/色" title="色" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/2.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/卖萌" title="卖萌" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/3.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/哈哈" title="哈哈" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/4.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/调皮" title="调皮" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/5.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/呆萌" title="呆萌" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/6.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/亲亲" title="亲亲" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/7.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/啵一个" title="啵一个" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/8.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/鬼脸" title="鬼脸" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/9.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li style="border-right:0px;"&gt;&lt;a data_ubb="/呵呵" title="呵呵" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/10.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/傻笑" title="傻笑" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/11.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/笑尿了" title="笑尿了" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/12.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/沉思" title="沉思" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/13.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/失望" title="失望" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/14.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/困惑" title="困惑" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/15.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/鄙视" title="鄙视" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/16.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/大哭" title="大哭" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/17.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/伤心" title="伤心" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/18.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li&gt;&lt;a data_ubb="/无聊" title="无聊" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/19.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li style="border-right:0px;"&gt;&lt;a data_ubb="/汗" title="汗" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/20.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li style="border-bottom:0px;"&gt;&lt;a data_ubb="/糟糕" title="糟糕" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/21.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li style="border-bottom:0px;"&gt;&lt;a data_ubb="/冷汗" title="冷汗" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/22.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li style="border-bottom:0px;"&gt;&lt;a data_ubb="/苦恼" title="苦恼" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/23.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li style="border-bottom:0px;"&gt;&lt;a data_ubb="/疲惫" title="疲惫" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/24.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li style="border-bottom:0px;"&gt;&lt;a data_ubb="/害怕" title="害怕" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/25.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li style="border-bottom:0px;"&gt;&lt;a data_ubb="/惊恐" title="惊恐" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/26.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li style="border-bottom:0px;"&gt;&lt;a data_ubb="/生气" title="生气" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/27.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li style="border-bottom:0px;"&gt;&lt;a data_ubb="/愤怒" title="愤怒" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/28.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li style="border-bottom:0px;"&gt;&lt;a data_ubb="/气炸了" title="气炸了" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/29.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;li style="border-right:0px;border-bottom:0px;"&gt;&lt;a data_ubb="/难受" title="难受" href="javascript:void(0)"&gt;&lt;img src="http://comment.ali213.net/images/emoji/30.png"&gt;&lt;/a&gt;&lt;/li&gt;';
+	comment_body=comment_body+'&lt;/ul&gt;';
+	comment_body=comment_body+'&lt;/div&gt;';
+			
+			
+	comment_body=comment_body+'        &lt;div class="ali-comment-sub ali-comment-sub-hf"&gt;&lt;button class="ali-comment-sub-button" id="ali_comment_hf" style="display: inline-block;"&gt;发布&lt;/button&gt;&lt;/div&gt;';
+				
+	comment_body=comment_body+'&lt;div class="ali-comment-nm-yzm"&gt;';
+	comment_body=comment_body+'&lt;input type="text" id="ali_comment_yzm_hf" name="ali_comment_yzm" value="" /&gt;';
+	comment_body=comment_body+'&lt;img style="cursor:hand;border:0px;" src="http://comment.ali213.net/inc/code_hf.php" id="ali-comment-yzm-url_hf" onclick="this.src=\'http://comment.ali213.net/inc/code_hf.php?\'+Math.random()"&gt;';
+	comment_body=comment_body+'&lt;/div&gt;';
+			
+			
+	comment_body=comment_body+'    &lt;/div&gt;';
+	comment_body=comment_body+'&lt;input type="hidden" name="ali-hf-id" id="ali_comment_hf_id" value="'+hf_id+'" /&gt;';	
+	comment_body=comment_body+'&lt;/div&gt;';
+	
+	
+	comment_body=comment_body+'&lt;div class="ali-comment-alert ali-text-center" id="ali_comment_alert_hf"&gt;';
+	comment_body=comment_body+'	&lt;span&gt;未输入评论内容&lt;/span&gt;';
+	comment_body=comment_body+'&lt;/div&gt;';
+	
+	
+	return comment_body;
+		
+}
+
+//登录
+function ali_comment_login_alert(){
+	if(COMMENT_USER==""){
+		renderForLoginDefault();
+	}
+}
+
+function login_zjjs(str){
+	
+	var strs= new Array();
+	strs=str.split("&amp;&amp;&amp;");
+	for(i=0;i&lt;strs.length ;i++ ) 
+	{ 
+		var doc = document,
+		s = doc.createElement('script'),
+		h = doc.getElementsByTagName('head')[0] || doc.head || doc.documentElement;
+		s.type = 'text/javascript';
+		s.src = strs[i];
+		h.insertBefore(s,h.firstChild);
+		
+	} 
+}
+
+function getCookie(c_name){
+	if (document.cookie.length&gt;0){
+		c_start=document.cookie.indexOf(c_name + "=");
+		if (c_start!=-1){ 
+			c_start=c_start + c_name.length+1;
+			c_end=document.cookie.indexOf(";",c_start);
+			if (c_end==-1) c_end=document.cookie.length;
+			return unescape(document.cookie.substring(c_start,c_end));
+		} 
+	}
+	return "";
+}
+username="";
+if(username=getCookie("passport_nickname")){
+     var username=typeof JSON!="undefined" ? JSON.parse(username) : eval("("+username+")");
+}
+var COMMENT_TYPE = getcommenttype();			//评论频道ID
+var COMMENT_CONID = getcommentconid();			//评论内容ID
+var COMMENT_TITLE = document.title;				//评论的title
+var COMMENT_URL = window.location.href;			//评论的url
+var COMMENT_USER = username;		//登录的用户名(为空则是游客)
+var COMMENT_PAGE = 1;							//PAGE
+var COMMENT_PIC=getCookie("passport_avatar");
+var COMMENT_UID=getCookie("passport_uid");
+
+var doc = document,
+h = doc.getElementsByTagName('head')[0] || doc.head || doc.documentElement;
+css = doc.createElement('link'),
+css.rel = 'stylesheet';
+css.type = 'text/css';
+css.href = 'http://comment.ali213.net/css/ali-comment_3g.css?20141027';
+h.insertBefore(css,h.firstChild);
+
+//评论主体内容载入
+comment_insert();
+
+
+//头像弹出
+$("body").delegate("#ali-comment-add-face","click",function(event){
+    $(this).addClass("current");
+	$("#ali-pl-face").show();
+	event.stopPropagation();
+});
+
+$("body").delegate("#ali-comment-add-face-hf","click",function(event){
+    $(this).addClass("current");
+	$("#ali-pl-face-hf").show();
+	event.stopPropagation();
+});
+
+$(document).click(function(){
+	$("#ali-pl-face").hide();
+	$("#ali-comment-add-face").removeClass("current");
+	
+	$("#ali-pl-face-hf").hide();
+	$("#ali-comment-add-face-hf").removeClass("current");
+	
+
+});
+
+$("#ali-comment-post-textarea").each(function(){
+   $(this).val($(this).attr("focucmsg"));
+   $(this).addClass("ali-comment-post-textarea-ow");
+   $(this).focus(function(){
+   if($(this).val() == $(this).attr("focucmsg"))
+	{
+	 $(this).val('');
+	 $(this).removeClass("ali-comment-post-textarea-ow");
+	}
+	});
+	$(this).blur(function(){
+	  if(!$(this).val()){
+	  $(this).val($(this).attr("focucmsg"));
+	  $(this).addClass("ali-comment-post-textarea-ow");
+	}   
+	   
+	});
+}); 
+
+//插入头像
+
+$("body").delegate("#ali-pl-face ul li a","click",function(){
+    var face_ubb = $(this).attr("data_ubb");
+	var ubb_content = $("#ali-comment-post-textarea").val();
+	if(ubb_content=="来说两句吧..."){ubb_content=""}
+	$("#ali-comment-post-textarea").removeClass("ali-comment-post-textarea-ow");
+	$("#ali-comment-post-textarea").val(""+ubb_content+"["+face_ubb+"]");
+});
+
+//插入头像-回复
+
+$("body").delegate("#ali-pl-face-hf ul li a","click",function(){
+    var face_ubb = $(this).attr("data_ubb");
+	var ubb_content = $("#ali-comment-post-textarea-hf").val();
+	if(ubb_content=="来说两句吧..."){ubb_content=""}
+	$("#ali-comment-post-textarea-hf").val(""+ubb_content+"["+face_ubb+"]");
+});
+
+
+//发布评论
+
+$("body").delegate("#ali_comment_fabu","click",function(){
+    var ali_comment_val = $("#ali-comment-post-textarea").val();
+	ali_comment_val = ali_comment_val.replace("来说两句吧...","");
+	
+	if(ali_comment_val==""){
+		$("#ali_comment_alert").show();
+		$("#ali_comment_alert span").html("未输入评论内容");	
+		return false;
+	}
+	
+	if(COMMENT_USER==""){
+		var ali_comment_user = "游侠网友";		//评论用户
+		var ali_comment_yzm = $("#ali_comment_yzm").val();			//验证码
+		var ali_comment_ifvip = "no";
+		
+		if(ali_comment_user==""){
+			/*
+			$("#ali_comment_alert").show();
+			$("#ali_comment_alert span").html("昵称不能为空");	
+			return false;
+			*/
+			ali_comment_user="游侠网友";
+		}
+		
+		if(ali_comment_yzm==""){
+			$("#ali_comment_alert").show();
+			$(".ali-comment-nm-yzm").show();
+			$("#ali_comment_alert span").html("验证码不能为空");	
+			return false;
+		}
+		
+	}else{
+		var ali_comment_yzm = $("#ali_comment_yzm").val();
+		var ali_comment_user = COMMENT_USER;						//评论用户
+		var ali_comment_ifvip = "yes";
+	}
+	
+	if(COMMENT_TYPE==""){
+		$("#ali_comment_alert").show();
+		$("#ali_comment_alert span").html("配置错误Appid");	
+		return false;
+	}
+	
+	$.ajax({   
+		 type:"GET",
+		 async:false,
+		 url: "http://comment.ali213.net/ali-comment-ajx.php",
+		 data:{
+			action:"submit",
+			appid:COMMENT_TYPE,
+			user:ali_comment_user,
+			yzm:ali_comment_yzm,
+			conid:COMMENT_CONID,
+			title:COMMENT_TITLE,
+			content:ali_comment_val,
+			url:COMMENT_URL,
+			ifvip:ali_comment_ifvip,
+			uid:COMMENT_UID
+		 },
+		 dataType:"jsonp",
+		 jsonp : 'callback', 
+		 jsonpCallback:"success_jsonpCallback",
+		 success: function(json){ 
+			$("#ali-comment-yzm-url").attr("src","http://comment.ali213.net/inc/code.php?"+Math.random());			
+			if(json[0].str==1){
+				$("#ali_comment_alert").show();
+				$(".ali-comment-nm-yzm").show();
+				$("#ali_comment_alert span").html(json[0].error);	
+			}
+			
+			if(json[0].str==2){
+				$("#ali_comment_alert").hide();
+				$("#ali-comment-post-textarea").val("");
+				comment_read(COMMENT_TYPE,COMMENT_CONID,1,2,2);
+			}
+			
+			if(json[0].str==3){
+				$("#ali_comment_alert").hide();
+				$("#ali-comment-post-textarea").val("");
+				alert(json[0].error);
+			}
+		
+		 },
+			error:function(){
+			// alert('ajax error');
+	   }
+
+	 });
+});
+
+
+function ali_yzm_sj(){
+	$("#ali_comment_yzm").val('');
+	$("#ali-comment-yzm-url").attr("src","http://comment.ali213.net/inc/code.php?"+Math.random());
+}
+
+
+//评论回复
+
+$("body").delegate("#ali_comment_hf","click",function(){
+    var ali_comment_val = $("#ali-comment-post-textarea-hf").val();
+	var ali_comment_hfid = $("#ali_comment_hf_id").val();
+	
+	if(ali_comment_val==""){
+		$("#ali_comment_alert_hf").show();
+		$("#ali_comment_alert_hf span").html("未输入评论内容");	
+		return false;
+	}
+	
+	if(ali_comment_hfid==""){
+		$("#ali_comment_alert_hf").show();
+		$("#ali_comment_alert_hf span").html("回复ID不存在");	
+		return false;
+	}
+	
+	if(COMMENT_USER==""){
+		var ali_comment_user = "游侠网友";		//评论用户
+		var ali_comment_yzm = $("#ali_comment_yzm_hf").val();			//验证码
+		var ali_comment_ifvip = "no";
+		
+		if(ali_comment_user==""){
+			/*
+			$("#ali_comment_alert_hf").show();
+			$("#ali_comment_alert_hf span").html("昵称不能为空");	
+			return false;
+			*/
+			ali_comment_user="游侠网友";
+		}
+		
+		if(ali_comment_yzm==""){
+			$("#ali_comment_alert_hf").show();
+			$(".ali-comment-nm-yzm").show();
+			$("#ali_comment_alert_hf span").html("验证码不能为空");	
+			return false;
+		}
+		
+	}else{
+
+		var ali_comment_user = COMMENT_USER;						//评论用户
+		var ali_comment_yzm = $("#ali_comment_yzm_hf").val();
+		var ali_comment_ifvip = "yes";
+	}
+	
+	if(COMMENT_TYPE==""){
+		$("#ali_comment_alert_hf").show();
+		$("#ali_comment_alert_hf span").html("配置错误Appid");	
+		return false;
+	}
+					                
+
+	$.ajax({   
+		 type:"GET",
+		 async:false,
+		 url: "http://comment.ali213.net/ali-comment-ajx.php",
+		 data:{
+			action:"huifu",
+			appid:COMMENT_TYPE,
+			user:ali_comment_user,
+			yzm:ali_comment_yzm,
+			conid:COMMENT_CONID,
+			title:COMMENT_TITLE,
+			content:ali_comment_val,
+			url:COMMENT_URL,
+			ali_comment_hfid:ali_comment_hfid,
+			ifvip:ali_comment_ifvip,
+			uid:COMMENT_UID
+		 },
+		 dataType:"jsonp",
+		 jsonp : 'callback', 
+		 jsonpCallback:"success_jsonpCallback",
+		 success: function(json){ 
+			$("#ali-comment-yzm-url_hf").attr("src","http://comment.ali213.net/inc/code_hf.php?"+Math.random());			
+			if(json[0].str==1){
+				$("#ali_comment_alert_hf").show();
+				$(".ali-comment-nm-yzm").show();
+				$("#ali_comment_alert_hf span").html(json[0].error);
+			}
+			
+			if(json[0].str==2){
+				$("#ali_comment_alert_hf").hide();
+				$("#ali-comment-post-textarea-hf").val("");
+				comment_read(COMMENT_TYPE,COMMENT_CONID,1,2,2);
+			}
+			
+			if(json[0].str==3){
+				$("#ali_comment_alert_hf").hide();
+				$("#ali-comment-post-textarea-hf").val("");
+				alert(json[0].error);
+				comment_read(COMMENT_TYPE,COMMENT_CONID,1,2,2);
+			}
+			
+		
+		 },
+			error:function(){
+			// alert('ajax error');
+	   }
+
+	 });   
+});
+
+$("body").delegate(".ali-action-ding","click",function(){
+     var ding_id = $(this).attr("data-id");
+	 comment_dc(ding_id,1);
+});
+
+$("body").delegate(".ali-action-cai","click",function(){
+     var cai_id = $(this).attr("data-id");
+	 comment_dc(cai_id,2);
+});
+
+//回复
+
+$("body").delegate(".ali-evt-reply","click",function(){
+        var input_id = $(this).attr("data-id");
+		var input_html = $("#ali_hf_input_"+input_id).html();
+		if(input_html==""){
+			$(".ali-comment-huifu-input").html("");
+			var input_text = comment_hf_input(input_id);	
+			$("#ali_hf_input_"+input_id).html(""+input_text);			
+		}else{	
+			$(".ali-comment-huifu-input").html("");	
+		}
+});
+
+
+function loginAfter(resultJson){
+	      if (resultJson['status'] == 1){
+                $(".ali213SSOPopSheild").hide();
+				ali213SSOavatar = getCookie("passport_avatar");
+		        $("[name='alissousername']").val('');
+		        $("[name='alissopasswd']").val('');
+		        $("[name='alissoyzm']").val('');
+				COMMENT_USER = resultJson['data']['userinfo']['nickname'];
+				COMMENT_UID = resultJson['data']['userinfo']['uid'];
+				COMMENT_PIC = getCookie("passport_avatar");
+				window[callbackfunForOnline].call(this,resultJson['data']['userinfo']['nickname']);
+				$("#ali213SSO").append(resultJson['data']['script']);
+				comment_insert();
+		  }else{
+			    alert(resultJson['msg']);
+		        $(".ali213SSO-yzm-img").attr("src","http://i.ali213.net/yzm/signin.jpg?r="+Math.random());
+		  }
+}
+
+$("body").delegate(".loginBtn","click",function(){
+        $.getJSON('http://i.ali213.net/api.html?action=logout&amp;callback=?',function(resultJson){
+			    if (resultJson['status'] == 1){
+					COMMENT_USER = "";
+					COMMENT_UID = "";
+					window[callbackfunForOffline].call(this);
+					$("#ali213SSO").append(resultJson['data']['script']);
+					comment_insert();
+				}else{
+					alert('登出失败，请重试');
+				}
+		});
+});
+
+
+
+//小编回复 查看更多
+
+$("body").delegate(".xbmore","click",function(){
+      $text = $(".xbmore").html(); 
+	  if($text=="查看更多评论")
+	  {
+	     $(".ali-c-block-box1").show();
+		 $(".xbmore").html("收起更多");
+	  }else{
+         $(".ali-c-block-box1").hide();
+		 $(".xbmore").html("查看更多评论");
+	     	$("html,body").animate({scrollTop: $("#ALICOMMENTTOP_XB").offset().top});	
+	  }
+});
+
+
+
+//内容框聚焦与失去焦点绑定事件
+
+
+$("body").delegate(".ali-comment-post-textarea-fw","focus",function(){
+       
+        $(".ali-comment-nm-yzm").show();
+
+});
+
+
+$("body").delegate(".ali-comment-post-textarea-fw","click",function(event){
+     event.stopPropagation();
+});
+
+$("body").bind("click",function(){
+
+        $(".ali-comment-nm-yzm").hide();
+
+});
+
+$("body").delegate(".ali-comment-nm-yzm","click",function(event){       
+        event.stopPropagation();
+});
+</pre></body></html>

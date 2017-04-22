@@ -1,0 +1,1584 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<TITLE>广州天河新东方职业教育培训中心 - JAVA培训|广州JAVA培训|广州android培训|软件工程师培训|软件工程师培训机构|软件编程培训|广州IT培训</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=gb2312">
+<META name="verify-v1" content="/jyNcCkGveATyoFSp3VEd5zoFmAyOwh2d00CwKITxYw=" />
+<meta name="keywords" content="东方标准,JAVA软件工程师,广州java培训,广州软件工程师培训,天河区java培训,广州软件开发培训,广州Android培训,java培训机构,java培训,Android培训">
+<meta name="description" content="新东方职业教育培训中心旗下东方标准【广州java培训、广州android培训班，学编程首选百年暨南】,先后与中山大学、华南理工大学、华南师范大学、暨南大学等合作开设业界领先的软件工程师培训等课程，是华南地区历史最悠久的大型综合IT培训机构。专注高端IT培训十余载...">
+<link href="main.css" rel="stylesheet" type="text/css" />
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="Bookmark" href="/favicon.ico">
+<link href="head.css" rel="stylesheet" type="text/css">
+<link href="http://www.oneedu.cn/css/access.css" rel="stylesheet" type="text/css" />
+<script language="JavaScript" type="text/javascript" src="js/imagerollover.js"></script>
+<SCRIPT src="/main/prototype-1.4.0.js"></SCRIPT>
+<SCRIPT>
+// News 标签
+var waitInterval;
+var MDelayTime=300;
+function ADMenu(index){
+			clearTimeout(waitInterval);
+			waitInterval=window.setTimeout("getShow("+index+");",MDelayTime);
+}
+
+function getShow(index){
+			clearTimeout(waitInterval);
+			for(var i=0;i<2;i++){/* 最多支持2个标签 */
+				if(GetObj("newsCon"+i)&&GetObj("ADm"+i)){
+					GetObj("newsCon"+i).style.display = 'none';
+					GetObj("ADm"+i).className = "qNewsbg1";
+				}
+			}
+			if(GetObj("newsCon"+index)&&GetObj("ADm"+index)){
+				GetObj("newsCon"+index).style.display = 'block';
+				GetObj("ADm"+index).className = "qNewsbg";
+			}
+}
+
+// play 标签
+		function GetObj(objName){
+			if(document.getElementById){
+				return eval('document.getElementById("' + objName + '")');
+			}else if(document.layers){
+				return eval("document.layers['" + objName +"']");
+			}else{
+				return eval('document.all.' + objName);
+			}
+		}
+		function PLAYMenu(index,flag){
+			for(var i=0;i<3;i++){/* 最多支持3个标签 */
+				if(GetObj("pCon"+i)&&GetObj("qPlay"+i)){
+					GetObj("pCon"+i).style.display = 'none';
+					GetObj("qPlay"+i).className = "qpTag1";
+				}
+			}
+			if(GetObj("pCon"+index)&&GetObj("qPlay"+index)){
+				GetObj("pCon"+index).style.display = 'block';
+				GetObj("qPlay"+index).className = "qpTag";
+			}
+		}
+
+
+//local sq++
+
+var PageUI = {};
+
+if (typeof PageUI.isGecko == "undefined") {
+    var user = navigator.userAgent.toLowerCase();
+
+    PageUI.isGecko     = (user.indexOf("gecko") > -1);
+    PageUI.isOpera     = (typeof window.opera != "undefined");
+    PageUI.isIe        = (user.indexOf("msie") > -1 && !PageUI.isOpera);
+    PageUI.isStrict    = (document.documentElement && document.documentElement.clientHeight);
+    PageUI.isSupported = (PageUI.isGecko || PageUI.isOpera || PageUI.isIe);
+    if (PageUI.isIe) {
+    	var bpos = user.indexOf("msie");
+    	var epos = user.indexOf(";", bpos);
+    	PageUI.IeVer = user.substring(bpos+5,epos);
+    } else {
+    	PageUI.IeVer = 0;
+    }
+}
+
+
+
+document.onmousedown=function(aEvent){
+	var myEvent = window.event ? window.event : aEvent;
+	var lo=GetObj("locListDiv");
+	if(!IsChild(myEvent.srcElement,lo))hideLocSelect();
+}
+function IsChild(cNode,pNode){
+	while(cNode!=null){
+		cNode=cNode.parentNode;
+		if(cNode==pNode) return true; 
+	}
+	return false;
+}
+function showLocSelect()
+{
+	var locdiv=GetObj("locListDiv");
+	if(locdiv.style.display=="block"){
+		locdiv.style.display="none";
+		return;
+	}
+	locdiv.style.display="block";
+	var locs=locdiv.getElementsByTagName("li");
+	for(var i=0;i<locs.length;i++)
+	{
+		var theloc=locs[i];
+			theloc.onmouseover=function(){
+				this.style.backgroundColor="#A0AAC8"
+			}
+			theloc.onmouseout=function(){
+				this.style.backgroundColor="#F2F6FB"
+			}
+			theloc.onmousedown=function(){
+				var locstr=this.innerHTML;
+				if (locstr.indexOf(" ")!=-1) locstr=locstr.substr(0,locstr.indexOf(" ")); //fixbug 在IE下多出一个空格
+//if(locstr=="湖南") alert(locstr);
+				setLocNews(locstr);
+				hideLocSelect();
+				var l=GetObj("locbar");
+				if (!PageUI.isIe) locstr= locstr+ '&utf8=1';
+				getHTML(locstr);
+			}
+	}
+}
+function randomNumber(limit){ return Math.floor(Math.random()*limit); } 
+
+    function getHTML(locstr)
+    {
+        var url = "http://www.oneedu.cn";
+        var pars = 'locstr='+locstr+"&t="+randomNumber(10000);
+        var myAjax = new Ajax.Updater("newsCon1", url, {method: 'get', parameters: pars});
+    }
+
+function hideLocSelect()
+{	
+	GetObj("locListDiv").style.display="none";
+}
+
+function setLocNews(locstr){
+	var l=GetObj("locbar");
+	l.setAttribute("href","http://www.oneedu.cn");
+	l.innerHTML=locstr+"新闻";
+}
+
+function getObject(objectId) {
+    if(document.getElementById && document.getElementById(objectId)) {
+	// W3C DOM
+	return document.getElementById(objectId);
+    } else if (document.all && document.all(objectId)) {
+	// MSIE 4 DOM
+	return document.all(objectId);
+    } else if (document.layers && document.layers[objectId]) {
+	// NN 4 DOM.. note: this won't find nested layers
+	return document.layers[objectId];
+    } else {
+	return false;
+    }
+}
+
+// cookie
+var hostDomain = "www.oneedu.cn";
+var kName = "CloseWelTime";
+var kValue;
+function getCookieVal (offset) {
+  var endstr = document.cookie.indexOf (";", offset);
+  if (endstr == -1)
+  endstr = document.cookie.length;
+  return unescape(document.cookie.substring(offset, endstr));
+}
+function GetCookie (name) {
+  var arg = name + "=";
+  var alen = arg.length;
+  var clen = document.cookie.length;
+  var i = 0;
+  while (i < clen) {
+    var j = i + alen;
+    if (document.cookie.substring(i, j) == arg)
+      return getCookieVal (j);
+    i = document.cookie.indexOf(" ", i) + 1;
+    if (i == 0)
+       break;
+  }
+  return "";
+}
+function SetCookie(cookieName,cookieValue,nDays) {
+ var today = new Date();
+ var expire = new Date();
+ if (nDays==null || nDays==0) nDays=7;
+ expire.setTime(today.getTime() + 3600000*24*nDays);
+ document.cookie = cookieName+"="+escape(cookieValue) + ";path=/;domain="+hostDomain+";expires="+expire.toGMTString();
+}
+
+////
+</SCRIPT>
+
+<!-- 导航 -->
+</HEAD>
+<BODY>
+
+<SCRIPT>
+var Digital=new Date();
+var myear=(navigator.userAgent.toLowerCase().indexOf("firefox")!=-1)?Digital.getYear()+1900:Digital.getYear();//如果firefox浏览器年份+1900
+var mmonth=Digital.getMonth()+1;
+var mday=Digital.getDate();
+var weekday=Digital.getDay();
+ShowWel();
+function ShowWel(){
+  var myCookie = GetCookie(kName);
+  if((myCookie!=null)&&(myCookie!="")) {
+    getObject('tInfo').style.display='none';
+  }
+}
+
+function CloseWel(){
+  getObject('tInfo').style.display='none';
+  kValue = ""+myear+mmonth+mday;
+  SetCookie(kName,kValue,7);
+}
+</SCRIPT>
+<!-- end -->
+<SCRIPT language=javascript src="main/qhstat.js"></SCRIPT>
+<div align=center><div id=clk_daohang>
+  <SCRIPT language=javascript> 
+function JSAddFavorite()
+{if ( window.sidebar && "object" == typeof( window.sidebar ) && "function" == typeof( window.sidebar.addPanel ) )
+{
+         //  firefox
+                window.sidebar.addPanel( '东方标准广州', '/', '' );
+        }
+        else if ( document.all && "object" == typeof( window.external ) )
+        {
+                //  ie
+                window.external.addFavorite( '/', '东方标准广州' );
+        }
+}
+</SCRIPT> 
+<table width="950" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td><table width="950" border="0" cellspacing="0" cellpadding="0" class="topmenu123">
+      <tr>
+        <td width="3"><img src="images/head_02.gif" width="3" height="37" /></td>
+        <td background="images/head_03.gif" class="top">广州新东方 www.oneedu.cn  <span class="red"></span> 　　　　　
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<A onclick="this.style.behavior='url(#default#homepage)';this.setHomePage('http://www.OneEdu.cn');return(false);" href="#">设新东方(广州)为首页</A> | <a href="javascript:JSAddFavorite();">收藏新东方
+（广州）</a> | <a href="/jy">人才服务</a> | <a href="/xiangmuwaibao/xiangmuwaibao1.html">项目外包</a> | <a href="http://www.oristand.com/" target="_blank">新东方北京
+
+总公司</a> | <a href="http://www.oneedu.cn/kaobo/index.html" target="_blank">考博英语</a></td>
+        <td width="3" align="right"><img src="images/head_05.gif" width="3" height="37" /></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td><table width="950" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="296"><img src="images/indexlogo.jpg"/></td>
+                <td width="652" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+              <td align="center"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td align="center"><a href="http://soft.oneedu.cn/" target="_blank"><img src="images/head_ico1.gif" width="58" height="56" border="0"/></a></td>
+              </tr>
+              <tr>
+                <td align="center" class="ico_1"><a href="http://soft.oneedu.cn/" target="_blank" class="ico_1" alt="广州Java培训">软件学院</a></td>
+              </tr>
+            </table></td>
+                        <td align="center"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td align="center"><a href="http://soft.oneedu.cn/html/kecheng/2012/1012/691.html" target="_blank" alt="广州Java培训"><img src="images/head_ico5.gif" width="58" 
+
+height="56" border="0" /></a></td>
+              </tr>
+              <tr>
+                <td align="center" class="ico_5"><a href="http://soft.oneedu.cn/html/kecheng/2012/1012/691.html" target="_blank" class="ico_5"   >3G学院</a></td>
+              </tr>
+            </table></td>
+            <td align="center"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td align="center"><a href="http://www.oneedu.cn/ruankao/index.htm" target="_blank"><img src="images/head_ico7.gif" width="58" height="56" border="0" 
+
+  title="系统分析师培训" /></a></td>
+              </tr>
+              <tr>
+                <td align="center" class="ico_1"><a href="http://www.oneedu.cn/ruankao/index.htm" target="_blank" class="ico_1" alt="广州Java培训">国家软考</a></td>
+              </tr>
+            </table></td>
+                        <td align="center"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td align="center"><a href="http://www.51doseo.com" target="_blank"><img src="images/head_ico2.gif" width="58" height="58" border="0" title="seo优化培训" /></a></td>
+              </tr>
+              <tr>
+                <td align="center" class="ico_2"><a href="http://www.51doseo.com" target="_blank" class="ico_2">SEO学院</a></td>
+              </tr>
+            </table></td>
+            <td align="center"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td align="center"><a href="http://www.51top.org" target="_blank"><img src="images/head_ico3.gif" width="65" height="56" border="0" title="动漫设计师培训" /></a></td>
+              </tr>
+              <tr>
+                <td align="center" class="ico_3"><a href="http://www.51top.org" target="_blank" class="ico_3">动漫学院</a></td>
+              </tr>
+            </table></td>
+            <td align="center"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td align="center"><a href="http://www.oneedu.cn/kecheng/jyl/1728.html" target="_blank"><img src="images/head_ico4.gif" width="58" height="56" 
+
+border="0" title="平面设计师培训" /></a></td>
+              </tr>
+              <tr>
+                <td align="center" class="ico_4"><a href="http://www.17cg.org" target="_blank" class="ico_4">艺术设计学院</a></td>
+              </tr>
+            </table></td>
+            <td align="center"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td align="center"><a href="http://www.oneedu.cn/bbs/" target="_blank"><img src="images/head_ico6.gif" width="58" height="56" border="0" /></a></td>
+              </tr>
+              <tr>
+                <td align="center" class="ico_6"><a href="http://www.oneedu.cn/bbs/" target="_blank" class="ico_6">论坛社区</a></td>
+              </tr>
+            </table></td>
+          </tr>
+        </table></td>
+      </tr>
+    </table>
+ </td>
+  </tr>
+  <tr>
+    <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="10"><img src="images/head_27.gif" width="15" height="75" /></td>
+        <td align="center" background="images/head_28.gif" class="nav"><a href="http://www.oneedu.cn/">网站首页</a>　 <a href="http://soft.oneedu.cn/html/kecheng/" target=_blank >培训课程</a>　 <a 
+
+href="/fengmao/news/Index.htm" target="_blank">新闻中心</a>　 <a href="/xuexiao/teacher.htm">教学中心</a>　 <a href="/xyzx">学员中心</a> 　<a href="/jy/index.html">就业中心</a>　 <a href="/kecheng/qypsb/21199.html">企业培训</a>　 <a href="/kecheng/rzl">认证培训</a>　 <a href="/kecheng/NITPRO">考前冲刺</a>　 <a 
+
+href="/jqpx/xsxx/Index.html">职前培训</a> 　<a href="/jy">人才服务</a>　 <a href="/xiangmuwaibao/xiangmuwaibao1.html" target="_blank">项目外包</a>　 <a 
+
+href="/rzks">NIT-Pro<br />
+        </a><a href="/zxbm/mianfeijiangzuo.html"> 免费讲座</a> 　<a href="/OneEdu/xyhj/index.html">校园环境</a>　 <a href="/xuexiao/teacher.htm">师资力量</a>　 <a 
+
+href="/xuexiao/jyms.html">就业明星</a>　 <a href="/xyzx/xyxs/Index.html">学员心声</a>　 <a href="/xyzx/xywd/Index.html">学员问答</a>　 <a href="/xyzx/xxlx/Index.html">
+
+学员来信</a>　 <a href="/xyzx/xyzp/Index.html">学员作品</a>　 <a href="/xxyd">学习园地</a>　 <a href="/jy/index.html">就业指导</a>　 <a
+
+href="http://soft.oneedu.cn/html/video222/">教学环境</a> 　<a href="/OneEdu/wlshb">教学设备</a>　 <a href="/xuexiao/weizhi.html">联系我们</a></td>
+        <td width="10" align="right"><img src="images/head_31.gif" width="15" height="75" /></td>
+      </tr>
+    </table></td>
+  </tr>
+  <tr><td height="130px">
+<div style="z-index:-1">
+<object type="application/x-shockwave-flash" style="" width="100%" height="130px">
+<param name="movie" value="http://www.oneedu.cn/images/topad.swf">
+<param name="wmode" value="transparent">
+</object>
+</div>
+<div style="position:absolute;top:190px;left:165px; width:950px;height:130px; z-index:1; visibility: visible">
+<a href="http://soft.oneedu.cn" style=""><img style="width:100%; height:130px;"  border="0" src="http://www.oneedu.cn/images/spacer.gif" title="广州新东方职业培训中心东方标准软件学院" alt="广州java培训实力最强,android培训就业领先"></a>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class=blank6> </div>
+<!-- PageContent -->
+<div id=qcontent >
+  <div id=qcon_l>
+    <!-- 新东方产品 -->
+   <!-- 新东方新闻 -->
+    <div id=clk_news>
+      <div id=qNews>
+        <div class=nTit>
+          <UL>
+            <LI class=qNewsbg id=ADm0 onmouseover=ADMenu(0); onmouseout=clearTimeout(waitInterval);>
+              <H6><A href="/fengmao/news/xdfnews/Index.htm" target=_blank>行业新闻</A></H6>
+            </LI>
+            <LI class=b>
+              <!-- local head -->
+            </LI>
+            <LI class=qNewsbg1 id=ADm1 onmouseover=ADMenu(1); onmouseout=clearTimeout(waitInterval);>
+              <H6><A id=locbar href="/fengmao/news/hydt/Index.htm">IT培训动态</A></H6>
+            </LI>
+          </UL>
+        </div>
+        <!-- local head end-->
+        <div id=newsCon0>
+          <div class=nLeft>
+            <UL>
+              <LI style="TEXT-ALIGN: center">
+                <script language="JavaScript">
+<!--
+var navigatorName = "Microsoft Internet Explorer";
+var isIE = false; 
+if(navigator.appName==navigatorName) isIE = true;
+function objSP_Article() {this.ImgUrl=""; this.LinkUrl=""; this.Title="";}
+function SlidePic_Article(_id) {this.ID=_id; this.Width=0;this.Height=0; this.TimeOut=5000; this.Effect=23; this.TitleLen=0; this.PicNum=-1; this.Img=null; this.Url=null; this.Title=null; this.AllPic=new Array(); this.Add=SlidePic_Article_Add; this.Show=SlidePic_Article_Show; this.LoopShow=SlidePic_Article_LoopShow;}
+function SlidePic_Article_Add(_SP) {this.AllPic[this.AllPic.length] = _SP;}
+function SlidePic_Article_Show() {
+  if(this.AllPic[0] == null) return false;
+  document.write("<div align='center'><a id='Url_" + this.ID + "' href='' target='_blank'><img id='Img_" + this.ID + "' style='width:" + this.Width + "px; height:" + this.Height + "px; filter: revealTrans(duration=2,transition=23);' src='javascript:null' border='0'></a>");
+  if(this.TitleLen != 0) {document.write("<br><span id='Title_" + this.ID + "'></span></div>");}
+  else{document.write("</div>");}
+  this.Img = document.getElementById("Img_" + this.ID);
+  this.Url = document.getElementById("Url_" + this.ID);
+  this.Title = document.getElementById("Title_" + this.ID);
+  this.LoopShow();
+}
+function SlidePic_Article_LoopShow() {
+  if(this.PicNum<this.AllPic.length-1) this.PicNum++ ; 
+  else this.PicNum=0; 
+  if(isIE==true){
+  this.Img.filters.revealTrans.Transition=this.Effect; 
+  this.Img.filters.revealTrans.apply(); 
+  }
+  this.Img.src=this.AllPic[this.PicNum].ImgUrl;
+  if(isIE==true){
+  this.Img.filters.revealTrans.play();
+  }
+  this.Url.href=this.AllPic[this.PicNum].LinkUrl;
+  if(this.Title) this.Title.innerHTML="<a href="+this.AllPic[this.PicNum].LinkUrl+" target='_blank'>"+this.AllPic[this.PicNum].Title+"</a>";
+  this.Img.timer=setTimeout(this.ID+".LoopShow()",this.TimeOut);
+}
+//-->
+</script>
+<script language=JavaScript>
+<!--
+var SlidePic_578 = new SlidePic_Article("SlidePic_578");
+SlidePic_578.Width    = 160;
+SlidePic_578.Height   = 120;
+SlidePic_578.TimeOut  = 5000;
+SlidePic_578.Effect   = 23;
+SlidePic_578.TitleLen = 20;
+var oSP = new objSP_Article();
+oSP.ImgUrl         = "/fengmao/UploadFiles_4325/200903/20090304103306177.jpg";
+oSP.LinkUrl        = "/fengmao/news/xdfnews/200903/27763.htm";
+oSP.Title         = "东方标准获“中国十大…";
+SlidePic_578.Add(oSP);
+var oSP = new objSP_Article();
+oSP.ImgUrl         = "/fengmao/UploadFiles_4325/200809/20080917114326978.jpg";
+oSP.LinkUrl        = "/fengmao/news/xdfnews/200809/27472.htm";
+oSP.Title         = "东方标准获千万美元国…";
+SlidePic_578.Add(oSP);
+var oSP = new objSP_Article();
+oSP.ImgUrl         = "/fengmao/UploadFiles_4325/200809/20080912111231640.jpg";
+oSP.LinkUrl        = "/fengmao/news/xdfnews/200809/27436.htm";
+oSP.Title         = "月儿圆&nbsp;人团圆&nbsp;东方标…";
+SlidePic_578.Add(oSP);
+var oSP = new objSP_Article();
+oSP.ImgUrl         = "/fengmao/UploadFiles_4325/200808/20080813103410128.jpg";
+oSP.LinkUrl        = "/fengmao/news/xdfnews/200808/27249.htm";
+oSP.Title         = "东方标准学员接受日本…";
+SlidePic_578.Add(oSP);
+var oSP = new objSP_Article();
+oSP.ImgUrl         = "/fengmao/UploadFiles_4325/200807/20080708145654381.jpg";
+oSP.LinkUrl        = "/fengmao/news/xdfnews/200807/26700.htm";
+oSP.Title         = "新近赴日学员获“老前…";
+SlidePic_578.Add(oSP);
+var oSP = new objSP_Article();
+oSP.ImgUrl         = "/fengmao/UploadFiles_4325/200807/20080708145417896.jpg";
+oSP.LinkUrl        = "/fengmao/news/xdfnews/200807/26699.htm";
+oSP.Title         = "国际软件工程师三位学…";
+SlidePic_578.Add(oSP);
+var oSP = new objSP_Article();
+oSP.ImgUrl         = "/fengmao/UploadFiles_4325/200806/20080607095837679.jpg";
+oSP.LinkUrl        = "/fengmao/news/xdfnews/200806/26247.htm";
+oSP.Title         = "东方标准牵手日本索浪…";
+SlidePic_578.Add(oSP);
+var oSP = new objSP_Article();
+oSP.ImgUrl         = "/fengmao/UploadFiles_4325/200805/20080530163956382.jpg";
+oSP.LinkUrl        = "/fengmao/news/xdfnews/200805/26177.htm";
+oSP.Title         = "东方标准——让就业机…";
+SlidePic_578.Add(oSP);
+var oSP = new objSP_Article();
+oSP.ImgUrl         = "/fengmao/UploadFiles_4325/200805/20080530163523702.jpg";
+oSP.LinkUrl        = "/fengmao/news/xdfnews/200805/26176.htm";
+oSP.Title         = "毕业作品展示期间学生…";
+SlidePic_578.Add(oSP);
+var oSP = new objSP_Article();
+oSP.ImgUrl         = "/fengmao/UploadFiles_4325/200801/20080130104621604.jpg";
+oSP.LinkUrl        = "/fengmao/news/xdfnews/200801/23569.htm";
+oSP.Title         = "全国计算机技术资格考…";
+SlidePic_578.Add(oSP);
+SlidePic_578.Show();
+//-->
+</script>
+
+              <LI class=txt><A href="/fengmao/ShowArticle.asp?ArticleID=6090" target=blank>俞敏洪</A>|<A href="/
+
+fengmao/news/xdfnews/200701/7956.htm" target=blank>吴雷</A>|<A href="http://blog.sina.com.cn/u/1060924832" target=blank>田江东</A>|<A href="/
+
+jqpx/Index.asp" target=blank></A>|<A href="http://www.itpx.com.cn/" target=blank><STRONG>IT培训</STRONG></A>|<A href="#" target=blank>人才测评</A>|<A 
+
+href="http://www.toedu.org" target=blank>广州Java培训</A>|<A href="#" target=blank>东方标准热点</A>
+              <LI>
+                <MARQUEE onmouseover=stop() onmouseout=start() scrollAmount=1 scrollDelay=1 direction=up>
+                <A href="/xuexiao/biaozhun.html" target=_blank>东方标准</A>是原<STRONG>新东方</STRONG>教育集团下的<A href="/
+
+xuexiao/biaozhun.html" target=_blank><STRONG>新东方职业教育中心</STRONG></A>,培训的服务有：<A href="/kecheng/jyl/1736.html" target=_blank><STRONG>Java软件
+
+工程师培训</STRONG></A>,<A href="/kecheng/jyl/1737.html" target=_blank>java软件工程师</A>,<A href="/kecheng/jyl/1737.html" target=_blank>国际化软件工程师培训</A>,<A href="/haiwai/index.html" target=_blank>海外就业</A>,<A href="/kecheng/jyl/1728.html" target=_blank><STRONG>电脑美术设计师
+
+</STRONG></A>,<A href="/kecheng/jyl/1727.html" target=_blank><STRONG>平面设计师培训</STRONG></A>,<A href="/kecheng/jyl/1726.html" 
+
+target=_blank><STRONG>网页设计师培训</STRONG></A>,是国内最好的JAVA软件工程师培训，<STRONG>IT培训</STRONG>学校,在<STRONG>广州</STRONG>主要有：<A href="/" 
+
+target=_blank>电脑培训</A>,职业教育<A href="/jqpx/Index.html" target=_blank>，职前培训</A>,就业培训,项目外包，也是国家教育部唯一授权的<A 
+
+href="http://www.nit-pro.org/index_part.asp?typeid=11&bigclassid=32" target=_blank>全国软件行业<STRONG>职称考试</STRONG></A><A href="/rzks/index.html" 
+
+target=_blank><STRONG>nit-pro认</STRONG>证</A>中心。2013年新增广州Android培训，耕耘十年java培训</MARQUEE>
+              </LI>
+            </UL>
+          </div>
+          <div class=nRight>
+            <script language='javascript' src='/AD/200612/biaotixinwen.js'></script>
+            <UL>
+              <LI style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND: none transparent scroll repeat 0% 0%; PADDING-BOTTOM: 0px; PADDING-TOP: 0px">
+                <div class="">·&nbsp;<a class="" href="/fengmao/news/xdfnews/201303/28045.htm" title="时代：谷歌整合旗下两大操作平台乃大势所趋" target="_blank">时代：谷歌整合旗下两大操作平台乃大势所趋</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/xdfnews/201303/28044.htm" title="Android的开源迷雾&nbsp;与中国厂商的机遇" target="_blank">Android的开源迷雾&nbsp;与中国厂商的机遇</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/xdfnews/201303/28038.htm" title="Android和Chrome业务整合前瞻与解析" target="_blank">Android和Chrome业务整合前瞻与解析</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/xdfnews/201303/28032.htm" title="收紧还是开放？Android后鲁宾时代之变" target="_blank">收紧还是开放？Android后鲁宾时代之变</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/xdfnews/201303/28031.htm" title="谷歌将于7月1日关停Google&nbsp;Reader服务" target="_blank">谷歌将于7月1日关停Google&nbsp;Reader服务</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/xdfnews/201303/28027.htm" title="手机操作系统新晋者的差异化功能破局" target="_blank">手机操作系统新晋者的差异化功能破局</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/xdfnews/201303/28025.htm" title="Android5.0将至&nbsp;谷歌I/O大会门票售罄" target="_blank">Android5.0将至&nbsp;谷歌I/O大会门票售罄</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/xdfnews/201303/28023.htm" title="Android之父鲁宾卸任&nbsp;Google开启新篇章" target="_blank">Android之父鲁宾卸任&nbsp;Google开启新篇章</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/xdfnews/201303/28020.htm" title="2013年3月编程语言排行榜：有毒的Java" target="_blank">2013年3月编程语言排行榜：有毒的Java</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/xdfnews/201303/28019.htm" title="人大代表徐龙呼吁为个人开发者减税负" target="_blank">人大代表徐龙呼吁为个人开发者减税负</a></div>
+              </LI>
+            </UL>
+          </div>
+        </div>
+        <div id=newsCon1 style="DISPLAY: none">
+          <div class=nLeft>
+            <UL>
+              <LI style="TEXT-ALIGN: center">
+                <script language=JavaScript>
+<!--
+var SlidePic_447 = new SlidePic_Article("SlidePic_447");
+SlidePic_447.Width    = 160;
+SlidePic_447.Height   = 120;
+SlidePic_447.TimeOut  = 5000;
+SlidePic_447.Effect   = 23;
+SlidePic_447.TitleLen = 20;
+var oSP = new objSP_Article();
+oSP.ImgUrl         = "/fengmao/UploadFiles_4325/201302/20130225115652380.jpg";
+oSP.LinkUrl        = "/fengmao/news/ITZX/201302/27963.htm";
+oSP.Title         = "四年后全球微服务器出…";
+SlidePic_447.Add(oSP);
+var oSP = new objSP_Article();
+oSP.ImgUrl         = "/fengmao/UploadFiles_4325/201302/20130204112625170.jpg";
+oSP.LinkUrl        = "/fengmao/news/ITZX/201302/27897.htm";
+oSP.Title         = "Android5.0的时代就要…";
+SlidePic_447.Add(oSP);
+var oSP = new objSP_Article();
+oSP.ImgUrl         = "/fengmao/UploadFiles_4325/200810/20081020100208957.jpg";
+oSP.LinkUrl        = "/fengmao/news/ITZX/200810/27680.htm";
+oSP.Title         = "布兰妮Twitter开设个人…";
+SlidePic_447.Add(oSP);
+var oSP = new objSP_Article();
+oSP.ImgUrl         = "/fengmao/UploadFiles_4325/200809/20080929093352221.gif";
+oSP.LinkUrl        = "/fengmao/news/ITZX/200809/27591.htm";
+oSP.Title         = "谷歌首页现10周年庆LO…";
+SlidePic_447.Add(oSP);
+SlidePic_447.Show();
+//-->
+</script>
+
+              <LI class=txt><A href="/fengmao/news/hydt/Index.htm" target=blank>行业动态</A>|<A href="/fengmao/news/ITRW/Index.htm" 
+
+target=blank>IT人物</A>|<A href="/fengmao/news/ITZX/Index.htm" target=blank>IT资讯</A>|<A href="/fengmao/news/ITZX/Index.htm" target=blank>教育
+
+频道</A>|<A href="/fengmao/news/gkpd/Index.htm" target=blank>考试职场</A>|<A href="/fengmao/news/ksjcsc/Index.htm" target=blank>娱乐杂谈</A>|<A 
+
+href="/fengmao/news/rmzt/Index.htm" target=blank>热门杂谈</A>
+              <LI>
+                &nbsp;<a class="" href="/fengmao/news/ksjcsc/200702/9642.htm" title="河南大专女生从3万人中突围敲开微软大门(图)" target="_self">河南大专女生从3万人中突…</a><br />&nbsp;<a class="" href="/fengmao/news/ITRW/201303/28043.htm" title="黑莓CEO海因斯：iPhone用户界面已5年没创新了" target="_self">黑莓CEO海因斯：iPhone用…</a><br />&nbsp;<a class="" href="/fengmao/news/ITRW/201303/28042.htm" title="Twitter客户端开发者&nbsp;移动应用“教父”级人物" target="_self">Twitter客户端开发者&nbsp;移…</a><br />
+              </LI>
+            </UL>
+          </div>
+          <div class=nRight>
+            <script language='javascript' src='/AD/200612/biaotixinwen1.js'></script>
+            <UL>
+              <LI style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND: none transparent scroll repeat 0% 0%; PADDING-BOTTOM: 0px; PADDING-TOP: 0px">
+                <div class="">·&nbsp;<a class="" href="/fengmao/news/hydt/201303/28041.htm" title="为什么自学java难成功" target="_self">为什么自学java难成功</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/hydt/201303/28030.htm" title="非IT专业大学生通过IT培训就业是大势所趋" target="_self">非IT专业大学生通过IT培训就业是大势所趋</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/hydt/201303/28029.htm" title="IT培训行业强者愈强&nbsp;弱者难以为继" target="_self">IT培训行业强者愈强&nbsp;弱者难以为继</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/hydt/201303/28018.htm" title="ios超越android&nbsp;java工程师培训仍是主流" target="_self">ios超越android&nbsp;java工程师培训仍是主流</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/hydt/201303/28017.htm" title="女大学生就业软件、金融等行业薪资高" target="_self">女大学生就业软件、金融等行业薪资高</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/hydt/201303/28015.htm" title="东方标准:怎样才可以学好java软件程序开发" target="_self">东方标准:怎样才可以学好java软件程序开发</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/hydt/201303/28013.htm" title="Java程序员紧缺,进行培训成毕业生最好选择" target="_self">Java程序员紧缺,进行培训成毕业生最好选择</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/hydt/201303/27993.htm" title="学高端、高薪、高技能软件开发到东方标准" target="_self">学高端、高薪、高技能软件开发到东方标准</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/hydt/201303/27989.htm" title="IT职业人掌握七种技能&nbsp;一年薪资翻倍" target="_self">IT职业人掌握七种技能&nbsp;一年薪资翻倍</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/hydt/201303/27978.htm" title="软件行业缺人，手机软件开发蓄势待发" target="_self">软件行业缺人，手机软件开发蓄势待发</a></div>
+              </LI>
+            </UL>
+          </div>
+          <!-- ***新闻动态结束  全国软件资格水平考试-->
+        </div>
+        <div class=clear> </div>
+      </div>
+    </div>
+    <div class=blankW6> </div>
+    <!-- java培训名师推荐 -->
+    <div><A href="http://soft.oneedu.cn" target=_blank><IMG height=64 alt=东方标准，新东方IT src="/main/gongqi.jpg" width=478 border=0></A></div>
+    <div class=blankW6> </div>
+    <!-- 学员作品 -->
+<div id=clk_blog>
+	
+             <div id=qBbs>
+        <div class=bTit>
+          <H5><A href="/kecheng/" target=_blank>培训课程</A></H5>
+        </div>
+        <div id=bbsCon>
+          <div class=lFun>
+            <UL>
+              <LI> <a href="http://soft.oneedu.cn/html/kecheng/" target="_blank" alt="广州java培训,广州Android培训"><img alt="新概念java就业班" src="/OneEdu/images/十年专注.gif" border=0 /></a>
+                <P><A class=cBlue id=utitle_2591323 href="http://soft.oneedu.cn/html/kecheng/" target=_blank>新概念java就业班</A></P></LI>
+
+              <LI><A id=utitle_3052070 href="http://net.oneedu.cn/inde x.html" target=_blank><IMG alt="国家软考"
+             src="/OneEdu/images/国家软考.gif" border=0 title="软件职称认定证书" ></A>
+                <P><A class=cBlue id=utitle_3052070 href="http://net.oneedu.cn/index.html" target=_blank>国家软考</A></P>
+              </LI>
+                
+               <LI><A id=utitle_130335 href="http://cg.oneedu.cn" target=_blank><IMG alt="技能学历" src="/OneEdu/images/重点高校.jpg" border=0></A>
+                <P><A class=cBlue id=utitle_130335 href="http://cg.oneedu.cn" target=_blank>技能学历</A></P></LI>
+               </UL>          
+        </div>          
+       <div class=rFun>
+            <UL class=odd>
+              <LI style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND: none transparent scroll repeat 0% 0%; PADDING-BOTTOM: 0px; PADDING-TOP: 0px"><SPAN><A href="/kecheng/jyl/1736.html" target=_blank>[软件工程]</A></SPAN> <a href="http://soft.oneedu.cn/html/kecheng/2012/1030/802.html" target="_blank"><font color="#FF0000">广州软件开发课程高端就业班</font></a>
+			  <LI><A href="http://soft.oneedu.cn/html/kecheng/" target=_blank>新概念Java实训营</A></LI>
+              <LI><a href="http://soft.oneedu.cn/html/kecheng/2012/1012/693.html" target="_blank">Android软件工程师(国家人社部权威能力认定)</a></LI>
+              <LI><a href="http://soft.oneedu.cn/html/kecheng/2012/1012/693.html" target="_blank">移动互联网开发工程师</a></LI>
+              <LI><a href="http://soft.oneedu.cn/html/kecheng/2012/1012/692.html" target="_blank">iPhone软件工程师高端就业班</a></LI>
+              
+            </UL>
+
+            <UL class=odd>
+              <LI style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND: none transparent scroll repeat 0% 0%; PADDING-BOTTOM: 0px; PADDING-TOP: 0px"><SPAN><A 
+
+href="http://www.rkb.gov.cn/" target=_blank>[国家软考]</A></SPAN><a href="http://www.rkb.gov.cn/jsj/cms/zcfg/" title="软件设计师,系统分析师" 
+
+target="_blank"><font color="#FF0000">国家软件职称资格水平考试</font></a>
+               <LI><a href="http://www.oneedu.cn/ruankao/index.htm" target="_blank">信息系统项目管理师&nbsp;高级资格考试培训</a></LI>
+               <LI><a href="http://www.rkb.gov.cn/jsj/cms/ksjs/zgjj/" target="_blank">系统分析师&nbsp;高级资格考试培训</a></LI>
+               <LI><a href="http://www.oneedu.cn/ruankao/index.htm" target="_blank">系统集成项目工程师&nbsp;中级资格考试培训</a></LI>   
+               <LI><a href="http://www.rkb.gov.cn/jsj/cms/ksjs/zzjg/" target="_blank">软件设计师&nbsp;中级资格考试培训</a></LI>
+               <LI><a href="http://www.rkb.gov.cn/jsj/cms/ksjs/ksjs/" target="_blank">程序员&nbsp;初级资格考试培训</a></LI>			   
+            </UL>                
+          <UL class=odd>
+              <LI style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND: none transparent scroll repeat 0% 0%; PADDING-BOTTOM: 0px; PADDING-TOP: 0px"><SPAN><A 
+
+href="http://www.oneedu.cn/fengmao/news/ITZX/201301/27841.htm" target=_blank>[名校学历]</A></SPAN><a href="http://www.oneedu.cn/fengmao/news/ITZX/201301/27827.htm" target="_blank"><font color="#FF0000">国家承认名校学历</font></a>
+              <LI><a href="http://www.oneedu.cn/fengmao/news/ITZX/201301/27841.htm">暨南大学&nbsp;移动互联网开发专本自考</a></LI>
+              <LI><a href="http://www.oneedu.cn/fengmao/news/ITZX/201301/27815.htm">南开大学&nbsp;高起专、专升本(先就业后付款)</a></LI>
+              <LI><a href="http://www.oneedu.cn/fengmao/news/ITZX/201301/27824.htm">北京航天航空大学&nbsp;高起专、专升本</a></LI>
+              <LI><a href="http://www.oneedu.cn/fengmao/news/ITZX/201301/27814.htm">华南理工大学&nbsp;高起专、专升本</a></LI>
+              <LI><a href="http://www.oneedu.cn/fengmao/news/ITZX/201301/27825.htm">大连理工大学&nbsp;高起专、专升本(先就业后付款)</a></LI>
+            </UL>
+        </div>
+        </div>
+        <div class=clear> </div>
+      </div>
+        
+        	        <div id=qBlog>
+        <div class=bTit><SPAN><A href="/xuexiao/teacher.htm">更多&gt;&gt;</A></SPAN>
+          <H5><A href="/xyzx/xyzp" target=_blank>师咨力量</A></H5>
+        </div>
+        <div id=bbsCon>
+            <UL class=qJkt>
+
+<LI>
+<A id=utitle_136482 href="/fengmao/mstj/msjj/200612/6262.htm" target=_blank>
+<IMG height=75 src="/main/t11.gif" width=120 border=0></A>
+<A id=utitle_136482 href="/fengmao/mstj/msjj/200612/6262.htm" target=_blank>曾老师</A>
+</LI>
+<LI>
+<A id=utitle_136482 href="#" target=_blank alt="广州软件工程师培训,中山大道java培训,天河区java培训">
+<IMG height=75 src="/main/2011102901.jpg" width=120 border=0></A>
+<A id=utitle_136482 href="#" target=_blank>杨老师</A>
+</LI>
+
+<LI>
+<A id=utitle_136482 href="#" target=_blank>
+<IMG height=75 src="/main/2011102902.jpg" width=120 border=0></A>
+<A id=utitle_136482 href="#" target=_blank>张老师</A>
+</LI>
+
+<LI>
+<A id=utitle_136482 href="#" target=_blank alt="广州软件工程师培训,中山大道java培训,天河区java培训">
+<IMG height=75 src="/main/2011102903.jpg" width=120 border=0></A>
+<A id=utitle_136482 href="#" target=_blank>李老师</A>
+</LI>
+
+<LI>
+<A id=utitle_136482 href="#" target=_blank>
+<IMG height=75 src="/main/2011102904.jpg" width=120 border=0></A>
+<A id=utitle_136482 href="#" target=_blank>陈老师</A>
+</LI>
+
+<LI>
+<A id=utitle_136482 href="#" target=_blank alt="广州软件工程师培训,中山大道java培训,天河区java培训">
+<IMG height=75 src="/main/2011102905.jpg" width=120 border=0></A>
+<A id=utitle_136482 href="#" target=_blank>刘老师</A>
+                     
+          </div>
+        <div class=clear> </div>
+       </div>
+<!-- 另一个培训-->
+ <div id=qBbs  style="height:491px">
+        <div class=bTit>
+          <H5><A href="/kecheng/" target=_blank>培训课程</A></H5>
+        </div>
+        <div id=bbsCon>
+          <div class=lFun>
+            <UL>
+ 	<LI><A id=utitle_130335 href="http://cg.oneedu.cn" target=_blank><IMG alt="动漫设计培训班" src="/OneEdu/images/dongman.jpg" border=0></A>
+                <P><A class=cBlue id=utitle_130335 href="http://cg.oneedu.cn" target=_blank>动漫设计培训班</A></P></LI>
+
+	        <LI><A id=utitle_3052070 href="/kecheng/jyl/1728.html" target=_blank><IMG alt="网络网站工程师，网站培训，网页培训" 
+                         src="/OneEdu/images/pingmian.gif" border=0></A>
+                <P><A class=cBlue id=utitle_3052070 href="/kecheng/jyl/1728.html" target=_blank>平面设计师就业班</A></P>
+              </LI>
+            <LI><A id=utitle_3052070 href="http://www.51doseo.com" target=_blank><IMG alt="seo优化培训,网络营销培训" 
+                         src="/OneEdu/images/seo.gif" border=0></A>
+                <P><A class=cBlue id=utitle_3052070 href="http://www.51doseo.com" target=_blank>网络营销就业班</A></P>
+              </LI>
+                </UL>          
+        </div>          
+       <div class=rFun>
+        
+            <UL class=odd>
+<LI style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND: none transparent scroll repeat 0% 0%; PADDING-BOTTOM: 0px; PADDING-TOP: 0px"><SPAN><A 
+
+href="/kecheng/jyl/1728.html" target=_blank>[动漫设计]</A></SPAN><a href="http://www.51top.org/kczt01/index.html"
+ title="动漫设计就业班,二维精英培训班" 
+target="_blank"><font color="#FF0000">动漫设计师就业班</font></a>
+
+              <LI><a href="http://www.51top.org/kczt02/index.html#01" target="_blank">二维精英培训班</a></LI>
+       		<LI><a href="http://www.51top.org/html/kecheng/2012/1120/15.html" target="_blank">游戏角色设计专业</a></LI>
+              <LI><a title="动漫设计师就业班" href="http://www.51top.org/html/kecheng/2012/1120/16.html" target="_blank" 动漫设计-3dsMax影视包装设计班="动漫设计师就业班"><font 
+color="#FF0000"></font></a><a href="http://www.51top.org/html/kecheng/2012/1120/16.html" target="_blank">游戏动画设计专业</a></LI>
+
+			   <LI><a href="http://www.51top.org/html/kecheng/2012/1120/17.html" target="_blank">游戏特效设计专业</a></LI>
+			  <LI><a title="动漫设计师周末班" href="http://www.51top.org/html/kecheng/2011/1124/8.html" target="_blank" 动漫设计-3dsMax影视包装设计班="动漫设计师周末
+班"><font color="#660000">动漫设计师周末班</font></a><a href="http://www.51top.org/html/kecheng/2011/1124/8.html" target="_blank"></a></LI>
+
+
+              <LI style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND: none transparent scroll repeat 0% 0%; PADDING-BOTTOM: 0px; PADDING-TOP: 0px"><SPAN><A 
+
+href="/kecheng/NITPRO/Index.html" target=_blank>[平面设计]</A></SPAN><a href="http://www.web168.org/WangYeMeiGongPeiXun/784.html" target="_blank">高级美工设计师研修班</a>
+              <LI><a href="http://www.web168.org/WangYeMeiGongPeiXun/783.html" target="_blank">网页三剑客软件强化班</a></LI>
+              <LI><a href="http://www.web168.org/QianDuanKaiFaPeiXun/781.html" target="_blank">页面架构师(CSS+DIV)实战培训班</a></LI>
+              <LI><a href="http://www.web168.org/HouTaiKaiFaPeiXun/779.html" target="_blank">PHP+Mysql高级工程师培训</a></LI>
+	   <LI><a href="http://www.web168.org/HouTaiKaiFaPeiXun/778.html" target="_blank">ASP动态网站开发班</a></LI>
+            </UL>
+            <UL class=odd>
+            
+              
+              <LI style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND: none transparent scroll repeat 0% 0%; PADDING-BOTTOM: 0px; PADDING-TOP: 0px"><SPAN><A 
+ 	href="/kecheng/rzl/Index.html" target=_blank>[网络营销]</A></SPAN>
+              <a title="网络营销就业培训班" href="http://www.51doseo.com/yingxiaokaibanjihua/1343284217.html" target="_blank"><font color="#FF0000">网络营销就业培训班</font></a>&nbsp;
+			  <LI><a href="http://www.51doseo.com/yingxiaokaibanjihua/1343284395.html" target="_blank">搜索引擎优化SEO班</a>&nbsp;</LI>
+				<LI><a title="电商网站建设基础班(优化)" href="http://www.51doseo.com/yingxiaokaibanjihua/1344583374.html" 
+ 					target="_blank"><font color="#FF0000">电商网站建设基础班(优化)</font></a></LI>
+				<LI><a href="http://www.51doseo.com/yingxiaokaibanjihua/1343284260.html" target="_blank">淘宝网店推广提高班</a></LI>
+				<LI><a href="http://www.51doseo.com/yingxiaokaibanjihua/1343284272.html" target="_blank">付费营销提高班(SEM)</a></LI>
+				<LI><a href="http://www.51doseo.com/yingxiaokaibanjihua/1343284247.html" target="_blank">整合推广营销主管班</a></LI>
+            </UL>
+           </div>
+        </div>
+        <div class=clear> </div>
+      </div>
+
+<!-- end 另一个培训-->
+
+    </div>
+  </div>                                    
+ <div id=qcon_r >
+    <div id=qRight>
+      <div class=l>
+        <!-- 开班信息 -->
+        <div id=clk_juke>
+          <div class=qProduct>
+            <div class=qtit><SPAN><A href="http://soft.oneedu.cn/html/kecheng/2012/1012/693.html"><img src="/images/baoming1.gif"/></A></SPAN>
+              <H5><A href="http://soft.oneedu.cn/" target=_blank>最新开班信息</A></H5>
+            </div>
+            <UL>
+              <LI class=qImg><table border=0 width="100%">
+    <tr>
+      <td height=-1>培训课程</td>
+      <td height=-1 width="29%" align=middle>报名状态</td>
+    </tr>
+    <tr class=tdbg onmouseover="this.className='tdbgmouseover'" onmouseout="this.className='tdbg'">
+      <td><A title=3月新概念Java高端就业班 href="http://soft.oneedu.cn/html/kecheng/2012/1030/802.html" target=_blank><FONT color=#ff0000>3月新概念Java&3G高端就业班</FONT></A></td>
+      <td align=middle>
+<div align=left>
+      <div align=left><FONT color=#ff0000>热招中</FONT></div></div></td>
+    </tr>
+    <tr class=tdbg onmouseover="this.className='tdbgmouseover'" onmouseout="this.className='tdbg'">
+      <td><A title=Android开发工程师实战班 href="http://soft.oneedu.cn/html/kecheng/2012/1031/805.html" target=_blank><FONT color=#ff0000>Android开发工程师实战班</FONT></A></td>
+      <td align=middle>
+      <div align=left><FONT color=#ff0000>4月07日开班</FONT></div></td>
+    </tr>
+    <tr class=tdbg onmouseover="this.className='tdbgmouseover'" onmouseout="this.className='tdbg'">
+      <td><FONT color=#ff0000>2013版</FONT><A title=2013版Java精品业余班 href="http://soft.oneedu.cn/class/001.html" target=_blank><FONT color=#ff0000>Java精品业余班</FONT></A></td>
+      <td align=middle>
+      <div align=left><FONT color=#ff0000>差3个名额</FONT></div></td>
+    </tr>
+    <tr class=tdbg onmouseover="this.className='tdbgmouseover'" onmouseout="this.className='tdbg'">
+      <td><A title=Iphone-IOS工程师实训班 href="http://soft.oneedu.cn/html/kecheng/2012/1012/692.html" target=_blank><FONT color=#ff0000>Iphone-IOS工程师实训班</FONT></A></td>
+      <td align=middle>
+      <div align=left><FONT color=#ff0000>热招中</FONT></div></td>
+    </tr>
+    <tr class=tdbg onmouseover="this.className='tdbgmouseover'" onmouseout="this.className='tdbg'">
+      <td><A title=2013国家软考职称培训班 href="/ruankao/index.htm5" target=_blank><FONT color=#ff0000>2013国家软考职称培训班</FONT></A></td>
+      <td align=middle>
+      <div align=left><FONT color=#ff0000>热招中</FONT></div></td>
+    </tr>
+    <tr class=tdbg onmouseover="this.className='tdbgmouseover'" onmouseout="this.className='tdbg'">
+      <td><A href="http://www.web168.org/" target=_blank><FONT color=#3300ff>平面设计就业班</FONT></A></td>
+      <td align=middle>
+      <div align=left><FONT color=#3300ff>热招中</FONT></div></td>
+    </tr>
+    <tr class=tdbg onmouseover="this.className='tdbgmouseover'" onmouseout="this.className='tdbg'">
+      <td><A title=动漫设计师就业班 href="http://www.51top.org/kczt01/index.html" target=_blank Max影视包装设计班><FONT color=#3300ff ?>动漫设计师就业班</FONT></A></td>
+      <td align=middle>
+      <div align=left><FONT color=#3300ff>随到随学</FONT></div></td>
+    </tr>
+    <tr class=tdbg onmouseover="this.className='tdbgmouseover'" onmouseout="this.className='tdbg'">
+      <td><A href="http://www.51doseo.com/wangluoyingxiaokecheng/" target=_blank><FONT color=#3300ff>网络营销SEO培训班</FONT></A></td>
+      <td align=middle>
+      <div align=left><FONT color=#3300ff>差4个名额</FONT></div></td>
+    </tr>
+    <tr class=tdbg onmouseover="this.className='tdbgmouseover'" onmouseout="this.className='tdbg'">
+      <td><A href="http://www.web168.org/" target=_blank><FONT color=#3300ff>网页Web设计师(实战班)</FONT></FONT></A></td>
+      <td align=middle>
+      <div align=left><FONT color=#3300ff>差6个名额</FONT></div></td>
+    </tr>
+    <tr class=tdbg onmouseover="this.className='tdbgmouseover'" onmouseout="this.className='tdbg'">
+      <td><A href="http://www.web168.org/" target=_blank><FONT color=#000000>新东方美术培训班</FONT></A></td>
+      <td align=middle>
+      <div align=left><FONT color=#000000>差8个名额</FONT></div></td>
+    </tr>
+    <tr class=tdbg onmouseover="this.className='tdbgmouseover'" onmouseout="this.className='tdbg'">
+      <td><A title=动漫设计师周末班 href="http://cg.oneedu.cn/kecheng_7.html" target=_blank Max影视包装设计班><FONT color=#000000>动漫设计师周末班</FONT></A></td>
+      <td align=middle>
+      <div align=left><FONT color=#000000>差10个名额</FONT></div></td>
+    </tr>
+    <tr class=tdbg onmouseover="this.className='tdbgmouseover'" onmouseout="this.className='tdbg'">
+      <td><A href="http://www.51doseo.com/" target=_blank CCNP认证培训><FONT color=#000000>淘宝网店推广</FONT></A><FONT color=#000000>师</FONT></td>
+      <td align=middle>
+      <div align=left><FONT color=#000000>差10个名额</FONT></div></td>
+    </tr>
+  </table> </LI>
+            </UL>
+            </SPAN>
+            <UL>
+            </UL>
+          </div>
+        </div>
+        <div class=blankW6> </div>
+        <!-- 开班信息 -->
+        <div id=clk_juke>
+          <div class=qProduct>
+            <div class=qtit><SPAN><A href="http://soft.oneedu.cn/html/kecheng/2012/1012/693.html"><img src="/images/baoming1.gif" border="0"/></A></SPAN>
+              <H5><A href="/zxbm/mianfeijiangzuo.html" target=_blank>java培训心得交流</A></H5>
+            </div>
+            <UL>
+              <LI class=qImg><table border=0 width="100%">
+    <tr class=tdbg onmouseover="this.className='tdbgmouseover'" onmouseout="this.className='tdbg'">
+      <td width="69%"><A href="http://tieba.baidu.com/i/336236937/others?from=princess" target=_blank><STRONG><FONT size=1>杨老师-JAVA软件工程师指导</FONT></STRONG></A></td>
+    </tr>
+    <tr class=tdbg onmouseover="this.className='tdbgmouseover'" onmouseout="this.className='tdbg'">
+      <td><STRONG><A href="http://tieba.baidu.com/i/336205350/others?from=princess" target=_blank><STRONG><FONT size=1>陈老师-java培训广州指导</FONT></STRONG></A></STRONG></td>
+    </tr>
+    <tr class=tdbg onmouseover="this.className='tdbgmouseover'" onmouseout="this.className='tdbg'">
+      <td><STRONG><A href="http://tieba.baidu.com/i/336235666/others?from=princess" target=_blank><STRONG><FONT size=1>刘老师-Android培训广州指导</FONT></STRONG></A></STRONG></td>
+    </tr>
+    <tr class=tdbg onmouseover="this.className='tdbgmouseover'" onmouseout="this.className='tdbg'">
+      <td><STRONG><A href="http://www.baidu.com/p/帅陶哥" target=_blank><STRONG><FONT size=1>李老师-广州Android培训指导</FONT></STRONG></A></STRONG></td>
+    </tr>
+    <tr class=tdbg onmouseover="this.className='tdbgmouseover'" onmouseout="this.className='tdbg'">
+      <td><STRONG><A href="http://tieba.baidu.com/i/336234900/others?from=princess" target=_blank><STRONG><FONT size=1>夏老师-广州软件工程师培训指导</FONT></STRONG></A></STRONG></td>
+    </tr>
+  </table></LI>
+            </UL>
+            </SPAN>
+            <UL>
+            </UL>
+          </div>
+        </div>
+        <!-- 图文混排广告 -->
+        <!--div class=qPrAD><A href="/zxbm/jiangzuo.asp" target=_blank><IMG alt=广州java培训免费试听报名 src="/ad/jzbm.gif"></A> </div-->
+        <div class=blankW6> </div>
+        <!-- IT人物 begin -->
+        <div class=TabMenu id=Tab3MenuCon4  style="margin-left:2px;">
+          <table class=Tab-3Menu cellSpacing=0>
+            <tr>
+              <td class=Tab-Syn-On onmouseover=setTab3Menu(4);><A href="/fengmao/news/ITRW/Index.htm" target=_blank>软件编程</A></td>
+              <td class=Tab-Syn-LineOn></td>
+              <td class=Tab-Syn-Off onmouseover=setTab3Menu(5);><A href="/fengmao/news/ITZX/Index.htm">国家软考</A></td>
+              <td class=Tab-Syn-Line></td>
+              <td class=Tab-Syn-Off onmouseover=setTab3Menu(6);>软件学历</td>
+            </tr>
+            <tr class=Tab-3Menu-BtLine align=middle>
+              <td><IMG height=6 alt="" src="/menu-on-arrow.gif" width=9></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </table>
+          <div >
+            <UL class=odd>
+              <LI style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND: none transparent scroll repeat 0% 0%; PADDING-BOTTOM: 0px; PADDING-TOP: 0px">
+               <div class="">·&nbsp;<a class="" href="/xxyd/rjgc/201302/27952.html" title="Android之播放自己的视频" target="_blank">Android之播放自己的视频</a></div><div class="">·&nbsp;<a class="" href="/xxyd/rjgc/201302/27951.html" title="Android之创建自己的主题风格" target="_blank">Android之创建自己的主题风格</a></div><div class="">·&nbsp;<a class="" href="/xxyd/rjgc/201302/27945.html" title="OAuth认证原理" target="_blank">OAuth认证原理</a></div><div class="">·&nbsp;<a class="" href="/xxyd/rjgc/201302/27944.html" title="OAuth认证" target="_blank">OAuth认证</a></div><div class="">·&nbsp;<a class="" href="/xxyd/rjgc/201302/27939.html" title="java中的四个核心概念" target="_blank">java中的四个核心概念</a></div><div class="">·&nbsp;<a class="" href="/xxyd/rjgc/201302/27934.html" title="SQLite使用方法" target="_blank">SQLite使用方法</a></div><div class="">·&nbsp;<a class="" href="/xxyd/rjgc/201302/27933.html" title="JNDI介绍" target="_blank">JNDI介绍</a></div><div class="">·&nbsp;<a class="" href="/xxyd/rjgc/201302/27932.html" title="java堆内存的要点" target="_blank">java堆内存的要点</a></div><div class="">·&nbsp;<a class="" href="/xxyd/rjgc/201302/27931.html" title="深度了解java内存的原型" target="_blank">深度了解java内存的原型</a></div><div class="">·&nbsp;<a class="" href="/xxyd/rjgc/201302/27927.html" title="如何建立自己的对话框" target="_blank">如何建立自己的对话框</a></div><div class="">·&nbsp;<a class="" href="/xxyd/rjgc/201302/27926.html" title="LayoutAnimation的使用方法" target="_blank">LayoutAnimation的使用方法</a></div><div class="">·&nbsp;<a class="" href="/xxyd/rjgc/201302/27920.html" title="TabHost动态修改图标" target="_blank">TabHost动态修改图标</a></div><div class="">·&nbsp;<a class="" href="/xxyd/rjgc/201302/27919.html" title="Android的布局" target="_blank">Android的布局</a></div><div class="">·&nbsp;<a class="" href="/xxyd/rjgc/201302/27918.html" title="Hibernate中的单对单的关系" target="_blank">Hibernate中的单对单的关系</a></div><div class="">·&nbsp;<a class="" href="/xxyd/rjgc/201302/27917.html" title="ApplicationResource.properties不能保存中文的问题" target="_blank">ApplicationResource.properties不能保存…</a></div><div class="">·&nbsp;<a class="" href="/xxyd/rjgc/201302/27916.html" title="SpringBean" target="_blank">SpringBean</a></div><div class="">·&nbsp;<a class="" href="/xxyd/rjgc/201302/27915.html" title="Java代理机制" target="_blank">Java代理机制</a></div><div class="">·&nbsp;<a class="" href="/xxyd/rjgc/201302/27914.html" title="Java调试" target="_blank">Java调试</a></div><div class="">·&nbsp;<a class="" href="/xxyd/rjgc/201302/27913.html" title="Java命名的规范" target="_blank">Java命名的规范</a></div><div class="">·&nbsp;<a class="" href="/xxyd/rjgc/201302/27912.html" title="生成Javadoc" target="_blank">生成Javadoc</a></div><div class="">·&nbsp;<a class="" href="/xxyd/rjgc/201302/27911.html" title="MyEclipse常用快捷键" target="_blank">MyEclipse常用快捷键</a></div><div class="">·&nbsp;<a class="" href="/xxyd/rjgc/201302/27890.html" title="Android实现天气预报" target="_blank">Android实现天气预报</a></div><div class="">·&nbsp;<a class="" href="/xxyd/rjgc/201302/27885.html" title="Android添加动态控件" target="_blank">Android添加动态控件</a></div><div class="">·&nbsp;<a class="" href="/xxyd/rjgc/201302/27884.html" title="重装Eclipse问题解决办法" target="_blank">重装Eclipse问题解决办法</a></div><div class="">·&nbsp;<a class="" href="/xxyd/rjgc/201301/27877.html" title="Android学习之文件下载" target="_blank">Android学习之文件下载</a></div><div class="">·&nbsp;<a class="" href="/xxyd/rjgc/201301/27876.html" title="Android学习之广播机制" target="_blank">Android学习之广播机制</a></div>              
+
+</LI>
+            </UL>
+          </div>
+        </div>
+        <!-- 舌签内容1 end -->
+        <!-- IT人物 begin -->
+        <div class=TabMenu id=Tab3MenuCon5 style="DISPLAY: none;">
+          <table class=Tab-3Menu cellSpacing=0>
+            <tr>
+              <td class=Tab-Syn-Off onmouseover=setTab3Menu(4);>软件编程</td>
+              <td class=Tab-Syn-LineOn></td>
+              <td class=Tab-Syn-On onmouseover=setTab3Menu(5);><A href="/fengmao/news/ITZX/Index.htm" target=_blank>国家软考</A></td>
+              <td class=Tab-Syn-LineOn></td>
+              <td class=Tab-Syn-Off onmouseover=setTab3Menu(6);>软件学历</td>
+            </tr>
+            <tr class=Tab-3Menu-BtLine align=middle>
+              <td></td>
+              <td></td>
+              <td><IMG height=6 alt="" src="/menu-on-arrow.gif" width=9></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </table>
+          <div>
+            <UL class=odd>
+              <LI style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND: none transparent scroll repeat 0% 0%; PADDING-BOTTOM: 0px; PADDING-TOP: 0px">
+               <div class="">·&nbsp;<a class="" href="/fengmao/news/gkpd/201302/27908.htm" title="软考考题分析之五" target="_blank">软考考题分析之五</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/gkpd/201302/27907.htm" title="软考考题分析之四" target="_blank">软考考题分析之四</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/gkpd/201302/27904.htm" title="软考考题分析之三" target="_blank">软考考题分析之三</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/gkpd/201302/27901.htm" title="软考考题分析之二" target="_blank">软考考题分析之二</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/gkpd/201302/27900.htm" title="软考考题分析之一" target="_blank">软考考题分析之一</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/gkpd/201301/27863.htm" title="软考跟职称之间的关系" target="_blank">软考跟职称之间的关系</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/gkpd/201301/27862.htm" title="软考并不可怕" target="_blank">软考并不可怕</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/gkpd/200903/27775.htm" title="坚忍，才能为你带来事业的唯美升华" target="_blank">坚忍，才能为你带来事业的唯美升华</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/gkpd/200903/27774.htm" title="专注的好处" target="_blank">专注的好处</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/gkpd/200903/27772.htm" title="7亿农民的电脑培训比电脑下乡更重要" target="_blank">7亿农民的电脑培训比电脑下乡更重要</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/gkpd/200903/27768.htm" title="俞敏洪：大学生找工作心态应比较平和" target="_blank">俞敏洪：大学生找工作心态应比较平和</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/gkpd/200807/26923.htm" title="重庆大学生在QQ上向女网友炫富竟遭绑架" target="_blank">重庆大学生在QQ上向女网友炫富竟遭绑架</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/gkpd/200807/26720.htm" title="暑期培训高峰期" target="_blank">暑期培训高峰期</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/gkpd/200806/26344.htm" title="招聘会热潮持续降温&nbsp;大学生该如何就业" target="_blank">招聘会热潮持续降温&nbsp;大学生该如何就业</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/gkpd/200806/26335.htm" title="求职的专业冷与热" target="_blank">求职的专业冷与热</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/gkpd/200806/26334.htm" title="用人单位希望职场新人“稳”字当先" target="_blank">用人单位希望职场新人“稳”字当先</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/gkpd/200806/26331.htm" title="加速人才培养&nbsp;为我国软件产业发展“松绑”" target="_blank">加速人才培养&nbsp;为我国软件产业发展“松绑”</a></div>
+              </LI>
+            </UL>
+          </div>
+        </div>
+        <!-- 舌签内容2 end -->
+        <!-- 舌签内容3 begin -->
+        <div class=TabMenu id=Tab3MenuCon6 style="DISPLAY: none">
+          <table class=Tab-3Menu cellSpacing=0>
+            <tr>
+              <td class=Tab-Syn-Off onmouseover=setTab3Menu(4);>软件编程</td>
+              <td class=Tab-Syn-Line></td>
+              <td class=Tab-Syn-Off onmouseover=setTab3Menu(5);>国家软考</td>
+              <td class=Tab-Syn-LineOn></td>
+              <td class=Tab-Syn-On onmouseover=setTab3Menu(6);><A href="/fengmao/news/gkpd/Index.htm" target=_blank>软件学历</A></td>
+            </tr>
+            <tr class=Tab-3Menu-BtLine align=middle>
+              <td></td>
+              <td></td>
+              <td></td>
+
+              <td></td>
+              <td><IMG height=6 alt="" src="/menu-on-arrow.gif" width=9></td>
+            </tr>
+          </table>
+          <div>
+            <UL class=odd>
+              <LI style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND: none transparent scroll repeat 0% 0%; PADDING-BOTTOM: 0px; PADDING-TOP: 0px">
+               <div class="">·&nbsp;<a class="" href="/fengmao/news/ITZX/201302/27963.htm" title="四年后全球微服务器出货量将突破100万台" target="_blank">四年后全球微服务器出货量将突破100万台</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITZX/201302/27962.htm" title="2013：SQL数据库将迎来大时代" target="_blank">2013：SQL数据库将迎来大时代</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITZX/201302/27910.htm" title="Java有安全漏洞？" target="_blank">Java有安全漏洞？</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITZX/201302/27909.htm" title="如何规避Java漏洞带来的安全风险" target="_blank">如何规避Java漏洞带来的安全风险</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITZX/201302/27906.htm" title="IT业已成为网络攻防的最前沿" target="_blank">IT业已成为网络攻防的最前沿</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITZX/201302/27905.htm" title="谷歌为新应用引擎添加Java支持" target="_blank">谷歌为新应用引擎添加Java支持</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITZX/201302/27903.htm" title="Java的未来之路（二）" target="_blank">Java的未来之路（二）</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITZX/201302/27902.htm" title="Java的未来之路（一）" target="_blank">Java的未来之路（一）</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITZX/201302/27899.htm" title="手机开发人才短缺，市场需求旺盛" target="_blank">手机开发人才短缺，市场需求旺盛</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITZX/201302/27898.htm" title="Android就业薪水走高" target="_blank">Android就业薪水走高</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITZX/201302/27897.htm" title="Android5.0的时代就要到来" target="_blank">Android5.0的时代就要到来</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITZX/201302/27891.htm" title="2011年美国IT工资调查" target="_blank">2011年美国IT工资调查</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITZX/201301/27841.htm" title="学Java，&nbsp;拿文凭，东方标准助你一臂之力" target="_blank">学Java，&nbsp;拿文凭，东方标准助你一臂之力</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITZX/201301/27840.htm" title="网络学历教育&nbsp;帮你踢走就业&quot;绊脚石&quot;" target="_blank">网络学历教育&nbsp;帮你踢走就业&quot;绊脚石&quot;</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITZX/201301/27839.htm" title="网络教育六宗“最”状完美契合“充电”需求" target="_blank">网络教育六宗“最”状完美契合“充电”需…</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITZX/201301/27838.htm" title="网络教育对传统的教育体制和模式带来巨大影响" target="_blank">网络教育对传统的教育体制和模式带来巨大…</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITZX/201301/27837.htm" title="从美国网络教育现状谈我国网络教育前景分析" target="_blank">从美国网络教育现状谈我国网络教育前景分…</a></div>
+            </LI>
+            </UL>
+          </div>
+        </div>
+        <!-- IT人物结束 end -->
+        <div class=blankW6> </div>
+        <!-- 技术文章 -->
+        <!-- 舌签效果 begin -->
+        <script type="text/javascript">
+  <!--
+ function setTab3Menu(i){
+  selectTab3Menu(i);
+ }
+ function selectTab3Menu(i){
+  switch(i){
+   case 1:
+   document.getElementById("Tab3MenuCon1").style.display="block";
+   document.getElementById("Tab3MenuCon2").style.display="none";
+   document.getElementById("Tab3MenuCon3").style.display="none";
+   break;
+   case 2:
+   document.getElementById("Tab3MenuCon1").style.display="none";
+   document.getElementById("Tab3MenuCon2").style.display="block";
+   document.getElementById("Tab3MenuCon3").style.display="none";
+   break;
+   case 3:
+   document.getElementById("Tab3MenuCon1").style.display="none";
+   document.getElementById("Tab3MenuCon2").style.display="none";
+   document.getElementById("Tab3MenuCon3").style.display="block";
+     case 4:
+   document.getElementById("Tab3MenuCon4").style.display="block";
+
+   document.getElementById("Tab3MenuCon5").style.display="none";
+   document.getElementById("Tab3MenuCon6").style.display="none";
+   break;
+   case 5:
+   document.getElementById("Tab3MenuCon4").style.display="none";
+   document.getElementById("Tab3MenuCon5").style.display="block";
+   document.getElementById("Tab3MenuCon6").style.display="none";
+   break;
+   case 6:
+   document.getElementById("Tab3MenuCon4").style.display="none";
+   document.getElementById("Tab3MenuCon5").style.display="none";
+   document.getElementById("Tab3MenuCon6").style.display="block";
+   break;
+  }
+ }
+ //-->
+ </script>
+        <!-- 舌签内容1 begin -->
+        <div class=TabMenu id=Tab3MenuCon1 style="margin-left:2px;">
+          <table class=Tab-3Menu cellSpacing=0>
+            <tr>
+              <td class=Tab-Syn-On onmouseover=setTab3Menu(1);><A href="/xxyd/dnjq/Index.html" target=_blank>电脑技巧</A></td>
+              <td class=Tab-Syn-LineOn></td>
+              <td class=Tab-Syn-off onmouseover=setTab3Menu(2);>电脑美术</td>
+              <td class=Tab-Syn-Line></td>
+              <td class=Tab-Syn-Off onmouseover=setTab3Menu(3);>IT人物</td>
+            </tr>
+            <tr class=Tab-3Menu-BtLine align=middle>
+              <td><IMG height=6 alt="" src="/menu-on-arrow.gif" width=9></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </table>
+          <div >
+            <UL class=odd>
+              <LI style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND: none transparent scroll repeat 0% 0%; PADDING-BOTTOM: 0px; PADDING-TOP: 0px">
+                <div class="">·&nbsp;<a class="" href="/xxyd/dnjq/201302/27941.html" title="坐办公室应该要熟练的键盘操作" target="_blank">坐办公室应该要熟练的键盘操作</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnjq/201302/27940.html" title="用office&nbsp;2003将摄像头升级为扫描仪的方法" target="_blank">用office&nbsp;2003将摄像头升级为扫描仪的方法</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnjq/200807/26960.html" title="驱逐舰2008年上半年病毒统计报告" target="_blank">驱逐舰2008年上半年病毒统计报告</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnjq/200807/26959.html" title="木马以奥运开幕式为饵&nbsp;内嵌于Word文件" target="_blank">木马以奥运开幕式为饵&nbsp;内嵌于Word文件</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnjq/200807/26958.html" title="卡巴斯基误杀奇虎360风波" target="_blank">卡巴斯基误杀奇虎360风波</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnjq/200807/26957.html" title="DNS&nbsp;漏洞细节被泄露" target="_blank">DNS&nbsp;漏洞细节被泄露</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnjq/200807/26956.html" title="Shift按五下，Vista轻松破" target="_blank">Shift按五下，Vista轻松破</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnjq/200807/26955.html" title="去掉Windows&nbsp;XP右下角烦人的提示" target="_blank">去掉Windows&nbsp;XP右下角烦人的提示</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnjq/200807/26779.html" title="怎样实现windows&nbsp;xp删除文件需要密码" target="_blank">怎样实现windows&nbsp;xp删除文件需要密码</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnjq/200807/26764.html" title="怎样实现windows&nbsp;xp删除文件需要密码" target="_blank">怎样实现windows&nbsp;xp删除文件需要密码</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnjq/200807/26763.html" title="Windows&nbsp;XP小技巧" target="_blank">Windows&nbsp;XP小技巧</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnjq/200807/26762.html" title="修改Linux操作系统下22端口方法" target="_blank">修改Linux操作系统下22端口方法</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnjq/200807/26715.html" title="如何管理好Cisco设备" target="_blank">如何管理好Cisco设备</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnjq/200807/26714.html" title="网管限制仍能上Q" target="_blank">网管限制仍能上Q</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnjq/200807/26713.html" title="怎样实现同一网关多机上网" target="_blank">怎样实现同一网关多机上网</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnjq/200807/26712.html" title="轻松实现多机上网" target="_blank">轻松实现多机上网</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnjq/200807/26711.html" title="怎样解决宽带拨号开机慢" target="_blank">怎样解决宽带拨号开机慢</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnjq/200807/26710.html" title="配置网络参数的好方法" target="_blank">配置网络参数的好方法</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnjq/200807/26708.html" title="IP&nbsp;PBX网络通讯技术产品" target="_blank">IP&nbsp;PBX网络通讯技术产品</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnjq/200807/26707.html" title="Windows上网问题解决方案" target="_blank">Windows上网问题解决方案</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnjq/200807/26706.html" title="让上网速度加快的方法" target="_blank">让上网速度加快的方法</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnjq/200807/26705.html" title="如何搜索局域网的电脑" target="_blank">如何搜索局域网的电脑</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnjq/200807/26704.html" title="电信封杀ADSL共享的原因" target="_blank">电信封杀ADSL共享的原因</a></div>
+              </LI>
+            </UL>
+          </div>
+        </div>
+        <!-- 舌签内容1 end -->
+        <!-- 舌签内容2 begin -->
+      <div class=TabMenu id=Tab3MenuCon2 style="DISPLAY: none">
+          <table class=Tab-3Menu cellSpacing=0>
+            <tr>
+              <td class=Tab-Syn-Off onmouseover=setTab3Menu(1);>电脑技巧</td>
+              <td class=Tab-Syn-LineOn></td>
+              <td class=Tab-Syn-On onmouseover=setTab3Menu(2);><A href="/xxyd/dnms/Index.html" target=_blank>电脑美术</A></td>
+              <td class=Tab-Syn-LineOn></td>
+              <td class=Tab-Syn-Off onmouseover=setTab3Menu(3);>IT人物</td>
+            </tr>
+            <tr class=Tab-3Menu-BtLine align=middle>
+              <td></td>
+              <td></td>
+              <td><IMG height=6 alt="" src="/menu-on-arrow.gif" width=9></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </table>
+          <div>
+            <UL class=odd>
+              <LI style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND: none transparent scroll repeat 0% 0%; PADDING-BOTTOM: 0px; PADDING-TOP: 0px">
+                <div class="">·&nbsp;<a class="" href="/xxyd/dnms/pmsj/200701/9341.html" title="利用PS制作20种漂亮边框效果" target="_blank">利用PS制作20种漂亮边框效果</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnms/pmsj/200701/8801.html" title="印刷知识从入门到精通" target="_blank">印刷知识从入门到精通</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnms/pmsj/200804/24962.html" title="Photoshop鼠绘星球爆炸时的冲击波" target="_blank">Photoshop鼠绘星球爆炸时的冲击波</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnms/pmsj/200801/23528.html" title="字体设计的几种方法" target="_blank">字体设计的几种方法</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnms/pmsj/200801/23527.html" title="抠图杂谈----三言两语话抽出" target="_blank">抠图杂谈----三言两语话抽出</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnms/pmsj/200801/23526.html" title="平面广告创意常用技法" target="_blank">平面广告创意常用技法</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnms/pmsj/200801/23435.html" title="Photoshop打造红色唯美婚纱照片" target="_blank">Photoshop打造红色唯美婚纱照片</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnms/pmsj/200801/23421.html" title="炫出我的个性——QQ聊天表情的绘制（下）" target="_blank">炫出我的个性——QQ聊天表情的绘制（下）</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnms/pmsj/200801/23420.html" title="炫出我的个性——QQ聊天表情的绘制（上）" target="_blank">炫出我的个性——QQ聊天表情的绘制（上）</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnms/pmsj/200801/23418.html" title="如何用photoshop画数字云彩" target="_blank">如何用photoshop画数字云彩</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnms/pmsj/200801/23417.html" title="Photoshop7笔刷全攻略(2)——点状笔刷的使用" target="_blank">Photoshop7笔刷全攻略(2)——点状笔刷的使…</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnms/pmsj/200801/23416.html" title="Photoshop7笔刷全攻略(3)——路径描边做四方连续" target="_blank">Photoshop7笔刷全攻略(3)——路径描边做四…</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnms/pmsj/200801/23415.html" title="利用照片制作怀旧艺术效果" target="_blank">利用照片制作怀旧艺术效果</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnms/pmsj/200801/23126.html" title="CSS样式表创建美妙绝伦的网站" target="_blank">CSS样式表创建美妙绝伦的网站</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnms/pmsj/200801/23092.html" title="Photoshop打造精美手机广告" target="_blank">Photoshop打造精美手机广告</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnms/pmsj/200801/23091.html" title="PS美女闪亮唇彩教程" target="_blank">PS美女闪亮唇彩教程</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnms/pmsj/200801/23071.html" title="雪山效果创作思路" target="_blank">雪山效果创作思路</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnms/pmsj/200801/23070.html" title="photoshop制作积雪字效果" target="_blank">photoshop制作积雪字效果</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnms/pmsj/200712/23012.html" title="Photoshop鼠绘人像全过程" target="_blank">Photoshop鼠绘人像全过程</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnms/pmsj/200712/22994.html" title="解读Photoshop等高线" target="_blank">解读Photoshop等高线</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnms/pmsj/200712/22993.html" title="Firewoks打造液体金属表面效果" target="_blank">Firewoks打造液体金属表面效果</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnms/pmsj/200712/22992.html" title="Firewoks&nbsp;打造摇滚波字体" target="_blank">Firewoks&nbsp;打造摇滚波字体</a></div><div class="">·&nbsp;<a class="" href="/xxyd/dnms/sweosj/200702/9801.html" title="3DS&nbsp;MAX&nbsp;7&nbsp;新功能" target="_blank">3DS&nbsp;MAX&nbsp;7&nbsp;新功能</a></div>
+              </LI>
+            </UL>
+          </div>
+        </div>
+
+<div class="list_ykz">
+<a href="http://www.oneedu.cn/">广州Android培训</a>
+<a href="http://www.oneedu.cn/">Android培训机构</a><a href="http://www.oneedu.cn/">广州Android培训</a>
+</div>
+        <!-- 舌签内容2 end -->
+        <!-- 舌签内容3 begin -->
+        <div class=TabMenu id=Tab3MenuCon3 style="DISPLAY: none">
+          <table class=Tab-3Menu cellSpacing=0>
+            <tr>
+              <td class=Tab-Syn-Off onmouseover=setTab3Menu(1);>电脑技巧</td>
+
+              <td class=Tab-Syn-Line></td>
+              <td class=Tab-Syn-Off onmouseover=setTab3Menu(2);>电脑美术</td>
+              <td class=Tab-Syn-LineOn></td>
+              <td class=Tab-Syn-On onmouseover=setTab3Menu(3);><A href="/xxyd/rjgc/Index.html" target=_blank>IT人物</A></td>
+            </tr>
+            <tr class=Tab-3Menu-BtLine align=middle>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td><IMG height=6 alt="" src="/menu-on-arrow.gif" width=9></td>
+            </tr>
+          </table>
+          <div>
+            <UL class=odd>
+              <LI style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND: none transparent scroll repeat 0% 0%; PADDING-BOTTOM: 0px; PADDING-TOP: 0px">
+               <div class="">·&nbsp;<a class="" href="/fengmao/news/ITRW/201303/28043.htm" title="黑莓CEO海因斯：iPhone用户界面已5年没创新了" target="_blank">黑莓CEO海因斯：iPhone用户界面已5年没创…</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITRW/201303/28042.htm" title="Twitter客户端开发者&nbsp;移动应用“教父”级人物" target="_blank">Twitter客户端开发者&nbsp;移动应用“教父”级…</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITRW/201303/28039.htm" title="陈一舟：做APP&nbsp;我别无选择" target="_blank">陈一舟：做APP&nbsp;我别无选择</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITRW/201303/28037.htm" title="三星移动总裁：我们喜欢Android&nbsp;将继续合作" target="_blank">三星移动总裁：我们喜欢Android&nbsp;将继续合…</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITRW/201303/28028.htm" title="徐龙代表：加强应用软件管理&nbsp;勿让手机变“手雷”" target="_blank">徐龙代表：加强应用软件管理&nbsp;勿让手机变“…</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITRW/201303/28026.htm" title="埃洛普：诺基亚将很快重回手机行业领先位置" target="_blank">埃洛普：诺基亚将很快重回手机行业领先位…</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITRW/201303/28024.htm" title="鲁宾告诉Android伙伴：我有企业家之心" target="_blank">鲁宾告诉Android伙伴：我有企业家之心</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITRW/201303/28021.htm" title="人人公司CEO陈一舟：手游市场规模将超页游" target="_blank">人人公司CEO陈一舟：手游市场规模将超页游</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITRW/201303/28001.htm" title="周鸿祎：手机浏览器不再重要&nbsp;360更关注APP开发" target="_blank">周鸿祎：手机浏览器不再重要&nbsp;360更关注AP…</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITRW/201303/27994.htm" title="IT史话：Java之父“高司令”" target="_blank">IT史话：Java之父“高司令”</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITRW/201303/27991.htm" title="雷军：抢票软件值得开发" target="_blank">雷军：抢票软件值得开发</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITRW/201303/27990.htm" title="两会上的IT提案：李彦宏提案取消公共场所无线上网身份认证" target="_blank">两会上的IT提案：李彦宏提案取消公共场所…</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITRW/201303/27984.htm" title="苹果前CEO斯卡利：苹果创新滞后&nbsp;应开拓新兴市场" target="_blank">苹果前CEO斯卡利：苹果创新滞后&nbsp;应开拓新…</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITRW/201302/27973.htm" title="盖茨、扎克伯格呼吁美国学校重视计算机教育" target="_blank">盖茨、扎克伯格呼吁美国学校重视计算机教…</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITRW/201302/27971.htm" title="马云：怕儿子沉溺游戏&nbsp;饿死也不做开发" target="_blank">马云：怕儿子沉溺游戏&nbsp;饿死也不做开发</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITRW/201302/27960.htm" title="微软张亚勤：中国将成创新中心" target="_blank">微软张亚勤：中国将成创新中心</a></div><div class="">·&nbsp;<a class="" href="/fengmao/news/ITRW/201302/27959.htm" title="库克：手机仍有很大空间" target="_blank">库克：手机仍有很大空间</a></div> 
+               </LI>
+            </UL>
+          </div>
+        </div>
+        <!-- 舌签内容3 end -->
+      </div>
+      <div class=r>
+        <div id=clk_mp3>
+        </div>
+      <!-- 学员中心 -->
+      <div class=ad170>
+        <H5><A href="/xyzx/xywd/Index.html" target=_blank>东方标准报名问答</A></H5>
+        <UL>
+          <LI class=qImg>
+            <P></P>
+          <LI>
+            &nbsp;<a class="" href="/xyzx/xywd/201301/27851.html" title="java培训有用吗" target="_blank">java培训有用吗</a><br />&nbsp;<a class="" href="/xyzx/xywd/201301/27850.html" title="哪个java培训好" target="_blank">哪个java培训好</a><br />&nbsp;<a class="" href="/xyzx/xywd/201301/27847.html" title="java培训机构排行最好的是哪家" target="_blank">java培训机构排行最…</a><br />&nbsp;<a class="" href="/xyzx/xywd/201301/27846.html" title="Java、.NET、C/C++、游戏、测试...我学哪一个好" target="_blank">Java、.NET、C/C++、…</a><br />&nbsp;<a class="" href="/xyzx/xywd/201301/27845.html" title="大专文科班，到东方标准学习难度大吗" target="_blank">大专文科班，到东方…</a><br />&nbsp;<a class="" href="/xyzx/xywd/201301/27833.html" title="到IT行业做JAVA软件工程师职业有什么要求" target="_blank">到IT行业做JAVA软件…</a><br />&nbsp;<a class="" href="/xyzx/xywd/201301/27832.html" title="如何认准东方标准android培训机构" target="_blank">如何认准东方标准an…</a><br />&nbsp;<a class="" href="/xyzx/xywd/201301/27831.html" title="高端java培训哪家好" target="_blank">高端java培训哪家好</a><br />&nbsp;<a class="" href="/xyzx/xywd/201301/27821.html" title="java培训多少钱" target="_blank">java培训多少钱</a><br />&nbsp;<a class="" href="/xyzx/xywd/201301/27820.html" title="东方标准培训完毕，学员就业情况怎么样？" target="_blank">东方标准培训完毕，…</a><br />&nbsp;<a class="" href="/xyzx/xywd/201301/27819.html" title="软件培训java、c++哪个比较容易？" target="_blank">软件培训java、c++哪…</a><br />
+          </LI>
+        </UL>
+        <H5><A href="/jy/jymsgs/Index.html" target=_blank>东方标准就业明星</A></H5>
+        <UL>
+          <LI class=qImg>
+            <P></P>
+          <LI>
+            <div class="">·&nbsp;<a class="" href="/jy/jymsgs/200710/21782.html" title="成功面试经验大放送：BoldTech&nbsp;Systems公司面试经历" target="_blank">成功面试经验大放…</a></div><div class="">·&nbsp;<a class="" href="/jy/jymsgs/200710/21780.html" title="放弃了考研，成功跨入华为的应届生" target="_blank">放弃了考研，成功…</a></div><div class="">·&nbsp;<a class="" href="/jy/jymsgs/200710/21779.html" title="连载：国际软件工程师海外生存日记（十二）" target="_blank">连载：国际软件工…</a></div><div class="">·&nbsp;<a class="" href="/jy/jymsgs/200705/20632.html" title="大连男孩，在神州数码开始职业生涯" target="_blank">大连男孩，在神州…</a></div><div class="">·&nbsp;<a class="" href="/jy/jymsgs/200705/20628.html" title="文科生转行IT，畅游在用友软件园" target="_blank">文科生转行IT，畅…</a></div><div class="">·&nbsp;<a class="" href="/jy/jymsgs/200705/20579.html" title="连载：国际软件工程师海外生存日记（十一）" target="_blank">连载：国际软件工…</a></div><div class="">·&nbsp;<a class="" href="/jy/jymsgs/200705/20578.html" title="从工作中找到一份精彩的感觉" target="_blank">从工作中找到一份…</a></div><div class="">·&nbsp;<a class="" href="/jy/jymsgs/200704/20554.html" title="从生物医学到IT精英" target="_blank">从生物医学到IT精…</a></div><div class="">·&nbsp;<a class="" href="/jy/jymsgs/200704/20552.html" title="出国就业，不同的经历，同样的梦想" target="_blank">出国就业，不同的…</a></div><div class="">·&nbsp;<a class="" href="/jy/jymsgs/200704/20551.html" title="连载：国际软件工程师海外生存日记（十）" target="_blank">连载：国际软件工…</a></div><div class="">·&nbsp;<a class="" href="/jy/jymsgs/200704/20120.html" title="毕业不到一年&nbsp;成功加盟IBM" target="_blank">毕业不到一年&nbsp;成功…</a></div><div class="">·&nbsp;<a class="" href="/jy/jymsgs/200704/20119.html" title="国际软件工程师相聚在樱花下" target="_blank">国际软件工程师相…</a></div><div class="">·&nbsp;<a class="" href="/jy/jymsgs/200703/12684.html" title="放弃了考研，成功跨入华为的应届生" target="_blank">放弃了考研，成功…</a></div><div class="">·&nbsp;<a class="" href="/jy/jymsgs/200703/12682.html" title="得中国电信认可，一次录用4名学员" target="_blank">得中国电信认可，…</a></div><div class="">·&nbsp;<a class="" href="/jy/jymsgs/200703/12619.html" title="看准行业需求，跨出领先一步" target="_blank">看准行业需求，跨…</a></div><div class="">·&nbsp;<a class="" href="/jy/jymsgs/200703/12618.html" title="非美术专业也能跻身北京最好装修公司" target="_blank">非美术专业也能跻…</a></div><div class="">·&nbsp;<a class="" href="/jy/jymsgs/200702/9640.html" title="程序员35岁前成功的12条黄金法则" target="_blank">程序员35岁前成功…</a></div><div class="">·&nbsp;<a class="" href="/jy/jymsgs/200702/9635.html" title="IT英雄：一个程序员如何月进万金的？" target="_blank">IT英雄：一个程序…</a></div>
+          </LI>
+        </UL>
+      </div>
+      <div class=ad170>
+        <div id=clk_jctj>
+          <H5><A href="http://bbs.oneedu.cn/" target=_blank>东方标准论坛</A></H5>
+          <UL>
+            <LI class=qImg>
+              <P></P>
+            <LI>
+              <script language="JavaScript" src="/bbs/api/javascript.php?
+
+function=threads&fids=4_43_44_45_5_46_47_48_9_49_50_10_52_51_42_41_22_19_20_31_32_33_34_24_25_26_29_27_28_30_35_11_36_38_37_39_13_40_12&maxlength=20&startrow=0&picpre=
+
+&items=20&digest=0&newwindow=1&highlight=0&forum=0&author=0&dateline=0&orderby=dateline&verify=a29225b6fbd00cbaf271e587839fc5ed"></script>
+            </LI>
+          </UL>
+        </div>
+      </div>
+    </div>
+    <div class=clear> </div>
+  </div>
+</div>
+<div class=clear> </div>
+</div>
+<div class=q_line > </div>
+<div class=ad950>
+
+ <object type="application/x-shockwave-flash" style="" width="100%" height="80"> 
+<param name="movie" value="http://www.oneedu.cn/images/oneedu.swf"> 
+<param name="wmode" value="transparent"> 
+</object>
+
+</div>
+    <div id="qcontent" > 
+  <div id=qcon_l>
+    <!-- 东方标准课程 -->
+    <div id=clk_qiche>
+      <div id=qBlog>
+        <div class=bTit><SPAN><A href="/OneEdu/xyhj/index.html">更多&gt;&gt;</A></SPAN>
+          <H5><A href="/OneEdu/xyhj/index.html" target=_blank>校园坏境</A></H5>
+        </div>
+        <div id=bbsCon>
+                        <table width="98%" border=0 align="center" cellspacing="3">
+                      <tr>
+                        <td><div align="center"><a href="/OneEdu/xyhj/index.html"><img src="oneedu/images/xiaoyuan/讲座2.jpg" width="109" height="90" border="0" 
+
+/></a></div></td>
+                        <td><div align="center"><a href="/OneEdu/xyhj/index.html"><img src="oneedu/images/xiaoyuan/讲座3.jpg" width="109" height="90" border="0" 
+
+/></a></div></td>
+                        <td><div align="center"><a href="/OneEdu/xyhj/index.html"><img src="oneedu/images/xiaoyuan/3.jpg" width="109" height="90" border="0" 
+
+/></a></div></td>
+                        <td><div align="center"><a href="/OneEdu/xyhj/index.html"><img src="oneedu/images/xiaoyuan/讲座1.jpg" width="109" height="90" border="0" 
+
+/></a></div></td>
+                      </tr>
+                      <tr>
+                        <td><div align="center">java培训体验课讲座</div></td>
+                        <td><div align="center">java培训体验课讲座</div></td>
+                        <td><div align="center">文化广场一角</div></td>
+
+                        <td><div align="center">java培训体验课讲座</div></td>
+                      </tr>
+                      <tr>
+                        <td><div align="center"><a href="/OneEdu/xyhj/index.html"><img src="oneedu/images/xiaoyuan/4.jpg" width="109" height="90" border="0" 
+
+/></a></div></td>
+                        <td><div align="center"><a href="http://net.oneedu.cn"><img src="oneedu/images/xiaoyuan/网络设备1.jpg" width="109" height="90" border="0" 
+
+/></a></div></td>
+                        <td><div align="center"><a href="http://net.oneedu.cn"><img src="oneedu/images/xiaoyuan/网络设备4.jpg" width="109" height="90" border="0" 
+
+/></a></div></td>
+                        <td><div align="center"><a href="/OneEdu/xyhj/index.html"><img src="oneedu/images/xiaoyuan/讲座2.jpg" width="109" height="90" border="0" 
+
+/></a></div></td>
+                      </tr>
+                      <tr>
+                        <td><div align="center">图书馆</div></td>
+                        <td><div align="center"><a href="http://net.oneedu.cn">网络设备</a></div></td>
+                        <td><div align="center"><a href="http://net.oneedu.cn">网络设备</a></div></td>
+                        <td><div align="center">java培训体验课讲座</div></td>
+                      </tr>
+
+                    </table>
+
+        </div>
+        <div class=clear> </div>
+      </div>
+<div class="list_ykz">
+<a href="http://www.oneedu.cn/">Android培训机构</a>
+<a href="http://www.oneedu.cn/">Android培训机构</a>
+<a href="http://www.oneedu.cn/">广州Android培训</a>
+</div><div id=qBlog>
+        <div class=bTit>
+          <H5>特约专访</H5>
+        </div>
+        <div id=bbsCon>
+      <table cellSpacing=0 cellPadding=0 width=450 border=0>
+              <tr>
+                <td vAlign=top align=left width=200 height=190><table width="100%" border=0>
+                    <tr>
+                      <td width="40%" height=64><div align=center><A href="/fengmao/mstj/tjdty/Index.htm" target=_blank><IMG height=64 src="/
+
+main/tianjiangdong.jpg" width=74 border=0></A> </div></td>
+                      <td vAlign=top align=left width="60%" rowSpan=2><div align=left><A href="/fengmao/mstj/tjdty/Index.htm" target=_blank>广州软件开发课程, 课
+
+程设计以实战为核心, 职业教育的使命让参加广州java培训... </A> </div></td>
+                    </tr>
+                    <tr>
+                      <td><div align=center><A href="/fengmao/mstj/tjdty/Index.htm" target=_blank>田江东</A> </div></td>
+                    </tr>
+                    <tr height=1>
+                      <td background=/images/xian.gif colSpan=2 height=1>&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td><A href="http://soft.oneedu.cn/Photo/teacher/2.html" target=_blank><IMG height=64 src="/main/yanghao.jpg" width=74 
+
+border=0></A></td>
+                      <td vAlign=top align=left rowSpan=2><div align=left><A href="http://soft.oneedu.cn/Photo/teacher/2.html" target=_blank>JavaEE应用专家，10年java软件
+
+开发经验，具有出色的研发技巧及分析能力，对技术...</A> </div></td>
+                    </tr>
+                    <tr>
+                      <td><div align=center><A href="http://soft.oneedu.cn/Photo/teacher/2.html" target=_blank>杨老师</A> </div></td>
+                    </tr>
+ 
+                  </table></td>
+                <td width=1>&nbsp;</td>
+                <td vAlign=top align=left width=249><A style="PADDING-LEFT: 5px; FONT-SIZE: 12px; LINE-HEIGHT: 1.7" href="/xuexiao/biaozhun.html" 
+
+target=_blank>&nbsp;&nbsp;&nbsp;&nbsp;东方标准java培训人才服务有限公司前身是新东方教育科技集团（NYSE：EDU）旗下的新东方职业教育中心，东方标准是到目前为止国内规模最大的综合IT人
+
+才服务机构。在新的国际风险投资注入后，东方标准的业务范围已扩展到IT综合技能培训、职业技能测评、人才服务、人才派遣和高级人才java培训等多项IT人才服务领域，为国内外IT企业和个人提供全方位、一站式人才服务......</A></td>
+              </tr>
+          </table>
+        </div>
+        <div class=clear> </div>
+
+    </div>
+     <div id=qBlog>
+        <div class=bTit><SPAN><A href="/xyzx/xyzp">更多&gt;&gt;</A></SPAN>
+          <H5><A href="/xyzx/xyzp" target=_blank>学员作品</A></H5>
+        </div>
+        <div id=bbsCon>
+          <div class=blogL>
+            <UL class=bimg>
+              <LI class=bul><SPAN><A href="/kecheng/jyl/1728.html" target=_blank>电脑美术</A></SPAN><A href="/xyzx/xyzp/200609/1975.html"><IMG 
+
+height=88 alt=电脑美术，平面设计师培训 src="/main/zuopin1.jpg" width=122 border=0></A> </LI>
+            </UL>
+            <P><A class=cBlue href="/xyzx/xyzp/200609/1975.html" target=_blank>时尚客厅</A></P>
+            <UL class=bimg>
+              <LI class=bul><SPAN><A href="http://cg.oneedu.cn" target=_blank>动漫设计</A></SPAN><a href="http://cg.oneedu.cn"><IMG height=88 alt=三维设计作品 
+
+src="/OneEdu/images/zlsj.jpg" width=122 border=0></a> </LI>
+            </UL>
+            <P><A class=cBlue href="http://cg.oneedu.cn" target=_blank>动漫设计</A></P>
+          </div>
+          <div class=blogL>
+            <UL class=bimg>
+              <LI class=bul><SPAN><A href="http://net.oneedu.cn/class_show1.html" target=_blank>网络工程</A></SPAN><A href="http://net.oneedu.cn/class_show1.html" 
+
+target=_blank><IMG height=88 src="/main/zuopin2.jpg" width=122 border=0></A> </LI>
+            </UL>
+            <P><A class=cBlue href="#" target=_blank>权限控制系统</A></P>
+            <UL class=bimg>
+              <LI class=bul><SPAN><A href="http://soft.oneedu.cn/class_show1.html" target=_blank>软件工程</A></SPAN><A href="http://soft.oneedu.cn/xueyuan_show1.html" 
+
+target=_blank><IMG height=88 alt=软件工程师作品 src="/main/zuopin4.jpg" width=122 border=0></A> </LI>
+            </UL>
+            <P><A class=cBlue href="http://soft.oneedu.cn/xueyuan_show1.html" target=_blank>移动计费系统</A></P>
+          </div>
+          <div style="TEXT-ALIGN: left">
+            ·&nbsp;<a class="" href="/xyzx/xyzp/200610/5197.html" title="高级住宅" target="_blank">高级住宅</a><br />·&nbsp;<a class="" href="/xyzx/xyzp/200610/5196.html" title="三维作品" target="_blank">三维作品</a><br />·&nbsp;<a class="" href="/xyzx/xyzp/200609/2065.html" title="平面作品" target="_blank">平面作品</a><br />·&nbsp;<a class="" href="/xyzx/xyzp/200609/1975.html" title="时尚客厅" target="_blank">时尚客厅</a><br />·&nbsp;<a class="" href="/xyzx/xyzp/200609/1710.html" title="别墅--三维设计" target="_blank">别墅--三维…</a><br />·&nbsp;<a class="" href="/xyzx/xyzp/200608/883.html" title="我的作品" target="_blank">我的作品</a><br />·&nbsp;<a class="" href="/xyzx/xyzp/200608/882.html" title="东方标准三剑客" target="_blank">东方标准三…</a><br />·&nbsp;<a class="" href="/xyzx/xyzp/200608/881.html" title="高级公寓" target="_blank">高级公寓</a><br />·&nbsp;<a class="" href="/xyzx/xyzp/200608/880.html" title="高级居室" target="_blank">高级居室</a><br />·&nbsp;<a class="" href="/xyzx/xyzp/200608/879.html" title="平面作品展" target="_blank">平面作品展</a><br />·&nbsp;<a class="" href="/xyzx/xyzp/200608/878.html" title="公车站广告" target="_blank">公车站广告</a><br />·&nbsp;<a class="" href="/xyzx/xyzp/200608/877.html" title="光明策略网页" target="_blank">光明策略网…</a><br />·&nbsp;<a class="" href="/xyzx/xyzp/200608/876.html" title="东方标准的网页设计" target="_blank">东方标准的…</a><br />·&nbsp;<a class="" href="/xyzx/xyzp/200608/875.html" title="突出特征" target="_blank">突出特征</a><br />·&nbsp;<a class="" href="/xyzx/xyzp/200608/874.html" title="夸张牛奶" target="_blank">夸张牛奶</a><br />·&nbsp;<a class="" href="/xyzx/xyzp/200608/873.html" title="绿洲的方向" target="_blank">绿洲的方向</a><br />
+          </div>
+        </div>
+        <div class=clear> </div>
+      </div>
+
+    <div class=blankW6> </div>
+    <!-- 故事会-校园-文化 -->
+    <div id=clk_xiaoyuan>
+      <div id=qBlog>
+        <div class=bTit>
+          <H5><A href="/jy/" target=_blank>就业</A>·<A href="/jy/" target=_blank>人才服务</A>·<A href="/jy/" target=_blank>人才外包</A></H5>
+        </div>
+        <div id=bbsCon>
+          <div class=lFun>
+            <UL>
+              <LI><A href="/jy/" target=_blank><IMG height=120 src="/main/jiuyezhilan.jpg" width=160 border=0></A>
+                <P><A class=cBlue id=utitle_3048543 href="/jy/" target=_blank>天河区java培训指南</A></P>
+              <LI><A id=utitle_3049098 href="/jy/zp/200704/20126.html" target=_blank><IMG height=120 src="/main/2007jie.jpg" width=160 
+
+border=0></A>
+                <P><A class=cBlue id=utitle_3049098 href="htto://www.oneedu.cn/jy/zp/200704/20126.html" target=_blank>东方标准高校就业招聘会和大学生就业高峰论坛
+
+</A></P>
+              <LI><A href="/fengmao/news/xdfnews/200612/6218.htm" target=_blank><IMG height=120 src="/main/itqj.jpg" width=160 border=0></A>
+                <P><A class=cBlue href="/fengmao/news/xdfnews/200612/6218.htm" target=_blank>中国JAVA软件工程师人才服务旗舰起航</A></P>
+              </LI>
+            </UL>
+          </div>
+          <div class=rFun>
+            <UL class=odd>
+              <LI style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND: none transparent scroll repeat 0% 0%; PADDING-BOTTOM: 0px; PADDING-TOP: 0px"><SPAN><A 
+
+href="/jy/jyxx/Index.html" target=_blank>[最新就业]</A></SPAN><BR>
+                <table width="100%" cellpadding="0" cellspacing="0"><tr><td valign="top" class="">·&nbsp;<a class="" href="/jy/jyxx/200802/23704.html" title="企业重视雇主品牌，网络招聘推陈出新" target="_blank">企业重视雇主品牌，…</a><br /></td><td valign="top" class="">·&nbsp;<a class="" href="/jy/jyxx/200802/23703.html" title="网络编辑、3G工程师等入选最赚钱十大行业" target="_blank">网络编辑、3G工程师…</a><br /></td></tr><tr><td valign="top" class="">·&nbsp;<a class="" href="/jy/jyxx/200801/23463.html" title="求职季要有好心态" target="_blank">求职季要有好心态</a><br /></td><td valign="top" class="">·&nbsp;<a class="" href="/jy/jyxx/200801/23074.html" title="适合大学生兼职的七个行业" target="_blank">适合大学生兼职的七…</a><br /></td></tr><tr><td valign="top" class="">·&nbsp;<a class="" href="/jy/jyxx/200801/23073.html" title="高端劳动力供求困局突围之道" target="_blank">高端劳动力供求困局…</a><br /></td><td valign="top" class="">·&nbsp;<a class="" href="/jy/jyxx/200801/23072.html" title="广东企业外来民工求职比例趋减&nbsp;劳动力不足" target="_blank">广东企业外来民工求…</a><br /></td></tr><tr><td valign="top" class="">·&nbsp;<a class="" href="/jy/jyxx/200801/23064.html" title="C++软件工程师" target="_blank">C++软件工程师</a><br /></td><td valign="top" class="">·&nbsp;<a class="" href="/jy/jyxx/200801/23063.html" title="java工程师" target="_blank">java工程师</a><br /></td></tr><tr><td valign="top" class="">·&nbsp;<a class="" href="/jy/jyxx/200801/23062.html" title="软件工程师" target="_blank">软件工程师</a><br /></td><td valign="top" class="">·&nbsp;<a class="" href="/jy/jyxx/200801/23061.html" title="软件工程师" target="_blank">软件工程师</a><br /></td></tr><tr></tr></table>
+              </LI>
+            </UL>
+            <P></P>
+            <UL class=odd>
+              <LI style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND: none transparent scroll repeat 0% 0%; PADDING-BOTTOM: 0px; PADDING-TOP: 0px"><SPAN><A 
+
+href="/jy/zp/Index.html" target=_blank>[最新招聘]</A></SPAN><BR>
+                <table width="100%" cellpadding="0" cellspacing="0"><tr><td valign="top" class="">·&nbsp;<a class="" href="/jy/zp/201303/28036.html" title="android开发工程师（广州市易臣信息技术有限公司）" target="_blank">android开发工程师…</a><br /></td><td valign="top" class="">·&nbsp;<a class="" href="/jy/zp/201303/28035.html" title="android开发工程师（广东广信通信服务有限公司）" target="_blank">android开发工程师…</a><br /></td></tr><tr><td valign="top" class="">·&nbsp;<a class="" href="/jy/zp/201303/28034.html" title="java软件工程师（广州嘉一信息科技有限公司）" target="_blank">java软件工程师（…</a><br /></td><td valign="top" class="">·&nbsp;<a class="" href="/jy/zp/201303/28033.html" title="java软件工程师（广州市和声信息技术有限公司）" target="_blank">java软件工程师（…</a><br /></td></tr><tr><td valign="top" class="">·&nbsp;<a class="" href="/jy/zp/201303/28009.html" title="android软件工程师（广州市三川田数码科技有限公司）" target="_blank">android软件工程师…</a><br /></td><td valign="top" class="">·&nbsp;<a class="" href="/jy/zp/201303/28008.html" title="android软件工程师（广州顺科软件服务有限公司）" target="_blank">android软件工程师…</a><br /></td></tr><tr><td valign="top" class="">·&nbsp;<a class="" href="/jy/zp/201303/28007.html" title="高级java开发工程师（广州创显光电科有技限公司）" target="_blank">高级java开发工程…</a><br /></td><td valign="top" class="">·&nbsp;<a class="" href="/jy/zp/201303/28006.html" title="java开发工程师（广东缤果动漫集团有限公司）" target="_blank">java开发工程师（…</a><br /></td></tr><tr><td valign="top" class="">·&nbsp;<a class="" href="/jy/zp/201303/27999.html" title="android开发工程师（广州光亚网络科技有限公司）" target="_blank">android开发工程师…</a><br /></td><td valign="top" class="">·&nbsp;<a class="" href="/jy/zp/201303/27998.html" title="手机应用开发工程师（广州永年文化传播有限公司）" target="_blank">手机应用开发工程…</a><br /></td></tr><tr></tr></table>
+              </LI>
+            </UL>
+            <P></P>
+            <UL class=odd>
+              <LI style="PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND: none transparent scroll repeat 0% 0%; PADDING-BOTTOM: 0px; PADDING-TOP: 0px"><SPAN><A 
+
+href="/jy/jyzx/Index.html" target=_blank>[就业技巧]</A></SPAN><BR>
+                <div class="">·&nbsp;<a class="" href="/jy/jcrs/201303/28040.html" title="具有什么技能的java程序员被企业所需" target="_blank">具有什么技能的java程序员被企业所需</a></div><div class="">·&nbsp;<a class="" href="/jy/jcrs/201303/28022.html" title="面试JAVA程序员的基础能力问题" target="_blank">面试JAVA程序员的基础能力问题</a></div><div class="">·&nbsp;<a class="" href="/jy/jcrs/201303/28014.html" title="Java程序员的笔试题十道" target="_blank">Java程序员的笔试题十道</a></div><div class="">·&nbsp;<a class="" href="/jy/jcrs/201303/28003.html" title="三招扩大自己的人脉" target="_blank">三招扩大自己的人脉</a></div><div class="">·&nbsp;<a class="" href="/jy/jcrs/201303/28002.html" title="面试前如何调整到最佳心态" target="_blank">面试前如何调整到最佳心态</a></div>
+              </LI>
+            </UL>
+          </div>
+        </div>
+        <div class=clear> </div>
+      </div>
+    </div>
+  </div> </div>
+
+
+<div id=qcon_r>    <!-- 培训 -->
+    <div id=qRight>
+      <div class=l>
+        <!-- 职前培训 -->
+        <div id=clk_jyfx>
+          <div class=qProduct>
+            <div class=qtit>
+              <H5><A href="/jqpx/xsxx/Index.html" target=_blank>职前培训</A></H5>
+            </div>
+            <UL class=qExp>
+              <LI><A href="/jqpx/xsxx/Index.html"><IMG height=86 alt=职前培训，职业测评 src="/main/tese.gif" width=91 border=0></A>
+
+                <dl>
+                  <dt><A href="/jqpx/xsxx/Index.html">流程：学员培训→职业测评→专家定位→推荐就业</A>
+                  <dt><A href="/jqpx/xsxx/Index.html">培训目标：打造优秀，全面，综合能力强，具备竞争优势的高素质人才...</A> </dt>
+                </dl>
+              </LI>
+            </UL>
+            <UL class=qWap>
+              <LI>
+              地处中山大道java培训,广州软件工程师培训,Android培训广州质量最好的培训中心,广州java软件培训就业质量最高</LI>
+            </UL>
+          </div>
+        </div>
+        <div class=blankW6> </div>
+        <!-- 海外就业 -->
+        <div id=clk_shss1>
+          <div class=qProduct>
+            <div class=qtit>
+              <H5><A href="/haiwai/" target=_blank>海外就业</A></H5>
+            </div>
+            <UL class=qExp>
+              <LI><A href="/haiwai/index.html"><IMG height=86 alt=海外出国就业，对日赴日 src="/main/tese1.gif" width=91 border=0></A>
+                <dl>
+                  <dt><A href="/haiwai/index.html">东方标准（广州）成立了海外就业部，打出“不走传统留学路，出国就业零风险”口号为应届优秀毕业生推了国际软件
+
+工程师高校联合 </A> </dt>
+                </dl>
+              </LI>
+            </UL>
+            <UL class=qWap>
+              <LI>
+                <!--$海外就业$-->
+                <div class="">·&nbsp;<a class="" href="/haiwai/gushu/200711/22680.html" title="放弃8000元的月薪，来栋梁工程追梦" target="_blank">放弃8000元的月薪，来栋梁工程追…</a></div><div class="">·&nbsp;<a class="" href="/haiwai/news/200704/20105.html" title="＂赢在起跑线之前＂系列课程首场揭幕" target="_blank">＂赢在起跑线之前＂系列课程首场…</a></div><div class="">·&nbsp;<a class="" href="/haiwai/gushu/200703/12612.html" title="送孙女赴海外工作，85岁奶奶欣慰落泪" target="_blank">送孙女赴海外工作，85岁奶奶欣慰…</a></div><div class="">·&nbsp;<a class="" href="/haiwai/news/200701/7944.html" title="感谢信：赴日工作，让儿子的未来更加辉煌" target="_blank">感谢信：赴日工作，让儿子的未来…</a></div><div class="">·&nbsp;<a class="" href="/haiwai/news/200701/7943.html" title="史朝胜：十个月成就我20万年薪的经历" target="_blank">史朝胜：十个月成就我20万年薪的…</a></div><div class="">·&nbsp;<a class="" href="/haiwai/gushu/200701/7942.html" title="软件工程师的海外生存日记（九）" target="_blank">软件工程师的海外生存日记（九）</a></div><div class="">·&nbsp;<a class="" href="/haiwai/gushu/200701/7941.html" title="软件工程师的海外生存日记（八）" target="_blank">软件工程师的海外生存日记（八）</a></div><div class="">·&nbsp;<a class="" href="/haiwai/news/200612/6226.html" title="新东方大学生就业辅导高峰论坛" target="_blank">新东方大学生就业辅导高峰论坛</a></div><div class="">·&nbsp;<a class="" href="/haiwai/gushu/200610/6055.html" title="软件工程师的海外生存日记(七)" target="_blank">软件工程师的海外生存日记(七)</a></div><div class="">·&nbsp;<a class="" href="/haiwai/gushu/200610/6054.html" title="软件工程师的海外生存日记(六)" target="_blank">软件工程师的海外生存日记(六)</a></div>
+              </LI>
+            </UL>
+          </div>
+        </div>
+
+        <div class=blankW6> </div>
+        <!-- 就业明星 -->
+        <div id=clk_msnsh>
+          <div class=qProduct style="BORDER-BOTTOM-STYLE: none">
+            <div class=qtit>
+              <H5><A href="/xuexiao/jyms.html" target=_blank>就业明星</A></H5>
+            </div>
+            <UL class=qJk>
+              <LI><A id=utitle_136482 href="/xuexiao/jyms.html" target=_blank><IMG height=75 src="/main/zhouyi.gif" width=100 border=0></A><A 
+
+id=utitle_136482 href="/xuexiao/jyms.html" target=_blank>周毅</A></LI>
+              <LI><A id=utitle_136751 href="/xuexiao/jyms.html" target=_blank><IMG height=75 src="/main/liuqing.gif" width=100 border=0></A><A 
+
+href="/xuexiao/jyms.html" target=_blank>刘晴操</A> </LI>
+            </UL>
+            <UL class=qJk>
+              <LI><A id=utitle_136482 href="/xuexiao/jyms.html" target=_blank><IMG height=75 src="/main/dingji.gif" width=100 border=0></A><A 
+
+id=utitle_136482 href="/xuexiao/jyms.html" target=_blank>丁喆</A></LI>
+              <LI><A id=utitle_136751 href="/xuexiao/jyms.html" target=_blank><IMG height=75 src="/main/luoguoliang.gif" width=100 
+
+border=0></A><A href="/xuexiao/jyms.html" target=_blank>易旻</A> </LI>
+            </UL>
+            <UL class=qJk>
+              <LI><A id=utitle_136482 href="/xuexiao/jyms.html" target=_blank><IMG height=75 src="/main/hexuexiang.gif" width=100 
+
+border=0></A><A id=utitle_136482 href="/xuexiao/jyms.html" target=_blank>何学翔</A></LI><span style="display:none"><a href='http://www.qipai5.com'>真钱棋牌
+
+</a> </span>
+              <LI><A id=utitle_136751 href="/xuexiao/jyms.html" target=_blank><IMG height=75 src="/main/heyan.gif" width=100 border=0></A><A 
+
+href="/xuexiao/jyms.html" target=_blank>柯妍</A> </LI>
+            </UL>			
+			            <div class=qtit>
+              <H5 align="right"><a href="/xuexiao/jyms.html">更多&gt;&gt;</a></H5>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class=r>
+        <!-- 就业 -->
+        <div id=clk_qctk>
+          <div class=qVideo>
+            <H5><A href="/jy/jymsgs/Index.html" target=_blank>学员来信</A></H5>
+            <UL>
+              <LI class=qImg>
+                <P></P>
+              <LI>
+                <li>此栏目下没有文章</li>
+
+              </LI>
+            </UL>
+          </div>
+        </div>
+        <div class=qVideo>
+          <div id=clk_ltpp>
+            <H5><A href="#" target=_blank>人才输出单位</A></H5>
+            <div class=logotu>
+<UL>
+<LI><IMG src="/main/ad_baidu.gif"> 
+<LI><IMG src="/main/ad_gw.gif"> 
+<LI><IMG src="/main/ad_lenovo.gif"> 
+<LI><IMG src="/main/ad_lz.gif"> 
+<LI><IMG src="/main/ad_tongfang.gif"> 
+<LI><IMG src="/main/ad_tt.gif"> 
+<LI><IMG src="/main/ad_ufida.gif"> </LI></UL></LI></div>
+            <UL>
+              <LI><MARQUEE onmouseover=stop() onmouseout=start() scrollAmount=1 scrollDelay=30 direction=up height=480>TCL广州分公司<BR>昂立公司<BR>百度<BR>百事(中国)有限公司<BR>宝元号(广州)首饰有限公司<BR>北京博大正方软件技术公司<BR>北京和源沐泽科技发展公司<BR>北京华旗资讯广州分公司<BR>北京朗新信息系统有限公司<BR>北京联众科技有限公司<BR>北京纽曼理想数码有限公司<BR>广州安美<BR>广州傲佳<BR>广州合丰数码科技有限公司<BR>广州蓝帆<BR>广州全力达科技<BR>新隆创展计算机科技公司<BR>北京人脉科技有限公司<BR>北京四维图新<BR>北京新思软件软件有限公司<BR>北京新网数字信息有限公司<BR>广州分公司<BR>信必优系统技术有限公司<BR>北京讯宜创新电子有限公司<BR>北京亿阳集团有限公司<BR>宇信鸿泰科技发展有限公司<BR>中海纪元数字技术发展公司<BR>计算机软件与系统有限公司<BR>长讯公司<BR>成都大东网络安全技术公司<BR>大禾公司<BR>电脑报华南报<BR>东莞技研新阳有限公司<BR>东莞盈天电脑有限公司<BR>高大(顺德)电子厂有限公司<BR>广东大参林连锁药店有限公司<BR>广东海瀚科技发展有限公司<BR>广东和升商贸有限公司<BR>广东华智科技有限公司<BR>广东骏和通信器材有限公司<BR>广东凯通软件开发有限公司<BR>广东联媒传播广告有限公司<BR>广东铭鸿数据处理有限公司<BR>广东锐想资讯科技有限公司<BR>广东商易数码科技有限公司<BR>linux公共服务技术支持中心<BR>广东省电信实业集团公司<BR>广东省数字证书认证中心<BR>源大水利水电集团有限公司<BR>广东盛悦环保节能有限公司<BR>广东数据通信网络有限公司<BR>广东太古可口可乐有限公司<BR>广东天拓资讯科技有限公司<BR>广东怡创通信有限公司<BR>广东智软电脑开发有限公司<BR>广东中实通信技术有限公司<BR>广州彩易信息科技有限公司<BR>广州大宇宙信息创造有限公司<BR>广州德达泰尔通信有限公司<BR>广州德明信通信有限公司<BR>广州顶九信息科技有限公司<BR>广州鼎海贸易有限公司<BR>广州飞歌电子科技有限公司<BR>广州菲音信息科技有限公司<BR>广州昊致电气有限公司<BR>合立正通信息网络集成公司<BR>广州虹天电子商务有限公司<BR>广州鸿鹄计算机科技公司<BR>广州华大自学考试辅导学校<BR>广州华工信息软件有限公司<BR>广州汇安科技<BR>广州慧宝数码科技有限公司<BR>广州金发科技股份有限公司<BR>广州进鼎光电设备有限公司<BR>广州京华网络有限公司<BR>广州骏网信息科技有限公司<BR>广州骏维电子科技有限公司<BR>广州宽路通讯科技有限公司<BR>广州理想信息产业有限公司<BR>广州理想资讯科技有限公司<BR>广州美电贝尔电业科技公司<BR>广州美深信息技术有限公司<BR>广州美声计算机科技公司<BR>广州美维电子有限公司<BR>广州明确咨询有限公司<BR>奇码科技有限公司<BR>企大投资顾问有限公司<BR>广州日滨科技发展有限公司<BR>广州软件人才培训中心<BR>广州瑞风科技公司<BR>广州塞宝腾睿信息科技<BR>广州尚艺美发美容连锁机构<BR>盛讯网格技术服务有限公司<BR>广州市白云区凯诺电子厂<BR>贝讯通信技术有限公司<BR>广州市超伦科技有限公司<BR>德诚节能科技有限公司<BR>点通信息科技有限公司<BR>番科计算机有限公司<BR>工钛电子科技有限公司<BR>广州市海珠区扬华培训中心<BR>华而实通信科技有限公司<BR>广州市京华网络有限公司<BR>广州市景望科技有限公司<BR>广州市九佛电器有限公司<BR>炬元通讯技术有限公司<BR>聚晖电子科技有限公司<BR>俊伯人才服务有限公司<BR>灵讯通信科技有限公司<BR>罗斯泰克科技有限公司<BR>摩网信息技术有限公司<BR>品高软件开发有限公司<BR>普亚电子科技有限公司<BR>瑞达通信技术有限公司<BR>天亿计算机设备公司<BR>维科创新通信技术公司<BR>维科创新通信技术公司<BR>广州市伟昊科技电子公司<BR>艺汇数码图文喷绘公司<BR>殷雷信息技术公司<BR>域创创意设计有限公司<BR>广州市职拓科技公司<BR>广州市中钰科技有限公司<BR>天越通信技术发展公司<BR>网亿科技发展公司<BR>广州威腾网络科技有限公司<BR>广州微启软件有限公司<BR>广州维科创新通信技术<BR>广州新东方职业教育中心<BR>广州新中酒管理公司<BR>广州信息产业部电子第五研究所<BR>广州旭泰纸品有限公司<BR>广州讯邦广告传媒有限公司<BR>(新浪)广州亚盟信息科技<BR>广州易特隆电子科技<BR>广州翼锋信息科技有限公司<BR>广州永佶电子科技有限公司<BR>广州兆京计算机技术有限公司<BR>广州智鼎数码科技有限公司<BR>广州中软信息技术有限公司<BR>广州中资源网络有限公司<BR>广州卓讯网络科技有限公司<BR>海拓公司<BR>信息科技有限公司<BR>红海人力资源有限公司<BR>华计软件开发<BR>惠普（中国）有限公司<BR>教育新天地<BR>金蝶软件(中国)有限公司<BR>广州分公司<BR>骏和通信器材有限公司<BR>立信企业集团<BR>盟讯(广州)电子有限公司<BR>民生银行(广州分行)<BR>摩托罗拉<BR>南海乔国电子科技公司<BR>诺基亚有限公司<BR>普怡健茶<BR>祈福（南沙）酒店<BR>清华同方电脑有限公司<BR>铨盛贸易<BR>日本NDS公司<BR>日本NEC株式会社<BR>日本爱普生株式会社<BR>日本本田株式会社<BR>日本东建公司<BR>日本富士通公司<BR>日本佳能株式会社<BR>日本尼康株式会社<BR>日本日立株式会社<BR>日本松下株式会社<BR>日本索尼株式会社<BR>日本夏普株式会社<BR>日本住友株式会社<BR>软通动力<BR>神州泰岳<BR>石竹公司<BR>时代互联信息技术公司<BR>顺德中昌电脑<BR>松本电工实业有限公司<BR>速达软件技术有限公司<BR>索尼爱立信有限公司<BR>天极网络有限公司<BR>广州分公司<BR>天讯<BR>同方股份有限公司<BR>拓欧信息技术有限公司<BR>文思创新软件技术公司<BR>文思创新软件科技公司<BR>香港易宝通迅服务公司<BR>协亨手机城<BR>新华南方软件外包公司<BR>新浪网<BR>新世界数码科技有限公司<BR>星网锐捷网络有限公司<BR>亚迪瑞特咨询（华南分部）<BR>依利安达集团<BR>易诚世纪科技有限公司<BR>英才网联科技有限公司<BR>智库网<BR>中国NTT DATA公司<BR>中国电信广州分公司<BR>中国计算机报<BR>中国人寿保险公司<BR>中国网通广州分公司<BR>中邮普态<BR>中智软件开发有限公司<BR>珠江灯光音响实业<BR>资讯整合网<BR>嵌入式软件公共技术中心<BR>华南资讯科技有限公司<BR>立信企业下属诚毅公司<BR>广东龙拓<BR>广州天拓<BR>广州诚伯信息有限公司<BR>纵横天地电子商旅服务公司<BR>中国企业新网<BR><A href="http://www.toedu.org/">广州Java培训</A><BR>实用英语法语学校<BR></MARQUEE> </A></LI>
+            </UL>
+          </div>
+        </div>
+
+      </div>
+      <div class=clear> </div>
+    </div>
+  </div>
+  <div class=clear> </div>
+</div>
+<!--end 培训-->
+<div class=q_line> </div>
+<div id=foot1>
+  <div class=youqinglianjie>
+    <UL>
+     <LI><FONT color=#000000><STRONG>友情链接</STRONG></FONT><A href="mailto:consult@oneedu.cn" >（友情连接及网站合作）</A></LI>
+            <LI><table width="100%" cellSpacing="5"><tr align="center" class="tdbg"><td width='88'><a href="/FriendSite/FriendSiteUrl.asp?ID=642" target="_blank" title="网站名称：华师大动漫培训
+网站地址：http://www.51top.org/kczt04/
+网站简介：">华师大动漫培训</a></td><td width='88'><a href="/FriendSite/FriendSiteUrl.asp?ID=701" target="_blank" title="网站名称：Java培训机构
+网站地址：http://soft.oneedu.cn
+网站简介：">Java培训机构</a></td><td width='88'><a href="/FriendSite/FriendSiteUrl.asp?ID=702" target="_blank" title="网站名称：暨南大学自考
+网站地址：http://www.tojob.org
+网站简介：">暨南大学自考</a></td><td width='88'><a href="/FriendSite/FriendSiteUrl.asp?ID=703" target="_blank" title="网站名称：广州SEO培训
+网站地址：http://www.17cg.org
+网站简介：">广州SEO培训</a></td><td width='88'><a href="/FriendSite/FriendSiteUrl.asp?ID=704" target="_blank" title="网站名称：网络营销培训
+网站地址：http://www.51doseo.com
+网站简介：">网络营销培训</a></td><td width='88'><a href="/FriendSite/FriendSiteUrl.asp?ID=705" target="_blank" title="网站名称：广州网页培训
+网站地址：http://www.web168.org
+网站简介：">广州网页培训</a></td><td width='88'><a href="/FriendSite/FriendSiteUrl.asp?ID=706" target="_blank" title="网站名称：广州广告培训
+网站地址：http://www.itpx8.com
+网站简介：">广州广告培训</a></td><td width='88'><a href="/FriendSite/FriendSiteUrl.asp?ID=381" target="_blank" title="网站名称：动画培训
+网站地址：http://www.51top.org/kczt01/index.html
+网站简介：动画培训">动画培训</a></td><td width='88'><a href="/FriendSite/FriendSiteUrl.asp?ID=94" target="_blank" title="网站名称：广州java培训
+网站地址：http://www.myzd.org
+网站简介：">广州java培训</a></td></tr><tr align='center' class='tdbg'><td width='88'><a href="/FriendSite/FriendSiteUrl.asp?ID=6" target="_blank" title="网站名称：网页设计培训
+网站地址：http://www.web168.org
+网站简介：建站资源、酷站欣赏、模板设计">网页设计培训</a></td><td width='88'><a class='LinkFriendSite' href='/FriendSite/FriendSiteReg.asp' target='_blank'>点击申请</a></td><td width='88'><a class='LinkFriendSite' href='/FriendSite/FriendSiteReg.asp' target='_blank'>点击申请</a></td><td width='88'><a class='LinkFriendSite' href='/FriendSite/FriendSiteReg.asp' target='_blank'>点击申请</a></td><td width='88'><a class='LinkFriendSite' href='/FriendSite/FriendSiteReg.asp' target='_blank'>点击申请</a></td><td width='88'><a class='LinkFriendSite' href='/FriendSite/FriendSiteReg.asp' target='_blank'>点击申请</a></td><td width='88'><a class='LinkFriendSite' href='/FriendSite/FriendSiteReg.asp' target='_blank'>点击申请</a></td><td width='88'><a class='LinkFriendSite' href='/FriendSite/FriendSiteReg.asp' target='_blank'>点击申请</a></td><td width='88'><a class='LinkFriendSite' href='/FriendSite/FriendSiteReg.asp' target='_blank'>点击申请</a></td></tr></table></LI>
+    </UL>
+  </div>
+</div>
+<div class="list_ykz">
+<a href="http://www.oneedu.cn/">java培训</a>
+<a href="http://www.oneedu.cn/">android培训</a>
+</div>
+<div class=blank6> </div>
+<!-- 页尾 -->
+<div align=center><div id=footindex>
+<UL>
+<LI>
+<div align=center><STRONG>新东方职业教育广州中心 </STRONG> <A href="/xuexiao/weizhi.html#sp" target=_blank>[地图]</A> <BR>地址：广州市天河区五山路华南理工大学国家科技园金华园区C栋112</div>
+<LI>
+<div align=center><A class=h_black_x href="/xuexiao/biaozhun.html" target=_blank>关于我们</A> | <A class=h_black_x href="/jy/xdfjob/Index.html" target=_blank>学校招聘</A> | <A href="mailto:master@oneedu.cn">站务邮箱</A> | <A href="mailto:tian@oneedu.cn">校长信箱</A> | <A class=h_black_x href="/FriendSite/Index.asp" target=_blank>友情连接</A> | <A class=h_black_x href="/xuexiao/weizhi.html" target=_blank>学校位置</A> | <A class=h_black_x href="/ditu.html" target=_blank>网站地图</A> | <A class=h_black_x href="/GuestBook/" target=_blank>在线留言</A> | <A class=h_black_x href="/daili/" target=_blank>代理招生</A></div>
+<LI>
+<div align=center>www.OneEdu.cn 新东方职业教育中心版权所有 All Rights Reserved <A href="http://www.miibeian.gov.cn/">粤ICP备06113350号</A> 
+<script src='http://s56.cnzz.com/stat.php?id=762985&web_id=762985&show=pic' language='JavaScript' charset='gb2312'></script>
+<!--script language="javascript" type="text/javascript" src="http://js.users.51.la/1951400.js"></script--></div>
+<LI>
+<div align=center>
+<div style="DISPLAY: none"></div><IMG height=50 alt=新东方教育集团 src="/main/gd.jpg" width=128 border=0> <A href="http://www.neworiental.org/" target=_blank><IMG height=50 alt=新东方教育集团 src="/main/xindongfanglogo.gif" width=128 border=0></A> <A href="http://www.dtcap.com/" target=_blank><IMG height=50 alt="DT CAPITAL （德同资本）" src="/main/detong.jpg" width=128 border=0></A> <A href="http://www.dcm.com/" target=_blank><IMG height=50 alt="DCM-Doll Capital Management" src="/main/dcm.jpg" width=128 border=0></A> 
+<script src="http://www.google-analytics.com/urchin.js" type="text/javascript">
+</script> 
+<script type="text/javascript">
+_uacct = "UA-1413119-4";
+urchinTracker();
+</script>
+
+</div></LI></UL></div>
+
+<!-- 在线咨询-->
+<script language="javascript">
+
+function noneDiv(){
+   document.getElementById("bottomToolBar2").style.display="none";
+}
+
+</script>
+
+<div class="bottomToolBar2"  id="bottomToolBar2"  >
+<div  title="点击关闭!" style="float:right;" >
+   <a href="#" onclick="javascript:noneDiv()"     >
+<img src="/images/close.jpg"  style="margin-left:-25px;margin-top:-15px;"/>
+   </a>
+</div>
+<div class="toolBarCont2"  >
+<!--请将以下这段代码放到网页中您想要显示固定图标的位置-->
+<script language="javascript">
+<!--
+if(document.all || document.getElementById)
+{
+	document.write('<span id="LR_User_Icon0"></span>');
+}
+else if(document.layers)
+{
+	document.write('<layer name="LR_User_Icon0"></layer>');
+}
+//-->
+</script>
+</div>
+
+</div>
+
+<script language="javascript" src="http://dgt.zoosnet.net/JS/LsJS.aspx?siteid=DGT49535531&float=1&lng=cn"></script>
+
+<script language="javascript">
+if(typeof(LiveReceptionCode_isonline)!='undefined')
+{
+	if(LiveReceptionCode_isonline)
+		LR_GetObj('LR_User_Icon0').innerHTML='<a  href="http://soft.oneedu.cn" '+LiveReceptionCode_BuildChatWin('您好!我想咨询!','电话:020-66637693  \nQQ:2403642159 \n电子邮件:2403642159@qq.com')+'><img src="/images/online.gif" border="0" ></a>';
+	else
+		LR_GetObj('LR_User_Icon0').innerHTML='<a  href="http://soft.oneedu.cn" '+LiveReceptionCode_BuildChatWin('您好!我想咨询!','电话:020-66637693  \nQQ:2403642159 \n电子邮件:2403642159@qq.com')+'><img src="/images/unline.gif" border="0"   ></a>';
+}
+</script>
+
+
+<!-- 在线咨询-->
+
+ </div>

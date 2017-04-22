@@ -1,0 +1,907 @@
+<!DOCTYPE html><html><head>
+	<title>联络员注册</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="content-type" content="text/html;charset=utf-8;">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<script src="/javascript/jquery-1.7.js"></script>
+	<script src="/javascript/ajax.js"></script>
+    <link rel="stylesheet" href="/javascript/plugins/aui-artDialog/css/ui-dialog.css">
+	<script src="/javascript/plugins/aui-artDialog/dist/dialog-plus.js"></script>
+
+    <script>
+$(function() {
+    loadHeadHtml();
+    loadEndHtml();
+    $.get("/ifCollectInfo.jspx", function (data) {
+        if (data == "1") {
+            loadJS("http://fwtj.gsxt.gov.cn/js/logcollector.js?nodenum=420000", function() {
+                sessionId_gsxt = getSessionId();// 正常情况JS可以拿到sessionId,但经过测试发现有些web服务器，js拿不到sessionId，这种情况需要手动对sessionId进行赋值，如sessionId_gsxt=
+                t1Collect_gsxt();// 收集访问信息，每个页面都需要调用该方法
+            });
+        }
+    });
+});
+
+//定义加载文件的函数
+var loadJS = function(url, callback) {
+    var head = document.getElementsByTagName('head')[0],
+            script = document.createElement('script');
+    script.src = url;
+    script.type = "text/javascript";
+    head.appendChild(script);
+
+    script.onload = script.onreadystatechange = function() {
+        if ((!this.readyState) || this.readyState == "complete" || this.readyState == "loaded") {
+            callback();
+        } else {
+        }
+    }
+}
+//获取sessionid
+function getSessionId(){
+    var c_name = 'JSESSIONID';
+    if(document.cookie.length>0){
+        c_start=document.cookie.indexOf(c_name + "=")
+        if(c_start!=-1){
+            c_start=c_start + c_name.length+1
+            c_end=document.cookie.indexOf(";",c_start)
+            if(c_end==-1) c_end=document.cookie.length
+            return unescape(document.cookie.substring(c_start,c_end));
+        }
+    }
+}
+
+//加载顶部
+function loadHeadHtml() {
+    $.post("/yearReport/reporthead.jspx?flag=", {},
+            function(data) {
+                $("#headdiv").html(data);
+            });
+}
+//加载底部
+function loadEndHtml() {
+    $.get("/company/end.jspx", function(data) {
+        //初始將a.html include div#iframe
+        $("#enddiv").html(data);
+    });
+}
+
+function checkZch(obj){
+	$("#regnosm").html("");
+	var pass=true;
+	var regNoIsNull = isNull("regno","统一社会信用代码/注册号");
+	if(!regNoIsNull){
+		$("#leRepPName").val("");
+		$("#lerepHidden").val("");
+		if($("#leRepIdCard").val()){
+			$("#leRepIdCardsm").html("");
+			leRepIdCardTemp = false;
+		}
+		return false;
+	}
+	regNo = obj.value;
+	$.ajax({
+		type:'post',
+		url:'/showLerepName.jspx',
+		data:{'regNo':regNo},
+		dataType:'json',
+		async:false,
+		success:function(data){
+			if(data.success){
+				$("#leRepPName").val(data.lerep);
+				if(data.lerep){
+					$("#lerepHidden").val(encodeURI(data.lerep));
+				}else{
+					$("#lerepHidden").val("");
+				}
+			}else if(data.regnoError){
+				$("#regnosm").html("该企业或个体用户信息不存在！");
+				$("#leRepPName").val("");
+				$("#lerepHidden").val("");
+				$("#leRepIdCardsm").html("");
+				leRepIdCardTemp = false;
+				pass = false;
+			}
+		}
+	});
+	return pass;
+}
+
+</script>
+
+<style type="text/css">
+
+    #base {
+        min-width: 1200px;
+        margin:auto;
+    }
+
+
+    #enddiv {
+        position: relative;
+        width:1366px;
+        text-align: center;
+        height:78px;
+        margin: auto auto;
+        background-color: #FFFFFF;
+        top: 50px;
+    }
+
+    #middlediv {
+        margin:84px auto 0px auto;
+        width: 936px;
+        height: 424px;
+        padding:10px 0px 5px 0px;
+    }
+    #imgmiddlediv {
+        /**gy*/
+        padding: 9px 0px 4px 0px;
+		margin-left: auto;
+  		margin-right: auto;
+  		/**gy*/
+    }
+
+    .tableStyle {
+        margin: 25px 22px 0px auto;
+        text-align:center;
+        width:95%;
+        height:65%;
+    }
+
+    .titleStyle {
+        height:40px;width:366px;
+        font-family: '微软雅黑 Bold', '微软雅黑';
+        font-weight: 700;
+        font-style: normal;
+        font-size: 14px;
+        color: #87550F;
+        text-align: right;
+        background:url(/images/liaisonRegister/u5.png);
+        
+        /**gy*/
+        padding-right: 10px;
+        /**gy*/
+    }
+    .inputStyle {
+        font-family: '微软雅黑 Regular', '微软雅黑';
+        font-weight: 400;
+        font-style: normal;
+        color: #666666;
+        text-align: center;
+        line-height: 20px;
+        width: 691px;
+        height: 40px;
+        background: url( /images/liaisonRegister/u7.png );
+    }
+
+    .textStyle {
+        width: 354px;
+        height: 19px;
+        font-family: 'Arial Normal', 'Arial';
+        font-weight: 400;
+        font-style: normal;
+        font-size: 13px;
+        text-decoration: none;
+        text-align: left;
+        float: left;
+        margin: 0px 0px 0px 65px;
+    }
+
+    .selectStyle {
+        width: 357px;
+        height: 22px;
+        font-family: 'Arial Normal', 'Arial';
+        font-weight: 400;
+        font-style: normal;
+        font-size: 13px;
+        text-decoration: none;
+        float:left;
+        margin: 0px 0px 0px 65px;
+    }
+
+    .hintStyle {
+        font-weight: 400;
+        font-style: normal;
+        font-size: 13px;
+        color: #FF0000;
+        font-family: '微软雅黑 Regular', '微软雅黑';
+    }
+
+    .buttonStyle {
+        Border-bottom-style:none;
+        position: absolute;
+        width: 95px;
+        height: 35px;
+        font-family: '微软雅黑 Regular', '微软雅黑';
+        font-weight: 400;
+        font-style: normal;
+        font-size: 14px;
+        color: #FFFFFF;
+        text-align: center;
+        line-height: normal;
+        overflow:hidden;
+        background: url( /images/liaisonRegister/u42.png ) no-repeat;
+        margin: 20px 0px auto 475px;
+        padding-top: 7px;
+    }
+
+    .shuoming {
+        font: 12px "微软雅黑",arial, "宋体", sans-serif, " Microsoft YaHei ", tahoma;
+        color: #fc4343;
+        text-align: center;
+    }
+    .headStyle {
+        height:90px;
+    }
+
+</style>
+</head>
+
+<body style="background-color: #fbf8ef;">
+<div id="base">
+    <!-- 顶部 -->
+    <div id="headdiv" class="headStyle"></div>
+
+    <div id="middlediv" style="background:url(/images/liaisonRegister/u0.png);width:1120px;height:460px;">
+        <div id="imgmiddlediv" style="background:url(/images/liaisonRegister/u2.png);width:1110px;height:440px;">
+            <div class="tableStyle">
+                <form action="" id="baseForm" name="baseForm" method="post">
+                    <table border="0" cellspacing="0" cellpadding="0">
+                        <tbody><tr>
+                            <td class="titleStyle">统一社会信用代码/注册号*</td>
+                            <td class="inputStyle">
+                                <input id="regno" name="regno" type="text" class="textStyle" onblur="check_info(&quot;regno&quot;)">
+                                 &nbsp;<span id="regnosm" class="shuoming"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="titleStyle">法定代表人（负责人）姓名*</td>
+                            <td class="inputStyle">
+                                <input id="leRepPName" name="leRepPNameShow" type="text" class="textStyle" onblur="check_info(&quot;lerep&quot;)">
+                                &nbsp;<span id="leRepPNamesm" class="shuoming"></span>
+                                <input type="hidden" value="" name="leRepPName" id="lerepHidden">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="titleStyle">法定代表人（负责人）证件号码*</td>
+                            <td class="inputStyle">
+                                <input id="leRepIdCard" name="leRepIdCard" type="text" class="textStyle" onblur="check_info(&quot;lerepId&quot;)">
+                                &nbsp;<span id="leRepIdCardsm" class="shuoming"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="titleStyle">联络员姓名*</td>
+                            <td class="inputStyle">
+                                <input id="pName" name="pNameShow" type="text" class="textStyle" onblur="isNull(&quot;pName&quot;,&quot;联络员姓名&quot;)">
+                                &nbsp;<span id="pNamesm" class="shuoming"></span>
+                                <input type="hidden" value="" name="pName" id="pNameHidden">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="titleStyle">联络员证件类型*</td>
+                            <td class="inputStyle">
+                                  <select id="ptype" class="selectStyle" name="ptype" onchange="isNull(&quot;idCard&quot;, &quot;联络员证件号码&quot;)">&gt;
+                                        <option value="10">
+                                            中华人民共和国居民身份证
+                                        </option>
+                                        <option value="20">
+                                            中华人民共和国军官证
+                                        </option>
+                                        <option value="30">
+                                            中华人民共和国警官证
+                                        </option>
+                                        <option value="40">
+                                            外国（地区）护照
+                                        </option>
+                                        <option value="51">
+                                            香港特别行政区护照
+                                        </option>
+                                        <option value="52">
+                                            香港（永久性）居民身份证
+                                        </option>
+                                        <option value="53">
+                                            澳门特别行政区护照
+                                        </option>
+                                        <option value="54">
+                                            澳门（永久性）居民身份证
+                                        </option>
+                                        <option value="55">
+                                            港澳居民来往内地通行证
+                                        </option>
+                                        <option value="56">
+                                            台湾居民身份证
+                                        </option>
+                                        <option value="57">
+                                            台湾居民来往大陆通行证
+                                        </option>
+                                        <option value="58">
+                                            台湾农民身份有关证明
+                                        </option>
+                                        <option value="60">
+                                            户口薄
+                                        </option>
+                                        <option value="90">
+                                            其他有效身份证件
+                                        </option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="titleStyle">联络员证件号码*</td>
+                            <td class="inputStyle">
+                                <input id="idCard" name="idCard" type="text" class="textStyle" onblur="isNull(&quot;idCard&quot;,&quot;联络员证件号码&quot;)">
+                                &nbsp;<span id="idCardsm" class="shuoming"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="titleStyle">联络员手机号码*</td>
+                            <td class="inputStyle">
+                                <input id="phone" name="phone" type="text" class="textStyle" onblur="isNull(&quot;phone&quot;,&quot;联络员手机号码&quot;)">
+                                &nbsp;<span id="phonesm" class="shuoming"></span>
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </form>
+                <div class="buttonStyle" onmouseover="this.style.cursor='pointer'" onclick="save()">
+                    保 存
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部样式    -->
+    <div id="enddiv"></div>
+</div>
+
+<script language="javascript">
+var blacklist = "";
+var liaisonRecordshow = "";
+var regnoTemp = true;
+var leRepPNameTemp = true;
+var leRepIdCardTemp = true;
+    function save() {
+    	var regnoIsNUll;
+    	if(regnoTemp){
+	        regnoIsNUll = isNull("regno", "统一社会信用代码/注册号");
+    	}else{
+    		regnoIsNUll = false;
+    	}
+    	var leRepPNameIsNUll;
+    	if(leRepPNameTemp){
+        	leRepPNameIsNUll = isNull("leRepPName", "法定代表人（负责人）姓名");
+    	}else{
+    		leRepPNameIsNUll = false;
+    	}
+        var leRepIdCardIsNUll;
+        if(leRepIdCardTemp){
+	        leRepIdCardIsNUll = isNull("leRepIdCard", "法定代表人（负责人）证件号码");
+        }else{
+        	leRepIdCardIsNUll = false;
+        }
+        var phoneIsNUll = isNull("phone", "联络员手机号码");
+        var pNameIsNUll = isNull("pName", "联络员姓名");
+        var idCardIsNUll = isNull("idCard", "联络员证件号码");
+        if (leRepPNameIsNUll && leRepIdCardIsNUll && regnoIsNUll && phoneIsNUll && pNameIsNUll && idCardIsNUll) {
+	        var d = dialog({
+	    	    title: '确定保存',
+	    	    content: '请仔细核对录入的信息是否有误，您确定要进行保存吗？',
+	    	    okValue: '确定',
+	    	    ok: function () {
+	    	    	   liaisonRecordshow = "";
+	                   checkLiaisonRecord();
+	                   if (liaisonRecordshow != "" && liaisonRecordshow != "noerror") {
+							var d = dialog({
+							    title: '提示',
+							    content: liaisonRecordshow,
+							    okValue:'确定',
+								ok:function(){}
+							}).width(320).focus();
+							d.showModal();
+	                   } else {
+	                       blacklist = "";
+	                       checkBlackList();
+	                       if (blacklist != "" && blacklist != "noerror") {
+	                           var returnVal = window.confirm(blacklist);
+	                           if (returnVal) {
+	                           	$("#lerepHidden").val(encodeURI($("#leRepPName").val()));
+	                           	$("#pNameHidden").val(encodeURI($("#pName").val()));
+	                               document.getElementById("baseForm").action = "/liaisonRecordSave.jspx";
+	                               document.getElementById("baseForm").submit();
+	                           }
+	                       } else {
+	                       	$("#lerepHidden").val(encodeURI($("#leRepPName").val()));
+	                       	$("#pNameHidden").val(encodeURI($("#pName").val()));
+	                           document.getElementById("baseForm").action = "/liaisonRecordSave.jspx";
+	                           document.getElementById("baseForm").submit();
+	                       }
+	                   }
+	    	    },
+	    	    cancelValue: '取消',
+	    	    cancel: function () {}
+	    	}).width(320);
+	    	d.showModal(); 
+        }
+    }
+    function checkBlackList() {
+        var leRepIdCard = document.getElementById("leRepIdCard").value;
+        $.ajax({
+            url:"/checkBlackList.jspx?leRepIdCard=" + leRepIdCard,
+            type:"post",
+            async:false,
+            success:function(data) {
+                blacklist = data;
+            }
+        });
+    }
+     //通过id获取元素值
+    function isNull(id,msg){
+        var sm = document.getElementById(id + "sm");
+        if(id==null || id==""){sm.innerHTML = "<span class='shuoming'>查看的id为空！</span>";return false;}
+        var key=document.getElementById(id);
+        if(key==null){
+            key= document.getElementsByName(id)[0];
+            if(key==null){
+                sm.innerHTML = "<span class='shuoming'>找不到对应的id:"+id+"</span>";return false;
+            }
+        }
+        if(key.value==null || key.value==""){sm.innerHTML = "<span class='shuoming'>"+msg+"不允许为空！"+"</span>";  return false};
+        if (id == "phone") {
+            return checkMobilePhone(id, msg);
+        } else if (id == "regno") {
+            return checkRegNO(id, msg);
+        } else if (id == "leRepPName") {
+            return checkText(id, msg);
+        } else if (id == "pName") {
+        	var reg = /^[^\d]+$/;
+        	if($("#"+id).val()&&!reg.test($("#"+id).val())){
+        		 drawMsg(id,"联络员姓名格式不正确！");
+        		 return false;
+        	}
+            return checkText(id, msg);
+        } else if (id == "idCard") {
+        	var reg = /^[0-9a-zA-Z]*$/;
+        	if($("#"+id).val()&&!reg.test($("#"+id).val())){
+        		 drawMsg(id,"联络员证件号码格式不正确！");
+	             return false;
+        	}
+        	if($('#ptype').val() == '10'){
+	            msg = "";
+	            var message = checkIdcardForMessage(id, msg);
+	            if (message == "") {
+	                drawImg(id);
+	                return true;
+	            } else {
+	                drawMsg(id, message);
+	                return false;
+	            }
+        	}
+        	drawImg(id);
+            return true;
+        } else {
+            sm.innerHTML = "<img src='/images/liaisonRegister/login2_07.gif' style='height:31px;width:19.22px;text-align:center;vertical-align:middle;'/>";
+            return true;
+        }
+    }
+    function checkLiaisonRecord() {
+        var leRepPName = document.getElementById("leRepPName").value;
+        leRepPName = encodeURIComponent(leRepPName);
+        var leRepIdCard = document.getElementById("leRepIdCard").value;
+        var regno = document.getElementById("regno").value;
+        $.ajax({
+            url:"/checkLiaisonRecord.jspx",
+            data:{"leRepIdCard":leRepIdCard,"leRepPName":leRepPName,"regno":regno},
+            type:"post",
+            async:false,
+            success:function(data) {
+                liaisonRecordshow = data;
+            }
+        });
+
+    }
+    //校验正确画对勾
+    function drawImg(id) {
+        var sm = document.getElementById(id + "sm");
+        sm.innerHTML = "<img src='/images/liaisonRegister/login2_07.gif' style='height:31px;width:19.22px;text-align:center;vertical-align:middle;'/>";
+    }
+    //校验失败显示错误信息
+    function drawMsg(id, msg) {
+        var sm = document.getElementById(id + "sm");
+        sm.innerHTML = "<span class='shuoming'>" + msg + "</span>";
+    }
+    function checkMobilePhone(id, msg) {
+        var sm = document.getElementById(id + "sm");
+        if (getVal(id) == '') return true;
+        if (getVal(id).match(/^(1[3-8])\d{9}$/) == null) {
+            sm.innerHTML = "<span class='shuoming'>" + msg + "不是有效的手机号码！</span>";
+            return false;
+        } else {
+            sm.innerHTML = "<img src='/images/liaisonRegister/login2_07.gif' style='height:31px;width:19.22px;text-align:center;vertical-align:middle;'/>";
+            return true;
+        }
+    }
+    function checkRegNO(id, msg) {
+        var sm = document.getElementById(id + "sm");
+        if (getVal(id) == '') return true;
+        sm.innerHTML = "<img src='/images/liaisonRegister/login2_07.gif' style='height:31px;width:19.22px;text-align:center;vertical-align:middle;'/>";
+        return true;
+
+    }
+    function getVal(id) {
+        var val = getObj(id);
+        if (val)return val.value;
+        return null;
+    }
+    function getObj(id) {
+        if (id == null || id == "") {
+        	var d = dialog({
+			    title: '提示',
+			    content: "查看的id为空！",
+			    okValue:'确定',
+				ok:function(){}
+			}).width(320).focus();
+			d.showModal();
+            return null;
+        }
+        var key = document.getElementById(id);
+        if (key == null) {
+            key = document.getElementsByName(id)[0];
+            if (key == null) {
+            	var d = dialog({
+    			    title: '提示',
+    			    content: "找不到对应的id:" + id,
+    			    okValue:'确定',
+    				ok:function(){}
+    			}).width(320).focus();
+    			d.showModal();
+                return null;
+            }
+        }
+        return key;
+    }
+    function checkText(id, msg) {
+        var sm = document.getElementById(id + "sm");
+        if (getVal(id) == '') return true;
+        var maxLen = 450;
+        var checkStr = getVal(id);
+        var total = 0;
+        if (checkStr != '') {
+            //计算包含英文与汉字的字符串长度
+            for (var i = 0; i < checkStr.length; i++) {
+                var c = checkStr.charCodeAt(i);
+                if ((c >= "0x0001" && c < "0x007e") || ( c >= "0xff60" && c < "0xff9f")) {
+                    total++;
+                } else {
+                    //DB2中一个汉字是三个字符位
+                    total += 3;
+                }
+            }
+            if (total > maxLen) {
+                sm.innerHTML = "<span class='shuoming'>" + msg + "不能超过150个字！</span>";
+                return false;
+            } else {
+                sm.innerHTML = "<img src='/images/liaisonRegister/login2_07.gif' style='height:31px;width:19.22px;center;vertical-align:middle;'/>";
+                return true;
+            }
+        } else {
+            sm.innerHTML = "<img src='/images/liaisonRegister/login2_07.gif' style='height:31px;width:19.22px;center;vertical-align:middle;'/>";
+            return true;
+        }
+    }
+    function check_info(obj){
+        $("#regnosm").html("");
+        $("#regnosm").css("font-weight","");
+        if(obj=="regno"){
+        	$("#leRepPNamesm").html("");
+        	$("#leRepIdCardsm").html("");
+        }else if(obj=="lerep"){
+	        $("#leRepPNamesm").html("");
+        }else if(obj=="lerepId"){
+        	$("#leRepIdCardsm").html("");
+        }
+        var regNo = $("#regno").val();
+        var leRepPName = $("#leRepPName").val();
+    	var leRepIdCard = $("#leRepIdCard").val();
+        if(obj=="regno"&&!leRepPName){
+    		if(!checkZch(document.getElementById("regno"))){
+    			return false;
+    		};
+	        leRepPName = $("#leRepPName").val();
+        }    	  
+        if(regNo){
+    		leRepPName = encodeURI(leRepPName);
+		     $.ajax({
+	    		url:"/check_info.jspx",
+	            data: {'regNo':regNo,'leRepPName':leRepPName,'leRepIdCard':leRepIdCard},
+	            type: "post",
+	            async:false,
+	            success: function(data) {
+	            	if (data != null) {
+	            		if(data.mainBody&&data.mainBody=="null"){
+	            			$("#regnosm").html("该企业或个体用户信息不存在！");
+	            			regnoTemp = false;
+	            			$("#leRepPNamesm").html("");
+	            			leRepPNameTemp = false;
+	            			$("#leRepIdCardsm").html("");
+	            			leRepIdCardTemp = false;
+	            		}else{
+	            			regnoTemp = true;
+	            			if(data.leRep || data.legCerNO){
+	            				if(data.leRep=="null"){
+	            					$("#leRepPNamesm").html("法定代表人（负责人）姓名不允许为空！");
+	            					leRepPNameTemp = false;
+	            				}else if(data.leRep=="false"&&!leRepIdCard){
+									$("#leRepPNamesm").html("请输入正确的法定代表人（负责人）姓名！");
+									leRepPNameTemp = false;
+		            			}else if(data.leRep=="false"||data.legCerNO=="false"||data.leRep=="noMatch"){
+		            				$("#leRepPNamesm").html("姓名和证件号码不匹配或不存在！");
+									leRepPNameTemp = false;
+		            			}else{
+		 	                        leRepPNameTemp = true;
+		            			}
+	            				if(data.legCerNO=="null"){
+	            					$("#leRepIdCardsm").html("法定代表人（负责人）证件号码不允许为空！");
+	            					leRepIdCardTemp = false;
+	            				}else if(data.legCerNO=="false"&&!leRepPName){
+									$("#leRepIdCardsm").html("请输入正确的法定代表人（负责人）证件号码！");
+									leRepIdCardTemp = false;
+			            		}else if(data.leRep=="false"||data.legCerNO=="false"||data.leRep=="noMatch"){
+			            			$("#leRepIdCardsm").html("");
+			            			leRepIdCardTemp = false;
+		            			}else{
+			            			leRepIdCardTemp = true;
+			            		}
+		            		}else if(data.exit && data.exit=="true"){
+		            			$("#regnosm").html("该企业或个体已经注册！");
+		            			regnoTemp = false;
+		            			$("#leRepPNamesm").html("");
+		            			leRepPNameTemp = false;
+		            			$("#leRepIdCardsm").html("");
+		            			$("#regnosm").css("font-weight","900");
+		            			leRepIdCardTemp = false;
+		            		}else{
+		                        regnoTemp = true;
+		            			leRepPNameTemp = true;
+		                        leRepIdCardTemp = true;
+							}
+	            			if(regnoTemp){
+	            				drawImg("regno");
+	            			}
+	            			if(leRepPNameTemp){
+	            				drawImg("leRepPName");
+	            			}
+	            			if(leRepIdCardTemp){
+	            				drawImg("leRepIdCard");
+	            			}
+	            		}
+					}
+	            },
+	            dataType:"json"
+            })
+         }else{
+       		 isNull("regno", "统一社会信用代码/注册号");
+       		 regnoTemp = true;
+       		 if(obj=="lerep"&&!leRepPName){
+       			isNull("leRepPName", "法定代表人（负责人）姓名");
+       		 }
+       		 if(obj=="lerepId"&&!leRepIdCard){
+       			isNull("leRepIdCard", "法定代表人（负责人）证件号码");
+       		 }
+         }
+    }
+    function doCheckPhoneNum() {
+        var pass = false;
+        var phone = $("#phone").val();
+        if (!phone) {
+        	var d = dialog({
+			    title: '提示',
+			    content: "请输入联络员手机号码！",
+			    okValue:'确定',
+				ok:function(){}
+			}).width(320).focus();
+			d.showModal();
+            return false;
+        }
+        if (phone.length != 11) {
+        	var d = dialog({
+			    title: '提示',
+			    content: "联络员手机号码填写不正确！",
+			    okValue:'确定',
+				ok:function(){}
+			}).width(320).focus();
+			d.showModal();
+            return false;
+        }
+        $.ajax({url:"/checkPhoneNum.jspx",
+            data: "phoneNum=" + encodeURI(encodeURI($("#phone").val())),
+            success: function(data) {
+                data = eval('(' + data + ')');
+                if (data.success != undefined && data.success == false) {
+                	var d = dialog({
+        			    title: '提示',
+        			    content: "请使用省内手机号码！",
+        			    okValue:'确定',
+        				ok:function(){}
+        			}).width(320).focus();
+        			d.showModal();
+                } else {
+                    pass = true;
+                }
+            },async:false,
+            dataType:"json"})
+        return pass;
+    }
+/*身份证号验证，可组装提示语，名称预先核准投资人身份证号验证所需*/
+function checkIdcardForMessage(id, message) {
+    var idcard = document.getElementById(id).value;
+    var msg = "";
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    var Errors = new Array(
+            "身份证号码出生年份超出范围！",
+            "身份证号码位数不对！",
+            "身份证号码出生日期超出范围或含有非法字符！",
+            "身份证号码校验错误！",
+            "身份证地区非法！",
+            "身份证号码不能为空！",
+            "投资人未满18周岁");
+    var area = {11:"北京",12:"天津",13:"河北",14:"山西",15:"内蒙古",21:"辽宁",22:"吉林",23:"黑龙江",31:"上海",
+        32:"江苏",33:"浙江",34:"安徽",35:"福建",36:"江西",37:"山东",41:"河南",42:"湖北",43:"湖南",44:"广东",45:"广西",
+        46:"海南",50:"重庆",51:"四川",52:"贵州",53:"云南",54:"西藏",61:"陕西",62:"甘肃",63:"青海",64:"宁夏",65:"新疆",
+        71:"台湾",81:"香港",82:"澳门",91:"国外"}
+    var idcard,Y,JYM;
+    var S,M;
+    var idcard_array = new Array();
+    idcard_array = idcard.split("");
+
+    if (idcard == null || idcard == '') {
+        //        alert(message + Errors[5]);
+        msg = message + Errors[5];
+        return msg;
+    }
+
+    //判断地区代码是否合法
+    if (area[parseInt(idcard.substr(0, 2))] == null) {
+        //        alert(message + Errors[4]);
+        msg = message + Errors[4];
+        return msg;
+    }
+    switch (idcard.length) {
+        case 15:
+            if ((parseInt(idcard.substr(6, 2)) + 1900) % 4 == 0
+                    || ((parseInt(idcard.substr(6, 2)) + 1900) % 100 == 0 && (parseInt(idcard.substr(6, 2)) + 1900) % 4 == 0 )) {
+                ereg = /^[1-9][0-9]{5}[0-9]{2}((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|[1-2][0-9]))[0-9]{3}$/;
+                //测试出生日期的合法性
+            } else {
+                ereg = /^[1-9][0-9]{5}[0-9]{2}((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|1[0-9]|2[0-8]))[0-9]{3}$/;
+                //测试出生日期的合法性
+            }
+            if (ereg.test(idcard)) {
+
+                //判断是否满十八周岁
+                if (parseInt(year) - (parseInt(idcard.substr(6, 2)) + 1900) == 18) {
+                    if (parseInt(month) == parseInt(idcard.substr(8, 2))) {
+                        if (parseInt(day) < parseInt(idcard.substr(10, 2))) {
+                            var info = message + Errors[6] + "，是否继续保存？";
+                            //  if(!confirm(info)){
+                            //  return false;
+                            //}else{
+                            return msg;
+                            //}
+                        } else {
+                            return msg;
+                        }
+                    } else if (parseInt(month) < parseInt(idcard.substr(8, 2))) {
+                        var info = message + Errors[6] + "，是否继续保存？";
+                        // if(!confirm(info)){
+                        return msg;
+                        // }else{
+                        //     return true;
+                        //}
+                    } else {
+                        return msg;
+                    }
+                } else if (parseInt(year) - (parseInt(idcard.substr(6, 2)) + 1900) < 18) {
+                    var info = message + Errors[6] + "，是否继续保存？";
+                    //  if(!confirm(info)){
+                    return msg;
+                    //                        }else{
+                    //                            return true;
+                    //                        }
+                } else {
+                    return msg;
+                }
+            } else {
+                //                alert(message + Errors[2]);
+                msg = message + Errors[2];
+                return msg;
+            }
+        case 18:
+            if (parseInt(idcard.substr(6, 4)) % 4 == 0 || (parseInt(idcard.substr(6, 4)) % 100 == 0 && parseInt(idcard.substr(6, 4)) % 4 == 0 )) {
+                ereg = /^[1-9][0-9]{5}(19|20)[0-9]{2}((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|[1-2][0-9]))[0-9]{3}[0-9Xx]$/;
+                //闰年出生日期的合法性正则表达式
+            }
+            else {
+                ereg = /^[1-9][0-9]{5}(19|20)[0-9]{2}((01|03|05|07|08|10|12)(0[1-9]|[1-2][0-9]|3[0-1])|(04|06|09|11)(0[1-9]|[1-2][0-9]|30)|02(0[1-9]|1[0-9]|2[0-8]))[0-9]{3}[0-9Xx]$/;
+                //平年出生日期的合法性正则表达式
+            }
+
+        //判断身份证号中的年份是否小于当前年份
+            if (parseInt(idcard.substr(6, 4)) > parseInt(year)) {
+                //                alert(message + Errors[0]);
+                msg = message + Errors[0];
+                return msg;
+            }
+            if (ereg.test(idcard)) {
+                //计算身份证号码的校验位
+                S = (parseInt(idcard_array[0]) + parseInt(idcard_array[10])) * 7 + (parseInt(idcard_array[1]) + parseInt(idcard_array[11])) * 9 + (parseInt(idcard_array[2]) + parseInt(idcard_array[12])) * 10 + (parseInt(idcard_array[3]) + parseInt(idcard_array[13])) * 5 + (parseInt(idcard_array[4]) + parseInt(idcard_array[14])) * 8 + (parseInt(idcard_array[5]) + parseInt(idcard_array[15])) * 4 + (parseInt(idcard_array[6]) + parseInt(idcard_array[16])) * 2 + parseInt(idcard_array[7]) * 1 + parseInt(idcard_array[8]) * 6 + parseInt(idcard_array[9]) * 3;
+                //alert("s="+S)
+                Y = S % 11;
+                //alert("Y="+Y)
+                JYM = "10X98765432";
+                JYM_T = "10x98765432";
+                M = JYM.substr(Y, 1);
+                //生成校验位
+                M_T = JYM_T.substr(Y, 1);
+                //生成校验位
+                //alert("M="+M)
+                if (M == idcard_array[17] || M_T == idcard_array[17]) {
+
+                    //判断是否满十八周岁
+                    if (parseInt(year) - parseInt(idcard.substr(6, 4)) == 18) {
+                        if (parseInt(month) == parseInt(idcard.substr(10, 2))) {
+                            if (parseInt(day) < parseInt(idcard.substr(12, 2))) {
+                                var info = message + Errors[6] + "，是否继续保存？";
+                                // if(!confirm(info)){
+                                return msg;
+                                // }else{
+                                //   return true;
+                                // }
+                            } else {
+                                return msg;
+                            }
+                        } else if (parseInt(month) < parseInt(idcard.substr(10, 2))) {
+                            var info = message + Errors[6] + "，是否继续保存？";
+                            //if(!confirm(info)){
+                            //  return false;
+                            //                            }else{
+                            return msg;
+                            //                            }
+                        } else {
+                            return msg;
+                        }
+                    } else if (parseInt(year) - parseInt(idcard.substr(6, 4)) < 18) {
+                        //                        var info = message + Errors[6] + "，是否继续保存？";
+                        //                        if(!confirm(info)){
+                        //                            return false;
+                        //                        }else{
+                        return msg;
+                        //                        }
+                    } else {
+                        return msg;
+                    }
+                } else {
+                    //                    alert(message + Errors[3]);
+                    msg = message + Errors[3];
+                    return msg;
+                }
+            }
+            else {
+                //                alert(message + Errors[2]);
+                msg = message + Errors[2];
+                return msg;
+                ;
+            }
+        default:
+        //            alert(message + Errors[1]);
+            msg = message + Errors[1];
+            return msg;
+    }
+
+
+}
+</script>
+
+
+</body></html>

@@ -1,0 +1,146 @@
+<html><head><script type="text/javascript" src="style/input_date.js"></script>
+<script type="text/javascript" src="style/meizz_date.js"></script>
+<script type="text/javascript" src="style/jquery.js"></script>
+<script type="text/javascript" src="style/jquery.form.js"></script>
+<script type="text/javascript" src="style/common.js"></script>
+<script type="text/javascript" src="style/My97DatePicker/WdatePicker.js"></script><link href="https://suum.szsi.gov.cn/suum/style/My97DatePicker/skin/WdatePicker.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://suum.szsi.gov.cn/suum/style/artDialog/skins/blue.css?4.1.7"><script type="text/javascript" src="style/artDialog/artDialog.js?skin=blue"></script>
+<script type="text/javascript" src="style/artDialog/artDialog.common.js"></script>
+<script type="text/javascript" src="style/artDialog/plugins/iframeTools.source.js"></script>
+
+<link rel="stylesheet" href="style/style.css" type="text/css">
+
+
+
+
+<!--
+* @page name
+* @function   社会统一用户管理系统登录
+* @author     huangyj
+* @created    2016-10-31
+* @version    1.0
+-->
+
+	<title>社会统一用户管理系统登录</title>
+
+	<link rel="stylesheet" href="login/css/reset.css">
+	<link rel="stylesheet" href="login/css/main.css">
+	<link rel="stylesheet" href="login/css/login.css">
+	<script src="login/js/login.js"></script>
+	<script type="text/javascript" src="user/js/user.js"></script>
+	<script type="text/javascript" src="style/validator.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			if("" == "unit")
+			{
+				$("#unitUser").addClass("checked");
+	            $("#personUser").removeClass("checked");
+	            var item_icon = $("#unitUser").find("i");
+	            var item_icon_sibling = $("#personUser").find("i");
+				item_icon.attr("class","unit-icon-checked");
+				item_icon_sibling.attr("class","person-icon");
+                $(".login-name").text("单位用户名：");
+                $("#forgetUserName").attr("href", "goFindUUserNameOneStep.do?method=goFindUserNameOneStep");
+                $("#forgetPassword").attr("href", "goFoundUPwd.do?method=goFoundPwd");
+                $("#signup").text("单位注册");
+                $("#signup").attr("href", "chooseUnitRegisterType.do?method=chooseUnitRegisterTypeStep0");
+                $("#personOrUnitLogin").val("unit");
+			}
+		});
+	</script>
+	<style>
+		.signin:hover{
+		    color: #fff;
+		    text-decoration: none;
+		}
+		.login-forget:hover{
+			color: #969696;
+		    text-decoration: none;
+		}
+		html{
+			overflow-y: auto !important;
+		}
+	</style>
+</head>
+<body><div style="position: absolute; left: 0px; top: 120px; display: block; width: auto; z-index: 1987; " class=" aui_state_focus"><div class="aui_outer"><table class="aui_border"><tbody><tr class="aui_tr"><td class="aui_nw"></td><td class="aui_n"></td><td class="aui_ne"></td></tr><tr class="aui_tr"><td class="aui_w"></td><td class="aui_c"><div class="aui_inner"><table class="aui_dialog"><tbody><tr class="aui_tr"><td colspan="2" class="aui_header"><div class="aui_titleBar"><div class="aui_title" style="cursor: move; display: block; "></div><a class="aui_close" href="javascript:/*artDialog*/;" style="display: block; ">×</a></div></td></tr><tr class="aui_tr"><td class="aui_icon" style="display: none; "><div class="aui_iconBg" style="background-image: none; background-position: initial initial; background-repeat: initial initial; "></div></td><td class="aui_main" style="height: 32px; "><div class="aui_content aui_state_full" style="padding: 20px 25px; "><div class="aui_loading" style="display: none; "><span>loading..</span></div><iframe src="other/suum_ad.html" name="Openanswer" style="width: 100%; height: 100%; border: 0px none; " frameborder="0" allowtransparency="true"></iframe></div></td></tr><tr class="aui_tr"><td colspan="2" class="aui_footer"><div class="aui_buttons" style="display: none; "></div></td></tr></tbody></table></div></td><td class="aui_e"></td></tr><tr class="aui_tr"><td class="aui_sw"></td><td class="aui_s"></td><td class="aui_se" style="cursor: se-resize; "></td></tr></tbody></table></div></div>
+	<!--页面头部开始-->
+	
+<link rel="stylesheet" type="text/css" href="menu/js/base.css">
+<link rel="stylesheet" type="text/css" href="menu/js/menu.css">
+<script>
+	$(document).ready(function(){
+		showHtml(null,"other/suum_ad.html","answer");
+	});
+</script>
+<div id="headerAll" style="text-align: center">
+	<div id="header">
+		<div id="top">
+			<a class="logo" href="javascript:void(0);"><cite>统一用户平台</cite></a>
+		</div>
+	</div>
+</div>
+
+	<!--页面头部结束-->
+	
+	<!--页面主体-->
+	<div class="container">
+	    <ul class="login-choice-icon">
+	        <li id="personUser" class="checked float-left"><i class="person-icon-checked"></i>个人用户</li>
+	        <li id="unitUser" class="float-right"><i class="unit-icon"></i>单位用户</li>
+	    </ul>
+	    <div class="login-line"></div>
+	    <!--用户登录区-->
+	    <div class="login-error">
+	    	<ul id="errorMsg" style="list-style-type:none">
+		    	
+			</ul>
+			<span id="errorId"></span>
+	    </div>
+	    <div class="login-form">
+			<form action="pubLoginNew.do?method=login&amp;loginFlag=02" method="post">
+				<input type="hidden" id="personOrUnitLogin" name="personOrUnitLogin" value="person">
+		        <dl class="content-dl">
+		            <dt class="login-name">个人用户名：</dt>
+		            <dd>
+		            	<input id="userId" value="" name="userCode" type="text" autocomplete="off">
+		            	<a id="forgetUserName" class="login-forget" href="goFindUserNameOneStep.do?method=goFindUserNameOneStep">忘记用户名</a>
+		            </dd>
+		        </dl>
+		        <dl class="content-dl">
+		            <dt>密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：</dt>
+		            <dd>
+		            	<input id="password" value="" name="password" type="password" autocomplete="off">
+		            	<a id="forgetPassword" class="login-forget" href="goFoundPwd.do?method=goFoundPwd">忘记密码</a>
+		            </dd>
+		        </dl>
+		        <dl class="content-dl">
+		            <dt>验&nbsp;&nbsp;&nbsp;证&nbsp;&nbsp;&nbsp;码：</dt>
+		            <dd>
+		                <div class="identify-code">
+		                    <input id="verificationCode" value="" maxlength="4" name="verificationCode" type="text" onblur="checkVerificationCodeNew()" class="identify-code-input">
+		                    <img src="getKaptchaImage.do?method=getKaptchaImage" id="kaptchaImage" class="identify-code-img" style="width:107px; height:41px">
+		                </div>
+		                <div id="right_sign" class="identify-code-state identify-ok" style="display:none"></div> <!--验证码正确-->
+                		<!-- <div id="error_sign" class="identify-code-state identify-error" style="display:none"></div> --> <!--验证码错误-->
+                		<div style="clear:both"></div>
+		            </dd>
+		        </dl>
+		        <div id="tishi_code" class="identify-error-tip"></div>
+		        <div class="submit-btn">
+		            <a class="signin" href="javascript:onSubmit()">登&nbsp;&nbsp;&nbsp;&nbsp;录</a>
+		            <a id="signup" class="signup" href="goRegister.do?method=goRegister">个人注册</a>&nbsp;&nbsp;
+<!-- 		            <a href="goUnitAdminReset.do?method=goUnitAdminResetStep1">重置管理员</a> -->
+		        </div>
+			</form>
+	    </div>
+	</div>
+	<!--页面主体结束-->
+	
+	<!--后面是页面尾部-->
+	<div class="footer">
+	    <p>技术保障电话：88892919-1</p>
+	    <p>Copyright © 2014 - 2015 Szhrss. All Rights Reserved</p>
+	    <p>深圳市人力资源和社会保障局 版权所有</p>
+	</div>
+
+<div id="_my97DP" style="position: absolute; top: -1970px; left: -1970px; "><iframe style="width: 186px; height: 197px; " src="https://suum.szsi.gov.cn/suum/style/My97DatePicker/My97DatePicker.htm" frameborder="0" border="0" scrolling="no"></iframe></div><div style="display: none; position: fixed; left: 0px; top: 0px; width: 100%; height: 100%; cursor: move; opacity: 0; background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial; "></div></body></html>

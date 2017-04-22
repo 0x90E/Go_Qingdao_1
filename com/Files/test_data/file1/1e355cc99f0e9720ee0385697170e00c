@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+ <head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+  <meta http-equiv="Cache-control" content="no-cache" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" /> 
+  <meta name="format-detection" content="telephone=no" /> 
+  <meta name="keywords" content="【技术交流】Inter HAXM 安装失败的解决方法参考" /> 
+  <meta name="description" content="【技术交流】Inter HAXM 安装失败的解决方法参考 ,黑马程序员IT技术论坛" /> 
+  <title>【技术交流】Inter HAXM 安装失败的解决方法参考-黑马程序员IT技术论坛 -  手机版 - Powered by Discuz!</title> 
+  <script src="./template/bigstyle/touch/static/libs/requirejs/2.1.9/require.js" type="text/javascript"></script> 
+  <script src="./template/bigstyle/touch/static/libs/jquery/1.11.2/jquery.min.js" type="text/javascript"></script> 
+  <script src="./template/bigstyle/touch/static/libs/jquery/1.11.2/ajaxfileupload.js" type="text/javascript" charset="utf-8"></script> 
+  <script src="./template/bigstyle/touch/static/dist-1472029699/base.js" type="text/javascript" charset="utf-8"></script> 
+ </head> 
+ <body>   
+  <script type="text/javascript">
+var pageOpenAnimate="fadeIn";
+    // dz环境参数
+    var dz = {
+        bodyWidth: document.body.offsetWidth,
+        bodyHeight: window.screen.availHeight,
+        charset : 'utf-8',
+        version : 'X3.2',
+        mobileapi : 'http://bbs.itheima.com/api/mobile/index.php',
+        postseccheck: '0',
+
+        uid : '0',
+        groupid : '7',
+        username : '',
+        avatar : 'http://bbs.itheima.com/uc_server/avatar.php?uid=0&size=middle',
+        bbname: '黑马程序员IT技术论坛',
+        sitename : '黑马程序员论坛',
+        siteurl  : 'http://bbs.itheima.com/',
+sitelogo : 'http://bbs.itheima.com/static/image/mobile/images/logo.png',
+        //scriptfilename: '/alidata/www/itheimabbs/forum.php',
+        pluginpath : './source/plugin',
+        mobile_plugins: ['bigstyle', 'wechat', 'mobile', 'security', 'qqconnect', ''],
+        stylepath: './template/bigstyle',
+        securl: 'http://bbs.itheima.com/misc.php?mod=seccode&mobile=2',
+        loginurl: 'http://bbs.itheima.com/member.php?mod=logging&action=login&mobile=2',
+        hash: '58943fa23b0e4439b7a8bda561ddbbf4'
+    };
+    // bigstyle 插件api
+    var bigstyle_api = false;
+        bigstyle_api = "http://bbs.itheima.com//source/plugin/bigstyle/index.php?version=4&module=";
+    
+    function dz_avatar(uid) {
+        var res = dz.avatar;
+        var i = dz.avatar.indexOf('uid');
+        if (i>0) {
+            var prefix = dz.avatar.substr(0,i);
+            return prefix+'uid='+uid+'&size=middle';
+        }
+        return "./template/bigstyle/touch/static/imgs/noavatar.jpg";
+    }
+
+    require.config({
+        baseUrl: dz.stylepath+"/touch/static/dist-1472029699/",
+        packages: [
+            {name:'mwt', location:'../libs/mwt/3.2', main:'mwt_mobile.min'}
+        ]
+    });
+  </script> 
+  <link rel="stylesheet" href="./template/bigstyle/touch/static/libs/mwt/3.2/mwt_mobile.min.css" type="text/css" /> 
+  <link rel="stylesheet" href="./template/bigstyle/touch/static/css/bigstyle.css" type="text/css" /> 
+  <style>
+  body,td,th,span,b,p,label,div,a,input,button,select,option {font-family: Arial,Tahoma,Verdana,'microsoft yahei';}
+  .mwt-h5bar {
+    background:#660000;
+  }
+  .headbar td {
+    background:#660000;
+    color:#fff  }
+  #ucbtn p {color:#fff}
+  .headbar h1 {
+    font-family:Arial,"microsoft yahei";font-size:18px;letter-spacing:0px;
+    overflow: hidden;                                                                      
+    white-space: nowrap;                                                                   
+    text-overflow: ellipsis;
+width:200px;
+  }
+  .spacebg {background:#660000;color:#fff;}
+
+  .footnav td {background:#fff;font-size:14px;}
+  .foota {color:#999;text-decoration:none;}
+  .foota.active {color:#660000;}
+
+  .bg {background:#f2f2f2;}
+</style> 
+  <script>
+jQuery(document).ready(function($) {
+require(["jsapp","mwt"],function(jsapp){
+var tid = "203068";
+jsapp.run("forum/viewthread",tid);
+});
+});
+</script>
+  <div id="oripaper-del" style="display:none;">
+   <font face="Arial, SimSun">*This article is for reference only*/<br /> 【背景】<br /> 使用AndriodStudio 做软件开发时需要使用AVD 技术，而每次编译工程或运行时打开虚拟机的速度都非常的慢，是非常的慢。原因在于，在默认前提下，编译后模拟运行依托的是电脑的ram。因此，使用inter 硬件加速技术是十分必要的。在折腾了两天后这个问题终于解决，在此写下心得供各位论坛水友参考。 首先，关于这个问题的解决办法网上的讨论很多，本文可供参考。<br /> 【正文】<br /> inter 硬件加速技术需要手动下载，打开SDK Manger 在Extra目录下可以发现这个下载项如图1<br /> <br /> <br /> 最后一项，如果显示没有下载，请点击并Install。注意1：由于下载需要访问谷歌，在伟大的“墙”的阻力下，建议使用翻墙软件登陆vpn进行下载，否则不是很慢，而是根本下载不到。其他下载项也是一样的。在Install 完成后进入下一步骤。 在SDK管理器下，Installed代表的已经下载，而不是已经安装。所以对于HAXM 还需要手动安装。打开文件目录 X：\...\SDK安装目录\extras\inter\Hardware_Accelerated_Execution_Manage 进入按步骤安装即可。如果安装成功，以下文字可忽略。如果安装失败，请继续。 在抛除下载的程序包本身错误的情况下（这种情况极少，如果是，请重新下载），绝大部分的错误如图2：<br /> <br /> 这个错误的原因是，你的电脑CPU 可能不支持硬件加速，或者VT-x技术没有开启。为解决这个问题，首先，你得确定你的电脑是支持Inter HAXM。<br /> （1）电脑CPU 是Inter 的，而不是AMD 的<br /> <br /> <br /> （2）CPU 型号在i3以上一般都支持硬件加速，以下的话可以break了，因为即便支持也会有其他奇葩的问题。<br /> <br /> <br /> （3）CPU支持VT-x技术吗？这个非常重要，查阅官方资料可以，但这里建议使用工具软件CPUID，在处理器指令集一栏可以清楚看到是否支持vt-x.如图3：<br /> <br /> <br /> <br /> 如果再指令集里没有vt-x，那么尅break了。如果问题明明支持却问题还是在，请继续看一下文字。<br /> CPU 虽然支持vt-x但不一定会开通，因为虚拟机这一类的东西有点讨厌，为维护系统的稳定一般很少主动开启。所以，依旧借助工具软件securAble可以查看该技术是否支持并开启，如图4：<br /> <br /> <br /> <br /> 如果 Hardware Virtualization 是NO ，那么就别在折腾了，没理由。如果是yes，请继续。<br /> <br /> <br /> （4）是否打开HAXM？下面的步骤网上的其他教程已经说的很多了，开机狂按F2（此处按根据电脑本身） 进入Bios，选择 InterHAXM 一项，修改为启动即可。这一部分简略的原因在于，我发现很多笔记本电脑进入BIos后，压根就没有这个选项！！可是明明工具检测出来他明明存在！！这是个世界上最悲伤的故事。。。。。<br /> <br /> <br /> （5）如何在BIOS中没有HAXM 选项的情况下启动。这个情况很特殊，<br /> 目前有两种参考办法：<br /> （5.1）刷BIOS ，这个请登录你的笔记本官网，搜索BIOS 下载并按步骤安装，如果害怕把笔记本玩死了，可以送去电脑维修中心。<br /> （5.2）我感觉我写这篇帖子最大的价值就在这里了，因为我发现如果明明存在却故意隐藏，留给用户一个寂寞的背影，还不算太悲伤。因为有一个怪蜀黍叫360. 默认情况下360 的核金防护是完全开启的，inter-vt已经被关闭，所以会出现在图2 的报错。所以，解决办法就是，打开360点击立体防护，把核金防护机制关闭（彻底）如图5<br /> <br /> <br /> 关闭后，在重新安装HAXM ，安装成功。打开AS 后，实验虚拟机，泛型速度明显提高。内存使用也降低（不卡顿）。还有其他问题或其他解决方法请留言交流。<br /> end&lt;正文结束&gt;</font>
+   <br /> 
+   <font face="Arial, SimSun">/*This article is for reference only*/</font>
+   <br /> 
+   <br /> 
+  </div>
+ </body>
+</html>

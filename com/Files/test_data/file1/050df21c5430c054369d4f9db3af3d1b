@@ -1,0 +1,358 @@
+<!DOCTYPE html><html><head>
+    <meta charset="utf-8">
+    <title>登录众划算</title>
+    <style>
+        body, dl, dt, dd, ul, li, input, img, h1, form { margin: 0; padding: 0; }
+        img { border: none; }
+        body { font: 12px/1.5 tahoma,\5b8b\4f53,arial; color: #999; background-color: #F8F8F8; }
+        ul,ol{ list-style: none;}
+        a { color: #999; text-decoration: none; }
+        a:hover { color: #BD0A01; text-decoration: underline; }
+        .w980{ width: 980px; margin: 0 auto;}
+        .pull-left{ float: left;}
+        .pull-right{ float: right;}
+        .clearfix:after { content: '\20'; display: block; height: 0; clear: both; }
+        .clearfix{ *zoom: 1; }
+        .fz14{font-size: 14px;}
+        #warnning { max-height: 65px; overflow: hidden; padding: 4px 22px 4px; border: 1px solid #FFAD77; color:#f00; word-wrap:break-word;  background: url(http://static.zhonghuasuan.com/images/login/warnning.png) no-repeat 4px 7px #FFFFD0; _background: url(http://static.zhonghuasuan.com/images/login/warnning_png8.png) no-repeat 4px 7px #FFFFD0;}
+        #capslock { display:none; max-height: 65px; overflow: hidden; padding: 4px 22px 4px; border: 1px solid #FFAD77; color:#f00; word-wrap:break-word;  background: 4px 7px #FFFFD0; _background: no-repeat 4px 7px #FFFFD0;}
+
+        .headerWrapper{ box-shadow:0 0 10px rgba(0,0,0,.3); z-index: 1000; position: relative;}
+        #logo { width:250px; height:45px; overflow: hidden; *height: 0; *padding-top: 45px; *background: url(http://static.zhonghuasuan.com/images/login/logo.png) no-repeat 0 0;}
+        #logo:before { content: url(http://static.zhonghuasuan.com/images/login/logo.png);}
+        .header { padding-top:50px; overflow: hidden; padding-bottom: 20px; }
+        .header .link{ padding-top: 2em; padding-right: 10px;}
+
+        .mainWrapper{ width: 100%; overflow: hidden; background:url('http://img.zhonghuasuan.com/mall/dimg/2016/10/14/1339048148.jpg') no-repeat 50% 0;}
+        .main{ position: relative; height: 380px;}
+        .gotoExperience { display: block; width: 100%; height: 100%;}
+        .loginbar{ position: absolute; top: 20px; right: 10px; width: 250px; padding: 25px; color:#fff; background:rgba(0,0,0,0.4);filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,StartColorStr='#66000000',EndColorStr='#66000000');}
+        .loginbar a { text-decoration: none; color: rgb(226,226,226);}
+        .loginbar a:hover { color: #fff;text-decoration: underline;}
+        .loginbar li{ margin-bottom: 10px; }
+        .loginbar label{  line-height: 25px; cursor: pointer;}
+        .input-checkbox{ vertical-align: middle;}
+        #password, #username { padding: 6px 5px; width: 238px; border: 1px solid #E4E4E4; outline: none;}
+        #password:focus, #username:focus {border-color:#FF818E; box-shadow: 0 0 4px rgba(204,0,0,.6);}
+        .submit {display: block;height: 35px;line-height: 35px;width: 100%;font-size: 18px;background-size: cover;color: #f9f9f9;cursor: pointer;text-align: center;font-weight: normal;font-weight:bold\0;*font-weight:bold; border: 0;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+            background-color: #E22627;
+            background-image: -webkit-gradient(linear,left top,left bottom,from(#F23C3D),to(#D51415));
+            background-image: -moz-linear-gradient(top,#F23C3D,#D51415);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#F23C3D',endColorstr='#D51415');
+            background-image: -o-linear-gradient(top,#F23C3D,#D51415);
+            background-image: -ms-linear-gradient(top,#F23C3D 0,#D51415 100%);
+            background-image: linear-gradient(top,#F23C3D,#D51415);
+        }
+        .submit:hover{
+            background-color:#F54040;
+            background-image:-webkit-gradient(linear,left top,left bottom,from(#F54040),to(#E22627));
+            background-image:-moz-linear-gradient(top,#F54040,#E22627);
+            filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#F54040',endColorstr='#E22627');
+            background-image:-o-linear-gradient(top,#F54040,#E22627);
+            background-image:-ms-linear-gradient(top,#F54040 0,#E22627 100%);
+            background-image:linear-gradient(top,#F54040,#E22627);
+        }
+        .disabled, .disabled:hover {
+            text-shadow: 1px 1px 0 #fff;
+            color:#a0a0a0;
+            background: #ccc;
+            filter:progid:DXImageTransform.Microsoft.gradient(enabled=false);
+            cursor: default;
+        }
+
+        #link2index{ display: block; width: 101px; position: absolute; left:5px; top: 148px; height: 24px; background-image: url(http://static.zhonghuasuan.com/images/login/link2index.png); }
+
+        .footer{ text-align: center; padding-top: 35px; background-color: #fafafa;}
+        .footer a,.footer span{ margin-right: 10px;}
+        .m-credit{margin-top: 10px;}
+        .m-credit a{
+    		display:inline-block; *display:inline; *zoom:1;
+    		margin-right: 10px;
+    		background: url("http://static.zhonghuasuan.com/common/img/credit.png") 0 0 no-repeat;
+    		overflow: hidden;
+            line-height: 2;
+            height: 0;
+            padding-top: 40px;
+    	}
+        .m-credit .police{ width: 40px; background-position: 0 -47px; }
+        .m-credit .kxlogo{ width: 102px; background-position: 0 0; }
+        .m-credit .realName{ width: 101px; background-position: -131px 0; }
+    </style>
+    <link rel="shortcut icon" type="image/ico" href="http://static.zhonghuasuan.com/images/favicon.ico">
+    <script src="http://static.zhonghuasuan.com/min/?f=javascript/common/jquery/jquery-1.9.1.min.js&amp;v=1.0201703291615" type="text/javascript"></script>
+
+    <script type="text/javascript">
+    function __login() {
+        this.objUserName	= null;
+        this.objPassword	= null;
+    	this.username		= '';
+		this.username_pla	= '';
+		this.password		= '';
+		this.objMessage		= '';
+
+		this.btn			= null;
+
+		this.checkUrl		= 'http://login.zhonghuasuan.com/tologin';
+		this.checkDataType	= 'json';
+
+		this.ini();
+	}
+
+    __login.prototype = {
+		ini: function() {
+			this.objUserName	= $('#username');
+    		this.objPassword	= $('#password');
+			this.btn			= $('#submit');
+			this.objMessage		= $('#warnning');
+
+			if (this.objUserName.val().length != 0) {
+				this.objPassword.focus();
+			}
+
+			// 大小写锁定提示
+			this.capsLock();
+
+			// IE10之下input没有placeholder功能
+			this.placeholder();
+		},
+		showMessage: function(message, show) {
+			var message = message || '';
+			var show	= show === false ? show : true;
+
+			if(this.objMessage.length == 0){
+				this.objMessage = $("<li id='warnning'></li>");
+				this.objMessage.prependTo(".loginForm ul").text(message);
+			}else{
+				this.objMessage.text(message);
+			}
+
+			if(show) this.objMessage.show();
+			else this.objMessage.hide();
+		},
+		success: function(jsonData) {
+			if (jsonData.state == 'SUCCESS') {
+				// 登录成功直接跳转
+				window.location.href = jsonData.url;
+			}else if(jsonData.state == 'ISOLD' || jsonData.state == 'NO_ACTIVATE') {
+				this.showMessage(jsonData.message);
+				this.jump(jsonData.url);
+			}else if (jsonData.state == 'WRONG_SIMPLE_PASSWORD'){
+				this.showMessage('密码过于简单，请立即修改');
+				this.jump("http://login.shikee.com/home/weak_password");
+			}else {
+				this.objPassword.val(''); // 默认都会设置密码文本框为空
+				if (jsonData.state == 'NOT_FOUND') {
+					this.objUserName.val('').focus(); // 给文本框焦点
+				}else if (jsonData.state == 'WRONG_PASSWORD') {
+					this.objPassword.focus(); // 给文本框焦点
+				}
+				this.showMessage(jsonData.message);
+				this.resumeButton();
+			}
+		},
+		error: function() {
+			this.showMessage('服务器错误');
+			this.resumeButton();
+		},
+		verification: function() {
+			this.username		= $.trim(this.objUserName.val());
+			this.username_pla	= $.trim(this.objUserName.attr('placeholder'));
+			this.password		= $.trim(this.objPassword.val());
+
+			if (this.username.length == 0 || this.username === this.username_pla) {
+				this.objUserName.val('').focus(); // 给文本框焦点并设置为空
+				this.showMessage('请输入账号');
+				return false;
+			}
+
+			if (this.password.length == 0) {
+				this.objPassword.val('').focus(); // 给文本框焦点并设置为空
+				this.showMessage('请输入密码');
+				return false;
+			}
+
+			return true;
+		},
+		post: function() {
+			if( this.objMessage.length != 0 ) {
+				this.showMessage('', false);
+			};/*隐藏错误提示框*/
+			var _this = this;
+
+			if (this.verification()) {
+				// 禁用按钮
+				this.btn.addClass('disabled').val('登录中...').prop('disabled', true);
+				var busy = setTimeout(function() {
+					this.showMessage("服务器繁忙，请耐心等待...");
+				}, 3000);
+
+				$.ajax({
+					url: this.checkUrl,
+					data: $("form").serialize(),
+					dataType: this.checkDataType,
+					cache: false,
+					type: 'POST',
+					success: function(jsonData){_this.success(jsonData);},
+					statusCode: {
+						500: function() {
+							_this.showMessage("服务器错误");
+							_this.objPassword.val('').focus();
+						},
+						200: function() {
+							clearInterval(busy);
+						}
+					},
+					error: function(){_this.error();}
+				});
+			}
+		},
+		jump: function(url) {
+			var num = 3, btn = this.btn, txt = '秒后自动跳转到相应地址...';
+
+			btn.val(num + txt).attr('url', url);
+
+            num -= 1;
+
+            var countDown = setInterval(function() {
+                if(num){
+                	btn.val(num + txt);
+                    num -= 1;
+                }else{
+                    countDown && clearInterval(countDown);
+                    document.location.href = btn.attr('url');
+                }
+            }, 1000);
+		},
+		placeholder: function() {
+			if( !("placeholder" in document.createElement("input")) ) {
+				// 使用JQ获取，this.getAttribute在低级的IE下不起效果
+
+				$("input[placeholder]").not("input[type=password]").focus(function() {
+	                if( this.value === $(this).attr("placeholder") ){
+	                    this.value = "";
+	                    this.style.color = "#000";
+	                }
+	            }).blur(function() {
+	                if( this.value === "" ){
+	                    this.value = $(this).attr("placeholder");
+	                    this.style.color = "#a9a9a9";
+	                }
+	            }).blur();
+	        }
+		},
+		capsLock: function() {
+			this.objPassword[0].onkeypress = function(event){
+				var e = event||window.event,
+				$tip = $('#capslock'),
+				kc  =  e.keyCode || e.which, // 按键的keyCode
+				isShift  =  e.shiftKey ||(kc  ==   16 ) || false ; // shift键是否按住
+				if (((kc >=65&&kc<=90)&&!isShift)|| ((kc >=97&&kc<=122)&&isShift)){
+					$tip.show();
+				}
+				else{
+					$tip.hide();
+				}
+			};
+		},
+		resumeButton: function() {
+			this.btn.removeClass('disabled').prop('disabled', false).val('登 录');
+		}
+	}
+	</script>
+</head>
+<body>
+
+    <div class="headerWrapper">
+       <div class="header w980 clearfix">
+            <a href="http://www.zhonghuasuan.com/">
+                <h1 id="logo" class="pull-left">登陆-众划算</h1>
+            </a>
+            <span class="link pull-right">
+                <a href="http://www.zhonghuasuan.com/" target="_blank">首页</a> -
+                <a href="http://reg.zhonghuasuan.com/" target="_blank">注册</a> |
+                <a href="http://help.zhonghuasuan.com/" target="_blank">帮助中心</a>
+            </span>
+        </div>
+    </div>
+
+    <div class="mainWrapper">
+        <div class="w980 main">
+            <a title="立即体验" class="gotoExperience" href="http://bbs.shikee.com/thread-1391870-1-1.html" target="_blank"></a>
+            <div class="loginbar">
+                <form class="loginForm" action="http://login.zhonghuasuan.com/tologin?login=local" method="post">
+                	<input type="hidden" name="errorMsg" value="">
+                	<input type="hidden" name="to" value="http%3A%2F%2Fseller.zhonghuasuan.com%2Forder%2Forder_list%2F1025085">
+                	<input type="hidden" name="token" value="d25a35022dd04af3b28ef8db0652ebd2">                    <ul>
+                                                <li>
+                            <label for="username" class="fz14">账号：</label>
+                            <input type="text" id="username" autocomplete="off" tabindex="1" name="account" value="" placeholder="会员名/手机号码/邮箱">
+                        </li>
+                        <li>
+                            <label for="password" class="fz14">密码：</label>
+                            <input type="password" autocomplete="off" id="password" tabindex="2" name="password">
+                        </li>
+                        <li id="capslock">键盘大写锁定已打开，请注意大小写</li>
+                        <li class="clearfix">
+                            <label class="pull-left">
+                                <input type="checkbox" name="remember" value="1" checked="checked" tabindex="3" class="input-checkbox">
+                                <span>记住登录名</span>
+                            </label>
+                            <a class="pull-right" href="http://ucenter.shikee.com/findpwd/" target="_blank">忘记密码？</a>
+                        </li>
+                        <li>
+                            <input id="submit" class="submit" type="submit" value="登  录">
+                        </li>
+                        <li>
+                            <p class="pull-left">
+                            	<a href="http://login.zhonghuasuan.com/api/event/qq/login"><img style="vertical-align: text-top;" src="http://static.zhonghuasuan.com/images/www/qq.png" alt="QQ登录">QQ登录</a>
+                            </p>
+                            <p class="pull-right"><a href="http://reg.zhonghuasuan.com/" target="_blank">免费注册</a></p>
+                        </li>
+                    </ul>
+                </form>
+                <script type="text/javascript">
+
+				var login = new __login();
+                $("#submit").click(function() {
+                	login.post();
+					return false;
+                });
+
+    			$("#submit").prop("disabled", false);/*for firefox bug*/
+
+                </script>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="footer">
+        <a href="http://help.zhonghuasuan.com/" target="_blank">帮助</a>
+        <a href="http://www.zhonghuasuan.com/guide" target="_blank">新手引导</a>
+        <a href="http://help.zhonghuasuan.com/feedback" target="_blank">意见反馈</a>
+        <a href="http://www.zhonghuasuan.com/legal/" target="_blank">法律声明</a>
+        <script src="http://s15.cnzz.com/stat.php?id=905537&amp;web_id=905537" language="JavaScript"></script><script src="http://c.cnzz.com/core.php?web_id=905537&amp;t=z" charset="utf-8" type="text/javascript"></script><a href="http://www.cnzz.com/stat/website.php?web_id=905537" target="_blank" title="站长统计">站长统计</a>
+        <span>版权所有</span>
+        Copyright © 2006-2017        <a href="http://www.zhonghuasuan.com/" target="_blank">zhonghuasuan.com</a>
+        <a href="http://www.miibeian.gov.cn/" target="_blank">桂ICP备07009935号</a>
+		<div style="display:none;"><script src="http://s96.cnzz.com/stat.php?id=5713574&amp;web_id=5713574&amp;show=pic" language="JavaScript"></script><script src="http://c.cnzz.com/core.php?web_id=5713574&amp;show=pic&amp;t=z" charset="utf-8" type="text/javascript"></script><a href="http://www.cnzz.com/stat/website.php?web_id=5713574" target="_blank" title="站长统计"><img border="0" hspace="0" vspace="0" src="http://icon.cnzz.com/img/pic.gif"></a></div>
+       	<script>
+        !function(){
+            var r = document.createElement("script");
+            r.setAttribute("type","text/javascript");
+            r.setAttribute("src","http://static.zhonghuasuan.com/min/?f=javascript/common/referrer.min.js,javascript/common/track.min.js&v=1.0201703291615");
+            document.body.appendChild(r);
+        }();
+        </script>
+        <div class="m-credit">
+            <a class="police" target="_blank" href="http://www.gx.cyberpolice.cn/NewsCategory/lstNewCate.do" title="南宁网警" rel="nofollow">南宁网警</a>
+            <!--可信网站图片LOGO安装开始-->
+            <script>document.write('<a class="kxlogo" target="_blank" href="https://ss.knet.cn/verifyseal.dll?sn=e13111211010043388o1e9000000&amp;ct=df&amp;a=1&amp;pa='+Math.random()+'" title="可信网站" rel="nofollow">可信网站</a>');</script><a class="kxlogo" target="_blank" href="https://ss.knet.cn/verifyseal.dll?sn=e13111211010043388o1e9000000&amp;ct=df&amp;a=1&amp;pa=0.23633255786262453" title="可信网站" rel="nofollow">可信网站</a>
+            <!--可信网站图片LOGO安装结束-->
+            <a class="realName" target="_blank" href="http://v.pinpaibao.com.cn/authenticate/cert/?site=www.zhonghuasuan.com&amp;at=realname" title="实名验证" rel="nofollow">实名验证</a>
+        </div>
+    </div><script type="text/javascript" src="http://static.zhonghuasuan.com/min/?f=javascript/common/referrer.min.js,javascript/common/track.min.js&amp;v=1.0201703291615"></script>
+
+
+</body></html>

@@ -1,0 +1,89 @@
+<html><head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<title></title>
+<script>
+injectDOM = function() {
+    setTimeout(function() {
+    	var u = window.location.href;
+    	var sessionid = getParam(u, 'session_id');
+		var org_id = getParam(u, 'org_id');
+		var suppressFlash = getParam(u, 'suppressFlash');
+		
+        var div = document.createElement('p');
+        document.body.appendChild(div);
+        div.style.width = "0px";
+        div.style.height = "0px";
+        div.style.background = "url(https://src.ebay-us.com/fp/clear.png?org_id="+org_id+"&session_id="+sessionid+"&m=1)";
+
+     	// NOTE: Don't use new Image() it delays onload (in chrome at least)
+        var img = document.createElement("img");
+        img.src = "https://src.ebay-us.com/fp/clear.png?org_id="+org_id+"&session_id="+sessionid+"&m=2";
+        document.body.appendChild(img);
+        var js = document.createElement("script");
+        js.src ="https://src.ebay-us.com/fp/check.js?org_id="+org_id+"&session_id="+sessionid;
+        this.document.body.appendChild(js);
+
+        // Get OS and UA
+        var u = navigator.userAgent.toLowerCase(),
+        p = navigator.platform.toLowerCase(),
+        win = p ? /win/.test(p) : /win/.test(u);
+        var ie = false;
+        try{
+	        ie = !+"\v1";
+	        if (!ie)
+	        	ie = /*@cc_on!@*/false;
+        }
+        catch(e){
+        	
+        }
+        if(suppressFlash == '' || suppressFlash == 'false'){
+        if (ie && win) {
+            //var divx = document.createElement("div");
+            var divx = document.getElementById("tmxobject");
+            divx.outerHTML =
+              '<object type="application/x-shockwave-flash" data="https://src.ebay-us.com/fp/fp.swf?org_id='+org_id+'&session_id='+sessionid+'" width="1" height="1"><param name="movie" value="https://src.ebay-us.com/fp/fp.swf?org_id='+org_id+'&session_id='+sessionid+'" /> <param name="wmode" value="transparent" /></object>';
+        } else {
+            var obj = document.createElement('object');
+            obj.setAttribute("type", "application/x-shockwave-flash");
+            obj.setAttribute("data", "https://src.ebay-us.com/fp/fp.swf?org_id="+org_id+"&session_id="+sessionid);
+            obj.setAttribute("width", "1");
+            obj.setAttribute("height", "1");
+
+            var param1 = document.createElement('param');
+            param1.setAttribute("name", "movie");
+            param1.setAttribute("value", "https://src.ebay-us.com/fp/fp.swf?org_id="+org_id+"&session_id="+sessionid);
+            var param2 = document.createElement('param');
+            param2.setAttribute("name", "wmode");
+            param2.setAttribute("value", "transparent");
+            obj.appendChild(param1);
+            obj.appendChild(param2);
+            document.body.appendChild(obj);
+
+            //obj.appendChild(document.createElement("div"));
+	        }
+        }
+        var div1 = document.createElement('div');
+        document.body.appendChild(div1);
+
+    }, 0);
+}
+function getParam(u, p)
+{
+    var s = u.indexOf(p) + p.length +1;
+    var e = u.indexOf('&', s);
+
+    if (e == -1)
+        e = u.length;
+    var v =  u.substring(s, e);
+    var isOk  = /^[0-9A-Z]*$/i.test(v);
+    if(isOk)
+        return v;
+    else
+       return "";
+}
+</script>
+</head>
+<body onload="injectDOM();">
+<div id="tmxobject"></div>
+
+<p style="width: 0px; height: 0px; background-image: url(https://src.ebay-us.com/fp/clear.png?org_id=&amp;session_id=&amp;m=1); background-position: initial initial; background-repeat: initial initial; "></p><img src="https://src.ebay-us.com/fp/clear.png?org_id=&amp;session_id=&amp;m=2"><script src="https://src.ebay-us.com/fp/check.js?org_id=&amp;session_id="></script><object type="application/x-shockwave-flash" data="https://src.ebay-us.com/fp/fp.swf?org_id=&amp;session_id=" width="1" height="1"><param name="movie" value="https://src.ebay-us.com/fp/fp.swf?org_id=&amp;session_id="><param name="wmode" value="transparent"></object><div></div></body></html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html><html><head lang="en">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+    <meta charset="UTF-8">
+    <title>一起沃</title>
+    <link type="text/css" rel="stylesheet" href="http://ku-res.17wo.cn/wap-video-storm/images/tencent/end-style.css">
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js" type="text/javascript"></script>
+    <script src="http://ku-res.17wo.cn/wap-video-storm/scripts/jquery-1.8.2.min.js" type="text/javascript"></script>
+    <script src="http://ku-res.17wo.cn/wap-video-storm/scripts/comm.min.js" type="text/javascript"></script>
+    <script src="http://ku-res.17wo.cn/wap-video-storm/scripts/wx.share.min.js?v=1.22" type="text/javascript"></script>
+</head>
+<body class="woend-bd">
+<div id="today" class="none">
+    
+    2017-04-02-06-43-23
+</div>
+<div id="validateCodeLayer" class="endtop-bg">
+    <img src="http://ku-res.17wo.cn/wap-video-storm/images/tencent/endtop.png" class="end-bg">
+</div>
+<div id="validateCodeLayer" class="end-center">
+    <a href="javascripe:void(0);" class="down-bt" id="downWotv" onclick="return false">
+        <img src="http://ku-res.17wo.cn/wap-video-storm/images/tencent/end-button.png">
+    </a>
+    <div class="end-ip">
+        <input type="tel" class="tel_ip" placeholder="请输入有效的联通号码">
+    </div>
+    <div class="end-ip">
+        <input type="tel" class="code_none" placeholder="请输入验证码">
+        <span class="gain_code" id="code_sent">获取验证码</span>
+		<span class="gain_code" style="display:none" id="code_unsent">点击获取验证码</span>
+    </div>
+	 <p class="ipt_tips none"></p>
+	 <div class="login_user none">
+        当前用户：<b></b>
+    </div>
+    <div class="end-button">
+        <a href="javascripe:void(0);" class="order-bt1" id="query">
+            <img src="http://ku-res.17wo.cn/wap-video-storm/images/tencent/end-bt_01.png">
+			
+        </a>
+        <a href="javascripe:void(0);" class="order-bt2">
+            <img src="http://ku-res.17wo.cn/wap-video-storm/images/tencent/end-bt_02.png">
+        </a>
+    </div>
+</div>
+<div class="end-footer">
+    <img src="http://ku-res.17wo.cn/wap-video-storm/images/tencent/end-bottom.png" class="bt-logo">
+    @2016中国联通 粤ICP证10029056**
+</div>
+
+<script src="http://ku-res.17wo.cn/wap-video-storm/images/tencent/jQueryRotate.2.2.js" type="text/javascript"></script>
+<script>
+
+    var hasLogin = false;
+
+
+    $(function () {
+        init();
+    });
+
+    function init() {
+        initPage();
+        initButton();
+        if (wo.client.weixing) {
+            setTimeout(initWXShare, 50);
+        }
+    }
+
+    function initPage() {
+        $.ajaxSetup({
+            timeout: 10000,
+            error: function () {
+                wo.dom.alertError("服务器繁忙，请稍候重试~");
+            }
+        });
+
+        resetPop();
+;
+    }
+
+    function initButton() {
+        $(".order-bt2").on("click", function () {
+            $(".login_user").hide();
+            $("#validateCodeLayer .ipt_tips").hide();
+            $("#validateCodeLayer .ipt_tips").text("");
+            $("#validateCodeLayer input").val("");
+            $("#validateCodeLayer .end_ip").show();
+            hasLogin = false;
+        });
+		
+        $("#query").on("click", function () {
+            if (hasLogin) {
+                window.location.href = "query.shtml";
+            } else {
+                login("query.shtml");
+            }
+        });
+		$("#downWotv").on("click", function () {       
+		   window.location.href = "http://wotv.17wo.cn/";
+        });
+        $("#code_sent").on("click", function () {
+            getValidateCode();
+				
+        });
+
+
+    }
+
+    function initWXShare() {
+        var url = "Index!wxShare";
+        $.ajax({
+            url: url,
+            data: {
+                wxShareUrl: window.location.href
+            },
+            dataType: "json",
+            type: "POST",
+            error: function () {
+            },
+            success: function (res) {
+                if (res.success) {
+                    var wxShare = res.data.wxShare;
+                    wx.config({
+                        debug: false,
+                        appId: 'wx90dc7e3e16b4b06e',
+                        timestamp: wxShare.timeStamp,
+                        nonceStr: wxShare.nonceStr,
+                        signature: wxShare.signature,
+                        jsApiList: [
+                            'checkJsApi',
+                            'onMenuShareTimeline',
+                            'onMenuShareAppMessage',
+                            'onMenuShareQQ',
+                            'onMenuShareWeibo'
+                        ]
+                    });
+
+                    pushWxShare({
+                        url: "http://qq.17wo.cn/",
+                        title: "视频风暴腾讯季来袭，开启畅享4G视频的时代",
+                        desc: "联通用户可畅享3个月的每月腾讯视频定向流量+1GB省内流量，更有腾讯视频VIP相赠，仅需15元，好莱坞大片随时看！",
+                        msgImg: "http://ku-res.17wo.cn/wap-video-storm/images/wxfx.jpg"
+                    });
+                }
+            }
+        });
+    }
+
+
+    function login(pageUrl) {
+        var validateCode = $(".code_none").val();
+        var mobile = $(".tel_ip").val();
+
+        //是否联通手机号码
+        if (!wo.regexp.TestMobiles(mobile)) {
+            $(".ipt_tips").text("请输入正确的联通手机号码~");
+            $(".ipt_tips").show();
+            $(".tel_ip").focus();
+            return false;
+        }
+
+        //验证码不能为空
+        if (!validateCode) {
+            $(".ipt_tips").text("验证码不能为空~");
+            $(".ipt_tips").show();
+            $(".code_none").focus();
+            return false;
+        }
+
+        var url = "Query!checkValidateCode";
+        $.ajax({
+            url: url,
+            data: {
+                validateCode: validateCode,
+                mobile: mobile
+            },
+            dataType: "json",
+            type: "POST",
+            beforeSend: function () {
+                wo.dom.loadingMask(true);
+            },
+            error: function () {
+                wo.dom.loadingMask(false);
+            },
+            success: function (res) {
+                wo.dom.loadingMask(false);
+                if (res.success) {
+                    window.location.href = pageUrl;
+                } else {
+                    $(".ipt_tips").html(res.message);
+                    $(".ipt_tips").show();
+                }
+            }
+        });
+    }
+
+    function getValidateCode() {
+        var url = "Index!getValidateCode";
+        var mobile = $(".tel_ip").val();
+        //是否联通手机号码
+        if (!wo.regexp.TestMobiles(mobile)) {
+            $(".ipt_tips").text("请输入正确的联通手机号码~");
+            $(".ipt_tips").show();
+            $(".tel_ip").focus();
+            return false;
+        }
+
+        jump(60);//验证码倒计时60秒
+        $.ajax({
+            url: url,
+            data: {
+                mobile: mobile
+            },
+            dataType: "json",
+            type: "POST",
+            beforeSend: function () {
+                wo.dom.loadingMask(true);
+            },
+            error: function () {
+                wo.dom.loadingMask(false);
+            },
+            success: function (res) {
+                wo.dom.loadingMask(false);
+                if (res.success) {
+                    $(".ipt_tips").text("验证码发送成功~");
+                    $(".ipt_tips").show();
+                } else {
+                    $(".ipt_tips").html(res.message);
+                    $(".ipt_tips").show();
+                }
+            }
+        });
+		
+    }
+
+    function jump(count) {
+        $("#code_unsent").show().text("重新发送(" + count + ")");
+        $("#code_sent").hide();
+        setTimeout(function () {
+            count--;
+            if (count > 0) {
+                $("#code_unsent").show().text("重新发送(" + count + ")");
+                $("#code_sent").hide()
+                jump(count);
+            } else {
+                $("#code_sent").show().text("获取验证码");
+                $("#code_unsent").hide().text("重新发送(" + count + ")");
+                count = 60;
+            }
+        }, 1000);
+    }
+
+
+    function showNewPhone(mobile) {
+        $(".login_user b").text(mobile);
+        $(".login_user").show();
+        $(".u_ct").show();
+        $("#validateCodeLayer .end_ip").hide();
+    }
+
+
+    function resetPop() {
+        var get_bw = $(window).width();
+        var get_bh = $(window).height();
+        $(".woend-bd .mask-layer").css("margin-top", 0);
+        $(".pop-layer").each(function (index, element) {
+            if (!$(this).is(':hidden') && $(this).find(".p_txt").size() > 0) {
+                if ($(this).outerHeight() > get_bh) {
+                    $(this).find(".p_txt").height(get_bh - $(".woend-bd .pop-footer-nav").height() - 80);
+                }
+                var get_poph = $(this).outerHeight();
+                $(this).css({
+                    "margin-top": -get_poph / 2
+                });
+            } else {
+                if (!$(this).is(':hidden')) {
+                    var get_poph = $(this).outerHeight();
+                    $(this).css({
+                        "margin-top": -get_poph / 2
+                    })
+                }
+            }
+        });
+    }
+</script>
+
+<script>document.write('<div style="display:none"><script src="http://s95.cnzz.com/stat.php?id=1260167449&web_id=1260167449" language="JavaScript">' + '</s' + 'cript></div>')</script><div style="display:none"><script src="http://s95.cnzz.com/stat.php?id=1260167449&amp;web_id=1260167449" language="JavaScript"></script><script src="http://c.cnzz.com/core.php?web_id=1260167449&amp;t=z" charset="utf-8" type="text/javascript"></script><a href="http://www.cnzz.com/stat/website.php?web_id=1260167449" target="_blank" title="站长统计">站长统计</a></div></body></html>

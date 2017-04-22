@@ -1,0 +1,1199 @@
+<html><head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+    <meta http-equiv="x-ua-compatible" content="ie=7">
+    <title>郑州市_安全教育平台</title>
+    <script src="http://css.safetree.com.cn/shengpingtai/js/jquery-1.6.1.min.js" type="text/javascript"></script>
+    <script src="http://css.safetree.com.cn/shengpingtai/js/scrollnews.js"></script>
+    <link href="http://css.safetree.com.cn/shengpingtai/styles/css/global.css?r=82" type="text/css" rel="stylesheet">
+    <link href="http://css.safetree.com.cn/shengpingtai/styles/css/index.css?r=129" type="text/css" rel="stylesheet">
+    <!--<link href="http://css.safetree.com.cn/shengpingtai/styles/css/newyear.css?r=8" type="text/css"
+        rel="stylesheet" />-->
+    <script language="javascript" type="text/javascript" src="http://css.safetree.com.cn/shengpingtai/js/yao.js"></script>
+    <script src="http://css.safetree.com.cn/shengpingtai/js/Json.js" type="text/javascript"></script>
+    <script src="http://css.safetree.com.cn/shengpingtai/js/csee.searcher.js?r=47" type="text/javascript"></script>
+    <script language="javascript" type="text/javascript" src="http://css.safetree.com.cn/shengpingtai/js/SiteIndex.js?r=42"></script>
+    <script language="javascript" type="text/javascript" src="http://file.safetree.com.cn/GetWebApi.js?r=9"></script>
+    <script language="javascript" type="text/javascript" src="http://css.safetree.com.cn/shengpingtai/js/Lockscreen.js"></script>
+    <script src="http://css.safetree.com.cn/shengpingtai/js/passwordEdit.js?r=9" type="text/javascript"></script>
+    <script language="javascript" type="text/javascript" src="http://css.safetree.com.cn/shengpingtai/js/checkcode1.0.1.js?r=2"></script>
+    <!--[if IE 6]>
+<script type="text/javascript" src="http://css.safetree.com.cn/shengpingtai/js/Png.js"></script>
+<script type="text/javascript">
+    EvPNG.fix('div, ul, img, li, input, a');
+</script>
+<![endif]-->
+    <script type="text/javascript">
+        if (window.location.host == "chengdu.safetree.com.cn") {
+            window.location.href = "/cdlogin.html";
+        }
+        var uStr = getCookie("_UStr");
+        if (uStr != null && uStr.length > 0) {
+            CSEE.exit(function () {
+
+            });
+        }
+        var CacheAPIUrl = GetWebApiUrl(document.domain);
+        //var CacheAPIUrl = "WebApi.safetree.com.cn";
+
+
+        $(function () {
+            //inputTipText();
+
+            $(".login_div .wxa").click(function () {
+                $(".login_wxdiv").show();
+                $(".login_div").hide();
+            });
+            $(".login_div .inputa, .login_div .inputb").mouseover(function () {
+                $(this).css({ "border-color": "#209583" });
+            }).mouseout(function () {
+                $(this).css({ "border-color": "#ccc" });
+            });
+            $(".login_wxdiv .pca").click(function () {
+                $(".login_div").show();
+                $(".login_wxdiv").hide();
+            });
+            $(".wechat-btn").click(function () {
+                $(".wechat-cont").toggle();
+                if ($(this).hasClass('close-btn')) {
+                    $(this).removeClass('close-btn');
+                } else {
+                    $(this).addClass('close-btn');
+                }
+            });
+        })
+    </script>
+    <script type="text/javascript">
+
+
+
+        var comefromcss = "http://file.safetree.com.cn/special/90/push.css"; //微信单独样式
+        $(document).ready(function () {
+            if (parseInt(getCookie("ErrorNum")) > 2) {
+                $("#code").show();
+                nextcheckcode(); //刷新验证码
+            }
+
+            $(".lrkfbtn").click(function () {
+                $(".lrkfbox").toggle();
+            });
+
+            //寒假期间，联系客服弹层隐藏
+            //var date = new Date();
+            //if (date < new Date('2017-01-27 00:00:00') || date > new Date('2017-02-02 23:59:59')) {
+            //    $(".lrkf").show();
+            //}
+            //360,IE不兼容new Date('2017-01-27 00:00:00')
+            $(".lrkf").show();
+
+            //为安全第一课焦点图增加事件
+            $(".YSample [href*='#setnav_g1']", "#YSlide").live("click", function () {
+                show('setnav_g1');
+                return false;
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        //浏览器原生支持placeholder?
+        function isplaceholder() {
+            return 'placeholder' in document.createElement('input')
+        };
+
+        function getCookie(name) {
+            var arr,
+                reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+
+            if (arr = document.cookie.match(reg))
+
+                return unescape(arr[2]);
+            else
+                return null;
+        }
+
+        function setCookie(c_name, value, expiredays) {
+            var exdate = new Date();
+            exdate.setDate(exdate.getDate() + expiredays);
+            document.cookie = c_name + "=" + escape(value) +
+                ((expiredays == null) ? "" : ";path=/;domain=.safetree.com.cn;expires=" + exdate.toGMTString());
+        }
+
+        $(function () {
+            if (!isplaceholder()) {
+                document.getElementById("PassWord1").style.display = "block";
+                document.getElementById("PassWord").style.display = "none";
+                document.getElementById("UName").style.color = "Gray";
+                document.getElementById("checkcode").style.color = "Gray";
+                $('.input_test,.inputc').bind({
+                    focus: function () {
+                        if (this.value == this.defaultValue) {
+                            if (this.id == "PassWord1") {
+                                document.getElementById("PassWord1").style.display = "none";
+                                document.getElementById("PassWord").style.display = "block";
+                                $("#PassWord").focus();
+                            }
+                            this.value = "";
+                            this.style.color = "black";
+                        }
+                    },
+                    blur: function () {
+                        if (this.value == "") {
+
+                            if (this.id == "PassWord") {
+                                document.getElementById("PassWord1").style.display = "block";
+                                document.getElementById("PassWord").style.display = "none";
+                            }
+                            this.value = this.defaultValue;
+                            this.style.color = "Gray";
+                        }
+                    }
+                });
+            }
+            else {
+                $("#UName").val("");
+                $("#checkcode").val("");
+            }
+
+            $("#LoginButton").click(function () {
+                LoginFunc();
+            })
+
+            //输入用户名之后回车判断 如果用户名为空，提示输入用户名 否则密码框获取焦点
+            $("#UName").keydown(function (e) {
+                if (e.keyCode == 13) {
+                    if ($.trim($("#UName").val()) == "") {
+                        $("#UName").focus();
+                        alert("请输入账号");
+                    } else {
+                        $(".user_nameul").hide();
+                        $("#PassWord").focus();
+                    }
+                }
+            })
+
+            $("#PassWord,#checkcode").keydown(function (e) {
+                if (e.keyCode == 13) {
+                    $("#LoginButton").click();
+                }
+            })
+
+
+
+
+        })
+
+        //重新指定验证码url
+        var codeUrl = switchUrl(window.location.host);
+
+        //登录方法
+        function LoginFunc() {
+            var t;
+            var UName = $("#UName").val();
+            var PassWord = $("#PassWord").val();
+            var checkcode = $("#checkcode").val(); //验证码相关 
+            if ($.trim(UName).length <= 0) {
+                $("#UName").focus();
+                alert("请输入帐号");
+                return;
+            }
+            else if ($.trim(PassWord).length <= 0) {
+                $("#PassWord").focus();
+                alert("请输入密码");
+                return;
+            }
+            //验证码相关
+            else if ($.trim(checkcode).length <= 0 && parseInt(getCookie("ErrorNum")) > 2) {
+                $("#checkcode").focus();
+                alert("请输入验证码");
+                return;
+            }
+
+
+            $(".checkcodeerror").attr("style", "display:none");
+
+            $("#LoginButton").unbind(); //移除登录事件
+            $("#LoginButton").text('登录中');
+            t = setTimeout("CheckData()", 15000);
+            /*此处想要验证验证码  将 checkcode:1 ->1 该成用户输入的验证码即可*/
+            $.getJSON(codeUrl + "/LoginHandler.ashx?jsoncallback=?", { userName: $.trim(UName), password: PassWord, checkcode: checkcode, type: 'login', loginType: '1', r: Math.random() }, function (json) {
+                if (json.ret == 1) {
+                    setCookie("ErrorNum", 0, 1);
+                    clearTimeout(t);
+                    var returnurl = "";
+                    if (json.data.CardPwd == "-1") {//如果该帐号被重置过密码,则跳转修改密码页面
+                        returnurl = $.trim(json.data.EplatformUrl) + "/MainPage.html";
+                    }
+                    else if (json.data.CardPwd == "-3") { //如果该帐号为新导入的,则跳往修改帐号密码页面
+                        returnurl = $.trim(json.data.EplatformUrl) + "/MainPage.html";
+                    }
+                    else {
+                        var Data = json.data;
+                        if (Data != null && Data != undefined) {
+                            if (Data.regionalAuthority == '0' && Data.UserType == '0')
+                                returnurl = $.trim(json.data.EplatformUrl) + "/MainPage.html";
+                            else
+                                returnurl = $.trim(json.data.EplatformUrl) + "/MainPage.html";
+                        }
+                        else
+                            returnurl = $.trim(json.data.EplatformUrl) + "/MainPage.html";
+                    }
+                    showPasswordEdit(UName, PassWord, parseInt(json.data.regionalAuthority), returnurl);
+                }
+                else if (json.ret == -1 && json.msg) {
+                    $("#LoginButton").click(function () {
+                        LoginFunc();
+                    })
+                    $(".pwderror").attr("style", "display:block");
+                    $(".checkcodeerror").attr("style", "display:none");
+                    $("#LoginButton").text("登录");
+                    clearTimeout(t);
+                    if (parseInt(json.Enum) > 2) {
+                        setCookie("ErrorNum", json.Enum, 1);
+                        $("#code").show();
+                        nextcheckcode(); //验证码相关
+                    }
+                    return;
+                }
+                else if (json.ret == -2) {
+                    $("#LoginButton").click(function () {
+                        LoginFunc();
+                    });
+                    $(".checkcodeerror").attr("style", "display:block");
+                    $(".pwderror").attr("style", "display:none");
+                    $("#LoginButton").text("登录");
+                    clearTimeout(t);
+                    if (parseInt(json.Enum) > 2) {
+                        setCookie("ErrorNum", json.Enum, 1);
+                        $("#code").show();
+                        nextcheckcode(); //验证码相关
+                    }
+                    return;
+                }
+            });
+        }
+
+
+
+        function CheckData() {
+            alert("登录超时,请刷新页面后重新尝试!");
+            window.location.href = "/login.html";
+            return;
+        }
+
+        //轮播图
+        function SlideImg() {
+            if ($("YSample").length > 0) {
+                YAO.YTabs({
+                    tabs: YAO.getEl('YSIndex').getElementsByTagName('a'),
+                    contents: YAO.getElByClassName('YSample', 'p', 'YSlide'),
+                    defaultIndex: 0,
+                    auto: true,
+                    fadeUp: true
+                });
+            }
+        }
+
+        //收藏页面
+        function SavePage() {
+            var title = document.title
+            var url = document.location.href
+            if (window.sidebar) {
+                window.sidebar.addPanel(title, url, "");
+            }
+            else {
+                window.external.AddFavorite(url, title);
+            }
+        }
+
+        function setnav(name, cursel, n) {
+            for (i = 1; i <= n; i++) {
+                var menu = document.getElementById(name + i);
+                var con = document.getElementById(name + "_" + i);
+                if (i == cursel) {
+                    $(menu).show();
+                    $(menu).attr("class", "active");
+                    $(con).show();
+                }
+                else {
+                    $(menu).attr("class", "");
+                    $(con).hide();
+                }
+            }
+            if (cursel == 2) {
+                $("[name='more']").attr("href", "/HelpSystem/HelpEplat.aspx?CID=74");
+            } else {
+                if ($("#setpic_1 li").length > 0) {
+                    $("[name='more']").attr("href", "/HelpSystem/AdmAnnounce.aspx");
+                }
+                else {
+                    $("[name='more']").attr("href", "/HelpSystem/HelpEplat.aspx?CID=74");
+                }
+            }
+        }
+        //验证码相关,点击看不清,换一张   跟换验证码
+        function nextcheckcode() {
+            $(".checkcode").attr({ "src": codeUrl + "/checkcode.aspx?codetype=1&r=" + Math.random() });
+        }
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div class="lrkf" style="">
+        <div class="lrkfbtn">
+        </div>
+        <div style="display: none;" class="lrkfbox">
+            <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2966595295&amp;site=qq&amp;menu=yes" target="_blank">
+                <img src="http://css.safetree.com.cn/shengpingtai/styles/images/Teacation/qq.jpg"></a>
+            <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2902237944&amp;site=qq&amp;menu=yes" target="_blank">
+                <img src="http://css.safetree.com.cn/shengpingtai/styles/images/Teacation/qq.jpg"></a>
+            <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2678883845&amp;site=qq&amp;menu=yes" target="_blank">
+                <img src="http://css.safetree.com.cn/shengpingtai/styles/images/Teacation/qq.jpg"></a>
+            <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2608675513&amp;site=qq&amp;menu=yes" target="_blank">
+                <img src="http://css.safetree.com.cn/shengpingtai/styles/images/Teacation/qq.jpg"></a>
+            <div class="tela">
+                咨询热线：<br>
+                400-711-1010</div>
+            <h4>
+                咨询时间：<br>
+                9:00-17:30</h4>
+        </div>
+    </div>
+    <div class="wechat-box" id="left-wx">
+        <div class="wechat-cont">
+            <p id="wxname">学生安全教育平台</p>
+            <div class="wx-bd">
+                <!--  <script>
+                    var r = 0;
+                    var src = "http://file.safetree.com.cn/angel/push/PushWeiXin.html?location=100007&siteid=0&r=" + r + "&host=" + document.domain;
+                    document.write('<script type="text/javascript" src="' + src + '" ><\/script>');
+                </script>-->
+                <img title="学生安全教育平台" src="http://file.safetree.com.cn/special/SafeDay2017/styles/images/201703SfetyDay/WeChat-pt.jpg">
+            </div>
+            <p>
+                微信扫一扫，<br>
+                轻松找回帐号密码</p>
+        </div>
+        <div class="wechat-btn">
+        </div>
+    </div>
+    <!--微信推广 end-->
+    <!--头部-->
+    <div class="header-top">
+        <div class="container">
+            <div class="header-left">
+                <a href="http://www.safetree.com.cn" target="_blank">
+                    <img src="http://css.safetree.com.cn/shengpingtai/styles/images/index/logo_safetree.jpg?r=15">中国安全教育网
+                </a>| <a href="http://www.safetree.com.cn/Main/_Xagc.aspx" target="_blank">学校安全教育实验区</a>
+            </div>
+        </div>
+    </div>
+    <div class="header_wp">
+        <div class="container">
+            <div class="header-left">
+                <h1>
+                    <a href="/login.html" target="_blank" id="ShiYanQuName">中国教育学会安全教育实验区</a>
+                </h1>
+                <p>
+                    <a href="/login.html" target="_blank" id="WebName">郑州市学校安全教育平台</a>
+                </p>
+            </div>
+            <div class="header-rt">
+                <p>
+                </p>
+                <a href="http://anquan.hee.cn/aqyh/" target="_blank" class="hebei" style="display: none;">
+                </a>
+            </div>
+        </div>
+    </div>
+    <!--头部-->
+    <div style="color: red; font-weight: bold; display: none;" class="top_wh">
+        <a href="http://File.safetree.com.cn/temp/关于学校安全教育平台学生帐号升级和开通问题的说明.doc">关于学校安全教育平台学生帐号升级和开通问题的说明</a>
+    </div>
+    <div class="bg-grey border-bto" style="border-bottom: #e1e1e1 1px solid">
+        <div class="container">
+            <div class="jypt">
+                <!--轮播图-->
+                <div id="YSlide">
+                    <script>
+                        var r = parseInt(new Date().getTime() / 3600000);
+                        var src = "http://file.safetree.com.cn/angel/push/imageslide.html?location=0&siteid=0&r=" + r + "&host=" + document.domain;
+                        document.write('<script type="text/javascript" src="' + src + '" ><\/script>');
+                    </script><script type="text/javascript" src="http://file.safetree.com.cn/angel/push/imageslide.html?location=0&amp;siteid=0&amp;r=414178&amp;host=zhengzhou.safetree.com.cn"></script>
+    <p class="YSample" style="display: block; ">
+            <a target="_blank" href="http://zhuanti.safetree.com.cn/SafeDay/2017SfetyDay_school.html" islogin="False">
+                <img src="http://file.safetree.com.cn/NavIco/ShufflingFigure/201703251906597855.jpg" style="opacity: 0.5499999999999999; ">
+            </a>
+    </p>
+    <p class="YSample" style="display: none; ">
+            <a target="_blank" href="http://jpk.safetree.com.cn/" islogin="False">
+                <img src="http://file.safetree.com.cn/NavIco/ShufflingFigure/201608311511292372.jpg" style="opacity: 1; ">
+            </a>
+    </p>
+<p id="YSIndex">
+        <a href="#1" class="  current"></a>
+        <a href="#2" class=" "></a>
+</p>
+<script type="text/javascript">
+    YAO.YTabs({
+        tabs: YAO.getEl('YSIndex').getElementsByTagName('a'),
+        contents: YAO.getElByClassName('YSample', 'p', 'YSlide'),
+        defaultIndex: 0,
+        auto: true,
+        fadeUp: true
+    });
+</script>
+
+                </div>
+                <div class="login_div" id="login_div">
+                    <a class="wxa" href="javascript:void(0)"></a>
+                    <div class="tcabd checkcodeerror" style="display: none">
+                        您输入的验证码有误，请重新输入。
+                    </div>
+                    <div class="tcabd pwderror" style="display: none">
+                        您输入的账户名和密码不匹配，请重新输入。
+                    </div>
+                    <h2>
+                        进入平台请登录</h2>
+                    <dl>
+                        <div class="inputa">
+                            <input type="text" placeholder="帐号" value="帐号" id="UName" name="input" style="color: Black" class="input_test">
+                            <ul class="user_nameul" style="display: none;">
+                            </ul>
+                        </div>
+                    </dl>
+                    <dl>
+                        <div class="inputb">
+                            <input type="text" value="密码(注意字母区分大小写)" id="PassWord1" name="" style="color: Gray;
+                                display: none" class="input_test">
+                            <input type="password" placeholder="密码(注意字母区分大小写)" id="PassWord" name="" style="color: Black" class="input_test">
+                        </div>
+                    </dl>
+                    <dl id="code" style="display: none;">
+                        <input class="inputc" type="text" placeholder="输入验证码" value="输入验证码" name="checkcode" id="checkcode"><div class="input-img">
+                                <img src="" class="checkcode" height="33"></div>
+                        <a href="javascript:void(0)" onclick="nextcheckcode()">看不清<br>换一张</a>
+                    </dl>
+                    <dl>
+                        <a href="#" class="login_btn" id="LoginButton">登录</a> <span class="p-mm">
+                            <a href="/StudentCenter/WeixinBack.aspx?Type=1" target="_blank">忘记账号密码？</a></span>
+                    </dl>
+                    <dl style="font-size: 12px; line-height: 16px; color: #333; text-align: center;">
+                        你也可以使用&nbsp;<a id="QQLogin" href="javascript:void(0)"><img src="http://css.safetree.com.cn/pingtai/styles/images/binding/icon_qq.jpg" style="vertical-align: middle"></a><span style="color: #999; padding: 0px 5px;">|</span><a id="SinaLogin" href="javascript:void(0)"><img src="http://css.safetree.com.cn/pingtai/styles/images/binding/icon_sina.jpg" style="vertical-align: middle"></a>&nbsp;帐号登录
+                    </dl>
+                </div>
+                <!--二维码-->
+                <div class="login_wxdiv" style="display: none;">
+                    <a class="pca" href="javascript:void(0)"></a>
+                    <p id="wxname_tc">学生安全教育平台</p>
+                    <div class="wx-bd">
+                        <!-- <script>
+                            var r = 0;
+                            var src = "http://file.safetree.com.cn/angel/push/PushWeiXin.html?location=100007&siteid=0&r=" + r + "&host=" + document.domain;
+                            document.write('<script type="text/javascript" src="' + src + '" ><\/script>');
+                        </script>-->
+                        <img title="学生安全教育平台" src="http://file.safetree.com.cn/special/SafeDay2017/styles/images/201703SfetyDay/WeChat-pt.jpg">
+                    </div>
+                </div>
+            </div>
+            <div class="kvbanner_cont">
+                <div class="sidebar-left" style="width: 980px;">
+                    <p id="WebJoinInfo">已有<span style="color:red;">2212</span>所学校开展安全课程、<span style="color:red;">29523</span>名教师参与授课、<span style="color:red;">1232092</span>名学生参与学习</p>
+                </div>
+                <div class="sidebar-right" style="display: none;">
+                    <a href="/HelpSystem/HelpEplat.aspx" target="_blank">
+                        <img src="http://css.safetree.com.cn/shengpingtai/styles/images/index/pic-help.jpg"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container" style="padding-top: 20px;">
+        <script>
+            var r = parseInt(new Date().getTime() / 3600000);
+            var src = "http://file.safetree.com.cn/angel/push/sitenotice.html?location=0&siteid=0&r=" + r + "&host=" + document.domain;
+            document.write('<script type="text/javascript" src="' + src + '" ><\/script>');
+        </script><script type="text/javascript" src="http://file.safetree.com.cn/angel/push/sitenotice.html?location=0&amp;siteid=0&amp;r=414178&amp;host=zhengzhou.safetree.com.cn"></script>
+
+
+        <!--news-cont end-->
+        <div class="sidebar-left">
+            <div class="col-boxa">
+                <!--要显示行政公告的-->
+                <div class="head-pic" name="showxzgg">
+                    <a href="javascript:;" id="setpic1" onclick="setnav('setpic',1,2)" style="display: none;">
+                        行政通知</a> <a href="javascript:;" class="active" id="setpic2" onclick="setnav('setpic',2,2)">
+                            平台公告</a> <a href="/HelpSystem/HelpEplat.aspx?CID=74" class="more-link" name="more" target="_blank">
+                                更多</a>
+                </div>
+                <div class="news-list">
+                    <ul id="setpic_1" style="display: none;">
+                        <script>
+                            var r = parseInt(new Date().getTime() / 3600000);
+                            var src = "http://" + CacheAPIUrl + "/SiteIndx/XingZhengGongGao.html?r=" + r + "&host=http://" + document.domain;
+                            document.write('<script type="text/javascript" src="' + src + '" ><\/script>');
+                        </script><script type="text/javascript" src="http://file.safetree.com.cn/webapi.henan/SiteIndx/XingZhengGongGao.html?r=414178&amp;host=http://zhengzhou.safetree.com.cn"></script>
+
+                    </ul>
+                    <ul id="setpic_2">
+                        <script>
+                            var r = parseInt(new Date().getTime() / 3600000);
+                            var src = "http://" + CacheAPIUrl + "/SiteIndx/QuestionOrNotice.html?type=1&r=" + r;
+                            document.write('<script type="text/javascript" src="' + src + '" ><\/script>');
+                        </script><script type="text/javascript" src="http://file.safetree.com.cn/webapi.henan/SiteIndx/QuestionOrNotice.html?type=1&amp;r=414178"></script>
+    <ul>
+            <li class="">   
+                <a href="/HelpSystem/HelpEplat.aspx?CID=74&amp;conid=407" target="_blank" title="中国教育学会安全教育实验区2017年工作要点">中国教育学会安全教育实验区2017年工作要点</a>
+            </li>
+            <li class="">   
+                <a href="/HelpSystem/HelpEplat.aspx?CID=74&amp;conid=202" target="_blank" title="中国教育学会安全教育实验区2016年工作要点">中国教育学会安全教育实验区2016年工作要点</a>
+            </li>
+            <li class="">   
+                <a href="/HelpSystem/HelpEplat.aspx?CID=74&amp;conid=406" target="_blank" title="关于2017年寒假活动期间，学生帐号升级归档、教师授课的通知">关于2017年寒假活动期间，学生帐号升级归档、教师授课的通知</a>
+            </li>
+            <li class="">   
+                <a href="/HelpSystem/HelpEplat.aspx?CID=74&amp;conid=404" target="_blank" title="关于2016年“119”消防安全专题结束通知">关于2016年“119”消防安全专题结束通知</a>
+            </li>
+            <li class="li-last">   
+                <a href="/HelpSystem/HelpEplat.aspx?CID=74&amp;conid=405" target="_blank" title="关于校车安全专题数据固化的通知">关于校车安全专题数据固化的通知</a>
+            </li>
+    </ul>
+
+
+                    </ul>
+                </div>
+            </div>
+            <div class="col-boxa">
+                <div class="head-pic">
+                    <span class="active">常见问题<label id="pp"></label></span><a href="/HelpSystem/HelpEplat.aspx" class="more-link" target="_blank">更多</a></div>
+                <!--常见问题-->
+                <div class="news-list" id="Question">
+                    <script>
+                        var r = parseInt(new Date().getTime() / 3600000);
+                        var src = "http://" + CacheAPIUrl + "/SiteIndx/QuestionOrNotice.html?typeName=学校帮助&r=" + r + "&Region=-1";
+                        document.write('<script type="text/javascript" src="' + src + '" ><\/script>');
+                    </script><script type="text/javascript" src="http://file.safetree.com.cn/webapi.henan/SiteIndx/QuestionOrNotice.html?typeName=学校帮助&amp;r=414178&amp;Region=-1"></script>
+    <ul>
+            <li class="">   
+                <a href="/HelpSystem/HelpEplat.aspx?CID=116&amp;conid=376" target="_blank" title="班主任管理学生帐号">班主任管理学生帐号</a>
+            </li>
+            <li class="">   
+                <a href="/HelpSystem/HelpEplat.aspx?CID=116&amp;conid=375" target="_blank" title="查看、下载教师和学生帐号">查看、下载教师和学生帐号</a>
+            </li>
+            <li class="">   
+                <a href="/HelpSystem/HelpEplat.aspx?CID=116&amp;conid=374" target="_blank" title="导入学生帐号">导入学生帐号</a>
+            </li>
+            <li class="">   
+                <a href="/HelpSystem/HelpEplat.aspx?CID=116&amp;conid=373" target="_blank" title="导入班主任教师帐号">导入班主任教师帐号</a>
+            </li>
+            <li class="li-last">   
+                <a href="/HelpSystem/HelpEplat.aspx?CID=116&amp;conid=372" target="_blank" title="整理班主任和学生基础数据">整理班主任和学生基础数据</a>
+            </li>
+    </ul>
+
+
+                </div>
+            </div>
+            <div class="index-cdq" style="display: none;" id="ChengDuRank">
+                <div class="head-pic pic-red">
+                    成都市中心城区安全教育分值最低的十所学校（动态排名）</div>
+                <ul id="ShiZhiShuRankStr">
+                </ul>
+            </div>
+        </div>
+        <!--sidebar-left end-->
+        <div class="sidebar-right">
+            <div class="head-pic pic-green">
+                <span class="active">意见反馈</span><a href="http://www.safetree.com.cn/MessageBoard/Messageboard.aspx" class="more-link" target="_blank">我要留言</a></div>
+            <!--留言-->
+            <div class="message-ul" style="height: 220px; margin-bottom: 20px;" id="UserMsg">
+                <script>
+                    var r = parseInt(new Date().getTime() / 3600000); //一小时缓存
+                    var src = "http://file.safetree.com.cn/angel/push/UserMsg.html?topNum=500&&r=" + r + "&host=" + document.domain;
+                    document.write('<script type="text/javascript" src="' + src + '" ><\/script>');
+                </script><script type="text/javascript" src="http://file.safetree.com.cn/angel/push/UserMsg.html?topNum=500&amp;&amp;r=414178&amp;host=zhengzhou.safetree.com.cn"></script><ul>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <li>
+            <strong>郑州市-陈*九：</strong>天然气管道定期检查是否漏气,使用完燃气要及时关闭燃气灶开关和关闭总阀门。
+准备更换使用多年的电器。
+
+        </li>
+        <li>
+            <strong>郑州市-王*雅：</strong>
+1、应先熟悉所住楼层的各逃生路线，并随时做好迅速撤离的准备。 2、平日应与家人预先模拟火灾预案，设想逃生途径及到约定会合地点。 3、应熟悉所住楼层内的消防设备及其使用方法。 
+        </li>
+        <li>
+            <strong>郑州市-周*甜：</strong>厨房燃气一定要用完关好，卧室床头柜不能再放烟灰缸，打火机一定不能放在阳光直射的地方。
+        </li>
+        <li>
+            <strong>郑州市-姚*杰：</strong>使用完燃气不仅关闭燃气灶开关，还要关闭总阀门 ；煤气快用完时，不晃动煤气罐后继续使用，让专业人员来处理
+        </li>
+        <li>
+            <strong>郑州市-赵*芳：</strong>厨房灶台前不能放易燃物，不要躺在床上吸烟，蚊香点燃后不要放在床边，客厅插板上不差太多大功率用电器，能易燃的东西不要让孩子看到以防万一易燃，请家长看好自己的孩子。
+        </li>
+        <li>
+            <strong>郑州市-兰*佩：</strong>燃气灶软管应及时更换。使用完燃气仅关闭燃气灶开关，未关闭总阀门，对此应关闭阀门
+        </li>
+        <li>
+            <strong>郑州市-宋*月：</strong>及时更换燃气灶软管，厨房保证干净整洁，不在卧室，阳台放易燃物品。把打火机等危险物品放在儿童不易接触的地方等
+        </li>
+        <li>
+            <strong>郑州市-赵*辰：</strong>1、使用完燃气先关闭燃气灶阀门，再关闭总阀门，并在厨房墙壁上粘贴一个小的提示标识，防止遗忘。2、提醒家长不要在卧室吸烟，一定将烟头熄灭再丢弃，并将打火机和烟灰缸收起来，不再卧室出现。
+        </li>
+        <li>
+            <strong>郑州市-李*钰：</strong>厨房：使用完燃气要关闭燃气灶开关及总阀门开关。客厅：电视机，空调等电器不用时要拔掉电源。卧室：电热毯不用时要关闭开关和电源。阳台：纸箱，报纸易燃物品要及时清理。
+        </li>
+        <li>
+            <strong>郑州市-张*伊：</strong>家里煤气用过要记得关闭，勤检查线路，出门记得关闭电源
+        </li>
+        <li>
+            <strong>郑州市-陈*霄：</strong>1、应先熟悉所住楼层的各逃生路线，并随时做好迅速撤离的准备。 2、平日应与家人预先模拟火灾预案，设想逃生途径及到约定会合地点。 3、应熟悉所住楼层内的消防设备及其使用方法。 
+        </li>
+        <li>
+            <strong>郑州市-左*熙：</strong>家长应该给孩子多看一些关于安全防护措施之类的课外读物让孩子知道安全的重要性，多给孩子讲一些讲一讲安全事故的发生，让孩子懂得自我保护。
+        </li>
+        <li>
+            <strong>郑州市-杨*萌：</strong>消防知识，很重要我们要让孩子学会自我保护能力。远离火灾，不要玩火，不要把依然品放在离电源近的地方
+        </li>
+        <li>
+            <strong>郑州市-张*淼：</strong>1、天然气定期检查。    2、用完天然气要关闭阀门。     3、打火机远离床边。
+4、电插板上不能插太多插头。    5、打火机要放在安全的地方，不能放在阳光照射处。
+        </li>
+        <li>
+            <strong>郑州市-刘*珂：</strong>清理燃气罐附近的杂物，并且提醒大人把烟头熄灭后扔进垃圾桶。阳台上做好检查清理废旧纸箱，给父母普及安全知识。
+        </li>
+        <li>
+            <strong>郑州市-张*辉：</strong>1、关闭总阀门，2、离床及易燃物远一点，3、及时更换新的，4、放到烟灰缸息灭，
+        </li>
+        <li>
+            <strong>郑州市-李*航：</strong>及时更换老换软管。燃气使用时必须有人看管。抽油烟机定期清理。天然气管道定期检查。使用完天然气关总阀准备多个大功率的拖线板。电话旁准备好紧急联系电话卡。老化的电器停止使用更换。阳台上不燃放烟花。
+        </li>
+        <li>
+            <strong>郑州市-万*沛：</strong>冬季空调、取暖器、电磁炉、电热毯等大功率电器使用频繁，很容易造成电气线路超负荷或长时间使用电器过热引发火灾，加上一些家用电器质量不过关或者使用方法不当，也会引起火灾。冬季烤火取暖不要使用汽油、煤油、酒
+        </li>
+        <li>
+            <strong>郑州市-侯*宸：</strong>在家庭中不要放易燃易爆的物品，电路电器经常维修，不能私拉乱接电线，远离火源，家中常备灭火器，杜绝一切可能发生的隐患。
+        </li>
+        <li>
+            <strong>郑州市-李*：</strong>及早发现及 时处理
+        </li>
+        <li>
+            <strong>郑州市-杨*涵：</strong>我们应该多学习安全知识
+        </li>
+        <li>
+            <strong>郑州市-陈*明：</strong>加强排查，杜绝隐患
+        </li>
+        <li>
+            <strong>郑州市-郭*文：</strong>夏天不要玩可燃物
+        </li>
+        <li>
+            <strong>郑州市-吴*仪：</strong>安全第一，多学习安全知识，要注意防范，解除安全隐患
+        </li>
+        <li>
+            <strong>郑州市-王*文：</strong>星期天和家人彻底排查，消除安全隐患！
+        </li>
+        <li>
+            <strong>郑州市-张*意：</strong>日常生活中多注意安全隐患，加强安全意识！！防患于未然！
+        </li>
+        <li>
+            <strong>郑州市-李*柯：</strong>严格按照国家的安全要求来使用电器，把所有的不安全的，危险品，按照国家规定来储存，严谨孩子玩火。
+        </li>
+        <li>
+            <strong>郑州市-黄*康：</strong>定期检查清洗油烟机。杜绝大人躺床上沙发上抽烟，打火机烟灰缸放置安全地方。增加插线板分开电哭用电。清理阳台易燃物品。
+        </li>
+        <li>
+            <strong>郑州市-武*卓：</strong>定期清理抽烟机，尽量劝导家人不在卧室吸烟，把阳台物品定时清理
+        </li>
+        <li>
+            <strong>郑州市-李*：</strong>自己不玩火，不乱摸插线板，安全用电，告诉家长不用老化的电线。
+        </li>
+        <li>
+            <strong>郑州市-李*辉：</strong>1、应先熟悉所住楼层的各逃生路线，并随时做好迅速撤离的准备。2、平日应与家人预先模拟火灾预案，设想逃生途径及到约定会合地点。3、应熟悉所住楼层内的消防设备及其使用方法。
+        </li>
+        <li>
+            <strong>郑州市-晋*然：</strong>自己不乱用电和燃气，告诉家长不用电时要及时关掉。
+        </li>
+        <li>
+            <strong>郑州市-常*阳：</strong>1、今后要经常定期检查天然气管道是否漏气；2、要注意不能在床边点蚊香；3、不能随地放打火机；4防盗窗要留紧急逃生门。
+        </li>
+        <li>
+            <strong>郑州市-路*得：</strong>定时检查家里的电线老化情况，在家里准备一个灭火器
+        </li>
+        <li>
+            <strong>郑州市-侯*彤：</strong>告诉家长用完燃气，电都要关掉总开关，不私自乱拉电线，自己不玩打火机，不随意乱摸带电的东西。
+        </li>
+        <li>
+            <strong>郑州市-王*阳：</strong>以后做完饭要及时关闭燃气总阀，点燃的蚊香应远离易燃物品，打火机等危险品应放到儿童拿不到的地方
+        </li>
+        <li>
+            <strong>郑州市-张*博：</strong>1、定期检查厨房煤气，屋子里的电路等一些会出现安全隐患的地方。
+2、儿童禁止玩火和一些不安全的物品。
+        </li>
+        <li>
+            <strong>郑州市-李*洋：</strong>对于老化的然气管立即换掉，卧室不用电热毯。院子里不堆放废弃物。易燃易爆物品不乱放。
+        </li>
+        <li>
+            <strong>郑州市-周*祥：</strong>1.煤气罐用完不能晃动后使用。
+2.电线老旧时要及时换。
+        </li>
+        <li>
+            <strong>郑州市-冯*瑶：</strong>天然气一定要关总阀门，孩子不能进入厨房玩耍，大功率电器不能用同一件插板，以防发生漏电发生火灾
+        </li>
+        <li>
+            <strong>郑州市-杨*瑞：</strong>1、首先清理阳台，避免可燃物出现。2、打火机放置在儿童接触不到的地方。3、正确使用燃气
+        </li>
+        <li>
+            <strong>郑州市-李*源：</strong>1.清除煤气罐旁的杂物。2.电热毯不用时及时断电。3.拔出电线插板上的不用的电器的插头。4.清除阳台上的易燃杂物。
+        </li>
+        <li>
+            <strong>郑州市-王*洁：</strong>燃气用完要关掉总阀门，小孩不能随意进入厨房玩弄，阳台上不能堆放杂物，打火机不能放在阳光照射处，插板上不能插太多插头，插板上的线破皮得及时更换，电器老化得及时更换，防盗窗得留逃生门，阳台上不能放已然物品
+        </li>
+        <li>
+            <strong>郑州市-张*苑：</strong>1.清除煤气罐旁的杂物。2.电热毯不用时及时断电。3.拔出电线插板上的不用的电器的插头。4.清除阳台上的易燃杂物。
+        </li>
+        <li>
+            <strong>郑州市-万*青：</strong>厨房软气管经常检查并换新的，燃气管定期检查是否漏气，燃气燃烧有人看管，人走气关，客厅，阳台易爆易燃东西经常检查不放，安全步梯保持畅通。
+        </li>
+        <li>
+            <strong>郑州市-谢*琳：</strong>1.知道消防常识
+2.家里放有消防工具
+        </li>
+        <li>
+            <strong>郑州市-李*非：</strong>1、天然气管道定期请专业人员检查
+2、一个电源插板上不插过多电器，较大功率电器分开插在不同电源板上
+
+        </li>
+        <li>
+            <strong>郑州市-常*悦：</strong>父母不在家，自己不随意摆弄厨房设备。大人不要在床上吸烟。不要在插线板上插满插头。不要在阳台堆积杂物。
+        </li>
+        <li>
+            <strong>郑州市-潘*元：</strong>1、及时清理抽油烟机；以后做到定期清理
+2、准备改造放到窗，安装紧急逃生门
+        </li>
+        <li>
+            <strong>郑州市-蔡*彤：</strong>1、收集散放打火机，放置固定高处。
+2、防盗窗尽快开活动开启窗
+
+        </li>
+        <li>
+            <strong>郑州市-王*茜：</strong>1.家中电线有无老化.破损现象   2.炉火与燃气炉灶是否同时使用
+        </li>
+        <li>
+            <strong>郑州市-丁*：</strong>使用电器或煤气时要有人看管；不要在电器或煤气旁放易燃物；要是有逃生窗；把打火机放在小孩玩不到的地方；点蚊香时要把蚊香放安全处；按时检查电器；不在阳台堆放杂物。
+        </li>
+        <li>
+            <strong>郑州市-宋*琳：</strong>湿手不要去碰插座导致中电，阳台上不要放纸箱酒精炮竹等危险物。厨房里的天然气用完后要关掉阀门儿。看电视时把电源插座拔掉。为了我们的安全
+        </li>
+        <li>
+            <strong>郑州市-学*：</strong>1.厨房定期检查燃气软管并饭后及时关闭总阀，定期清理抽油烟机。
+2卧室不使用电器时及时关闭，使用取暖设备时严格按照使用说明操作，火源应     远离易燃物品。
+3客厅插座使用电器时应分流使用。
+        </li>
+        <li>
+            <strong>郑州市-申*卉：</strong>厨房燃气灶旁易燃的物品放置储藏柜内，油壶外包装塑质应离灶火远，避免火大热量高烧坏油桶引起火灾。客厅插座应及时关闭，不同时多个使用，打火机不放置电视电源插座旁，阳台不堆积杂物纸箱、酒精等易燃物，及时清理
+        </li>
+        <li>
+            <strong>郑州市-吴*慧：</strong>使用完煤气灶以后，查看是否关阀门 ，阳台上不能堆满纸箱报纸等可燃物插线板多谢不能出现破皮老化的现象要定期检查同时也要十分注意点燃的蚊香不能放在床边
+        </li>
+        <li>
+            <strong>郑州市-杨*涵：</strong>以后加强安全意识.不能再床上吸烟.及时关闭 电闸开关.把火机收好告诉孩子不能玩火.不能把安全隐患发生在家里每个角落。
+        </li>
+        <li>
+            <strong>郑州市-李*：</strong>厨房燃气管道及阀门定期检查及维护，厨房保持每天通风，室内一次不要使用多个大功率电器，不在室内抽烟，不在明火及电器周围放置易燃易爆物品，每天打扫室内卫生，不在楼道及消防通道堆放垃圾和杂物，及时排查消除安
+        </li>
+        <li>
+            <strong>郑州市-马*：</strong>一，厨房：打火机、火柴不能随意放在灶台上，灶火旁温度过高因起火灾。二，卧室：大人不能躺在床上抽烟，打火机，烟灰缸也不能放在床边。三，客厅，烟头应该彻底熄灭放在烟灰缸中。四，庭院烟头应彻底熄灭扔垃圾
+        </li>
+        <li>
+            <strong>郑州市-何*霏：</strong>以后不再晃动煤气罐，长时间出门及时拔掉插板上的插头，固定电话旁边放上紧急电话联系卡。
+        </li>
+        <li>
+            <strong>郑州市-许*晨：</strong>从生活中的小细节做起，杜绝隐患，防止火灾发生。
+        </li>
+        <li>
+            <strong>郑州市-王*一：</strong>使用完燃气，关掉总阀门。
+不使用的时候打掉电源插头
+        </li>
+        <li>
+            <strong>郑州市-宋*：</strong>及时请专业人员进行更换，切不可擅自处理，以免发生意想不到的安全问题；打火机应放到儿童拿不到的地方，且不能放到阳光照射不到的地方
+        </li>
+        <li>
+            <strong>郑州市-李*怡：</strong>自查家庭厨房客厅阳台等地方火灾安全隐患。
+        </li>
+        <li>
+            <strong>郑州市-王*一：</strong>以后不让儿童任意的进出厨房，家里的插线板不用的时候要及时关掉
+        </li>
+        <li>
+            <strong>郑州市-谷*倩：</strong>蚊香远离床边，可燃物及时清理
+        </li>
+        <li>
+            <strong>郑州市-赵*铭：</strong>平时多学习消防知识，了解消防隐患，家中及时清理火灾隐患点：阳台不存放易燃东西，天然气及时关闭阀门，及时清理油烟机，不乱使用老化插座电线等
+        </li>
+        <li>
+            <strong>郑州市-何*鑫：</strong>1、用完燃气灶后把总阀门也关掉，定期清理油烟机。
+2、阳台增加逃生出口。
+        </li>
+        <li>
+            <strong>郑州市-高*深：</strong>家人和我共同努力，健康快乐生活
+        </li>
+        <li>
+            <strong>郑州市-周*然：</strong>安全用电
+        </li>
+        <li>
+            <strong>郑州市-徐*然：</strong>拿走燃气瓶旁边的杂物
+拿走床边的烟灰缸
+阳台阳光照射的地方不能放打火机
+客厅的插座要多装一些
+        </li>
+        <li>
+            <strong>郑州市-孙*兰：</strong>安全
+        </li>
+        <li>
+            <strong>郑州市-刘*凡：</strong>及时检查
+        </li>
+        <li>
+            <strong>郑州市-李*晨：</strong>不把太多的电器电源都插到一个插座上，电源要分开用以确保用电的安全
+        </li>
+        <li>
+            <strong>郑州市-平*超：</strong>把不用的物品放到别处
+        </li>
+        <li>
+            <strong>郑州市-张*：</strong>厨房 客厅 卧室定期检查 消除安全隐患
+        </li>
+        <li>
+            <strong>郑州市-高*帆：</strong>定期检查天然气否漏气，阳台不随意摆放杂物。定期清理抽油烟机，打火机不放在儿童较容易拿到的地方，告知不能玩打火机，告知火灾注意事项等。
+厨房的燃气，以后用完要关总开关重新放置在安全位置
+        </li>
+        <li>
+            <strong>郑州市-王*睿：</strong>提高防范意识，
+        </li>
+        <li>
+            <strong>郑州市-张*创：</strong>注意安全
+        </li>
+        <li>
+            <strong>郑州市-李*衡：</strong>具体问题具体分析
+        </li>
+        <li>
+            <strong>郑州市-田*宁：</strong>微波炉和烤箱电源分开放，各种大功率电器有专用插座，点燃的蚊香离开床边。
+        </li>
+        <li>
+            <strong>郑州市-邬*菊：</strong>多看书
+        </li>
+        <li>
+            <strong>郑州市-徐*：</strong>经常开窗通风 出门时关好电源
+        </li>
+        <li>
+            <strong>郑州市-牛*龙：</strong>以后打火机放置在安全位置，燃气每次使用完要及时关闭
+        </li><li>
+            <strong>郑州市-王*东：</strong>要遵守交通规则，安全第一！
+        </li><li>
+            <strong>郑州市-匿名：</strong>交通安全最重要
+        </li><li>
+            <strong>郑州市-刘*襄：</strong>安全交通
+        </li><li>
+            <strong>郑州市-匿名：</strong>很受教育，交通安全教育平台栏目真好！
+        </li><li>
+            <strong>郑州市-赵*：</strong>消除不安全的隐患，把东西归位，及时更换煤气软管，排除隐患，确保安全。
+        </li><li>
+            <strong>郑州市-王*涛：</strong>及时检查燃气管道，发现有破例及时更换，点燃的蚊香要放在金属架上客厅的插板不要插过多的电器阳台上的防盗网要留有逃生口
+        </li><li>
+            <strong>郑州市-学*：</strong>1、检查厨房，更换气管。
+2、检查卧室，易燃物品禁止摆放。
+3、检查客厅，不随意放打火机。
+4、检查阳台，清理易燃杂物。
+        </li><li>
+            <strong>郑州市-李*洋：</strong>依次处理，先告知孩子不能往厨房去，不安全，卧室电热毯及时关闭，客厅及时排查安全隐患，阳台要设计紧急逃生门
+        </li><li>
+            <strong>郑州市-张*琼：</strong>1、已将煤气罐旁边的杂物清除，以后不在煤气罐旁边堆放杂物。
+2、电热氮不用时及时拔掉。
+3、回来爸爸有空让他设一个逃生门。
+        </li><li>
+            <strong>郑州市-郭*格：</strong>依次处理，先告知孩子不能往厨房去，不安全，卧室电热毯及时关闭，客厅及时排查安全隐患，阳台要设计紧急逃生门
+        </li><li>
+            <strong>郑州市-张*润：</strong>1.不能摇晃燃气罐，不安全，2.不用时候要拔掉电源。3.插板上不能同时插那么多电气，不安全，不用及时拔掉。
+        </li><li>
+            <strong>郑州市-刘*如：</strong>用完天然气首先要检查一下燃气灶是否关闭，如果没有过的话先把燃气灶关闭，然后再关掉燃气的总阀门。电源不用随时拔掉，防盗窗要留紧急逃生口。吸完烟一定要确认烟头灭了以后再往垃圾桶里丢。
+        </li><li>
+            <strong>郑州市-管*含：</strong>按时清理油烟机，减少油垢，降低起火风险。
+        </li><li>
+            <strong>郑州市-陈*豪：</strong>清理燃气管的杂物，阳台上的杂物
+        </li><li>
+            <strong>郑州市-王*童：</strong>一、定期检查燃气管道是否漏气
+二、杜绝家长在床上抽烟
+三、及时清理阳台杂物
+
+        </li><li>
+            <strong>郑州市-卢*辉：</strong>煤气快用完时，不私自晃动煤气罐后继续使用，把它交给专业人员处理。
+        </li>
+</ul>
+<script type="text/javascript">
+    $(".message-ul").each(function () {
+        var _this = this;
+        setInterval(function () {
+            var b1 = $(_this).find('li:first');
+            var b2 = $(_this).find('li:last');
+            $(b1).insertAfter($(b2));
+        }, 3000);
+    });
+</script>
+
+            </div>
+        </div>
+        <!--sidebar-right end-->
+        <div class="ul_ziyuan" style="display: none">
+            <div class="head-pic">
+                <span class="active">共享资源</span><!--<a href="javascript:;" class="more-link" target="_blank">更多</a>--></div>
+            <ul id="data">
+                <!--  <script type="text/javascript">
+                    var url = "http://www.safetree.com.cn/Special/ActivityAndSociety.aspx" + "?jsoncallback=?";
+                    $.getJSON(url,
+                            {
+                                r: Math.random(),
+                                topNum: 5
+                            }, function (Data) {
+                                if (Data != null) {
+                                    var html = '';
+                                    for (var i = 0; i < Data.length; i++) {
+                                        var sr = Data[i];
+                                        if (sr != null) {
+                                            var spicurl = "";
+                                            if (sr.ImgUrl == "" || sr.ImgUrl == null) {
+                                                spicurl = "http://www.safetree.com.cn/Content/styles/images/global/mr.jpg";
+                                            } else {
+                                                spicurl = sr.ImgUrl;
+                                            }
+                                            var url = 'http://www.safetree.com.cn/SafeRepository/_SafetyVieoPlay.aspx?contentID=' + sr.ContentID;
+                                            html += '<li><a href="' + url + '"  target="_blank">';
+                                            html += '<img style="width: 182px;height:122px;" src="' + spicurl + '" title="' + sr.VideoTimeLength + '"></a><h4>';
+                                            html += '<a href="' + url + '"  target="_blank" title="' + sr.VideoTimeLength + '">';
+                                            html += sr.VideoTimeLength;
+                                            html += ' </a></h4></li>';
+                                        }
+                                    }
+                                    $("#data").html(html);
+                                }
+                            });
+                </script>-->
+            </ul>
+        </div>
+    </div>
+    <script src="js/Footer.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var query = GetQueryString("Key");
+        LoadFooter(false, CacheAPIUrl);
+    </script><script type="text/javascript" src="http://file.safetree.com.cn/webapi.henan/SiteIndx/Footer.html?r=23&amp;host=http://zhengzhou.safetree.com.cn"></script><div class="footer-wp" style="font-size:14px;">
+    <div style="top: 340px; right: 0; width: 35px; height: 166px; position: fixed; z-index: 999;
+        _top: expression(eval(document.documentElement.scrollTop+340));">
+        <a href="../HelpSystem/HelpEplat.aspx">
+            <img src="http://css.safetree.com.cn/shengpingtai/Styles/images/global/icon-help.png">
+        </a>
+    </div>
+    <div class="container">
+        <p>
+                <strong>主办：郑州市教育局&nbsp;&nbsp;&nbsp;&nbsp;学术支持：中国教育学会&nbsp;&nbsp;&nbsp;&nbsp;技术支持：中央电化教育馆</strong><br>
+            信息服务业务经营许可证：京ICP备12041388号<br>
+            咨询电话：400-711-1010（周一到周五 9:00-17:30）邮箱：csesafe@moe.edu.cn
+        </p>
+    </div>
+</div>
+<div style="width:300px;margin:0 auto; padding:20px 0;">
+    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11010802021143" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
+        <img src="http://file.safetree.com.cn/icp/beian.png" style="float:left;">
+        <p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 5px; color:#939393;">京公网安备 11010802021143号</p>
+    </a>
+</div>
+
+
+    </form>
+    <!--cnzz统计-->
+    <div style="display: none;">
+        <script type="text/javascript">            var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://"); document.write(unescape("%3Cspan id='cnzz_stat_icon_2583451'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s6.cnzz.com/stat.php%3Fid%3D2583451' type='text/javascript'%3E%3C/script%3E"));</script><span id="cnzz_stat_icon_2583451"><a href="http://www.cnzz.com/stat/website.php?web_id=2583451" target="_blank" title="站长统计">站长统计</a></span><script src=" http://s6.cnzz.com/stat.php?id=2583451" type="text/javascript"></script><script src="http://c.cnzz.com/core.php?web_id=2583451&amp;t=z" charset="utf-8" type="text/javascript"></script>
+    </div>
+
+
+<script>
+    var query = GetQueryString("Key");
+
+    //加载站点基本信息
+    LoadWebInfo(query, function (Res) {
+        if (Res && Res != "") {
+            var PrvID = Res.PrvID;
+            var CityID = Res.CityID;
+            var CountyID = Res.CountyID;
+            var EplatformID = Res.EplatformID;
+            var EplatName = Res.EplatName;
+            var WebType = Res.WebType;
+            var SchoolNum = Res.SchoolNum;
+            var TeacherNum = Res.TeacherNum;
+            var StudentNum = Res.StudentNum;
+            document.title = EplatName + "_安全教育平台"
+            $("#WebName").html(EplatName + "学校安全教育平台");
+            var ShiYanQuName = EplatformID == 20104 ? "创建“国家级学校安全教育示范区”" : "中国教育学会安全教育实验区";
+            $("#ShiYanQuName").html(ShiYanQuName);
+            $("#WebJoinInfo").html("已有<span style='color:red;'>" + SchoolNum + "</span>所学校开展安全课程、<span style='color:red;'>" + TeacherNum + "</span>名教师参与授课、<span style='color:red;'>" + StudentNum + "</span>名学生参与学习");
+            if (PrvID == 3) {
+                $(".hebei").show();
+                $(".header-rt p").css({ "height": "34px", "margin-top": "16px" });
+            }
+
+            var url = window.location.host.toLowerCase();
+            //            if (url != "hangzhou.safetree.com.cn" && PrvID != 12) {
+            //                $("#left-wx").show();
+            //                $(".login_div .wxa").show();
+            //                $("#FP").show();
+            //            }
+
+            //加载站点底部
+            //LoadFooter(WebType, PrvID, CityID, EplatName);
+
+            //登录框历史登录用户
+            var InputRecord = getCookie("RecordLoginInput_" + EplatformID) != null ? getCookie("RecordLoginInput_" + EplatformID).replace(/%7C/g, "|") : "";
+
+            $(document).bind("click", function (e) {
+                try {
+                    var target = $(e.target);
+                    if (target.closest(".login_div").length == 0 && target.context.className != "liclosebtn") {
+                        $(".user_nameul").hide();
+                    }
+                } catch (e) { }
+            })
+            $(".user_nameul li a[name='sel']").live("click", function () {
+                var userItem = $(this).text();
+                $("#UName").val(userItem);
+                $(".user_nameul").hide();
+                $("#PassWord").focus();
+            })
+            $(".user_nameul li .liclosebtn").live("click", function () {
+                var thisVal = $(this).prev().text();
+                var userAry = InputRecord.split('|');
+                var aryIndex = -1;
+                for (var i = 0, j = userAry.length; i < j; i++) {
+                    if (userAry[i] == thisVal)
+                        aryIndex = i;
+                }
+                if (aryIndex > -1) {
+                    userAry.splice(aryIndex, 1);
+                    InputRecord = userAry.join('|');
+                    setCookie('RecordLoginInput_' + EplatformID, InputRecord, 365);
+
+                    if ($(".user_nameul li").length > 1) {
+                        $(this).parent().remove();
+                    }
+                    else {
+                        $(".user_nameul").remove();
+                    }
+                }
+            })
+            $("#UName").click(function () {
+                if ($(".user_nameul").is(":hidden")) {
+                    if (InputRecord != "") {
+                        var userHtml = '';
+                        var userAry = InputRecord.split('|');
+                        if (userAry != null && userAry.length > 0) {
+                            for (var i = 0, item; item = userAry[i++]; ) {
+                                userHtml += '<li><a name="sel" href="javascript:void(0)">' + item + '</a><a href="javascript:void(0)" class="liclosebtn">&times;</a></li>';
+                            }
+                            $(".user_nameul").html(userHtml);
+                            $(".user_nameul").show();
+                        }
+                    }
+                }
+                else {
+                    $(".user_nameul").hide();
+                }
+            })
+
+            $("#UName").keydown(function (e) {
+                if (e.keyCode == 9) {
+                    $(".user_nameul").hide();
+                }
+            });
+            //登录框历史登录用户
+
+
+            //绑定第三方登录的事件
+            $("#QQLogin").click(function () {
+                window.open(Res.QQLoginUrl, 'ThirdLogin', 'width=600,height=500,menubar=0,scrollbars=0, status=1,titlebar=0,toolbar=0,location=1');
+                return false;
+            })
+            $("#SinaLogin").click(function () {
+                window.open(Res.SinaLoginUrl, 'ThirdLogin', 'width=600,height=500,menubar=0,scrollbars=0, status=1,titlebar=0,toolbar=0,location=1');
+                return false;
+            })
+
+        }
+        if (EplatformID == 20004) {
+            function class_dlbox() {
+                $(".dlbox").click(function () {
+                    if ($(this).attr("class") == "dlbox") {
+                        $(".dlboxon").attr("class", "dlbox").find(".dlxq").hide();
+                        $(".dlbox").find("dl").css("border-bottom", "#ccc 1px dotted");
+                        $(this).attr("class", "dlboxon").find(".dlxq").show();
+                        $(this).find("dl").css("border-bottom", "none");
+                    } else {
+                        $(this).attr("class", "dlbox").find(".dlxq").hide();
+                        $(this).find("dl").css("border-bottom", "#ccc 1px dotted");
+                    }
+                });
+            }
+
+            $('#ChengDuRank').show();
+            //加载动态排名
+            LoadShiZhiShuRank("#ShiZhiShuRankStr", function () {
+                class_dlbox();
+                $("#UserMsg").css("height", "780");
+            }, 1);
+        }
+    })
+
+    //加载平台公告 和 常见问题
+    //        LoadNoticeOrQuestion("[name='setpic_2'],[name='setpic_22']", "#Question", "#setpic_1", function () {
+    //            if ($("#setpic_1").length > 0) {
+    //                $('#setpic1').click();
+    //                $('[name="showxzgg"]').show();
+    //                $('[name="noshowxzgg"]').hide();
+    //            }
+    //        });
+
+    if ($("#setpic_1 li").length > 0) {
+        setnav('setpic', 1, 2);
+        $("[name='more']").attr("href", "/HelpSystem/AdmAnnounce.aspx");
+    }
+    else {
+        $("[name='more']").attr("href", "/HelpSystem/HelpEplat.aspx?CID=74");
+    }
+
+
+
+    $(".message-ul").each(function () {
+        var _this = this;
+        var t2 = 0;
+        t2 = setInterval(function () {
+            var b1 = $(_this).find('li:first');
+            var b2 = $(_this).find('li:last');
+            $(b1).insertAfter($(b2));
+        }, 3000);
+    });
+    $(".newyear-body .login_div .inputa, .newyear-body .login_div .inputb").mouseover(function () {
+        $(this).css({ "border-color": "#ca0000" });
+    }).mouseout(function () {
+        $(this).css({ "border-color": "#ccc" });
+    });
+
+    var ImgTitle = $(".wechat-box .wx-bd img").attr("title");
+    $("#wxname").html(ImgTitle);
+    $("#wxname_tc").html(ImgTitle);
+
+</script>
+</body></html>

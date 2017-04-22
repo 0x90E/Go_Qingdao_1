@@ -1,0 +1,375 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
+  <title>极客DIY：使用树莓派搭建Tor节点，实现科学上网 - 吾爱漏洞</title> 
+  <meta name="keywords" content="漏洞，白帽黑客，黑帽SEO ，渗透测试，逆向破解，代码审计，黑客网站，黑客博客，黑客教程，黑客软件，黑客工具，黑客技术，编程入门，电子书下载，营销软件，营销技巧，办公软件，qq技术" /> 
+  <meta name="description" content="" /> 
+  <meta name="generator" content="cms" /> 
+  <link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.52bug.cn/xmlrpc.php?rsd" /> 
+  <link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.52bug.cn/wlwmanifest.xml" /> 
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.52bug.cn/rss.php" /> 
+  <link href="http://www.52bug.cn/content/templates/black/main.css" rel="stylesheet" type="text/css" /> 
+  <link href="http://www.52bug.cn/caonima/editor/plugins/code/prettify.css" rel="stylesheet" type="text/css" /> 
+  <script src="http://www.52bug.cn/caonima/editor/plugins/code/prettify.js" type="text/javascript"></script> 
+  <script src="http://www.52bug.cn/include/lib/js/common_tpl.js" type="text/javascript"></script> 
+  <script src="http://libs.baidu.com/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> 
+  <!--[if IE 6]>
+
+<script src="http://www.52bug.cn/content/templates/black/iefix.js" type="text/javascript"></script>
+
+<![endif]--> 
+ </head> 
+ <body> 
+  <div id="wrap"> 
+   <div id="header"> 
+    <div style="width:1270px;margin:0 auto;"> 
+     <!-- logo --> 
+     <div class="logo l"> 
+      <a href="http://www.52bug.cn/"><img src="http://www.52bug.cn/content/uploadfile/tpl_options//logo.png" /></a> 
+      <!-- <h3></h3> --> 
+     </div> 
+     <!-- 导航--> 
+     <div id="nav" class="nav l"> 
+      <ul class="bar"> 
+       <li class="item common"> <a href="http://www.52bug.cn/">首页</a> </li> 
+       <li class="item common"> <a href="http://www.52bug.cn/sort/hacktool">黑客工具</a> 
+        <ul class="sub-nav"> 
+         <li><a href="http://www.52bug.cn/sort/23">黑客技术</a></li> 
+        </ul> </li> 
+       <li class="item common"> <a href="http://www.52bug.cn/sort/it">编程入门</a> </li> 
+       <li class="item common"> <a href="http://www.52bug.cn/sort/pdf">电子书下载</a> 
+        <ul class="sub-nav"> 
+         <li><a href="http://www.52bug.cn/sort/19">编程系列</a></li>
+         <li><a href="http://www.52bug.cn/sort/20">逆向系列</a></li>
+         <li><a href="http://www.52bug.cn/sort/21">渗透系列</a></li>
+         <li><a href="http://www.52bug.cn/sort/22">办公系列</a></li> 
+        </ul> </li> 
+       <li class="item common"> <a href="http://www.52bug.cn/sort/seo">营销软件</a> 
+        <ul class="sub-nav"> 
+         <li><a href="http://www.52bug.cn/sort/24">营销技巧</a></li> 
+        </ul> </li> 
+       <li class="item common"> <a href="http://www.52bug.cn/sort/office">办公软件</a> </li> 
+       <li class="item common"> <a href="http://www.52bug.cn/sort/qq">qq技术</a> </li> 
+      </ul> 
+     </div> 
+     <!-- 登录 --> 
+     <div class="login-area"> 
+      <ul> 
+       <li class="item common relative l rss"><a class="header-otherli" href="http://www.52bug.cn/rss.php"><i class="rss-icon"></i>订阅</a></li> 
+       <li class="item common l"><a class="header-otherli" rel="external nofollow" href="http://www.52bug.cn/daima/Scorpio">关于</a></li> 
+      </ul> 
+     </div> 
+     <!-- 搜索框--> 
+     <div class="search-area" id="search"> 
+      <form name="keyform" method="get" action="http://www.52bug.cn/index.php"> 
+       <input name="keyword" class="search" type="text" onblur="if(this.value==''){this.value='请输入搜索关键字';}" onfocus="this.value='';" value="请输入搜索关键字" /> 
+       <input type="submit" name="submit" value="搜索" class="submit button" /> 
+       <script type="text/javascript">
+
+          function searchblur(){
+
+            document.getElementById('search').className='search-area';
+
+          }
+
+          function searchfocus(){
+
+            document.getElementById('search').className='search-area focus';
+
+          }
+
+        </script> 
+      </form> 
+     </div> 
+    </div> 
+   </div> 
+   <div id="content"> 
+    <div id="contentleft"> 
+     <div class="post"> 
+      <div class="post-title"> 
+       <div class="post-author"> 
+        <img src="http://www.52bug.cn/content/templates/black/images/avatar.jpg" width="50" height="50" /> 
+       </div> 
+       <h2>极客DIY：使用树莓派搭建Tor节点，实现科学上网</h2> 
+       <p class="post-extra"> 作者：<a href="http://www.52bug.cn/author/1">admin</a> <em class="v-line">|</em> 时间：2017-2-22 13:24:00 <em class="v-line">|</em> 分类 : 黑客技术 &nbsp;&nbsp;<span></span> <span style="margin-right:10px" id="displayside">隐藏侧边栏</span><span id="ksside">展开侧边栏</span> </p> 
+       <script type="text/javascript">
+$(document).ready(function(){
+  $("#displayside").click(function(){
+  $("#sidebar").hide();
+	  $("#contentleft").css("width","100%");
+  });
+  $("#ksside").click(function(){
+  $("#sidebar").show();
+	  $("#contentleft").css("width","75%");
+  });
+});
+
+</script> 
+      </div> 
+      <div class="h-dotted-line"></div> 
+      <div class="post-content"> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;text-align:center;background-color:#FFFFFF;"> <span style="box-sizing:border-box;word-wrap:break-word;word-break:break-all;color:#00B050;"><span style="box-sizing:border-box;font-weight:700;"><span style="color:#069aef;"><span style="background-image:initial;background-attachment:initial;background-size:initial;background-origin:initial;background-clip:initial;background-position:0px 0px;background-repeat:initial;"><img data-original="http://image.3001.net/images/20160415/14606967512443.jpg!small" src="http://image.3001.net/images/20160415/14606967512443.jpg!small" alt="GeekFeastGiveaway" width="690" style="box-sizing:border-box;vertical-align:middle;max-width:100%;display:inline;" /></span></span></span></span> </p> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> <span style="box-sizing:border-box;word-wrap:break-word;word-break:break-all;color:#00B050;"><span style="box-sizing:border-box;font-weight:700;">我们的目标是：用树莓派实现-硬件Tor，通电自动连接Tor节点，所有流量全部强制通过Tor节点引出，到达目标地址。断线无限重连。不管是手机，还是平板，还是PC，只要连接到树莓派之后，全部实现全程Tor节点流量，实现科学上网。</span></span> </p> 
+       <h2 style="box-sizing:border-box;font-family:微软雅黑;line-height:1.1;color:#262626;margin:30px 0px 15px;font-size:18px;white-space:normal;background-color:#FFFFFF;"> 0&times;01：前期准备 </h2> 
+       <h3 style="box-sizing:border-box;font-family:微软雅黑;line-height:1.1;color:#0070C0;margin:20px 0px 15px;font-size:16px;white-space:normal;background-color:#FFFFFF;"> 1.1：准备硬件： </h3> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;text-align:center;background-color:#FFFFFF;"> <a href="http://image.3001.net/images/20160413/14605265279708.jpg" class="highslide-image" target="_blank" style="box-sizing:border-box;color:#069AEF;background:0px 0px;"><img alt="IMG_20160412_091607.jpg" data-original="http://image.3001.net/images/20160413/14605265279708.jpg!small" src="http://image.3001.net/images/20160413/14605265279708.jpg!small" width="690" style="box-sizing:border-box;vertical-align:middle;max-width:100%;display:inline;" /></a> </p> 
+       <h3 style="box-sizing:border-box;font-family:微软雅黑;line-height:1.1;color:#0070C0;margin:20px 0px 15px;font-size:16px;white-space:normal;background-color:#FFFFFF;"> 1.2：安装系统 </h3> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 下载kali-2.1.2-rpi.img，并且使用win32diskimager写入SD卡。 </p> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;text-align:center;background-color:#FFFFFF;"> <a href="http://image.3001.net/images/20160413/14605265462833.png" class="highslide-image" target="_blank" style="box-sizing:border-box;color:#069AEF;background:0px 0px;"><img alt="0x01.png" data-original="http://image.3001.net/images/20160413/14605265462833.png!small" src="http://image.3001.net/images/20160413/14605265462833.png!small" width="690" style="box-sizing:border-box;vertical-align:middle;max-width:100%;display:inline;" /></a> </p> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 将电源+电源线+树莓派B板+无线网卡+SD卡接好，通电，连接到家庭路由器上，此处为常用的姿势，不可能插错的，所以就不上图了。树莓派上四个灯都点亮了之后，进入家庭路由器网关，找到树莓派的IP地址，用Putty软件SSH连到树莓派上，kali的SSHD是默认开启的，账号是root，密码是toor。连接时会弹出是否接受SSH秘钥，选择“是”接受。连接成功的正确姿势是这样的： </p> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;text-align:center;background-color:#FFFFFF;"> <a href="http://image.3001.net/images/20160413/14605265868099.jpg" class="highslide-image" target="_blank" style="box-sizing:border-box;color:#069AEF;background:0px 0px;"><img alt="屏幕截图_041216_101249_AM.jpg" data-original="http://image.3001.net/images/20160413/14605265868099.jpg!small" src="http://image.3001.net/images/20160413/14605265868099.jpg!small" width="690" style="box-sizing:border-box;vertical-align:middle;max-width:100%;display:inline;" /></a> </p> 
+       <h3 style="box-sizing:border-box;font-family:微软雅黑;line-height:1.1;color:#0070C0;margin:20px 0px 15px;font-size:16px;white-space:normal;background-color:#FFFFFF;"> 1.3：添加源&amp;更新 </h3> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 如果不更新，后面很多软件会无法进行自动化安装。Vi打开/etc/apt/sources.list，在源里添加以下内容，然后进行更新，apt-get update &amp;&amp; apt-get upgrade。根据网速可能需要若干小时，因为要连欧洲服务器，所以速度很龟毛。完成后手动reboot重启。 </p> 
+       <pre style="box-sizing:border-box;overflow:auto;font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:13px;padding:9.5px;margin-top:0px;margin-bottom:15px;line-height:1.42857;color:#333333;word-break:break-all;word-wrap:break-word;border:1px solid #E4E4E4;border-radius:4px;background-color:#F3F3F3;"><code class="hljs nginx" style="box-sizing:border-box;font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:inherit;padding:0.5em;color:#444444;border-radius:0px;white-space:pre-wrap;display:block;overflow-x:auto;background-image:initial;background-attachment:initial;background-size:initial;background-origin:initial;background-clip:initial;background-position:initial;background-repeat:initial;"><span class="hljs-attribute" style="box-sizing:border-box;font-weight:bold;">deb</span> http://mirrors.ustc.edu.cn/kali kali main non-free contrib
+deb-src http://mirrors.ustc.edu.cn/kali kali main non-free contrib
+deb http://mirrors.ustc.edu.cn/kali-security kali/updates main contrib non-free
+deb http://mirrors.aliyun.com/kali kali main non-free contrib
+deb-src http://mirrors.aliyun.com/kali kali main non-free contrib
+deb http://mirrors.aliyun.com/kali-security kali/updates main contrib non-free </code></pre> 
+       <h3 style="box-sizing:border-box;font-family:微软雅黑;line-height:1.1;color:#0070C0;margin:20px 0px 15px;font-size:16px;white-space:normal;background-color:#FFFFFF;"> 1.4：可选项 </h3> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 恢复只有官方Wheezy镜像才自带的raspi-config功能：安装过原版系统的都知道，原版功能确实很便利。（下方文件可能有更新，可根据需求安装最新版） </p> 
+       <pre style="box-sizing:border-box;overflow:auto;font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:13px;padding:9.5px;margin-top:0px;margin-bottom:15px;line-height:1.42857;color:#333333;word-break:break-all;word-wrap:break-word;border:1px solid #E4E4E4;border-radius:4px;background-color:#F3F3F3;"><code class="hljs ruby" style="box-sizing:border-box;font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:inherit;padding:0.5em;color:#444444;border-radius:0px;white-space:pre-wrap;display:block;overflow-x:auto;background-image:initial;background-attachment:initial;background-size:initial;background-origin:initial;background-clip:initial;background-position:initial;background-repeat:initial;">wget <a href="http://archive.raspberrypi.org/debian/pool/main/r/raspi-config/raspi-config_20150131-1_all.deb" style="box-sizing:border-box;color:#666666;text-decoration:none;background:0px 0px;"><span class="hljs-symbol" style="box-sizing:border-box;color:#BC6060;">http:</span>/<span class="hljs-regexp" style="box-sizing:border-box;color:#BC6060;">/archive.raspberrypi.org/debian</span><span class="hljs-regexp" style="box-sizing:border-box;color:#BC6060;">/pool/main</span><span class="hljs-regexp" style="box-sizing:border-box;color:#BC6060;">/r/raspi</span>-config/raspi-config_20150131-<span class="hljs-number" style="box-sizing:border-box;color:#880000;">1_</span>all.deb</a> wget <a href="http://http.us.debian.org/debian/pool/main/t/triggerhappy/triggerhappy_0.3.4-2_armel.deb" style="box-sizing:border-box;color:#666666;text-decoration:none;background:0px 0px;"><span class="hljs-symbol" style="box-sizing:border-box;color:#BC6060;">http:</span>/<span class="hljs-regexp" style="box-sizing:border-box;color:#BC6060;">/http.us.debian.org/debian</span><span class="hljs-regexp" style="box-sizing:border-box;color:#BC6060;">/pool/main</span><span class="hljs-regexp" style="box-sizing:border-box;color:#BC6060;">/t/triggerhappy</span><span class="hljs-regexp" style="box-sizing:border-box;color:#BC6060;">/triggerhappy_0.3.4-2_armel.deb</span></a> <span class="hljs-regexp" style="box-sizing:border-box;color:#BC6060;">wget </span><a href="http://http.us.debian.org/debian/pool/main/l/lua5.1/lua5.1_5.1.5-7.1_armel.deb" style="box-sizing:border-box;color:#666666;text-decoration:none;background:0px 0px;"><span class="hljs-regexp" style="box-sizing:border-box;color:#BC6060;">http:/</span><span class="hljs-regexp" style="box-sizing:border-box;color:#BC6060;">/http.us.debian.org/debian</span><span class="hljs-regexp" style="box-sizing:border-box;color:#BC6060;">/pool/main</span><span class="hljs-regexp" style="box-sizing:border-box;color:#BC6060;">/l/lua</span>5.<span class="hljs-number" style="box-sizing:border-box;color:#880000;">1</span>/lua5.<span class="hljs-number" style="box-sizing:border-box;color:#880000;">1_5.1</span>.<span class="hljs-number" style="box-sizing:border-box;color:#880000;">5</span>-<span class="hljs-number" style="box-sizing:border-box;color:#880000;">7.1_</span>armel.deb</a> <span class="hljs-comment" style="box-sizing:border-box;color:#888888;">#以上为下载主安装包和依赖包</span> <span class="hljs-comment" style="box-sizing:border-box;color:#888888;">dpkg -i triggerhappy_0.3.4-2_armel.deb</span> <span class="hljs-comment" style="box-sizing:border-box;color:#888888;">dpkg -i lua5.1_5.1.5-7.1_armel.deb</span> <span class="hljs-comment" style="box-sizing:border-box;color:#888888;">dpkg -i raspi-config_20150131-1_all.deb </span></code></pre> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 以上是安装依赖包和主包 注意要严格按照安装顺序<br style="box-sizing:border-box;" /> raspi-config的配置过程省略，网上遍地都是，以上准备工作结束。 </p> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;text-align:center;background-color:#FFFFFF;"> <a href="http://image.3001.net/images/20160413/14605266181721.jpg" class="highslide-image" target="_blank" style="box-sizing:border-box;color:#069AEF;background:0px 0px;"><img alt="屏幕截图_041216_062117_PM.jpg" data-original="http://image.3001.net/images/20160413/14605266181721.jpg!small" src="http://image.3001.net/images/20160413/14605266181721.jpg!small" width="690" style="box-sizing:border-box;vertical-align:middle;max-width:100%;display:inline;" /></a> </p> 
+       <h2 style="box-sizing:border-box;font-family:微软雅黑;line-height:1.1;color:#262626;margin:30px 0px 15px;font-size:18px;white-space:normal;background-color:#FFFFFF;"> 0&times;02：配置网络<br style="box-sizing:border-box;" /> </h2> 
+       <h3 style="box-sizing:border-box;font-family:微软雅黑;line-height:1.1;color:#0070C0;margin:20px 0px 15px;font-size:16px;white-space:normal;background-color:#FFFFFF;"> 2.1：简介 </h3> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 这里采用的是无线网卡（wlan0）连接家庭无线网关上网，有线网口（eth0）作为hdcpd服务器连接AP分发IP地址作为网关收集client信息。这样做有几个优点： </p> 
+       <blockquote style="box-sizing:border-box;padding:10px 20px;margin:0px 0px 20px;font-size:14px;border-left-width:5px;border-left-style:solid;border-left-color:#EEEEEE;color:#585858;font-family:微软雅黑;line-height:26px;white-space:normal;background:#F7F7F7;"> 
+        <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;word-break:break-all;white-space:pre-wrap;"> 1.wlan0可以后期变更为市面上有售的无线网卡，作为网络出口，或者可以连接手机热点，手机作为出口，达到移动网关的目的。这些均可以充电宝供电。 </p> 
+        <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;word-break:break-all;white-space:pre-wrap;"> 2，eth0连接AP，可以扩大信号范围，增强收集强度，在树莓派上设置wireshark拦截所有请求，达到中间人的目的，或者安装XAMPP自建钓鱼网站，骗取用户账户和密码。 </p> 
+        <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;word-break:break-all;white-space:pre-wrap;"> 3，任何终端均可自行连接到AP上，自动获得IP地址，对树莓派进行配置，比较方便。可以是电脑，平板，或者手机，在公共场合操作非常方便，不必一直扛着电脑。（改掉树莓派上的SSH的默认密码，否则任何人都可以连上你的树莓派。） </p> 
+        <p style="box-sizing:border-box;margin-top:0px;margin-bottom:0px;font-size:15px;word-break:break-all;white-space:pre-wrap;"> 4，如果全部要求可移动，那可以增加一个wlan1作为dhcpd服务器分发IP，这样的缺点是信号比较弱。 </p> 
+       </blockquote> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 现在开始搭建： </p> 
+       <h3 style="box-sizing:border-box;font-family:微软雅黑;line-height:1.1;color:#0070C0;margin:20px 0px 15px;font-size:16px;white-space:normal;background-color:#FFFFFF;"> 2.2： </h3> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 无线网卡设置DHCP模式，连接上无线网：修改/etc/network/interfaces，添加： </p> 
+       <pre style="box-sizing:border-box;overflow:auto;font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:13px;padding:9.5px;margin-top:0px;margin-bottom:15px;line-height:1.42857;color:#333333;word-break:break-all;word-wrap:break-word;border:1px solid #E4E4E4;border-radius:4px;background-color:#F3F3F3;"><code class="hljs cpp" style="box-sizing:border-box;font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:inherit;padding:0.5em;color:#444444;border-radius:0px;white-space:pre-wrap;display:block;overflow-x:auto;background-image:initial;background-attachment:initial;background-size:initial;background-origin:initial;background-clip:initial;background-position:initial;background-repeat:initial;">allow-hotplug wlan0 &nbsp;&nbsp;&nbsp;<span class="hljs-meta" style="box-sizing:border-box;color:#2B6EA1;">#这是网卡wlan0</span> iface wlan0 inet dhcp &nbsp;&nbsp;<span class="hljs-meta" style="box-sizing:border-box;color:#2B6EA1;">#把wlan0设置成dhcp模式，以自动获取ip地址</span> wpa-ssid ChinaNGB-WF &nbsp;&nbsp;<span class="hljs-meta" style="box-sizing:border-box;color:#2B6EA1;">#这是你的ssid</span> wpa-psk my123456 &nbsp;&nbsp;&nbsp;<span class="hljs-meta" style="box-sizing:border-box;color:#2B6EA1;">#这是ssid的wifi密码</span> <span class="hljs-meta" style="box-sizing:border-box;color:#2B6EA1;">#wpa-roam /etc/wpa_supplicant/wpa_supplicant.conf #把这一行注释掉</span> iface <span class="hljs-keyword" style="box-sizing:border-box;font-weight:bold;">default</span> inet dhcp &nbsp;&nbsp;<span class="hljs-meta" style="box-sizing:border-box;color:#2B6EA1;">#默认dhcp模式</span> </code></pre> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 然后reboot，然后无线网卡上小灯开始闪呀闪，就知道已经开始工作了。然后再去路由器上找到e8开头的MAC地址（EPUB网卡），SSH连上去。 </p> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;text-align:center;background-color:#FFFFFF;"> <a href="http://image.3001.net/images/20160413/14605271844152.jpg" class="highslide-image" target="_blank" style="box-sizing:border-box;color:#069AEF;background:0px 0px;"><img alt="IMG_20160412_180107.jpg" data-original="http://image.3001.net/images/20160413/14605271844152.jpg!small" src="http://image.3001.net/images/20160413/14605271844152.jpg!small" width="690" style="box-sizing:border-box;vertical-align:middle;max-width:100%;display:inline;" /></a> </p> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 输入ifconfig命令：会出现已经获取到的ip地址等等，说明已经成功连上无线。这时候你可以把有线断掉了，把eth0口腾空出来。<br style="box-sizing:border-box;" /> （PS：在户外的时候，没有家庭网络，但是我们有手机，可以共享无线热点出来，我们可以共享无线热点，同时连接上树莓派进行设置和监视，同时进行“工作”。此时要把wlan设置连上我们手机分享出的热点。） </p> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;text-align:center;background-color:#FFFFFF;"> <a href="http://image.3001.net/images/20160413/14605266707373.jpg" class="highslide-image" target="_blank" style="box-sizing:border-box;color:#069AEF;background:0px 0px;"><img alt="屏幕截图_041216_060339_PM.jpg" data-original="http://image.3001.net/images/20160413/14605266707373.jpg!small" src="http://image.3001.net/images/20160413/14605266707373.jpg!small" width="690" style="box-sizing:border-box;vertical-align:middle;max-width:100%;display:inline;" /></a> </p> 
+       <h3 style="box-sizing:border-box;font-family:微软雅黑;line-height:1.1;color:#0070C0;margin:20px 0px 15px;font-size:16px;white-space:normal;background-color:#FFFFFF;"> 2.3 </h3> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 把腾出来的eth0设置成静态地址：修改/etc/network/interfaces： </p> 
+       <h3 style="box-sizing:border-box;font-family:微软雅黑;line-height:1.1;color:#0070C0;margin:20px 0px 15px;font-size:16px;white-space:normal;background-color:#FFFFFF;"> 2.4：安装和配置 </h3> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 安装DHCP服务器为接进热点的设备分配IP： </p> 
+       <pre style="box-sizing:border-box;overflow:auto;font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:13px;padding:9.5px;margin-top:0px;margin-bottom:15px;line-height:1.42857;color:#333333;word-break:break-all;word-wrap:break-word;border:1px solid #E4E4E4;border-radius:4px;background-color:#F3F3F3;"><code class="hljs sql" style="box-sizing:border-box;font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:inherit;padding:0.5em;color:#444444;border-radius:0px;white-space:pre-wrap;display:block;overflow-x:auto;background-image:initial;background-attachment:initial;background-size:initial;background-origin:initial;background-clip:initial;background-position:initial;background-repeat:initial;">apt-get <span class="hljs-keyword" style="box-sizing:border-box;font-weight:bold;">install</span> isc-dhcp-<span class="hljs-keyword" style="box-sizing:border-box;font-weight:bold;">server</span></code></pre> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 修改/etc/dhcp/dhcpd.conf：将里面所有的内容都#掉，末尾加上： </p> 
+       <pre style="box-sizing:border-box;overflow:auto;font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:13px;padding:9.5px;margin-top:0px;margin-bottom:15px;line-height:1.42857;color:#333333;word-break:break-all;word-wrap:break-word;border:1px solid #E4E4E4;border-radius:4px;background-color:#F3F3F3;"><code class="hljs perl" style="box-sizing:border-box;font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:inherit;padding:0.5em;color:#444444;border-radius:0px;white-space:pre-wrap;display:block;overflow-x:auto;background-image:initial;background-attachment:initial;background-size:initial;background-origin:initial;background-clip:initial;background-position:initial;background-repeat:initial;">ddns-update-style none;default-lease-<span class="hljs-keyword" style="box-sizing:border-box;font-weight:bold;">time</span> <span class="hljs-number" style="box-sizing:border-box;color:#880000;">600</span>;
+max-lease-<span class="hljs-keyword" style="box-sizing:border-box;font-weight:bold;">time</span> <span class="hljs-number" style="box-sizing:border-box;color:#880000;">7200</span>;authoritative;<span class="hljs-keyword" style="box-sizing:border-box;font-weight:bold;">log</span>-facility local7;
+subnet <span class="hljs-number" style="box-sizing:border-box;color:#880000;">192.168</span>.<span class="hljs-number" style="box-sizing:border-box;color:#880000;">10.0</span> netmask <span class="hljs-number" style="box-sizing:border-box;color:#880000;">255.255</span>.<span class="hljs-number" style="box-sizing:border-box;color:#880000;">255.0</span> {&nbsp; range <span class="hljs-number" style="box-sizing:border-box;color:#880000;">192.168</span>.<span class="hljs-number" style="box-sizing:border-box;color:#880000;">10.2</span> <span class="hljs-number" style="box-sizing:border-box;color:#880000;">192.168</span>.<span class="hljs-number" style="box-sizing:border-box;color:#880000;">10.254</span>;
+option domain-name-servers <span class="hljs-number" style="box-sizing:border-box;color:#880000;">8.8</span>.<span class="hljs-number" style="box-sizing:border-box;color:#880000;">8.8</span>;
+option domain-name <span class="hljs-string" style="box-sizing:border-box;color:#880000;">&quot;raspberry&quot;</span>;&nbsp; &nbsp;
+option routers <span class="hljs-number" style="box-sizing:border-box;color:#880000;">192.168</span>.<span class="hljs-number" style="box-sizing:border-box;color:#880000;">10.1</span>; option broadcast-address <span class="hljs-number" style="box-sizing:border-box;color:#880000;">192.168</span>.<span class="hljs-number" style="box-sizing:border-box;color:#880000;">10.255</span>;&nbsp;&nbsp;&nbsp; </code></pre> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> }→→→→→修改/etc/default/isc-dhcp-server：同理将所有内容#掉，末尾加上： </p> 
+       <pre style="box-sizing:border-box;overflow:auto;font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:13px;padding:9.5px;margin-top:0px;margin-bottom:15px;line-height:1.42857;color:#333333;word-break:break-all;word-wrap:break-word;border:1px solid #E4E4E4;border-radius:4px;background-color:#F3F3F3;"><code class="hljs ini" style="box-sizing:border-box;font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:inherit;padding:0.5em;color:#444444;border-radius:0px;white-space:pre-wrap;display:block;overflow-x:auto;background-image:initial;background-attachment:initial;background-size:initial;background-origin:initial;background-clip:initial;background-position:initial;background-repeat:initial;"><span class="hljs-attr" style="box-sizing:border-box;">DHCPD_CONF</span>=<span class="hljs-string" style="box-sizing:border-box;color:#880000;">&quot;/etc/dhcp/dhcpd.conf&quot;</span>INTERFACES=<span class="hljs-string" style="box-sizing:border-box;color:#880000;">&quot;eth0&quot;</span></code></pre> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> →→→→→isc-dhcp-server这个软件有一点小缺陷，需要自建一个leases文件： </p> 
+       <pre style="box-sizing:border-box;overflow:auto;font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:13px;padding:9.5px;margin-top:0px;margin-bottom:15px;line-height:1.42857;color:#333333;word-break:break-all;word-wrap:break-word;border:1px solid #E4E4E4;border-radius:4px;background-color:#F3F3F3;"><code class="hljs dts" style="box-sizing:border-box;font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:inherit;padding:0.5em;color:#444444;border-radius:0px;white-space:pre-wrap;display:block;overflow-x:auto;background-image:initial;background-attachment:initial;background-size:initial;background-origin:initial;background-clip:initial;background-position:initial;background-repeat:initial;">touch <span class="hljs-meta-keyword" style="box-sizing:border-box;font-weight:bold;">/var/</span>lib<span class="hljs-meta-keyword" style="box-sizing:border-box;font-weight:bold;">/dhcp/</span>dhcp.leases</code></pre> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> →→→→→启动isc-dhcp-server： </p> 
+       <pre style="box-sizing:border-box;overflow:auto;font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:13px;padding:9.5px;margin-top:0px;margin-bottom:15px;line-height:1.42857;color:#333333;word-break:break-all;word-wrap:break-word;border:1px solid #E4E4E4;border-radius:4px;background-color:#F3F3F3;"><code class="hljs nginx" style="box-sizing:border-box;font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:inherit;padding:0.5em;color:#444444;border-radius:0px;white-space:pre-wrap;display:block;overflow-x:auto;background-image:initial;background-attachment:initial;background-size:initial;background-origin:initial;background-clip:initial;background-position:initial;background-repeat:initial;"><span class="hljs-attribute" style="box-sizing:border-box;font-weight:bold;">service</span> isc-dhcp-server start</code></pre> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 将isc-dhcp-server加入开机自启： </p> 
+       <pre style="box-sizing:border-box;overflow:auto;font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:13px;padding:9.5px;margin-top:0px;margin-bottom:15px;line-height:1.42857;color:#333333;word-break:break-all;word-wrap:break-word;border:1px solid #E4E4E4;border-radius:4px;background-color:#F3F3F3;"><code class="hljs sql" style="box-sizing:border-box;font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:inherit;padding:0.5em;color:#444444;border-radius:0px;white-space:pre-wrap;display:block;overflow-x:auto;background-image:initial;background-attachment:initial;background-size:initial;background-origin:initial;background-clip:initial;background-position:initial;background-repeat:initial;"><span class="hljs-keyword" style="box-sizing:border-box;font-weight:bold;">update</span>-rc.<span class="hljs-keyword" style="box-sizing:border-box;font-weight:bold;">d</span> isc-dhcp-<span class="hljs-keyword" style="box-sizing:border-box;font-weight:bold;">server</span> enable0x02<span class="hljs-number" style="box-sizing:border-box;color:#880000;">.4</span>：</code></pre> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 添加iptables引导流量走向：打开流量转发：A.修改/etc/sysctl.conf：net.ipv4.ip_forward=1 B.修改/proc/sys/net/ipv4/ip_forward为1： </p> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 修改proc下的文件有点特殊 不可用vi，而是用echo命令的方式#echo 1 &gt; /proc/sys/net/ipv4/ip_forward&nbsp; 添加转发规则：然后用iptables -t nat -S和iptables -S检查是否添加成功开NAT： </p> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> sudo iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE wlan的全部进eth，全接受sudo iptables -A FORWARD -i wlan0 -o eth0 -m state –state RELATED,ESTABLISHED -j ACCEPTeth的全部进wlan，全接受<span style="box-sizing:border-box;word-wrap:break-word;word-break:break-all;color:#EF4747;"></span># sudo iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT规则开机自添加# sh -c “iptables-save &gt; /etc/iptables.ipv4.nat”#reboot此时已经可以连接eth0实现上网。打开水星的AP，设置SSID为i-Shanghai，密码为空，设置过程略。eth0连接到AP的lan口，启动AP，任何客户端连接到AP即自动连接到eth0口。 </p> 
+       <h2 style="box-sizing:border-box;font-family:微软雅黑;line-height:1.1;color:#262626;margin:30px 0px 15px;font-size:18px;white-space:normal;background-color:#FFFFFF;"> 0&times;03 </h2> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 安装监视软件，监测树莓派实时动态→netdata ，如果需要年月周汇总动态，可以选择Monitorix（已亲测，可以安装。）。参考文档：<a href="https://github.com/firehol/netdata/wiki/InstallationOx03.1" style="box-sizing:border-box;color:#069AEF;background:0px 0px;">https://github.com/firehol/netdata/wiki/Installation</a> </p> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 3.1：安装netdata：安装所有的依赖包配置环境#apt-get install zlib1g-dev gcc make git autoconf autogen automake pkg-config </p> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 3.2：第一行从GitHub下载编译文件，然后cd到文件夹，然后运行编译： </p> 
+       <pre style="box-sizing:border-box;overflow:auto;font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:13px;padding:9.5px;margin-top:0px;margin-bottom:15px;line-height:1.42857;color:#333333;word-break:break-all;word-wrap:break-word;border:1px solid #E4E4E4;border-radius:4px;background-color:#F3F3F3;"><code class="hljs nginx" style="box-sizing:border-box;font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:inherit;padding:0.5em;color:#444444;border-radius:0px;white-space:pre-wrap;display:block;overflow-x:auto;background-image:initial;background-attachment:initial;background-size:initial;background-origin:initial;background-clip:initial;background-position:initial;background-repeat:initial;"><span class="hljs-attribute" style="box-sizing:border-box;font-weight:bold;">git</span> clone https://github.com/firehol/netdata.git --depth=<span class="hljs-number" style="box-sizing:border-box;color:#880000;">1</span></code></pre> 
+       <pre style="box-sizing:border-box;overflow:auto;font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:13px;padding:9.5px;margin-top:0px;margin-bottom:15px;line-height:1.42857;color:#333333;word-break:break-all;word-wrap:break-word;border:1px solid #E4E4E4;border-radius:4px;background-color:#F3F3F3;"><code class="hljs bash" style="box-sizing:border-box;font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:inherit;padding:0.5em;color:#444444;border-radius:0px;white-space:pre-wrap;display:block;overflow-x:auto;background-image:initial;background-attachment:initial;background-size:initial;background-origin:initial;background-clip:initial;background-position:initial;background-repeat:initial;"><span class="hljs-built_in" style="box-sizing:border-box;color:#1F811F;">cd</span> netdata<span class="hljs-comment" style="box-sizing:border-box;color:#888888;">#./netdata-installer.sh</span></code></pre> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 3.3：加入开机启动，在rc.local下加入/usr/sbin/netdata，然后reboot重启。 </p> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 3.4：然后在任意浏览器打开 树莓派IP地址:19999，别忘了端口号，默认是19999，然后正确的姿势如下： </p> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;text-align:center;background-color:#FFFFFF;"> <a href="http://image.3001.net/images/20160413/14605266992972.png" class="highslide-image" target="_blank" style="box-sizing:border-box;color:#069AEF;background:0px 0px;"><img alt="屏幕截图(9).png" data-original="http://image.3001.net/images/20160413/14605266992972.png!small" src="http://image.3001.net/images/20160413/14605266992972.png!small" width="690" style="box-sizing:border-box;vertical-align:middle;max-width:100%;display:inline;" /></a> </p> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 正确配置和连接好后的拓补如下： </p> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;text-align:center;background-color:#FFFFFF;"> <a href="http://image.3001.net/images/20160413/14605273363686.jpg" class="highslide-image" target="_blank" style="box-sizing:border-box;color:#069AEF;background:0px 0px;"><img alt="IMG_20160412_214252.jpg" data-original="http://image.3001.net/images/20160413/14605273363686.jpg!small" src="http://image.3001.net/images/20160413/14605273363686.jpg!small" width="690" style="box-sizing:border-box;vertical-align:middle;max-width:100%;display:inline;" /></a> </p> 
+       <h2 style="box-sizing:border-box;font-family:微软雅黑;line-height:1.1;color:#262626;margin:30px 0px 15px;font-size:18px;white-space:normal;background-color:#FFFFFF;"> 0&times;04 </h2> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 好了，以上均为foreplay，前戏，现在进入正题。我们的目标是：（没有蛀牙！）用树莓派实现《硬件Tor》，通电自动连接Tor节点，所有流量全部强制通过Tor节点引出，到达目标地址。断线无限重连。不管是手机，还是平板，还是PC，只要连接到i-Shaghai之后，全部实现全程Tor节点流量，实现科学上网。 </p> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 4.1：Tor是什么：Tor是加密互联网路由器，可以将你的流量加密后在Tor节点上至少进行三层跳板，跳板不定期随机耦合，到达目的网址，混淆你的IP地址，由于其加密传输，可以躲过&middot;政&middot;府&middot;的关键词过滤探针，在国外广泛被应用于暗网入口。有了这款《硬件Tor》之后，可以随时随地进入暗网。本文不介绍如何进入暗网。 </p> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;text-align:center;background-color:#FFFFFF;"> <a href="http://image.3001.net/images/20160413/14605267335273.jpg" class="highslide-image" target="_blank" style="box-sizing:border-box;color:#069AEF;background:0px 0px;"><img alt="initpintu_副本.jpg" data-original="http://image.3001.net/images/20160413/14605267335273.jpg!small" src="http://image.3001.net/images/20160413/14605267335273.jpg!small" width="515" style="box-sizing:border-box;vertical-align:middle;max-width:100%;display:inline;" /></a> </p> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 4.2：网桥是什么：以上这么多福利满满，在本国被禁掉也是理所当然的事情。所以在国内，第一步是连接上Tor节点之前，需要搭一座桥，以连接上节点服务器。这座桥就叫做网桥。第一代网桥只是简简单单的IP地址，现在的第三代抗干扰混淆网桥（obfsproxy）大概的姿势是这样的：可以突破封锁，直达国外。（以下网桥时效性不保证） </p> 
+       <blockquote style="box-sizing:border-box;padding:10px 20px;margin:0px 0px 20px;font-size:14px;border-left-width:5px;border-left-style:solid;border-left-color:#EEEEEE;color:#585858;font-family:微软雅黑;line-height:26px;white-space:normal;background:#F7F7F7;"> 
+        <p style="box-sizing:border-box;margin-top:0px;margin-bottom:0px;font-size:15px;word-break:break-all;white-space:pre-wrap;"> obfs3 37.187.65.72:35304 E47EC8C02C116B77D04738FA2E7B427F241A0164<br style="box-sizing:border-box;" /> obfs3 194.132.209.8:57356 B43A8BDE049073CA7AA7D3D46A7F97A93042DF35<br style="box-sizing:border-box;" /> obfs3 23.252.105.31:3443 CDAE9FD7710761D1914182F62B1B47F2FBF1FDE1 </p> 
+       </blockquote> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 4.3：网桥这么宝贵，如何获取网桥，本文推荐的方式是去官网直接索取网桥。地址（需要科学上网才可以登录）是：<a href="https://bridges.torproject.org/bridges?transport=obfs3" style="box-sizing:border-box;color:#069AEF;background:0px 0px;">https://bridges.torproject.org/bridges?transport=obfs3</a><br style="box-sizing:border-box;" /> 4.4：接下来就是重头戏安装和配置Tor了：（以下需要在VPN环境下进行，无线网卡需要连接到VPN内部）在更新源里/etc/apt/sources.list添加以下两项：deb <a href="http://deb.torproject.org/torproject.org" style="box-sizing:border-box;color:#069AEF;background:0px 0px;">http://deb.torproject.org/torproject.org</a> wheezy maindeb-src <a href="http://deb.torproject.org/torproject.org" style="box-sizing:border-box;color:#069AEF;background:0px 0px;">http://deb.torproject.org/torproject.org</a> wheezy main更新和导出前面包和秘钥：#gpg –keyserver keys.gnupg.net –recv 886DDD89#gpg –export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | sudo apt-key add -然后：更新源和安装最新版的Tor：apt-get updateapt-get install tor deb.torproject.org-keyring此时最新版的Tor就安装好了，截止发稿，版本为：0.2.7.6-1 </p> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;text-align:center;background-color:#FFFFFF;"> <a href="http://image.3001.net/images/20160413/14605267661500.jpg" class="highslide-image" target="_blank" style="box-sizing:border-box;color:#069AEF;background:0px 0px;"><img alt="屏幕截图_041316_124606_PM.jpg" data-original="http://image.3001.net/images/20160413/14605267661500.jpg!small" src="http://image.3001.net/images/20160413/14605267661500.jpg!small" width="690" style="box-sizing:border-box;vertical-align:middle;max-width:100%;display:inline;" /></a> </p> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 4.5：安装obfsproxy： </p> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> #apt-get install obfsproxy&nbsp;&nbsp; 完成后最新版如下图： </p> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;text-align:center;background-color:#FFFFFF;"> <a href="http://image.3001.net/images/20160413/14605267799748.jpg" class="highslide-image" target="_blank" style="box-sizing:border-box;color:#069AEF;background:0px 0px;"><img alt="屏幕截图_041316_010726_PM.jpg" data-original="http://image.3001.net/images/20160413/14605267799748.jpg!small" src="http://image.3001.net/images/20160413/14605267799748.jpg!small" width="417" style="box-sizing:border-box;vertical-align:middle;max-width:100%;display:inline;" /></a> </p> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 4.6：接下来就是对Tor进行配置（离成功越来越近了，欣喜！）：修改/etc/tor/torrc： </p> 
+       <pre style="box-sizing:border-box;overflow:auto;font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:13px;padding:9.5px;margin-top:0px;margin-bottom:15px;line-height:1.42857;color:#333333;word-break:break-all;word-wrap:break-word;border:1px solid #E4E4E4;border-radius:4px;background-color:#F3F3F3;"><code class="hljs nginx" style="box-sizing:border-box;font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:inherit;padding:0.5em;color:#444444;border-radius:0px;white-space:pre-wrap;display:block;overflow-x:auto;background-image:initial;background-attachment:initial;background-size:initial;background-origin:initial;background-clip:initial;background-position:initial;background-repeat:initial;"><span class="hljs-attribute" style="box-sizing:border-box;font-weight:bold;">SocksPort</span> 9050
+SocksListenAddress <span class="hljs-number" style="box-sizing:border-box;color:#880000;">192.168.10.1:9050</span> <span class="hljs-comment" style="box-sizing:border-box;color:#888888;"># 树莓派IP</span> <span class="hljs-comment" style="box-sizing:border-box;color:#888888;">ClientOnly 1</span> <span class="hljs-comment" style="box-sizing:border-box;color:#888888;">VirtualAddrNetwork 10.192.0.0/10</span> <span class="hljs-comment" style="box-sizing:border-box;color:#888888;">DNSPort 53</span> <span class="hljs-comment" style="box-sizing:border-box;color:#888888;">DNSListenAddress 192.168.10.1</span> <span class="hljs-comment" style="box-sizing:border-box;color:#888888;">AutomapHostsOnResolve 1</span> <span class="hljs-comment" style="box-sizing:border-box;color:#888888;">AutomapHostsSuffixes .onion,.exit</span> <span class="hljs-comment" style="box-sizing:border-box;color:#888888;">TransPort 9040</span> <span class="hljs-comment" style="box-sizing:border-box;color:#888888;">TransListenAddress 192.168.10.1</span> <span class="hljs-comment" style="box-sizing:border-box;color:#888888;">Log notice file /var/log/tor/notices.log　　# log日志路径</span> <span class="hljs-comment" style="box-sizing:border-box;color:#888888;">RunAsDaemon 1</span> <span class="hljs-comment" style="box-sizing:border-box;color:#888888;">ClientTransportPlugin obfs3 exec /usr/local/bin/obfsproxy managed　　　　　　　　# obfsproxy路径</span> <span class="hljs-comment" style="box-sizing:border-box;color:#888888;">UseBridges 1</span> <span class="hljs-comment" style="box-sizing:border-box;color:#888888;">Bridge obfs3 37.187.65.72:35304 E47EC8C02C116B77D04738FA2E7B427F241A0164 #刚刚获取的网桥</span> <span class="hljs-comment" style="box-sizing:border-box;color:#888888;">Bridge obfs3 194.132.209.8:57356 B43A8BDE049073CA7AA7D3D46A7F97A93042DF35</span> <span class="hljs-comment" style="box-sizing:border-box;color:#888888;">Bridge obfs3 23.252.105.31:3443 CDAE9FD7710761D1914182F62B1B47F2FBF1FDE1</span> </code></pre> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 4.7:添加iptables规则 </p> 
+       <pre style="box-sizing:border-box;overflow:auto;font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:13px;padding:9.5px;margin-top:0px;margin-bottom:15px;line-height:1.42857;color:#333333;word-break:break-all;word-wrap:break-word;border:1px solid #E4E4E4;border-radius:4px;background-color:#F3F3F3;"><code class="hljs sql" style="box-sizing:border-box;font-family:Menlo, Monaco, Consolas, 'Courier New', monospace;font-size:inherit;padding:0.5em;color:#444444;border-radius:0px;white-space:pre-wrap;display:block;overflow-x:auto;background-image:initial;background-attachment:initial;background-size:initial;background-origin:initial;background-clip:initial;background-position:initial;background-repeat:initial;">sudo iptables -t nat -A PREROUTING -i eth0 -p tcp <span class="hljs-comment" style="box-sizing:border-box;color:#888888;">--dport 22 -j REDIRECT --to-ports 22</span> sudo iptables -t nat -A PREROUTING -i eth0 -p tcp <span class="hljs-comment" style="box-sizing:border-box;color:#888888;">--dport 19999 -j REDIRECT --to-ports 19999</span> sudo iptables -t nat -A PREROUTING -i eth0 -p udp <span class="hljs-comment" style="box-sizing:border-box;color:#888888;">--dport 53 -j REDIRECT --to-ports 53</span> sudo iptables -t nat -A PREROUTING -i eth0 -p tcp <span class="hljs-comment" style="box-sizing:border-box;color:#888888;">--syn -j REDIRECT --to-ports 9040</span> </code></pre> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 为了让上面的规则在开始时自动添加，执行：<br style="box-sizing:border-box;" /> &nbsp;# sh -c “iptables-save &gt; /etc/iptables.ipv4.nat”<br style="box-sizing:border-box;" /> 第一条命令为22端口开一个特例，这样SSH才能连上树莓派。<br style="box-sizing:border-box;" /> 第二条命令为19999端口开一个特例，这样netdata才能连上树莓派。<br style="box-sizing:border-box;" /> 第三条命令将所有DNS（端口号53）请求转发到配置文件torrc中的DNSPort中<br style="box-sizing:border-box;" /> 第四条命令将所有TCP流量转发到配置文件torrc中的TransPort中 </p> 
+       <blockquote style="box-sizing:border-box;padding:10px 20px;margin:0px 0px 20px;font-size:14px;border-left-width:5px;border-left-style:solid;border-left-color:#EEEEEE;color:#585858;font-family:微软雅黑;line-height:26px;white-space:normal;background:#F7F7F7;"> 
+        <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;word-break:break-all;white-space:pre-wrap;"> 4.8：启动tor客户端进程：<br style="box-sizing:border-box;" /> &nbsp;# service tor start<br style="box-sizing:border-box;" /> &nbsp;在/var/log/tor/notices.log中查看tor启动情况，正常的是： </p> 
+        <p style="box-sizing:border-box;margin-top:0px;margin-bottom:0px;font-size:15px;word-break:break-all;white-space:pre-wrap;"> Apr 13 13:32:46.000 [notice] Bootstrapped 5%: Connecting to directory server<br style="box-sizing:border-box;" /> Apr 13 13:32:46.000 [warn] We were supposed to connect to bridge ’162.217.177.95:18869′ using pluggable transport ‘obfs4′, but we can’t find a pluggable transport proxy supporting ‘obfs4′. This can happen if you haven’t provided a ClientTransportPlugin line, or if your pluggable transport proxy stopped running.<br style="box-sizing:border-box;" /> Apr 13 13:32:47.000 [notice] Bootstrapped 10%: Finishing handshake with directory server<br style="box-sizing:border-box;" /> Apr 13 13:32:57.000 [notice] Bootstrapped 15%: Establishing an encrypted directory connection<br style="box-sizing:border-box;" /> Apr 13 13:32:58.000 [notice] Bootstrapped 20%: Asking for networkstatus consensus<br style="box-sizing:border-box;" /> Apr 13 13:32:58.000 [notice] Bootstrapped 25%: Loading networkstatus consensus<br style="box-sizing:border-box;" /> Apr 13 13:33:22.000 [notice] Bootstrapped 80%: Connecting to the Tor network<br style="box-sizing:border-box;" /> Apr 13 13:33:23.000 [notice] Bootstrapped 90%: Establishing a Tor circuit<br style="box-sizing:border-box;" /> Apr 13 13:33:28.000 [notice] Tor has successfully opened a circuit. Looks like client functionality is working.<br style="box-sizing:border-box;" /> Apr 13 13:33:28.000 [notice] Bootstrapped 100%: Done </p> 
+       </blockquote> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;text-align:center;background-color:#FFFFFF;"> <a href="http://image.3001.net/images/20160413/14605268301461.jpg" class="highslide-image" target="_blank" style="box-sizing:border-box;color:#069AEF;background:0px 0px;"><img alt="屏幕截图_041316_013613_PM.jpg" data-original="http://image.3001.net/images/20160413/14605268301461.jpg!small" src="http://image.3001.net/images/20160413/14605268301461.jpg!small" width="690" style="box-sizing:border-box;vertical-align:middle;max-width:100%;display:inline;" /></a> </p> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> 然后任何时候reboot，树莓派会自动启动，开始连接加密节点，同时eth0口等待你的终端进行连接，我们的目的已经实现。网络出口会自动间隔几分钟就会跳动一次，表现为出口IP会不断变化，隐藏你的真实身份。这时候，你可以畅享目前为止军方都无法破解的加密服务了。 </p> 
+       <p style="box-sizing:border-box;margin-top:0px;margin-bottom:10px;font-size:15px;line-height:26px;word-break:break-all;white-space:pre-wrap;color:#585858;font-family:微软雅黑;background-color:#FFFFFF;"> <span style="box-sizing:border-box;font-weight:700;"><span style="box-sizing:border-box;word-wrap:break-word;word-break:break-all;color:#EF4747;">* 作者：Roy_Chen</span></span> </p> 
+      </div> 
+      <div class="post-tags"> 
+      </div> 
+      <link rel="stylesheet" type="text/css" href="http://www.52bug.cn/content/plugins/syntaxHighlighter/brush/shCore.css" />
+      <link rel="stylesheet" type="text/css" href="http://www.52bug.cn/content/plugins/syntaxHighlighter/brush/shThemeDefault.css" />
+      <script type="text/javascript" src="http://www.52bug.cn/content/plugins/syntaxHighlighter/brush/brush.js"></script>
+      <script type="text/javascript"> SyntaxHighlighter.config.clipboardSwf = "http://www.52bug.cn/content/plugins/syntaxHighlighter/brush/clipboard.swf";SyntaxHighlighter.config.bloggerMode = true; SyntaxHighlighter.all();setTimeout(function(){$("div.syntaxhighlighter div.lines td.content").attr("nowrap","nowrap");$("div.syntaxhighlighter").hover(function(){$(this).css("overflow-x","auto")},function(){$(this).css("overflow-x","hidden")})},2000);</script>
+      <div id="cyEmoji" role="cylabs" data-use="emoji" sid=""></div> 
+      <script type="text/javascript" charset="utf-8" src="http://changyan.itc.cn/js/??lib/jquery.js,changyan.labs.js?appid=cyqIl0VkO"></script> 
+      <script type="text/javascript" src="http://lib.sinaapp.com/js/jquery/1.7.2/jquery.min.js"></script> 
+      <script type="text/javascript">
+		$(function(){
+			$('a').click(function(){
+			   var openUrl = $(this).attr('href'); 
+			   var openTarget = $(this).attr('target');
+			   if(openUrl.indexOf(location.host)==-1){
+				 //alert($(this).attr('is_open'));
+				 if(openTarget!='_blank'){
+					if(typeof($(this).attr('is_open')) == 'undefined'){
+						$(this).attr('target','_blank').attr('href','/content/plugins/openlink/viewPage.html?url='+openUrl);
+					}
+				 }else{
+					if(typeof($(this).attr('is_open')) == 'undefined'){
+						$(this).attr('href','/content/plugins/openlink/viewPage.html?url='+openUrl);
+					}
+				 }
+				 $(this).attr('is_open','use');
+			   }
+			});
+		});
+	</script> 
+      <div class="nextlog"> 
+       <a class="l" href="http://www.52bug.cn/post-2413.html" title="Cobalt Strike之DNS Beacon使用记录"><em>&laquo;</em>Cobalt Strike之DNS Beacon使用记录</a> 
+       <a class="r" href="http://www.52bug.cn/post-2411.html" title="一条短信控制你的手机! Android平台的SQL注入漏洞浅析">一条短信控制你的手机! Android平台的SQL注入漏洞浅析<em>&raquo;</em></a> 
+      </div> 
+      <div style="clear:both;"></div> 
+      <div id="pagenavi"> 
+      </div> 
+     </div> 
+     <div style="clear:both;"></div> 
+    </div>
+    <!--end #contentleft--> 
+    <ul id="sidebar"> 
+     <!-- 微博秀 --> 
+     <iframe width="100%" height="150" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&amp;width=0&amp;height=150&amp;fansRow=1&amp;ptype=1&amp;speed=0&amp;skin=1&amp;isTitle=1&amp;noborder=1&amp;isWeibo=1&amp;isFans=0&amp;uid=5405888037&amp;verifier=81c0771a&amp;dpc=1"> </iframe> 
+     <li> <h3 class="sideitem-heading"><span class="sideitem-title">热门文章</span></h3> 
+      <ul id="hotlog"> 
+       <li> <em class="sidebar-icon weight-icon1">热</em> <a href="http://www.52bug.cn/post-270.html">最新版网盘助手免安装百度云管家直接下载大文件</a></li> 
+       <li> <em class="sidebar-icon weight-icon2">热</em> <a href="http://www.52bug.cn/post-153.html">SVN工具api-ms-win-crt-runtime-l1-1-0.dll 丢失问题解决方案</a></li> 
+       <li> <em class="sidebar-icon weight-icon3">热</em> <a href="http://www.52bug.cn/post-421.html">【社工】身份证正反面生成器</a></li> 
+       <li> <em class="sidebar-icon weight-iconother">热</em> <a href="http://www.52bug.cn/post-6.html">破解企业QQ不能和私人QQ同时在电脑上的登陆限制+附工具</a></li> 
+       <li> <em class="sidebar-icon weight-iconother">热</em> <a href="http://www.52bug.cn/post-54.html">通过WordPress免费模板进行仿站,移植到EMlog</a></li> 
+       <li> <em class="sidebar-icon weight-iconother">热</em> <a href="http://www.52bug.cn/post-1355.html">【软件抓包】Charles 4.0.2 汉化中文版</a></li> 
+       <li> <em class="sidebar-icon weight-iconother">热</em> <a href="http://www.52bug.cn/post-128.html">WIN7 Activation v1.7激活工具,可解决内部版本7601</a></li> 
+       <li> <em class="sidebar-icon weight-iconother">热</em> <a href="http://www.52bug.cn/post-51.html">Discuz! X3.2 版本Tools急诊箱工具使用教程</a></li> 
+       <li> <em class="sidebar-icon weight-iconother">热</em> <a href="http://www.52bug.cn/post-11.html">破解免费空间主机管理权限代码</a></li> 
+       <li> <em class="sidebar-icon weight-iconother">热</em> <a href="http://www.52bug.cn/post-1211.html">中国菜刀2016最新版秒过WAF 官网正版</a></li> 
+      </ul> 
+      <div style="clear:both;"></div> </li> 
+     <li> <h3 class="sideitem-heading"><span class="sideitem-title">友情链接</span></h3> 
+      <ul id="link"> 
+       <li><a href="http://www.secbug.org" title="" target="_blank">破晓团队</a></li> 
+       <li><a href="http://bbs.sssie.com" title="" target="_blank">SSS安全论坛</a></li> 
+       <li><a href="http://www.kali.org.cn" title="" target="_blank">kali linux</a></li> 
+       <li><a href="http://qqhack8.blog.163.com/" title="" target="_blank">K8哥哥's Blog</a></li> 
+       <li><a href="http://www.metasploit.cn" title="" target="_blank">Metasploit</a></li> 
+       <li><a href="http://www.chamd5.org/" title="" target="_blank">解密MD5</a></li> 
+       <li><a href="http://www.xuepojie.com" title="" target="_blank">学破解论坛</a></li> 
+       <li><a href="http://www.exehack.net/" title="" target="_blank">小残's Blog</a></li> 
+       <li><a href="http://www.shellsec.com" title="" target="_blank">神刀安全网</a></li> 
+       <li><a href="http://www.shiyanbar.com" title="" target="_blank">实验吧</a></li> 
+       <li><a href="http://chungeseo.com" title="" target="_blank">seo博客</a></li> 
+       <li><a href="http://www.365cmd.com" title="" target="_blank">三六五网络学院</a></li> 
+       <li><a href="http://www.moonsec.com" title="" target="_blank">暗月博客</a></li> 
+       <li><a href="http://www.youxia.org" title="" target="_blank">游侠安全网</a></li> 
+       <li><a href="http://bbs.chinablackhat.com/" title="" target="_blank">中国黑帽网</a></li> 
+       <li><a href="http://www.anquanlong.com" title="" target="_blank">安全龙</a></li> 
+       <li><a href="http://www.eyy5.com/forum.php" title="" target="_blank">起易论坛</a></li> 
+       <li><a href="http://www.k8sec.com" title="" target="_blank">社工库论坛</a></li> 
+       <li><a href="http://www.fbisb.com/" title="" target="_blank">黑客教程网</a></li> 
+       <li><a href="http://www.qxzxp.com" title="未加qq好友" target="_blank">七行者博客</a></li> 
+       <li><a href="http://www.98exe.net/" title="" target="_blank">南域剑盟</a></li> 
+       <li><a href="http://www.51zuosi.com/" title="" target="_blank">51作死网</a></li> 
+       <li><a href="http://www.hx99.net/" title="未加qq好友" target="_blank">华西安全网</a></li> 
+       <li><a href="http://bbs.77169.com/forum.php" title="未加qq好友" target="_blank">华盟论坛</a></li> 
+       <li><a href="http://www.leybc.com" title="" target="_blank">易语言编程</a></li> 
+       <li><a href="http://www.tolur.org/" title="" target="_blank">IT同路人论坛</a></li> 
+       <li><a href="http://www.jmpoep.com" title="未加qq好友" target="_blank">零日安全论坛</a></li> 
+       <li><a href="http://www.waitalone.cn/" title="未加qq好友" target="_blank">独自等待</a></li> 
+       <li><a href="http://www.secye.com" title="" target="_blank">SecYe安全</a></li> 
+       <li><a href="https://phpinfo.me/" title="" target="_blank">Lcy's Blog</a></li> 
+       <li><a href="http://p2j.cn" title="未加qq好友" target="_blank">PHP2Java</a></li> 
+       <li><a href="http://www.70sec.com" title="" target="_blank">70sec</a></li> 
+       <li><a href="http://www.nosafe.org/forum.php" title="" target="_blank">NoSafe社区</a></li> 
+       <li><a href="http://www.backlion.org" title="" target="_blank">渗透测试研究中心</a></li> 
+       <li><a href="https://www.chinabaiker.com/" title="" target="_blank">中国白客联盟</a></li> 
+       <li><a href="http://www.52js8.com/forum.php" title="" target="_blank">1401软件安全</a></li> 
+       <li><a href="http://bbs.wghostk.com/" title="" target="_blank">幽灵网安</a></li> 
+       <li><a href="http://www.4848438.com" title="" target="_blank">小胖博客</a></li> 
+       <li><a href="http://www.8090-sec.com/" title="" target="_blank">8090安全小组</a></li> 
+       <li><a href="http://bbs.ixsec.org/forum.php" title="" target="_blank">爱安全论坛</a></li> 
+       <li><a href="http://www.test404.com/" title="" target="_blank">Test404's Blog</a></li> 
+       <li><a href="http://www.xssec.org/" title="" target="_blank">新世纪安全</a></li> 
+       <li><a href="http://www.0dayhack.com/" title="" target="_blank">颓废's Blog</a></li> 
+       <li><a href="https://www.hackfun.org/" title="" target="_blank">hackfun</a></li> 
+       <li><a href="https://www.mrxn.net/" title="" target="_blank">Mrxn's Blog</a></li> 
+       <li><a href="http://blog.xiaohack.org/" title="" target="_blank">纯情's blog</a></li> 
+       <li><a href="http://www.heavensec.org/" title="" target="_blank">HEAVEN网安</a></li> 
+       <li><a href="http://www.00com.org" title="" target="_blank">收集家</a></li> 
+       <li><a href="http://www.y1ng.net/" title="" target="_blank">y1ng's Blog</a></li> 
+       <li><a href="http://www.weixianmanbu.com" title="" target="_blank">黑客博客</a></li> 
+       <li><a href="http://cracer.com/" title="未加qq好友" target="_blank">cracer</a></li> 
+       <li><a href="http://www.xksafe.com/" title="" target="_blank">邪客安全网</a></li> 
+       <li><a href="https://www.webshell.ren/" title="" target="_blank">土司安全网</a></li> 
+       <li><a href="http://www.sgzsec.com" title="" target="_blank">潇水一飞</a></li> 
+       <li><a href="http://www.52wlw.com/" title="" target="_blank">我爱物联网</a></li> 
+       <li><a href="https://www.leavesongs.com/" title="" target="_blank">phithon's Blog</a></li> 
+      </ul> 
+      <div style="clear:both;"></div> </li> 
+     <li> <h3 class="sideitem-heading"><span class="sideitem-title">办理VIP请点击下方进入官方淘宝店</span></h3> 
+      <ul> 
+       <a href="http://dwz.cn/4lxUTO" target="_blank"><img src="http://www.52bug.cn/vip.png" width="230" height="171" title="" align="" alt="" /></a> 
+      </ul> 
+      <div style="clear:both;"></div> </li> 
+    </ul>
+    <!--end #siderbar--> 
+   </div>
+   <!--end #content--> 
+   <div style="clear:both;"></div> 
+   <div id="footerbar"> 
+    <div class="footerbar-waper"> 
+     <p> 免责声明：<br /> 本站所发布的任何软件，全部来源于互联网，版权争议与本站无关。仅限用于学习和研究，您必须在下载后的24个小时之内，从您的电脑中彻底删除上述内容。学习网络技术是为了更好的提升自我安全意识。不允许将内容私自传播、销售或者其他任何非法用途！否则，一切后果请用户自负！<br /> <a> CopyRight &copy; Powered by </a><a href="http://www.52bug.cn" title="吾爱漏洞"> 52bug 技术支持 . &nbsp;</a> <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1254095424'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/z_stat.php%3Fid%3D1254095424%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));</script> 
+      <!--<a href="http://www.miibeian.gov.cn" target="_blank"></a>
+			    			<style>.yinyong {text-align:left !important;text-indent:2em !important;margin:10px 0 1em 0 !important;padding: 5px 10px!important;border: 1px dashed #CCC!important;background: #f7f7f7 url(http://www.52bug.cn/content/plugins/Lanye_downstyle/yinyongbg.png) right top no-repeat !important;color: #000 !important;font-size: 13px !important;line-height:22px !important;}
+.fujian {text-align:left !important;text-indent:0 !important;padding:0 0 0 32px !important;width: auto !important;background-image: url(http://www.52bug.cn/content/plugins/Lanye_downstyle/down_01.png) !important;background-position: left top !important;
+background-repeat: no-repeat !important;color: white !important;font-weight: bold !important;font-size: 15px !important;height: 32px !important;line-height: 32px !important;background-color: #F90 !important;margin: 10px 0 !important;box-shadow: 1px 2px 1px #999 !important;}
+.fujian a{color:#fff !important; font-family:"Microsoft Yahei" !important;}
+.fujian:hover{background-color:#00aff0 !important}
+.gray{margin:20px 0px !important;padding:15px 15px 15px 70px !important;font-size:12px !important;background:url(http://www.52bug.cn/content/plugins/Lanye_downstyle/checklist.png) no-repeat 20px 20px #f6f5f5;border:1px solid #cccccc !important;color:#555 !important;border-radius:8px} 
+.yellow {margin:20px 0px !important;padding:15px 15px 15px 70px !important;font-size:12px !important;background:url(http://www.52bug.cn/content/plugins/Lanye_downstyle/warning.png) no-repeat 20px 20px #fff9c6;border:1px solid #fbe951 !important;color:#cba200 !important;border-radius:8px} 
+.green {margin:20px 0px !important;padding:15px 15px 15px 70px !important;font-size:12px !important;background:url(http://www.52bug.cn/content/plugins/Lanye_downstyle/yes.png) no-repeat 20px 20px #EBF6E0;border:1px solid #b7ec82 !important;color:#649505 !important;border-radius:8px} 
+.blue {margin:20px 0px !important;padding:15px 15px 15px 70px !important;font-size:12px !important;background:url(http://www.52bug.cn/content/plugins/Lanye_downstyle/info.png) no-repeat 20px 20px #c3e5ff;border:1px solid #8accff !important;color:#0d70bb !important;border-radius:8px} 
+.red {margin:20px 0px !important;padding:15px 15px 15px 70px !important;font-size:12px !important;background:url(http://www.52bug.cn/content/plugins/Lanye_downstyle/noway.png) no-repeat 20px 20px #FFE9E9;border:1px solid #ffacac !important;color:#bd0000 !important;border-radius:8px} 
+</style>
+<a href="http://www.52bug.cn/sitemap.xml" rel="sitemap">sitemap</a><script type="text/javascript" src="http://www.52bug.cn/content/plugins/swsu_lazyload/jquery.min.js"></script>
+<script type="text/javascript" src="http://www.52bug.cn/content/plugins/swsu_lazyload/jquery.lazyload.js"></script>
+<script type="text/javascript">
+	var jQuery=$.noConflict();
+	jQuery("img").lazyload({
+		effect : "fadeIn",
+		failurelimit : 10});
+</script>
+			--> </p> 
+    </div> 
+   </div>
+   <!--end #footerbar--> 
+  </div>
+  <!--end #wrap--> 
+  <script>prettyPrint();</script> 
+  <!--返回顶部--> 
+  <script type="text/javascript" src="http://www.52bug.cn/content/templates/black/js/scrolltotop.js"></script> 
+  <script>scrolltotop.init();</script>  
+ </body>
+</html>

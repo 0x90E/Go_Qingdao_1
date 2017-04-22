@@ -1,0 +1,352 @@
+<!DOCTYPE html><html><head>
+    <title>登录智联招聘</title>
+        <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-icon" sizes="57x57" href="//img09.zhaopin.cn/2012/other/mobile/favicons/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="//img09.zhaopin.cn/2012/other/mobile/favicons/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="//img09.zhaopin.cn/2012/other/mobile/favicons/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="//img09.zhaopin.cn/2012/other/mobile/favicons/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="//img09.zhaopin.cn/2012/other/mobile/favicons/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="//img09.zhaopin.cn/2012/other/mobile/favicons/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="//img09.zhaopin.cn/2012/other/mobile/favicons/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="//img09.zhaopin.cn/2012/other/mobile/favicons/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="//img09.zhaopin.cn/2012/other/mobile/favicons/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="//img09.zhaopin.cn/2012/other/mobile/favicons/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="//img09.zhaopin.cn/2012/other/mobile/favicons/android-chrome-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="//img09.zhaopin.cn/2012/other/mobile/favicons/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="//img09.zhaopin.cn/2012/other/mobile/favicons/favicon-16x16.png" sizes="16x16">
+    <meta content="telephone=no,email=no" name="format-detection">
+    <link href="/Content/css?v=85AsOP-XcBfN5ztMm2xvBMuYHHBrIRZvQOzJaFVIrxc1" rel="stylesheet">
+
+    <script async="" src="/Scripts/analytics.js"></script><script type="text/javascript" async="" src="http://stats.g.doubleclick.net/dc.js"></script><script type="text/javascript" async="" src="/Scripts/dywe.js"></script><script src="/bundles/jquery?v=zDDctx9nWJT8KqBV9ISQShe9X7PvARnrYocA5s-H5SQ1"></script>
+
+    <noscript>您的浏览器不支持JavaScript,请使用其它浏览器</noscript>
+    
+</head>
+<body>
+     
+
+<script type="text/javascript">
+    var handlePromptTime;
+    //屏蔽android back
+    $(document).ready(function () {
+        window.addEventListener("backbutton", function (e) {
+            dialogCloseAction();
+        });
+    });
+    //====处理反馈完成后弹出提示====
+    function handlePrompt(val) {
+        $("body").append("<div class='handlePrompt'>" + val + "</div>");
+        clearTimeout(handlePromptTime);
+        handlePromptTime = setTimeout(function () {
+            $(".handlePrompt").remove();
+        }, 2000);
+    }
+    //判断是否为微信访问 否则清除cookie
+    function is_weixn() {
+        var ua = navigator.userAgent.toLowerCase();
+        if (ua.match(/MicroMessenger/i) == "micromessenger") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    function clCookie() {
+        if (!is_weixn()) {
+            clearCookie();
+        }
+    }
+    clCookie();
+    function reg() {
+        window.location.href = "/account/regist";
+    }
+    function Forget() {
+        window.location.href = "/account/Findpwd";
+    }
+    function return_login(){
+        window.location.href = "/account/Login";
+    }
+    var $vertifyImg = $('#vertifyImg'), paraId;
+    function getVCode() {
+        
+        $.ajax({
+            url: '/account/LoginCode?type=0&pictype=1',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                paraId = data.codeId;
+                $('#vertifyImg').attr('src', 'data:image/jpg;base64,' + data.imgDataBase64);
+                return paraId;
+            }
+        });
+    }
+    //获取r值
+    
+    var Mkey = "";
+    $(function(){
+        if ($("#verification").length>0){
+            getVCode();
+        }
+    })
+
+    $("#MvfctImg").click(function () {
+        getVCode();
+    });
+
+    //验证码显示条件
+    var verificationBool = true;
+
+    function login() {
+        $(".warn_message").text("");
+        var name = $("#userName").val();
+        var pwd = $("#password").val();
+        var yzm = $("#verification").val();
+
+        //验证账号
+        if (name == undefined || name == '') {
+            alert("请输入账号");
+            return;
+        }
+        //验证邮箱
+        var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+        if (pwd == undefined || pwd == '') {
+            alert("请输入密码");
+            return;
+        }
+        //验证验证码
+        if ($("#verification").length>0 && yzm == undefined || yzm == '') {
+            alert("请输入验证码");
+            return;
+        }
+
+        if(paraId == undefined){ paraId = "" }
+        if(yzm == undefined){ yzm = "" }
+
+        function setCookie(name,value){
+            var Days = 30;
+            var exp = new Date();
+            exp.setTime(exp.getTime() + Days*24*60*60*1000);
+            document.cookie = name + "="+ escape (value) + ";expires=" + exp.toGMTString();
+        };
+
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]);
+            return null;
+        };
+
+        $.post("/account/logon", { "userName": name, "pwd": pwd,vKey:paraId, vCode:yzm }, function (data, textSatus, jqxhr) {
+
+            //console.log(data.cookies);
+
+            if ($("#verification").length>0){
+
+                getVCode();
+
+            }
+
+                //判断data.NeedVerifyCode如果为true显示验证码
+                if(data.NeedVerifyCode == true && $("#verification").length < 1 && verificationBool){
+                    if (data.StatusCode != 200) {
+                        handlePrompt(data.StatusDescription);
+                    }
+                    $('<a><img src="//img09.zhaopin.cn/2012/other/mobile/m/img_login_3_16325.png" width="17" height="16"><input id="verification" name="verification" placeholder="输入验证码" type="text" value=""><img id="vertifyImg" style="top:11px;" src="" width="58" height="25" onclick=\'getVCode()\' /></a>').appendTo($(".log_reg_item"));
+                    getVCode();
+                    verificationBool = false;
+                    return false;
+                }
+
+                //判断验证码及登陆状态
+                //console.log(data);
+                if (data.StatusCode == 200||data.StatusCode == 603) {
+                    handlePrompt("登录成功");
+                } else {
+                    handlePrompt(data.StatusDescription);
+                    return false;
+                }
+              
+
+                for(var i = 0; i < data.cookies.length; i++) {
+                    var xinCookie = "";
+                    //console.log(data.cookies[i]);
+                    if (data.cookies[i].Name == "JSsUserInfo") {
+                        var date2 = new Date();
+                        date2.setTime(date2.getTime() + 3 * 3650000);
+                        // var xin_cookie = ";domain=.zhaopin.com;" + data.cookies[i].Value + ";path=/;expires=" + date2.toGMTString();
+                        console.log(data.cookies[i].Value);
+                        var stringOne = data.cookies[i].Value;
+                        var atValue = stringOne.replace(/;/g, '').split('=')[1].substring(0, stringOne.replace(/;/g, '').split('=')[1].length - 2);
+                        var rtValue = stringOne.replace(/;/g, '').split('=')[2];
+                        console.log('at的值是 ' + atValue + 'rt的值是 ' + rtValue);
+                        document.cookie = "at=" + atValue+ ";path=/;expires=" + date2.toGMTString() +";domain=.zhaopin.com" ;
+                        document.cookie= "rt=" + rtValue+ ";path=/;expires=" + date2.toGMTString() +";domain=.zhaopin.com";
+                    }
+                    //= xinCookie;
+                }
+                //验证码通过后储存登陆cookie
+                for (var i = 0; i < data.cookies.length ; i++) {
+
+                    var c = data.cookies[i];
+                    var date = new Date();
+                    date.setTime(date.getTime() + parseInt(c.Exipre) * 3650000);
+                    var str_cookie = c.Name + "=" + c.Value + ";path=/;expires=" + date.toGMTString();
+                    if (c.Name == "JSsUserInfo") {
+                        str_cookie += ";domain=.zhaopin.com";
+                        var date2 = new Date();
+                        date2.setTime(date2.getTime() + 3 * 3650000);
+                        str_cookie = c.Name + "=" + c.Value + ";path=/;expires=" + date2.toGMTString();
+                    }
+                    document.cookie = str_cookie;
+                    
+                    //判断localStorage是否执行
+                    var storage = window.localStorage;
+                    try {
+                        storage.setItem(c.Name, c.Value);
+                        break;
+                    } catch (error) {
+                        break;
+                    }
+                    //localStorage.setItem(c.Name,c.Value);
+                    
+                }
+                //v5 清除开通反馈通localStorage
+                localStorage.removeItem("FeedbackNum");
+                localStorage.removeItem("FeedbackNumCorInfo");
+                localStorage.removeItem("FeedbackNumIndex");
+
+                //如果是微信登录，登录成功后再请求将再请求与服务器请求绑定一次
+                    
+                setTimeout(function () {
+                    if(data.StatusCode == 603){
+                        window.location.replace("/resume/resumest1");
+                        return;
+                    }
+	                        window.location.href = "/";
+                }, 1);
+                
+        }, "json");
+        ga('send','event','denglu','click','accountLogin');
+    }
+
+    function rdlogin() {
+        $(".warn_message").text("");
+        var name = $("#userName").val();
+        var pwd = $("#password").val();
+        var yzm = $("#verification").val();
+        var wxid = $("input[id=rdlogin]").attr("data-wxid");
+        if (name == undefined || name == '') {
+            alert("请输入账号");
+            return;
+        }
+        if (pwd == undefined || pwd == '') {
+            alert("请输入密码");
+            return;
+        }
+        //验证验证码
+        if ($("#verification").length>0 && yzm == undefined || yzm == '') {
+            alert("请输入验证码");
+            return;
+        }
+    }
+    $(function () {
+        $(".j_employmentBox .check span").click(function () {
+            $(this).children(".bg").toggleClass("hover");
+        });
+    })
+
+</script>
+
+<style>
+    body{min-height: 457px;background:#fff;}
+    .wiser{ text-indent: -9999px; padding: 25% 0; }
+    .darcy-bottom{ width: 100%;padding: 12px 0;}
+    .darcy-bottom p{ text-align: center; font-size: 14px; color: #2287ff;text-decoration: underline;}  
+</style>
+<div class="searchMain">
+    <div class="container" id="BodyContainer">
+        <header id="r_header" class="r_title">
+            <div class="r_returnbk" id="backup">
+                <i></i>
+            </div>
+            登录智联招聘
+        </header>
+        <div class="warn_message"></div>
+        <section class="r_content logRegTabCon">
+<form action="/account/logon" method="post">                <div class="log_reg_item">
+                    <a>
+                        <img src="//img09.zhaopin.cn/2012/other/mobile/m/img_login_1_16325.png" width="17" height="20">
+                        <input id="userName" name="userName" placeholder="手机号/邮箱" type="email" value="">
+                    </a>
+                    <a>
+                        <img src="//img09.zhaopin.cn/2012/other/mobile/m/img_login_2_16325.png" width="17" height="20">
+                        <input id="password" name="pwd" placeholder="密码" type="password">
+                        <i class="show_hide_pass icon_invisible"></i>
+                    </a>
+                </div>
+                <section class="j_employmentBox other_operation">
+                    <div class="check">
+                        <span>
+                            <span class="bg hover"></span>
+                            <span style="background:none;" class="select">下次自动登录</span>
+                        </span>
+                        <a href="/account/Findpwd" class="right">忘记密码？</a>
+                    </div>
+                    <div class="btn" onclick="login();">登 录</div>
+                    <p>没有帐号，<a href="/account/regist?samsung=6" class="login_tip" onclick="lijizhuce();">立即注册</a></p>
+                    <div id="honor">
+                        <div class="wiser">解决一个非常离奇的bug</div>
+                        <a href="https://passport.zhaopin.com/org/login"><section class="darcy-bottom" id="company"><p>企业用户登录</p></section></a>
+                    </div>
+                </section>
+</form>
+        </section>
+    </div>
+</div>
+<script>
+    function GetQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    };
+    var Murl = '/account/getvalidcode';
+    //切换输入密码明暗文
+    $password = $('#password');
+    $('.log_reg_item a .show_hide_pass').click(function (event) {
+        $(this).hasClass("icon_invisible") ? ($(this).removeClass("icon_invisible").addClass("icon_visible"),
+         $password.attr("type", "text")) : $(this).hasClass("icon_visible") && ($(this).removeClass("icon_visible").addClass("icon_invisible"),
+         $password.attr("type", "password"));
+    });
+    $('#backup').on('click', function () {
+        if (GetQueryString('isEmail') == 6) {
+            window.location.href = "/";
+        } else {
+            dialogCloseAction();
+        };
+    });
+
+    //立即注册
+    function lijizhuce() {
+        ga('send', 'event', 'lijizhuce', 'click', 'accountLogin');
+    }
+
+</script>
+    <script src="/Scripts/common_ga.js"></script>
+    <script src="/Scripts/global_za.js"></script>
+    <script type="text/javascript">
+    function goreg() {
+        //_gaq.push(['_trackEvent', 'Registration_Event', 'clicked']);
+        //ga('send', 'event', 'Registration_Event', 'clicked')
+        window.location.href = "/account/regist";
+    }
+    </script>
+    
+    <script src="/Scripts/ga/globalGA.js"></script>
+
+
+
+
+</body></html>

@@ -1,0 +1,177 @@
+<html><head></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">/**
+ * Created by govo on 15/10/30.
+ */
+var loader;
+(function(loader) {
+    var file_loaded = 0;
+    var file_toload = 0;
+
+    var loadingStar = null;
+    var loadingProgress = null;
+    var loadingInterval = null;
+    var loadingCount = 0;
+    var loadingPercent = 0;
+
+    var cdnRoot = "https://dxgl.res.qiukuixinxi.com/game_v1.9.26.1/".indexOf("{")==0? "" :"https://dxgl.res.qiukuixinxi.com/game_v1.9.26.1/";
+    var versionTag = "1.9.26.1_3112";
+
+    var CHANNEL_CDNROOT = {
+    };
+
+    var channel = window.getChannel() || window.getChannelByPath("egret");
+
+    if(!DEBUG &amp;&amp; CHANNEL_CDNROOT[channel]){
+        cdnRoot = CHANNEL_CDNROOT[channel];
+    }
+
+
+    function setupUI(){
+
+        document.getElementById("incorrect-orientation").addEventListener('touchmove',function(e){
+            e.preventDefault();
+        },true);
+
+        loadingInterval = window.setInterval(function () {
+            var percent = Math.min( loadingPercent+0.02,0.95 );
+            setLoadingProgress(percent);
+        },100);
+
+        var mobileType = mobileTest();
+        if(mobileType.isMobile){
+
+            var page_size = getPageSize();
+            var zoom = page_size.width / 375;
+            document.getElementById("sg-loadscrn").style.zoom = ''+zoom;
+
+        }
+
+    }
+
+
+    function mobileTest(){
+        var ua = navigator.userAgent.toLocaleLowerCase();
+        var pf = navigator.platform.toLocaleLowerCase();
+        var m = window.location.search.toString().match(/[\?&amp;]*v=([^&amp;]+)/);
+        var v = m?m[1]:null;
+        var isAndroid = (/android/i).test(ua)||((/iPhone|iPod|iPad/i).test(ua) &amp;&amp; (/linux/i).test(pf))
+            || (/ucweb.*linux/i.test(ua));
+        var isIOS =(/iPhone|iPod|iPad/i).test(ua) &amp;&amp; !isAndroid;
+        var isWinPhone = (/Windows Phone|ZuneWP7/i).test(ua);
+        var isMobile = isAndroid || isIOS || isWinPhone || v=="m"; //DEBUG
+        return {
+            isMobile:isMobile,
+            isIOS:isIOS,
+            isAndroid:isAndroid,
+            isWinPhone:isWinPhone
+        }
+    }
+
+    function setLoadingProgress(count){
+        loadingPercent = Math.min(Math.max(count,loadingPercent), 1);
+
+        if(loadingStar==null) loadingStar = document.getElementById("load-star");
+        if(loadingProgress==null) loadingProgress = document.getElementById("load-progressed");
+        var max = 183;
+        var pos = max*loadingPercent;
+        loadingStar.style.left = pos+"px";
+        loadingProgress.style.width = pos+"px";
+    }
+
+    function hideLoading(){
+        document.getElementById("sg-loadscrn").style.display = "none";
+        if(loadingInterval) window.clearInterval(loadingInterval);
+        loadingInterval = null;
+    }
+
+    function startGame() {
+
+
+        window.setTimeout(function(){
+            setLoadingProgress(1);
+            window.setTimeout(function(){
+                hideLoading();
+            },80);
+        },10);
+
+        var support = [].map &amp;&amp; document.createElement("canvas").getContext;
+        if (support) {
+            egret_h5.startGame();
+        } else {
+            alert("Egret 不支持您当前的浏览器")
+        }
+    }
+
+    function getQueryString(url_search) {
+        if (url_search == null) {
+            url_search = window.location.search;
+        }
+        var ret = {};
+        var regspt = /[?&amp;]/;
+        var parts = url_search.split(regspt);
+        for (var i = 0; i &lt; parts.length; ++i) {
+            var part = parts[i];
+            if (part != '') {
+                var assign = part.split('=');
+                var key = decodeURIComponent(assign[0]);
+                var val = decodeURIComponent(assign[1]);
+                ret[key] = val;
+            }
+        }
+        return ret;
+    }
+
+    var retryCount = {};
+    function loadJS(url, callback) {
+        var fileref = document.createElement('script');
+        fileref.setAttribute('type', 'text/javascript');
+        fileref.setAttribute('src', url);
+        fileref.onload = function() {
+            file_loaded++;
+            callback();
+            if (file_loaded &gt;= file_toload) {
+                startGame();
+            }
+        };
+        fileref.onerror = function() {
+            if(!retryCount[url]){
+                retryCount[url]=0;
+            }
+            retryCount[url]++
+
+            if(retryCount[url]&lt;5){
+                loadJS(url,callback);
+            }
+            file_toload--;
+        };
+        file_toload++;
+        document.getElementsByTagName('body')[0].appendChild(fileref);
+    }
+
+
+    function getPageSize() {
+        var html = document.documentElement;
+        return {
+            width: Math.max(html.clientWidth, html.scrollWidth, html.offsetWidth),
+            height: Math.max(html.clientHeight, html.scrollHeight, html.offsetHeight)
+        };
+    }
+
+    function loadGame() {
+        console.log('load game');
+        setupUI();
+
+
+        setLoadingProgress(0.1+loadingPercent);
+        loadJS(cdnRoot+"launcher/egret_require.js?v="+versionTag, function() {
+            setLoadingProgress(0.2+loadingPercent);
+            loadJS(cdnRoot+"launcher/egret_loader.js?v="+versionTag, function() {
+                setLoadingProgress(0.2+loadingPercent);
+                loadJS(cdnRoot+"launcher/game-min2.js?v="+versionTag, function() {
+                    console.log("game mini")
+                    setLoadingProgress(0.2+loadingPercent);
+                });
+            });
+        });
+    }
+    loadGame();
+})(loader || (loader = {}));</pre></body></html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html><html><head lang="en">
+		<meta charset="UTF-8">
+			<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+		<!--<meta content="initial-scale=1,maximum-scale=1,user-scalable=no,width=device-width" name="viewport">-->
+		<title>视频直播中</title>
+		<style>
+			body {
+				margin: 0;
+				padding: 0;
+			}
+		</style>
+		<script type="text/javascript" src="https://special.dajie.com/nb/assets/vsite/onlivexjh_mobile/js/jquery-1.10.1.min.19198.js"></script>
+		<!--<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">-->
+		<script type="text/javascript" src="https://special.dajie.com/nb/assets/vsite/onlivexjh_mobile/js/dajieWebViewBridge.19198.js"></script>
+		<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+		<script type="text/javascript" src="https://special.dajie.com/nb/assets/vsite/onlivexjh_mobile/js/sharewxindex.19198.js"></script>
+		<script type="text/javascript">
+			$.getUrlParam = function(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if(r != null) return unescape(r[2]);
+				return null;
+			}
+			var activityId = $.getUrlParam("activityId");
+			var guestId = $.getUrlParam("guestId");
+			var markstatus = $.getUrlParam("markstatus");
+			dajieApp.set('shareOption', {
+				"isShow": "false"
+			});
+			function doSet() {
+				$(document).attr("title", "视频回放中"); //修改title值
+			}
+			if(markstatus == 2) {
+				doSet();
+			}
+			var href;
+			if(guestId == null || guestId == undefined) {
+				href = "/livetalk/getPlayUrl?activityId=" + activityId;
+			} else {
+				href = "/livetalk/getPlayUrl?activityId=" + activityId + '&guestId=' + guestId;
+			}
+			$.ajax({
+				type: "get",
+				url: href,
+				dataType: 'json',
+				success: function(data) {
+					if(data.isOk == 1) {
+						//  				请求成功
+						$("#iframevedio").attr('src', data.url.replace('https','http'));
+//						$("#iframevedio").attr('src', data.url.replace('https','http').replace('http','https'))
+					}
+				}
+			});
+
+			function onBridgeReady() {
+				WeixinJSBridge.call('hideOptionMenu');
+			}
+
+			if(typeof WeixinJSBridge == "undefined") {
+				if(document.addEventListener) {
+					document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+				} else if(document.attachEvent) {
+					document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+					document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+				}
+			} else {
+				onBridgeReady();
+			}
+		</script>
+	</head>
+
+	<body style="">
+		<iframe id="iframevedio" src="" style="width:100%; height:100%; position:absolute; display:block;" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"></iframe>
+	
+
+
+</body></html>

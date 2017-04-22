@@ -1,0 +1,35 @@
+<html><head></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">var JPlaceHolder = {
+    //检测
+    _check : function(){
+        return 'placeholder' in document.createElement('input');
+    },
+    //初始化
+    init : function(){
+        if(!this._check()){
+            this.fix();
+        }
+    },
+    //修复
+    fix : function(){
+        jQuery('.input[placeholder]').each(function(index, element) {
+            var self = $(this), txt = self.attr('placeholder');
+            //当input标签有值的时候 就不用加搜索关键字了
+            if(self.val().length==0){
+            	self.wrap($('&lt;div&gt;&lt;/div&gt;').css({position:'relative', zoom:'1', border:'none', background:'none', padding:'none', margin:'none'}));
+                var pos = self.position(), h = self.outerHeight(true), paddingleft = self.css('padding-left');
+                var holder = $('&lt;span&gt;&lt;/span&gt;').text(txt).css({position:'absolute', left:'6px', top:'6px', height:h, lienHeight:h, paddingLeft:paddingleft, color:'#aaa'}).appendTo(self.parent());
+                self.focusin(function(e) {
+                    holder.hide();
+                }).focusout(function(e) {
+                    if(!self.val()){
+                        holder.show();
+                    }
+                });
+                holder.click(function(e) {
+                    holder.hide();
+                    self.focus();
+                });
+            }
+        });
+    }
+};</pre></body></html>

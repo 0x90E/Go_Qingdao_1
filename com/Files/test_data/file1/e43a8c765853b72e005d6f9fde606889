@@ -1,0 +1,75 @@
+<!DOCTYPE html><html><head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"> 
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<meta name="Description" content="时空网博客，提倡优质生活关注都市脉搏，分享前沿体验，交流个性思想。方便易用，无限空间，免费注册即与时空网百万网友为邻，共创广西网络精彩生活每一天">
+<meta name="Keywords" content="广西博客,南宁博客，时空博客">
+<title>_时空博客</title>
+<link href="/mobile/css/boke.css?23" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/mobile/js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/mobile/js/jquery.hiSlider.min.js"></script>
+
+<script src="http://bbs.gxsky.com/wx/2016/gohome/js/layer.mobile-v1.7/layer/layer.js" type="text/javascript"></script><link href="http://bbs.gxsky.com/wx/2016/gohome/js/layer.mobile-v1.7/layer/need/layer.css" type="text/css" rel="styleSheet" id="layermcss">
+<script>
+var page = 1;
+var flag = true;
+function ajaxList(){
+  	   if(flag==false){return false;}
+   flag = false;
+   page++;
+   var p = "?t=list2&page="+page+"&uid=0";
+       $.ajax({
+            type:'GET',
+            url: 'http://blog.gxsky.com/mobile/backstage.php'+p,
+            success: function(data) {
+flag = true;
+var str='';
+var obj=eval('('+data+')');
+for(var i in obj){
+str += '<div id="zw">';
+str += '<h1>'+obj[i].title+'</h1>';
+str += '<div class="zz">'+obj[i].fb_date+' 阅读：'+obj[i].viewcount+' </div>';
+str += '<div class="nr">'+obj[i].mem+'</div>';
+str += '<div class="ck"><a href="article.php?id='+obj[i].id+'">>>阅读全文</a></div>';
+str += '</div>';
+}
+if(str!=''){
+$("#qk").append(str); 
+}else{
+page--;
+layer.open({ content: '已经是最后一页',time: 2});
+}
+
+            }
+        });
+ }
+</script>
+<style>
+#qk img {max-width:100%;}
+</style>
+</head>
+
+<body>
+
+<div id="page">
+
+<div style="position:relative;">
+<img src="http://blog.gxsky.com/mobile/images/nrydh.jpg" width="100%">
+
+<div style="position:absolute;padding-left:40%;top:35%;font-size:20px;"></div>
+
+
+</div>
+
+<div id="qk">
+
+
+
+</div>
+
+<div id="zhankai" onclick="ajaxList()">展开更多</div>
+
+</div>
+
+
+
+</body></html>

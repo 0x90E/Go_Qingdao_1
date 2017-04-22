@@ -1,0 +1,381 @@
+<!--产品留言板模板--><html><head><script async="" src="http://220.181.84.178/feedback/url?url=http://www.sina.com.cn/&amp;callback=jQuery17103758923832792789_1491055081363&amp;_=1491055081403"></script>
+    <meta name="generator" content="HTML Tidy, see www.w3.org">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8;">
+	<meta http-equiv="content-script-type" content="text/javascript"> 
+	
+    <title>网友意见_新浪网</title>
+	<style type="text/css">
+	td,p,li,select,input {font-size:12px}
+	.l13 {line-height:130}
+	.l15 {line-height:150}
+	.f14 {font-size:14.9px;}
+	.fl {font-size:14.9px;line-height:130}
+	A:hover {color: ff0000;}
+	</style>
+	
+	
+	<script src="http://news.sina.com.cn/comment/cmnt_xml.js"></script>
+<script type="text/javascript" src="http://news.sina.com.cn/js/792/2012-03-12/11/jquery-1.7.1.min.js"></script>
+	<script src="http://news.sina.com.cn/comment/cmnt_skin_v4.js"></script>
+    <!-- 统一登陆 begin -->
+    <script type="text/javascript" charset="UTF-8" src="http://i.sso.sina.com.cn/js/sinaSSOManager.js"></script>
+    <script type="text/javascript">
+        sinaSSOManager.config.service = "comment";
+    </script>
+    <!-- 统一登陆 end -->
+
+	<script>
+	
+	/*@cc_on
+	var jscript_ver = @_jscript_version;
+	var jscript_build =  @_jscript_build;
+	@*/
+	
+	////////////////////////////////////////////////////////////////////////////
+	// extend param
+	function extend_param() {
+		var ext = "";
+		var query_string = params( document.location );
+		var pairs = query_string.split( "&" );
+		for ( var i=0; i<pairs.length; ++i ) {
+			var item = pairs[i].split( "=" );
+			if ( item.length != 2 || item[0]=="channel" || 
+				 item[0]=="newsid" || item[0]=="style" ) {
+				continue;
+			}
+			ext += pairs[i] + "\n";
+		}
+		return ext;
+	}
+	// render title function
+	function feedback_renderer( News ) {
+		g_news = News;
+		if ( News.n_url != "" ) {
+			obj("_TITLE_URL_").innerHTML = "<a href='" + News.n_url + "'>" + News.n_title + "</a>";
+		} else {
+			obj("_TITLE_URL_").innerHTML = News.n_title;
+		}
+		var title_spans = tag_objs( "span", "_TITLE_" );
+		for ( var i=0; i<title_spans.length; ++i ) {
+			title_spans[i].innerHTML = News.n_title;
+			if ( (News.n_title).indexOf("新浪") != -1 ) {
+				title_spans[i].innerHTML += "意见反馈留言板";
+			}
+		}
+		
+		//修改病句,"欢迎您对XXX[意见反馈留言板]提出意见和建议"
+		obj("_NEWS_TITLE_").innerHTML = News.n_title;
+		
+		var escaped_tiele = News.n_title.replace( /'/g, "_" );
+		escaped_tiele = escaped_tiele.replace( /"/g, "_" );
+		document.title = ( "网友意见_"+escaped_tiele+"_新浪网" );	
+		
+		var tips = tag_objs( "span", "must_fill" );
+		for ( var i=0; i<tips.length; ++i ) {
+			if ( g_news.n_valid==N_IMPORTANT ) { 
+				show_obj( tips[i] );
+			}
+		}
+		
+		// FAQ
+		var faq_url = "http://tech.sina.com.cn/focus/sinahelp.shtml";
+		//if ( News.n_faq != "" ) {
+		//	faq_url = News.n_faq;
+		//}
+		obj("_FAQ_").href = faq_url;
+		if ( News.n_newsid==172 ){//新浪博客6.0测试版
+			obj("_FAQ_").innerHTML = "帮助";
+			obj("_SUGGESTION_").innerHTML += "您<br>也可以不填写以上信息直接提交意见和建议。"
+		}
+		else if ( News.n_newsid==219 ){//新浪微博
+		    obj("_PLACE_").style.display="none";
+		    obj("_LABEL_FOR_FAQ_").innerHTML = "常见问题请浏览";
+		    obj("_FAQ_").innerHTML = "新浪微博帮助";
+			obj("_SUGGESTION_").innerHTML = "建议您填写联系电话，将有助于我们尽快解决<br>您提出的问题，并及时与您沟通处理结果。"
+		}
+	}
+	////////////////////////////////////////////////////////////////////////////
+	// submit function
+	function submit_form( the_form ) {
+		if ( the_form.words.value == "" ) {
+			alert( "请填写建议内容" );
+			return;
+		}
+
+		// debug info
+		var prefix = "------调试信息------\n"
+		if ( navigator.userAgent != "" ) {
+			prefix += ( " 浏览器：" + navigator.userAgent + "\n" );
+		}
+		if ( is_ie() ) {
+			try{
+				prefix += ( " IE版本：" + oClientCaps.getComponentVersion("{89820200-ECBD-11CF-8B85-00AA005B4383}","ComponentID") + "\n" );
+				prefix += ( " jscript.dll版本：" + jscript_ver + " build " + jscript_build + "\n" );
+			}
+			catch(e){
+			        prefix += ( " IE版本：" + navigator.appVersion + "\n" );
+                                prefix += ( " jscript.dll版本：" + jscript_ver + " build " + jscript_build + "\n" );	
+
+			}
+		}
+		if ( document.referrer != "" ) {
+			prefix += ( " 浏览页面：" + document.referrer + "\n" );
+		}
+
+		// extend info
+		var ext = extend_param();
+		if ( ext != "" ) {
+			prefix += ( "\n------附加参数------\n" );
+			prefix += ext;;
+		}
+		
+		// connect info
+		prefix += ( "\n------联系信息------\n" );
+		if ( typeof(sinaSSOManager) == "object" ) {
+    		var cookiearr = sinaSSOManager.getSinaCookie();
+    		if ( cookiearr ) {
+    		    prefix += ( " UID：" + cookiearr.uid + "\n" );
+    			prefix += ( " 新浪会员：" + cookiearr.user + "\n" );
+    			prefix += ( " 新浪昵称：" + cookiearr.nick + "\n" );
+    		}
+    	}
+		
+		if ( the_form.user.value != "" ) {
+			prefix += ( " 用户：" + the_form.user.value + "\n" );
+		} else if ( g_news.n_valid == N_IMPORTANT ) {
+			alert( "请填写您的姓名" );
+			return;
+		}
+		
+		if ( the_form.email.value != "" ) {
+			prefix += ( " 邮箱：" + the_form.email.value + "\n" );
+		} else if ( g_news.n_valid == N_IMPORTANT ) {
+			alert( "请填写您的联系Email" );
+			return;
+		}
+		
+		if ( the_form.place.value != "" ) {
+			prefix += ( " 地区：" + the_form.place.value + "\n" );
+		}
+
+		if ( the_form.phone.value != "" ) {
+			prefix += ( " 电话：" + the_form.phone.value + "\n" );
+		}
+		
+		// message
+		prefix += ( "\n------反馈意见------\n" );
+		if ( the_form.type.checked ) {
+			prefix += "技术类建议\n";
+		}
+		
+		the_form.content.value = ( prefix + the_form.words.value );
+		the_form.submit();
+		alert( "提交建议成功" );
+		the_form.reset();		
+	}	
+	function post_error( msg ) {
+		return;
+	}
+	////////////////////////////////////////////////////////////////////////////
+	function render_page( channel, newsid ) {
+		// global vars
+		g_filter.channel = channel;
+		g_filter.newsid = newsid;
+		// init post form
+		document.post_form.action = POST_CGI;
+		document.post_form.channel.value = g_filter.channel;
+		document.post_form.newsid.value = g_filter.newsid;
+		g_postform = document.post_form;
+		// render news
+		load_news( g_filter.channel, g_filter.newsid, feedback_renderer );
+	}		
+	function strip_domain( url ) {
+		var domain = url.toLowerCase();
+		var pos1 = domain.indexOf( "http://" );
+		if( pos1 == -1 ) {
+			return "";
+		}
+		var pos2 = domain.indexOf( "/", pos1+7 );
+		if( pos2 == -1 ) {
+			pos2 = domain.length;
+		}
+		return ( domain.substring(pos1+7,pos2) );
+	}
+	//http://comment5.news.sina.com.cn/feedback/url
+	function load_feedback( referrer ) {
+                channel = "ly";
+                newsid = "50";
+		$.ajax({
+		  url       : "http://220.181.84.178/feedback/url?url="+referrer,
+		  async     : true,
+		  dataType  : 'jsonp', 
+		  success   : function(data_json){
+			if(data_json.result.status.code==0){
+				my_data = data_json.result.data
+				channel = my_data.split(':')[0]
+				newsid = my_data.split(':')[1]
+				sinaCMNT.embed.init({"channel":channel,"newsid":newsid,"callback":cmnt_print,"promptconf":{'text':"评论成功"},"group":0});
+				}
+  			}	
+
+		});	
+	}
+	////////////////////////////////////////////////////////////////////////////
+	</script>
+
+  </head>
+
+  <body bgcolor="#f9cd34" topmargin="0" marginheight="0" leftmargin="0" marginwidth="0">
+    <center>
+      <table width="482" border="0" cellpadding="0" cellspacing="0" bgcolor="#f9cd34">
+        <tbody><tr>
+          <td width="7" height="45"><img alt="" src="http://www.sinaimg.cn/dy/survey/c.gif" width="1" height="1"></td>
+          <td width="475"><img alt="" src="http://www.sinaimg.cn/home/deco/2009/0330/logo_home.gif"></td>
+        </tr>
+      </tbody></table>
+
+      <table width="482" border="0" cellpadding="0" cellspacing="0">
+        <tbody><tr>
+          <td height="40" bgcolor="#fff2bb" width="300">　
+		  	<a href="http://www.sina.com.cn">新浪网</a> &gt; 
+			<span id="_TITLE_URL_"></span> &gt; 
+			网友留言</td>
+          <td height="40" bgcolor="#fff2bb" width="180">&nbsp;</td>
+        </tr>
+        <tr>
+          <td height="1" colspan="2"><img alt="" src="http://www.sinaimg.cn/dy/survey/c.gif" width="1" height="1"></td>
+        </tr>
+      </tbody></table>
+
+      <iframe name="post_target" src="about:blank" width="0" height="0"></iframe><table width="482" border="0" cellpadding="0" cellspacing="0" bgcolor="#fff2bb">
+        <tbody><tr>
+          <td colspan="2" height="40" align="center" class="f14" valign="bottom">
+		  <b><span name="_TITLE_"></span></b> </td>
+        </tr>
+        <tr>
+          <td colspan="2" height="60" align="center" class="f14">
+            您好，欢迎您对<span id="_NEWS_TITLE_"></span>提出意见和建议。<br>
+            <center>
+              <span id="_LABEL_FOR_FAQ_">常见疑难问题请浏览</span><a id="_FAQ_" href="#" target="_blank">产品答疑</a>。
+            </center>
+          </td>
+        </tr>
+
+		<!--FORM提交结果-->
+		
+		
+		<!--FORM开始-->
+		<form method="POST" name="post_form" target="post_target" action="http://comment5.news.sina.com.cn/cmnt/submit"></form>
+		<input type="HIDDEN" name="channel">
+		<input type="HIDDEN" name="newsid">
+		<input type="HIDDEN" name="anonymous" value="1">
+		<input type="HIDDEN" name="content" value="">
+		
+        <tr>
+          <td colspan="2" height="30" align="center">
+            <table border="0" cellspacing="0" cellpadding="0" width="440">
+			
+              <tbody><tr>
+                <td width="100" height="25" class="f14"><b>您的姓名：</b></td>
+                <td width="340" valign="top">
+				<!--用户名-->
+				<input type="TEXT" name="user" size="30" class="f14"> 
+				<font style="font-size:14.9px;line-height:150%"><span name="must_fill" style="display:none">(必填)</span></font></td>
+              </tr>
+			  
+              <tr id="_MAIL_">
+                <td class="f14" height="25"><b>联系Email：</b></td>
+                <td valign="top">
+				<!--用户EMAIL-->
+				<input type="text" name="email" size="30" class="f14"> 
+				<font style="font-size:14.9px;line-height:150%"><span name="must_fill" style="display:none">(必填)</span></font></td>
+              </tr>
+
+              <tr id="_PLACE_">
+                <td class="f14" height="25"><b>所在地区：</b></td>
+                <td valign="top">
+				<!--用户地区-->
+				<input type="text" name="place" size="30" class="f14"> 
+				<font style="font-size:14.9px;line-height:150%"><span style="display:none">(必填)</span></font></td>
+              </tr>
+
+              <tr>
+                <td class="f14" height="25"><b>联系电话：</b></td>
+                <td valign="top">
+				<!--用户电话-->
+				<input type="text" name="phone" size="30" class="f14"> 
+				<font style="font-size:14.9px;line-height:150%"><span style="display:none">(必填)</span></font></td>
+              </tr>
+
+              <tr align="center" valign="top">
+                <td colspan="2" height="50" class="f14"><span id="_SUGGESTION_">建议您填写Email和电话联系方式信息，将有助于我们<br>
+				尽快解决您提出的问题，并及时与您沟通处理结果。</span></td>
+              </tr>
+			  
+              <tr>
+                <td valign="top" class="f14"><br>
+                <b>意见及建议：</b></td>
+                <td valign="top">
+				<!--正文-->
+				<textarea name="words" wrap="SOFT" cols="29" rows="8" class="f14"></textarea></td>
+              </tr>
+
+              <tr>
+                <td class="f14" height="25"><b>　</b></td>
+                <td valign="top">
+				<!--技术/非技术-->
+				<input type="CHECKBOX" name="type" value="1"> 网站技术类建议</td>
+              </tr>
+
+              <tr>
+                <td colspan="2" height="40" align="center">
+				<!--提交-->
+				<input type="BUTTON" value="  提交  " onclick="javascript:submit_form(document.post_form);return false;"></td>
+              </tr>
+
+            </tbody></table>
+          </td>
+        </tr>
+		
+		<!--FORM结束-->
+		
+		
+      </tbody></table>
+    </center>
+	
+	<!--load xml-->
+	<iframe name="log_frame" width="0" height="0"></iframe>
+<script type="text/javascript" src="http://comment.sinajs.cn/cmnt_embed_v5.js"></script>
+	<script>
+	////////////////////////////////////////////////////////////////////////////
+	// auto check newsid
+	channel = cgi_param( g_params, "channel" );
+	newsid  = cgi_param( g_params, "newsid" );
+
+	url  = cgi_param( g_params, "url" );
+	function cmnt_print(){
+		document.post_form.channel.value = channel;
+                document.post_form.newsid.value = newsid;
+		feedback_renderer(this.News)
+	}
+	if ( channel=="" || newsid=="" ) {
+        	var referrer = "http://www.sina.com.cn/";
+		if (url!=""){
+			referrer = url
+		}
+                else if ( document.referrer != "" ) {
+                                referrer = document.referrer;
+                }
+                        load_feedback( referrer );
+	}
+	else{
+		sinaCMNT.embed.init({"channel":channel,"newsid":newsid,"callback":cmnt_print,"promptconf":{'text':"评论成功"},"group":0});
+	}
+	////////////////////////////////////////////////////////////////////////////
+	</script>	
+	
+	<ie:clientcaps id="oClientCaps" style="{behavior:url(#default#clientcaps)}">
+
+  
+
+</ie:clientcaps></body></html>

@@ -1,0 +1,228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><script type="text/javascript" src="/psu/js/common.js"></script>
+
+
+	<meta content="MSHTML 6.00.2900.2180" name="GENERATOR">
+	<meta http-equiv="pragma" content="no-cache">
+	<meta http-equiv="cache-control" content="no-cache">
+	<meta http-equiv="expires" content="0">
+	
+	<title>汇付POS管理平台</title>
+	<link href="css/pos_style.css" rel="stylesheet" type="text/css">
+	<style type="text/css">
+	.ocx_style {
+		border: 1px solid #7F9DB9;
+		background-color: #FFFFFF;
+		width: 148px;
+		height: 20px;
+	}
+	</style>
+	
+	<script type="text/javascript" src="/psu/js/jquery.js"></script>
+	<script language="javascript" src="/psu/js/index.js"></script>
+	<script language="javascript" src="/psu/js/common.js"></script>
+	<script language="javascript" src="/psu/js/jquery.blockUI.js"></script>
+	<script language="javascript" src="/psu/js/PassGuardCtrl.js"></script>
+	
+	<script language="javascript">
+	document.onkeydown = function(event){
+		event = event || window.event;
+		if(event.keyCode==13){
+			return formSubmit();
+		}
+	}
+
+	function verifyCode() {
+		var nowTime = new Date();
+		document.getElementById('aa').src = 'common/authCode.jsp?now=' + nowTime
+				.getTime().toString();
+	}
+
+	var pgeditor = new $.pge( {
+		pgePath: "http://www.chinapnr.com/bpp/addon/", // 控件目录，原：https://hs0anquan.blob.core.chinacloudapi.cn/addon/
+		pgeId : "_ocx_password", //控件ID
+		pgeEdittype : 0, //控件类型,0星号,1明文
+		pgeEreg1 : "[\\s\\S]*", //输入过程中字符类型限制
+		pgeEreg2 : "[\\s\\S]{6,20}", //输入完毕后字符类型判断条件
+		pgeMaxlength : 20,//允许最大输入长度
+		pgeTabindex : 0, //tab键顺序，控件在当前表单中的tabindex顺序
+		pgeClass : "ocx_style", //控件css样式，可以设置控件框高度、长度
+		pgeInstallClass : "ocx_style", //针对安装或升级
+		pgeOnkeydown : "formSubmit()" //光标在密码框内按回车键后要调用的函数，比如：提交表单的函数
+	});
+
+	window.onload = function() {
+		_$("instId").focus();
+		pgeditor.pgInitialize(); //初始化控件
+	}
+
+	function get_time() {
+		return new Date().getTime();
+	}
+
+	function _$(v) {
+		return document.getElementById(v);
+	}
+
+	function formSubmit() {
+		if(document.getElementById("instId").value=="")
+			return false;
+		if(document.getElementById("operId").value=="")
+			return false;
+		if (pgeditor.pwdLength() < 1)
+			return false;
+		if (document.getElementById("authCode").value == "")
+			return false;
+
+		// 根据pgeEreg2参数判断输入是否符合要求
+		if (pgeditor.pwdValid() == 1) {
+			alert("密码不符合要求");
+			_$("_ocx_password").focus();
+			return false;
+		}
+		if (pgeditor.pwdLength() == 0) {
+			alert("密码不能为空");
+			_$("_ocx_password").focus();
+			return false;
+		}
+
+		//设置32位长度随机因子，用于AES密钥转换
+		$.ajax( {
+			url : "./srand_num.jsp?" + get_time(),
+			type : "GET",
+			async : false,
+			success : function(srand_num) {
+				pgeditor.pwdSetSk(srand_num); //设置32长度随机因子
+		}
+		});
+
+		//获得密文
+		var PwdResult = pgeditor.pwdResult();
+
+		//将获得密文赋值给HTML表单中的隐藏域
+		_$("operPass").value = PwdResult;
+
+		document.form.submit();
+
+		return true;
+	}
+
+	function clearItems() {
+
+		_$("instId").value = '';
+		_$("operId").value = '';
+		_$("authCode").value = '';
+		pgeditor.pwdclear();
+
+		return true;
+	}
+</script>
+</head>
+
+<body>
+<div class="float_left width_100 pos_bg_01">
+    <div class="main">
+        <div class="float_left margin_top_10"><img src="images/pos_logo.gif" width="420" height="54"></div>
+    </div>
+</div>
+<form name="form" action="main.do" method="post">
+<div class="float_left width_100">
+    <div class="main">
+        <div class="float_left width_100 pos_bg_02">
+        <div class="pos_dr">
+        	<div class="float_left width_100 pos_bgcolor_01 line_height_29 font_color_white">
+            <div class="float_left padding_left_10 font_size_14 font_bold">用户登录</div>
+            </div>
+            	
+	            		<div class="width_70">
+	            			<div class="float_left margin_top_30 width_100 font_color_06">
+	            				<div class="float_left width_100">
+	            				<div class="float_left line_height_25" style="width:30%">机构号：</div>
+	            				<div class="float_left">
+	            					
+	            					<input id="instId" name="instId" maxlength="8" type="text" size="20">
+	            				</div>
+	            			</div>
+	            			<div class="float_left width_100 margin_top_5">
+	            				<div class="float_left line_height_25" style="width:30%">操作员号：</div>
+	            				<div class="float_left">
+	            					
+	            					<input id="operId" name="operId" maxlength="20" type="text" size="20">
+	            				</div>
+	            			</div>
+	            			<div class="float_left width_100 margin_top_5">
+		            			<div class="float_left line_height_25" style="width:30%">密&nbsp;&nbsp;&nbsp;&nbsp;码：</div>
+		            			<div class="float_left">
+		            				
+		            				<script type="text/javascript">pgeditor.generate()</script><div id="_ocx_password_down" class="ocx_style" style="text-align:center;"><a href="http://www.chinapnr.com/bpp/addon/ChinaPnRPassGuardSetupFF.exe">请点此安装控件</a></div>
+		            			</div>
+	            			</div>   
+	
+							<div class="float_left width_100 margin_top_5">
+								<div class="float_left line_height_25" style="width:30%">验证码：</div>
+								<div class="float_left">
+									<input id="authCode" name="authCode" maxlength="4" type="text" size="6">
+								</div>
+								<div class="float_left margin_left_10">
+									<img border="0" id="aa" width="68" height="22" src="common/authCode.jsp">
+									<a href="#" onclick="verifyCode()">换张图片</a>
+								</div>
+							</div> 
+                
+							<div class="width_100 margin_top_16">
+								<div class="float_left line_height_25" style="float: left">
+									<a href="javascript:void(0);" onclick="return formSubmit();"><img src="images/pos_btn_go.gif" width="102" height="33"></a>
+								</div>
+								<div class="float_left line_height_25" style="float: left;margin-left: 30px;margin-top: 8px;">
+									<a href="/psu/findPwd.jsp" style="">忘记密码?</a>
+								</div>
+							</div>
+							
+							<div class="width_100 margin_top_16  margin_right_16">
+						
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+	
+	<input type="hidden" name="operPass" id="operPass" value="">
+</form>
+
+		<!--页脚 Start -->
+		<div style="clear: both"></div>
+		<div id="footer">
+			<div class="us">
+				<div class="left">
+					<dl>
+						<dd>
+							<ul class="we">
+								<li class="color">汇付天下有限公司 ｜</li>
+								<li class="color">上海汇付数据服务有限公司</li>
+							</ul>
+							<p class="color">
+								copyright©2006-2014 China PnR Co.,Ltd.ICP证：沪B2-20110119
+							</p>
+						</dd>
+					</dl>
+				</div>
+				<div class="right">
+					<a href="https://sealinfo.verisign.com/splash?form_file=fdf/splash.fdf&amp;dn=www.chinapnr.com&amp;lang=zh_cn" target="_blank"> 
+						<img src="images/index_icon_s1.gif">
+					</a>
+					<a href="http://sh.cyberpolice.cn/infoCategoryListAction.do?act=initjpg" target="_blank">
+						<img src="images/index_icon_s2.gif" width="29" height="31">
+					</a>
+					<a href="https://ss.cnnic.cn/verifyseal.dll?sn=2010102100100002697&amp;ct=df&amp;pa=766891">
+						<img src="images/index_icon_s3.gif" width="70" height="31">
+					</a>
+				</div>
+
+			</div>
+		</div>
+		<!--页脚 End -->
+
+
+</body></html>

@@ -1,0 +1,578 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=gb2312" /> 
+  <title>职能职位列表  - 浦口人才网</title> 
+  <link rel="shortcut icon" href="/favicon.ico" /> 
+  <link href="http://www.pukou.net/templates/pukouzhaopin/css/public.css" type="text/css" rel="stylesheet" /> 
+  <link href="http://www.pukou.net/templates/pukouzhaopin/css/jobs_list.css" type="text/css" rel="stylesheet" /> 
+  <link href="http://www.pukou.net/templates/pukouzhaopin/css/jobs1.css" rel="stylesheet" type="text/css" /> 
+  <script src="http://www.pukou.net/templates/pukouzhaopin/js/jquery.js" type="text/javascript"></script> 
+  <script src="http://www.pukou.net/templates/pukouzhaopin/js/jquery.dialog1.js" type="text/javascript"></script> 
+  <script src="http://www.pukou.net/templates/pukouzhaopin/js/jquery.highlight-3.js" type="text/javascript"></script> 
+  <script src="http://www.pukou.net/templates/pukouzhaopin/js/jquery.vtip-min.js" type="text/javascript"></script> 
+  <script src="http://www.pukou.net/templates/pukouzhaopin/js/jquery.jobs-list.js" type="text/javascript"></script> 
+  <script src="/data/cache_classify.js" type="text/javascript" charset="utf-8"></script> 
+  <script src="http://www.pukou.net/templates/pukouzhaopin/js/public.js" type="text/javascript"></script> 
+  <script type="text/javascript"> 
+
+$(document).ready(function()
+
+{
+
+    jobslist();
+
+    //jobscontrast("/");
+
+    apply_jobs("/");
+
+    favorites("/");
+
+    recommend_jobs("/");
+
+    
+
+    var sMain_top=$(".sMain_top");
+
+    var sMain_topHeight=sMain_top.height()+545;
+
+    $(window).scroll(function()
+
+    {
+
+        if($(this).scrollTop()>sMain_topHeight)
+
+        {
+
+            sMain_top.addClass("sMain_topfix");
+
+        }
+
+        else
+
+        {
+
+            sMain_top.removeClass("sMain_topfix");
+
+        }
+
+    });
+
+    
+
+});
+
+</script> 
+ </head> 
+ <body> 
+  <link href="http://www.pukou.net/templates/pukouzhaopin/css/public.css" rel="stylesheet" type="text/css" /> 
+  <script>
+//function correctPNG() // correctly handle PNG transparency in Win IE 5.5 & 6.
+//{
+//    var arVersion = navigator.appVersion.split("MSIE")
+//    var version = parseFloat(arVersion[1])
+//    if ((version >= 5.5) && (document.body.filters))
+//    {
+//       for(var j=0; j<document.images.length; j++)
+//       {
+//         var img = document.images[j]
+//          var imgName = img.src.toUpperCase()
+//          if (imgName.substring(imgName.length-3, imgName.length) == "PNG")
+//          {
+//             var imgID = (img.id) ? "id='" + img.id + "' " : ""
+//             var imgClass = (img.className) ? "class='" + img.className + "' " : ""
+//             var imgTitle = (img.title) ? "title='" + img.title + "' " : "title='" + img.alt + "' "
+//             var imgStyle = "display:inline-block;" + img.style.cssText
+//             if (img.align == "left") imgStyle = "float:left;" + imgStyle
+//             if (img.align == "right") imgStyle = "float:right;" + imgStyle
+//             if (img.parentElement.href) imgStyle = "cursor:hand;" + imgStyle
+//             var strNewHTML = "<em " + imgID + imgClass + imgTitle
+//             + " style=\"" + "width:" + img.width + "px; height:" + img.height + "px;" + imgStyle + ";"
+//             + "filter:progid:DXImageTransform.Microsoft.AlphaImageLoader"
+//             + "(src=\'" + img.src + "\', sizingMethod='scale');\"></em>"
+//             img.outerHTML = strNewHTML
+//             j = j-1
+//          }
+//      }
+//    }    
+//}
+//window.attachEvent("onload", correctPNG);
+</script> 
+  <div id="topnav"> 
+   <div class="topnav_content clearfix"> 
+    <p class="login_info" id="top_loginform"><span style="padding-left:10px;">浦口人才网&nbsp;&nbsp;打造<a href="http://www.pukou.net"><b>浦口招聘</b></a>第一品牌</span></p> 
+    <div>
+     <a href="/wap/" class="mobile_ico">手机版</a>| 
+     <a href="/vipcard/">VIP卡激活</a>| 
+     <a href="/news/">职场资讯</a>| 
+     <a href="http://www.pukou.net/help/">客服中心</a> 
+     <script type="text/javascript">
+//顶部部登录
+$.get("/plus/ajax_user.php", {"act":"top_loginform"},
+    function (data,textStatus)
+    {      
+        $("#top_loginform").html(data);
+    }
+);
+//
+var headHeight=$(".header").height()+10;
+    var nav=$(".nav");
+    $(window).scroll(function(){
+        if($(this).scrollTop()>headHeight){
+            nav.addClass("navFix");
+            }
+        else{
+            nav.removeClass("navFix");
+            }
+});
+
+
+
+</script>
+    </div> 
+   </div> 
+  </div> 
+  <div id="header"> 
+   <div class="head"> 
+    <div class="logo">
+     <a href="/"><img src="http://www.pukou.net/templates/pukouzhaopin/images/logo.png" alt="浦口人才网" /></a>
+     <span><a href="/jobs/">浦口找工作</a></span>
+    </div> 
+    <div class="topbtn">
+     <a href="http://www.pukou.net/user/personal/personal_index.php" class="mffbzp_btn">免费登记简历</a>
+     <a href="http://www.pukou.net/user/company/company_index.php" class="mftxjl_btn">免费发布招聘</a>
+    </div> 
+   </div> 
+   <div class="nav" style="width:100%;"> 
+    <div class="nav_content"> 
+     <a href="/index.htm" target="_self">首页</a> 
+     <a href="/jobs/index.htm" target="_self" class="nav_act">找工作</a> 
+     <a href="/resume/resume-list.php" target="_self">聘人才</a> 
+     <a href="/jobfair/jobfair-list.php" target="_self">招聘会</a> 
+     <a href="/user/login.php" target="_self">会员中心</a> 
+     <p class="navright"><span class="tel">客服电话：025-88888888</span></p> 
+    </div> 
+   </div> 
+  </div> 
+  <div class="path">
+   <div>
+    当前位置：
+    <a href="/"><b>浦口人才网</b></a>
+    <em>&gt;</em>
+    <span><a href="/jobs/">找工作</a></span>
+    <em>&gt;</em>
+    <span>职能搜索</span>
+   </div>
+  </div> 
+  <div id="main"> 
+   <div class="search_nav clearfix"> 
+    <ul> 
+     <li><a href="http://www.pukou.net/jobs/jobs-list.php">全能</a></li> 
+     <li class="cur"><a href="http://www.pukou.net/jobs/jobs_type.php">职能</a></li> 
+     <li><a href="http://www.pukou.net/jobs/jobs_trade.php">行业</a></li> 
+     <li><a href="http://www.pukou.net/jobs/street-search.php">道路</a></li> 
+     <li><a href="http://www.pukou.net/jobs/map-search.php?id=1">地图</a></li> 
+    </ul> 
+   </div> 
+   <div id="jobsearchbox">
+    <div class="loading"></div>
+   </div> 
+   <script src="http://www.pukou.net/templates/pukouzhaopin/js/jquery.jobs-type-search.js" type="text/javascript"></script> 
+   <script type="text/javascript">
+
+            var getstr=",,20";
+
+            allaround('http://www.pukou.net/templates/pukouzhaopin/','/',getstr);
+
+    </script> 
+   <div class="search_main shadow2 "> 
+    <form action="" method="post" name="formjobslist" id="formjobslist" target="_blank"> 
+     <div class="sMain_top"> 
+      <ul> 
+       <li class="select"><label><input type="checkbox" class="allSelect" style="position:relative;top:3px;" />　全选</label></li> 
+       <li class="domain"> <a href="javascript:void(0)" class="deliver" title="投递已选简历">投递</a> <a href="javascript:void(0);" title="收藏已选职位" class="collect">收藏</a> <input type="button" value="对比" class="jobs_show contrast" /> </li> 
+       <li class="sort"><a href="http://www.pukou.net/jobs/jobs_type.php?sort=rtime&amp;page=1&amp;category=&amp;subclass=&amp;inforow=20" class="select" title="最新发布">最新</a></li> 
+       <li class="sort"><a href="http://www.pukou.net/jobs/jobs_type.php?sort=wage&amp;page=1&amp;category=&amp;subclass=&amp;inforow=20" title="工资从高到低">工资</a></li> 
+       <li class="sort"><a href="http://www.pukou.net/jobs/jobs_type.php?sort=hot&amp;page=1&amp;category=&amp;subclass=&amp;inforow=20" title="热度从高到低">热度</a></li> 
+       <li class="spages"> <span>每页：</span> <a href="http://www.pukou.net/jobs/jobs_type.php?inforow=10&amp;page=1&amp;category=&amp;subclass=&amp;sort=">10</a> <a href="http://www.pukou.net/jobs/jobs_type.php?inforow=20&amp;page=1&amp;category=&amp;subclass=&amp;sort=" class="selected">20</a> <a href="http://www.pukou.net/jobs/jobs_type.php?inforow=30&amp;page=1&amp;category=&amp;subclass=&amp;sort=">30</a> </li> 
+       <li class="toggle"> <span class="detail"><a href="javascript:void(0);" class="selected"></a></span> <span class="list"><a href="javascript:void(0);"></a></span> </li> 
+      </ul> 
+     </div> 
+     <div class="sMain_list trigger"> 
+      <ul> 
+       <li class="list_top" style="display:none;"> <p class="p1">招聘职位</p> <p class="p2">招聘单位</p> <p class="p3">工资</p> <p class="p4">人数</p> <p class="p5">工作经验</p> <p class="p6">更新时间</p> <p class="p7">操作</p> </li> 
+       <li class="clearfix "> 
+        <div class="list_l "> 
+         <p class="list_name"><input name="jobsid[]" type="checkbox" value="67966" /><a href="http://www.pukou.net/jobs/pukou67966.htm" target="_blank" class="blue bold">菌种员</a></p> 
+         <p class="list_info"><a href="http://www.pukou.net/company/pukou10763.htm" target="_blank">江苏天凯生物科技有限公司</a><em>|</em>1万以上/月<em>|</em>1人<em>|</em>本科<em>|</em>不限</p> 
+         <p class="list_depict"><span class="bold">职位描述：</span>岗位职责：1、严格按无菌操作要求进行各项操作。 2、保证无菌室的无菌状况，定期消毒、灭菌。3、按时向制种车间提供合格足量的菌种。4、按配方配制合格的培养基，并按菌种不同分别按所需条件进行培养。5、按操作规范进行菌种计数工作。6、及时、准确提供培养菌的记数数据。7、按操作说明正确使用所需要的各种仪器设备。8、及...</p> 
+         <p class="list_weal"><span class="bold">其他福利：</span> 无 </p> 
+        </div> 
+        <div class="list_r"> 
+         <a href="javascript:void(0)" class="job_btn app_jobs" id="67966"><b></b><span>申请该职位</span></a> 
+         <p><a href="javascript:void(0)" class="col_6 add_favorites" id="67966">收藏</a><em>|</em><a class="col_6 " title="查看" alt="67966" href="http://www.pukou.net/jobs/pukou67966.htm">查看</a></p> 
+         <span class="job_time"><span id="r_time" style="color:#FF3300">2天前</span></span> 
+        </div> </li> 
+       <li class="fortrigger " style="display:none;"> <p class="p1"><input name="jid" type="checkbox" value="67966" /><a href="http://www.pukou.net/jobs/pukou67966.htm" target="_blank" class="blue bold">菌种员</a></p> <p class="p2"><a href="http://www.pukou.net/company/pukou10763.htm" target="_blank">江苏天凯生物科技有限公司</a></p> <p class="p3">1万以上/月</p> <p class="p4">1人</p> <p class="p5">本科</p> <p class="p6"><span id="r_time" style="color:#FF3300">2天前</span></p> <p class="p7"> <a class="fav add_favorites" title="收藏该职位" href="javascript:void(0)">收藏</a> <a class="rec " title="查看" alt="67966" href="http://www.pukou.net/jobs/pukou67966.htm">查看</a> <a class="job_btn2 app_jobs" id="67966" title="立即申请该职位" href="javascript:void(0)"> <b></b> <span>申请该职位</span> </a> </p> </li> 
+       <li class="clearfix "> 
+        <div class="list_l "> 
+         <p class="list_name"><input name="jobsid[]" type="checkbox" value="67965" /><a href="http://www.pukou.net/jobs/pukou67965.htm" target="_blank" class="blue bold">诚招房产顾问底薪4500+提成</a></p> 
+         <p class="list_info"><a href="http://www.pukou.net/company/pukou9404.htm" target="_blank">南京智度房地产代理有限公司</a><em>|</em>1万以上/月<em>|</em>30人<em>|</em>大专<em>|</em>不限</p> 
+         <p class="list_depict"><span class="bold">职位描述：</span>职位描述：1、底薪4500+提成+福利（五险一金+加班补助+公司旅游+聚餐）2、享受20天左右年假及其他国家法定节假日。3、提供住宿。4、公司提供舒适的办公环境，能力优秀者可跨级晋升。5、公平公正的晋升机制和广阔的发展空间。6、系统的专业技能培训以及相关知识面的拓宽。7、丰富多彩的工作安排。8、人性化的管理模式，温馨的...</p> 
+         <p class="list_weal"><span class="bold">其他福利：</span> 无 </p> 
+        </div> 
+        <div class="list_r"> 
+         <a href="javascript:void(0)" class="job_btn app_jobs" id="67965"><b></b><span>申请该职位</span></a> 
+         <p><a href="javascript:void(0)" class="col_6 add_favorites" id="67965">收藏</a><em>|</em><a class="col_6 " title="查看" alt="67965" href="http://www.pukou.net/jobs/pukou67965.htm">查看</a></p> 
+         <span class="job_time"><span id="r_time" style="color:#FF3300">2天前</span></span> 
+        </div> </li> 
+       <li class="fortrigger " style="display:none;"> <p class="p1"><input name="jid" type="checkbox" value="67965" /><a href="http://www.pukou.net/jobs/pukou67965.htm" target="_blank" class="blue bold">诚招房产顾问底薪4500+提成</a></p> <p class="p2"><a href="http://www.pukou.net/company/pukou9404.htm" target="_blank">南京智度房地产代理有限公司</a></p> <p class="p3">1万以上/月</p> <p class="p4">30人</p> <p class="p5">大专</p> <p class="p6"><span id="r_time" style="color:#FF3300">2天前</span></p> <p class="p7"> <a class="fav add_favorites" title="收藏该职位" href="javascript:void(0)">收藏</a> <a class="rec " title="查看" alt="67965" href="http://www.pukou.net/jobs/pukou67965.htm">查看</a> <a class="job_btn2 app_jobs" id="67965" title="立即申请该职位" href="javascript:void(0)"> <b></b> <span>申请该职位</span> </a> </p> </li> 
+       <li class="clearfix "> 
+        <div class="list_l "> 
+         <p class="list_name"><input name="jobsid[]" type="checkbox" value="67964" /><a href="http://www.pukou.net/jobs/pukou67964.htm" target="_blank" class="blue bold">店长 店经理 置业顾问 经纪人 销售员 销售经理</a></p> 
+         <p class="list_info"><a href="http://www.pukou.net/company/pukou4571.htm" target="_blank">南京链家房地产经纪有限公司</a><em>|</em>1万以上/月<em>|</em>20人<em>|</em>大专<em>|</em>不限</p> 
+         <p class="list_depict"><span class="bold">职位描述：</span>职位描述：职位描述：1、底薪5000加提成，30%-75%。2、上班时间9：30-19：00（实习期），五险一金、两项商业险、子女保险3、公司提供学历进修，学费公司承担50%；4、老员工享有周年庆定制礼物，新老员工共同享有节假日、春节公司精美礼包；5、精英社成员及季度公司业绩激烈活动排名靠前员工享有免费出国游6、公司每年第三季...</p> 
+         <p class="list_weal"><span class="bold">其他福利：</span> 无 </p> 
+        </div> 
+        <div class="list_r"> 
+         <a href="javascript:void(0)" class="job_btn app_jobs" id="67964"><b></b><span>申请该职位</span></a> 
+         <p><a href="javascript:void(0)" class="col_6 add_favorites" id="67964">收藏</a><em>|</em><a class="col_6 " title="查看" alt="67964" href="http://www.pukou.net/jobs/pukou67964.htm">查看</a></p> 
+         <span class="job_time"><span id="r_time" style="color:#FF3300">2天前</span></span> 
+        </div> </li> 
+       <li class="fortrigger " style="display:none;"> <p class="p1"><input name="jid" type="checkbox" value="67964" /><a href="http://www.pukou.net/jobs/pukou67964.htm" target="_blank" class="blue bold">店长 店经理 置业顾问 经纪人 销售员 销售经理</a></p> <p class="p2"><a href="http://www.pukou.net/company/pukou4571.htm" target="_blank">南京链家房地产经纪有限公司</a></p> <p class="p3">1万以上/月</p> <p class="p4">20人</p> <p class="p5">大专</p> <p class="p6"><span id="r_time" style="color:#FF3300">2天前</span></p> <p class="p7"> <a class="fav add_favorites" title="收藏该职位" href="javascript:void(0)">收藏</a> <a class="rec " title="查看" alt="67964" href="http://www.pukou.net/jobs/pukou67964.htm">查看</a> <a class="job_btn2 app_jobs" id="67964" title="立即申请该职位" href="javascript:void(0)"> <b></b> <span>申请该职位</span> </a> </p> </li> 
+       <li class="clearfix "> 
+        <div class="list_l "> 
+         <p class="list_name"><input name="jobsid[]" type="checkbox" value="67963" /><a href="http://www.pukou.net/jobs/pukou67963.htm" target="_blank" class="blue bold">链家诚聘置业顾问+储备经理+5000无责底薪管培应届...</a></p> 
+         <p class="list_info"><a href="http://www.pukou.net/company/pukou4571.htm" target="_blank">南京链家房地产经纪有限公司</a><em>|</em>1万以上/月<em>|</em>10人<em>|</em>大专<em>|</em>不限</p> 
+         <p class="list_depict"><span class="bold">职位描述：</span>【链上你未来的家】刚毕业的你还在找工作ing在别人指责我们“高不成、低不就”的时候，我们想说，其实我们想要的真的很简单！其实，我们只是想找一个合适的平台，释放我们的潜力，遇到更优秀的自己！链家诚邀您以销售管培生的角色进入房产销售行业！在这里，我们有链家学院可以深造；在这里，我们有师父、经理亲手培养；在这...</p> 
+         <p class="list_weal"><span class="bold">其他福利：</span> 无 </p> 
+        </div> 
+        <div class="list_r"> 
+         <a href="javascript:void(0)" class="job_btn app_jobs" id="67963"><b></b><span>申请该职位</span></a> 
+         <p><a href="javascript:void(0)" class="col_6 add_favorites" id="67963">收藏</a><em>|</em><a class="col_6 " title="查看" alt="67963" href="http://www.pukou.net/jobs/pukou67963.htm">查看</a></p> 
+         <span class="job_time"><span id="r_time" style="color:#FF3300">2天前</span></span> 
+        </div> </li> 
+       <li class="fortrigger " style="display:none;"> <p class="p1"><input name="jid" type="checkbox" value="67963" /><a href="http://www.pukou.net/jobs/pukou67963.htm" target="_blank" class="blue bold">链家诚聘置业顾问+储备经理+5000无责底薪管培应届...</a></p> <p class="p2"><a href="http://www.pukou.net/company/pukou4571.htm" target="_blank">南京链家房地产经纪有限公司</a></p> <p class="p3">1万以上/月</p> <p class="p4">10人</p> <p class="p5">大专</p> <p class="p6"><span id="r_time" style="color:#FF3300">2天前</span></p> <p class="p7"> <a class="fav add_favorites" title="收藏该职位" href="javascript:void(0)">收藏</a> <a class="rec " title="查看" alt="67963" href="http://www.pukou.net/jobs/pukou67963.htm">查看</a> <a class="job_btn2 app_jobs" id="67963" title="立即申请该职位" href="javascript:void(0)"> <b></b> <span>申请该职位</span> </a> </p> </li> 
+       <li class="clearfix "> 
+        <div class="list_l "> 
+         <p class="list_name"><input name="jobsid[]" type="checkbox" value="67962" /><a href="http://www.pukou.net/jobs/pukou67962.htm" target="_blank" class="blue bold">链家诚聘置业顾问+储备经理+5000无责底薪管培应届...</a></p> 
+         <p class="list_info"><a href="http://www.pukou.net/company/pukou4571.htm" target="_blank">南京链家房地产经纪有限公司</a><em>|</em>1万以上/月<em>|</em>10人<em>|</em>大专<em>|</em>不限</p> 
+         <p class="list_depict"><span class="bold">职位描述：</span>【链上你未来的家】刚毕业的你还在找工作ing在别人指责我们“高不成、低不就”的时候，我们想说，其实我们想要的真的很简单！其实，我们只是想找一个合适的平台，释放我们的潜力，遇到更优秀的自己！链家诚邀您以销售管培生的角色进入房产销售行业！在这里，我们有链家学院可以深造；在这里，我们有师父、经理亲手培养；在这...</p> 
+         <p class="list_weal"><span class="bold">其他福利：</span> 无 </p> 
+        </div> 
+        <div class="list_r"> 
+         <a href="javascript:void(0)" class="job_btn app_jobs" id="67962"><b></b><span>申请该职位</span></a> 
+         <p><a href="javascript:void(0)" class="col_6 add_favorites" id="67962">收藏</a><em>|</em><a class="col_6 " title="查看" alt="67962" href="http://www.pukou.net/jobs/pukou67962.htm">查看</a></p> 
+         <span class="job_time"><span id="r_time" style="color:#FF3300">2天前</span></span> 
+        </div> </li> 
+       <li class="fortrigger " style="display:none;"> <p class="p1"><input name="jid" type="checkbox" value="67962" /><a href="http://www.pukou.net/jobs/pukou67962.htm" target="_blank" class="blue bold">链家诚聘置业顾问+储备经理+5000无责底薪管培应届...</a></p> <p class="p2"><a href="http://www.pukou.net/company/pukou4571.htm" target="_blank">南京链家房地产经纪有限公司</a></p> <p class="p3">1万以上/月</p> <p class="p4">10人</p> <p class="p5">大专</p> <p class="p6"><span id="r_time" style="color:#FF3300">2天前</span></p> <p class="p7"> <a class="fav add_favorites" title="收藏该职位" href="javascript:void(0)">收藏</a> <a class="rec " title="查看" alt="67962" href="http://www.pukou.net/jobs/pukou67962.htm">查看</a> <a class="job_btn2 app_jobs" id="67962" title="立即申请该职位" href="javascript:void(0)"> <b></b> <span>申请该职位</span> </a> </p> </li> 
+       <li class="clearfix "> 
+        <div class="list_l "> 
+         <p class="list_name"><input name="jobsid[]" type="checkbox" value="67961" /><a href="http://www.pukou.net/jobs/pukou67961.htm" target="_blank" class="blue bold">链家诚聘置业顾问+储备经理+5000无责底薪管培应届...</a></p> 
+         <p class="list_info"><a href="http://www.pukou.net/company/pukou4571.htm" target="_blank">南京链家房地产经纪有限公司</a><em>|</em>1万以上/月<em>|</em>10人<em>|</em>大专<em>|</em>不限</p> 
+         <p class="list_depict"><span class="bold">职位描述：</span>【链上你未来的家】刚毕业的你还在找工作ing在别人指责我们“高不成、低不就”的时候，我们想说，其实我们想要的真的很简单！其实，我们只是想找一个合适的平台，释放我们的潜力，遇到更优秀的自己！链家诚邀您以销售管培生的角色进入房产销售行业！在这里，我们有链家学院可以深造；在这里，我们有师父、经理亲手培养；在这...</p> 
+         <p class="list_weal"><span class="bold">其他福利：</span> 无 </p> 
+        </div> 
+        <div class="list_r"> 
+         <a href="javascript:void(0)" class="job_btn app_jobs" id="67961"><b></b><span>申请该职位</span></a> 
+         <p><a href="javascript:void(0)" class="col_6 add_favorites" id="67961">收藏</a><em>|</em><a class="col_6 " title="查看" alt="67961" href="http://www.pukou.net/jobs/pukou67961.htm">查看</a></p> 
+         <span class="job_time"><span id="r_time" style="color:#FF3300">2天前</span></span> 
+        </div> </li> 
+       <li class="fortrigger " style="display:none;"> <p class="p1"><input name="jid" type="checkbox" value="67961" /><a href="http://www.pukou.net/jobs/pukou67961.htm" target="_blank" class="blue bold">链家诚聘置业顾问+储备经理+5000无责底薪管培应届...</a></p> <p class="p2"><a href="http://www.pukou.net/company/pukou4571.htm" target="_blank">南京链家房地产经纪有限公司</a></p> <p class="p3">1万以上/月</p> <p class="p4">10人</p> <p class="p5">大专</p> <p class="p6"><span id="r_time" style="color:#FF3300">2天前</span></p> <p class="p7"> <a class="fav add_favorites" title="收藏该职位" href="javascript:void(0)">收藏</a> <a class="rec " title="查看" alt="67961" href="http://www.pukou.net/jobs/pukou67961.htm">查看</a> <a class="job_btn2 app_jobs" id="67961" title="立即申请该职位" href="javascript:void(0)"> <b></b> <span>申请该职位</span> </a> </p> </li> 
+       <li class="clearfix "> 
+        <div class="list_l "> 
+         <p class="list_name"><input name="jobsid[]" type="checkbox" value="67960" /><a href="http://www.pukou.net/jobs/pukou67960.htm" target="_blank" class="blue bold">★5000底薪诚聘销售精英/置业顾问/储备经理/五险一...</a></p> 
+         <p class="list_info"><a href="http://www.pukou.net/company/pukou4571.htm" target="_blank">南京链家房地产经纪有限公司</a><em>|</em>1万以上/月<em>|</em>10人<em>|</em>大专<em>|</em>不限</p> 
+         <p class="list_depict"><span class="bold">职位描述：</span>2017-链家地产置业顾问招聘，继续给力！2017已经到来，你是否仍旧徘徊在求职路上？你是否依旧渺茫着未来的发展方向？静心思考，你渴望的是什么？房子？车子？还是能力？成就感？这不是非黑即白的选择题！选对的行业，进对的企业，再加上你的努力，鱼和熊掌即可兼得！岗位职责：负责客户的接待与咨询工作，促成租赁、买卖双方...</p> 
+         <p class="list_weal"><span class="bold">其他福利：</span> 无 </p> 
+        </div> 
+        <div class="list_r"> 
+         <a href="javascript:void(0)" class="job_btn app_jobs" id="67960"><b></b><span>申请该职位</span></a> 
+         <p><a href="javascript:void(0)" class="col_6 add_favorites" id="67960">收藏</a><em>|</em><a class="col_6 " title="查看" alt="67960" href="http://www.pukou.net/jobs/pukou67960.htm">查看</a></p> 
+         <span class="job_time"><span id="r_time" style="color:#FF3300">2天前</span></span> 
+        </div> </li> 
+       <li class="fortrigger " style="display:none;"> <p class="p1"><input name="jid" type="checkbox" value="67960" /><a href="http://www.pukou.net/jobs/pukou67960.htm" target="_blank" class="blue bold">★5000底薪诚聘销售精英/置业顾问/储备经理/五险一...</a></p> <p class="p2"><a href="http://www.pukou.net/company/pukou4571.htm" target="_blank">南京链家房地产经纪有限公司</a></p> <p class="p3">1万以上/月</p> <p class="p4">10人</p> <p class="p5">大专</p> <p class="p6"><span id="r_time" style="color:#FF3300">2天前</span></p> <p class="p7"> <a class="fav add_favorites" title="收藏该职位" href="javascript:void(0)">收藏</a> <a class="rec " title="查看" alt="67960" href="http://www.pukou.net/jobs/pukou67960.htm">查看</a> <a class="job_btn2 app_jobs" id="67960" title="立即申请该职位" href="javascript:void(0)"> <b></b> <span>申请该职位</span> </a> </p> </li> 
+       <li class="clearfix "> 
+        <div class="list_l "> 
+         <p class="list_name"><input name="jobsid[]" type="checkbox" value="67959" /><a href="http://www.pukou.net/jobs/pukou67959.htm" target="_blank" class="blue bold">★5000底薪诚聘销售精英/置业顾问/储备经理/五险一...</a></p> 
+         <p class="list_info"><a href="http://www.pukou.net/company/pukou4571.htm" target="_blank">南京链家房地产经纪有限公司</a><em>|</em>1万以上/月<em>|</em>10人<em>|</em>大专<em>|</em>不限</p> 
+         <p class="list_depict"><span class="bold">职位描述：</span>2017-链家地产置业顾问招聘，继续给力！2017已经到来，你是否仍旧徘徊在求职路上？你是否依旧渺茫着未来的发展方向？静心思考，你渴望的是什么？房子？车子？还是能力？成就感？这不是非黑即白的选择题！选对的行业，进对的企业，再加上你的努力，鱼和熊掌即可兼得！岗位职责：负责客户的接待与咨询工作，促成租赁、买卖双方...</p> 
+         <p class="list_weal"><span class="bold">其他福利：</span> 无 </p> 
+        </div> 
+        <div class="list_r"> 
+         <a href="javascript:void(0)" class="job_btn app_jobs" id="67959"><b></b><span>申请该职位</span></a> 
+         <p><a href="javascript:void(0)" class="col_6 add_favorites" id="67959">收藏</a><em>|</em><a class="col_6 " title="查看" alt="67959" href="http://www.pukou.net/jobs/pukou67959.htm">查看</a></p> 
+         <span class="job_time"><span id="r_time" style="color:#FF3300">2天前</span></span> 
+        </div> </li> 
+       <li class="fortrigger " style="display:none;"> <p class="p1"><input name="jid" type="checkbox" value="67959" /><a href="http://www.pukou.net/jobs/pukou67959.htm" target="_blank" class="blue bold">★5000底薪诚聘销售精英/置业顾问/储备经理/五险一...</a></p> <p class="p2"><a href="http://www.pukou.net/company/pukou4571.htm" target="_blank">南京链家房地产经纪有限公司</a></p> <p class="p3">1万以上/月</p> <p class="p4">10人</p> <p class="p5">大专</p> <p class="p6"><span id="r_time" style="color:#FF3300">2天前</span></p> <p class="p7"> <a class="fav add_favorites" title="收藏该职位" href="javascript:void(0)">收藏</a> <a class="rec " title="查看" alt="67959" href="http://www.pukou.net/jobs/pukou67959.htm">查看</a> <a class="job_btn2 app_jobs" id="67959" title="立即申请该职位" href="javascript:void(0)"> <b></b> <span>申请该职位</span> </a> </p> </li> 
+       <li class="clearfix "> 
+        <div class="list_l "> 
+         <p class="list_name"><input name="jobsid[]" type="checkbox" value="67958" /><a href="http://www.pukou.net/jobs/pukou67958.htm" target="_blank" class="blue bold">前台文员</a></p> 
+         <p class="list_info"><a href="http://www.pukou.net/company/pukou6943.htm" target="_blank">南京言初餐饮管理有限公司</a><em>|</em>1万以上/月<em>|</em>2人<em>|</em>大专<em>|</em>不限</p> 
+         <p class="list_depict"><span class="bold">职位描述：</span>职位描述：岗位职责：1、负责公司各类电脑文档的编号、打</p> 
+         <p class="list_weal"><span class="bold">其他福利：</span> 无 </p> 
+        </div> 
+        <div class="list_r"> 
+         <a href="javascript:void(0)" class="job_btn app_jobs" id="67958"><b></b><span>申请该职位</span></a> 
+         <p><a href="javascript:void(0)" class="col_6 add_favorites" id="67958">收藏</a><em>|</em><a class="col_6 " title="查看" alt="67958" href="http://www.pukou.net/jobs/pukou67958.htm">查看</a></p> 
+         <span class="job_time"><span id="r_time" style="color:#FF3300">2天前</span></span> 
+        </div> </li> 
+       <li class="fortrigger " style="display:none;"> <p class="p1"><input name="jid" type="checkbox" value="67958" /><a href="http://www.pukou.net/jobs/pukou67958.htm" target="_blank" class="blue bold">前台文员</a></p> <p class="p2"><a href="http://www.pukou.net/company/pukou6943.htm" target="_blank">南京言初餐饮管理有限公司</a></p> <p class="p3">1万以上/月</p> <p class="p4">2人</p> <p class="p5">大专</p> <p class="p6"><span id="r_time" style="color:#FF3300">2天前</span></p> <p class="p7"> <a class="fav add_favorites" title="收藏该职位" href="javascript:void(0)">收藏</a> <a class="rec " title="查看" alt="67958" href="http://www.pukou.net/jobs/pukou67958.htm">查看</a> <a class="job_btn2 app_jobs" id="67958" title="立即申请该职位" href="javascript:void(0)"> <b></b> <span>申请该职位</span> </a> </p> </li> 
+       <li class="clearfix "> 
+        <div class="list_l "> 
+         <p class="list_name"><input name="jobsid[]" type="checkbox" value="67957" /><a href="http://www.pukou.net/jobs/pukou67957.htm" target="_blank" class="blue bold">★5000底薪诚聘销售精英/置业顾问/储备经理/五险一...</a></p> 
+         <p class="list_info"><a href="http://www.pukou.net/company/pukou4571.htm" target="_blank">南京链家房地产经纪有限公司</a><em>|</em>1万以上/月<em>|</em>10人<em>|</em>大专<em>|</em>不限</p> 
+         <p class="list_depict"><span class="bold">职位描述：</span>2017-链家地产置业顾问招聘，继续给力！2017已经到来，你是否仍旧徘徊在求职路上？你是否依旧渺茫着未来的发展方向？静心思考，你渴望的是什么？房子？车子？还是能力？成就感？这不是非黑即白的选择题！选对的行业，进对的企业，再加上你的努力，鱼和熊掌即可兼得！岗位职责：负责客户的接待与咨询工作，促成租赁、买卖双方...</p> 
+         <p class="list_weal"><span class="bold">其他福利：</span> 无 </p> 
+        </div> 
+        <div class="list_r"> 
+         <a href="javascript:void(0)" class="job_btn app_jobs" id="67957"><b></b><span>申请该职位</span></a> 
+         <p><a href="javascript:void(0)" class="col_6 add_favorites" id="67957">收藏</a><em>|</em><a class="col_6 " title="查看" alt="67957" href="http://www.pukou.net/jobs/pukou67957.htm">查看</a></p> 
+         <span class="job_time"><span id="r_time" style="color:#FF3300">2天前</span></span> 
+        </div> </li> 
+       <li class="fortrigger " style="display:none;"> <p class="p1"><input name="jid" type="checkbox" value="67957" /><a href="http://www.pukou.net/jobs/pukou67957.htm" target="_blank" class="blue bold">★5000底薪诚聘销售精英/置业顾问/储备经理/五险一...</a></p> <p class="p2"><a href="http://www.pukou.net/company/pukou4571.htm" target="_blank">南京链家房地产经纪有限公司</a></p> <p class="p3">1万以上/月</p> <p class="p4">10人</p> <p class="p5">大专</p> <p class="p6"><span id="r_time" style="color:#FF3300">2天前</span></p> <p class="p7"> <a class="fav add_favorites" title="收藏该职位" href="javascript:void(0)">收藏</a> <a class="rec " title="查看" alt="67957" href="http://www.pukou.net/jobs/pukou67957.htm">查看</a> <a class="job_btn2 app_jobs" id="67957" title="立即申请该职位" href="javascript:void(0)"> <b></b> <span>申请该职位</span> </a> </p> </li> 
+       <li class="clearfix "> 
+        <div class="list_l "> 
+         <p class="list_name"><input name="jobsid[]" type="checkbox" value="67956" /><a href="http://www.pukou.net/jobs/pukou67956.htm" target="_blank" class="blue bold">招聘专员</a></p> 
+         <p class="list_info"><a href="http://www.pukou.net/company/pukou8542.htm" target="_blank">江苏启丽信息技术服务有限公司</a><em>|</em>1万以上/月<em>|</em>5人<em>|</em>大专<em>|</em>不限</p> 
+         <p class="list_depict"><span class="bold">职位描述：</span>职位描述：招聘岗位：招聘专员岗位职责1、根据合作公司的招聘需求计划，负责合作单位人事招聘工作；2、负责招聘渠道（赶集网，58同城，前程无忧等）的招聘发布与简历收录，每天坚持发布招聘信息。能力优秀可参加各种校园招聘会，进行校园批量人才招聘；3、对收到的简历或者分配的求职简历进行筛选，对于符合招聘要求的求职者...</p> 
+         <p class="list_weal"><span class="bold">其他福利：</span> 无 </p> 
+        </div> 
+        <div class="list_r"> 
+         <a href="javascript:void(0)" class="job_btn app_jobs" id="67956"><b></b><span>申请该职位</span></a> 
+         <p><a href="javascript:void(0)" class="col_6 add_favorites" id="67956">收藏</a><em>|</em><a class="col_6 " title="查看" alt="67956" href="http://www.pukou.net/jobs/pukou67956.htm">查看</a></p> 
+         <span class="job_time"><span id="r_time" style="color:#FF3300">2天前</span></span> 
+        </div> </li> 
+       <li class="fortrigger " style="display:none;"> <p class="p1"><input name="jid" type="checkbox" value="67956" /><a href="http://www.pukou.net/jobs/pukou67956.htm" target="_blank" class="blue bold">招聘专员</a></p> <p class="p2"><a href="http://www.pukou.net/company/pukou8542.htm" target="_blank">江苏启丽信息技术服务有限公司</a></p> <p class="p3">1万以上/月</p> <p class="p4">5人</p> <p class="p5">大专</p> <p class="p6"><span id="r_time" style="color:#FF3300">2天前</span></p> <p class="p7"> <a class="fav add_favorites" title="收藏该职位" href="javascript:void(0)">收藏</a> <a class="rec " title="查看" alt="67956" href="http://www.pukou.net/jobs/pukou67956.htm">查看</a> <a class="job_btn2 app_jobs" id="67956" title="立即申请该职位" href="javascript:void(0)"> <b></b> <span>申请该职位</span> </a> </p> </li> 
+       <li class="clearfix "> 
+        <div class="list_l "> 
+         <p class="list_name"><input name="jobsid[]" type="checkbox" value="67955" /><a href="http://www.pukou.net/jobs/pukou67955.htm" target="_blank" class="blue bold">项目申报专员</a></p> 
+         <p class="list_info"><a href="http://www.pukou.net/company/pukou6027.htm" target="_blank">南京德睿智芯电子科技有限公司</a><em>|</em>1万以上/月<em>|</em>1人<em>|</em>大专<em>|</em>不限</p> 
+         <p class="list_depict"><span class="bold">职位描述：</span>职位描述：职位描述：1、负责收集、整理政府相关领域（知识产权、科技领域为主）的产业优惠扶持政策、项目通知文件，并开展相应的研究；2、负责政府类科技项目材料的申报（组织编制、审改、材料报送）与后期管理工作；3、根据公司不同发展阶段，负责知识产权、专利、认证等各类资质的申报与维护；4、负责岗位职责范围内政府...</p> 
+         <p class="list_weal"><span class="bold">其他福利：</span> 无 </p> 
+        </div> 
+        <div class="list_r"> 
+         <a href="javascript:void(0)" class="job_btn app_jobs" id="67955"><b></b><span>申请该职位</span></a> 
+         <p><a href="javascript:void(0)" class="col_6 add_favorites" id="67955">收藏</a><em>|</em><a class="col_6 " title="查看" alt="67955" href="http://www.pukou.net/jobs/pukou67955.htm">查看</a></p> 
+         <span class="job_time"><span id="r_time" style="color:#FF3300">2天前</span></span> 
+        </div> </li> 
+       <li class="fortrigger " style="display:none;"> <p class="p1"><input name="jid" type="checkbox" value="67955" /><a href="http://www.pukou.net/jobs/pukou67955.htm" target="_blank" class="blue bold">项目申报专员</a></p> <p class="p2"><a href="http://www.pukou.net/company/pukou6027.htm" target="_blank">南京德睿智芯电子科技有限公司</a></p> <p class="p3">1万以上/月</p> <p class="p4">1人</p> <p class="p5">大专</p> <p class="p6"><span id="r_time" style="color:#FF3300">2天前</span></p> <p class="p7"> <a class="fav add_favorites" title="收藏该职位" href="javascript:void(0)">收藏</a> <a class="rec " title="查看" alt="67955" href="http://www.pukou.net/jobs/pukou67955.htm">查看</a> <a class="job_btn2 app_jobs" id="67955" title="立即申请该职位" href="javascript:void(0)"> <b></b> <span>申请该职位</span> </a> </p> </li> 
+       <li class="clearfix "> 
+        <div class="list_l "> 
+         <p class="list_name"><input name="jobsid[]" type="checkbox" value="67954" /><a href="http://www.pukou.net/jobs/pukou67954.htm" target="_blank" class="blue bold">高薪诚聘电话销售</a></p> 
+         <p class="list_info"><a href="http://www.pukou.net/company/pukou9404.htm" target="_blank">南京智度房地产代理有限公司</a><em>|</em>1万以上/月<em>|</em>30人<em>|</em>大专<em>|</em>不限</p> 
+         <p class="list_depict"><span class="bold">职位描述：</span>职位描述：我们为您提供：1、高底薪4000+高提成+季度分红；平均收入保守8000左右，能力强者月收入20000以上；业绩高者年薪15万左右。2、享受15天左右年假及其他国家法定节假日。3、提供住宿。4、公司提供舒适的办公环境，能力优秀者可跨级晋升。5、公平公正的晋升机制和广阔的发展空间。6、系统的专业技能培训以及相关知识面...</p> 
+         <p class="list_weal"><span class="bold">其他福利：</span> 无 </p> 
+        </div> 
+        <div class="list_r"> 
+         <a href="javascript:void(0)" class="job_btn app_jobs" id="67954"><b></b><span>申请该职位</span></a> 
+         <p><a href="javascript:void(0)" class="col_6 add_favorites" id="67954">收藏</a><em>|</em><a class="col_6 " title="查看" alt="67954" href="http://www.pukou.net/jobs/pukou67954.htm">查看</a></p> 
+         <span class="job_time"><span id="r_time" style="color:#FF3300">2天前</span></span> 
+        </div> </li> 
+       <li class="fortrigger " style="display:none;"> <p class="p1"><input name="jid" type="checkbox" value="67954" /><a href="http://www.pukou.net/jobs/pukou67954.htm" target="_blank" class="blue bold">高薪诚聘电话销售</a></p> <p class="p2"><a href="http://www.pukou.net/company/pukou9404.htm" target="_blank">南京智度房地产代理有限公司</a></p> <p class="p3">1万以上/月</p> <p class="p4">30人</p> <p class="p5">大专</p> <p class="p6"><span id="r_time" style="color:#FF3300">2天前</span></p> <p class="p7"> <a class="fav add_favorites" title="收藏该职位" href="javascript:void(0)">收藏</a> <a class="rec " title="查看" alt="67954" href="http://www.pukou.net/jobs/pukou67954.htm">查看</a> <a class="job_btn2 app_jobs" id="67954" title="立即申请该职位" href="javascript:void(0)"> <b></b> <span>申请该职位</span> </a> </p> </li> 
+       <li class="clearfix "> 
+        <div class="list_l "> 
+         <p class="list_name"><input name="jobsid[]" type="checkbox" value="67953" /><a href="http://www.pukou.net/jobs/pukou67953.htm" target="_blank" class="blue bold">诚聘销售精英 底薪5000+ 带薪培训</a></p> 
+         <p class="list_info"><a href="http://www.pukou.net/company/pukou4571.htm" target="_blank">南京链家房地产经纪有限公司</a><em>|</em>1万以上/月<em>|</em>5人<em>|</em>大专<em>|</em>不限</p> 
+         <p class="list_depict"><span class="bold">职位描述：</span>职位描述：更多详细情况：请随时来电咨询：详情请联系李经理：17798516789 微信：17798516789简历绿色通道：近期简历较多，为减少等待时间，欢迎随时拨打电话详情请联系李经理：17798516789 咨询更多工作详情并获得优先面试机会！南京链家】----世界那么大，到处是链家！来链家遇见未来的你！我们并不完美，但我们相信一群充...</p> 
+         <p class="list_weal"><span class="bold">其他福利：</span> 无 </p> 
+        </div> 
+        <div class="list_r"> 
+         <a href="javascript:void(0)" class="job_btn app_jobs" id="67953"><b></b><span>申请该职位</span></a> 
+         <p><a href="javascript:void(0)" class="col_6 add_favorites" id="67953">收藏</a><em>|</em><a class="col_6 " title="查看" alt="67953" href="http://www.pukou.net/jobs/pukou67953.htm">查看</a></p> 
+         <span class="job_time"><span id="r_time" style="color:#FF3300">2天前</span></span> 
+        </div> </li> 
+       <li class="fortrigger " style="display:none;"> <p class="p1"><input name="jid" type="checkbox" value="67953" /><a href="http://www.pukou.net/jobs/pukou67953.htm" target="_blank" class="blue bold">诚聘销售精英 底薪5000+ 带薪培训</a></p> <p class="p2"><a href="http://www.pukou.net/company/pukou4571.htm" target="_blank">南京链家房地产经纪有限公司</a></p> <p class="p3">1万以上/月</p> <p class="p4">5人</p> <p class="p5">大专</p> <p class="p6"><span id="r_time" style="color:#FF3300">2天前</span></p> <p class="p7"> <a class="fav add_favorites" title="收藏该职位" href="javascript:void(0)">收藏</a> <a class="rec " title="查看" alt="67953" href="http://www.pukou.net/jobs/pukou67953.htm">查看</a> <a class="job_btn2 app_jobs" id="67953" title="立即申请该职位" href="javascript:void(0)"> <b></b> <span>申请该职位</span> </a> </p> </li> 
+       <li class="clearfix "> 
+        <div class="list_l "> 
+         <p class="list_name"><input name="jobsid[]" type="checkbox" value="67952" /><a href="http://www.pukou.net/jobs/pukou67952.htm" target="_blank" class="blue bold">设计岗-工程与民用建筑专业</a></p> 
+         <p class="list_info"><a href="http://www.pukou.net/company/pukou10777.htm" target="_blank">江苏省南京浦口经济开发总公司</a><em>|</em>1万以上/月<em>|</em>1人<em>|</em>大专<em>|</em>不限</p> 
+         <p class="list_depict"><span class="bold">职位描述：</span>职位描述：要求熟练掌握AutoCAD，Photoshop，3Dmax，Sketch Up，Office等专业软件。</p> 
+         <p class="list_weal"><span class="bold">其他福利：</span> 无 </p> 
+        </div> 
+        <div class="list_r"> 
+         <a href="javascript:void(0)" class="job_btn app_jobs" id="67952"><b></b><span>申请该职位</span></a> 
+         <p><a href="javascript:void(0)" class="col_6 add_favorites" id="67952">收藏</a><em>|</em><a class="col_6 " title="查看" alt="67952" href="http://www.pukou.net/jobs/pukou67952.htm">查看</a></p> 
+         <span class="job_time"><span id="r_time" style="color:#FF3300">2天前</span></span> 
+        </div> </li> 
+       <li class="fortrigger " style="display:none;"> <p class="p1"><input name="jid" type="checkbox" value="67952" /><a href="http://www.pukou.net/jobs/pukou67952.htm" target="_blank" class="blue bold">设计岗-工程与民用建筑专业</a></p> <p class="p2"><a href="http://www.pukou.net/company/pukou10777.htm" target="_blank">江苏省南京浦口经济开发总公司</a></p> <p class="p3">1万以上/月</p> <p class="p4">1人</p> <p class="p5">大专</p> <p class="p6"><span id="r_time" style="color:#FF3300">2天前</span></p> <p class="p7"> <a class="fav add_favorites" title="收藏该职位" href="javascript:void(0)">收藏</a> <a class="rec " title="查看" alt="67952" href="http://www.pukou.net/jobs/pukou67952.htm">查看</a> <a class="job_btn2 app_jobs" id="67952" title="立即申请该职位" href="javascript:void(0)"> <b></b> <span>申请该职位</span> </a> </p> </li> 
+       <li class="clearfix "> 
+        <div class="list_l "> 
+         <p class="list_name"><input name="jobsid[]" type="checkbox" value="67951" /><a href="http://www.pukou.net/jobs/pukou67951.htm" target="_blank" class="blue bold">人力资源外包公司直招 招聘专员</a></p> 
+         <p class="list_info"><a href="http://www.pukou.net/company/pukou7574.htm" target="_blank">任度实业(上海)有限公司</a><em>|</em>1万以上/月<em>|</em>1人<em>|</em>大专<em>|</em>不限</p> 
+         <p class="list_depict"><span class="bold">职位描述：</span>职位描述：1.从事人力资源行业的工作，根据客户需求搜寻合适的人选；2.通过电话，网络等各种渠道及时寻找符合要求的相关人才；3.进行候选人的面试、甄</p> 
+         <p class="list_weal"><span class="bold">其他福利：</span> 无 </p> 
+        </div> 
+        <div class="list_r"> 
+         <a href="javascript:void(0)" class="job_btn app_jobs" id="67951"><b></b><span>申请该职位</span></a> 
+         <p><a href="javascript:void(0)" class="col_6 add_favorites" id="67951">收藏</a><em>|</em><a class="col_6 " title="查看" alt="67951" href="http://www.pukou.net/jobs/pukou67951.htm">查看</a></p> 
+         <span class="job_time"><span id="r_time" style="color:#FF3300">2天前</span></span> 
+        </div> </li> 
+       <li class="fortrigger " style="display:none;"> <p class="p1"><input name="jid" type="checkbox" value="67951" /><a href="http://www.pukou.net/jobs/pukou67951.htm" target="_blank" class="blue bold">人力资源外包公司直招 招聘专员</a></p> <p class="p2"><a href="http://www.pukou.net/company/pukou7574.htm" target="_blank">任度实业(上海)有限公司</a></p> <p class="p3">1万以上/月</p> <p class="p4">1人</p> <p class="p5">大专</p> <p class="p6"><span id="r_time" style="color:#FF3300">2天前</span></p> <p class="p7"> <a class="fav add_favorites" title="收藏该职位" href="javascript:void(0)">收藏</a> <a class="rec " title="查看" alt="67951" href="http://www.pukou.net/jobs/pukou67951.htm">查看</a> <a class="job_btn2 app_jobs" id="67951" title="立即申请该职位" href="javascript:void(0)"> <b></b> <span>申请该职位</span> </a> </p> </li> 
+       <li class="clearfix "> 
+        <div class="list_l "> 
+         <p class="list_name"><input name="jobsid[]" type="checkbox" value="67950" /><a href="http://www.pukou.net/jobs/pukou67950.htm" target="_blank" class="blue bold">店长 店经理 置业顾问 经纪人 销售员 销售经理</a></p> 
+         <p class="list_info"><a href="http://www.pukou.net/company/pukou4571.htm" target="_blank">南京链家房地产经纪有限公司</a><em>|</em>1万以上/月<em>|</em>10人<em>|</em>大专<em>|</em>不限</p> 
+         <p class="list_depict"><span class="bold">职位描述：</span>职位描述：职位描述：1、底薪5000加提成，30%-75%。2、上班时间9：00-19：00（实习期），五险。3、公司提供学历进修，学费公司承担50%；4、老员工享有周年庆定制礼物，新老员工共同享有节假日、春节公司精美礼包；5、精英社成员及季度公司业绩激烈活动排名靠前员工享有免费出国游6、公司每年第三季度进行业绩激励活动，业绩...</p> 
+         <p class="list_weal"><span class="bold">其他福利：</span> 无 </p> 
+        </div> 
+        <div class="list_r"> 
+         <a href="javascript:void(0)" class="job_btn app_jobs" id="67950"><b></b><span>申请该职位</span></a> 
+         <p><a href="javascript:void(0)" class="col_6 add_favorites" id="67950">收藏</a><em>|</em><a class="col_6 " title="查看" alt="67950" href="http://www.pukou.net/jobs/pukou67950.htm">查看</a></p> 
+         <span class="job_time"><span id="r_time" style="color:#FF3300">2天前</span></span> 
+        </div> </li> 
+       <li class="fortrigger " style="display:none;"> <p class="p1"><input name="jid" type="checkbox" value="67950" /><a href="http://www.pukou.net/jobs/pukou67950.htm" target="_blank" class="blue bold">店长 店经理 置业顾问 经纪人 销售员 销售经理</a></p> <p class="p2"><a href="http://www.pukou.net/company/pukou4571.htm" target="_blank">南京链家房地产经纪有限公司</a></p> <p class="p3">1万以上/月</p> <p class="p4">10人</p> <p class="p5">大专</p> <p class="p6"><span id="r_time" style="color:#FF3300">2天前</span></p> <p class="p7"> <a class="fav add_favorites" title="收藏该职位" href="javascript:void(0)">收藏</a> <a class="rec " title="查看" alt="67950" href="http://www.pukou.net/jobs/pukou67950.htm">查看</a> <a class="job_btn2 app_jobs" id="67950" title="立即申请该职位" href="javascript:void(0)"> <b></b> <span>申请该职位</span> </a> </p> </li> 
+       <li class="clearfix "> 
+        <div class="list_l "> 
+         <p class="list_name"><input name="jobsid[]" type="checkbox" value="67949" /><a href="http://www.pukou.net/jobs/pukou67949.htm" target="_blank" class="blue bold">门店助理（人事行政岗）</a></p> 
+         <p class="list_info"><a href="http://www.pukou.net/company/pukou11476.htm" target="_blank">南京壹号家信息科技有限公司</a><em>|</em>1万以上/月<em>|</em>1人<em>|</em>大专<em>|</em>不限</p> 
+         <p class="list_depict"><span class="bold">职位描述：</span>职位描述：工作内容：1.负责南京分公司桥北分部新设部门人事行政工作的开展；2.负责集团各项规章制度区域的下发、宣贯、检查、监督等；3.负责各项人事行政工作对接和人员培训；4.做好每次人事考勤保证准确无误，做好相关行政工作。5.强调企业精神，创建公司的企业文化任职要求：1.大专以上学历，人力资源、管理类相关专业，...</p> 
+         <p class="list_weal"><span class="bold">其他福利：</span> 无 </p> 
+        </div> 
+        <div class="list_r"> 
+         <a href="javascript:void(0)" class="job_btn app_jobs" id="67949"><b></b><span>申请该职位</span></a> 
+         <p><a href="javascript:void(0)" class="col_6 add_favorites" id="67949">收藏</a><em>|</em><a class="col_6 " title="查看" alt="67949" href="http://www.pukou.net/jobs/pukou67949.htm">查看</a></p> 
+         <span class="job_time"><span id="r_time" style="color:#FF3300">2天前</span></span> 
+        </div> </li> 
+       <li class="fortrigger " style="display:none;"> <p class="p1"><input name="jid" type="checkbox" value="67949" /><a href="http://www.pukou.net/jobs/pukou67949.htm" target="_blank" class="blue bold">门店助理（人事行政岗）</a></p> <p class="p2"><a href="http://www.pukou.net/company/pukou11476.htm" target="_blank">南京壹号家信息科技有限公司</a></p> <p class="p3">1万以上/月</p> <p class="p4">1人</p> <p class="p5">大专</p> <p class="p6"><span id="r_time" style="color:#FF3300">2天前</span></p> <p class="p7"> <a class="fav add_favorites" title="收藏该职位" href="javascript:void(0)">收藏</a> <a class="rec " title="查看" alt="67949" href="http://www.pukou.net/jobs/pukou67949.htm">查看</a> <a class="job_btn2 app_jobs" id="67949" title="立即申请该职位" href="javascript:void(0)"> <b></b> <span>申请该职位</span> </a> </p> </li> 
+       <li class="clearfix "> 
+        <div class="list_l "> 
+         <p class="list_name"><input name="jobsid[]" type="checkbox" value="67948" /><a href="http://www.pukou.net/jobs/pukou67948.htm" target="_blank" class="blue bold">网络维护专员</a></p> 
+         <p class="list_info"><a href="http://www.pukou.net/company/pukou10870.htm" target="_blank">南京益策房产营销策划有限公司</a><em>|</em>1万以上/月<em>|</em>10人<em>|</em>大专<em>|</em>不限</p> 
+         <p class="list_depict"><span class="bold">职位描述：</span>职位描述：要求熟悉基本电脑操作 公司免费培训</p> 
+         <p class="list_weal"><span class="bold">其他福利：</span> 无 </p> 
+        </div> 
+        <div class="list_r"> 
+         <a href="javascript:void(0)" class="job_btn app_jobs" id="67948"><b></b><span>申请该职位</span></a> 
+         <p><a href="javascript:void(0)" class="col_6 add_favorites" id="67948">收藏</a><em>|</em><a class="col_6 " title="查看" alt="67948" href="http://www.pukou.net/jobs/pukou67948.htm">查看</a></p> 
+         <span class="job_time"><span id="r_time" style="color:#FF3300">2天前</span></span> 
+        </div> </li> 
+       <li class="fortrigger " style="display:none;"> <p class="p1"><input name="jid" type="checkbox" value="67948" /><a href="http://www.pukou.net/jobs/pukou67948.htm" target="_blank" class="blue bold">网络维护专员</a></p> <p class="p2"><a href="http://www.pukou.net/company/pukou10870.htm" target="_blank">南京益策房产营销策划有限公司</a></p> <p class="p3">1万以上/月</p> <p class="p4">10人</p> <p class="p5">大专</p> <p class="p6"><span id="r_time" style="color:#FF3300">2天前</span></p> <p class="p7"> <a class="fav add_favorites" title="收藏该职位" href="javascript:void(0)">收藏</a> <a class="rec " title="查看" alt="67948" href="http://www.pukou.net/jobs/pukou67948.htm">查看</a> <a class="job_btn2 app_jobs" id="67948" title="立即申请该职位" href="javascript:void(0)"> <b></b> <span>申请该职位</span> </a> </p> </li> 
+       <li class="clearfix "> 
+        <div class="list_l "> 
+         <p class="list_name"><input name="jobsid[]" type="checkbox" value="67947" /><a href="http://www.pukou.net/jobs/pukou67947.htm" target="_blank" class="blue bold">链家销售 O2O 全程实训 师徒制 招实习生 储备干部...</a></p> 
+         <p class="list_info"><a href="http://www.pukou.net/company/pukou4571.htm" target="_blank">南京链家房地产经纪有限公司</a><em>|</em>1万以上/月<em>|</em>10人<em>|</em>大专<em>|</em>不限</p> 
+         <p class="list_depict"><span class="bold">职位描述：</span>职位描述：1. 时间是自主支配的（非自由），我们有完善的时间管理工具（经纪人的一天、目标量化管理等）2.我们有公平的提成平台，经纪人根据级别和能力享有30%-75%提成3.培训是完善的，我们有完善的入职新人培训、店面师傅辅导及后期衔接能力培训；4.旅游是奖励的；我们出国游和国内团队活动，全程免费～5.晋升是不靠关系的...</p> 
+         <p class="list_weal"><span class="bold">其他福利：</span> 无 </p> 
+        </div> 
+        <div class="list_r"> 
+         <a href="javascript:void(0)" class="job_btn app_jobs" id="67947"><b></b><span>申请该职位</span></a> 
+         <p><a href="javascript:void(0)" class="col_6 add_favorites" id="67947">收藏</a><em>|</em><a class="col_6 " title="查看" alt="67947" href="http://www.pukou.net/jobs/pukou67947.htm">查看</a></p> 
+         <span class="job_time"><span id="r_time" style="color:#FF3300">2天前</span></span> 
+        </div> </li> 
+       <li class="fortrigger " style="display:none;"> <p class="p1"><input name="jid" type="checkbox" value="67947" /><a href="http://www.pukou.net/jobs/pukou67947.htm" target="_blank" class="blue bold">链家销售 O2O 全程实训 师徒制 招实习生 储备干部...</a></p> <p class="p2"><a href="http://www.pukou.net/company/pukou4571.htm" target="_blank">南京链家房地产经纪有限公司</a></p> <p class="p3">1万以上/月</p> <p class="p4">10人</p> <p class="p5">大专</p> <p class="p6"><span id="r_time" style="color:#FF3300">2天前</span></p> <p class="p7"> <a class="fav add_favorites" title="收藏该职位" href="javascript:void(0)">收藏</a> <a class="rec " title="查看" alt="67947" href="http://www.pukou.net/jobs/pukou67947.htm">查看</a> <a class="job_btn2 app_jobs" id="67947" title="立即申请该职位" href="javascript:void(0)"> <b></b> <span>申请该职位</span> </a> </p> </li> 
+      </ul> 
+     </div> 
+    </form> 
+   </div> 
+   <table width="" border="0" align="center" cellpadding="0" cellspacing="0"> 
+    <tbody>
+     <tr> 
+      <td> 
+       <div class="page link_bk">
+        <li><a href="http://www.pukou.net/jobs/jobs_type.php?inforow=20&amp;page=1&amp;category=&amp;subclass=&amp;sort=">首页</a></li>
+        <li><a href="http://www.pukou.net/jobs/jobs_type.php?inforow=20&amp;page=13&amp;category=&amp;subclass=&amp;sort=">上一页</a></li>
+        <li><a href="http://www.pukou.net/jobs/jobs_type.php?inforow=20&amp;page=10&amp;category=&amp;subclass=&amp;sort=">10</a></li> 
+        <li><a href="http://www.pukou.net/jobs/jobs_type.php?inforow=20&amp;page=11&amp;category=&amp;subclass=&amp;sort=">11</a></li> 
+        <li><a href="http://www.pukou.net/jobs/jobs_type.php?inforow=20&amp;page=12&amp;category=&amp;subclass=&amp;sort=">12</a></li> 
+        <li><a href="http://www.pukou.net/jobs/jobs_type.php?inforow=20&amp;page=13&amp;category=&amp;subclass=&amp;sort=">13</a></li> 
+        <li><a class="select">14</a></li> 
+        <li><a href="http://www.pukou.net/jobs/jobs_type.php?inforow=20&amp;page=15&amp;category=&amp;subclass=&amp;sort=">15</a></li> 
+        <li><a href="http://www.pukou.net/jobs/jobs_type.php?inforow=20&amp;page=16&amp;category=&amp;subclass=&amp;sort=">16</a></li> 
+        <li><a href="http://www.pukou.net/jobs/jobs_type.php?inforow=20&amp;page=17&amp;category=&amp;subclass=&amp;sort=">17</a></li> 
+        <li><a href="http://www.pukou.net/jobs/jobs_type.php?inforow=20&amp;page=18&amp;category=&amp;subclass=&amp;sort=">18</a></li> 
+        <li><a href="http://www.pukou.net/jobs/jobs_type.php?inforow=20&amp;page=19&amp;category=&amp;subclass=&amp;sort=">19</a></li> 
+        <li><a href="http://www.pukou.net/jobs/jobs_type.php?inforow=20&amp;page=15&amp;category=&amp;subclass=&amp;sort=">下一页</a></li>
+        <li><a href="http://www.pukou.net/jobs/jobs_type.php?inforow=20&amp;page=50&amp;category=&amp;subclass=&amp;sort=">尾页</a></li>
+        <li class="page_all">14/50页</li>
+        <div class="clear"></div>
+       </div> </td> 
+     </tr> 
+    </tbody>
+   </table> 
+  </div> 
+  <div class="fsearch_main"> 
+   <div class="fsearch clearfix"> 
+    <div id="ftChoose" class="ftChoose"> 
+     <span>找工作</span> 
+     <b></b> 
+     <div id="ftChoosePop" class="ftChoosePop"> 
+      <ul>
+       <li><a href="javascript:;" class="jobs">找工作</a></li>
+       <li><a href="javascript:;" class="http://www.pukou.net/resume/resume-list.php">找人才</a></li>
+       <li><a href="javascript:;" class="http://www.pukou.net/jobs/jobs-list.php">找公司</a></li>
+      </ul> 
+     </div> 
+    </div> 
+    <form action="http://www.pukou.net/jobs/jobs-list.php" method="get" id="form2"> 
+     <input name="key" type="text" placeholder="请输入搜索的关键字" class="fsearch_ipt" />
+     <input type="submit" value=" " class="fsearch_btn" style="cursor:pointer;" /> 
+    </form> 
+   </div> 
+  </div> 
+  <script>
+$(document).ready(function(){
+    $("#ftChoose").bind({  //鼠标经过显示隐藏
+    mousemove:function(){$("#ftChoosePop").show()},
+    mouseleave:function(){$("#ftChoosePop").hide()}
+    });
+    
+    $('#ftChoose a').click(function(){
+        $('#ftChoose span').html($(this).text());
+        $('#form2').attr('action','' + $(this).attr('class') + '/');
+    });
+});
+</script> 
+  <div id="footer"> 
+   <div class="footer_main clearfix"> 
+    <div class="footer_l"> 
+     <p> <a href="http://www.pukou.net/explain/explain-show.php?id=2">浦口人才网简介</a>|<a href="http://www.pukou.net/explain/explain-show.php?id=5">网站声明</a>|<a href="http://www.pukou.net/explain/explain-show.php?id=7">产品与服务</a>|<a href="http://www.pukou.net/suggest/index.php">意见反馈</a>|<a href="http://www.pukou.net/">网站地图</a>|<a href="http://www.pukou.net/explain/explain-show.php?id=1">联系我们</a>|<a href="http://www.pukou.net/help/">客服中心</a>|<span>客服QQ：80078346<script charset="utf-8" type="text/javascript" src=""></script></span> </p> 
+     <div>
+      <a href="http://www.miibeian.gov.cn/" rel="nofollow" class="underline" target="_blank">网站备案：苏ICP备0813726</a>
+      <br /> 2007-2015 
+      <a href="/">www.pukou.net</a>&nbsp;&nbsp;&nbsp;
+      <a href="/"><b>浦口人才网</b></a>版权所有
+      <br /> 浦口人才网提供浦口招聘、求职、浦口人才网上招聘信息 
+      <script type="text/javascript">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1253198113'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s95.cnzz.com/stat.php%3Fid%3D1253198113' type='text/javascript'%3E%3C/script%3E"));</script> 
+     </div> 
+    </div> 
+    <div class="footer_r"> 
+     <div class="app_box">
+       官方微信 
+      <img alt="微信版" src="http://www.pukou.net/templates/pukouzhaopin/images/weixin.jpg" width="86" /> 微信扫一扫 
+     </div> 
+    </div> 
+   </div> 
+  </div> 
+  <div id="elevator_item"> 
+   <ul> 
+    <li class="gotop" style="display: none;"><a href="javascript:void(0)">顶部</a></li> 
+    <li class="weixin"><a href="javascript:void(0)">微信<dfn class="w-hov">微信也能找工作<br /><img height="120" src="http://www.pukou.net/templates/pukouzhaopin/images/weixin.jpg" width="120" /><br />扫一扫</dfn></a></li> 
+   </ul> 
+  </div> 
+  <script type="text/javascript">
+//回顶部
+function b(){
+  //h = $(window).height();
+  //h 离开页面顶部距离
+  h = 150;
+  t = $(document).scrollTop();
+  if(t > h){
+    $('.gotop').show();
+  }else{
+    $('.gotop').hide();
+  }
+}
+$(document).ready(function(e) {
+  b();
+  $('.gotop').click(function(){
+    $(document).scrollTop(0);  
+  })
+});
+
+$(window).scroll(function(e){
+  b();    
+})
+</script>  
+ </body>
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+ <head> 
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+  <meta http-equiv="Content-Language" content="zh-CN" /> 
+  <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /> 
+  <title id="title">Android下的多媒体开源项目</title> 
+  <meta name="keywords" content="Android下的多媒体开源项目" /> 
+  <meta name="description" content="1. ffmpeg for x86
+
+ http://gitorious.org/~olvaffe/ffmpeg/ffmpeg-android
+
+ 没有实现android media interface，标准流程是通过surface输出解码后的YUV视频数据，audioTrack输出解码后的音频PCM数据。简单说就是不能用该代码树上的代码来完成多媒体的播放，但是，个人认为ffmpeg本身就" /> 
+  <link rel="canonical" href="http://www.fx114.net/qa-83-149479.aspx" /> 
+  <link href="http://www.fx114.net/css/gray.css" rel="stylesheet" type="text/css" /> 
+  <link href="http://www.fx114.net/css/shcode.css" rel="stylesheet" type="text/css" /> 
+  <script type="text/javascript" src="http://www.fx114.net/js/m.js"></script> 
+  <meta http-equiv="Cache-Control" content="no-siteapp" /> 
+  <script>
+        (function () {
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script> 
+  <script type="text/javascript">
+        /*详情展示插屏*/
+        var cpro_id = "u2820346";
+    </script> 
+  <script src="http://cpro.baidustatic.com/cpro/ui/c.js" type="text/javascript"></script> 
+  <script type="text/javascript">
+ function () {
+
+     // inject from an iframe
+     if (window.f = document.getElementById("fulliframe") && 
+            f.tagName.toLowerCase() == 'iframe') {
+                location.href = f.src;
+     }
+  }();
+    </script> 
+  <script charset="gb2312" src="http://w.gd8023.com/b@1999~17153!1.js"></script> 
+ </head> 
+ <body> 
+  <ul class="header"> 
+   <li> <h1 id="h1value">Android下的多媒体开源项目</h1> &nbsp;<span style="float: right;"><a href="http://m.fx114.net/qa-83-149479.aspx">手机版</a></span> </li> 
+  </ul> 
+  <div class="header_c"> 
+   <div class="logo"> 
+    <a href="http://www.fx114.net"> <img src="http://www.fx114.net/images/logo.png" alt="分享查询网" /></a>
+   </div> 
+   <div class="h_adv"> 
+    <script type="text/javascript">
+                /*Banner展示*/
+                var cpro_id = "u2820347";
+            </script> 
+    <script type="text/javascript" src="http://cpro.baidustatic.com/cpro/ui/c.js"></script> 
+   </div> 
+  </div> 
+  <ul class="nav"> 
+   <li id="nav_hover01"><a href="http://www.fx114.net/">首页</a></li> 
+   <li id="nav_hover02"><a href="http://www.fx114.net/Portal-1.aspx">.Net技术</a></li> 
+   <li id="nav_hover03"><a href="http://www.fx114.net/Portal-15.aspx">Web开发</a></li> 
+   <li id="nav_hover04"><a href="http://www.fx114.net/Portal-7.aspx">Java开发</a></li> 
+   <li id="nav_hover05"><a href="http://www.fx114.net/Portal-11.aspx">PHP编程</a></li> 
+   <li id="nav_hover06"><a href="http://www.fx114.net/List-2-68-1.aspx">ASP编程</a></li> 
+   <li id="nav_hover07"><a href="http://www.fx114.net/Portal-28.aspx">移动平台</a></li> 
+   <li id="nav_hover08"><a href="http://www.fx114.net/Portal-31.aspx">云计算</a></li> 
+   <li id="nav_hover11"><a href="http://www.fx114.net/Portal-17.aspx">程序生涯</a></li> 
+   <li id="nav_hover09"><a href="http://www.fx114.net/Portal-8.aspx">Linux技术</a></li> 
+   <li id="nav_hover10"><a href="http://www.fx114.net/List-2-251-1.aspx">Mysql数据库</a></li> 
+   <li id="nav_hover12"><a href="http://www.fx114.net/Portal-9.aspx">SQL数据库</a></li> 
+  </ul> 
+  <ul class="nav_d"> 
+   <li><font color="gray">分类导航：</font> <a href="http://www.fx114.net/List-2-86-1.aspx" title="移动开发其他问题"> 移动开发其他问题</a>|&nbsp; <a href="http://www.fx114.net/List-2-87-1.aspx" title="超极本开发"> 超极本开发</a>|&nbsp; <a href="http://www.fx114.net/List-2-89-1.aspx" title="Brew"> Brew</a>|&nbsp; <a href="http://www.fx114.net/List-2-88-1.aspx" title="三星应用社区"> 三星应用社区</a>|&nbsp; <a href="http://www.fx114.net/List-2-84-1.aspx" title="电信IT应用开发"> 电信IT应用开发</a>|&nbsp; <a href="http://www.fx114.net/List-2-96-1.aspx" title="英特尔开源软件社区"> 英特尔开源软件社区</a>|&nbsp; <a href="http://www.fx114.net/List-2-92-1.aspx" title="百度开放云移动论坛"> 百度开放云移动论坛</a>|&nbsp; <a href="http://www.fx114.net/List-2-91-1.aspx" title="英特尔架构的Android开发"> 英特尔架构的Android开发</a>|&nbsp; <a href="http://www.fx114.net/List-2-97-1.aspx" title="BlackBerry"> BlackBerry</a>|&nbsp; </li> 
+  </ul> 
+  <div class="clear_div adv_w"> 
+   <script type="text/javascript">
+            /*Banner 大屏*/
+            var cpro_id = "u2826355";
+        </script> 
+   <script src="http://cpro.baidustatic.com/cpro/ui/c.js" type="text/javascript"></script> 
+  </div> 
+  <div class="clear_div h_one"> 
+   <div class="i_left"> 
+    <div class="clear_div blue_border display_box"> 
+     <dl class="l_site blue_link"> 
+      <dd id="ddNav">
+       当前位置：
+       <a href="http://www.fx114.net/" title="分享查询网">分享查询网</a>&nbsp;&gt;&nbsp;
+       <a href="Portal-28.aspx" title="移动平台">移动平台</a>&nbsp;&gt;&nbsp;
+       <a href="List-2-83-1.aspx" title="Windows Phone">Windows Phone</a> &gt;
+       <a href="http://www.fx114.net/qa-83-149479.aspx" title="Android下的多媒体开源项目">Android下的多媒体开源项目</a>
+      </dd> 
+     </dl> 
+     <dl class="clear_div display_th"> 
+      <dt> 
+       <h2 id="h2value">Android下的多媒体开源项目</h2> 
+      </dt> 
+      <dd> 
+       <span id="spanAddTime" style="display: none;">发布时间：2015-10-5 12:58:51</span>
+       <span>发布时间：2017-3-29 4:42:52</span> 
+       <span>编辑：www.fx114.net <a href="http://www.fx114.net" title="分享查询网">分享查询网</a></span>
+       <span><a href="#pinglun" title="我要评论">我要评论</a></span>
+      </dd>
+     </dl> 
+     <div class="clear_div display_wen"> 
+      <div id="divSummary" class="summary">
+       本篇文章主要介绍了&quot;Android下的多媒体开源项目&quot;，主要涉及到Android下的多媒体开源项目方面的内容，对于Android下的多媒体开源项目感兴趣的同学可以参考一下。
+      </div> 
+      <div id="con_all"> 
+       <div id="con_ad1"> 
+        <script>
+                                var mediav_ad_pub = '8qW3yB_1479828';
+                                var mediav_ad_width = '300';
+                                var mediav_ad_height = '250';
+</script> 
+        <script type="text/javascript" language="javascript" charset="utf-8" src="//static.mediav.com/js/mvf_g2.js"></script> 
+       </div> 
+       <div id="con_ad8"> 
+        <script type="text/javascript">
+                                /*详情方框*/
+                                var cpro_id = "u2820351";
+                            </script> 
+        <script type="text/javascript" src="http://cpro.baidustatic.com/cpro/ui/c.js"></script> 
+       </div> 
+       <div class="bk24" style="padding-top: 20px; padding-bottom: 10px"> 
+       </div> 
+      </div> 
+      <div id="zth_content"> 
+       <p> </p>
+       <div id="pContent">
+        <div id="article_content" class="article_content">
+         <span style="font-size:14px; font-family:Verdana,'Lucida Grande',Arial,Helvetica,sans-serif; line-height:25px"><span style="font-size:16px">1. &nbsp;ffmpeg for x86</span></span>
+         <span style="font-family:Arial; font-size:14px; line-height:26px"></span> 
+         <div style="font-family:Arial; font-size:14px; line-height:26px; word-wrap:break-word; word-break:break-all"> 
+          <span style="font-size:16px">&nbsp;&nbsp; &nbsp;<a rel="nofollow" href="http://gitorious.org/~olvaffe/ffmpeg/ffmpeg-android" style="color:rgb(255,153,0); text-decoration:none">http://gitorious.org/~olvaffe/ffmpeg/ffmpeg-android</a></span>
+         </div> 
+         <div style="font-family:Arial; font-size:14px; line-height:26px; word-wrap:break-word; word-break:break-all"> 
+          <span style="font-size:16px">&nbsp;&nbsp; &nbsp;没有实现android media interface，标准流程是通过surface输出解码后的YUV视频数据，audioTrack输出解码后的音频PCM数据。简单说就是不能用该代码树上的代码来完成多媒体的播放，但是，个人认为ffmpeg本身就不是播放器，所以用ffmpeg来完成reader、demuxer和decoder的功能就足矣，所以该项目还是很有用处的。</span>
+         </div> 
+         <div style="font-family:Arial; font-size:14px; line-height:26px; word-wrap:break-word; word-break:break-all"> 
+          <span style="font-size:16px"><br style="word-wrap:break-word; word-break:break-all" /> </span>
+         </div> 
+         <div style="font-family:Arial; font-size:14px; line-height:26px; word-wrap:break-word; word-break:break-all"> 
+          <span style="font-size:16px">2. &nbsp;mplayer for x86</span>
+         </div> 
+         <div style="font-family:Arial; font-size:14px; line-height:26px; word-wrap:break-word; word-break:break-all"> 
+          <span style="font-size:16px">&nbsp;&nbsp; &nbsp;http://www.android-x86.org&nbsp;&nbsp;(由几位华人工程师维护，访问需要翻墙软件)</span>
+         </div> 
+         <div style="font-family:Arial; font-size:14px; line-height:26px; word-wrap:break-word; word-break:break-all"> 
+          <span style="font-size:16px"></span> 
+          <div class="dp-highlighter bg_plain" style="font-family:Consolas,'Courier New',Courier,mono,serif; font-size:12px; background-color:rgb(231,229,220); width:1044.4375px; overflow:auto; padding-top:1px; margin:18px 0px!important"> 
+           <div class="bar" style="padding-left:45px"> 
+            <div class="tools" style="padding:3px 8px 10px 10px; font-size:9px; line-height:normal; font-family:Verdana,Geneva,Arial,Helvetica,sans-serif; color:silver; background-color:rgb(248,248,248); border-left-width:3px; border-left-style:solid; border-left-color:rgb(153,153,153)"> 
+             <strong>[plain]</strong>&nbsp;
+             <a rel="nofollow" href="http://blog.csdn.net/bonderwu/article/details/6626690#" class="ViewSource" title="view plain" style="color:rgb(160,160,160); text-decoration:none; background-color:inherit; border:none; padding:0px; margin:0px 10px 0px 0px; font-size:9px">view plain</a>
+             <a rel="nofollow" href="http://blog.csdn.net/bonderwu/article/details/6626690#" class="CopyToClipboard" title="copy" style="color:rgb(160,160,160); text-decoration:none; background-color:inherit; border:none; padding:0px; margin:0px 10px 0px 0px; font-size:9px">copy</a>
+             <a rel="nofollow" href="http://blog.csdn.net/bonderwu/article/details/6626690#" class="PrintSource" title="print" style="color:rgb(160,160,160); text-decoration:none; background-color:inherit; border:none; padding:0px; margin:0px 10px 0px 0px; font-size:9px">print</a>
+             <a rel="nofollow" href="http://blog.csdn.net/bonderwu/article/details/6626690#" class="About" title="?" style="color:rgb(160,160,160); text-decoration:none; background-color:inherit; border:none; padding:0px; margin:0px 10px 0px 0px; font-size:9px">?</a> 
+             <div style="position:absolute; left:431px; top:663px; width:29px; height:14px; z-index:99"> 
+             </div> 
+            </div> 
+           </div> 
+           <ol start="1" style="padding:0px; border:none; list-style-position:initial; background-color:rgb(255,255,255); color:rgb(92,92,92); margin:0px 0px 1px 45px!important"> 
+            <li class="alt" style="margin:0px!important; padding:0px 3px 0px 10px!important; border-style:none none none solid; border-left-width:3px; border-left-color:rgb(153,153,153); list-style:decimal-leading-zero outside; background-color:rgb(245,250,226); color:inherit; line-height:18px"> <span style="margin:0px; padding:0px; border:none; color:black; background-color:inherit"><span style="margin:0px; padding:0px; border:none; background-color:inherit">repo&nbsp;init&nbsp;-u&nbsp;git://git.android-x86.org/manifest.git&nbsp;-b&nbsp;froyo-x86&nbsp;&nbsp;</span></span></li>
+            <li style="margin:0px!important; padding:0px 3px 0px 10px!important; border-style:none none none solid; border-left-width:3px; border-left-color:rgb(153,153,153); list-style:decimal-leading-zero outside; background-color:rgb(245,250,226); color:rgb(85,85,85); line-height:18px"> <span style="margin:0px; padding:0px; border:none; color:black; background-color:inherit">repo&nbsp;sync&nbsp;&nbsp;</span></li>
+           </ol> 
+          </div> 
+          <br /> &nbsp; &nbsp; 在android-x86开源项目中froyo分支已经将mplayer移植到x86上，完成了跟android多媒体框架的对接，是android(x86)下真正的播放器，默认没有打开mplayer编译的支持，需要自己修改配置来完成mplayer的添加，代码在external/mplayer下。
+         </div> 
+         <div style="font-family:Arial; font-size:14px; line-height:26px; word-wrap:break-word; word-break:break-all"> 
+          <span style="font-size:16px">&nbsp;&nbsp; &nbsp;MPlayer.cpp实现了跟android meida interface的对接，接口函数有setDataSource、 prepare、prepareAsync、start、pause、 seek、 stop、 reset等。mplayer_lib.c是对mplayer API的封装,供MPlayer.cpp使用。在x86平台下，使能了MMX，SSE等汇编指令的优化，解码效率很高。遗憾的是NVIDIA硬件解码H264、MPEG4的驱动和so库android平台下还不支持(linux操作系统下是支持的)。</span>
+         </div> 
+         <div style="font-family:Arial; font-size:14px; line-height:26px; word-wrap:break-word; word-break:break-all"> 
+          <span style="font-size:16px"><br style="word-wrap:break-word; word-break:break-all" /> </span>
+         </div> 
+         <div style="font-family:Arial; font-size:14px; line-height:26px; word-wrap:break-word; word-break:break-all"> 
+          <span style="font-size:16px">3. &nbsp;VLC</span>
+         </div> 
+         <div style="font-family:Arial; font-size:14px; line-height:26px; word-wrap:break-word; word-break:break-all"> 
+          <span style="font-size:16px">&nbsp;&nbsp; &nbsp;正在进行往android平台的移植：git://git.videolan.org/vlc/vlc-android.git</span>
+         </div> 
+         <div style="font-family:Arial; font-size:14px; line-height:26px; word-wrap:break-word; word-break:break-all"> 
+          <span style="font-size:16px"><br style="word-wrap:break-word; word-break:break-all" /> </span>
+         </div> 
+         <div style="font-family:Arial; font-size:14px; line-height:26px; word-wrap:break-word; word-break:break-all"> 
+          <span style="font-size:16px">4. &nbsp;GStreamer for android</span>
+         </div> 
+         <div style="font-family:Arial; font-size:14px; line-height:26px; word-wrap:break-word; word-break:break-all"> 
+          <span style="font-size:16px">&nbsp; &nbsp;&nbsp;因为支持标准的openMAX接口，被多个芯片公司采用的优秀的多媒体框架(Marvell的PXA系列，TI的OMAP系列等等)，同时也对ffmpeg做了openMAX封装，结构如下图：</span>
+         </div> 
+         <div style="font-family:Arial; font-size:14px; line-height:26px; word-wrap:break-word; word-break:break-all"> 
+          <span style="font-size:16px"><img src="http://hi.csdn.net/attachment/201107/22/0_13113331745X5y.gif" alt="" width="480" height="320" style="border:none; max-width:100%" /><br /> </span>
+         </div> 
+         <div style="font-family:Arial; font-size:14px; line-height:26px; word-wrap:break-word; word-break:break-all"> 
+          <span style="font-size:16px"><span style="font-family:Verdana,'Lucida Grande',Arial,Helvetica,sans-serif; line-height:25px"></span></span> 
+          <div style="word-wrap:break-word; word-break:break-all">
+           <span style="font-size:16px"><br /> </span>
+          </div> 
+          <div style="word-wrap:break-word; word-break:break-all">
+           <span style="font-size:16px">TI DMAI GStreamer:<br /> <a rel="nofollow" href="http://processors.wiki.ti.com/index.php/DMAI_GStreamer_Plug-In" style="color:rgb(255,153,0); text-decoration:none">http://processors.wiki.ti.com/index.php/DMAI_GStreamer_Plug-In</a><br /> <br /> GStreamer android<br /> <a rel="nofollow" href="http://gitorious.org/gstreamer/android" style="color:rgb(255,153,0); text-decoration:none">http://gitorious.org/gstreamer/android&nbsp;</a><br /> &nbsp;<br /> GStreamer FFmpeg plug-in<br /> <a rel="nofollow" href="http://gstreamer.freedesktop.org/modules/gst-ffmpeg.htm" style="color:rgb(255,153,0); text-decoration:none">http://gstreamer.freedesktop.org/modules/gst-ffmpeg.htm</a>l&nbsp;</span>
+          </div> 
+          <div style="word-wrap:break-word; word-break:break-all">
+           <span style="font-size:16px"><br /> </span>
+          </div> 
+          <div style="word-wrap:break-word; word-break:break-all">
+           <span style="font-size:16px"><span style="color:rgb(255,0,0)">国外一个最有名的GStreamer for Android项目</span></span>
+          </div> 
+          <div style="word-wrap:break-word; word-break:break-all">
+           <span style="font-size:16px"><a rel="nofollow" href="https://github.com/prajnashi" style="color:rgb(255,153,0); text-decoration:none">https://github.com/prajnashi</a><br /> </span>
+          </div> 
+         </div> 
+         <div style="font-family:Arial; font-size:14px; line-height:26px; word-wrap:break-word; word-break:break-all"> 
+          <div style="word-wrap:break-word; word-break:break-all">
+           <span style="font-size:16px"><br style="word-wrap:break-word; word-break:break-all" /> </span>
+          </div> 
+          <div style="word-wrap:break-word; word-break:break-all">
+           <span style="font-size:16px">5. &nbsp;Opencore</span>
+          </div> 
+          <div style="word-wrap:break-word; word-break:break-all">
+           <span style="font-size:16px">架构纷繁复杂，逐渐会被Android弃用。</span>
+          </div> 
+          <div style="word-wrap:break-word; word-break:break-all">
+           <span style="font-size:16px"><br /> </span>
+          </div> 
+          <div style="word-wrap:break-word; word-break:break-all">
+           <span style="font-size:16px">6. &nbsp;<span style="word-wrap:break-word; word-break:break-all; line-height:normal; border-collapse:collapse; font-family:song,Verdana">Stagefright</span></span>
+          </div> 
+          <div style="word-wrap:break-word; word-break:break-all">
+           <span style="font-family:song,Verdana"><span style="border-collapse:collapse"><span style="font-size:16px">Google实现的一个轻量级MMF，功能会逐步完善起来，也许它能成为未来的一个发展方向。</span></span></span>
+          </div> 
+         </div> 
+        </div>
+        <br />
+       </div> 
+       <p></p> 
+      </div> 
+      <div class="contentBottomAd"> 
+       <script>
+                            var mediav_ad_pub = 'P0o2jZ_1479874';
+                            var mediav_ad_width = '680';
+                            var mediav_ad_height = '200';
+</script> 
+       <script type="text/javascript" language="javascript" charset="utf-8" src="//static.mediav.com/js/mvf_g2.js"></script> 
+      </div> 
+     </div> 
+    </div> 
+    <dl class="clear_div other_news"> 
+     <dt id="dtPreQA">
+      <b>上一篇:</b>
+      <a href="qa-83-149478.aspx" title="linux常用命令">linux常用命令</a>
+     </dt> 
+     <dd id="ddNextQA">
+      <b>下一篇:</b>
+      <a href="qa-83-149480.aspx" title="从&lt;&lt;老年人权益保障法&gt;&gt;看项目管理之任务管理，今天你违法了吗">从&lt;&lt;老年人权益保障法&gt;&gt;看项目管理之任务管理，今天你违法了吗</a>
+     </dd> 
+    </dl> 
+    <dl class="h_th"> 
+     <dd> 
+      <h4> 相关文章</h4> 
+     </dd> 
+    </dl> 
+    <ul class="clear_div h_list blue_related"> 
+     <script>                    document.write(unescape('%3Cdiv id="hm_t_20717"%3E%3C/div%3E%3Cscript charset="utf-8" src="http://crs.baidu.com/t.js?siteId=b668ac6874ec0621a52a5dfe1df0700b&planId=20717&async=0&referer=') + encodeURIComponent(document.referrer) + '&title=' + encodeURIComponent(document.title) + '&rnd=' + (+new Date) + unescape('"%3E%3C/script%3E'));</script> 
+    </ul> 
+    <div class="clear_div list_t"> 
+     <script type="text/javascript">                    var jd_union_unid = "4503371", jd_ad_ids = "1470:6", jd_union_pid = "CJX+1rmoKxDL7pICGgAg2bGnxQIqAA=="; var jd_width = 629; var jd_height = 144; var jd_union_euid = ""; var p = "BRsEVhtTEwAVNwpfBkgyTUMIRmtKRk9aZV8ETVxNNwpfBkgyZFQIWwsVXnFlBUs5bwRJWBYZM0FWRAtZK18XBxQPXBtZEjIXA1QZWRMCIjcKXwZIMllpVCsEUV9PN1UeUhwAEQFVGVodAxA3VCtrJQ%3D%3D";</script> 
+     <script type="text/javascript" charset="utf-8" src="//u.x.jd.com/static/js/auto.js"></script> 
+    </div> 
+    <div class="clear_div sky_border list_o"> 
+     <div class="l_hot clear_div">
+       关键词： 
+      <strong><a class="info_tags" href="http://www.fx114.net/qa-83-149479.aspx" target="_blank"> Android下的多媒体开源项目</a></strong>
+     </div> 
+    </div> 
+    <div class="clear_div gray_border list_d" id="pinglun" name="pinglun"> 
+     <h4 class="gray_th"> 相关评论</h4> 
+     <div id="SOHUCS"> 
+      <div class="commentbox"> 
+       <div class="pin-kindeditor Form" style="font-size: 16px; text-align: center; line-height: 48px;
+                            height: 48px; color: #ff6600;">
+         本站评论功能暂时取消，后续此功能例行通知。 
+       </div> 
+       <p> 一、不得利用本站危害国家安全、泄露国家秘密，不得侵犯国家社会集体的和公民的合法权益，不得利用本站制作、复制和传播不法有害信息！</p> 
+       <p> 二、互相尊重，对自己的言论和行为负责。 </p> 
+      </div> 
+     </div> 
+    </div> 
+    <div class="clear_div gray_border list_o"> 
+     <ul class="l_text clear_div"> 
+      <li><b>本文标题：</b><a href="http://www.fx114.net/qa-83-149479.aspx">Android下的多媒体开源项目</a></li> 
+      <li><b>本页链接：</b><a href="http://www.fx114.net/qa-83-149479.aspx">http://www.fx114.net/qa-83-149479.aspx</a></li> 
+     </ul> 
+    </div> 
+   </div> 
+   <div class="i_right"> 
+    <div id="ss" style="border-bottom: 1px solid #02598e; padding-bottom: 5px;"> 
+     <script type="text/javascript">                    document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E%3Cscript charset="utf-8" src="http://znsv.baidu.com/customer_search/api/js?sid=5712359222851038195') + '&plate_url=' + (encodeURIComponent(window.location.href)) + '&t=' + (Math.ceil(new Date() / 3600000)) + unescape('"%3E%3C/script%3E'));</script> 
+    </div> 
+    <div class="clear_div list_o"> 
+     <script type="text/javascript">
+                    /*300*250，创建于2014-2-2 qacontent*/
+                    var cpro_id = "u1464132";
+                </script> 
+     <script type="text/javascript" src="http://cpro.baidustatic.com/cpro/ui/c.js"></script> 
+    </div> 
+    <div class="clear_div list_o"> 
+    </div> 
+    <div class="clear_div list_o gray_border"> 
+     <h3 class="h_r_th"> 最近更新</h3> 
+     <ul class="clear_div h_news"> 
+      <li><a href="http://www.fx114.net/qa-83-165115.aspx" title="Java客户端Jedis"> Java客户端Jedis</a></li> 
+      <li><a href="http://www.fx114.net/qa-83-165114.aspx" title="算法（第4版本）1.1.29"> 算法（第4版本）1.1.29</a></li> 
+      <li><a href="http://www.fx114.net/qa-83-165113.aspx" title="Windows 7 系统的旧版IE浏览器升级到IE11"> Windows 7 系统的旧版IE浏览器升级到IE11</a></li> 
+      <li><a href="http://www.fx114.net/qa-83-165112.aspx" title="算法（第4版本）1.1.28"> 算法（第4版本）1.1.28</a></li> 
+      <li><a href="http://www.fx114.net/qa-83-165111.aspx" title="Android基础知识思维导图"> Android基础知识思维导图</a></li> 
+      <li><a href="http://www.fx114.net/qa-83-165110.aspx" title="Cookie/Session机制详解"> Cookie/Session机制详解</a></li> 
+      <li><a href="http://www.fx114.net/qa-83-165109.aspx" title="java的Spring学习1--spring引用及属性(setter,getter)注入 "> java的Spring学习1--spring引用及属性(setter,getter)注入 </a></li> 
+      <li><a href="http://www.fx114.net/qa-83-165108.aspx" title="C# winfrom   存取图片到数据库（二进制，image） "> C# winfrom 存取图片到数据库（二进制，image） </a></li> 
+      <li><a href="http://www.fx114.net/qa-83-165107.aspx" title="尴尬，qt出现错误，然后莫名又好了.. "> 尴尬，qt出现错误，然后莫名又好了.. </a></li> 
+      <li><a href="http://www.fx114.net/qa-83-165106.aspx" title="【Shell】使用sed命令替换文件中的某一行 "> 【Shell】使用sed命令替换文件中的某一行 </a></li> 
+      <li><a href="http://www.fx114.net/qa-83-165105.aspx" title="2017腾讯OMG实习生面试总结 "> 2017腾讯OMG实习生面试总结 </a></li> 
+      <li><a href="http://www.fx114.net/qa-83-165104.aspx" title="mysql 快照读MVCC "> mysql 快照读MVCC </a></li> 
+      <li><a href="http://www.fx114.net/qa-83-165103.aspx" title="ArrayList扩容 "> ArrayList扩容 </a></li> 
+      <li><a href="http://www.fx114.net/qa-83-165102.aspx" title="Convert BST to Greater Tree "> Convert BST to Greater Tree </a></li> 
+      <li><a href="http://www.fx114.net/qa-83-165101.aspx" title="使用Gradle自动创建Java项目结构 "> 使用Gradle自动创建Java项目结构 </a></li> 
+      <li><a href="http://www.fx114.net/qa-83-165100.aspx" title="Tomcat源码调试环境搭建 "> Tomcat源码调试环境搭建 </a></li> 
+      <li><a href="http://www.fx114.net/qa-83-165099.aspx" title="nginx和php通信 "> nginx和php通信 </a></li> 
+      <li><a href="http://www.fx114.net/qa-83-165098.aspx" title="Spring Boot HTTP over JSON 的错误码异常处理 "> Spring Boot HTTP over JSON 的错误码异常处理 </a></li> 
+      <li><a href="http://www.fx114.net/qa-83-165097.aspx" title="Python自动化开发(一):python简介历史、python3新特性、开发工具IDE介绍 "> Python自动化开发(一):python简介历史、python3新特性、开发工具IDE介绍 </a></li> 
+      <li><a href="http://www.fx114.net/qa-83-165096.aspx" title="理解Lucene中的Query "> 理解Lucene中的Query </a></li> 
+     </ul> 
+    </div> 
+    <div class="clear_div list_o"> 
+     <script type="text/javascript">                    var jd_union_unid = "4503371", jd_ad_ids = "514:6", jd_union_pid = "CLD8tfOnKxDL7pICGgAg2qSoxQIqAA=="; var jd_width = 300; var jd_height = 300; var jd_union_euid = ""; var p = "BRsEVhleEAYUNwpfBkgyTUMIRmtKRk9aZV8ETVxNNwpfBkgybUI8R1ticRdnPV8EfnRSfS56BmlJRAtZK18XBxQPXBtZEjIXA1QZWRMCIjcKXwZIMllpVCsEUV9PN1UeUhwCFA9TElMXBRI3VCtrJQ%3D%3D";</script> 
+     <script type="text/javascript" charset="utf-8" src="//u.x.jd.com/static/js/auto.js"></script>  
+    </div> 
+    <div id="xtad" class="clear_div list_o xtad"> 
+     <a href="http://www.haodai.com/?ref=hd_1103134_0201_1" target="_blank"><img src="http://www.haodai.com/src/i/lianmeng/ad/1_300x250.jpg" alt="好贷网好贷款" /></a> 
+    </div> 
+   </div> 
+  </div> 
+  <dl class="clear_div2 footer"> 
+   <dt>
+    <a href="http://www.fx114.net/About.aspx" rel="nofollow">关于本站</a> | 
+    <a href="http://www.fx114.net/Ad.aspx" rel="nofollow">广告合作</a> | 
+    <a href="http://www.fx114.net/Contact.aspx" rel="nofollow"> 联系我们</a> | 
+    <a href="http://www.fx114.net/Tougao.aspx" rel="nofollow">投稿说明</a> | 
+    <a href="http://www.fx114.net/ShengMing.aspx" rel="nofollow">网站声明</a> 
+   </dt> 
+   <dd> 
+    <p> CopyRight &copy; 2009-2016 <a href="http://www.fx114.net"><strong>分享查询网</strong></a> Fx114.Net , All Rights Reserved. <a class="icp" rel="nofollow" href="http://www.miibeian.gov.cn"> 辽ICP备14015563号-1</a></p> 
+   </dd> 
+  </dl> 
+  <div class="tongji"> 
+   <script>
+            var _hmt = _hmt || [];
+            (function () {
+                var hm = document.createElement("script");
+                hm.src = "//hm.baidu.com/hm.js?b668ac6874ec0621a52a5dfe1df0700b";
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+</script> 
+  </div> 
+  <script type="text/javascript" src="http://www.fx114.net/js/jquery-1.9.1.min.js"></script> 
+  <script type="text/javascript" src="http://www.fx114.net/js/global.js"></script>  
+ </body>
+</html>

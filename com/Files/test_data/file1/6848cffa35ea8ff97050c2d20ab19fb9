@@ -1,0 +1,509 @@
+<html><head></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">Date.prototype.format = function (format) {
+    var o = { "M+": this.getMonth() + 1, "d+": this.getDate(), "h+": this.getHours(), "m+": this.getMinutes(), "s+": this.getSeconds(), "q+": Math.floor((this.getMonth() + 3) / 3), "S": this.getMilliseconds() };
+    if (/(y+)/.test(format)) { format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length)); }
+    for (var k in o) { if (new RegExp("(" + k + ")").test(format)) { format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length)); } }
+    return format;
+};
+Date.prototype.formatDateTime = function () { return this.format("yyyy-MM-dd hh:mm:ss"); };
+var ep_setTimeout = window.setTimeout;
+window.setTimeout = function (fRef, mDelay) {
+    if (typeof fRef == 'function') {
+        var argu = Array.prototype.slice.call(arguments, 2);
+        var f = function () {
+            fRef.apply(null, argu);
+        };
+        return ep_setTimeout(f, mDelay);
+    }
+    return ep_setTimeout(fRef, mDelay);
+}
+var EPLib = {
+    host: 'http://static.union.easypass.cn/',
+    ajaxUrl: 'http://static.union.easypass.cn/log/ajax/core.ashx',
+    cssUrl: 'http://css.union.easypass.cn/style/{0}.css',
+    cookie: {
+        cookieEnabled: (navigator.cookieEnabled) ? true : false,
+        cookieDomain: '',
+        locationId: 'EP_LocationID',
+        sn: 'EP_Sn'
+    },
+    _$: function (id) { return document.getElementById(id); },
+    enc: function (v) { return typeof encodeURIComponent == "function" ? encodeURIComponent(v) : escape(v) },
+    pageY: function (element) { return element.offsetParent ? (element.offsetTop + this.pageY(element.offsetParent)) : element.offsetTop; },
+    loadjs: function (url, callback, charset, id, reset, params) {
+        if (reset &amp;&amp; this._$(id)) { var jsnode = this._$(id); try { jsnode.parentNode.removeChild(jsnode); } catch (err) { } }
+        var s = document.createElement("script"); s.type = "text/javascript";
+        if (id) s.id = id; if (charset) s.charset = charset;
+        if (s.readyState) {
+            s.onreadystatechange = function () {
+                if (s.readyState == "loaded" || s.readyState == "complete") {
+                    s.onreadystatechange = null;
+                    if (callback &amp;&amp; typeof callback == 'function') {
+                        eval('callback(' + params.varName + ', params)');
+                    }
+                }
+            };
+        }
+        else {
+            s.onload = function () {
+                if (callback &amp;&amp; typeof callback == 'function') {
+                    eval('callback(' + params.varName + ', params)');
+                }
+            };
+        }
+        s.src = url; document.getElementsByTagName("head")[0].appendChild(s);
+    },
+    setCookie: function (name, value, hour) {
+        var exp = new Date(); //new   Date( "December 31, 9998 "); 
+        if (typeof hour == 'undefined' || hour == null) hour = 24 * 1; //默认保存一天
+        exp.setTime(exp.getTime() + hour * 60 * 60 * 1000);
+        document.cookie = name + "= " + escape(value) + ";expires= " + exp.toGMTString() + ";path=/" + (this.cookie.cookieDomain ? ";domain=" + this.cookie.cookieDomain : "");
+        return this.getCookie(name) ? true : false;
+    },
+    getCookie: function (objName) {
+        var arrStr = document.cookie.split("; ");
+        for (var i = 0; i &lt; arrStr.length; i++) {
+            var temp = arrStr[i].split("=");
+            if (temp[0] == objName) return unescape(temp[1]);
+        }
+        return '';
+    },
+    newGuid: function () {
+        var guid = "";
+        for (var i = 1; i &lt;= 32; i++) {
+            var n = Math.floor(Math.random() * 16.0).toString(16);
+            guid += n;
+            if ((i == 8) || (i == 12) || (i == 16) || (i == 20))
+                guid += "-";
+        }
+        return guid;
+    },
+    sys: function () {
+        var Sys = {};
+        var ua = navigator.userAgent.toLowerCase();
+        var s;
+        (s = ua.match(/msie ([\d.]+)/)) ? Sys.ie = s[1] :
+            (s = ua.match(/firefox\/([\d.]+)/)) ? Sys.firefox = s[1] :
+                (s = ua.match(/chrome\/([\d.]+)/)) ? Sys.chrome = s[1] :
+                    (s = ua.match(/opera.([\d.]+)/)) ? Sys.opera = s[1] :
+                        (s = ua.match(/version\/([\d.]+).*safari/)) ? Sys.safari = s[1] : 0;
+        return Sys;
+    },
+    detectOS: function () {
+        var sUserAgent = navigator.userAgent;
+        var isWin = (navigator.platform == "Win32") || (navigator.platform == "Windows");
+        var isMac = (navigator.platform == "Mac68K") || (navigator.platform == "MacPPC") || (navigator.platform == "Macintosh") || (navigator.platform == "MacIntel");
+        if (isMac) return "Mac";
+        var isUnix = (navigator.platform == "X11") &amp;&amp; !isWin &amp;&amp; !isMac;
+        if (isUnix) return "Unix";
+        var isLinux = (String(navigator.platform).indexOf("Linux") &gt; -1);
+        if (isLinux) return "Linux";
+        if (isWin) {
+            var isWin2K = sUserAgent.indexOf("Windows NT 5.0") &gt; -1 || sUserAgent.indexOf("Windows 2000") &gt; -1;
+            if (isWin2K) return "Win2000";
+            var isWinXP = sUserAgent.indexOf("Windows NT 5.1") &gt; -1 || sUserAgent.indexOf("Windows XP") &gt; -1;
+            if (isWinXP) return "WinXP";
+            var isWin2003 = sUserAgent.indexOf("Windows NT 5.2") &gt; -1 || sUserAgent.indexOf("Windows 2003") &gt; -1;
+            if (isWin2003) return "Win2003";
+            var isWin2003 = sUserAgent.indexOf("Windows NT 6.0") &gt; -1 || sUserAgent.indexOf("Windows Vista") &gt; -1;
+            if (isWin2003) return "WinVista";
+            var isWin2003 = sUserAgent.indexOf("Windows NT 6.1") &gt; -1 || sUserAgent.indexOf("Windows 7") &gt; -1;
+            if (isWin2003) return "Win7";
+        } return "None";
+    },
+    client: function () {
+        var url = document.location; //当前地址
+        var refer = document.referrer; //来源地址
+        var browser = ''; //浏览器类型
+        var screenWidth = window.screen.width; //分辨率 宽度
+        var screenHeight = window.screen.height; //分辨率 高度
+        var Sys = this.sys();
+        var language = '';
+
+        if (Sys.ie) { browser = 'IE' + (Sys.ie ? ' ' + Sys.ie : ''); }
+        else if (Sys.firefox) { browser = 'Firefox'; }
+        else if (Sys.chrome) { browser = 'Chrome'; }
+        else if (Sys.opera) { browser = 'Opera'; }
+        else if (Sys.safari) { browser = 'Safari'; }
+
+        if (navigator.language) { language = navigator.language; }
+        else { language = navigator.browserLanguage; }
+
+        return {
+            url: url
+            , refer: refer
+            , browser: browser
+            , screenWidth: screenWidth
+            , screenHeight: screenHeight
+            , language: language
+            , os: this.detectOS()
+        };
+    },
+    html: function (id, _html) {
+        var obj = this._$(id);
+        if (!obj) return '';
+        if (!_html) {
+            return obj.innerHTML;
+        }
+        else {
+            obj.innerHTML = _html;
+            return '';
+        }
+    },
+    css: function (id, _csslink) {
+        var objHead = document.getElementsByTagName('head')[0];
+        var obj = objHead; //this._$(id);
+        if (!obj || !_csslink) return;
+        var link = document.createElement('link');
+        link.href = _csslink;
+        link.type = 'text/css';
+        link.rel = 'stylesheet';
+        obj.appendChild(link);
+    },
+    iff: function (value, defaultValue) {
+        if (value == null || value == '' || value == 'null' || value == 'undefined') return defaultValue;
+        return value;
+    },
+    objAttr: function (id, extParams) {
+        var obj = this._$(id);
+        var attr = {};
+        if (!extParams) {
+            extParams = 'blockid,partner,type,city_type,city_id,city_name,car_type,brandid,serialid,carid,isupdate,generateid,charset,version,rowcount,ver,loadcss';
+        }
+        var arr = extParams.split(',');
+        for (var i = 0; i &lt; arr.length; i++) {
+            var key = arr[i];
+            attr[key] = '';
+        }
+        attr['blockid'] = '';
+        attr['loadcss'] = '1';
+        if (!id) return attr;
+
+        for (var i = 0; i &lt; arr.length; i++) {
+            var key = arr[i];
+            attr[key] = this.iff(obj.getAttribute(key), '');
+        }
+        attr['blockid'] = id.replace('ep_union_', ''); //重新设置
+        attr['loadcss'] = this.iff(obj.getAttribute('loadcss'), '1');
+        return attr;
+    },
+    setObjAttr: function (id, key, value) {
+        if (typeof key == 'undefined' || key == null) return;
+        var obj = this._$(id);
+        value = this.iff(value, '');
+        obj.setAttribute(key, value);
+    },
+    getSn: function () {
+        var _temp_sn = '0';
+        var _random = Math.random();
+        var _sn = this.getCookie(this.cookie.sn);
+        if (_sn &amp;&amp; _sn != '') {
+            _temp_sn = _sn;
+        } else if (this.setCookie(this.cookie.sn, _random, 24)) {
+            _temp_sn = _random;
+        }
+        return _temp_sn;
+    }
+
+};
+
+function EPMonitor(monitorId, _generateId) {
+    if (!monitorId) return;
+    var monitoring = true; //监听标识位
+    var pageLoadTime = new Date(); //页面载入时间
+    var adLoadTime; //广告载入时间
+    var handlerId; //句柄标识
+    var Sys = EPLib.sys();
+    var showStatus = 0; //呈现状态:1 发送呈现日志，0 不发送呈现日志
+
+    (function () {
+        if (!_generateId) _generateId = newGuid();
+        handlerId = 'EP-UNION-' + _generateId; //当前实例Id
+    })();
+
+    var offset = function () {
+        var pageHeight = document.body.clientHeight; //获取整个页面的高度
+        var screenHeight = document.documentElement.clientHeight; //获取当前浏览器的可视区域高度
+        var scrollHeight = document.body.scrollHeight; //获取滚动条的高度
+        var dom = EPLib._$(monitorId); //获取要监测区域元素
+        //计算当前浏览器巨顶的高度
+        var scrollTop = 0;
+        var setTop = EPLib.pageY(dom);
+        //IE、火狐等其他浏览器的滚动条滚动的高度
+        if (Sys.ie || Sys.firefox) {
+            scrollTop = document.documentElement.scrollTop;
+        } else {
+            scrollTop = document.body.scrollTop;
+        }
+        var domHeight = dom.clientHeight; //广告体内容高度
+        var offsettingTop = 10; //顶部位移量,即显露70px的广告
+        var offsettingBottom = 10;  //底部位移量,即显露70px的广告
+
+        var y = screenHeight + scrollTop; //滚动高度
+        var minY = setTop + offsettingTop; //最小有效高度
+        var maxY = setTop + domHeight + screenHeight - offsettingBottom; //最大有效高度
+        var adViewingHeight = setTop + domHeight + screenHeight; //广告可视高度
+
+        return {
+            pageHeight: pageHeight
+            , scrollTop: scrollTop
+            , screenHeight: screenHeight
+            , setTop: setTop
+            , domHeight: domHeight
+            , y: y
+            , minY: minY
+            , maxY: maxY
+            , adViewingHeight: adViewingHeight //广告可视高度
+        };
+    };
+
+    var actionFlagType = { BlockLoadLog: 1, BlockShowLog: 2, BlockClickLog: 3 };
+
+    var hasViewAd = function () {
+        var os = offset();
+        var minY = os.minY;
+        var maxY = os.maxY;
+        var y = os.y;
+        var setTop = os.setTop;
+        var domHeight = os.domHeight;
+        var screenHeight = os.screenHeight;
+        var scrollTop = os.scrollTop;
+
+        if (minY &lt;= y &amp;&amp; y &lt;= maxY &amp;&amp; showStatus == 1) {
+            if (monitoring) {  //第一次呈现广告的时间
+                monitoring = false;
+                adLoadTime = new Date();
+                //alert(adLoadTime);
+                sendmsg(actionFlagType.BlockShowLog, 0);
+            }
+            return true;
+        } else {
+            return false;
+        }
+
+    };
+
+    var sendmsg = function (actionFlag, isClose) {
+        if (!actionFlag) return;
+        var objAttr = EPLib.objAttr(monitorId);
+        var client = EPLib.client();
+        var qs = [];
+        var s = '__'; //参数名前缀
+        qs.push('action=Log'); //!important
+        qs.push('ActionFlag=' + actionFlag);
+        qs.push(s + 'BlockClientID=' + _generateId);
+        qs.push(s + 'BlockID=' + objAttr['blockid']);
+        qs.push(s + 'BlockTypeID=' + objAttr['type']);
+        qs.push(s + 'MediaID=' + objAttr['partner']);
+        qs.push(s + 'LoadTime=' + pageLoadTime.formatDateTime());
+        qs.push(s + 'LocationID=' + EPLib.getCookie(EPLib.cookie.locationId));
+        qs.push(s + 'Sn=' + EPLib.getSn());
+        if (adLoadTime) {
+            qs.push(s + 'ShowTime=' + adLoadTime.formatDateTime());
+        }
+        if (actionFlag == 1) {
+            qs.push(s + 'Browser=' + EPLib.enc(client.browser));
+            qs.push(s + 'Os=' + EPLib.enc(client.os));
+            qs.push(s + 'Language=' + EPLib.enc(client.language));
+            qs.push(s + 'Screen=' + (client.screenWidth + 'x' + client.screenHeight));
+            qs.push(s + 'Referer=' + EPLib.enc(client.refer));
+            qs.push(s + 'LocationURL=' + EPLib.enc(client.url));
+        }
+        if (actionFlag == 2) {
+            qs.push(s + 'Version=' + objAttr['ver']);
+            qs.push(s + 'DataRowCount=' + objAttr['rowcount']);
+        }
+        qs.push('city_type=' + objAttr['city_type']);
+        qs.push('city_id=' + objAttr['city_id']);
+        qs.push('tmp=' + Math.round((new Date).getTime() / 1000));
+        //alert(qs.join('&amp;'));
+
+        var varName = 'ep_jsondata_' + monitorId.replace('-', '_');
+        var jsid = 'ep-jsid-' + monitorId;
+        var params = { monitorId: monitorId, varName: varName };
+        EPLib.loadjs(EPLib.ajaxUrl + '?' + qs.join('&amp;'), function (data, params) { }, 'utf-8', jsid, 1, params);
+    };
+
+    this.setHandler = function (_handler) {
+        window[handlerId] = _handler;
+        sendmsg(actionFlagType.BlockLoadLog, 0); //第一次发送
+        hasViewAd();
+    };
+
+    this.setShowStatus = function (_status) {
+        showStatus = _status;
+        if (showStatus == 1) {
+            hasViewAd();
+        }
+    };
+
+    this.attachEvent = function () {
+        var obj = window[handlerId];
+        if (Sys.ie) {
+            window.attachEvent("onscroll", obj.scroll);
+            window.attachEvent("onload", obj.drawing);
+        } else {
+            window.addEventListener("scroll", obj.scroll, true);
+        }
+    };
+
+    this.scroll = function () {
+        hasViewAd();
+    };
+
+    this.drawing = function () {
+        //var b = document.body;
+        //b.style.zoom = b.style.zoom == "1" ? "100%" : "1";
+        //trigger re-rendering 
+        document.body.style.zoom = 1.1;
+        //restore it 
+        document.body.style.zoom = '';
+
+    };
+
+};
+var EPUnion = {
+    init: function () {
+        var objs = document.getElementsByTagName('ins')
+        for (var i = 0; i &lt; objs.length; i++) {
+            var obj = objs[i];
+            var monitorId = obj.getAttribute('id');
+
+            if (monitorId &amp;&amp; monitorId.substring(0, 9) == 'ep_union_') {
+                var objAttr = EPLib.objAttr(monitorId); //key一律小写
+                var blockId = monitorId.replace('ep_union_', ''); //obj.getAttribute('blockId');
+                var version = objAttr['version'];
+                var partner = objAttr['partner'];
+                var type = objAttr['type'];
+                var city_type = objAttr['city_type'];
+                var city_id = objAttr['city_id'];
+                var city_name = objAttr['city_name'];
+                var car_type = objAttr['car_type'];
+                var brandid = objAttr['brandid'];
+                var serialid = objAttr['serialid'];
+                var carid = objAttr['carid'];
+                var isUpdate = objAttr['isupdate'];
+                var charset = objAttr['charset'];
+                var loadcss = objAttr['loadcss'];
+
+                var varName = 'ep_jsondata_' + monitorId.replace('-', '_');
+
+                var generateId = EPLib.newGuid();
+                obj.setAttribute('generateId', generateId); //设置当前GenerateId
+                var monitor = new EPMonitor(monitorId, generateId);
+
+                var qs = [], qs2 = [];
+                var csslink = EPLib.cssUrl.replace('{0}', blockId);
+
+                qs2.push('varName=' + varName);
+                qs2.push('monitorId=' + monitorId);
+                qs2.push('blockId=' + blockId);
+                qs2.push('version=' + EPLib.iff(version, ''));
+                qs2.push('partner=' + EPLib.iff(partner, ''));
+                qs2.push('type=' + EPLib.iff(type, ''));
+                qs2.push('city_type=' + EPLib.iff(city_type, ''));
+                qs2.push('city_id=' + EPLib.iff(city_id, ''));
+                qs2.push('city_name=' + EPLib.enc(city_name ? city_name : ''));
+                qs2.push('car_type=' + EPLib.iff(car_type, ''));
+                qs2.push('brandid=' + EPLib.iff(brandid, ''));
+                qs2.push('serialid=' + EPLib.iff(serialid, ''));
+                qs2.push('carid=' + EPLib.iff(carid, ''));
+                qs2.push('charset=' + EPLib.iff(charset, 'utf-8'));
+                qs2.push('tmp=' + Math.round((new Date).getTime() / 1000));
+
+                isUpdate = 1;
+                if (isUpdate) {
+                    var jsid = 'ep-jsid-' + monitorId;
+                    var params = { monitor: monitor, monitorId: monitorId, blockId: blockId, csslink: csslink, varName: varName, qs2: qs2 };
+                    //url, callback, charset, id, reset, params
+                    if (loadcss == "1" || loadcss == true)
+                        EPLib.css(params.monitorId, params.csslink);
+                    EPLib.loadjs(EPLib.host + 'block/?' + qs2.join('&amp;'), function (data, params) {
+                        if (data.status == 1 &amp;&amp; data.html) {
+                            monitor = params.monitor;
+                            monitorId = params.monitorId;
+                            if (data['version'] &amp;&amp; data['version'] != '') {
+                                EPLib.setObjAttr(params.monitorId, 'ver', data['version']);
+                            }
+                            if (data['rowcount'] &amp;&amp; data['rowcount'] != '') {
+                                EPLib.setObjAttr(params.monitorId, 'rowcount', data['rowcount']);
+                            }
+                            EPLib.html(params.monitorId, data.html);
+                            monitor.setHandler(monitor);
+                            monitor.attachEvent();
+                            if (data['reload'] &amp;&amp; data['reload'] == 1) { //重新发起请求
+                                window.setTimeout(EPUnion.reloadContent, 1000, params);
+                            } else {
+                                monitor.setShowStatus(1);
+                            }
+                        }
+                    }, 'utf-8', jsid, 1, params);
+
+                } else {
+                    monitor.setHandler(monitor);
+                    monitor.attachEvent();
+                }
+
+            }
+        }
+    },
+    log: function (monitorId, params) {
+        if (!monitorId) return;
+        var objAttr = EPLib.objAttr(monitorId);
+        var generateId = objAttr['generateid']; //BlockClientID
+        var MediaID = objAttr['partner']; //MediaID
+        var blockId = monitorId.replace('ep_union_', '');
+        var ClickRowRefID = params['ClickRowRefID'];
+        var ClickElement = params['ClickElement'];
+        var BlockTypeID = params['BlockTypeID'];
+        if (!generateId || !blockId || !ClickRowRefID || !ClickElement) return;
+        var locationId = EPLib.getCookie(EPLib.cookie.locationId);
+        var sn = EPLib.getSn();
+
+        var s = '__'; //参数名前缀
+        var qs = [];
+        qs.push('action=Log');
+        qs.push('actionFlag=3'); //点击日志
+        qs.push(s + 'monitorId=' + monitorId);
+        qs.push(s + 'BlockClientID=' + generateId);
+        qs.push(s + 'BlockID=' + blockId);
+        qs.push(s + 'ClickRowRefID=' + ClickRowRefID);
+        qs.push(s + 'ClickElement=' + EPLib.enc(ClickElement)); //EPLib.enc(ClickElement)
+        qs.push(s + 'LocationID=' + locationId);
+        qs.push(s + 'Sn=' + sn);
+        qs.push(s + 'BlockTypeID=' + BlockTypeID);
+        qs.push(s + 'MediaID=' + MediaID);
+        qs.push('city_type=' + objAttr['city_type']);
+        qs.push('city_id=' + objAttr['city_id']);
+        //alert(qs.join('&amp;'));
+        var varName = 'ep_jsondata_' + monitorId.replace('-', '_');
+        var jsid = 'ep-jsid-' + monitorId;
+        var params = { monitorId: monitorId, varName: varName };
+        EPLib.loadjs(EPLib.ajaxUrl + '?' + qs.join('&amp;'), function (data, params) { }, 'utf-8', jsid, 1, params);
+    },
+    reloadContent: function (params) {
+        var jsid = 'ep-jsid-' + params.monitorId;
+        var qs2 = params.qs2;
+        qs2.push('tmp2=' + Math.round((new Date).getTime() / 1000));
+        //EPLib.css(params.monitorId, params.csslink);
+        EPLib.loadjs(EPLib.host + 'block/?' + qs2.join('&amp;'), function (data, params) {
+            if (data['version'] &amp;&amp; data['version'] != '') {
+                EPLib.setObjAttr(params.monitorId, 'ver', data['version']);
+            }
+            if (data['rowcount'] &amp;&amp; data['rowcount'] != '') {
+                EPLib.setObjAttr(params.monitorId, 'rowcount', data['rowcount']);
+            }
+            if (data.status == 1 &amp;&amp; data.html) {
+                EPLib.html(params.monitorId, data.html);
+            }
+            monitor = params.monitor;
+            monitor.setShowStatus(1);
+        }, 'utf-8', jsid, 1, params);
+    }
+};
+try {
+    EPUnion.init();
+} catch (err) { };
+
+
+
+</pre></body></html>

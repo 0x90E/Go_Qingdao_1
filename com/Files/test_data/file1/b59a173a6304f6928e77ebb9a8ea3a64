@@ -1,0 +1,1055 @@
+<!DOCTYPE html><html><head>
+    <title>企业登录</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8;">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <script src="/javascript/jquery-1.7.js"></script>
+    <script src="/javascript/ajax.js"></script>
+        <link rel="stylesheet" href="/javascript/plugins/aui-artDialog/css/ui-dialog.css">
+	<script src="/javascript/plugins/aui-artDialog/dist/dialog-plus.js"></script>
+    <script>
+        $(function() {
+            changeTab("tabNormal");
+            /*验证码倒计时具体按钮，初始化隐藏*/
+            $(".weiTimeout").hide();
+
+
+            $.get("/ifCollectInfo.jspx", function (data) {
+                if (data == "1") {
+				 loadJS("http://fwtj.gsxt.gov.cn/js/logcollector.js?nodenum=340000",function(){
+					     sessionId_gsxt = getSessionId(); // 正常情况JS可以拿到sessionId,但经过测试发现有些web服务器，js拿不到sessionId，这种情况需要手动对sessionId进行赋值，如sessionId_gsxt=
+						 t1Collect_gsxt(); // 收集访问信息，每个页面都需要调用该方法
+				 });
+                }
+            });
+        });
+
+
+        //定义加载文件的函数
+        var loadJS = function(url, callback) {
+            var head = document.getElementsByTagName('head')[0],
+                    script = document.createElement('script');
+            script.src = url;
+            script.type = "text/javascript";
+            head.appendChild(script);
+
+            script.onload = script.onreadystatechange = function() {
+                if ((!this.readyState) || this.readyState == "complete" || this.readyState == "loaded") {
+                    callback();
+                } else {
+                }
+            }
+        }
+
+        //获取sessionid
+        function getSessionId(){
+            var c_name = 'JSESSIONID';
+            if(document.cookie.length>0){
+                c_start=document.cookie.indexOf(c_name + "=")
+                if(c_start!=-1){
+                    c_start=c_start + c_name.length+1
+                    c_end=document.cookie.indexOf(";",c_start)
+                    if(c_end==-1) c_end=document.cookie.length
+                    return unescape(document.cookie.substring(c_start,c_end));
+                }
+            }
+        }
+        function changeTab(obj) {
+            if (obj == "tabPin") {
+                document.getElementById("panelNormal").style.display = "none";
+                document.getElementById("tabNormal").style.color = "#FFFFFF";
+                document.getElementById("tabNormal").style.background = "#AB812D";
+                document.getElementById("panelPin").style.display = "";
+                document.getElementById("tabPin").style.color = "#AB812D";
+                document.getElementById("tabPin").style.background = "#FFFFFF";
+            } else if (obj == "tabNormal") {
+                document.getElementById("panelNormal").style.display = "";
+                document.getElementById("tabNormal").style.color = "#AB812D";
+                document.getElementById("tabNormal").style.background = "#FFFFFF";
+                document.getElementById("panelPin").style.display = "none";
+                document.getElementById("tabPin").style.background = "#AB812D";
+                document.getElementById("tabPin").style.color = "#FFFFFF";
+
+
+            }
+        }
+        // 根据注册号/社会信用代码查找“市场主体名称”与“联络员姓名”，AJAX方法
+        function setName(obj) {
+        	$("#regnosm").html("");
+        	$("#regnosm").css("font-weight","");
+        	document.getElementById("marketName").value = "";
+            document.getElementById("pName").value = "";
+            var regno = obj.value;
+            if (regno == null || regno == "") {
+                return;
+            }
+            var request = new ajax.Request();
+            var url = "?ts=" + new Date() + "&regno=" + regno;
+            url = encodeURI(url);
+            url = encodeURI(url);
+            //两次编码
+            request.loadTextByGet("/obtEntAndLiName.jspx" + url, setNameCallback);
+        }
+        var flag = false;//统一社会信用代码/注册号是否正确
+        function setNameCallback(message) {
+            message = message.replace("\"", "").replace("\"", "");
+            if(message=="cancel"){
+            	$("#regnosm").html("企业已注销，请查证");
+            	flag = false;
+            }else if(message=="false"){
+            	$("#regnosm").html("请输入正确的统一社会信信用代码/注册号");
+            	flag = false;
+            }else if(message=="againReg"){
+            	$("#regnosm").html("请先进行企业联络员注册");
+            	$("#regnosm").css("font-weight","900");
+            	flag = false;
+            }else if(message.indexOf("$")!=-1){
+	            var reStr = message.split("$");
+	            document.getElementById("marketName").value = reStr[0];
+	            document.getElementById("pName").value = reStr[1];
+	            if(!$("#idCard").val()){
+	            	drawImg("regno","true");
+	            }else{
+	            	drawImg("regno","false");
+	            }
+	            flag = true;
+            }
+            var idCard = document.getElementById("idCard").value;
+            if (idCard != null && idCard != "") {
+                getPhone(document.getElementById("idCard"));
+            }
+        }
+
+        // 根据“联络员身份证号”查找“联络员手机号”，AJAX方法
+        function getPhone(obj) {
+        	$("#idCardsm").html("");
+        	document.getElementById("phone").value = "";
+            var regno = document.getElementById("regno").value;
+            var idCard = obj.value;
+            if (regno == null || regno == "") {
+                document.getElementById("idCard").value = "";
+                return;
+            }else if(idCard == null || idCard == ""){
+            	if(flag){
+	            	drawImg("regno","true");
+            	}
+            	return;
+            }else if(flag){
+            	drawImg("regno","false");
+            }
+            var request = new ajax.Request();
+            var url = "?ts=" + new Date() + "&regno=" + regno + "&idCard=" + idCard;
+            url = encodeURI(url);
+            url = encodeURI(url);
+            //两次编码
+            request.loadTextByGet("/obtLiPhone.jspx" + url, setPhoneCallback);
+        }
+        function setPhoneCallback(message) {
+            message = message.replace("\"", "").replace("\"", "");
+            if(message=="cancel"){
+            	$("#idCardsm").html("企业已注销，请查证");
+                return;
+            }
+            if (message == "false" || message == "phoErr" || !message) {
+            	$("#idCardsm").html("与企业联络员注册信息不匹配，请核对");
+                return;
+            }
+            document.getElementById("phone").value = message;
+            drawImg("idCard");
+        }
+        function getVerCode() {
+            var yzflag = document.getElementById("yzflag");
+            var phone = document.getElementById("phone");
+            if (yzflag != null && yzflag.value == '01') {
+                if (phone == null || phone.value == "") {
+                	var d = dialog({
+					    title: '提示',
+					    content: "手机号为空或格式错误！",
+					    okValue:'确定',
+						ok:function(){}
+					}).width(320).focus();
+					d.showModal();
+                    return;
+                } else {
+                    var regno = document.getElementById("regno").value;
+                    var idCard = document.getElementById("idCard").value;
+                    if (regno == null || regno == "") {
+                    	var d = dialog({
+    					    title: '提示',
+    					    content: "请填写统一社会信用代码/注册号！",
+    					    okValue:'确定',
+    						ok:function(){}
+    					}).width(320).focus();
+    					d.showModal();
+                        return;
+                    }
+                    if (idCard == null || idCard == "") {
+                    	var d = dialog({
+    					    title: '提示',
+    					    content: "请填写工商联络员身份证号码！",
+    					    okValue:'确定',
+    						ok:function(){}
+    					}).width(320).focus();
+    					d.showModal();
+                        return;
+                    }
+                    var request = new ajax.Request();
+                    var url = "?ts=" + new Date() + "&idCard=" + idCard + "&regno=" + regno;
+                    url = encodeURI(url);
+                    url = encodeURI(url);
+                    document.getElementById("yzflag").value = "02";
+                    request.loadTextByGet("/sendPhoVerCode.jspx" + url, tipsCallback);
+                }
+            }
+        }
+
+        //倒计时方法
+        function backTimeOut(s){
+            var reg=/^\+?[1-9]\d*$/;
+            if(reg.test(s)){
+                $("#phoneCodeBut").hide();
+                $(".weiTimeout").show();
+                $(".weiTimeout").html((s--)+"秒后重新获取");
+                var timerone=setInterval(function(){
+                    if(s==0){
+                        $(".weiTimeout").hide();
+                        $("#phoneCodeBut").show();
+                        document.getElementById("yzflag").value = "01";
+                        clearInterval(timerone);
+                    }else{
+                        $(".weiTimeout").html((s--)+"秒后重新获取");
+                    }
+                },1000);
+            }else{
+            	var d = dialog({
+				    title: '提示',
+				    content: "请传入正确的时间！",
+				    okValue:'确定',
+					ok:function(){}
+				}).width(320).focus();
+				d.showModal();
+            }
+        }
+        var timer;
+        //返回发送短信结果
+        function tipsCallback(message) {
+            message = message.replace("\"", "").replace("\"", "");
+            if ("发送成功" == message) {
+            } else {
+            	var d = dialog({
+				    title: '提示',
+				    content: message,
+				    okValue:'确定',
+					ok:function(){}
+				}).width(320).focus();
+				d.showModal();
+            }
+            backTimeOut(60);
+        }
+        //提交
+        function doSubmit() {
+            var regno = document.getElementById("regno").value;
+            var idCard = document.getElementById("idCard").value;
+            var verCode = document.getElementById("phoneCode").value;
+            if (regno == null || regno == "") {
+            	var d = dialog({
+				    title: '提示',
+				    content: "请填写统一社会信用代码/注册号！",
+				    okValue:'确定',
+					ok:function(){}
+				}).width(320).focus();
+				d.showModal();
+                return;
+            }
+            if (idCard == null || idCard == "") {
+            	var d = dialog({
+				    title: '提示',
+				    content: "请填写工商联络员身份证号码！",
+				    okValue:'确定',
+					ok:function(){}
+				}).width(320).focus();
+				d.showModal();
+                return;
+            }
+            if (verCode == null || verCode == "") {
+            	var d = dialog({
+				    title: '提示',
+				    content: "验证码不能为空！",
+				    okValue:'确定',
+					ok:function(){}
+				}).width(320).focus();
+				d.showModal();
+                return false;
+            }
+            // 先验证是否已获取备案手机验证码，通过后再提交
+            var pass = false;
+            var request = new ajax.Request();
+            var urlStr = "?ts=" + new Date() + "&idCard=" + idCard + "&regno=" + regno + "&phoneCode=" + verCode;
+            urlStr = encodeURI(urlStr);
+            urlStr = encodeURI(urlStr);
+            $.ajax({url:"/verifyGetPhoVerCode.jspx",
+                data: urlStr,
+                success: function(message) {
+                    message = message.replace("\"", "").replace("\"", "");
+                    if (message == "true") {
+                        pass = true;
+                    } else {
+                        if (message != "验证码不正确！") {
+                            document.getElementById("phoneCode").value = "";
+                        }
+                        var d = dialog({
+        				    title: '提示',
+        				    content: message,
+        				    okValue:'确定',
+        					ok:function(){}
+        				}).width(320).focus();
+        				d.showModal();
+                    }
+                },async:false,
+                dataType:"json"})
+            if (!pass)return pass;
+            document.getElementById("normalLoginSubmit").target = "_self";
+            document.getElementById("normalLoginSubmit").submit();
+        }
+        //重置
+        function reset() {
+            document.getElementById("regno").value = "";
+            document.getElementById("idCard").value = "";
+            document.getElementById("marketName").value = "";
+            document.getElementById("pName").value = "";
+            document.getElementById("phoneCode").value = "";
+            document.getElementById("phone").value = "";
+            document.getElementById("yzflag").value = "01";
+        }
+        function resetState(){
+        	$("#regnosm").html("");
+        	$("#idCardsm").html("");
+        	document.getElementById("yzflag").value = "01";
+        }
+        function goBackHome() {
+            window.location.href = "/index.jspx";
+        }
+        function pintb() {
+            var pinyzm = document.getElementById("pinyzm").value;
+            var pincode = document.getElementById("pincode").value;
+            if (pincode == null || pincode == "") {
+            	var d = dialog({
+				    title: '提示',
+				    content: "请填写PIN码！",
+				    okValue:'确定',
+					ok:function(){}
+				}).width(320).focus();
+				d.showModal();
+                return;
+            }
+            if (pinyzm == null || pinyzm == "") {
+            	var d = dialog({
+				    title: '提示',
+				    content: "请输入验证码！",
+				    okValue:'确定',
+					ok:function(){}
+				}).width(320).focus();
+				d.showModal();
+                return;
+            }
+            var request = new ajax.Request();
+            var url = "?ts=" + new Date() + "&yzm=" + pinyzm;
+            request.loadTextByGet("/verifyVeriCode.jspx" + url, pinbutCallback);
+        }
+
+        function pinbutCallback(message) {
+            message = message.replace("\"", "").replace("\"", "");
+            if (message != "true") {
+            	var d = dialog({
+				    title: '提示',
+				    content: "验证码不正确！",
+				    okValue:'确定',
+					ok:function(){}
+				}).width(320).focus();
+				d.showModal();
+                changeQyyhdlVal();
+            } else {
+                document.getElementById("pinLoginSubmit").action = "/pinlogin.jspx";
+                var pincode_ = document.getElementById("pincode").value;
+                if (login_no_submit(pincode_) == -1) return;
+                document.getElementById("pinLoginSubmit").submit();
+            }
+        }
+
+        function changeQyyhdlVal() {
+            $('#qyyhdl').prop('src', '/captchaVal.jspx?id=' + Math.random());
+        }
+
+        var TP_USER = 1;
+        //******************************
+        //
+        // 验证系统的登录页面调用的函数
+        //
+        //******************************
+        function login_no_submit(pincode) {
+            var i_com = PkiCom_3E6E10ED_201311060001;
+            ret = i_com.BLicInit();
+            if (ret != 0) {
+            	var d = dialog({
+				    title: '提示',
+				    content: "智能卡初始化失败！",
+				    okValue:'确定',
+					ok:function(){}
+				}).width(320).focus();
+				d.showModal();
+                return -1;
+            }
+            ret = i_com.BLicLogin(TP_USER, pincode);
+            if (!ret) {
+            	var d = dialog({
+				    title: '提示',
+				    content: "登录智能卡失败，请确认输入的口令是否正确！",
+				    okValue:'确定',
+					ok:function(){}
+				}).width(320).focus();
+				d.showModal();
+                return -1;
+            }
+            if (ret) {
+                //获取证书
+                ret = readLable_no_submit(pincode);
+                //获取签名
+                ret = sign_no_submit(pincode);
+                //alert("登录成功");
+            }
+            ret = i_com.BLicLogout();
+            if (!ret) {
+            	var d = dialog({
+				    title: '提示',
+				    content: "智能卡退出失败！",
+				    okValue:'确定',
+					ok:function(){}
+				}).width(320).focus();
+				d.showModal();
+                return -1;
+            }
+            ret = i_com.BLicEnd();
+            if (ret != 0) {
+            	var d = dialog({
+				    title: '提示',
+				    content: "智能卡释放失败！",
+				    okValue:'确定',
+					ok:function(){}
+				}).width(320).focus();
+				d.showModal();
+                return -1;
+            }
+        }
+
+
+        //******************************
+        //
+        // 验证系统的读取证书调用的函数
+        //
+        //******************************
+        function readLable_no_submit(pincode) {
+            var i_com = PkiCom_3E6E10ED_201311060001;
+            ret = i_com.BLicInit();
+            if (ret != 0) {
+            	var d = dialog({
+				    title: '提示',
+				    content: "智能卡初始化失败！",
+				    okValue:'确定',
+					ok:function(){}
+				}).width(320).focus();
+				d.showModal();
+                return -1;
+            }
+            ret = i_com.BLicLogin(TP_USER, pincode);
+            if (!ret) {
+            	var d = dialog({
+				    title: '提示',
+				    content: "登录智能卡失败，请确认输入的口令是否正确！",
+				    okValue:'确定',
+					ok:function(){}
+				}).width(320).focus();
+				d.showModal();
+                return -1;
+            }
+            if (ret) {
+                //读取开始
+                var type = 1;
+                myType = i_com.BLicReadLable("LAB_USERCERT_SIG", type)
+                document.getElementById("licenceEntity").value = myType;
+                //alert("电子营业执照信息"+myType);
+            }
+            //读取结束
+            ret = i_com.BLicLogout();
+            if (!ret) {
+            	var d = dialog({
+				    title: '提示',
+				    content: "智能卡退出失败！",
+				    okValue:'确定',
+					ok:function(){}
+				}).width(320).focus();
+				d.showModal();
+                return -1;
+            }
+            ret = i_com.BLicEnd();
+            if (ret != 0) {
+            	var d = dialog({
+				    title: '提示',
+				    content: "智能卡释放失败！",
+				    okValue:'确定',
+					ok:function(){}
+				}).width(320).focus();
+				d.showModal();
+                return -1;
+            }
+            return ret;
+        }
+
+        //******************************
+        //
+        //  签名
+        //
+        //******************************
+        function sign_no_submit(pincode) {
+            //初始化
+            var i_com = PkiCom_3E6E10ED_201311060001;
+            ret = i_com.BLicInit();
+            if (ret != 0) {
+            	var d = dialog({
+				    title: '提示',
+				    content: "智能卡初始化失败"+ret+"！",
+				    okValue:'确定',
+					ok:function(){}
+				}).width(320).focus();
+				d.showModal();
+                return -1;
+            }
+            ret = i_com.BLicLogin(TP_USER, pincode);
+            if (!ret) {
+            	var d = dialog({
+				    title: '提示',
+				    content: "登录智能卡失败，请确认输入的口令是否正确！",
+				    okValue:'确定',
+					ok:function(){}
+				}).width(320).focus();
+				d.showModal();
+                return -1;
+            }
+            //签名开始
+            var i_inData = document.getElementById("signText").value;
+            var i_algoType = 33772;
+            //32772 -- sha1RSA 33772 ---- SM3SM2
+            signdata = i_com.BLicSign(i_inData, i_algoType);
+            //alert(signdata);
+            if (signdata != null) {
+                document.getElementById("signValue").value = signdata;
+                //alert("签名成功");
+            } else {
+            	var d = dialog({
+				    title: '提示',
+				    content: "签名失败！",
+				    okValue:'确定',
+					ok:function(){}
+				}).width(320).focus();
+				d.showModal();
+            }
+            ret = i_com.BLicLogout();
+            //签名结束
+            if (!ret) {
+            	var d = dialog({
+				    title: '提示',
+				    content: "智能卡退出失败！",
+				    okValue:'确定',
+					ok:function(){}
+				}).width(320).focus();
+				d.showModal();
+                return -1;
+            }
+            ret = i_com.BLicEnd();
+            if (ret != 0) {
+            	var d = dialog({
+				    title: '提示',
+				    content: "智能卡释放失败！",
+				    okValue:'确定',
+					ok:function(){}
+				}).width(320).focus();
+				d.showModal();
+                return -1;
+            }
+            return ret;
+        }
+        //校验正确画对勾
+        function drawImg(id,isNull) {
+            var sm = document.getElementById(id + "sm");
+            var msg = "<img src='/images/liaisonRegister/login2_07.gif' style='height:31px;width:19.22px;text-align:center;vertical-align:middle;'/>";
+            if(id=="regno"&&isNull=="true"){
+            	msg += "&nbsp;请输入工商联络员身份证号码";
+            }
+            sm.innerHTML = msg;
+        }
+    </script>
+
+    <style type="text/css">
+		.shuoming {
+	        font: 12px "微软雅黑",arial, "宋体", sans-serif, " Microsoft YaHei ", tahoma;
+	        color: #fc4343;
+	        text-align: left;
+	    }
+	    
+        body {
+            margin: auto;
+        }
+        #base {
+            width: 1366px;
+            margin:auto;
+        }
+
+
+        #enddiv {
+            position: relative;
+            width: 1366px;
+            text-align: center;
+            height: 84px;
+            line-height: 84px;
+            margin: auto auto;
+            background-color: #FFFFFF;
+            top: 25px;
+        }
+
+        #middlediv {
+            margin:57px auto 0px 210px;
+            background-color: #F7F7F7;
+            background: #F7F7F7;
+            width: 936px;
+            height: auto;
+        }
+        #tabNormal {
+            float: left;
+            position: relative;
+            cursor: pointer;
+            font-family: '微软雅黑 Regular', '微软雅黑';
+            font-size: 18px;
+            color: #045485;
+            text-align: center;
+            background: #FFFFFF;
+            width: 155px;
+            height: 34px;
+            top: 20px;
+            left: 34px;
+            line-height: 32px;
+            border-radius: 5px 5px 0px 0px;
+            behavior: url(/pie/PIE.htc);
+        }
+        #tabPin {
+            float:left;
+            position: relative;
+            cursor: pointer;
+            font-family: '微软雅黑 Regular', '微软雅黑';
+            font-size: 18px;
+            color: #FFFFFF;
+            text-align: center;
+            width: 155px;
+            height: 34px;
+            top: 20px;
+            left: 53px;
+            line-height: 32px;
+            border-radius: 5px 5px 0px 0px;
+            behavior: url(/pie/PIE.htc);
+        }
+
+        .loginText {
+            font-family: 'Arial Normal', 'Arial';
+            font-size: 12px;
+            color: #000000;
+            width: 294px;
+            height: 18px;
+        }
+
+        .yzmText {
+            font-family: 'Arial Normal', 'Arial';
+            font-size: 13px;
+            color: #000000;
+            width: 129px;
+            height: 18px;
+        }
+
+        .labelTd {
+            font-family: '微软雅黑 Regular', '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 14px;
+            text-align: right;
+            line-height: 10px;
+            height:44px;
+        }
+
+        .panels {
+            margin:auto;
+            margin-top:3px;
+            width: 946px;
+            height:auto;
+            min-height:380px;
+            background: #FFFFFF;
+            border-radius: 0px 0px 5px 5px;
+            background: url( "/images/index/loginshadown.png" ) repeat-y center;
+
+        }
+        .divYuanJiao{
+			margin:0px auto;
+			width:946px;
+			height:16px;
+			background:#FFFFFF;
+			border-radius: 0px 0px 5px 5px;
+			background: url( "/images/index/loginshadown2.png" ) no-repeat center;
+		}
+        .mustImage{
+            vertical-align: middle;
+        }
+
+        #tabs {
+            margin:auto;
+            padding-bottom:12px;
+            padding-left:6px;
+            width: 936px;
+            height: 49px;
+            background: #045485;
+            background: url( "/images/liaisonRegister/u56.png" ) no-repeat center;
+            border-radius: 5px 5px 0px 0px;
+        }
+
+        #pinLoginSubmit, #normalLoginSubmit{
+            margin:auto;
+            padding-bottom:12px;
+        }
+        #normalLoginTb,#pinLoginTb{
+            margin:-10px auto auto 210px;
+        }
+
+        #phoneCodeBut{
+            position: relative;
+            width: 103px;
+            height: 29px;
+            background: url( "/images/index/u35.png" ) no-repeat center;
+            border-radius: 5px 5px 5px 5px;
+            border:0px;
+            color:#FFFFFF;
+            left: 21px;
+        }
+        .weiTimeout{
+            position:relative;
+            width: 103px;
+            height: 26px;
+            background: #999;
+            color:#FFF;
+            line-height:25px;
+            font-size:12px;
+            text-align:center;
+            border-radius: 5px 5px 5px 5px;
+            border:0px;
+            color:#FFFFFF;
+            padding: 7px;
+            left: 21px;
+            behavior: url(/pie/PIE.htc);
+        }
+
+        .norSubmitBut{
+            position: relative;
+            width: 90px;
+            height: 29px;
+            background: #026DCF;
+            border-radius: 5px 5px 5px 5px;
+            border:0px;
+            color:#FFFFFF;
+            font-size:14px;
+            top:10px;
+            background: url( "/images/liaisonRegister/u30.png" ) no-repeat center;
+        }
+
+        .resetBut{
+            position: relative;
+            width: 90px;
+            height: 29px;
+            background: #013BA7;
+            border-radius: 5px 5px 5px 5px;
+            border:0px;
+            color:#FFFFFF;
+            font-size:14px;
+            top:10px;
+            background: url( "/images/liaisonRegister/u34.png" ) no-repeat center;
+        }
+        .backBut{
+            position: relative;
+            width: 90px;
+            height: 29px;
+            background: #013BA7;
+            border-radius: 5px 5px 5px 5px;
+            border:0px;
+            color:#FFFFFF;
+            font-size:14px;
+            top:10px;
+            background: url( "/images/liaisonRegister/u34.png" ) no-repeat center;
+        }
+        #backHomeBut{
+            position: relative;
+            width: 80px;
+            height: 29px;
+            background: #D1AB62;
+            border-radius: 2px 2px 2px 2px;
+            border:none;
+            color:#FFFFFF;
+            top:15px;
+            left:533px;
+            background: url( "/images/liaisonRegister/u60.png" ) no-repeat center;
+        }
+        #qyyhdl {
+            height: 26px;
+            vertical-align: middle;
+        }
+        .descrSrc {
+            position: relative;
+            text-decoration:none;
+            float:left;
+            font-size: 15px;
+            display: block;
+            width: 100px;
+            height: 20px;
+            left:100px;
+        }
+
+        .register{
+            margin:38px auto 32px -10px;
+            text-align:center;
+            font-family: '微软雅黑 Regular', '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 16px;
+            color: #1E1E1E;
+        }
+
+        .prompt{
+            text-align:center;
+            font-family: '微软雅黑 Regular', '微软雅黑';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 16px;
+            color: #FF0000;
+        }
+        .headStyle {
+            height:90px;
+        }
+
+    </style>
+<script src="http://fwtj.gsxt.gov.cn/js/logcollector.js?nodenum=340000" type="text/javascript"></script></head>
+
+<body style="background-color:rgb(247, 247, 247);">
+<div id="base">
+    <!-- 顶部 -->
+
+<style>
+    #topdiv{
+        background-color:#AB812D;
+        margin:0px  auto;
+        height:9px;
+        width:1366px;
+    }
+    #headdiv{
+        width: 1366px;
+        background: url( "/images/index/u63.png" ) no-repeat center;
+        margin: 0px auto;
+        height: 109px;
+    }
+    #logoimg{
+        margin-left:124px ;
+        margin-top:17px;
+    }
+    #logotitle{
+        margin-left: -488px;
+        margin-bottom: -2px;
+    }
+    p{padding:0px; margin:0px;display: inline;}
+
+</style>
+<script type="text/javascript">
+
+    $(function () {
+        //根据省份不同更新logo
+        if ("anhui" != "" && "anhui" != null) {
+            $("#logoimg").attr("src", "/images/index/xz_toubu_logo/" + "anhui" + ".png")
+        }
+    });
+</script>
+
+
+
+
+<div id="topdiv"></div>
+<div id="headdiv">
+    <img id="logoimg" src="/images/index/xz_toubu_logo/anhui.png">
+</div>
+
+
+    <div id="middlediv" class="middlediv">
+        <div id="tabs">
+            <div id="tabNormal" onclick="changeTab('tabNormal')" style="color: rgb(171, 129, 45); background-color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial; ">工商联络员登录</div>
+            <div id="tabPin" onclick="changeTab('tabPin')" style="background-color: rgb(171, 129, 45); color: rgb(255, 255, 255); background-position: initial initial; background-repeat: initial initial; ">电子营业执照登录</div>
+            <input id="backHomeBut" onmouseover="this.style.cursor='pointer'" type="button" onclick="goBackHome();" value="返回首页">
+
+        </div>
+        <div class="panels">
+            <div id="panelNormal" class="panel" style="">
+                <form action="/checkLogin.jspx" method="post" id="normalLoginSubmit">
+                    <table id="normalLoginTb">
+                        <tbody><tr><td style="height: 30px"></td><td></td></tr>
+                        <tr>
+                            <td class="labelTd"><img class="mustImage" src="/images/entIdenAutation/u16.png">统一社会信用代码/注册号&nbsp;&nbsp;</td>
+                            <td>
+                            	<input id="regno" name="regno" type="text" class="loginText" onblur="setName(this)">
+                            	<span id="regnosm" class="shuoming"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="labelTd"><img class="mustImage" src="/images/entIdenAutation/u16.png">工商联络员身份证号码&nbsp;&nbsp;</td>
+                            <td>
+                            	<input id="idCard" name="idCard" type="text" class="loginText" onblur="getPhone(this)">
+                            	<span id="idCardsm" class="shuoming"></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="labelTd"><img class="mustImage" src="/images/entIdenAutation/u16.png">企业（个体、农专）名称&nbsp;&nbsp;</td>
+                            <td><input id="marketName" type="text" class="loginText" disabled=""></td>
+                        </tr>
+                        <tr>
+                            <td class="labelTd"><img class="mustImage" src="/images/entIdenAutation/u16.png">工商联络员姓名&nbsp;&nbsp;</td>
+                            <td><input id="pName" name="pName" class="loginText" type="text" disabled=""></td>
+                        </tr>
+                        <tr>
+                            <td class="labelTd"><img class="mustImage" src="/images/entIdenAutation/u16.png">工商联络员手机号&nbsp;&nbsp;</td>
+                            <td><input id="phone" type="text" class="loginText" disabled=""></td>
+                        </tr>
+                        <tr>
+                            <td class="labelTd">验证码&nbsp;&nbsp;</td>
+                            <td>
+                            	<input id="phoneCode" name="phoneCode" type="text" class="yzmText">
+                                <input onmouseover="this.style.cursor='pointer'" id="phoneCodeBut" type="button" value="获取验证码" onclick="getVerCode();">
+                                <span class="weiTimeout" onmouseover="this.style.cursor='pointer'" style="display: none; "></span>
+                                <input type="hidden" id="yzflag" value="01">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <input class="norSubmitBut" onmouseover="this.style.cursor='pointer'" style="left:95px" type="button" value="登 录" onclick="doSubmit();">
+                                <input class="resetBut" onmouseover="this.style.cursor='pointer'" style="left:147px" type="button" value="重  置" onclick="reset();resetState();">
+                                <input class="backBut" onmouseover="this.style.cursor='pointer'" style="left:199px" type="button" value="返回" onclick="goBackHome();">
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </form>
+            </div>
+
+            <div id="panelPin" class="panel" style="display: none; ">
+                <form action="" id="pinLoginSubmit">
+                    <table id="pinLoginTb">
+                        <tbody><tr><td style="height: 30px"></td><td></td></tr>
+                        <tr>
+                            <td class="labelTd"><img class="mustImage" src="/images/entIdenAutation/u16.png">PIN&nbsp;码&nbsp;&nbsp;</td>
+                            <td><input id="pincode" type="password" class="loginText"></td>
+                        </tr>
+                        <tr>
+                            <td class="labelTd">验证码&nbsp;&nbsp;</td>
+                            <td><input id="pinyzm" name="pinyzm" type="text" class="yzmText">
+                                <img id="qyyhdl" src="/captchaVal.jspx" onclick="changeQyyhdlVal();">
+                                <input type="hidden" name="licenceEntity" id="licenceEntity" value="">
+                                <input type="hidden" name="signText" id="signText" value="sign_text1491076210769">
+                                <input type="hidden" name="signValue" id="signValue" value=""></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><a href="/client/电子营业执照安装指南.docx" class="descrSrc">安装指南</a>
+                                <a href="/client/atv.zip" class="descrSrc">驱动安装</a></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><input onmouseover="this.style.cursor='pointer'" class="norSubmitBut" style="left:10px" type="button" value="登录" onclick="pintb();">
+                                <input class="resetBut" onmouseover="this.style.cursor='pointer'" type="button" style="left:60px" value="重置" onclick="reset();">
+                                <input class="backBut" onmouseover="this.style.cursor='pointer'" type="button" style="left:110px" value="返回" onclick="goBackHome();">
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </form>
+                <div style="display: none;">
+                    <object id="PkiCom_3E6E10ED_201311060001" classid="CLSID:0DC9CA0C-ED42-4C87-A335-1B0BD043FC71">
+                        <param name="_Version" value="65536">
+                        <param name="_ExtentX" value="2646">
+                        <param name="_ExtentY" value="1323">
+                        <param name="_StockProps" value="0">
+                    </object>
+                </div>
+            </div>
+        </div>
+		<div class="divYuanJiao"></div>
+    </div>
+    <div class="register">
+        <p>
+            <span>说明：在首次【企业公示信息填报】之前，</span>
+            <span>请先</span>
+            <span class="prompt">
+                【<a onmouseover="this.style.cursor='pointer'" style="color:red;" target="_black" href="/liaisonRegister.jspx">企业联络员注册</a>】
+            </span>
+
+            <span>，若注册信息发生变化请</span>
+            <span class="prompt">
+               【<a onmouseover="this.style.cursor='pointer'" style="color:red;" target="_black" href="/liaisonChange.jspx">企业联络员变更</a>】！
+            </span>
+        </p>
+    </div>
+    <!-- 底部 -->
+<link href="/css/styles.css" type="text/css" rel="stylesheet">
+<!-- Unnamed (Shape) -->
+<style type="text/css">
+    #u281 {
+        border-top: 1px solid #D5D5D5;
+        height:80px;
+        background:url(/images/AnnReportManage/u22.png)  no-repeat center;
+        width: 1366px;
+        margin-bottom:20px;
+    }
+    #u282 {
+        position: relative;
+        top:10px;
+        font-family: '微软雅黑 Regular', '微软雅黑';
+        font-weight: 400;
+        font-style: normal;
+        font-size: 12px;
+        color: #8F8F8F;
+        line-height: 20px;
+        text-align:center;
+    }
+    #u282 p {
+        margin: 0px;
+    }
+    #u282 a{
+        color: #FF0000;
+        text-decoration:none;
+    }
+</style>
+<script type="text/javascript">
+    $(function () {
+        loaTailHtml();
+    });
+    function loaTailHtml() {
+        $.ajax({
+            url:"/getTail.jspx",
+            type:'post',
+            async:false,
+            success: function(data) {
+                $("#zbdw").html($.parseJSON(data).copyright);
+                $("#addPho").html($.parseJSON(data).footer);
+            }
+        });
+    }
+</script>
+<div id="u281">
+    <div id="u282">
+        <p></p><div id="zbdw">主办单位：安徽省工商行政管理局</div><p></p><p></p><div id="addPho">地址：合肥市包河区宁国路112号     邮政编码：230001   备案号：京ICP备16053442号-1</div><a href="/zxPhone.jspx" target="_self">业务咨询与技术支持联系方式</a><p></p>
+    </div>
+</div></div>
+
+
+<script type="text/javascript" src="http://fwtj.gsxt.gov.cn/statistics/collectT1Log?param={'sessionId':'0000lmA_M2YstgejjxfJR7GJCCT:-1','referer':'','host':'www.ahcredit.gov.cn','url':'http://www.ahcredit.gov.cn/login.jspx','queryString':'','nodenum':'340000'}"></script></body></html>

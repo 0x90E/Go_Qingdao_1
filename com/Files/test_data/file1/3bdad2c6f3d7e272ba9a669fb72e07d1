@@ -1,0 +1,517 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head id="Head1"><title>
+	学员学分管理系统
+</title><meta name="description" content="继续医学教育、学分管理、学分查询、继教项目、继教管理、继教学分、项目申报、科教管理、科研项目申报、科教一体化管理、住院医师规范化培训管理、轮转管理、考试考务管理、最好的继续医学教育管理系统、最好的住院医师规范化培训管理系统。"><meta name="keywords" content="继续医学教育、学分管理、学分查询、继教项目、继教管理、继教学分、项目申报、科教管理、科研项目申报、科教一体化管理、住院医师规范化培训管理、轮转管理、考试考务管理、最好的继续医学教育管理系统、最好的住院医师规范化培训管理系统">
+
+
+
+<script src="//hm.baidu.com/hm.js?7769a162212315e0ef571a8d9c086d62"></script><script src="//hm.baidu.com/hm.js?b8b19370771d6914b2aac73158a962b8"></script><script type="text/javascript" src="http://kjpt2.91huayi.com/script/check.js"></script>
+
+<script type="text/javascript" src="http://kjpt2.91huayi.com/script/common.js"></script>
+
+<script type="text/javascript" src="http://kjpt2.91huayi.com/script/jquery-1.3.2.min.js"></script>
+
+<script type="text/javascript" src="http://kjpt2.91huayi.com/script/jquery.blockUI.min.js"></script>
+
+<script type="text/javascript" src="http://kjpt2.91huayi.com/script/jquery.cookie.js"></script>
+
+<script type="text/javascript" src="http://kjpt2.91huayi.com/script/openWindow.js"></script>
+
+<link href="../App_Themes/Default/layout.css" rel="stylesheet" type="text/css"><link href="../App_Themes/Default/popdiv.css" rel="stylesheet" type="text/css"><link href="../App_Themes/Default/content.css" rel="stylesheet" type="text/css">
+
+    <script src="../script/main.js" type="text/javascript"></script>
+
+    <script src="../script/modualPop.js" type="text/javascript"></script>
+
+    <script language="javascript" type="text/javascript">
+     function showAgree() {
+         $.Pop('../common/Managerinf/agree.aspx', '服务协议', '670', '360');
+     }
+
+     var selPerID=""
+      function check() {
+         var myDate = new Date();
+         document.getElementById("Code").src="CheckCode.aspx?id="+myDate.toLocaleTimeString();
+      }
+      function checkCode() {
+            var myDate = new Date();
+            document.getElementById("Code").src = "CheckCode.aspx?id=" + myDate.toLocaleTimeString();
+        }
+      function selInput()
+        {
+            $("input[type='text']").eq(0).focus();
+        }
+      function selectRadio(obj)
+        {
+            if(typeof(obj)=="string")            
+                obj=document.getElementById(obj);
+            
+            $(":radio").removeAttr("checked");
+            $(obj).attr("checked","checked");
+            selRadioID=$(obj).attr("id");
+            selPerID=$(obj).attr("value");
+        }
+      
+      function checkLogin(){
+          if($("#txtUserName").val()=="医通卡或证件号")
+          {
+            alert("请输入用户名！");
+            $("#txtUserName").focus();
+            return false;
+          }          
+          
+          if(document.getElementById("txtpwd").style.display!="none")
+          {
+              if($("#txtpwd").val()=="初始密码为您姓名拼音全拼")
+              {
+                 alert("请输入密码！");
+                 $("#txtpwd").focus();
+                 return false;
+              }
+          }
+          else
+          {
+             for (i = 0; i < document.getElementById("txtpassWord").value.length; i = i + 1) {
+                  var code = document.getElementById("txtpassWord").value.charCodeAt(i);
+                  if (code > 128) {
+                  alert("『密码』填写了非法字符，不允许填写汉字,请拨打400-888-0052修改初始密码,谢谢！");
+                  document.getElementById("txtpassWord").focus();
+                  return false;
+                  }
+                }
+          }
+          
+          if($("#TxtCheckCode").val()=="")
+          {
+             alert("请输入验证码！");
+             $("#TxtCheckCode").focus();
+             return false;
+          }
+          return true;
+      }
+      function showMultPer(){      
+          $.blockUI({
+            message:$("#mutiPerView").show(),
+            css: {
+                border: 'none',
+                height: 400+'px',
+                width: 600+'px',
+                top: ($(window).height()-500) / 2 + 'px',
+                left: ($(window).width()-600) /2 + 'px',
+                cursor: 'default'
+            },
+            overlayCSS: {
+                backgroundColor: '#fff',
+                opacity: 0.3
+            }
+           });
+       }
+       function svSelVal(){
+            if(selPerID.length>0){                                     
+                $("#HdnSelPerson").val(selPerID);
+                $("#txtUserName").val(selPerID);
+                $("#hidCount").val("");
+                cancelPop();
+               // $("#btn_SelPerson").click();  
+                return false;         
+            }
+       }
+       
+       function cancelPop()
+       {      
+            $("#txtUserName").css("color","#333");
+            $("#mutiPerView").css("height","0px");
+            $("#mutiPerView").css("width","0px");
+            $("#mutiPerView").css("position:","absolute");
+            $("#mutiPerView").css("border","none");
+            $("#mutiPerView").empty();              
+            $("#hidCount").val("");
+            $.unblockUI();                       
+            return false;
+       }
+      
+      function txtClear()
+      {
+         document.getElementById("txtUserName").value="医通卡或证件号";
+         document.getElementById("txtpassWord").style.display="none";
+         document.getElementById("txtpwd").style.display="inline";
+         document.getElementById("TxtCheckCode").value="";
+         return false;         
+      }
+      
+      function altermsg()
+      {
+        $.Pop('AlertMsg.aspx','提示','650','512');
+        return false;
+      }
+      
+      $(function(){
+        $('input:text').eq(2).focus();
+      });
+      
+      function checkUserName()
+      {
+           var txtuserName = $("#txtUserName").val().replace(/\s/g,"");
+           if(txtuserName=="")
+           {
+                $("#txtUserName").css("color","#ccc");
+                $("#txtUserName").val("医通卡或证件号");
+           }
+            else if (txtuserName.length > 1) {
+            return true;
+               // KjptWebApp.personScoreSearch_validate.GetCertIdCount(txtuserName,valdata_callback);
+           }
+           return true;
+      }
+      
+      function valdata_callback(res)
+      {
+         var strval = res.value;
+         if(strval>1)
+         {
+            if($("#hidCount").val()=="")
+            {
+                $("#Button1").click();
+            }
+            return false;
+         }
+         else
+         {
+            return true;
+         }
+      }
+      
+      function ofus()
+      {
+           $("#txtUserName").css("color","#333");
+           var txtuserName = $("#txtUserName").val().replace(/\s/g,"");
+           if(txtuserName=="医通卡或证件号")
+           {
+                $("#txtUserName").val("");
+           }
+      }
+      
+      function pwdofus()
+      {
+           var txtpwd = document.getElementById("txtpassWord");
+           var tpwd = document.getElementById("txtpwd");
+           if(txtpwd.style.display=="none")
+           {
+                txtpwd.style.display="inline";                
+                txtpwd.focus();
+                tpwd.style.display="none";
+           }
+      }
+      
+      function pwdoblur()
+      {
+           var txtpwd = document.getElementById("txtpassWord");
+           var tpwd = document.getElementById("txtpwd");
+           if(txtpwd.value=="")
+           {
+               if(tpwd.style.display=="none")
+               {
+                    tpwd.style.display="inline";
+                    txtpwd.style.display="none";
+               }
+           }
+      }
+    </script>
+
+    <style type="text/css">
+        body
+        {
+            background-color: #FCFCFE;
+            font-size: 12px;
+            margin: 0px;
+            padding: 0px;
+            font-family: "宋体";
+        }
+        table th
+        {
+            font-weight: bolder;
+            text-align: center;
+            background-color: #DDFFDD;
+        }
+        
+        #form1
+        {
+            padding-right: 60px;
+            padding-left: 50px;
+            font-size: 12px;
+            background: url(../images/Image[5].jpg) no-repeat;
+            padding-bottom: 32px;
+            margin: 10px auto;
+            width: 676px;
+            color: #000;
+            padding-top: 98px;
+            font-family: "宋体";
+            height: 170px;
+        }
+        #formsd
+        {
+            padding-right: 60px;
+            padding-left: 50px;
+            font-size: 12px;
+            background: url(../images/Image[5]-1.jpg) no-repeat;
+            padding-bottom: 32px;
+            margin: 120px auto;
+            width: 576px;
+            color: #000;
+            padding-top: 98px;
+            font-family: "宋体";
+            height: 170px;
+        }
+        #dvtable
+        {
+            padding-right: 60px;
+            padding-left: 50px;
+            font-size: 12px;
+            background: url(../images/Image[5].jpg) no-repeat;
+            padding-bottom: 32px;
+            width: 576px;
+            color: #000;
+            padding-top: 0px;
+            font-family: "宋体";
+            height: 170px;
+            position: relative;
+            margin-left: 273px;
+        }
+        #dvcontent
+        {
+            width: 99%;
+            margin: 15px auto;
+        }
+        #mttable
+        {
+            width: 97%;
+        }
+        #lgform
+        {
+            width: 396px;
+            text-align: left;
+        }
+        #lgform tr td
+        {
+            height: 36px;
+        }
+        #lgform tr td.left
+        {
+            text-align: right;
+        }
+        .inpt
+        {
+            border: solid 1px #87D5E9;
+            height: 24px;
+        }
+        #dvimag
+        {
+            width: 676px;
+            position: relative;
+            margin-left: 273px;
+            margin-bottom: 6px;
+        }
+        #dvimag img
+        {
+            width: 780px;
+            height: 190px;
+            border: 0;
+        }
+         #tishi
+        {
+            font-size: 12px;
+            width:600px;
+            margin:5px auto 0 auto;
+            line-height:30px;
+            color: #000;
+            font-family: "宋体";
+        }
+    </style>
+</head>
+<body>
+    <div id="headerxueyuan">
+        <div class="headerleft">
+        </div>
+        <div class="headerright">
+        </div>
+    </div>
+
+
+    <form name="forms" method="post" action="validate.aspx" id="forms">
+<div>
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMTA3MzMzNTM3Ng9kFgICAQ9kFgJmDxYCHgVzdHlsZQUZd2lkdGg6NzAwcHg7ZGlzcGxheTpub25lO2QYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgIFDEltYWdlQnV0dG9uMQUMSW1hZ2VCdXR0b24yFuloYZBx8YwkO8r3gXHr1w2t9Ec=">
+</div>
+
+
+<script type="text/javascript" src="/ajaxpro/prototype.ashx"></script>
+<script type="text/javascript" src="/ajaxpro/core.ashx"></script>
+<script type="text/javascript" src="/ajaxpro/converter.ashx"></script>
+<script type="text/javascript" src="/ajaxpro/KjptWebApp.personScoreSearch_validate,KjptWebApp.ashx"></script>
+
+<div>
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="2985F945">
+</div>
+      
+    <div id="form1">
+        <div id="mutiPerView" style="width:700px;display:none;" class="popdiv nn">
+            <h5>
+                请从下方列表中选择一个帐号登陆
+            </h5>
+            <div class="outer">
+                <div class="inner" style="height: 300px; overflow: auto;">
+                    <div style="color: #FF0000; font-weight: bold;">
+                        您的人员信息有多项（即：多个卡号对应同一个姓名和身份证号，请拨打4008880052进行合并处理，再用合并好后的卡号或证件号登录查询，否则学分会在多处存储，会影响到您的达标情况。）
+                    </div>
+                    
+                </div>
+                <div class="enter">
+                    <input type="button" onclick="svSelVal()" value="确 认" class="btn70_mouseout">
+                    <input type="button" onclick="return cancelPop();" value="取 消" class="btn70_mouseout">
+                </div>
+            </div>
+        </div>
+        
+        <table cellspacing="0" cellpadding="0" border="0" id="lgform">
+            <tbody>
+                <tr>
+                    <td class="left">
+                        用户名：
+                    </td>
+                    <td style="width: 320px" align="left">
+                        <input type="hidden" name="hidCount" id="hidCount">
+                        <input name="txtUserName" type="text" value="医通卡或证件号" id="txtUserName" title="用户名可以为(医通卡号、身份证号、军官证号，港澳台身份证号)" class="inpt" onblur="return checkUserName();" onfocus="return ofus();" style="width:156px;color: #ccc;">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left">
+                        密码：
+                    </td>
+                    <td style="width: 320px;" align="left">
+                        <input name="txtpassWord" type="password" id="txtpassWord" title="初始密码为：您姓名的全拼" class="inpt" onblur="return pwdoblur();" style="width:152px;display: none;">
+                        
+                        <input name="txtpwd" type="text" value="初始密码为您姓名拼音全拼" id="txtpwd" title="初始密码为：您姓名的全拼" class="inpt" onfocus="return pwdofus();" style="width:156px;color: #ccc; display: inline;">
+                        <a href="#" onclick="$.Pop('GetPwdByWenXin.aspx','找回密码',600,380,selInput);return false;" style=" color:Red; font-weight:bold">
+                            
+                            找回密码</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="left">
+                        验证码：
+                    </td>
+                    <td align="left">
+                        <input name="TxtCheckCode" type="text" id="TxtCheckCode" class="inpt" style="width:50px;">
+                        <img id="Code" src="CheckCode.aspx" align="absmiddle" onclick="check()" alt="">
+                        <a href="#" onclick="check()" tabindex="3">换一张</a>
+                    </td>
+                </tr>
+                <tr style="text-align: center; height: 60px; padding: 24px 0px;">
+                    <td colspan="2">
+                      
+                        <input type="image" name="ImageButton1" id="ImageButton1" src="../App_Themes/SkinFile/images/login.jpg" onclick="return checkLogin();" style="border-width:0px;">&nbsp;
+                      
+                        <input type="image" name="ImageButton2" id="ImageButton2" src="../App_Themes/SkinFile/images/res.jpg" onclick="txtClear();" style="border-width:0px;">
+
+                        <input type="submit" name="Button1" value="Button" id="Button1" class="nn">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="submit" name="btn_SelPerson" value="确认选择" id="btn_SelPerson" style="display: none;">
+        <input type="hidden" name="HdnSelPerson" id="HdnSelPerson">
+    </div>
+    <div style=" margin:0 auto; width:790px;">
+        <img alt="" src="../App_Themes/SkinFile/images/change_huayizhushou.jpg">
+        <p>&nbsp;</p>        
+    </div>
+    
+ <div id="pageBase_runing" runat="server" style="z-index: 12000; left: 0px; width: 100%; cursor: wait; position: absolute; top: 0px; height: 100%; visibility: hidden; "><table width="100%" height="100%"><tbody><tr align="center" valign="middle"><td><div class="wait_tip" id="pageBase_runing" runat="server"><img runat="server" src="http://kjpt2.91huayi.com\App_Themes\Default\images\indicator_medium.gif" align="absmiddle">系统处理中，请稍侯…</div> </td> </tr>  </tbody></table></div><script language="Javascript">document.getElementById('pageBase_runing').style.visibility = "hidden";</script><script language="Javascript">function xs(){document.getElementById('pageBase_runing').style.visibility = "visible";}</script><script language="Javascript">function yc(){document.getElementById('pageBase_runing').style.visibility = "hidden";}</script></form>
+    <div id="footer">
+        <center>
+            <div id="copyRight">
+                <span>华医医学教育中心</span><span>全国技术服务热线:&nbsp;&nbsp;4008881052<span>全国技术服务邮箱:4008881052@91huayi.com</span><span>版权所有
+            91huayi.com</span>
+            <br>推荐使用显示器分辨率:1280*800或更大分辨率,IE浏览器7.0或以上版本 <span style="color: #FFF;">V1.2.1</span>
+            </span></div>
+        </center>
+        <div class="clear">
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $(function () {
+            $('form').submit(function () {
+                var browserType = getBrowserVersion();
+                var br = jQuery.browser;
+                var name = '';
+                if (browserType.name == "") {//函数未检测出类型，用jquery检测
+                    if (br.safari) {
+                        name = 'safari';
+                    }
+                    if (br.opera) {
+                        name = 'opera';
+                    }
+                    if (br.msie) {
+                        name = 'msie';
+                    }
+                    if (br.mozilla) {
+                        name = 'mozilla';
+                    }
+                    if (name == "") {
+                        name = "未知";
+                    }
+                }
+
+                var pd = {
+                    Browser: browserType.name,
+                    Height: screen.height,
+                    UserName: $('#txtUserName').val(),
+                    Version: browserType.version,
+                    Width: screen.width
+                }
+                if ($("#txtUserName").val() != "医通卡或证件号" && $("#txtUserName").val() != "") {
+                    $.post('../Handlers/UserLog.ashx', pd, null);
+                }
+            });
+        });
+
+        //检测浏览器类型及版本
+        function getBrowserVersion() {
+            var browserType = { name: "", version: "" };
+            var Sys = {};
+            var ua = navigator.userAgent.toLowerCase();
+            var s;
+            (s = ua.match(/msie ([\d.]+)/)) ? Sys.ie = s[1] :
+             (s = ua.match(/firefox\/([\d.]+)/)) ? Sys.firefox = s[1] :
+             (s = ua.match(/chrome\/([\d.]+)/)) ? Sys.chrome = s[1] :
+             (s = ua.match(/opera.([\d.]+)/)) ? Sys.opera = s[1] :
+             (s = ua.match(/version\/([\d.]+).*safari/)) ? Sys.safari = s[1] : 0;
+
+            //以下进行测试
+            if (Sys.ie) {
+                browserType.name = "IE";
+                browserType.version = Sys.ie;
+            }
+            if (Sys.firefox) {
+                browserType.name = "Firefox";
+                browserType.version = Sys.firefox;
+            }
+            if (Sys.chrome) {
+                browserType.name = "Chrome";
+                browserType.version = Sys.chrome;
+            }
+            if (Sys.opera) {
+                browserType.name = "Opera";
+                browserType.version = Sys.opera;
+            }
+            if (Sys.safari) {
+                browserType.name = "Safari";
+                browserType.version = Sys.safari;
+            }
+            return browserType;
+        }
+    </script>
+
+
+
+</body></html>

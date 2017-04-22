@@ -1,0 +1,831 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head> 
+  <link href="http://c.csdnimg.cn/public/favicon.ico" rel="SHORTCUT ICON" /> 
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+  <title>拥抱Android Studio：从ADT到Android Studio-CSDN.NET </title> 
+  <meta name="description" content="本文作者在帮助用户集成Android SDK的过程中，发现很多遗留项目依旧没有从ADT迁移过来，依然有很多用户对Android Studio怀着恐惧与不信任。由此，撰写了系列博文，希望能够帮助更多的开发者拥抱变化。" /> 
+  <meta name="keywords" content="移动开发,Android,Android Studio,ADT,开发经验" /> 
+  <meta name="author" content="CSDN.NET" /> 
+  <meta name="Copyright" content="CSDN.NET" /> 
+  <meta name="image" content="" /> 
+  <!-- toolbar start --> 
+  <link href="http://c.csdnimg.cn/public/common/toolbar/css/index.css" type="text/css" rel="stylesheet" /> 
+  <script src="http://c.csdnimg.cn/public/common/libs/jquery/jquery-1.9.1.min.js" type="text/javascript"></script> 
+  <!-- toolbar end --> 
+  <link href="http://news.csdn.net/css/content.css" rel="stylesheet" type="text/css" /> 
+  <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?6275c7f2c7d9617f47b5ea3c72633374";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script> 
+  <script src="http://ads.csdn.net/js/tracking.js" type="text/javascript"></script> 
+ </head> 
+ <body> 
+  <script type="text/javascript">
+  var protocol = window.location.protocol;
+  document.write('<script type="text/javascript" src="' +protocol+ '//c.csdnimg.cn/pubfooter/js/repoAddr2.js?v=' + Math.random() + '"></'+'script>');
+</script> 
+  <script src="http://c.csdnimg.cn/public/common/toolbar/js/html.js" type="text/javascript" id="toolbar-tpl-scriptId" prod="news" skin="black" domain="http://mobile.csdn.net"></script> 
+  <script type="text/javascript" src="http://cbjs.baidu.com/js/m.js"></script> 
+  <div class="wrap"> 
+   <!-- 间歇滚动 --> 
+   <script language="javascript">function T(n){document.getElementById("ArticleCnt").style.fontSize=n+"px";}</script> 
+   <script src="http://news.csdn.net/js/jquery.autoscroll.js" type="text/javascript"></script>
+   <!--滚动js--> 
+   <!-- //间歇滚动 --> 
+   <script type="text/javascript">BAIDU_CLB_preloadSlots("421718","421717","421715","421714","421712","445821","421709","119835");</script> 
+  </div> 
+  <!-- nav --> 
+  <div id="xcx_tabmenu" class="nav"> 
+   <div id="cx_tabmenu" class="cx_tabmenu"> 
+    <!-- lev one --> 
+    <div id="ddimagetabs" class="lev_1"> 
+     <ul> 
+      <li><a href="http://news.csdn.net" id="sclink1" target="_blank" onclick="LogClickCount(this, 392);">业界</a></li> 
+      <li><a href="http://mobile.csdn.net" id="sclink2" target="_blank" onclick="LogClickCount(this, 393);">移动开发</a></li> 
+      <li><a href="http://cloud.csdn.net" id="sclink3" target="_blank" onclick="LogClickCount(this, 394);">云计算</a></li> 
+      <li><a href="http://sd.csdn.net" id="sclink4" target="_blank" onclick="LogClickCount(this, 395);">软件研发</a></li> 
+      <li><a href="http://programmer.csdn.net/" id="sclink6" target="_blank">程序员</a></li> 
+      <li><a href="http://geek.csdn.net/" id="sclink7" target="_blank">极客头条</a></li> 
+      <li><a href="http://special.csdn.net/newssubject/index.html" id="sclink5" target="_blank">专题</a></li> 
+      <!--<li><a href="http://share.csdn.net" id="sclink8" target="_blank">CSDN Share</a></li>
+				<li><a href="http://read.csdn.net/" id="sclink9" target="_blank">我的Tag</a></li>--> 
+     </ul> 
+    </div> 
+    <!-- lev two --> 
+    <div id="tabcontentcontainer" class="lev_2"> 
+     <div class="tabcontent" id="sc1"> 
+      <ul> 
+       <li><a href="http://www.csdn.net/tag/cto/news" target="_blank">CTO</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E4%BA%A7%E5%93%81/news" target="_blank">产品</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E5%88%9B%E4%B8%9A/news" target="_blank">创业</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E8%81%8C%E5%9C%BA/news" target="_blank">职场</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E4%BA%BA%E7%89%A9/news" target="_blank">人物</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E5%AF%B9%E8%AF%9Dcto/news" target="_blank">对话CTO</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E7%A4%BE%E5%8C%BA%E4%B9%8B%E6%98%9F/news" target="_blank">社区之星</a></li> 
+      </ul> 
+     </div> 
+     <div class="tabcontent" id="sc2"> 
+      <ul> 
+       <li><a href="http://www.csdn.net/tag/android/news" target="_blank">Android</a></li> 
+       <li><a href="http://www.csdn.net/tag/ios/news" target="_blank">iOS</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E7%A7%BB%E5%8A%A8%E6%B8%B8%E6%88%8F/news" target="_blank">移动游戏</a></li> 
+       <li><a href="http://www.csdn.net/tag/html5/news" target="_blank">HTML5</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%99%BA%E8%83%BD%E7%A1%AC%E4%BB%B6/news" target="_blank">智能硬件</a></li> 
+       <li><a href="http://www.csdn.net/tag/swift/news" target="_blank">Swift</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E8%BF%91%E5%8C%A0/news" target="_blank">近匠</a></li> 
+      </ul> 
+     </div> 
+     <div class="tabcontent" id="sc3"> 
+      <ul> 
+       <li><a href="http://www.csdn.net/tag/%E5%A4%A7%E6%95%B0%E6%8D%AE/news" target="_blank">大数据</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E4%B8%AD%E5%BF%83/news" target="_blank">数据中心</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%9C%8D%E5%8A%A1%E5%99%A8/news" target="_blank">服务器</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E5%AD%98%E5%82%A8/news" target="_blank">存储</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E8%99%9A%E6%8B%9F%E5%8C%96/news" target="_blank">虚拟化</a></li> 
+       <li><a href="http://www.csdn.net/tag/nosql/news" target="_blank">NoSQL</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E5%AE%89%E5%85%A8/news" target="_blank">安全</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E4%BA%91%E5%85%88%E9%94%8B/news" target="_blank">云先锋</a></li> 
+      </ul> 
+     </div> 
+     <div class="tabcontent" id="sc4"> 
+      <ul> 
+       <li><a href="http://www.csdn.net/tag/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/news" target="_blank">编程语言</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E5%BC%80%E6%94%BE%E5%B9%B3%E5%8F%B0/news" target="_blank">开放平台</a></li> 
+       <li><a href="http://www.csdn.net/tag/html5/news" target="_blank">HTML5</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E5%89%8D%E7%AB%AF%E5%BC%80%E5%8F%91/news" target="_blank">前端开发</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%99%BA%E8%83%BD%E7%AE%97%E6%B3%95/news" target="_blank">智能算法</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%9E%B6%E6%9E%84/news" target="_blank">架构</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E5%BC%80%E6%BA%90/news" target="_blank">开源</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E5%BA%93/news" target="_blank">数据库</a></li> 
+      </ul> 
+     </div> 
+     <div class="tabcontent" id="sc5"> 
+      <ul> 
+       <li><a href="http://www.csdn.net/tag/%E5%B0%81%E9%9D%A2%E7%A7%80/news" target="_blank">封面秀</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E7%89%B9%E5%88%AB%E7%AD%96%E5%88%92/news" target="_blank">特别策划</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E7%AE%A1%E7%90%86%E5%AE%9E%E8%B7%B5/news" target="_blank">管理实践</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%8A%80%E6%9C%AF%E6%9E%B6%E6%9E%84/news" target="_blank">技术架构</a></li> 
+      </ul> 
+     </div> 
+    </div> 
+   </div> 
+  </div> 
+  <script type="text/javascript">
+	// The idea borrowed from dynamicDrive.com
+	
+	var initialtab = [1, "sc1"]
+	
+	var previoustab = "";
+	var intv;
+	function expandcontent(cid, aobject) {
+	    stopTimer();
+	    highlighttab(aobject);
+	    if (previoustab != ""){
+	         document.getElementById(previoustab).style.display = "none";
+	    }
+	    document.getElementById(cid).style.display = "block";
+	    previoustab = cid;
+	}
+	
+	function highlighttab(aobject) {
+	    stopTimer();
+	
+	   if (typeof tabobjlinks == "undefined"){
+	         collectddimagetabs();
+	    }
+	   for (i = 0; i < tabobjlinks.length; i++){
+	    	tabobjlinks[i].className = "";   
+	    }
+	    aobject.className = "current";
+	}
+	
+	function collectddimagetabs() {
+	    var tabobj = document.getElementById("ddimagetabs");
+	    tabobjlinks = tabobj.getElementsByTagName("A");
+	}
+	
+	function startTimer() {
+	    intv = setTimeout("expandcontent(initialtab[1], tabobjlinks[initialtab[0]-1])", 2000);
+	}
+	
+	function stopTimer() {
+	    clearTimeout(intv);
+	}
+	
+	$(document).ready(function(){ 
+		collectddimagetabs();
+		var domain = new Array('news.','mobile.','cloud.','sd.','programmer.');
+		for(var i=0;i<domain.length;i++){
+			if(window.location.href.indexOf(domain[i]) > 0){
+				expandcontent('sc'+(i+1), tabobjlinks[i]);
+			}
+		}
+		$('#button_both').click(function(){
+			var key=$('#queries_searchfield_query-new').val();
+			key = $.trim(key);
+			if(key==""){
+				alert("关键字不能为空！");
+			}
+			else{
+				key =  encodeURIComponent(key)
+				var url="http://so.csdn.net/search?sort=created_at&t=news&q="+key;
+				window.location.href=url;
+			}
+			return false;
+		});
+	});
+	
+	</script> 
+  <div class="wrap"> 
+   <div class="ad_960"> 
+    <ins data-revive-zoneid="94" data-revive-id="8c38e720de1c90a6f6ff52f3f89c4d57"></ins> 
+   </div> 
+   <div class="brea_nav"> 
+    <span class="fr"> <a href="http://news.csdn.net/rss_mobile.html" class="rss" target="_blank">订阅移动开发RSS</a> </span>
+    <a href="http://www.csdn.net/">CSDN首页</a>
+    <em>&gt;</em> 
+    <a href="http://mobile.csdn.net" target="_blank">移动开发</a> 
+   </div> 
+   <div class="content"> 
+    <div class="left"> 
+     <div class="detail"> 
+      <h1 class="title">拥抱Android Studio：从ADT到Android Studio</h1> 
+      <h4> 
+       <div class="tit_bar">
+         发表于
+        <span class="ago">2015-12-17 19:50</span>| 
+        <span class="view_time">次阅读</span>| 来源
+        <span class="ago">投稿</span>| 
+        <span class="num_recom"><font id="remark_count1" class="cmtcount" style="font-size:12px;color:#c00;">0</font> 条评论</span>| 作者
+        <span class="ago">何畅彬</span> 
+       </div> </h4> 
+      <div class="tag">
+       <a href="http://www.csdn.net/tag/%E7%A7%BB%E5%8A%A8%E5%BC%80%E5%8F%91/news">移动开发</a>
+       <a href="http://www.csdn.net/tag/android/news">Android</a>
+       <a href="http://www.csdn.net/tag/android%20studio/news">Android Studio</a>
+       <a href="http://www.csdn.net/tag/adt/news">ADT</a>
+       <a href="http://www.csdn.net/tag/%E5%BC%80%E5%8F%91%E7%BB%8F%E9%AA%8C/news">开发经验</a>
+      </div> 
+      <div class="summary"> 
+       <input type="hidden" id="article_description" name="article_description" value="本文作者在帮助用户集成Android SDK的过程中，发现很多遗留项目依旧没有从ADT迁移过来，依然有很多用户对Android Studio怀着恐惧与不信任。由此，撰写了系列博文，希望能够帮助更多的开发者拥抱变化。" /> 
+       <script type="text/javascript" charset="utf-8">
+(function(){
+  var _w = 22 , _h = 16;
+  var article_description=$("#article_description").val();
+  var param = {
+    url:location.href,
+    type:'3',
+    count:'', /**是否显示分享数，1显示(可选)*/
+    appkey:'', /**您申请的应用appkey,显示分享来源(可选)*/
+    title:article_description, /**分享的文字内容(可选，默认为所在页面的title)*/
+    pic:'', /**分享图片的路径(可选)*/
+    ralateUid:'', /**关联用户的UID，分享微博会@该用户(可选)*/
+	language:'zh_cn', /**设置语言，zh_cn|zh_tw(可选)*/
+    rnd:new Date().valueOf()
+  }
+  var temp = [];
+  for( var p in param ){
+    temp.push(p + '=' + encodeURIComponent( param[p] || '' ) )
+  }
+  document.write('<iframe allowTransparency="true" frameborder="0" scrolling="no" src="http://hits.sinajs.cn/A1/weiboshare.html?' + temp.join('&') + '" width="'+ _w+'" height="'+_h+'"></iframe>')
+})()
+</script>
+       <strong>摘要：</strong>本文作者在帮助用户集成Android SDK的过程中，发现很多遗留项目依旧没有从ADT迁移过来，依然有很多用户对Android Studio怀着恐惧与不信任。由此，撰写了系列博文，希望能够帮助更多的开发者拥抱变化。 
+      </div> 
+      <div class="con news_content"> 
+       <p><i>CSDN移动将持续为您优选移动开发的精华内容，共同探讨移动开发的技术热点话题，涵盖移动应用、开发工具、移动游戏及引擎、智能硬件、物联网等方方面面。如果您想投稿、寻求《近匠》报道，或给文章挑错，欢迎发送邮件至tangxy#csdn.net（请把#改成@）。&nbsp;</i> </p> 
+       <hr /> 
+       <h2><span style="background-color: initial;">拥抱变化，拥抱新事物</span></h2> 
+       <p>多年前央视有一套电视系列片： <a href="http://baike.baidu.com/subview/634340/5376026.htm">大国崛起</a>，主要讲述那些曾经在站在世界舞台中央的国家的兴衰历程。纵观历史，正是创新使得一个国家得以崛起。</p> 
+       <p>Android 开发因为涉及到代码编辑、UI 布局、打包等工序，最好使用一款 IDE。Google 最早提供了基于 Eclipse 的 ADT 作为开发工具，后于2013年 Google I/O 大会发布基于 IntelliJ IDEA 开发 <a href="https://zh.wikipedia.org/wiki/Android_Studio">Android Studio</a>。后者正式版发布之后，Google 宣布不再持续支持 ADT。Android Studio 有更快的速度，更好的代码完成等特性。</p> 
+       <p>时至今日，在我们研发&nbsp;App 测试服务—— BugTags 的时候，在帮助用户集成 Android SDK 的过程中，我们发现很多遗留项目依旧没有从 ADT 迁移过来，依然有很多用户对 Android Studio 怀着恐惧与不信任。我想我们有义务去做一个系列介绍，让更多的人拥抱变化，拥抱新鲜事物。</p> 
+       <blockquote style="border-left-width: 4px; border-left-style: solid; border-left-color: rgb(221, 221, 221); padding-left: 1em; margin-left: 3em !important; font-style: normal !important; color: rgb(119, 119, 119);">
+        本文系列一，主要介绍两个工具的比较及其迁移。
+       </blockquote> 
+       <h1>Android Studio（IntelliJ IDEA）vs. ADT（Eclipse）</h1> 
+       <p></p> 
+       <p>本文并不打算涉及 IDE 的圣战，理论上只要配上插件，用得趁手，都差不多。然而本文也是带有倾向性的，因为工作原因，笔者使用过 Eclipse 多年，也使用过多款 JetBrains 的 IDE，均不辱 XXX 语言开发第一 IDE 之名。下面介绍一些 Android Studio 的优胜的地方。</p> 
+       <ul> 
+        <li>更快的运行速度；</li> 
+        <li>更智能的自动补全；</li> 
+       </ul> 
+       <blockquote style="border-left-width: 4px; border-left-style: solid; border-left-color: rgb(221, 221, 221); padding-left: 1em; margin-left: 3em !important; font-style: normal !important; color: rgb(119, 119, 119);">
+        你不用自动补全？那其实你 ADT 也不需要的， vi 或者一个记事本就足够了；
+       </blockquote> 
+       <p></p> 
+       <ul> 
+        <li><span style="background-color: initial;">更好的重构，IDEA 会帮你找到每一个需要重构的地方；</span> </li> 
+        <li><span style="background-color: initial;">更好的索引与搜索，双击 shift 键搜索，文件搜索，代码搜索，都很方便；</span> </li> 
+        <li><span style="background-color: initial;">更好的版本管理功能（git/SVN）；</span> </li> 
+        <li><span style="background-color: initial;">更灵活强大集成脚本 gradle；</span> </li> 
+        <li><span style="background-color: initial;">原生支持的从项目文件到操作系统的文件浏览器功能；</span> </li> 
+       </ul> 
+       <p></p> 
+       <blockquote style="border-left-width: 4px; border-left-style: solid; border-left-color: rgb(221, 221, 221); padding-left: 1em; margin-left: 3em !important; font-style: normal !important; color: rgb(119, 119, 119);">
+        ADT 可以通过插件支持？问题来了，我为啥要去花宝贵的时间折腾这个插件呢；
+       </blockquote> 
+       <p></p> 
+       <ul> 
+        <li><span style="background-color: initial;">……</span> </li> 
+       </ul> 
+       <p></p> 
+       <blockquote style="border-left-width: 4px; border-left-style: solid; border-left-color: rgb(221, 221, 221); padding-left: 1em; margin-left: 3em !important; font-style: normal !important; color: rgb(119, 119, 119);">
+        以上省略一万字。
+       </blockquote> 
+       <p>相信我，对于 Android 开发者，切换到 Android Studio，经过短短学习曲线之后，你会爱上这个 IDE，并且即将由奢入俭难，再也回不去了。</p> 
+       <h1>从 ADT 迁移到 Android Studio</h1> 
+       <p>如果你看到上面的优点，已经克服了心中的怀疑和恐惧，准备动手迁移，下面提供一些迁移提示。</p> 
+       <h2>常用网站</h2> 
+       <blockquote style="border-left-width: 4px; border-left-style: solid; border-left-color: rgb(221, 221, 221); padding-left: 1em; margin-left: 3em !important; font-style: normal !important; color: rgb(119, 119, 119);">
+        部分需要科学上网 
+        <br />你无法科学上网？赶紧搜一下，自己搭或者买一个吧。世界如此多娇，人生苦短。将你遇到过问题的出错信息用 Google 搜索，第一条来自 stackoverflow 的答案就是你想要的。
+       </blockquote> 
+       <ul> 
+        <li> <a href="http://developer.android.com/sdk/index.html">Android Studio 下载页</a> </li> 
+        <li> <a href="http://developer.android.com/tools/studio/index.html">Android Studio</a>：Android Developer 上 Android Studio 的介绍</li> 
+        <li> <a href="http://tools.android.com/">Android Tools</a>：Android 工具首页，有大量的深度的技术文档</li> 
+        <li> <a href="http://tools.android.com/tech-docs/new-build-system">Android Build Sytem</a>：基于 gradle 的 Android 构建系统，最为关键的一篇文章</li> 
+        <li> <a href="http://developer.android.com/sdk/installing/migrate.html">从 ADT 迁移指南</a>：官方提供的迁移手册</li> 
+        <li> <a href="http://androiddevtools.cn/">Android Studio 国内下载渠道</a>：良心网站，你懂的，但是笔者不对 Xcode Ghost之类的事情负责</li> 
+       </ul> 
+       <h2>ADT 与 Android Studio 目录结构对比</h2> 
+       <h3>ADT 项目结构</h3> 
+       <p style="text-align: center;"> <img src="http://7xligz.com1.z0.glb.clouddn.com/15-12-1/49630646.jpg" alt="ADT 项目结构" style="width: 247.522448979592px; height: 407px;" /> </p> 
+       <p>project/src/：放置代码文件</p> 
+       <p>project/libs：放置 .jar 库或者 .so 库</p> 
+       <p>project/res：项目资源文件</p> 
+       <p>project/AndroidManifest.xml：工程 manifest 文件</p> 
+       <h3>Android Studio 项目结构</h3> 
+       <p style="text-align: center;"> <img src="http://7xligz.com1.z0.glb.clouddn.com/15-12-1/87043687.jpg" alt="Android Studio 项目结构" style="width: 264.455474452555px; height: 612px;" /> </p> 
+       <p>Android Studio 的一个 project (项目)下可以包含多个独立的 module（模块），图中 Bugtags-Android-Demo 便是一个项目，app 便是一个 module。结构如下。</p> 
+       <p>project/build.gradle：项目的 build.gradle 文件，主要是全局的远程库配置、gradle 插件版本等信息</p> 
+       <p>project/app：名字为 app 的模块</p> 
+       <p>project/build.gradle：模块的 build.gradle 文件，<strong>是最关键的配置文件</strong>，后续会有文章继续专门介绍 gradle build system</p> 
+       <p>project/app/src：源码文件夹</p> 
+       <p>project/app/src/java：放置代码文件</p> 
+       <p>project/app/src/jniLibs：默认的.so 库放置的位置，可以在模块的 build.gradle 中通过jniLibs.srcDirs 值来修改所在位置</p> 
+       <p>project/app/libs：放置 .jar 库</p> 
+       <h2>从 ADT 迁移</h2> 
+       <p>本文主要参考这篇 <a href="http://developer.android.com/sdk/installing/migrate.html">迁移指南</a>。Android Studio 提供了非常友好的导入向导。</p> 
+       <h3>在 Android Studio 导入</h3> 
+       <p>File-&gt;New-&gt;Import Project，找到你的 ADT 的 workspace 下的项目，一路点击 YES，会生成一个全新的项目。</p> 
+       <p style="text-align: center;"> <img src="http://7xligz.com1.z0.glb.clouddn.com/15-12-1/89986096.jpg" alt="导入成功" style="width: 538.781038374718px; height: 390px;" /> </p> 
+       <h4>问题</h4> 
+       <ul> 
+        <li>项目之间有依赖</li> 
+       </ul> 
+       <blockquote style="border-left-width: 4px; border-left-style: solid; border-left-color: rgb(221, 221, 221); padding-left: 1em; margin-left: 3em !important; font-style: normal !important; color: rgb(119, 119, 119);">
+        直接导入使用依赖的项目，被依赖的项目就会自动被导入到同一个项目中，作为一个模块。 
+        <br />下文中的左侧是 ADT 项目，右侧是 Android Studio 项目。 
+        <br />其中 Bugtags-Android-Eclipse-Demo 使用 Bugtags-Android-Eclipse-Lib 作为依赖。
+       </blockquote> 
+       <p style="text-align: center;"> <img src="http://7xligz.com1.z0.glb.clouddn.com/15-12-1/41683475.jpg" alt="依赖" style="width: 561.228346456693px; height: 346px;" /> </p> 
+       <ul> 
+        <li>停留在界面上不动</li> 
+       </ul> 
+       <p style="text-align: center;"> <img src="http://7xligz.com1.z0.glb.clouddn.com/15-12-1/84638123.jpg" alt="错误" /> </p> 
+       <blockquote style="border-left-width: 4px; border-left-style: solid; border-left-color: rgb(221, 221, 221); padding-left: 1em; margin-left: 3em !important; font-style: normal !important; color: rgb(119, 119, 119);">
+        这个状态是 gradle 构建脚本尝试去下载 gradle 的 wrapper，这个 wrapper 大概 3M，
+        <strong>需要科学上网</strong>，早期很多人就是在这个页面卡住，放弃了 Android Studio。确保你已经科学上网，并且耐心等待，又或者点击取消，先进项目看看。
+       </blockquote> 
+       <h2>Android Studio 的几个关键概念</h2> 
+       <p>如果上面没有问题，你已经能够正常的看到 Android Studio 的项目工程了。</p> 
+       <p>IDE 使用、快捷键什么的，笔者认为没什么可写的。自己熟悉吧。下面介绍一个对于 ADT 而言全新的概念。</p> 
+       <h3>build.gradle</h3> 
+       <p>在项目的 build.gradle 文件中，有如下内容：</p> 
+       <p></p>
+       <pre class="brush: ">// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    repositories {
+        jcenter()//这是构建插件所使用的远程库，后续会有一篇介绍库的含义
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.0.0-alpha1'//这是项目所使用的 Android gradle 版本
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()//这是使用远程库依赖的时候，的远程库
+    }
+}</pre> 
+       <p></p> 
+       <p>在每个模块的 build.gradle 文件中，初始会有如下内容： <br /> </p> 
+       <p></p>
+       <pre class="brush: ">apply plugin: 'com.android.library'
+//com.android.library标示是一个库模块；
+//com.android.application标示这是一个应用模块
+
+android {
+    compileSdkVersion 19//编译 sdk 版本
+    buildToolsVersion &quot;23.0.2&quot;//构建工具版本
+
+    defaultConfig {
+        minSdkVersion 9
+        targetSdkVersion 19
+    }
+
+    buildTypes {//打包类型
+        release {
+            minifyEnabled false//是否混淆
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {//依赖管理
+    compile 'com.bugtags.library:bugtags-lib:1.0.8'//远程
+    compile fileTree(dir: 'libs', include: ['*.jar'])//本地 jar 依赖
+}</pre> 
+       <p></p> 
+       <h3>依赖管理</h3> 
+       <h4>远程依赖：</h4> 
+       <p></p>
+       <pre class="brush: ">dependencies {
+ 	compile 'com.bugtags.library:bugtags-lib:1.0.8'
+}</pre> 
+       <p></p> 
+       <p>Android Studio 使用 gradle 进行依赖管理，兼容了 maven 的库，一个经典的 maven 库的配置如下： <br /> </p> 
+       <p></p>
+       <pre class="brush: ">&lt;dependency&gt;
+    &lt;groupId&gt;com.bugtags.library&lt;/groupId&gt;
+    &lt;artifactId&gt;bugtags-lib&lt;/artifactId&gt;
+    &lt;version&gt;1.0.8&lt;/version&gt;
+&lt;/dependency&gt;</pre> 
+       <p></p> 
+       <p>对比之后，你会发现 compile 的内容中，分为三部分 groupdId:artifactId:version</p> 
+       <p>com.bugtags.library对应groupId</p> 
+       <p>bugtags-lib对应 artifactId</p> 
+       <p>1.0.8对应 version</p> 
+       <h4>本地依赖</h4> 
+       <p></p>
+       <pre class="brush: ">dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])//本地 jar 依赖
+}</pre> 
+       <p></p> 
+       <p>Android Studio 工程创建的时候，默认会有如上依赖，意义是把放在与该 build.gradle 文件同一层的 libs 文件夹中所有的 jar 文件都作为库依赖。</p> 
+       <h4>同步依赖</h4> 
+       <p>一般情况下，你配置完了build.gradle 之后，该编辑框的上方会出现正在 sync 的标记。耐心等待完成即可。如果发现没有同步成功，可以使用下面这个按钮：</p> 
+       <p style="text-align: center;"> <img src="http://7xligz.com1.z0.glb.clouddn.com/15-12-1/19304918.jpg" alt="sync" /> </p> 
+       <p>如果长时间未成功，则可以在控制台使用： <code>bash ./gradlew build --info</code> 以上命令来看控制台输出。</p> 
+       <h3>build variant</h3> 
+       <p>Android Studio 内置了多渠打包功能，就是所谓的 build variant，可以新建若干个 productflavor 来达到目的。 大致可以这样：</p> 
+       <p style="text-align: center;"> <img src="http://7xligz.com1.z0.glb.clouddn.com/15-12-1/21680795.jpg" alt="flavors" style="width: 605.439024390244px; height: 241px;" /> </p> 
+       <p>这个功能十分的灵活和强大，举个例子，你想要有两个版本，一个收费版，一个免费版，在若干代码文件和资源文件上，都不大一样。</p> 
+       <p>以前你可能选择在代码中判断当前版本，加载不同的代码和资源。或者使用 git 的 branch。</p> 
+       <p>现在你可以使用 Android Studio 直接使用多个 productflavor， 在对应的 flavor 放置那些有区别的代码和文件。一次打包，即可完成。 在下一篇系列文章中，笔者将会详细介绍这个功能。</p> 
+       <h1>总结</h1> 
+       <p>新版本的 Android Studio 还有更多强大的功能，包括最新 preview 的 instant build，将会极大提升构建速度。后文将会详细介绍。</p> 
+       <p>一个工程从 ADT 迁移到 Android Studio 只需要很短的时间，连带熟悉基本概念，半天基本可以完成。如果还没有进行迁移的同学，要抓紧了，不要被世界抛弃了。</p> 
+       <p>笔者 <a href="http://kvh.io">kvh</a>先在这里挖一个系列坑，希望这个系列能够让读者快速掌握 Android Studio 与 gradle，请持续关注。</p>
+       <p style="text-align: right;">（审校/唐小引）</p> 
+       <p><b></b> <img src="http://img.ptcms.csdn.net/article/201512/17/56729fa38cf6b.jpg" style="width: 109.866666666667px; height: 112px; float: left; margin: 0px 10px 10px 0px;" alt="" /><b>作者简介：</b> </p> 
+       <p>何畅彬，BugTags技术总监，关注移动SDK研发、后端服务设计与实现，个人博客：<a href="http://kvh.io/" target="_blank">http://kvh.io/</a>。 </p> 
+       <hr /> 
+       <p><span style="font-weight: bold; color: rgb(227, 108, 9);">【活动预告】</span> <span style="color: #262626;">由CSDN主办的<b>“<a href="http://toolwith.csdn.net/awards/2015" target="_blank">2015开发工具及服务年度大奖评选</a>”</b>活动已正式启动。近两年，开发工具及服务不断涌现，从云服务、即时通讯、安全到统计监测、人工智能、物联网平台等。CSDN将通过公开征集，并结合平台内用户数据采集分析，评选出CSDN 2015开发工具及服务年度大奖。<b>赶快为你的开发工具与服务报名参与评选吧。更多详情，请关注<a href="http://toolwith.csdn.net/awards/2015" target="_blank">评选活动官网</a>。</b> </span> </p> 
+       <h3><b><span style="color: #e36c09;">第一时间掌握最新移动开发相关信息和技术，请关注mobilehub公众微信号（ID: mobilehub)。</span></b></h3> 
+       <p style="text-align: center;"> <img src="http://img.ptcms.csdn.net/article/201504/17/55306b78ab20e_middle.jpg" /> <br /> </p> 
+       <p class="copyright"></p> 
+      </div> 
+      <div class="share"> 
+       <div class="bdsharebuttonbox" style="float:right;"> 
+        <!-- a href="#" class="bds_more" data-cmd="more"></a --> 
+        <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a> 
+        <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a> 
+        <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a> 
+        <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a> 
+       </div> 
+       <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"32"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script> 
+      </div> 
+      <div class="detail"> 
+       <div class="digg"> 
+        <input type="hidden" id="digg_id" value="2826507" /> 
+        <dl class="support"> 
+         <dt>
+          顶
+         </dt> 
+         <dd>
+          0
+         </dd> 
+        </dl> 
+        <dl class="oppose"> 
+         <dt>
+          踩
+         </dt> 
+         <dd>
+          0
+         </dd> 
+        </dl> 
+       </div> 
+      </div> 
+      <div class="ad_600_90"> 
+       <ins data-revive-zoneid="95" data-revive-id="8c38e720de1c90a6f6ff52f3f89c4d57"></ins> 
+      </div> 
+      <div class="related">
+       推荐阅读相关主题： 
+       <a href="http://www.csdn.net/tag/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/news" title="开发工具" target="_blank">开发工具</a> 
+       <a href="http://www.csdn.net/tag/intellij%20idea/news" title="intellij idea" target="_blank">intellij idea</a> 
+       <a href="http://www.csdn.net/tag/stackoverflow/news" title="stackoverflow" target="_blank">stackoverflow</a> 
+       <a href="http://www.csdn.net/tag/%E7%A7%BB%E5%8A%A8%E6%B8%B8%E6%88%8F/news" title="移动游戏" target="_blank">移动游戏</a> 
+       <a href="http://www.csdn.net/tag/%E5%90%8E%E7%AB%AF%E6%9C%8D%E5%8A%A1/news" title="后端服务" target="_blank">后端服务</a> 
+       <a href="http://www.csdn.net/tag/%E7%A7%BB%E5%8A%A8%E5%BA%94%E7%94%A8/news" title="移动应用" target="_blank">移动应用</a> 
+      </div> 
+      <!-- relational article and news --> 
+      <div id="Tab3" class="relational"> 
+       <h2 class="tab_1 Menubox"> 
+        <ul> 
+         <li id="three1" onclick="setTab('three',1,2)" class="hover">相关文章</li> 
+         <li id="three2" onclick="setTab('three',2,2)">最新报道</li> 
+        </ul> </h2> 
+       <div class="con Contentbox"> 
+        <div id="con_three_1" class="hover"> 
+         <ul class="list_1"> 
+          <li><a href="http://www.csdn.net/article/1970-01-01/2825023" title="深度解析iOS应用程序的生命周期" target="_blank">深度解析iOS应用程序的生命周期</a></li> 
+          <li><a href="http://www.csdn.net/article/1970-01-01/2824932" title="iOS开发实践：用Swift和Core Animatoin创建圆形图片加载动画" target="_blank">iOS开发实践：用Swift和Core Animatoin创建圆形图片加载动画</a></li> 
+          <li><a href="http://www.csdn.net/article/1970-01-01/2826527" title="如何反编译Android 5.0 framework" target="_blank">如何反编译Android 5.0 framework</a></li> 
+          <li><a href="http://www.csdn.net/article/1970-01-01/2825410" title="实战iOS 9：详解Xcode的Code Coverage工具" target="_blank">实战iOS 9：详解Xcode的Code Coverage工具</a></li> 
+          <li><a href="http://www.csdn.net/article/1970-01-01/2816348" title="iOS开发经验谈：如何提高应用开发效率？" target="_blank">iOS开发经验谈：如何提高应用开发效率？</a></li> 
+          <li><a href="http://www.csdn.net/article/1970-01-01/2814601" title="老而弥坚：65岁传奇Android工程师谈开发" target="_blank">老而弥坚：65岁传奇Android工程师谈开发</a></li> 
+         </ul> 
+        </div> 
+        <div id="con_three_2" style="display:none"> 
+         <ul class="list_1 "> 
+          <li><a href="http://www.csdn.net/article/2016-11-17/2826670" title="实习生编程马拉松（三）：惊艳众人的DragonBoard机器人" target="_blank">实习生编程马拉松（三）：惊艳众人的DragonBoard机器人</a></li> 
+          <li><a href="http://www.csdn.net/article/2016-06-12/2826630" title="主流企业网盘横评：稳定、协作体验是最大采购影响因素" target="_blank">主流企业网盘横评：稳定、协作体验是最大采购影响因素</a></li> 
+          <li><a href="http://www.csdn.net/article/2016-03-25/2826613" title="王小川、蒋涛、张南雄……，50+新硬件创新领袖齐聚WARE 2016" target="_blank">王小川、蒋涛、张南雄……，50+新硬件创新领袖齐聚WARE 2016</a></li> 
+          <li><a href="http://www.csdn.net/article/2016-01-30/2826593" title="开发者福利：开放、聚合的百度全站技术服务体系" target="_blank">开发者福利：开放、聚合的百度全站技术服务体系</a></li> 
+          <li><a href="http://www.csdn.net/article/2016-01-11/2826587" title="陈爱平：华为企业移动安全平台AnyOffice技术架构与生态策略解读" target="_blank">陈爱平：华为企业移动安全平台AnyOffice技术架构与生态策略解读</a></li> 
+          <li><a href="http://www.csdn.net/article/2016-01-05/2826584" title="剖析车联网的完美形态，机器人化还是智能交通？" target="_blank">剖析车联网的完美形态，机器人化还是智能交通？</a></li> 
+         </ul> 
+        </div> 
+       </div> 
+      </div> 
+      <!-- //relational article and news 广告 --> 
+      <!-- comments --> 
+      <div id="comments" class="csdn_comments"></div> 
+      <script type="text/javascript" src="http://c.csdnimg.cn/pig/pubjs/cnick.js"></script> 
+      <script src="http://ptcms.csdn.net/comment/js/comments.js" type="text/javascript"></script> 
+      <script src="http://c.csdnimg.cn/atsuggest/comment_atsuggest.js" type="text/javascript"></script> 
+      <!--script src="js/https://passport.csdn.net/scripts/login.js?v=1.2" type="text/javascript"></script--> 
+      <script type="text/javascript">
+					    //var path = location.protocol +"//"+ location.host+"/comments/";                 //本地测试需要配置一个csdn.net的子域名，以便登录，例:http://comments.csdn.net
+					    var path = "http://ptcms.csdn.net/comment";
+					    csdn.comments = new csdn.comments({
+					        id:"comments",                                                                  //容器ID
+					        path:path,
+					        datapath:"http://ptcms.csdn.net",                                          //数据接口host
+					        cssUrl:path+"/css/comments.css",                                                 //css地址
+					        //loginUrl:path+"/js/login.js",                  //login.js地址
+					        loginUrl:"https://passport.csdn.net/content/loginbox/login.js",
+					        articleURL:"http://www.csdn.net/article/2015-12-17/2826507",
+					        title:"%E6%8B%A5%E6%8A%B1Android%20Studio%EF%BC%9A%E4%BB%8EADT%E5%88%B0Android%20Studio",
+					        md5:"http://static.blog.csdn.net/scripts/md5.js",                               //用于计算用户头像的md5.js地址
+					        componentsUrl:path+"/js/componet.js",              //CSDN通用组件地址
+					        toolkitUrl:path+"/js/toolkit.js",                  //CSDN工具包地址
+					        tab:{                                                                           //【通用组件】tab
+					            id:"csdnTab",                                                               //容器ID
+					            highlight:"hover"                                                           //表示当前选择的CSS样式名
+					        },
+					        pagination:{                                                                    //【通用组件】AJAX分页组件
+					            pagesize:50,                                                                //每页多少条数据
+					            showpages:10                                                                //显示多少页
+					        },
+                            oncountchange:function(count){                                                  //评论数chagnge回调
+                                var el = document.getElementById('remark_count1');
+                                if(el){el.innerHTML=count}
+                            }
+					    });
+					</script> 
+      <!-- //comments --> 
+     </div> 
+    </div> 
+    <div class="right"> 
+     <div class="ad_300_250"> 
+      <ins data-revive-zoneid="97" data-revive-id="8c38e720de1c90a6f6ff52f3f89c4d57"></ins> 
+     </div> 
+     <div style="border: 1px #ccc solid; font-size:14px; padding:10px; margin-bottom:20px;"> 
+      <ul style=" float:right; width: 160px; padding:5px;"> 
+       <li style="font-size:16px; font-weight:bold;">CSDN官方微信</li> 
+       <li style="float:left;">扫描二维码,向CSDN吐槽</li> 
+       <li>微信号：CSDNnews</li> 
+      </ul> 
+      <img src="http://articles.csdn.net/uploads/allimg/121116/28_121116100507_1.jpg" width="100" height="100" /> 
+     </div> 
+     <div style="border: 1px #ccc solid; font-size:14px; padding:3px; margin-bottom:20px; font-weight:bold;">
+      <img style="vertical-align:middle; margin-right:10px;" src="http://news.csdn.net/images/icon_ipad.png" />
+      <a href="http://dingyue.programmer.com.cn" target="_blank">程序员移动端订阅下载</a>
+     </div> 
+     <div class="sitemap">
+      <a href="http://www.csdn.net/article/lastnews" target="_blank">每日资讯快速浏览 </a>
+     </div> 
+     <!-- 订阅和关注 --> 
+     <div class="report"> 
+      <h2 class="tit_2"><p>微博关注</p></h2> 
+      <iframe width="100%" height="300" class="share_self" frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&amp;width=0&amp;height=300&amp;fansRow=2&amp;ptype=0&amp;speed=0&amp;skin=5&amp;isTitle=0&amp;noborder=0&amp;isWeibo=1&amp;isFans=0&amp;uid=1764241425&amp;verifier=9062046f&amp;colors=d6f3f7,ffffff,666666,000000,ffffff&amp;dpc=1"></iframe> 
+     </div> 
+     <div class="rtbrill" id="digestComment"></div> 
+     <div class="ad_300_250"> 
+      <ins data-revive-zoneid="98" data-revive-id="8c38e720de1c90a6f6ff52f3f89c4d57"></ins> 
+     </div> 
+     <!-- recommend and hot weekly --> 
+     <div id="Tab2" class="hot_weekly"> 
+      <h2 class="tit_2"><p>相关热门文章</p></h2> 
+      <div class="con Contentbox"> 
+       <div id="con_two_2"> 
+        <ul class="list_1 "> 
+        </ul> 
+       </div> 
+      </div> 
+     </div> 
+     <!-- hot tag --> 
+     <div class="hot_tag"> 
+      <h2 class="tit_2"><p><a href="http://www.csdn.net/tag">热门标签</a></p></h2> 
+      <ul class="list_1"> 
+       <li><a href="http://www.csdn.net/tag/hadoop" title="Hadoop" target="_blank">Hadoop</a></li> 
+       <li><a href="http://www.csdn.net/tag/aws" title="AWS" target="_blank">AWS</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E7%A7%BB%E5%8A%A8%E6%B8%B8%E6%88%8F" title="移动游戏" target="_blank">移动游戏</a></li> 
+       <li><a href="http://www.csdn.net/tag/java" title="Java" target="_blank">Java</a></li> 
+       <li><a href="http://www.csdn.net/tag/android" title="Android" target="_blank">Android</a></li> 
+       <li><a href="http://www.csdn.net/tag/ios" title="iOS" target="_blank">iOS</a></li> 
+       <li><a href="http://www.csdn.net/tag/swift" title="Swift" target="_blank">Swift</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%99%BA%E8%83%BD%E7%A1%AC%E4%BB%B6" title="智能硬件" target="_blank">智能硬件</a></li> 
+       <li><a href="http://www.csdn.net/tag/docker" title="Docker" target="_blank">Docker</a></li> 
+       <li><a href="http://www.csdn.net/tag/openstack" title="OpenStack" target="_blank">OpenStack</a></li> 
+       <li><a href="http://www.csdn.net/tag/vpn" title="VPN" target="_blank">VPN</a></li> 
+       <li><a href="http://www.csdn.net/tag/spark" title="Spark" target="_blank">Spark</a></li> 
+       <li><a href="http://www.csdn.net/tag/erp" title="ERP" target="_blank">ERP</a></li> 
+       <li><a href="http://www.csdn.net/tag/ie10" title="IE10" target="_blank">IE10</a></li> 
+       <li><a href="http://www.csdn.net/tag/eclipse" title="Eclipse" target="_blank">Eclipse</a></li> 
+       <li><a href="http://www.csdn.net/tag/crm" title="CRM" target="_blank">CRM</a></li> 
+       <li><a href="http://www.csdn.net/tag/javascript" title="JavaScript" target="_blank">JavaScript</a></li> 
+       <li><a href="http://www.csdn.net/tag/%E6%95%B0%E6%8D%AE%E5%BA%93" title="数据库" target="_blank">数据库</a></li> 
+       <li><a href="http://www.csdn.net/tag/ubuntu" title="Ubuntu" target="_blank">Ubuntu</a></li> 
+       <li><a href="http://www.csdn.net/tag/nfc" title="NFC" target="_blank">NFC</a></li> 
+       <li><a href="http://www.csdn.net/tag/wap" title="WAP" target="_blank">WAP</a></li> 
+      </ul> 
+     </div> 
+     <!-- //hot tag --> 
+     <!-- share --> 
+     <style>
+.box{ margin-bottom:20px;}
+.box h2{ color:#c00;font:normal 18px/30px "Microsoft YaHei";border-bottom:2px #333 solid;margin-bottom:15px;}
+.box h2 a{ color:#c00;}
+</style> 
+     <div class="box share"> 
+      <h2><a target="_blank" href="http://download.csdn.net/album/list" onclick="LogClickCount(this,342);">下载专辑</a></h2> 
+      <dl> 
+       <dt class="clearfix"> 
+        <a title="【资源优选】20个热门MySQL源码" href="http://download.csdn.net/album/detail/3626" target="_blank" onclick="LogClickCount(this,342);"><img style="height:75px;width:75px;" src="http://images.csdn.net/20170327/MySQL_180x220.png" /></a> 
+        <a title="【资源优选】20个热门MySQL源码" href="http://download.csdn.net/album/detail/3626" target="_blank" onclick="LogClickCount(this,342);"> 【资源优选】20个热门MySQL源码 </a>
+       </dt> 
+       <dt class="clearfix"> 
+        <a title="【资源优选】20个热门的Unity源码" href="http://download.csdn.net/album/detail/3611" target="_blank" onclick="LogClickCount(this,342);"><img style="height:75px;width:75px;" src="http://images.csdn.net/20170320/unity3D_180x220.png" /></a> 
+        <a title="【资源优选】20个热门的Unity源码" href="http://download.csdn.net/album/detail/3611" target="_blank" onclick="LogClickCount(this,342);"> 【资源优选】20个热门的Unity源码 </a>
+       </dt> 
+       <dt class="clearfix"> 
+        <a title="【资源优选】第十期：20个最热门的cocos2D源码" href="http://download.csdn.net/album/detail/3601" target="_blank" onclick="LogClickCount(this,342);"><img style="height:75px;width:75px;" src="http://images.csdn.net/20170313/cocos2D_180.png" /></a> 
+        <a title="【资源优选】第十期：20个最热门的cocos2D源码" href="http://download.csdn.net/album/detail/3601" target="_blank" onclick="LogClickCount(this,342);"> 【资源优选】第十期：20个最热门的cocos2D源码 </a>
+       </dt> 
+       <dt class="clearfix"> 
+        <a title="【资源优选】CSDN最热门的20个iOS精品源代码" href="http://download.csdn.net/album/detail/3593" target="_blank" onclick="LogClickCount(this,342);"><img style="height:75px;width:75px;" src="http://images.csdn.net/20170306/iOS180x23001.png" /></a> 
+        <a title="【资源优选】CSDN最热门的20个iOS精品源代码" href="http://download.csdn.net/album/detail/3593" target="_blank" onclick="LogClickCount(this,342);"> 【资源优选】CSDN最热门的20个iOS精品源代码 </a>
+       </dt> 
+       <dt class="clearfix"> 
+        <a title="10本python学习经典书" href="http://download.csdn.net/album/detail/3588" target="_blank" onclick="LogClickCount(this,342);"><img style="height:75px;width:75px;" src="http://images.csdn.net/20170303/python电子书.png" /></a> 
+        <a title="10本python学习经典书" href="http://download.csdn.net/album/detail/3588" target="_blank" onclick="LogClickCount(this,342);"> 10本python学习经典书 </a>
+       </dt> 
+      </dl> 
+     </div> 
+     <!-- //share --> 
+    </div> 
+   </div> 
+   <div class="hot_topic"> 
+    <ins data-revive-zoneid="96" data-revive-id="8c38e720de1c90a6f6ff52f3f89c4d57"></ins> 
+   </div> 
+   <script type="text/javascript" src="http://ptcms.csdn.net/like/js/like.js"></script> 
+   <script>
+	/*
+  window.WebSocket = window.WebSocket || window.MozWebSocket;
+  if( window.WebSocket ) {
+    var  wsServer = 'ws://geektest.csdn.net/'; 
+    var websocket = new window.WebSocket(wsServer, 'cmslike');
+
+    websocket.onopen = function (evt) { onOpen(evt) }; 
+    websocket.onclose = function (evt) { onClose(evt) }; 
+    websocket.onmessage = function (evt) { onMessage(evt) }; 
+    websocket.onerror = function (evt) { onError(evt) }; 
+    function onOpen(evt) {
+    } 
+    function onClose(evt) { 
+    } 
+    function onMessage(evt) {
+      var data = JSON.parse(evt.data);
+      var ding = $('.support dd').text();
+      if(ding != '' && data.support > ding){
+        $('.support dd').text(data.support);
+      };
+      var cai = $('.oppose dd').text();
+      if (cai != '' && data.oppose > cai) {
+        $('.oppose dd').text(data.oppose);
+      };
+    } 
+    function onError(evt) { 
+    }
+  }
+  */
+		$(document).ready(function(){
+			var digg_id=$("#digg_id").val();
+			$('.digg').like({
+				article_id: digg_id, // 文章id
+				ding_class: 'support', // 顶的class
+				cai_class: 'oppose', // 踩的class
+        domain: 'news.csdn.net',
+				callback: function(data) //处理数据方法
+				{
+          if(data.succ == 1)
+          {
+            $('.support dd').text(data.info.ding);
+            $('.oppose dd').text(data.info.ding);
+          }
+					if(data.succ == -2)
+					{
+						if(confirm(data.msg)){
+							window.location.href = "https://passport.csdn.net/UserLogin.aspx?from=http://news.csdn.net%2Farticle%2F2015-12-17%2F2826507";
+							return false;
+						}
+					}
+					if(data.succ == -1)
+					{
+						alert(data.msg);
+					}
+				}
+			});
+		});
+	</script> 
+   <script type="text/javascript">
+		$(document).ready(function(){ 
+			var href=document.location.href;	
+
+			if(href.split("/")[6] == undefined){
+				$("#click_"+1).addClass("on");
+			}else{
+				var hrefpageno=href.split("/")[6];		
+				$("#click_"+hrefpageno).addClass("on");
+			}	
+
+			new $.AutoScroll({
+				wrap:$('#job_ul'),scrollCount:1,interval:1500
+			});
+		expandcontent('sc2', tabobjlinks[1]);
+		$.getJSON('http://ptcms.csdn.net/article/service/article_count?preview=1&aid=2826507&jsonpcallback=?',function(data){
+				$('.view_time').html(data+'次阅读');
+			});
+
+		});
+		function linkfirst(arcid){
+			$("#linkfirst").attr("href","article.html?arcid="+arcid+"&pageno=1");			
+		}
+		function preclick(arcid){
+			var href=window.location.href;		
+			var hrefpageno=href.split("&")[1];		
+			var pageno=hrefpageno.split("=")[1];
+			var hrefno=pageno-1;
+			if(hrefno <1){
+				hrefno = 1;
+			}
+			$("#preclick").attr("href","article.html?arcid="+arcid+"&pageno="+hrefno);
+		}
+	
+		function nextclick(total,arcid){
+			var href=window.location.href;		
+			var hrefpageno=href.split("&")[1];		
+			var pageno=hrefpageno.split("=")[1];
+			var hrefno=parseInt(pageno)+1;
+			if(hrefno >total){
+				hrefno = total;
+			}
+			$("#nextclick").attr("href","article.html?arcid="+arcid+"&pageno="+hrefno);
+		}
+	
+		function firstclick(arcid){
+			$("#firstclick").attr("href","article.html?arcid="+arcid+"&pageno=1");	
+		}
+		
+		function lastclick(total,arcid){
+			$("#lastclick").attr("href","article.html?arcid="+arcid+"&pageno="+total);
+		}
+		function linktitle(num,arcid){
+			var numid=parseInt(num)+1;
+			$("#linktitle_"+num).attr("href","article.html?arcid="+arcid+"&pageno="+numid);
+		}
+	</script> 
+   <script>
+	   $(function () {
+	    var wrap = function () {
+	        var elems = document.getElementsByClassName('syntaxhighlighter');
+	        for (var j = 0; j < elems.length; ++j) {
+	            var sh = elems[j];
+	            var gLines = sh.getElementsByClassName('gutter')[0].getElementsByClassName('line');
+	            var cLines = sh.getElementsByClassName('code')[0].getElementsByClassName('line');
+	            var stand = 15;
+	            for (var i = 0; i < gLines.length; ++i) {
+	                var h = $(cLines[i]).height();
+	                if (h != stand) {
+	                    //console.log(i);
+	                    gLines[i].setAttribute('style', 'height: ' + h + 'px !important;');
+	                }
+	            }
+	        }
+	     };
+	    var whenReady = function () {
+	        if ($('.syntaxhighlighter').length === 0) {
+	            setTimeout(whenReady, 0);
+	        } else {
+	            wrap();
+	        }
+	    };
+	    whenReady();
+	});
+	</script> 
+   <script type="text/javascript">
+ 	 document.write('<script src="http' + (/^https/.test(location.href) ? 's' : '') + '://c.csdnimg.cn/public/highlighter/js/highlighter.js?' + (new Date()/300000|0) + '"></'+'script>');
+	</script> 
+   <!-- 广告位：富媒体广告 --> 
+   <script type="text/javascript">BAIDU_CLB_fillSlot("119835");</script> 
+   <script language="javascript" type="text/javascript" src="http://ads.csdn.net/js/async_new.js"></script> 
+   <!-- public footer --> 
+   <script type="text/javascript">
+      document.write('<script type="text/javascript" src="http://c.csdnimg.cn/pubfooter/js/publib_footer.js?' + Math.floor(new Date()/120000).toString(36) + '="></'+'script>');
+      </script> 
+   <!-- //public footer --> 
+  </div> 
+  <!-- tab js --> 
+  <script type="text/javascript">
+<!--
+/*第一种形式 第二种形式 更换显示样式*/
+function setTab(name,cursel,n){
+	for(i=1;i<=n;i++){
+		var menu=document.getElementById(name+i);
+		var con=document.getElementById("con_"+name+"_"+i);
+		menu.className=i==cursel?"hover":"";
+		con.style.display=i==cursel?"block":"none";
+	}
+}
+//-->
+</script> 
+  <script type="text/javascript" src="http://www.csdn.net/ui/scripts/Csdn/counter.js"></script> 
+  <script id="csdn-toolbar-id" btnid="header_notice_num" wrapid="note1" count="5" subcount="5" type="text/javascript" src="http://c.csdnimg.cn/public/common/toolbar/js/toolbar.js"></script>  
+  <!-- ask 全局悬浮按钮  --> 
+  <link href="http://c.csdnimg.cn/comm_ask/css/ask_float_block.css" rel="stylesheet" type="text/css" /> 
+  <script type="text/javascript" src="http://c.csdnimg.cn/comm_ask/js/libs/wmd.js"></script> 
+  <script type="text/javascript" src="http://c.csdnimg.cn/comm_ask/js/libs/showdown.js"></script> 
+  <script type="text/javascript" src="http://c.csdnimg.cn/comm_ask/js/libs/prettify.js"></script> 
+  <script type="text/javascript" src="http://c.csdnimg.cn/comm_ask/js/apps/ask_float_block.js"></script>  
+ </body>
+</html>

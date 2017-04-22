@@ -1,0 +1,160 @@
+<!DOCTYPE html><html><head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>幻牛登录</title>
+        <!-- Tell the browser to be responsive to screen width -->
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+        <!-- Bootstrap 3.3.6 -->
+        <link rel="stylesheet" href="http://id.51myd.com/modules/jifenbao/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://id.51myd.com/modules/jifenbao/dist/css/login.css">
+        <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <!-- jQuery 2.2.3 -->
+        <script src="http://id.51myd.com/modules/jifenbao/plugins/jQuery/jquery-2.2.3.min.js"></script>
+    </head>
+    <body>
+        <div class="container login-top-nav">
+            <div class="row">
+                <div class="col-xs-6">
+                    <a href="/" class="navbar-brand"><img src="http://id.51myd.com/modules/jifenbao/index/src/logo.png" alt=""></a>
+                </div>
+                <div class="col-xs-6 text-right">
+                    <a href="http://www.51myd.com">麦点官网</a>
+                    <span>|</span>
+                    <a href="http://id.51myd.com/help">用户帮助</a>
+                </div>
+            </div>
+        </div>
+                                                                                                                                
+                                    
+        
+<div class="login-content-box users">
+    <!-- <div class="login-content-box shops"> -->
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-md-offset-8 col-lg-4 col-lg-offset-8">
+                <div class="panel">
+                    <div class="panel-heading text-center clearfix" role="tablist">
+                        <a href="#quick" class="" data-toggle="tab" role="tab">快速登录</a>
+                        <a href="#account" class="active" data-toggle="tab" role="tab">账号登录</a>
+                    </div>
+                    <div class="panel-body tab-content">
+                        <div class="item tab-pane " id="quick" role="tabpanel">
+                            <!-- 无登录记录时显示 start -->
+                                                        <h3 class="no-account">暂无登录记录</h3>
+                                                        <!-- 有登录记录时显示 end -->
+                        </div>
+
+                        <div class="item tab-pane active" id="account" role="tabpanel">
+
+                            <form action="http://id.51myd.com/login" method="post" class="form-horizontal">
+                                                                <div class="form-group username">
+                                <input type="text" name="mobile" placeholder="请输入用户名或手机号" class="form-control">
+                                <span></span>
+                                </div>
+                                <div class="form-group pass">
+                                    <input type="password" name="password" class="form-control" placeholder="请输入密码">
+                                    <span></span>
+                                </div>
+
+                                <div class="form-group">
+                                                                    </div>
+
+                                <div class="form-group btn-line">
+                                        <button name="loginId" id="loginId" value="1" class="btn btn-block btn-success btn-lg">登录</button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                    <div class="panel-footer text-right">
+                        <a href="http://id.51myd.com/forget">忘记密码</a>
+
+                                                    <span>|</span>
+                            <a href="http://id.51myd.com/register">注册新用户</a>
+                                            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">
+            © 2016-2017 克珞世网络科技有限公司 网站备案号：浙ICP备15004318号-1
+        </div>
+    </div>
+</div>
+
+<!-- error Modal -->
+<div class="modal fade" id="errorModals" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">提示</h4>
+            </div>
+            <div class="modal-body" id="errorMsg"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="modalIds" data-dismiss="modal">知道了</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- error Modal -->
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">提示</h4>
+            </div>
+                        <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="modalId" data-dismiss="modal">知道了</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        <!-- Bootstrap 3.3.6 -->
+        <script src="http://id.51myd.com/modules/jifenbao/plugins/jQuery/jquery-2.2.3.min.js"></script>
+        <script src="http://id.51myd.com/modules/jifenbao/bootstrap/js/bootstrap.js"></script>
+        <script src="http://static.geetest.com/static/tools/gt.js"></script>
+<script>
+$('.account-list a').on('click', '.close', function (e) {
+    // 删除账号逻辑
+    var $a = $(this).parent();
+    if (window.confirm('确定要清空此账号的数据吗？')) {
+        $.post('http://id.51myd.com/remove_location_user', {id: $(this).data('id')}, function (result) {
+            if( parseInt(result.status) === 0 ) {
+                $a.remove();
+            } else {
+                $("#errorMsg").html(result.msg);
+                $("#errorModals").modal();
+                return false;
+            }
+        }, 'json');
+    }
+    e.preventDefault();
+});
+$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+    $('a[data-toggle="tab"]').removeClass('active');
+    $(e.target).addClass('active');
+});
+
+$(function () {
+    var errorSign = '0';
+    if (parseInt(errorSign) > 0) {
+        $("#errorModal").modal();
+    }
+
+                                                                
+                                                                                                                                                                                                                                });
+</script>
+    
+</body></html>

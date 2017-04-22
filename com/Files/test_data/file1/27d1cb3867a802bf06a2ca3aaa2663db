@@ -1,0 +1,130 @@
+<!DOCTYPE html><html lang="en"><head>
+	<meta charset="utf-8">
+	<title>世纪佳缘交友网</title>
+	<meta content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" name="viewport"><link rel="apple-touch-icon" href="http://images1c.jyimg.com/w4/wap/i/apple-touch-icon_touch.png">
+	<link rel="stylesheet" href="http://images1c.jyimg.com/w4/wap/c/m/2013/basic.css">
+	<link rel="stylesheet" href="http://images1c.jyimg.com/w4/wap/c/m/2013/list.css">
+	<link rel="stylesheet" href="http://images1c.jyimg.com/w4/wap/c/m/2013/new_common.css">
+	<link rel="stylesheet" href="http://images1c.jyimg.com/w4/wap/c/m/2014/login.css">
+	<script type="text/javascript" src="http://images1c.jyimg.com/w4/wap/j/m/2013/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="http://images1c.jyimg.com/w4/wap/j/m/2013/list.js"></script>
+	<script type="text/javascript" src="http://images1c.jyimg.com/w4/wap/j/m/2013/jy_funs.js"></script>
+	<meta name="baidu-tc-cerfication" content="658154ceedf0d8e7938ed156d9ea256d">
+	<script>
+		var msg_error = '';
+		var msg_img = "http://images1c.jyimg.com/w4/wap/i/m/2013/04/login/error.png";
+		var msg_time = 2000;
+		var loading_src = "http://images1c.jyimg.com/w4/wap/i/m/2013/04/per-inf/loading.gif";
+		$(function() {
+			//登录
+			if (msg_error!='') {
+				desLayer(msg_img, msg_error, msg_time);
+			}
+
+			$("#name, #password").focus(function() {
+				class_name_str = $(this).attr('id')=='name'?'o_fous':'o_fous2';
+				$(this).prev().addClass(class_name_str); 
+				$(this).prev().prev().addClass('bor_cor');
+			}).blur(function() {
+				class_name_str = $(this).attr('id')=='name'?'o_fous':'o_fous2';
+				$(this).prev().removeClass(class_name_str); 
+				$(this).prev().prev().removeClass('bor_cor');
+			}).keyup(function() {
+				countTextLen();
+			});
+			$(".txt_off").click(function() {
+				$(this).prev().val("");
+				$(this).addClass("dn");
+				$(this).prev().focus();
+			});
+			countTextLen();
+
+			$("#authcode_img").click(function() {
+				$(this).attr("src", "../interface/checkcode.php?pin=0_0_1491082821_15d32a7e2423d9b760c0f640a26d0695&v=6&t_code="+Date.parse(new Date()));
+				return false;
+			});
+		});
+
+		function check_loginform() {
+			if ($.trim($("#name").val())=='') {
+				desLayer(msg_img, "请填写登录名", msg_time);
+				return false;
+			}
+			if ($.trim($("#password").val())=='') {
+				desLayer(msg_img, "请填写登录密码", msg_time);
+				return false;
+			}
+			if ($("#authcode").length>0&&$.trim($("#authcode").val())=='') {
+				desLayer(msg_img, "请填写登录验证码", msg_time);
+				return false;
+			}
+			showLoading(loading_src, "正在登录中...", 0);
+			document.forms['login_form'].submit();
+			return false;
+		}
+
+		function countTextLen() {
+			if ($("#name").val().length>0) {
+				$(".txt_off_un").removeClass("dn");
+			}
+			else {
+				$(".txt_off_un").addClass("dn");
+			}
+			if ($("#password").val().length>0) {
+				$(".txt_off_pw").removeClass("dn");
+			}
+			else {
+				$(".txt_off_pw").addClass("dn");
+			}
+		}
+	</script>
+</head>
+
+<body>
+<div class="jy com_w_100">
+	<!--头部-start-->
+	<div class="top_nav clearfix tac topnav_cor">
+    	<a href="../?pin=0_0_1491082821_15d32a7e2423d9b760c0f640a26d0695&amp;v=6" class="rbtn fl topnav_cor"><span class="login_btn"></span></a>
+        <div class="navcont fs14">登录</div>
+    </div>
+	<!--头部-start-->
+    <!--主要部分-start-->
+	    <div class="pb70 bor_btm">
+		<form action="https://passport.jiayuan.com/wap/m/login/dologin.php?pin=0_0_1491082821_15d32a7e2423d9b760c0f640a26d0695&amp;v=6" method="post" name="login_form" target="hidden">
+			<ul class="input_list">
+				<li class="mb15 clearfix " id="user_name_li"><span class="name name2  fl" id="user_icon"></span><input class="w_180" name="name" id="name" placeholder="输入手机号或邮箱" type="text" value=""><span class="txt_off txt_off_un dn"></span></li>
+				<li class="mb15 clearfix pr" id="psw_name_li"><span class="name name3 fl" id="psw_icon"></span><input type="password" class="pr w_180" style="z-index:2;" name="password" id="password" placeholder="输入您的密码" value=""><span class="txt_off txt_off_pw dn"></span></li>
+												<li style="border:none;">
+					<label class="fl"><input type="checkbox" id="aut" name="save_pass" value="1" checked="checked"><span style="color:#888888;font-size:14px;">自动登录</span></label>
+					<a href="./forgetpass.php?pin=0_0_1491082821_15d32a7e2423d9b760c0f640a26d0695&amp;v=6" class="forg_psw fr">忘记密码</a>
+				</li>
+							</ul>
+			<a href="#" onclick="return check_loginform();" class="login_btn fs14 tac mr0a">登录</a>
+			<input type="hidden" name="pin" value="0_0_1491082821_15d32a7e2423d9b760c0f640a26d0695"><input type="hidden" name="v" value="6">
+			<input type="hidden" name="pre_urlpath" value="/chat/dyh.php">
+			<input type="hidden" name="from" value="">
+			<input type="hidden" name="_http_host" value="m3.jiayuan.com">
+			<input type="hidden" name="touch_session_id" value="15d32a7e2423d9b760c0f640a26d0695">
+			<input type="hidden" name="session_id_verify" value="1491082821_198779b7ca79ea97c0e0f4b2302fe474">
+					</form>
+    </div>
+    <!--主要部分-end-->
+
+    <!--footer-start-->
+            	<!--footer-->
+	<footer style="padding:20px 0px 10px 0px;">
+	       <p>
+							<a class="cur" href="http://m.jiayuan.com/?pin=0_0_1491082821_15d32a7e2423d9b760c0f640a26d0695&amp;v=6">触屏版</a>
+				<span>|</span>
+				<a href="http://m.jiayuan.com/d/?pin=0_0_1491082821_15d32a7e2423d9b760c0f640a26d0695&amp;v=6">客户端</a>
+			</p>
+			    					</footer>
+	
+
+
+        <!--footer--end-->
+</div>
+<iframe id="hidden" name="hidden" src="#" style="display:none;"></iframe>
+
+
+</body></html>

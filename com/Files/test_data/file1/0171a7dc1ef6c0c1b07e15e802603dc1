@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+ <head> 
+  <meta charset="utf-8" /> 
+  <title>1.1  流量问题 - 异步社区</title> 
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /> 
+  <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" /> 
+  <meta name="apple-mobile-web-app-capable" content="yes" /> 
+  <meta name="format-detection" content="telephone=no" /> 
+  <link rel="icon" href="/staticyb/images/favicon.png" type="image/x-icon" /> 
+  <link rel="shortcut icon" href="/staticyb/images/favicon.png" type="image/x-icon" /> 
+  <link href="/simditor/css?v=TFt0Ve6k53lmYvYXprBxLZapuFtSm_KFxRcLW5XqPtQ1" rel="stylesheet" /> 
+  <link href="/markdown-editor/css?v=HB-xmQrGLrhZS4Oxz3Iu2FdyEPbVwxEEvEsyCjarPos1" rel="stylesheet" /> 
+  <link href="/kendo/css?v=W-IyudFsjvr8DmczNaEtVDAWVVWkoAYhOkQl_7kkbqc1" rel="stylesheet" /> 
+  <link href="/yb/css?v=nOEMgSL9zhSAkXBWZSOxXndF1lYWP0u4zOt9NvdX_741" rel="stylesheet" /> 
+  <script src="/yb/js?v=7Qd09i8V1MWXs0ntq-TyUxVxw-5a69b6h57mHWqXI4A1"></script> 
+  <script src="/bundles/simditor?v=XxqINxXBQ6MPQSKyeMagucXxZJjUDuKVWsOXVJmJMkM1"></script> 
+  <script src="/bundles/kendo?v=Ep7XxB9YaQz_sUggoppp1nXkei68VOq0u3sLcOISbsE1"></script> 
+  <script type="text/javascript">
+        $.ajaxSetup({ cache: false });
+        var _vds = _vds || [];
+        window._vds = _vds;
+        (function () {
+            _vds.push(['setAccountId', 'b59341ccb802cc42']);
+            (function () {
+                var vds = document.createElement('script');
+                vds.type = 'text/javascript';
+                vds.async = true;
+                vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'dn-growing.qbox.me/vds.js';
+                var s = document.getElementsByTagName('script')[0];
+                s.parentNode.insertBefore(vds, s);
+            })();
+        })();
+
+        var _hmt = _hmt || [];
+        (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?3ae8f8f099c7e2f3d6cffbceb900c79a";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+        </script> 
+ </head> 
+ <body> 
+  <header id="header"> 
+   <div class="container"> 
+    <h1 class="logo"> <a href="/" class="logo__link" title="异步社区"> <img src="/staticyb/images/logo.png" class="logo__img" /> </a> </h1> 
+    <div class="search"> 
+     <form action="/search" method="get" style=""> 
+      <input type="text" class="search__key" name="q" /> 
+      <button type="submit" class="search__go">搜索</button> 
+     </form> 
+    </div> 
+    <ul class="user-info"> 
+     <li class="user-info__cart"><a href="/user/cart"><i class="icon icon-cart"></i>（0）</a></li> 
+     <li class="user-info__cart"><a href="http://account.epubit.com.cn/register?returnUrl=http%3a%2f%2fwww.epubit.com.cn%2fBook%2fOnlinechapter%2f18477" id="registerLink">注册</a></li> 
+     <li><a href="http://account.epubit.com.cn/log-in?returnUrl=http%3a%2f%2fwww.epubit.com.cn%2fBook%2fOnlinechapter%2f18477" id="loginLink">登录</a></li> 
+    </ul> 
+    <ul class="user-info-small"> 
+     <li><a href="javascript:" class="bread"></a></li> 
+    </ul> 
+   </div> 
+   <div class="menu--bg"> 
+    <div class="container"> 
+     <ul class="menu"> 
+      <li><a href="/">首页</a></li> 
+      <li><a href="/book">图书</a></li> 
+      <li><a href="/book?tab=ebook">电子书</a></li> 
+      <li><a href="/article">文章</a></li> 
+      <li class="nav__item--right"><a href="/article/write"><i class="icon icon-write"></i>写作</a></li> 
+     </ul> 
+    </div> 
+   </div> 
+   <div class="small-screen-drop"> 
+    <div class="search"> 
+     <form action="/search" method="get" style=""> 
+      <input type="text" class="search__key" name="q" /> 
+      <button type="submit" class="search__go">搜索</button> 
+     </form> 
+    </div> 
+    <div class="user"> 
+     <ul class="user-login"> 
+      <li><a href="http://account.epubit.com.cn/register?returnUrl=http%3a%2f%2fwww.epubit.com.cn%2fBook%2fOnlinechapter%2f18477" id="registerLink">注册</a></li> 
+      <li><a href="http://account.epubit.com.cn/log-in?returnUrl=http%3a%2f%2fwww.epubit.com.cn%2fBook%2fOnlinechapter%2f18477" id="loginLink">登录</a></li> 
+     </ul> 
+     <ul class="user-cart"> 
+      <li><a href="/user/shelf"><i class="icon icon-bookrack"></i>书架</a></li> 
+      <li><a href="/user/cart"><i class="icon icon-cart"></i>（0）</a></li> 
+     </ul> 
+    </div> 
+   </div> 
+  </header> 
+  <link href="/Content/copub-article-style.css" rel="stylesheet" /> 
+  <div class="container"> 
+   <div class="row"> 
+    <div class="col-md-9"> 
+     <div id="article-main" class="article mt40"> 
+      <h2 class="article__title">1.1 流量问题</h2> 
+      <p class="article__info" style="text-align:left;"><a href="/book/details/1202">Cisco VPN完全配置指南</a></p> 
+      <div class="typo typo-selection"> 
+       <div class="markdown-body"> 
+        <h2 data-line-num="0">1.1 流量问题</h2> 
+        <p data-line-num="1 2">VPN最初开发的主要目的是处理将明文数据通过网络进行传输时的安全问题。明文数据指的是可以被任何人检查和理解的信息，这包括源、目标和中间人。发送明文流量应用的例子包括Telnet，通过FTP或者TFTP的文件传输协议，使用邮局协议（POP）或者简单邮件传输协议（SMTP），以及其他协议的电子邮件。不道德的个人，例如黑客，可以利用发送明文数据的应用程序来执行下面类型的攻击：</p> 
+        <ul> 
+         <li data-line-num="3" class="第1级无序列表">窃听；</li> 
+         <li data-line-num="4" class="第1级无序列表">伪装；</li> 
+         <li data-line-num="5 6" class="第1级无序列表">中间人。</li> 
+        </ul> 
+        <p data-line-num="7 8">每种类型的攻击都可以暴露您的数据和公司的资产，使其处于不同的危险程度。下面的3小节更深入的讨论了这些攻击。</p> 
+        <h3 data-line-num="9 10">1.1.1 窃听攻击</h3> 
+        <p data-line-num="11 12">针对明文数据的最常见的攻击类型是窃听（eavesdropping）。在窃听攻击中，当数据包通过两台设备传输时，数据包的内容可以被人检查。某些类型的应用程序和协议易于受到窃听攻击，包括Telnet、POP、HTTP、TFTP、FTP、简单网络管理协议（SNMP）等。</p> 
+        <p data-line-num="13 14">在所有上述应用和协议中，用户名和密码之类的认证信息，都是在两台设备间以明文格式传送的，黑客可以使用这种信息来执行访问和实施其他类型的攻击。</p> 
+        <p data-line-num="15 16"><strong>注意：</strong> <em>即使某些协议可能以明文的形式发送信息，在许多情况下，它们至少有最低限度的验证方法来使得在某人访问资源之前验证个人的身份。例如，Telnet、POP和SMTP这些应用也考虑了认证问题，即使这些验证信息是以明文的形式发送的。实际上，这些协议初始不是为安全设计的，而是为了解决某些连接性问题。然而，自这些应用程序从20世纪70年代、80年代和90年代初期发展以来，特别是Internet的使用激增，使得事情发生了改变。</em></p> 
+        <h4 data-line-num="17">一、窃听工具</h4> 
+        <p data-line-num="18 19">通常情况下，一台协议分析仪可以用来检查（窃听）数据包。分析仪可以是基于硬件的解决方案或者是一台具有混杂网络接口卡（NIC）和相应软件的PC机。为了让这种类型的攻击奏效，攻击者必须对实际的源和目标设备之间的连接具有访问的能力。</p> 
+        <p data-line-num="20 21">主要有两种类别的协议分析仪：通用的和攻击型的。一台通用的协议分析仪能捕捉所有它看得见的数据包，并且通常是使用一种诊断工具来进行故障诊断与排除。市面上有许多基于软件的协议分析仪，采用免费软件就可以完成这一操作。</p> 
+        <p data-line-num="22 23">另一方面，攻击型协议分析仪是一台增强型的通用协议分析仪。攻击型的协议分析仪查看应用程序和协议的某些类型来寻找认证、金融和安全信息。一个攻击者将使用这些特定信息来执行其他类型的攻击。</p> 
+        <h4 data-line-num="24">二、窃听解决方案</h4> 
+        <p data-line-num="25 26">敏感的信息包括信用卡信息、个人信息、社会保险号码、电话号码和地址、用户名和口令以及专利信息。因为许多协议和应用程序在传输敏感信息的时候是不安全的（他们将信息以明文的形式发送），所以保护信息非常必要。一种解决方案是利用令牌卡使用一次性口令（OTP）。这可以防止某些人使用协议分析仪来捕捉口令信息而执行访问攻击。然而，这种解决方案只对口令攻击有效；其他类型的在明文连接上传输的信息都不被保护。</p> 
+        <p data-line-num="27 28">对于公司来说，在电子商务环境下保护信用卡信息的最通常的解决方案是使用具有SSL加密的HTTP（HTTPS）来加密特定用户的信息。对于合作伙伴的访问，通常采取的一种方式就是实施加密的VPN。加密可以将明文的信息变成随机的字符串；只有目标设备可以解密这些信息。加密可以以下面的两种方法来实施：</p> 
+        <ul> 
+         <li data-line-num="29" class="第1级无序列表"><strong>链路加密</strong>—整个数据帧（例如PPP或者HDLC帧）在两台设备之间加密；这用在直接连接的设备之间的点对点的连接上；</li> 
+         <li data-line-num="30 31" class="第1级无序列表"><strong>数据包的负荷加密</strong>—只有数据包的负荷被加密，这种类型的加密可以在第3层的网络上路由，例如Internet。</li> 
+        </ul> 
+        <p data-line-num="32 33">加密通常用于穿过公网的外部连接。然而，对于某些类型的敏感数据，您可能想在它穿过您的内联网时加密数据。在这两种解决方案中，您将会看到，数据包的负荷加密是VPN解决方案中的一种最常使用的方法。其原因是在许多情况下，数据必须传过多跳，因此数据包的负荷加密是最具有扩展性的：只需两台设备处理加密/解密的过程，而中间设备只是发送加密的数据。</p> 
+        <h3 data-line-num="34">1.1.2 伪装攻击</h3> 
+        <p data-line-num="35 36">一个伪装攻击就是一个个体隐藏其身份，甚至会假冒别人的身份。在网络环境下，这是通过改变数据包中的源地址信息来实现的。在TCP/IP协议族中，这通常被称为欺骗（spoofing）。使用欺骗的攻击者通常会把这种攻击和拒绝服务（DoS）攻击或者非授权访问攻击组合在一起。</p> 
+        <h4 data-line-num="37">一、伪装工具</h4> 
+        <p data-line-num="38 39">不像窃听攻击，许多类型的工具可以用来实现伪装攻击。为了修改数据包中的源IP地址，需要一个特殊的数据包产生程序。这就让黑客能够指定数据包所用的源地址，而不是使用与黑客的PC NIC相关联的IP地址。</p> 
+        <p data-line-num="40 41">一个攻击者通常会试图使用一个授权的外部源地址来屏蔽数据包过滤器。当然，任何返回的流量都会返回到实际授权的外部地址，而不是返回到攻击者。为了看到返回的流量，攻击者将会把这种攻击和路由选择攻击结合起来，这就使得返回流量可以重定向到攻击者。为了实施一个简单的DoS攻击，攻击者试图使用一个内部的源地址，而数据包过滤器通常会允许它通过一种防火墙系统。</p> 
+        <p data-line-num="42 43"><strong>注意：</strong> <em>在第2层的网络中，黑客可能使用ARP欺骗来将两台设备之间的流量重定向到黑客的设备。</em></p> 
+        <h4 data-line-num="44">二、伪装解决方案</h4> 
+        <p data-line-num="45 46">当然，使用一个强壮的防火墙系统来限制进入到您的网络中的数据包的类型是必需的。然而，一个防火墙系统将允许流量是从授权的外部系统而来，即使它是VPN的流量。因此，某种类型的数据包的验证检查是必需的。例如，您需要决定数据包是否来自一个合法的源，而不是来自执行伪装攻击的黑客。</p> 
+        <p data-line-num="47 48">最通常的解决方案是使用一个数据包的完整性检查系统，它是通过散列函数来实施的。散列函数允许用户验证传输的数据包的源。因为散列函数使用具有共享密钥的单向散列，只有具有共享密钥的设备才能建立并验证散列值。VPN中，最通常使用的散列函数是MD5和SHA。</p> 
+        <p data-line-num="49 50">注意：数据包的验证在这章后面的1.3.4小节中还要讨论，而散列函数在第2章中将讨论。</p> 
+        <h3 data-line-num="51">1.1.3 中间人攻击</h3> 
+        <p data-line-num="52 53">一个中间人攻击可以采取许多形式，包括下面最常用的两种：</p> 
+        <ul> 
+         <li data-line-num="54" class="第1级无序列表">会话回放攻击；</li> 
+         <li data-line-num="55 56" class="第1级无序列表">会话截获攻击。</li> 
+        </ul> 
+        <p data-line-num="57 58">使用会话回放攻击时，攻击者位于两台设备之间，捕捉来自会话中的数据包。攻击者将试图在以后使用捕捉到的数据包来回放（重新发送）它们。攻击者的目标就是使用相同的数据包来获取对远端系统的访问。在某些情况下，攻击者会改变数据包的内容来协助这一过程。</p> 
+        <p data-line-num="59 60">图1-1中的这幅图形解释了一个例子。在步骤1中，用户发送流量给真实的服务器。在步骤2中，攻击者截取了从用户到真实服务器的流量（假设它是一个Web会话）。通常，一个攻击者要么会用自己的源地址而不是真实的目标地址来仿冒DNS的回应包，这也是一种伪装攻击，要么与一种重路由选择攻击结合起来，仿冒数据包。如果攻击者能够访问源和目标之间的链路，攻击者可以很容易地使用协议分析仪来检查这个数据包。在这个例子中，假设攻击者正在使用重定向攻击，所有的流量都会发送给攻击者。攻击者伪装成真实的服务器，而且发送响应给用户PC，甚至可能是恶意的Java或者ActiveX脚本，来捕捉任意用户特定的敏感信息。在这个例子中，攻击者会把用户原始的流量进行重定向，并且发送响应给真正的目标，如步骤3所示。</p> 
+        <p data-line-num="61 62" class="图"><img src="http://write.epubit.com.cn/api/storage/getbykey/screenshow?key=150586726b07a8e046c8" alt="" width="400" style="width:400px" /></p> 
+        <p data-line-num="63 64" class="图题">图1-1 会话回放攻击</p> 
+        <p data-line-num="65 66">在一个会话截获攻击中，攻击者试图将自己插入到已有的连接中，接着控制两台设备之间的连接。图1-2解释了一个会话截获攻击。</p> 
+        <p data-line-num="67 68" class="图"><img src="http://write.epubit.com.cn/api/storage/getbykey/screenshow?key=1505b49662b11ef2897f" alt="" width="400" style="width:400px" /></p> 
+        <p data-line-num="69 70" class="图题">图1-2 会话截获攻击</p> 
+        <p data-line-num="71 72">为了执行这种攻击，攻击者不得不执行伪装，攻击者假装是源和目标设备。而且，攻击者必须对源和目标设备之间流动的数据包具有访问的能力。本质上，这看起来像图1-2的上部分所示。</p> 
+        <p data-line-num="73 74">另一方面，图1-2的下面部分更具有代表性，表明会话截获攻击是如何发生的。在这个例子中，当设备A发送流量给设备B时，攻击者截取了流量并且假装是设备B，他给设备A发送响应，发送的信息类似于设备B发送的信息。从设备A的角度来看，他认为自己实际上是和设备B交互的。攻击者也使用同样的过程和设备B交互。当数据流在设备A和设备B之间来回流动时，攻击者将会执行数据操作攻击—修改两台设备之间的数据来实施实际的会话截获攻击。攻击者使用这个过程来了解两台设备的信息，包括其安全弱点。</p> 
+        <p data-line-num="75 76">对于UDP和ICMP之类的协议，实施会话截获攻击对于黑客来说是非常简单的过程，这是因为没有相应的机制来定义连接是如何维护的。对于TCP，特别是TCP的定序过程，会话截获则会难一些。序列号应当是随机的，对于黑客来说去猜测下一段的序列号是非常困难的事情。因此，截获TCP会话是一件很困难的事情。然而，并不是所有的TCP应用程序都使用随机的序列号。在许多情况下，基于现有连接中过去的序列号去猜测现有的序列号是一件非常容易的事情。一名有经验的黑客可以将自己插入到现有的TCP的连接中。当然，这不是一个简单的过程。黑客需要执行许多步骤并且使用某些复杂的工具来实施攻击。</p> 
+        <h4 data-line-num="77">一、中间人攻击工具</h4> 
+        <p data-line-num="78 79">攻击者通常会使用一种攻击协议分析仪来捕捉上述所描述的两种攻击类型的数据包。使用会话回放攻击，黑客甚至可以使用Java或者ActiveX脚本来捕捉来自Web服务器会话的数据包。使用TCP会话截获攻击，攻击者需要某种类型的特殊TCP序列号猜测程序来成功地截获并且控制一个现有的TCP连接。</p> 
+        <h4 data-line-num="80">二、中间人攻击解决方案</h4> 
+        <p data-line-num="81 82">对中间人攻击有几种解决方案。例如，为了防止TCP会话的截获，您应当有一个防火墙系统来随机化TCP的序列号，确保对于攻击者来说预测会话的下一个序列号成为几乎不可能的事情。Cisco PIX安全设备和其他的可用设备可以执行这种功能。然而，攻击者可以使用其他方法，如前一小节所讨论的，来控制会话。</p> 
+        <p data-line-num="83 84"><strong>注意：</strong> <em>TCP序列号是32位的长度，提供了大约20亿个可能的组合，随机化序列号使得去猜测连接中的下一个序列号成为几乎是不可能的事情。</em></p> 
+        <p data-line-num="85 86">这种类型的问题的最好解决方案就是使用VPN。VPN提供了3种工具来抗击中间人攻击：</p> 
+        <ul> 
+         <li data-line-num="87" class="第1级无序列表">设备验证；</li> 
+         <li data-line-num="88" class="第1级无序列表">数据包完整性检查；</li> 
+         <li data-line-num="89 90" class="第1级无序列表">加密。</li> 
+        </ul> 
+        <p data-line-num="91">使用设备验证，您可以确保正在给您发送流量的设备就是一台授权的设备，而不是一台伪装的设备。使用数据包完整性检查，您可以确保发给您的数据包来自一个授权的源，而且没有被损害或者被假冒。使用加密，您可以确保中间人攻击设备不能去窃听两台设备之间正在共享的数据。这些主题将会在本章的1.3节中进行更多的讨论。</p> 
+       </div> 
+       <p id="copyright-declare"> 本文仅用于学习和交流目的，不代表异步社区观点。非商业转载请注明作译者、出处，并保留本文的原始链接。 </p> 
+      </div> 
+     </div> 
+     <div id="article-bottom"></div> 
+     <div class="interact"> 
+      <div class="share"> 
+       <div class="bdsharebuttonbox"> 
+        <span style="float:left;">分享：</span> 
+        <a href="#" class="bds_weixin" style="margin-top:-1px;" data-cmd="weixin" title="分享到微信"></a> 
+        <a href="#" class="bds_tsina" style="margin-top:-1px;margin-left:0px;" data-cmd="tsina" title="分享到新浪微博"></a> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div class="col-md-3"> 
+     <div class="hidden-lg hidden-md"> 
+      <span id="toggle-nav"><em>目录</em><i id="toggle-nav-icon" class="glyphicon glyphicon-list"></i></span> 
+     </div> 
+     <div id="read-nav" class="mt40 read-nav-mobile"> 
+      <div class="title"> 
+       <h2 class="title__hx">目录</h2> 
+      </div> 
+      <div class="catalogue-read mt15"> 
+       <ul> 
+        <li> <a href="/book/onlinechapter/17766">版 权 声 明</a> </li> 
+        <li> <a href="/book/onlinechapter/18382">关于技术审稿人</a> </li> 
+        <li> <a href="/book/onlinechapter/18383">关于作者</a> </li> 
+        <li> <a href="/book/onlinechapter/18384">内容提要</a> </li> 
+        <li> <a href="/book/onlinechapter/18386">前 言</a> </li> 
+        <li> <a href="/book/onlinechapter/18388">献 辞</a> </li> 
+        <li> <a href="/book/onlinechapter/18389">致 谢</a> </li> 
+        <li> 第一部分 VPN </li> 
+        <li> <a href="/book/onlinechapter/18465">第1章 VPN概述</a> </li> 
+        <li style="&quot;font-weight:bold;&quot;"> <a href="/book/onlinechapter/18477">1.1 流量问题</a> </li> 
+        <li> <a href="/book/onlinechapter/18481">1.2 VPN定义</a> </li> 
+        <li> <a href="/book/onlinechapter/18482">1.3 VPN组件</a> </li> 
+        <li> <a href="/book/onlinechapter/18483">1.4 VPN设计</a> </li> 
+        <li> <a href="/book/onlinechapter/18484">1.5 VPN实施</a> </li> 
+        <li> <a href="/book/onlinechapter/18485">1.5 VPN实施</a> </li> 
+        <li> <a href="/book/onlinechapter/18486">1.6 VPN：选择解决方案</a> </li> 
+        <li> <a href="/book/onlinechapter/18487">1.7 总 结</a> </li> 
+        <li> 第2章 VPN技术 </li> 
+        <li> 第3章 IPSec </li> 
+        <li> 第4章 PPTP和L2TP </li> 
+        <li> 第5章 SSL VPN </li> 
+        <li> 第二部分 集 中 器 </li> 
+        <li> 第6章 集中器产品信息 </li> 
+        <li> 第7章 使用IPSec实现集中器的远程访问连接 </li> 
+        <li> 第9章 集中器站点到站点的连接 </li> 
+        <li> 第10章 集中器的管理 </li> 
+        <li> 第11章 验证和故障诊断与排除集中器的连接 </li> 
+        <li> 第三部分 客 户 端 </li> 
+        <li> 第12章 Cisco VPN软件客户端 </li> 
+        <li> 第13章 Windows软件客户端 </li> 
+        <li> 第14章 3002硬件客户端 </li> 
+        <li> 第四部分 IOS路由器 </li> 
+        <li> 第15章 路由器产品信息 </li> 
+        <li> 第16章 路由器的ISAKMP/ IKE阶段1连接 </li> 
+        <li> 第17章 路由器站点到站点连接 </li> 
+        <li> 第18章 路由器远程访问连接 </li> 
+        <li> 第19章 路由器连接的故障诊断与排除 </li> 
+        <li> 第五部分 PIX防火墙 </li> 
+        <li> 第20章 PIX和ASA产品信息 </li> 
+        <li> 第21章 PIX和ASA站点到站点的连接 </li> 
+        <li> 第22章 PIX和ASA远程访问连接 </li> 
+        <li> 第23章 PIX和ASA连接的故障诊断与排除 </li> 
+        <li> 第六部分 案例研究 </li> 
+        <li> 第24章 案例研究 </li> 
+       </ul> 
+      </div> 
+     </div> 
+     <div class="title title-2 mt40"> 
+      <h3 class="title__hx">相关技术</h3> 
+     </div> 
+     <div class="tag"> 
+      <ul> 
+       <li> <a href="/book?category=61" target="_blank">思科</a> </li> 
+       <li> <a href="/book?category=105" target="_blank">思科技术</a> </li> 
+       <li> <a href="/book?category=188" target="_blank">安全</a> </li> 
+      </ul> 
+     </div> 
+     <div id="nav-bottom"></div> 
+    </div> 
+   </div> 
+  </div> 
+  <footer id="footer"> 
+   <div class="editable-area"> 
+    <div class="foot-link"> 
+     <div class="container"> 
+      <div class="row"> 
+       <div class="col-md-3 text-center"> 
+        <dl> 
+         <dt>
+          关于
+         </dt> 
+         <dd>
+          <a href="/contribution">成为作者</a>
+         </dd> 
+         <dd>
+          <a href="/article/19">成为译者</a>
+         </dd> 
+         <dd>
+          <a href="/article/78">自出版</a>
+         </dd> 
+         <dd>
+          <a href="/article/21">关于我们</a>
+         </dd> 
+        </dl> 
+       </div> 
+       <div class="col-md-3 text-center"> 
+        <dl> 
+         <dt>
+          帮助
+         </dt> 
+         <dd>
+          <a href="/article/2">常见问题</a>
+         </dd> 
+         <dd>
+          <a href="/article/77">赚取积分</a>
+         </dd> 
+         <dd>
+          <a href="/article/80">用户协议</a>
+         </dd> 
+         <dd>
+          <a href="/article/79">法律声明</a>
+         </dd> 
+        </dl> 
+       </div> 
+       <div class="col-md-3 text-center"> 
+        <dl> 
+         <dt>
+          微信订阅
+         </dt> 
+         <dd>
+          <img src="/staticyb/images/weixin.png" alt="" />
+          <span class="foot-link__gzh">公众号：异步社区</span>
+         </dd> 
+        </dl> 
+       </div> 
+       <div class="col-md-3 text-center"> 
+        <dl> 
+         <dt>
+          异步社区
+         </dt> 
+         <dd>
+          <span class="foot-link__label">微博：</span>
+          <a href="http://weibo.com/u/5658999121">@人邮异步社区</a>
+         </dd> 
+         <dd>
+          <span class="foot-link__label">QQ群：</span>368449889
+         </dd> 
+        </dl> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <p class="copy-right text-center">&copy; 2016异步社区 &middot; 人民邮电出版社 &middot; All rights reserved (京ICP备05035396号-6 &middot;)</p> 
+   </div> 
+  </footer> 
+  <div id="toTop" class="fixed-rightbottom"> 
+   <div class="go-top"> 
+    <a id="goto-top" href="javascript:void(0);" title="返回顶部" class="glyphicon glyphicon-chevron-up"></a> 
+   </div> 
+   <div class="go-bottom"> 
+    <a id="goto-bottom" href="javascript:void(0);" title="到达页尾" class="glyphicon glyphicon-chevron-down"></a> 
+   </div> 
+  </div> 
+  <div class="overlay" style="display: none;"></div> 
+  <script type="text/javascript">
+        
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-62932264-1', 'auto');
+        ga('send', 'pageview');
+        
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+
+            $('#banner-search,#banner-search-1').bind("click", function () {
+                var id = $(this).attr('id');
+                var q = $('#' + id + ' ~ input').val();
+                if (q) {
+                    location.href = '/search?q=' + q;
+                } else {
+                    $('input[name=q]').attr('placeholder', '请输入您感兴趣的');
+                }
+            })
+
+            $('.dropdown-toggle').dropdown();
+
+        })
+
+    </script> 
+  <script src="/js/prettify?v=PRHqCJ8-T47zruYf_uYvCva0dgPAJcB6BaNrH_cSmAA1"></script> 
+  <script type="text/javascript">
+        
+        window._bd_share_config = {
+            "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "2", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "24" },
+            "share": {}
+        };
+        with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
+        
+
+        $(function () {
+            var h = $('.markdown-body').children(":first");
+            if (h.is("h1") || h.is("h2"))
+                h.remove();
+
+            $('.markdown-body pre').addClass('prettyprint');
+            prettyPrint();
+
+            $(".markdown-body pre").each(function () {
+                var lines = $(this).attr("data-strong-lines");
+                if (lines == undefined || lines == "")
+                    return;
+                var nums = lines.split(' ');
+                if (nums.length > 0)
+                    for (var i = 0; i < nums.length; i++) {
+                        $(this).find("li:nth-child(" + nums[i] + ")").addClass("strong-code-line");
+                    }
+            });
+
+            if ($(window).width() > 992) {
+                var nav = $('#read-nav');
+                var article = $('#article-bottom');
+                var oldTop = nav.position().top;
+                var element = $('#nav-bottom');
+                var top = element.position().top;
+                var pos = element.css("position");
+                var height = top - oldTop - element.height;
+                var w = nav.width();
+                var h = nav.height();
+                $(window).scroll(function () {
+                    var scrolls = $(this).scrollTop();
+                    if (scrolls > top) {
+                        var a = $(window).height() - 80;
+                        var b = article.offset().top - scrolls - 66;
+                        nav.css({
+                            height: a > b ? b : a,
+                            width: w + 15
+                        }).addClass('fixed-read-nav');
+                    } else {
+                        nav.removeClass('fixed-read-nav').css({
+                            height: h,
+                            width: w
+                        });
+                    }
+                });
+            } else {
+                var nav = $('#read-nav'),
+                    toggleNav = $('#toggle-nav'),
+                    icon = $('#toggle-nav-icon'),
+                    overlay = $('.overlay');
+                nav.removeClass('mt40');
+                var w = $(window).width() * 0.8;
+                toggleNav.click(function () {
+                    overlay.show();
+                    nav.animate({ width: w }, 'fast');
+                    setToggleNav(toggleNav, overlay);
+                })
+
+                nav.click(function () {
+                    overlay.hide();
+                    nav.animate({ width: 0 }, 'fast');
+                    setToggleNav(toggleNav, overlay);
+                })
+
+                overlay.click(function () {
+                    overlay.hide();
+                    nav.animate({ width: 0 }, 'fast');
+                    setToggleNav(toggleNav, overlay);
+                })
+
+                $(window).scroll(function () {
+                    setToggleNav(toggleNav, overlay);
+                });
+            }
+
+            function setToggleNav(toggleNav, overlay) {
+                var scrollTop = $(window).scrollTop();
+                if (scrollTop > 120) {
+                    toggleNav.css({ top: 20 });
+                } else {
+                    toggleNav.css({ top: 168 });
+                }
+            }
+
+        });
+    </script>   
+ </body>
+</html>

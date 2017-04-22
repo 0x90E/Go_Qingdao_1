@@ -1,0 +1,391 @@
+<!DOCTYPE html><html><head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+    <title>手机地图查询、公交查询、驾车导航、周边查询_手机图吧网</title>
+    <meta name="keywords" content="手机地图查询、公交查询、驾车导航、周边查询">
+	<meta name="description" content="手机地图查询、公交查询、驾车导航、周边查询,无需安装软件,直接在手机完成所有搜索功能，方便快捷。手机图吧网">
+    <meta name="description" content="图吧地图-触屏版">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+	<script type="text/javascript" async="" src="http://www.google-analytics.com/ga.js"></script><script type="text/javascript">
+		var ua,vs,viewport,addStyle,highB,lowM,enabledHighResolution,outtop,zoomSteps,uc,opera,firefox;(function(){ua=window.navigator.userAgent.toLowerCase();vs=window.navigator.appVersion.toLowerCase();opera=ua.indexOf('opera')>-1||vs.indexOf('opera')>-1;firefox=ua.indexOf('firefox')>-1||vs.indexOf('firefox')>-1;if(!ua){viewport='width=device-width,initial-scale=0.6, user-scalable=no, target-densitydpi=Medium-dpi'}else if(/ucbrowser|mqqbrowser|baidubrowser|firefox/.test(ua)){viewport='width=device-width,initial-scale=0.6, user-scalable=no, target-densitydpi=Medium-dpi'}else{viewport='width=device-width,initial-scale=0.6, user-scalable=no, target-densitydpi=high-dpi'}enabledHighResolution=true;document.write('<meta name="viewport" content="'+viewport+'"/>')})();
+	</script><meta name="viewport" content="width=device-width,initial-scale=0.6, user-scalable=no, target-densitydpi=high-dpi">
+	<style type="text/css">
+        #loadingBox{text-align:center;zoom:.8;}
+        #loadingBox span{position:absolute;top:50%;left:50%;margin:-135px auto auto -160px;}
+        #loadingBox i{position:absolute;left:50%;top:50%;margin:-5px 0 0 -25px;display:inline-block;width:32px;height:32px;border:6px dotted #000;border-color:rgba(102,102,102,.1) rgba(102,102,102,.2) rgba(102,102,102,.3) rgba(153,153,153,.6);border-radius:300px;-webkit-animation:loadforever 2.5s infinite linear;}
+        @-webkit-keyframes loadforever{0%{-webkit-transform:rotate(0deg);}100%{-webkit-transform:rotate(360deg);}}
+		.nav_n{ width:100%; position:absolute; top:0px; z-index:99;}
+		.nav_n ul{ width:100%;height:63px; line-height:60px; background:url(http://r.mapbar.com/unmap/navbg.png) repeat-x; border-radius: 0 0 5px 5px;}
+		.nav_n li{width:33%; border-right:1px solid #78c1f0;text-align:center; float:left;}
+		.nav_n li:nth-last-child(1){ border:none; border-radius: 0 0 5px 0px; }
+		.nav_n li:nth-child(1){border-radius: 0 0 0px 5px;}
+		.nav_n li a{ font-size:1.3rem; color:#fff;}
+		.nav_n li:before{ content:"";  display:inline-block;  margin-top:-5px; margin-right:8px;vertical-align:middle;}
+		.nav_n li:nth-child(1):before{width:33px;  height:33px; background:url(http://r.mapbar.com/unmap/ditu.png);}
+		.nav_n li:nth-child(2):before{width:30px;  height:32px; background:url(http://r.mapbar.com/unmap/gongjiao.png);}
+		.nav_n li:nth-child(3):before{width:33px;  height:35px; background:url(http://r.mapbar.com/unmap/jiudian.png);}
+		.nav_n li.active{ background:#2c6ab5; box-shadow: inset 0px 0px 30px #083b7f;}
+		.top_nav {top: 64px!important;}
+		.aubble {top: 142px!important;}
+    </style>
+    <link rel="stylesheet" type="text/css" href="http://r.mapbar.com/unmap/style2_0_4_2.css">
+    <link rel="stylesheet" name="addStyle" id="addStyle" type="text/css" href="">
+
+	    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="http://r.mapbar.com/unmap/logo_1.png">
+	    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://r.mapbar.com/unmap/logo_2.png">
+	    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://r.mapbar.com/unmap/logo_3.png">
+	    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://r.mapbar.com/unmap/logo_4.png">
+	    <link rel="icon" type="image/png" href="http://r.mapbar.com/unmap/logo_1.png">
+
+	<style type="text/css">@keyframes TILE{0%{opacity:0}100%{opacity:1}}@-webkit-keyframes TILE{0%{opacity:0}100%{opacity:1}}.mapTile{-webkit-animation:TILE 0.2s ease-in-out;animation:TILE 0.2s ease-in-out}#mapBackground .mapTile{-webkit-animation:none;animation:none}</style></head>
+	<body ongesturestart="return;">
+
+		<div id="loadingBox" style="display: none; ">
+  			<span id="loadspan" style="">
+                <img src="http://r.mapbar.com/unmap/load_logo_new.png">
+            </span>
+			<i id="circle"></i>
+		</div>
+		<script>
+			if(outtop){document.getElementById('loadspan').style.top = document.getElementById('circle').style.top = outtop;}
+			document.getElementById('loadspan').style.display = '';
+		</script>
+	    <div id="pageFrame" style="display: block; ">
+
+	        <!-- 内容区 将查询结果、城市选择等内容放在此处 -->
+	        <div id="pfContent" style="width: 0px; top: 0px; left: 0px; ">
+	        	<!-- 详情结果 -->
+	        	<div id="infoDetail" style="display:none;">
+					<header><div class="hd_tit"><a name="back">返回</a><h1>详情</h1></div></header>
+					<address class="poi_add"><ul></ul></address>
+					<ul class="poi_but">
+						<li name="from">从这里出发</li>
+						<li name="arive">到达这里</li>
+						<li name="near">周边搜索</li>
+					</ul>
+					<figure class="poi_fig"></figure>
+					<section class="sect_abot"><strong></strong><p name="content"></p></section>
+				</div>
+
+				<!-- 搜索框-周边搜 -->
+				<div id="aroundBox" style="display: none;">
+					<header>
+						<div class="hd_tit">
+							<a name="back">返回</a>
+							<h1>查周边</h1>
+						</div>
+						<div class="hd_sear_rim">
+                            <div class="loc" id="curFalse">
+                                <span>
+                                    <b>暂时无法获取您的位置</b>
+                                </span>
+                            </div>
+                            <div class="loc" id="curTrue" style="display: none;">在&nbsp;&nbsp;“
+                                <span>
+                                    <b id="curLocal"></b>
+                                </span>”&nbsp;&nbsp;附近
+                            </div>
+                            <div class="sr_sear">
+  								<span class="sr_iput">
+  			    					<input type="text" placeholder="请输入关键字">
+  			    					<span class="sr_ico_close" name="deleteCk" style="display:none;">×</span>
+  								</span>
+                                <span name="query" class="sr_ico_but">查询</span>
+                            </div>
+						</div>
+					</header>
+					<section class="rim__select" id="aroundList"><ul><li><span name="type">美食</span><span name="type">公交站</span><span name="type">地铁站</span><span name="type">ATM</span><span name="type">银行</span></li><li><span name="type">宾馆</span><span name="type">酒吧</span><span name="type">超市</span><span name="type">便利店</span><span name="type">公厕</span></li><li><span name="type">KTV</span><span name="type">邮局</span><span name="type">医院</span><span name="type">公园</span><span name="type">网吧</span></li><li><span name="type">商场</span><span name="type">棋牌</span><span name="type">药店</span><span name="type">加油站</span><span name="type">停车场</span></li></ul></section>
+                    <!-- “查周边”推荐广告 -->
+                    <div class="AD_f" id="zhoubianAd" style="display: none; ">
+                    	<img src="http://r.mapbar.com/unmap/ad_sx.png" alt="查周边" class="ad_img">
+                        <strong>查周边</strong>
+                        <img src="http://r.mapbar.com/unmap/ad_star.png" alt="">
+                        <p>周边生活专家<span>超过<b>45W</b>人安装</span></p>
+                        <span id="zhoubianAdDown"><em>安装试用</em></span>
+                    </div>
+				</div>
+				<!-- 城市列表 -->
+	        	<div id="localCityList" style="display:none">
+					<header><div class="hd_tit"><a name="back">返回</a><h1>城市选择</h1></div></header>
+					<section class="list_section"><div name="list"><dl><dt class="normal" name="proLi">直辖市</dt><ul style="display:none;"><li name="ctLi">北京市</li><li name="ctLi">天津市</li><li name="ctLi">重庆市</li><li name="ctLi">上海市</li></ul></dl><dl><dt class="normal" name="proLi">安徽</dt><ul style="display:none;"><li name="ctLi">合肥市</li><li name="ctLi">芜湖市</li><li name="ctLi">黄山市</li><li name="ctLi">安庆市</li><li name="ctLi">蚌埠市</li><li name="ctLi">亳州市</li><li name="ctLi">巢湖市</li><li name="ctLi">池州市</li><li name="ctLi">滁州市</li><li name="ctLi">阜阳市</li><li name="ctLi">淮北市</li><li name="ctLi">六安市</li><li name="ctLi">马鞍山市</li><li name="ctLi">宿州市</li><li name="ctLi">铜陵市</li><li name="ctLi">宣城市</li><li name="ctLi">淮南市</li></ul></dl><dl><dt class="normal" name="proLi">福建</dt><ul style="display:none;"><li name="ctLi">福州市</li><li name="ctLi">莆田市</li><li name="ctLi">南平市</li><li name="ctLi">厦门市</li><li name="ctLi">泉州市</li><li name="ctLi">漳州市</li><li name="ctLi">三明市</li><li name="ctLi">龙岩市</li><li name="ctLi">宁德市</li></ul></dl><dl><dt class="normal" name="proLi">甘肃</dt><ul style="display:none;"><li name="ctLi">兰州市</li><li name="ctLi">酒泉市</li><li name="ctLi">嘉峪关市</li><li name="ctLi">张掖市</li><li name="ctLi">天水市</li><li name="ctLi">白银市</li><li name="ctLi">定西市</li><li name="ctLi">甘南藏族自治州</li><li name="ctLi">金昌市</li><li name="ctLi">临夏回族自治州</li><li name="ctLi">陇南市</li><li name="ctLi">平凉市</li><li name="ctLi">庆阳市</li><li name="ctLi">武威市</li></ul></dl><dl><dt class="normal" name="proLi">广东</dt><ul style="display:none;"><li name="ctLi">广州市</li><li name="ctLi">清远市</li><li name="ctLi">韶关市</li><li name="ctLi">河源市</li><li name="ctLi">梅州市</li><li name="ctLi">潮州市</li><li name="ctLi">汕头市</li><li name="ctLi">揭阳市</li><li name="ctLi">汕尾市</li><li name="ctLi">惠州市</li><li name="ctLi">东莞市</li><li name="ctLi">深圳市</li><li name="ctLi">珠海市</li><li name="ctLi">中山市</li><li name="ctLi">江门市</li><li name="ctLi">佛山市</li><li name="ctLi">肇庆市</li><li name="ctLi">云浮市</li><li name="ctLi">阳江市</li><li name="ctLi">茂名市</li><li name="ctLi">湛江市</li></ul></dl><dl><dt class="normal" name="proLi">广西</dt><ul style="display:none;"><li name="ctLi">南宁市</li><li name="ctLi">桂林市</li><li name="ctLi">百色市</li><li name="ctLi">玉林市</li><li name="ctLi">钦州市</li><li name="ctLi">北海市</li><li name="ctLi">梧州市</li><li name="ctLi">柳州市</li><li name="ctLi">河池市</li><li name="ctLi">防城港市</li><li name="ctLi">贺州市</li><li name="ctLi">来宾市</li><li name="ctLi">崇左市</li><li name="ctLi">贵港市</li></ul></dl><dl><dt class="normal" name="proLi">贵州</dt><ul style="display:none;"><li name="ctLi">贵阳市</li><li name="ctLi">六盘水市</li><li name="ctLi">遵义市</li><li name="ctLi">安顺市</li><li name="ctLi">毕节地区</li><li name="ctLi">黔东南苗族侗族自治州</li><li name="ctLi">黔南布依族苗族自治州</li><li name="ctLi">黔西南布依族苗族自治州</li><li name="ctLi">铜仁地区</li></ul></dl><dl><dt class="normal" name="proLi">海南</dt><ul style="display:none;"><li name="ctLi">海口市</li><li name="ctLi">三亚市</li><li name="ctLi">琼海市</li><li name="ctLi">白沙黎族自治县</li><li name="ctLi">保亭黎族苗族自治县</li><li name="ctLi">昌江黎族自治县</li><li name="ctLi">澄迈县</li><li name="ctLi">儋州市</li><li name="ctLi">定安县</li><li name="ctLi">东方市</li><li name="ctLi">乐东黎族自治县</li><li name="ctLi">临高县</li><li name="ctLi">陵水黎族自治县</li><li name="ctLi">琼中黎族苗族自治县</li><li name="ctLi">屯昌县</li><li name="ctLi">万宁市</li><li name="ctLi">文昌市</li><li name="ctLi">五指山市</li><li name="ctLi">西沙群岛</li><li name="ctLi">中沙群岛的岛礁及其海域</li><li name="ctLi">南沙群岛</li></ul></dl><dl><dt class="normal" name="proLi">河北</dt><ul style="display:none;"><li name="ctLi">石家庄市</li><li name="ctLi">张家口市</li><li name="ctLi">承德市</li><li name="ctLi">秦皇岛市</li><li name="ctLi">唐山市</li><li name="ctLi">廊坊市</li><li name="ctLi">保定市</li><li name="ctLi">沧州市</li><li name="ctLi">衡水市</li><li name="ctLi">邢台市</li><li name="ctLi">邯郸市</li></ul></dl><dl><dt class="normal" name="proLi">河南</dt><ul style="display:none;"><li name="ctLi">郑州市</li><li name="ctLi">三门峡市</li><li name="ctLi">洛阳市</li><li name="ctLi">焦作市</li><li name="ctLi">新乡市</li><li name="ctLi">鹤壁市</li><li name="ctLi">安阳市</li><li name="ctLi">濮阳市</li><li name="ctLi">开封市</li><li name="ctLi">商丘市</li><li name="ctLi">许昌市</li><li name="ctLi">漯河市</li><li name="ctLi">平顶山市</li><li name="ctLi">南阳市</li><li name="ctLi">信阳市</li><li name="ctLi">周口市</li><li name="ctLi">驻马店市</li><li name="ctLi">济源市</li></ul></dl><dl><dt class="normal" name="proLi">黑龙江</dt><ul style="display:none;"><li name="ctLi">哈尔滨市</li><li name="ctLi">齐齐哈尔市</li><li name="ctLi">黑河市</li><li name="ctLi">大庆市</li><li name="ctLi">鹤岗市</li><li name="ctLi">佳木斯市</li><li name="ctLi">牡丹江市</li><li name="ctLi">大兴安岭地区</li><li name="ctLi">伊春市</li><li name="ctLi">双鸭山市</li><li name="ctLi">鸡西市</li><li name="ctLi">七台河市</li><li name="ctLi">绥化市</li></ul></dl><dl><dt class="normal" name="proLi">湖北</dt><ul style="display:none;"><li name="ctLi">武汉市</li><li name="ctLi">十堰市</li><li name="ctLi">襄阳市</li><li name="ctLi">荆门市</li><li name="ctLi">孝感市</li><li name="ctLi">黄石市</li><li name="ctLi">咸宁市</li><li name="ctLi">荆州市</li><li name="ctLi">宜昌市</li><li name="ctLi">随州市</li><li name="ctLi">鄂州市</li><li name="ctLi">黄冈市</li><li name="ctLi">恩施土家族苗族自治州</li><li name="ctLi">仙桃市</li><li name="ctLi">天门市</li><li name="ctLi">神农架林区</li><li name="ctLi">潜江市</li></ul></dl><dl><dt class="normal" name="proLi">湖南</dt><ul style="display:none;"><li name="ctLi">长沙市</li><li name="ctLi">张家界市</li><li name="ctLi">常德市</li><li name="ctLi">益阳市</li><li name="ctLi">岳阳市</li><li name="ctLi">株洲市</li><li name="ctLi">湘潭市</li><li name="ctLi">衡阳市</li><li name="ctLi">郴州市</li><li name="ctLi">永州市</li><li name="ctLi">邵阳市</li><li name="ctLi">怀化市</li><li name="ctLi">娄底市</li><li name="ctLi">湘西土家族苗族自治州</li></ul></dl><dl><dt class="normal" name="proLi">吉林</dt><ul style="display:none;"><li name="ctLi">延边朝鲜族自治州</li><li name="ctLi">长春市</li><li name="ctLi">白城市</li><li name="ctLi">松原市</li><li name="ctLi">吉林市</li><li name="ctLi">四平市</li><li name="ctLi">辽源市</li><li name="ctLi">通化市</li><li name="ctLi">白山市</li></ul></dl><dl><dt class="normal" name="proLi">江苏</dt><ul style="display:none;"><li name="ctLi">南京市</li><li name="ctLi">徐州市</li><li name="ctLi">连云港市</li><li name="ctLi">盐城市</li><li name="ctLi">泰州市</li><li name="ctLi">镇江市</li><li name="ctLi">南通市</li><li name="ctLi">常州市</li><li name="ctLi">无锡市</li><li name="ctLi">苏州市</li><li name="ctLi">淮安市</li><li name="ctLi">宿迁市</li><li name="ctLi">扬州市</li></ul></dl><dl><dt class="normal" name="proLi">江西</dt><ul style="display:none;"><li name="ctLi">南昌市</li><li name="ctLi">九江市</li><li name="ctLi">景德镇市</li><li name="ctLi">上饶市</li><li name="ctLi">鹰潭市</li><li name="ctLi">宜春市</li><li name="ctLi">萍乡市</li><li name="ctLi">赣州市</li><li name="ctLi">吉安市</li><li name="ctLi">抚州市</li><li name="ctLi">新余市</li></ul></dl><dl><dt class="normal" name="proLi">辽宁</dt><ul style="display:none;"><li name="ctLi">沈阳市</li><li name="ctLi">朝阳市</li><li name="ctLi">阜新市</li><li name="ctLi">铁岭市</li><li name="ctLi">抚顺市</li><li name="ctLi">本溪市</li><li name="ctLi">辽阳市</li><li name="ctLi">鞍山市</li><li name="ctLi">丹东市</li><li name="ctLi">大连市</li><li name="ctLi">营口市</li><li name="ctLi">盘锦市</li><li name="ctLi">锦州市</li><li name="ctLi">葫芦岛市</li></ul></dl><dl><dt class="normal" name="proLi">内蒙古</dt><ul style="display:none;"><li name="ctLi">呼和浩特市</li><li name="ctLi">包头市</li><li name="ctLi">乌海市</li><li name="ctLi">赤峰市</li><li name="ctLi">通辽市</li><li name="ctLi">呼伦贝尔市</li><li name="ctLi">兴安盟</li><li name="ctLi">鄂尔多斯市</li><li name="ctLi">锡林郭勒盟</li><li name="ctLi">阿拉善盟</li><li name="ctLi">巴彦淖尔市</li><li name="ctLi">乌兰察布市</li></ul></dl><dl><dt class="normal" name="proLi">宁夏</dt><ul style="display:none;"><li name="ctLi">银川市</li><li name="ctLi">石嘴山市</li><li name="ctLi">固原市</li><li name="ctLi">中卫市</li><li name="ctLi">吴忠市</li></ul></dl><dl><dt class="normal" name="proLi">青海</dt><ul style="display:none;"><li name="ctLi">西宁市</li><li name="ctLi">果洛藏族自治州</li><li name="ctLi">海北藏族自治州</li><li name="ctLi">海东地区</li><li name="ctLi">海南藏族自治州</li><li name="ctLi">海西蒙古族藏族自治州</li><li name="ctLi">黄南藏族自治州</li><li name="ctLi">玉树藏族自治州</li></ul></dl><dl><dt class="normal" name="proLi">山东</dt><ul style="display:none;"><li name="ctLi">济南市</li><li name="ctLi">聊城市</li><li name="ctLi">烟台市</li><li name="ctLi">威海市</li><li name="ctLi">青岛市</li><li name="ctLi">泰安市</li><li name="ctLi">莱芜市</li><li name="ctLi">济宁市</li><li name="ctLi">菏泽市</li><li name="ctLi">临沂市</li><li name="ctLi">德州市</li><li name="ctLi">淄博市</li><li name="ctLi">潍坊市</li><li name="ctLi">日照市</li><li name="ctLi">东营市</li><li name="ctLi">滨州市</li><li name="ctLi">枣庄市</li></ul></dl><dl><dt class="normal" name="proLi">山西</dt><ul style="display:none;"><li name="ctLi">太原市</li><li name="ctLi">大同市</li><li name="ctLi">朔州市</li><li name="ctLi">阳泉市</li><li name="ctLi">长治市</li><li name="ctLi">晋城市</li><li name="ctLi">忻州市</li><li name="ctLi">晋中市</li><li name="ctLi">临汾市</li><li name="ctLi">运城市</li><li name="ctLi">吕梁市</li></ul></dl><dl><dt class="normal" name="proLi">陕西</dt><ul style="display:none;"><li name="ctLi">西安市</li><li name="ctLi">咸阳市</li><li name="ctLi">渭南市</li><li name="ctLi">延安市</li><li name="ctLi">宝鸡市</li><li name="ctLi">汉中市</li><li name="ctLi">铜川市</li><li name="ctLi">榆林市</li><li name="ctLi">商洛市</li><li name="ctLi">安康市</li></ul></dl><dl><dt class="normal" name="proLi">四川</dt><ul style="display:none;"><li name="ctLi">成都市</li><li name="ctLi">广元市</li><li name="ctLi">绵阳市</li><li name="ctLi">德阳市</li><li name="ctLi">南充市</li><li name="ctLi">广安市</li><li name="ctLi">遂宁市</li><li name="ctLi">内江市</li><li name="ctLi">乐山市</li><li name="ctLi">自贡市</li><li name="ctLi">泸州市</li><li name="ctLi">宜宾市</li><li name="ctLi">攀枝花市</li><li name="ctLi">巴中市</li><li name="ctLi">达州市</li><li name="ctLi">资阳市</li><li name="ctLi">眉山市</li><li name="ctLi">雅安市</li><li name="ctLi">甘孜藏族自治州</li><li name="ctLi">凉山彝族自治州</li><li name="ctLi">阿坝藏族羌族自治州</li></ul></dl><dl><dt class="normal" name="proLi">西藏</dt><ul style="display:none;"><li name="ctLi">拉萨市</li><li name="ctLi">阿里地区</li><li name="ctLi">昌都地区</li><li name="ctLi">林芝地区</li><li name="ctLi">日喀则地区</li><li name="ctLi">山南地区</li><li name="ctLi">那曲地区</li></ul></dl><dl><dt class="normal" name="proLi">新疆</dt><ul style="display:none;"><li name="ctLi">乌鲁木齐市</li><li name="ctLi">昌吉回族自治州</li><li name="ctLi">克拉玛依市</li><li name="ctLi">吐鲁番地区</li><li name="ctLi">哈密地区</li><li name="ctLi">石河子市</li><li name="ctLi">伊犁哈萨克自治州</li><li name="ctLi">巴音郭楞蒙古自治州</li><li name="ctLi">和田地区</li><li name="ctLi">阿勒泰地区</li><li name="ctLi">塔城地区</li><li name="ctLi">阿克苏地区</li><li name="ctLi">博尔塔拉蒙古自治州</li><li name="ctLi">克孜勒苏柯尔克孜自治州</li><li name="ctLi">喀什地区</li><li name="ctLi">图木舒克市</li><li name="ctLi">阿拉尔市</li><li name="ctLi">五家渠市</li></ul></dl><dl><dt class="normal" name="proLi">云南</dt><ul style="display:none;"><li name="ctLi">昆明市</li><li name="ctLi">曲靖市</li><li name="ctLi">玉溪市</li><li name="ctLi">丽江市</li><li name="ctLi">普洱市</li><li name="ctLi">临沧市</li><li name="ctLi">德宏傣族景颇族自治州</li><li name="ctLi">怒江傈僳族自治州</li><li name="ctLi">迪庆藏族自治州</li><li name="ctLi">楚雄彝族自治州</li><li name="ctLi">昭通市</li><li name="ctLi">大理白族自治州</li><li name="ctLi">红河哈尼族彝族自治州</li><li name="ctLi">保山市</li><li name="ctLi">文山壮族苗族自治州</li><li name="ctLi">西双版纳傣族自治州</li></ul></dl><dl><dt class="normal" name="proLi">浙江</dt><ul style="display:none;"><li name="ctLi">杭州市</li><li name="ctLi">绍兴市</li><li name="ctLi">宁波市</li><li name="ctLi">湖州市</li><li name="ctLi">嘉兴市</li><li name="ctLi">金华市</li><li name="ctLi">丽水市</li><li name="ctLi">温州市</li><li name="ctLi">台州市</li><li name="ctLi">舟山市</li><li name="ctLi">衢州市</li></ul></dl><dl><dt class="normal" name="proLi">特别行政区</dt><ul style="display:none;"><li name="ctLi">香港特别行政区</li><li name="ctLi">澳门特别行政区</li></ul></dl></div></section>
+				</div>
+				<div id="routeCityList" style="display:none">
+					<header><div class="hd_tit"><a name="back">返回</a><h1>城市选择</h1></div></header>
+					<section class="list_section"><div name="list"><dl><dt class="normal" name="proLi">直辖市</dt><ul style="display:none;"><li name="ctLi">北京市</li><li name="ctLi">天津市</li><li name="ctLi">重庆市</li><li name="ctLi">上海市</li></ul></dl><dl><dt class="normal" name="proLi">安徽</dt><ul style="display:none;"><li name="ctLi">合肥市</li><li name="ctLi">芜湖市</li><li name="ctLi">黄山市</li><li name="ctLi">安庆市</li><li name="ctLi">蚌埠市</li><li name="ctLi">亳州市</li><li name="ctLi">巢湖市</li><li name="ctLi">池州市</li><li name="ctLi">滁州市</li><li name="ctLi">阜阳市</li><li name="ctLi">淮北市</li><li name="ctLi">六安市</li><li name="ctLi">马鞍山市</li><li name="ctLi">宿州市</li><li name="ctLi">铜陵市</li><li name="ctLi">宣城市</li><li name="ctLi">淮南市</li></ul></dl><dl><dt class="normal" name="proLi">福建</dt><ul style="display:none;"><li name="ctLi">福州市</li><li name="ctLi">莆田市</li><li name="ctLi">南平市</li><li name="ctLi">厦门市</li><li name="ctLi">泉州市</li><li name="ctLi">漳州市</li><li name="ctLi">三明市</li><li name="ctLi">龙岩市</li><li name="ctLi">宁德市</li></ul></dl><dl><dt class="normal" name="proLi">甘肃</dt><ul style="display:none;"><li name="ctLi">兰州市</li><li name="ctLi">酒泉市</li><li name="ctLi">嘉峪关市</li><li name="ctLi">张掖市</li><li name="ctLi">天水市</li><li name="ctLi">白银市</li><li name="ctLi">定西市</li><li name="ctLi">甘南藏族自治州</li><li name="ctLi">金昌市</li><li name="ctLi">临夏回族自治州</li><li name="ctLi">陇南市</li><li name="ctLi">平凉市</li><li name="ctLi">庆阳市</li><li name="ctLi">武威市</li></ul></dl><dl><dt class="normal" name="proLi">广东</dt><ul style="display:none;"><li name="ctLi">广州市</li><li name="ctLi">清远市</li><li name="ctLi">韶关市</li><li name="ctLi">河源市</li><li name="ctLi">梅州市</li><li name="ctLi">潮州市</li><li name="ctLi">汕头市</li><li name="ctLi">揭阳市</li><li name="ctLi">汕尾市</li><li name="ctLi">惠州市</li><li name="ctLi">东莞市</li><li name="ctLi">深圳市</li><li name="ctLi">珠海市</li><li name="ctLi">中山市</li><li name="ctLi">江门市</li><li name="ctLi">佛山市</li><li name="ctLi">肇庆市</li><li name="ctLi">云浮市</li><li name="ctLi">阳江市</li><li name="ctLi">茂名市</li><li name="ctLi">湛江市</li></ul></dl><dl><dt class="normal" name="proLi">广西</dt><ul style="display:none;"><li name="ctLi">南宁市</li><li name="ctLi">桂林市</li><li name="ctLi">百色市</li><li name="ctLi">玉林市</li><li name="ctLi">钦州市</li><li name="ctLi">北海市</li><li name="ctLi">梧州市</li><li name="ctLi">柳州市</li><li name="ctLi">河池市</li><li name="ctLi">防城港市</li><li name="ctLi">贺州市</li><li name="ctLi">来宾市</li><li name="ctLi">崇左市</li><li name="ctLi">贵港市</li></ul></dl><dl><dt class="normal" name="proLi">贵州</dt><ul style="display:none;"><li name="ctLi">贵阳市</li><li name="ctLi">六盘水市</li><li name="ctLi">遵义市</li><li name="ctLi">安顺市</li><li name="ctLi">毕节地区</li><li name="ctLi">黔东南苗族侗族自治州</li><li name="ctLi">黔南布依族苗族自治州</li><li name="ctLi">黔西南布依族苗族自治州</li><li name="ctLi">铜仁地区</li></ul></dl><dl><dt class="normal" name="proLi">海南</dt><ul style="display:none;"><li name="ctLi">海口市</li><li name="ctLi">三亚市</li><li name="ctLi">琼海市</li><li name="ctLi">白沙黎族自治县</li><li name="ctLi">保亭黎族苗族自治县</li><li name="ctLi">昌江黎族自治县</li><li name="ctLi">澄迈县</li><li name="ctLi">儋州市</li><li name="ctLi">定安县</li><li name="ctLi">东方市</li><li name="ctLi">乐东黎族自治县</li><li name="ctLi">临高县</li><li name="ctLi">陵水黎族自治县</li><li name="ctLi">琼中黎族苗族自治县</li><li name="ctLi">屯昌县</li><li name="ctLi">万宁市</li><li name="ctLi">文昌市</li><li name="ctLi">五指山市</li><li name="ctLi">西沙群岛</li><li name="ctLi">中沙群岛的岛礁及其海域</li><li name="ctLi">南沙群岛</li></ul></dl><dl><dt class="normal" name="proLi">河北</dt><ul style="display:none;"><li name="ctLi">石家庄市</li><li name="ctLi">张家口市</li><li name="ctLi">承德市</li><li name="ctLi">秦皇岛市</li><li name="ctLi">唐山市</li><li name="ctLi">廊坊市</li><li name="ctLi">保定市</li><li name="ctLi">沧州市</li><li name="ctLi">衡水市</li><li name="ctLi">邢台市</li><li name="ctLi">邯郸市</li></ul></dl><dl><dt class="normal" name="proLi">河南</dt><ul style="display:none;"><li name="ctLi">郑州市</li><li name="ctLi">三门峡市</li><li name="ctLi">洛阳市</li><li name="ctLi">焦作市</li><li name="ctLi">新乡市</li><li name="ctLi">鹤壁市</li><li name="ctLi">安阳市</li><li name="ctLi">濮阳市</li><li name="ctLi">开封市</li><li name="ctLi">商丘市</li><li name="ctLi">许昌市</li><li name="ctLi">漯河市</li><li name="ctLi">平顶山市</li><li name="ctLi">南阳市</li><li name="ctLi">信阳市</li><li name="ctLi">周口市</li><li name="ctLi">驻马店市</li><li name="ctLi">济源市</li></ul></dl><dl><dt class="normal" name="proLi">黑龙江</dt><ul style="display:none;"><li name="ctLi">哈尔滨市</li><li name="ctLi">齐齐哈尔市</li><li name="ctLi">黑河市</li><li name="ctLi">大庆市</li><li name="ctLi">鹤岗市</li><li name="ctLi">佳木斯市</li><li name="ctLi">牡丹江市</li><li name="ctLi">大兴安岭地区</li><li name="ctLi">伊春市</li><li name="ctLi">双鸭山市</li><li name="ctLi">鸡西市</li><li name="ctLi">七台河市</li><li name="ctLi">绥化市</li></ul></dl><dl><dt class="normal" name="proLi">湖北</dt><ul style="display:none;"><li name="ctLi">武汉市</li><li name="ctLi">十堰市</li><li name="ctLi">襄阳市</li><li name="ctLi">荆门市</li><li name="ctLi">孝感市</li><li name="ctLi">黄石市</li><li name="ctLi">咸宁市</li><li name="ctLi">荆州市</li><li name="ctLi">宜昌市</li><li name="ctLi">随州市</li><li name="ctLi">鄂州市</li><li name="ctLi">黄冈市</li><li name="ctLi">恩施土家族苗族自治州</li><li name="ctLi">仙桃市</li><li name="ctLi">天门市</li><li name="ctLi">神农架林区</li><li name="ctLi">潜江市</li></ul></dl><dl><dt class="normal" name="proLi">湖南</dt><ul style="display:none;"><li name="ctLi">长沙市</li><li name="ctLi">张家界市</li><li name="ctLi">常德市</li><li name="ctLi">益阳市</li><li name="ctLi">岳阳市</li><li name="ctLi">株洲市</li><li name="ctLi">湘潭市</li><li name="ctLi">衡阳市</li><li name="ctLi">郴州市</li><li name="ctLi">永州市</li><li name="ctLi">邵阳市</li><li name="ctLi">怀化市</li><li name="ctLi">娄底市</li><li name="ctLi">湘西土家族苗族自治州</li></ul></dl><dl><dt class="normal" name="proLi">吉林</dt><ul style="display:none;"><li name="ctLi">延边朝鲜族自治州</li><li name="ctLi">长春市</li><li name="ctLi">白城市</li><li name="ctLi">松原市</li><li name="ctLi">吉林市</li><li name="ctLi">四平市</li><li name="ctLi">辽源市</li><li name="ctLi">通化市</li><li name="ctLi">白山市</li></ul></dl><dl><dt class="normal" name="proLi">江苏</dt><ul style="display:none;"><li name="ctLi">南京市</li><li name="ctLi">徐州市</li><li name="ctLi">连云港市</li><li name="ctLi">盐城市</li><li name="ctLi">泰州市</li><li name="ctLi">镇江市</li><li name="ctLi">南通市</li><li name="ctLi">常州市</li><li name="ctLi">无锡市</li><li name="ctLi">苏州市</li><li name="ctLi">淮安市</li><li name="ctLi">宿迁市</li><li name="ctLi">扬州市</li></ul></dl><dl><dt class="normal" name="proLi">江西</dt><ul style="display:none;"><li name="ctLi">南昌市</li><li name="ctLi">九江市</li><li name="ctLi">景德镇市</li><li name="ctLi">上饶市</li><li name="ctLi">鹰潭市</li><li name="ctLi">宜春市</li><li name="ctLi">萍乡市</li><li name="ctLi">赣州市</li><li name="ctLi">吉安市</li><li name="ctLi">抚州市</li><li name="ctLi">新余市</li></ul></dl><dl><dt class="normal" name="proLi">辽宁</dt><ul style="display:none;"><li name="ctLi">沈阳市</li><li name="ctLi">朝阳市</li><li name="ctLi">阜新市</li><li name="ctLi">铁岭市</li><li name="ctLi">抚顺市</li><li name="ctLi">本溪市</li><li name="ctLi">辽阳市</li><li name="ctLi">鞍山市</li><li name="ctLi">丹东市</li><li name="ctLi">大连市</li><li name="ctLi">营口市</li><li name="ctLi">盘锦市</li><li name="ctLi">锦州市</li><li name="ctLi">葫芦岛市</li></ul></dl><dl><dt class="normal" name="proLi">内蒙古</dt><ul style="display:none;"><li name="ctLi">呼和浩特市</li><li name="ctLi">包头市</li><li name="ctLi">乌海市</li><li name="ctLi">赤峰市</li><li name="ctLi">通辽市</li><li name="ctLi">呼伦贝尔市</li><li name="ctLi">兴安盟</li><li name="ctLi">鄂尔多斯市</li><li name="ctLi">锡林郭勒盟</li><li name="ctLi">阿拉善盟</li><li name="ctLi">巴彦淖尔市</li><li name="ctLi">乌兰察布市</li></ul></dl><dl><dt class="normal" name="proLi">宁夏</dt><ul style="display:none;"><li name="ctLi">银川市</li><li name="ctLi">石嘴山市</li><li name="ctLi">固原市</li><li name="ctLi">中卫市</li><li name="ctLi">吴忠市</li></ul></dl><dl><dt class="normal" name="proLi">青海</dt><ul style="display:none;"><li name="ctLi">西宁市</li><li name="ctLi">果洛藏族自治州</li><li name="ctLi">海北藏族自治州</li><li name="ctLi">海东地区</li><li name="ctLi">海南藏族自治州</li><li name="ctLi">海西蒙古族藏族自治州</li><li name="ctLi">黄南藏族自治州</li><li name="ctLi">玉树藏族自治州</li></ul></dl><dl><dt class="normal" name="proLi">山东</dt><ul style="display:none;"><li name="ctLi">济南市</li><li name="ctLi">聊城市</li><li name="ctLi">烟台市</li><li name="ctLi">威海市</li><li name="ctLi">青岛市</li><li name="ctLi">泰安市</li><li name="ctLi">莱芜市</li><li name="ctLi">济宁市</li><li name="ctLi">菏泽市</li><li name="ctLi">临沂市</li><li name="ctLi">德州市</li><li name="ctLi">淄博市</li><li name="ctLi">潍坊市</li><li name="ctLi">日照市</li><li name="ctLi">东营市</li><li name="ctLi">滨州市</li><li name="ctLi">枣庄市</li></ul></dl><dl><dt class="normal" name="proLi">山西</dt><ul style="display:none;"><li name="ctLi">太原市</li><li name="ctLi">大同市</li><li name="ctLi">朔州市</li><li name="ctLi">阳泉市</li><li name="ctLi">长治市</li><li name="ctLi">晋城市</li><li name="ctLi">忻州市</li><li name="ctLi">晋中市</li><li name="ctLi">临汾市</li><li name="ctLi">运城市</li><li name="ctLi">吕梁市</li></ul></dl><dl><dt class="normal" name="proLi">陕西</dt><ul style="display:none;"><li name="ctLi">西安市</li><li name="ctLi">咸阳市</li><li name="ctLi">渭南市</li><li name="ctLi">延安市</li><li name="ctLi">宝鸡市</li><li name="ctLi">汉中市</li><li name="ctLi">铜川市</li><li name="ctLi">榆林市</li><li name="ctLi">商洛市</li><li name="ctLi">安康市</li></ul></dl><dl><dt class="normal" name="proLi">四川</dt><ul style="display:none;"><li name="ctLi">成都市</li><li name="ctLi">广元市</li><li name="ctLi">绵阳市</li><li name="ctLi">德阳市</li><li name="ctLi">南充市</li><li name="ctLi">广安市</li><li name="ctLi">遂宁市</li><li name="ctLi">内江市</li><li name="ctLi">乐山市</li><li name="ctLi">自贡市</li><li name="ctLi">泸州市</li><li name="ctLi">宜宾市</li><li name="ctLi">攀枝花市</li><li name="ctLi">巴中市</li><li name="ctLi">达州市</li><li name="ctLi">资阳市</li><li name="ctLi">眉山市</li><li name="ctLi">雅安市</li><li name="ctLi">甘孜藏族自治州</li><li name="ctLi">凉山彝族自治州</li><li name="ctLi">阿坝藏族羌族自治州</li></ul></dl><dl><dt class="normal" name="proLi">西藏</dt><ul style="display:none;"><li name="ctLi">拉萨市</li><li name="ctLi">阿里地区</li><li name="ctLi">昌都地区</li><li name="ctLi">林芝地区</li><li name="ctLi">日喀则地区</li><li name="ctLi">山南地区</li><li name="ctLi">那曲地区</li></ul></dl><dl><dt class="normal" name="proLi">新疆</dt><ul style="display:none;"><li name="ctLi">乌鲁木齐市</li><li name="ctLi">昌吉回族自治州</li><li name="ctLi">克拉玛依市</li><li name="ctLi">吐鲁番地区</li><li name="ctLi">哈密地区</li><li name="ctLi">石河子市</li><li name="ctLi">伊犁哈萨克自治州</li><li name="ctLi">巴音郭楞蒙古自治州</li><li name="ctLi">和田地区</li><li name="ctLi">阿勒泰地区</li><li name="ctLi">塔城地区</li><li name="ctLi">阿克苏地区</li><li name="ctLi">博尔塔拉蒙古自治州</li><li name="ctLi">克孜勒苏柯尔克孜自治州</li><li name="ctLi">喀什地区</li><li name="ctLi">图木舒克市</li><li name="ctLi">阿拉尔市</li><li name="ctLi">五家渠市</li></ul></dl><dl><dt class="normal" name="proLi">云南</dt><ul style="display:none;"><li name="ctLi">昆明市</li><li name="ctLi">曲靖市</li><li name="ctLi">玉溪市</li><li name="ctLi">丽江市</li><li name="ctLi">普洱市</li><li name="ctLi">临沧市</li><li name="ctLi">德宏傣族景颇族自治州</li><li name="ctLi">怒江傈僳族自治州</li><li name="ctLi">迪庆藏族自治州</li><li name="ctLi">楚雄彝族自治州</li><li name="ctLi">昭通市</li><li name="ctLi">大理白族自治州</li><li name="ctLi">红河哈尼族彝族自治州</li><li name="ctLi">保山市</li><li name="ctLi">文山壮族苗族自治州</li><li name="ctLi">西双版纳傣族自治州</li></ul></dl><dl><dt class="normal" name="proLi">浙江</dt><ul style="display:none;"><li name="ctLi">杭州市</li><li name="ctLi">绍兴市</li><li name="ctLi">宁波市</li><li name="ctLi">湖州市</li><li name="ctLi">嘉兴市</li><li name="ctLi">金华市</li><li name="ctLi">丽水市</li><li name="ctLi">温州市</li><li name="ctLi">台州市</li><li name="ctLi">舟山市</li><li name="ctLi">衢州市</li></ul></dl><dl><dt class="normal" name="proLi">特别行政区</dt><ul style="display:none;"><li name="ctLi">香港特别行政区</li><li name="ctLi">澳门特别行政区</li></ul></dl></div></section>
+				</div>
+
+				<!-- 本地搜结果 -->
+	        	<div id="localResult" style="display:none">
+	 				<header><div class="hd_tit"><a name="back">返回</a><h1 name="title">搜索结果</h1></div></header>
+					<section class="result_list" name="list"></section>
+					<footer class="res_footer" name="footer">
+					    <span name="prePage" class="on_but current">上一页</span>
+					    <span name="nexPage" class="next_but current">下一页</span>
+					</footer>
+		   		</div>
+		   		<!-- 线路查询结果（包括公交和驾车） -->
+		   		<div id="routeResult" style="display:none">
+					<header>
+						<div class="hd_tit">
+                            <a name="back" id="subBack" ontouchend="endTouch(this)" ontouchstart="startTouch(this)">返回</a>
+                            <a id="lineScm" ontouchend="endTouch(this)" ontouchstart="startTouch(this)">线路方案</a>
+                            <h1><b name="start"></b><b> &nbsp;-&nbsp; </b><b name="end"></b></h1>
+                            <a name="map" class="r_a" id="subMap">地图</a>
+                        </div>
+					</header>
+
+				    <!-- 公交查询结果 -->
+					<section id="busResult" style="display:none;">
+					   <nav class="sub_nav" id="methodBoxB"><ul>
+					          <li name="method" data="subway" class="cur">最快捷</li>
+					          <li name="method" data="nonstop">少换乘</li>
+					          <li name="method" data="shortWalk">少步行</li>
+					   </ul></nav>
+					   <ul id="preList" class="sear_FA_Result"></ul>
+					   <ul id="subList" class="sear_FA_Result"></ul>
+                    </section>
+
+
+
+					<!-- 驾车查询结果 -->
+					<section id="navResult" style="display:none;">
+						<div>
+					    	<nav class="sub_nav" id="methodBoxT" style="display:none;"><ul>
+					        	<li name="method" class="cur" data="0">最快</li>
+					        	<li name="method" data="1">最短</li>
+					        	<li name="method" data="5">最经济</li>
+						   	</ul></nav>
+					       	<div class="carResCon" name="list">
+					       		<div class="lookmap" name="title"></div>
+					       		<ul name="content" class="resuleIco"></ul>
+					       	</div>
+					   </div>
+					</section>
+
+					<!-- 没有合适的查询结果时，进行提示 -->
+					<div id="noResult" style="display:none; margin-top:2em;"></div>
+				</div>
+
+				<!-- 起终点选择列表 -->
+				<div id="select_" class="F_T" style="display:none;">
+                    <header class="hd_tit">
+                        <a name="back">返回</a>
+                        <h1>选准确的起终点</h1>
+                    </header>
+					<div class="f_t_box">
+                        <div class="f_t_h">
+                            <span>起：</span>
+                            <strong name="sName"></strong>
+                            <a class="btn" name="reSelectS">重选</a>
+                        </div>
+						<ul class="pl_list_c" id="select_S" style="display: none;"></ul>
+					</div>
+					<div class="f_t_box">
+                        <div class="f_t_h">
+                            <span>终：</span>
+                            <strong name="eName"></strong>
+                            <a class="btn" name="reSelectE">重选</a>
+                        </div>
+						<ul class="pl_list_c" id="select_E" style="display: none;"></ul>
+					</div>
+				</div>
+	        </div>
+	        <!-- 地图区 地图放置在此处 -->
+			<div id="pfMap">
+
+				<div id="map" style="position: relative; overflow: hidden; padding: 0px; background-color: rgb(238, 238, 238); "><div id="mapContainer" style="position: absolute; top: 0px; left: 0px; padding: 0px; margin: 0px; width: 0px; height: 0px; z-index: 2; "><div id="mapBackground" style="position: absolute; top: 0px; left: 0px; padding: 0px; margin: 0px; width: 0px; height: 0px; z-index: 0; "></div><div style="position: absolute; padding: 0px; margin: 0px; z-index: 1; width: 0px; height: 0px; -webkit-transform: scale(1); "><img style="position: absolute; border: none; margin: 0px; padding: 0px; width: 300px; height: 300px; top: -63px; left: -240px; opacity: 0; " src="http://img0.mapbar.com/maplite/mapbank/stdmobile_h/6/11_4/12_19.png" class="mapTile"></div><div id="layersContainer" style="position: absolute; top: 0px; left: 0px; padding: 0px; margin: 0px; width: 0px; height: 0px; z-index: 3; "></div><div id="canvasContainer" width="0" height="0" style="position: absolute; top: 0px; left: 0px; padding: 0px; margin: 0px; width: 0px; height: 0px; z-index: 4; "><svg version="1.1" overflow="visible" viewBox="0 0 0 0" height="0" width="0" style="position: absolute; top: 0px; left: 0px; "></svg></div><div id="shadowContainer" style="position: absolute; top: 0px; left: 0px; padding: 0px; margin: 0px; width: 0px; height: 0px; z-index: 5; "></div><div id="markerContainer" style="position: absolute; top: 0px; left: 0px; padding: 0px; margin: 0px; width: 0px; height: 0px; z-index: 6; "></div><div id="handleContainer" style="position: absolute; top: 0px; left: 0px; padding: 0px; margin: 0px; width: 0px; height: 0px; z-index: 7; "></div><div id="iwContainer" style="position: absolute; top: 0px; left: 0px; padding: 0px; margin: 0px; width: 0px; height: 0px; z-index: 8; "></div></div><div id="panelContainer" style="position: absolute; top: 0px; left: 0px; padding: 0px; margin: 0px; width: 0px; height: 0px; z-index: 10; "><div id="pinPanelContainer" style="position: absolute; top: 0px; left: 0px; padding: 0px; margin: 0px; width: 0px; height: 0px; z-index: 0; "></div><div id="floatPanelContainer" style="position: absolute; top: 0px; left: 0px; padding: 0px; margin: 0px; width: 0px; height: 0px; z-index: 1; "><div style="z-index: 1; position: absolute; margin: 0px; padding: 0px; top: 0px; left: 0px; "><span style="font-size:14px;text-shadow:1px 1px 1px #fff;white-space:nowrap;overflow:hidden;">©&nbsp;2014&nbsp;Mapbar&nbsp;-&nbsp;GS(2013)6018号</span></div></div></div></div>
+				<div id="bottomline" style="width:100%;height:0px;"></div>
+				<div id="topline" style="width:100%;height:4px;position: absolute;top:4px;"></div>
+
+				<!-- 地图工具 -->
+				<div class="layerTool" id="WMapBtn" style="display:block;">
+                	<span id="flRefresh" name="flRefresh" class="LcRefresh" style="display:none;">刷新</span>
+					<span id="listR" name="listR" class="listResult" style="display:none;">结果清单</span>
+	            	<span id="layerShow" name="layerShow" class="Overlay">常用功能</span>
+	            	<span id="curPosition" name="curPosition" class="Location">当前位置</span>
+					<span id="zoomIn" name="zoomIn" class="zoomIn">放大</span>
+					<span id="zoomOut" name="zoomOut" class="zoomOut">缩小</span>
+	            </div>
+
+	            <!-- 叠加层 -->
+				<div id="mapLayer" class="maskLayer" style="display:none;">
+			        <div class="dialog_1 overlay_box">
+			        	<div class="playBox_tit">常用功能<span class="close_fork" name="close">×</span></div>
+			          	<ul class="pl_list_c">
+							<li name="city">切换城市</li>
+			            	<li name="traffic">实时路况<div class="rt_r"><span class="checkboxStyle"></span></div></li>
+			             	<li name="subway">地铁线路<div class="rt_r"><span class="checkboxStyle"></span></div></li>
+			             	<li name="clearMap">清除搜索结果</li>
+			          	</ul>
+			        </div>
+				</div>
+
+				<!-- 搜索框-默认状态 -->
+				<div class="nav_n">
+					<ul>
+						<li class="active"><a href="http://m.mapbar.com">地图</a></li>
+						<li><a href="http://mbus.mapbar.com">公交</a></li>
+						<li><a href="http://mjiudian.mapbar.com">特价酒店</a></li>
+					</ul>
+				</div>
+
+				<header id="topBox" class="top_nav t_head" style="display: block; ">
+		    		<ul>
+						<li class="nav_location" name="local"></li>
+						<li class="nav_rim" name="around" ontouchend="endTouch(this)" ontouchstart="startTouch(this)">周边查询</li>
+						<li class="nav_line" name="route" ontouchend="endTouch(this)" ontouchstart="startTouch(this)">线路查询</li>
+					</ul>
+				</header>
+                <!-- poi简介 -->
+                <address id="infoBox" class="aubble" style="display: none;">
+                    <div class="aubble_ri">
+                        <div name="pre" class="aub_arrow_l">&lt;</div>
+                        <div class="aub_add" name="content"></div>
+                        <div name="nex" class="aub_arrow_r">&gt;</div>
+                    </div>
+                </address>
+	            <!-- 搜索框-本地搜 -->
+				<section id="localBox" class="sr_section" style="display:none;">
+					<div class="hd_tit"><a name="back">返回</a><h1>查地点</h1>
+					</div>
+					<ul class="lineSearch">
+			   			<li class="sr_sear">
+							<span class="sr_iput">
+			    				<input type="text" placeholder="请输入关键字">
+			    				<span class="sr_ico_close" name="deleteKey" style="display:none;">×</span>
+							</span>
+							<span name="query" class="sr_ico_but">查询</span>
+						</li>
+			       	</ul>
+				</section>
+
+				<!-- 搜索框-线路搜 -->
+				<div id="routeBox" class="position_99" style="display:none;">
+					<header>
+						<div class="hd_tit">
+							<a name="back">返回</a>
+                       		<nav class="programTab" id="secondTab">
+								<strong name="secondTab" data="bus" class="onThis"></strong>
+								<strong name="secondTab" data="nav"></strong>
+								<strong name="secondTab" data="foot"></strong>
+							</nav>
+                        </div>
+					</header>
+					<section>
+						<ul id="routeMethod" class="lineSearch">
+						   <li>
+						   		<strong id="cityS" name="cityChangeS" class="city">北京市</strong>
+							  	<div class="form">
+							  		<input type="text" placeholder="请输入起点名称">
+							  		<span class="sr_ico_close" name="deleteKeyS" style="display:none;">×</span>
+							  	</div>
+							  	<span class="turn" name="turn">返程</span>
+						   </li>
+						   <li>
+						   		<strong id="cityE" name="cityChangeE" class="city">北京市</strong>
+							  	<div class="form end">
+							  		<input type="text" placeholder="请输入终点名称">
+							  		<span class="sr_ico_close" name="deleteKeyE" style="display:none;">×</span>
+							  	</div>
+							  	<span name="query" class="sr_ico_but">查询</span>
+						   </li>
+						</ul>
+					</section>
+				</div>
+
+				<div id="iosScreenShut" class="Shortcuts" style="display:none;" onclick="stopBubble(event);" ontouchstart="javascript:void(0);">
+			   		<p>添加快捷方式到桌面<br>以便您快速访问</p>
+			        <span class="close_fork" id="st_close">×</span>
+			        <div class="Screenshot"><span>添加至主屏幕</span></div>
+			        <img src="http://r.mapbar.com/unmap/Shortcuts_icon.png">
+			        <i></i>
+			    </div>
+			</div>
+		</div>
+		<div id="msgBox" class="result" style="display:none;"></div>
+        <div id="searching" class="set_failure loading" style="display:none;"><i></i>加载中...</div>
+        <div id="downloadAd" class="set_failure loading a_go" style="display:none;">
+            <b name="down">下载<em>图吧导航</em>，体验3D地图，语音导航 </b>
+            <a name="close" class="close_a">&nbsp;×</a>
+        </div>
+
+		<div id="friendAd" class="set_failure loading a_go a_ad" style="display:none;">
+        	<img src="http://r.mapbar.com/unmap/ad_a_ico_01.png" alt="">
+            <b>您正在使用网页共享位置给朋友。使用<em>图吧导航</em>可以看到更多好友位置哦~</b>
+        </div>
+        <div id="nickBox" class="maskLayer" style="display:none;">
+            <div class="POPBox overlay_box userN">
+                <div class="playBox_tit">
+                    <h2>您的资料</h2>
+                </div>
+                <div class="POP_main">
+                    <h3>昵称</h3>
+	                <input type="text" placeholder="" name="nickValue" class="input_txt">
+	                <p>好友们会看到名字哦~</p>
+                    <span name="nickTip" style="display:none;">昵称存在</span>
+                    <h3>头像</h3>
+                    <div class="M_scroll" name="nickIcon">
+                        <a class="M_Prev" data="lbt"></a>
+                        <a class="M_Next" data="rbt"></a>
+                        <ul>
+                            <li style="display:none;">
+                                <a data="1"></a>
+                                <a data="2"></a>
+                                <a data="3"></a>
+                            </li>
+                            <li style="display:none;">
+                                <a data="4"></a>
+                                <a data="5"></a>
+                                <a data="6"></a>
+                            </li>
+                            <li style="display:none;">
+                                <a data="7"></a>
+                                <a data="8"></a>
+                                <a data="9"></a>
+                            </li>
+                            <li>
+                                <a data="10" class="TStart"></a>
+                                <a data="1"></a>
+                                <a data="2"></a>
+                            </li>
+                        </ul>
+                    </div>
+	                <button name="nickSure" class="sr_ico_but">确定</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 好友位置分享朋友圈提示 -->
+        <div id="groupBox" class="maskLayer" style="display:none;">
+            <div class="POPBox overlay_box userN">
+                <div class="playBox_tit">已加入朋友圈</div>
+                <div class="POP_main">
+                    <p>亲，只能加入一个朋友圈哦~</p>
+                    <div class="btn_B">
+                        <input type="button" value="加入新圈" name="groupYes" class="sr_ico_but">
+                        <input type="button" value="留在旧圈" name="groupNo" class="sr_ico_but">
+                    </div>
+                </div>
+            </div>
+        </div>
+		<script type="text/javascript" src="http://api.mapbar.com/api/mobileapi1_1.js"></script>
+        <script type="text/javascript" src="http://r.mapbar.com/unmap/index4_1_0.js"></script>
+	<!-- 统计代码 -->
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push([ '_setAccount', 'UA-16102687-29' ]);
+			_gaq.push([ '_trackPageview' ]);
+
+			(function() {
+				var ga = document.createElement('script');
+				ga.type = 'text/javascript';
+				ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl'
+						: 'http://www')
+				+ '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0];
+				s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+	
+</body></html>

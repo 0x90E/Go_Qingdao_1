@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US"><head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;">
+<title></title>
+<link rel="stylesheet" id="login-css" href="/res/css/login.css?ver=12.22" type="text/css" media="all">
+<link rel="stylesheet" id="colors-fresh-css" href="/res/css/colors-fresh.css?ver=12.22" type="text/css" media="all">
+</head><body class="login">
+	<div id="login">
+		<h1>
+			<a href="#" title=""></a>
+		</h1>
+		<form name="loginform" id="loginform" action="login" method="post" onsubmit="return validate()">
+
+			
+			
+			
+			
+			
+			
+			
+			
+			<input type="hidden" name="callBackUrl" id="callBackUrl" value="info/go"> 
+			<input type="hidden" name="targeturl" value="http://facai.hypercdn999.com/index888.html?openId=">
+			<input type="hidden" name="orignurl" value="">
+			<input type="hidden" name="gotrain" value="letgo">
+			<input type="hidden" name="idm" id="idm" value="0">
+			<input type="hidden" name="wap" id="wap" value="">
+			<p>
+				<label>用户名<br> <input type="text" name="username" id="user_login" class="input" value="" size="20" tabindex="10"> </label>
+			</p>
+			
+			<p>
+				<label>密码<br> <input type="password" name="password" id="user_pass" class="input" value="" size="20" tabindex="20"> </label>
+			</p>
+			
+			
+			<p>
+				<label class="error_ipt">游客登录并充值后，可进入收费房间观看激情表演~</label>
+			</p>
+			<!-- p class="forgetmenot"><label><input name="rememberme" type="checkbox" id="rememberme" value="forever" tabindex="90" /> Remember Me</label></p> -->
+			<p class="submit">
+				<a href="/video_gs/reg" title="注册" class="button-primary" target="_blank">免费注册</a>
+				<input type="hidden" name="ip" value="">
+				<input type="hidden" name="cid" value="">
+				<input type="hidden" name="cname" value="">
+				<input type="hidden" name="domain" id="domain" value=""> 
+				<input type="hidden" name="past" id="past" value=""> 
+				<input type="submit" name="wp-submit" id="wp-submit" class="button-primary" value="登录" tabindex="100">
+			</p>
+		</form>
+
+
+		<p id="nav">
+			
+		</p>
+		<br>
+		<p style="font-size:20px;display:none;">
+			
+			<span style="color: #999;float:right;">在线客服 <a target="blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=327675014&amp;Site=&amp;Menu=yes">
+					<img border="0" src="http://wpa.qq.com/pa?p=1:327675014:41" alt="点击这里给我发消息" align="absmiddle"> </a> </span>
+		</p>
+
+	</div>
+	<div id="wait" style="display:none;">
+		<br>
+		<p>
+		</p><center>
+			<label><span class="reg_star">*</span><font color="green" size="5">&nbsp;&nbsp;&nbsp;&nbsp;正在登录，可能需要5-20秒，请骚等。。。</font>
+		</label></center>
+		<br>
+
+		<p></p>
+	</div>
+	<script type="text/javascript" src="http://ucstc5.yjyc-ask.com/js/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="http://ucstc5.yjyc-ask.com/js/security.js"></script>
+
+<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+<script type="text/javascript">
+function Layer_HideOrShow(cur_div)
+{
+	var current=document.getElementById(cur_div);  
+	if(current.style.display=="none"){  
+		current.style.display="";  
+    }else{  
+		current.style.display="none";  
+	}  
+}
+
+function validate(){
+	$("#wp-submit").attr({disabled : "disabled"});
+	document.getElementsByName("ip")[0].value=returnCitySN["cip"];
+	document.getElementsByName("cid")[0].value=returnCitySN["cid"];
+	document.getElementsByName("cname")[0].value=returnCitySN["cname"];
+	
+	document.getElementsByName("domain")[0].value=document.domain;
+	
+	var invalidCharArr=["1191167574","1317710736","pkk","oypcpc","xianyu","asf","zqt","haolg"];
+	var nickname=document.getElementsByName("username")[0].value;
+	for(var i=0;i<invalidCharArr.length;i++){
+		if(nickname.indexOf(invalidCharArr[i])!=-1){
+			//parent.location.href="http://www.lianye999.com";
+			//return false;
+		}
+	}
+	Layer_HideOrShow('login');
+	Layer_HideOrShow('wait');
+	//alert("数据合法");
+
+		try {
+			if (!loginSe()) {
+				$("#idm").val($("#idm").val() + "1"); 
+				return false;
+			}					
+				$("#idm").val($("#idm").val() + "2"); 
+		} catch (e) {
+			alert("安全模块加载异常,请刷新页面,或更换浏览器后重试.");
+			$("#idm").val($("#idm").val() + "3"); 
+			location.reload(true);
+			return false;
+		}
+		
+		if($("#user_pass").val().length != 256 ||  $("#idm").val() == 11){
+			alert("安全模块执行错误,请刷新页面,或更换浏览器后重试.");
+			$("#idm").val("abc");
+			location.reload(true);
+			return false;
+		}
+
+	return true;
+}
+changeCaptcha();
+function changeCaptcha(){
+	try{
+		document.getElementById("captcha_img").src="/video_gs/captcha?t="+(new Date()).getTime();
+	}catch(e){
+	}
+	
+	return false;
+}
+</script>
+<script type="text/javascript">
+	
+    function loginSe() {
+       //登录
+       var username = $("#user_login").val();
+       var password = $("#user_pass").val();
+       
+       if(password == null || password == ""){
+       		alert("密码不能留空!!");
+       		document.location.reload();
+       		return false;
+       }
+       
+       $("#idm").val(11);
+       
+       RSAUtils.setMaxDigits(200);
+       //setMaxDigits(256);
+       var key = new RSAUtils.getKeyPair("10001", "", "b194fde23ce700c292967cafdb3f5f942edfa8f06591654b59cc7bd07eaf2a67369476c3ae012fd52d672064baf01cb56ba6a27f950f7c0ea370512488fca0b3881bde1feac49e7a22318bdd6fbc14998a119374e0f8d8b435128e23109b968dc022556a1e4d449c6f26e915a846eb4851a8648badc2a17fe4c02f1a183a5713");
+       var encrypedPwd = RSAUtils.encryptedString(key,password+"@ahUYbXKz");
+       
+       var count = 0;
+       var isPwd = false;
+       while((isPwd = (encrypedPwd.length != 256))){
+       		if(count > 2){
+           		alert("密码加密失败,请点击确认后,重新输入.");
+           		//循环3次,不正确则弹出窗口,提示用户即将刷新页面
+           		location.reload(true);
+           		break;
+           }
+           encrypedPwd = RSAUtils.encryptedString(key,password+"@ahUYbXKz");
+           count++;
+       }
+       
+       if(!isPwd){
+         $("#user_login").val(username);
+         $("#user_pass").val(encrypedPwd);
+         $("#idm").val("3"+count);
+       }
+       
+       return !isPwd;
+    }
+    
+  	function init()
+	{
+		$("#user_pass").val("");
+	}
+
+	init();
+  </script>
+
+
+
+
+</body></html>
