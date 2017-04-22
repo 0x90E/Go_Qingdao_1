@@ -16,7 +16,9 @@ class Domain30dayPlugin(AbstractPlugin):
         features = []
         for url in simple_data:
             domain_info = tldextract.extract(url)
-            domain = domain_info.domain + '.' + domain_info.suffix
+            domain = domain_info.domain
+            if domain_info.suffix:
+                domain += '.' + domain_info.suffix
 
             if trusted_domain(domain):
                 features.append('0')
