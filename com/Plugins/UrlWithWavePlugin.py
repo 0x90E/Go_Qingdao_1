@@ -13,8 +13,8 @@ class UrlWithAtPlugin(AbstractPlugin):
         features = []
         for url in simple_data:
             if url.find('~') == -1:
-                features.append(self.R_LEGITIMATE)
+                features.append('0')
             else:
-                features.append(self.R_PHISHING)
+                features.append('1')
 
         return Series(features)

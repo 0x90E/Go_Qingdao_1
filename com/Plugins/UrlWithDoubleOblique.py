@@ -16,8 +16,8 @@ class UrlWithDoubleObliquePlugin(AbstractPlugin):
             url_info = parse_url(url)
             p_url = url_info.netloc + '/' + url_info.path + '?' + url_info.params
             if p_url.find('//') == -1:
-                features.append(self.R_LEGITIMATE)
+                features.append('0')
             else:
-                features.append(self.R_PHISHING)
+                features.append('1')
 
         return Series(features)

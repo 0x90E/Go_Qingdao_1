@@ -35,9 +35,9 @@ class Domain30dayPlugin(AbstractPlugin):
 
                     if (time.time() - reg_timestamp) < 30 * 86400:
                         # < 30day
-                        features.append(self.R_PHISHING)
+                        features.append('1')
                     else:
-                        features.append(self.R_LEGITIMATE)
+                        features.append('0')
                     break
 
         return Series(features)

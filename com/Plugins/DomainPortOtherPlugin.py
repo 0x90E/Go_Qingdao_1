@@ -15,8 +15,8 @@ class DomainPortOtherPlugin(AbstractPlugin):
         for url in simple_data:
             url_info = parse_url(url)
             if url_info.port == 80 or url_info.port == 443 or url_info.port is None:
-                features.append(self.R_LEGITIMATE)
+                features.append('0')
             else:
-                features.append(self.R_PHISHING)
+                features.append('1')
 
         return Series(features)

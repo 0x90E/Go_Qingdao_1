@@ -40,8 +40,8 @@ class DomainIpPlugin(AbstractPlugin):
                             domain)
 
             if ipv4 or ipv6:
-                features.append(self.R_PHISHING)
+                features.append('1')
             else:
-                features.append(self.R_LEGITIMATE)
+                features.append('0')
 
         return Series(features)

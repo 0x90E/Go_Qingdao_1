@@ -16,15 +16,9 @@ class DomainMultiSubPlugin(AbstractPlugin):
             domain_info = tldextract.extract(url)
 
             if domain_info.subdomain == '':
-                features.append(self.R_LEGITIMATE)
+                features.append('0')
             else:
                 sub_number = len(domain_info.subdomain.split('.'))
-
-                if sub_number == 1:
-                    features.append(self.R_LEGITIMATE)
-                elif sub_number == 2:
-                    features.append(self.R_SUSPICIOUS)
-                else:
-                    features.append(self.R_PHISHING)
+                features.append(str(sub_number))
 
         return Series(features)

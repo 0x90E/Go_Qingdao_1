@@ -51,12 +51,12 @@ class DomainFakePayPlugin(AbstractPlugin):
             domain_info = tldextract.extract(url)
             domain = domain_info.domain + '.' + domain_info.suffix
             if domain in self.list_white_domain:
-                features.append(self.R_LEGITIMATE)
+                features.append('0')
                 continue
             else:
                 for paywords in self.list_paywords:
                     if domain.find(paywords) != -1:
-                        features.append(self.R_PHISHING)
+                        features.append('1')
                         continue
-                features.append(self.R_LEGITIMATE)
+                features.append('0')
         return Series(features)

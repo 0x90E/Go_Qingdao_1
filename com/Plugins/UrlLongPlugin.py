@@ -19,10 +19,5 @@ class UrlLongPlugin(AbstractPlugin):
             otherwice: Phishing
             '''
             url_len = len(url_info.netloc + '/' + url_info.path + '?' + url_info.params)
-            if url_len < 54:
-                features.append(self.R_LEGITIMATE)
-            elif (54 <= url_len) and (url_len <= 75):
-                features.append(self.R_SUSPICIOUS)
-            else:
-                features.append(self.R_PHISHING)
+            features.append(str(url_len))
         return Series(features)

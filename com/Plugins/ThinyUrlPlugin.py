@@ -25,8 +25,8 @@ class ThinyUrlPlugin(AbstractPlugin):
             else:
                 if url_info.netloc.find('.') == -1 and \
                                 len(url_info.netloc + '/' + url_info.path + '?' + url_info.params) <= 14:
-                    features.append(self.R_PHISHING)
+                    features.append('1')
                 else:
-                    features.append(self.R_LEGITIMATE)
+                    features.append('0')
 
         return Series(features)
