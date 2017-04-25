@@ -2,7 +2,6 @@
 # -*- coding:utf-8 -*-
 
 from pandas import Series
-import tldextract
 from com.Plugins.AbstractPlugin import AbstractPlugin
 from com.Common.HttpRequest import *
 

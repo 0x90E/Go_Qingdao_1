@@ -3,6 +3,8 @@
 
 import httplib
 from bs4 import BeautifulSoup
+from socket import error
+from time import sleep
 
 # https://www.anquan.org/
 # http://icp.chinaz.com
@@ -25,17 +27,31 @@ class ChinazQuery:
 
     def get_whois_info(self, target_url):
         method_list = []
+        method_list.append(self._get_domain_register_date)
         self._do_query("whois.chinaz.com", target_url, method_list)
 
+    def get_domain_register_date(self, target_url):
+        method_list = []
+        self._do_query("whois.chinaz.com", target_url, method_list)
+        return self._get_whois_info(u"创建时间")        
+
     def _do_query(self, chinaz_website, target_url, method_list):
-        conn = httplib.HTTPConnection(chinaz_website)
-        conn.request("GET", "/" + target_url)
-        res = conn.getresponse()
-        if res.status != 200:
-            return 
+        while True:
+            try:
+                conn = httplib.HTTPConnection(chinaz_website)
+                conn.request("GET", "/" + target_url)
+                res = conn.getresponse()
+                if res.status != 200:
+                    return
+                else:
+                    break
+            except error as serr:
+                print "Socket error, sleep for a while..."
+                sleep(5)
+
         data = res.read()
         self.soup = BeautifulSoup(data)
-        # print(self.soup.prettify())
+        # print self.soup.prettify()
         
         for method in method_list:
             method()
@@ -87,3 +103,16 @@ class ChinazQuery:
                     for tag_span in tag_li.findChildren("span"):
                         if keyword in tag_span.get_text():
                             return tag_li.get_text().split(u"：")[1]
+
+    def _get_whois_info(self, keyword):
+        for tag_li in self.soup.find_all('li'):
+            is_target_div = False
+            for tag_div in tag_li.find_all('div'):
+                
+                if is_target_div:
+                    return tag_div.get_text()
+
+                if keyword in tag_div.get_text():
+                    is_target_div = True
+
+        return None

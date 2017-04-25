@@ -20,7 +20,9 @@ class FaviconPlugin(AbstractPlugin):
                 continue
 
             split_url = tldextract.extract(parse_url(values[1]).netloc)
-            domin_main = split_url.domain + "." + split_url.suffix
+            domin_main = split_url.domain
+            if split_url.suffix:
+                domin_main += '.' + split_url.suffix
             is_phishing_website = False
 
             for tag_img in soup.findAll("img"):
