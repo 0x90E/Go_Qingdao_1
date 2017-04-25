@@ -2,10 +2,11 @@
 # -*- coding:utf-8 -*-
 
 from pandas import Series
+import tldextract
 from com.Plugins.AbstractPlugin import AbstractPlugin
 from com.Common.HttpRequest import *
 from com.Common.Other import *
-import tldextract
+from com.Common.ChinazQuery import ChinazQuery
 
 
 class Domain30dayPlugin(AbstractPlugin):
@@ -14,30 +15,38 @@ class Domain30dayPlugin(AbstractPlugin):
 
     def do_extract(self, simple_data):
         features = []
+        chinaz_query = ChinazQuery()
+        count = 0
         for url in simple_data:
             domain_info = tldextract.extract(url)
             domain = domain_info.domain
             if domain_info.suffix:
                 domain += '.' + domain_info.suffix
 
-            if trusted_domain(domain):
-                features.append('0')
-            else:
-                while True:
-                    finish, reg_timestamp = get_domain_regday(domain)
-                    if finish is False:
-                        print('[%s] whois err. %s, try...' % (self.feature_name, domain))
-                        continue
-                    if reg_timestamp is None:
-                        features.append(self.R_LEGITIMATE)
-                        print('[%s] No Registration Data. %s' % (self.feature_name, domain))
-                        break
+            tmp_url = domain
+            if domain_info.subdomain:
+                tmp_url = domain_info.subdomain + "." + domain
 
-                    if (time.time() - reg_timestamp) < 30 * 86400:
-                        # < 30day
-                        features.append('1')
-                    else:
-                        features.append('0')
-                    break
+            register_date = chinaz_query.get_domain_register_date(tmp_url)
+            if register_date is None:
+                features.append(0)
+                continue
+
+            register_timestamp = time.mktime(time.strptime(register_date, u'%Y年%m月%d日'))
+            register_period = time.time() - register_timestamp
+
+            print "[%s]: %s " %(tmp_url, register_period)
+            features.append(register_period)
+            '''
+            if (time.time() - register_timestamp) < 30 * 86400:
+                # < 30day
+                print "[Phishing]url: %s, register date: %s" %(tmp, register_date)
+                features.append('1')
+            else:
+                features.append('0')
+                print "[legitimate]url: %s, register date: %s" %(tmp, register_date)
+
+            count = count + 1
+            '''
 
         return Series(features)
