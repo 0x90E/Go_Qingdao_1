@@ -19,13 +19,13 @@ class DisablingRightClickPlugin(AbstractPlugin):
             try:
                 # document.addEventListener('contextmenu', event => event.preventDefault());
                 if "contextmenu" in soup.prettify() and "preventDefault" in soup.prettify():
-                    features.append(2)
+                    features.append(1)
                     print "[Phishing] %s" %values[1]
                     continue
 
                 # event.button==2
                 if "event.button" in soup.prettify() and "2" in soup.prettify():
-                    features.append(2)
+                    features.append(1)
                     print "[Phishing] %s" %values[1]
                     continue
 

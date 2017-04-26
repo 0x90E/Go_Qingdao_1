@@ -16,8 +16,7 @@ class RequestUrlPlugin(AbstractPlugin):
                              "input", "script", "source", "video", "track"]
         features = []
         for values in simple_data.values:
-            total_src = 0.0
-            outternal_src = 0.0
+            outternal_src = 0
             
             split_url = tldextract.extract(parse_url(values[1]).netloc)
             domin_main = split_url.domain
@@ -33,7 +32,6 @@ class RequestUrlPlugin(AbstractPlugin):
                     if not tag.has_attr("src"):
                         continue
 
-                    total_src = total_src + 1
                     if not tag['src'].startswith("http"):
                         continue
 
@@ -47,22 +45,12 @@ class RequestUrlPlugin(AbstractPlugin):
                             if not track_tag.has_attr("src"):
                                 continue
 
-                            total_src = total_src + 1
                             if not track_tag['src'].startswith("http"):
                                 continue
 
                             if domin_main not in track_tag['src']:
                                 outternal_src = outternal_src + 1
             
-            if total_src == 0:
-                features.append(0)
-            elif (outternal_src/total_src) <= 0.22:
-                features.append(0)
-            elif (outternal_src/total_src) >= 0.22 and (outternal_src/total_src) < 0.61:
-                features.append(1)
-                print "[Suspicious]score :%s %s" %(outternal_src/total_src, domin_main)
-            else:
-                features.append(2)
-                print "[Phishing]score :%s %s" %(outternal_src/total_src, domin_main)
+            features.append(outternal_src)
 
         return Series(features)

@@ -22,7 +22,7 @@ class HiddenNumberPlugin(AbstractPlugin):
                 for tag_hidden in soup.findAll("hidden"):
                     print "got hidde: %s" %tag_hidden
                     # print "[Phishing] %s" %values[1]
-                    features.append(2)
+                    features.append(1)
                     break
 
                 features.append(0)

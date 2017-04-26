@@ -23,7 +23,7 @@ class IFrameRedirectionPlugin(AbstractPlugin):
                     if not tag_iframe.has_attr("frameborder"):
                         continue
                     print "[Phishing] %s" %values[1]
-                    features.append(2)
+                    features.append(1)
                     break
             except RuntimeError:
                 print "RuntimeError!!"

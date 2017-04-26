@@ -36,7 +36,7 @@ class FaviconPlugin(AbstractPlugin):
                     break
 
             if is_phishing_website:
-                features.append(2)
+                features.append(1)
                 print "[Phishing] %s" %domin_main
             else:
                 features.append(0)
