@@ -24,6 +24,7 @@ from com.Plugins.DisablingRightClickPlugin import DisablingRightClickPlugin
 from com.Plugins.IFrameRedirectionPlugin import IFrameRedirectionPlugin
 from com.Plugins.HiddenNumberPlugin import HiddenNumberPlugin
 from com.Plugins.IFrameToOtherDomain import IFrameToOtherDomain
+from com.Plugins.IcpPlugin import IcpPlugin
 from com.Common.HttpRequest import *
 
 if __name__ == "__main__":
@@ -31,7 +32,6 @@ if __name__ == "__main__":
     print "Hello question one"
 
     extraction_exector = ExtractionExector()
-
     extraction_exector.register_plugin(URL_PLUGIN, ThinyUrlPlugin())
     extraction_exector.register_plugin(URL_PLUGIN, DomainIpPlugin())
     extraction_exector.register_plugin(URL_PLUGIN, Domain30dayPlugin())
@@ -51,5 +51,6 @@ if __name__ == "__main__":
     extraction_exector.register_plugin(HTML_PLUGIN, IFrameToOtherDomain())
     extraction_exector.register_plugin(HTML_PLUGIN, HiddenNumberPlugin())
     extraction_exector.register_plugin(HTML_PLUGIN, IFrameRedirectionPlugin())
+    extraction_exector.register_plugin(HTML_PLUGIN, IcpPlugin())
 
     extraction_exector.do_extract("com/Files/test_data/file_list.txt", "com/Files/output.csv",)

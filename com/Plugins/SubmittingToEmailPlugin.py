@@ -15,11 +15,11 @@ class SubmittingToEmailPlugin(AbstractPlugin):
             soup = self.get_soup(values[0])
             if soup is None:
                 features.append(0)
-                continue   
+                continue
 
             try:
                 if "mail(" in soup.prettify() and "?>" in soup.prettify():
-                    features.append(2)
+                    features.append(1)
                     print "[Phishing] %s" %values[1]
                     continue
 
@@ -34,9 +34,9 @@ class SubmittingToEmailPlugin(AbstractPlugin):
                 print "RuntimeError!!"
 
             if is_phishing_website:
-                features.append(2)
+                features.append(1)
                 print "[Phishing] %s" %values[1]
             else:
-                features.append(0)                
+                features.append(0)
 
         return Series(features)

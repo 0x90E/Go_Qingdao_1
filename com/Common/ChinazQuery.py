@@ -33,7 +33,12 @@ class ChinazQuery:
     def get_domain_register_date(self, target_url):
         method_list = []
         self._do_query("whois.chinaz.com", target_url, method_list)
-        return self._get_whois_info(u"创建时间")        
+        return self._get_whois_info(u"创建时间")
+
+    def get_icp_info(self, target_url):
+        method_list = []
+        self._do_query("icp.chinaz.com", target_url, method_list)
+        return self._get_website_icp(u"网站备案/许可证号")
 
     def _do_query(self, chinaz_website, target_url, method_list):
         while True:
@@ -115,4 +120,11 @@ class ChinazQuery:
                 if keyword in tag_div.get_text():
                     is_target_div = True
 
+        return None
+
+    def _get_website_icp(self, keyword):
+        for tag_li in self.soup.find_all('li'):
+            if keyword in tag_li.get_text():
+                for tag_p in tag_li.find_all('p'):
+                    return tag_p.get_text().replace(u"查看截图", "")
         return None
