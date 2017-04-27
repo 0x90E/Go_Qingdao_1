@@ -15,6 +15,7 @@ class AbstractPlugin:
 
     def __init__(self, feature_name):
         self.feature_name = feature_name
+        self.html_dir = ""
 
     @abstractmethod
     def do_extract(self, simple_data):
@@ -30,11 +31,16 @@ class AbstractPlugin:
         """
         return self.feature_name
 
+    @abstractmethod
+    def set_html_dir(self, html_dir):
+        """
+            return the feature name.
+        """
+        self.html_dir = html_dir
+
     def get_soup(self, html_file):
-        html_source = os.path.join("com/Files/test_data/file1/", html_file)
-        # html_source = "/Users/Chung/GithubLocal/HTML_src_Attribute.html"
-        if not os.path.exists(html_source):
-            return None
+        html_source = os.path.join(self.html_dir, html_file)
+        assert os.path.exists(html_source)
         with open(html_source, 'rb') as f:
             input_bytes = f.read()
             result = chardet.detect(input_bytes)
