@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 
 from com.Common.HttpRequest import *
-from com.FeatureExtraction.ExtractionExector import ExtractionExector, URL_PLUGIN, HTML_PLUGIN
+from com.FeatureExtraction.ExtractionExector import *
 from com.Plugins.ThinyUrlPlugin import ThinyUrlPlugin
 from com.Plugins.DomainIpPlugin import DomainIpPlugin
 from com.Plugins.Domain30dayPlugin import Domain30dayPlugin
@@ -28,7 +28,6 @@ from com.Plugins.IcpPlugin import IcpPlugin
 from com.Common.HttpRequest import *
 
 if __name__ == "__main__":
-    # set_proxy('127.0.0.1', 1080)
     print "Hello question one"
 
     extraction_exector = ExtractionExector()
@@ -49,8 +48,8 @@ if __name__ == "__main__":
     extraction_exector.register_plugin(HTML_PLUGIN, SubmittingToEmailPlugin())
     extraction_exector.register_plugin(HTML_PLUGIN, DisablingRightClickPlugin())    
     extraction_exector.register_plugin(HTML_PLUGIN, IFrameToOtherDomain())
-    extraction_exector.register_plugin(HTML_PLUGIN, HiddenNumberPlugin())
     extraction_exector.register_plugin(HTML_PLUGIN, IFrameRedirectionPlugin())
     extraction_exector.register_plugin(HTML_PLUGIN, IcpPlugin())
 
-    extraction_exector.do_extract("com/Files/test_data/file_list.txt", "com/Files/output.csv",)
+    # MODE_TRAINING, MODE_TESTING
+    extraction_exector.do_extract(MODE_TESTING, "com/Files/output.csv",)
