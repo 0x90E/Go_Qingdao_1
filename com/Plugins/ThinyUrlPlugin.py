@@ -20,13 +20,9 @@ class ThinyUrlPlugin(AbstractPlugin):
             url = 'http://' + url
             url_info = parse_url(url)
 
-            if url_info.path == '':
-                features.append(self.R_LEGITIMATE)
+            if url_info.netloc.find('www.') == -1:
+                features.append('1')
             else:
-                if url_info.netloc.find('.') == -1 and \
-                                len(url_info.netloc + '/' + url_info.path + '?' + url_info.params) <= 14:
-                    features.append('1')
-                else:
-                    features.append('0')
+                features.append('0')
 
         return Series(features)

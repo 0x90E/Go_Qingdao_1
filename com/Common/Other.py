@@ -2,7 +2,7 @@ import re
 import subprocess
 import time
 import hashlib
-
+import os
 
 def md5(content):
     m1 = hashlib.md5()
@@ -10,10 +10,31 @@ def md5(content):
     return m1.hexdigest()
 
 
-def read_cache(id):
+def __gen_cache_path(id):
     file_name = md5(id)
+    return 'com/Files/cache/%s' % file_name
+
+
+def check_cache(id):
+    cache_path = __gen_cache_path(id)
+    return os.path.exists(cache_path)
+
+
+def rename_cache(old_id, new_id):
     try:
-        file = open('com/Files/cache/%s' % file_name, 'r')
+        old_path = __gen_cache_path(old_id)
+        new_path = __gen_cache_path(new_id)
+        if check_cache(old_id):
+            os.rename(old_path, new_path)
+    except:
+        print('rename_cache(%s, %s) err~' % (old_path, new_path))
+        pass
+
+
+def read_cache(id):
+    cache_path = __gen_cache_path(id)
+    try:
+        file = open(cache_path, 'r')
         data = file.read()
         file.close()
         return data
@@ -22,9 +43,9 @@ def read_cache(id):
 
 
 def write_cache(id, content):
-    file_name = md5(id)
+    pache_path = __gen_cache_path(id)
     try:
-        file = open('com/Files/cache/%s' % file_name, 'w+')
+        file = open(pache_path, 'w+')
         file.write(content)
         file.close()
         return True

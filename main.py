@@ -33,7 +33,7 @@ if __name__ == "__main__":
     extraction_exector = ExtractionExector()
     extraction_exector.register_plugin(URL_PLUGIN, ThinyUrlPlugin())
     extraction_exector.register_plugin(URL_PLUGIN, DomainIpPlugin())
-    extraction_exector.register_plugin(URL_PLUGIN, Domain30dayPlugin())
+    # extraction_exector.register_plugin(URL_PLUGIN, Domain30dayPlugin())
     extraction_exector.register_plugin(URL_PLUGIN, DomainNumberPlugin())
     extraction_exector.register_plugin(URL_PLUGIN, DomainSubNumberPlugin())
     extraction_exector.register_plugin(URL_PLUGIN, UrlLongPlugin())

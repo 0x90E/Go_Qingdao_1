@@ -15,7 +15,8 @@ class ExtractionExector():
         self.html_plugin_list = []
 
     def do_extract(self, data_path, output_csv):
-        sample_df = pd.read_csv(data_path, names=["id", "tag", "file_name", "url"])
+        # sample_df = pd.read_csv(data_path, names=["id", "tag", "file_name", "url"])
+        sample_df = pd.read_csv(data_path, names=["id", "file_name", "url"])
         final_df = DataFrame(sample_df, copy=True)
         len_input_data = len(final_df.index)
         for plugin in set(self.url_plugin_list):

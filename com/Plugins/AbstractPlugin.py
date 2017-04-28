@@ -9,6 +9,7 @@ from bs4 import BeautifulSoup
 
 class AbstractPlugin:
     _metaclass__ = ABCMeta
+    R_NONE = 'none'
     R_LEGITIMATE = '0'
     R_SUSPICIOUS = '1'
     R_PHISHING = '2'

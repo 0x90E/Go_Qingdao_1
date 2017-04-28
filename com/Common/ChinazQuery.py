@@ -5,7 +5,7 @@ import httplib
 from bs4 import BeautifulSoup
 from socket import error
 from time import sleep
-
+from com.Common.Other import *
 # https://www.anquan.org/
 # http://icp.chinaz.com
 
@@ -41,20 +41,24 @@ class ChinazQuery:
         return self._get_website_icp(u"网站备案/许可证号")
 
     def _do_query(self, chinaz_website, target_url, method_list):
-        while True:
-            try:
-                conn = httplib.HTTPConnection(chinaz_website)
-                conn.request("GET", "/" + target_url)
-                res = conn.getresponse()
-                if res.status != 200:
-                    return
-                else:
-                    break
-            except error as serr:
-                print "Socket error, sleep for a while..."
-                sleep(5)
+        data = read_cache(chinaz_website + '/' + target_url)
+        if data is None:
+            while True:
+                try:
+                    conn = httplib.HTTPConnection(chinaz_website)
+                    conn.request("GET", "/" + target_url)
+                    res = conn.getresponse()
+                    if res.status != 200:
+                        return
+                    else:
+                        data = res.read()  # hold exception...
+                        break
+                except error as serr:
+                    print "Socket error, sleep for a while..."
+                    sleep(5)
 
-        data = res.read()
+            if data:
+                write_cache(chinaz_website + '/' + target_url, data)
         self.soup = BeautifulSoup(data)
         # print self.soup.prettify()
         
