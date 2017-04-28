@@ -52,4 +52,4 @@ if __name__ == "__main__":
     extraction_exector.register_plugin(HTML_PLUGIN, IcpPlugin())
 
     # MODE_TRAINING, MODE_TESTING
-    extraction_exector.do_extract(MODE_TESTING, "com/Files/output.csv",)
+    extraction_exector.do_extract(MODE_TESTING, "com/Files/output.csv")
