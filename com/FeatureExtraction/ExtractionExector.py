@@ -1,12 +1,15 @@
 #! /usr/bin/python
 # -*- coding:utf-8 -*-
 
+import os
 import pandas as pd
 from pandas import DataFrame
 from com.Plugins.AbstractPlugin import AbstractPlugin
 
 URL_PLUGIN = "URL"
 HTML_PLUGIN = "HTML"
+MODE_TRAINING = "mode_training"
+MODE_TESTING = "mode_TESTING"
 
 
 class ExtractionExector():
@@ -14,9 +17,15 @@ class ExtractionExector():
         self.url_plugin_list = []
         self.html_plugin_list = []
 
-    def do_extract(self, data_path, output_csv):
-        # sample_df = pd.read_csv(data_path, names=["id", "tag", "file_name", "url"])
-        sample_df = pd.read_csv(data_path, names=["id", "file_name", "url"])
+    def do_extract(self, mode, output_csv):
+        if mode == MODE_TRAINING:
+            data_path = "com/Files/subject1_sample/file_list.txt"
+            name_list = ["id", "tag", "file_name", "url"]
+        elif mode == MODE_TESTING:
+            data_path = "com/Files/subject1_A/file_list.txt"
+            name_list = ["id", "file_name", "url"]
+
+        sample_df = pd.read_csv(data_path, names=name_list)
         final_df = DataFrame(sample_df, copy=True)
         len_input_data = len(final_df.index)
         for plugin in set(self.url_plugin_list):
@@ -29,6 +38,7 @@ class ExtractionExector():
             final_df[plugin.get_feature_name()] = tmp_features
         for plugin in set(self.html_plugin_list):
             print('[HTML]doing %s' % plugin.get_feature_name())
+            plugin.set_html_dir(os.path.join(os.path.dirname(data_path), "file"))
             tmp_features = plugin.do_extract(sample_df[["file_name", "url"]])
             if len(tmp_features.index) != len_input_data:
                 print "len of tmp_features.index: %s: " %tmp_features.index

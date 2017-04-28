@@ -5,6 +5,7 @@ import os
 from abc import abstractmethod, ABCMeta
 import chardet
 from bs4 import BeautifulSoup
+from HTMLParser import HTMLParseError
 
 
 class AbstractPlugin:
@@ -49,6 +50,6 @@ class AbstractPlugin:
                 detected_unicode = input_bytes.decode(result['encoding'])
                 soup = BeautifulSoup(detected_unicode)
                 # print soup.prettify()       
-            except (LookupError, UnicodeDecodeError, TypeError, RuntimeError):
+            except (LookupError, UnicodeDecodeError, TypeError, RuntimeError, HTMLParseError):
                 return None        
         return soup
