@@ -45,7 +45,8 @@ class AbstractPlugin:
         assert os.path.exists(html_source)
         with open(html_source, 'rb') as f:
             input_bytes = f.read()
-            result = chardet.detect(input_bytes)
+            result = chardet.detect(input_bytes[:1000])
+
             try:
                 detected_unicode = input_bytes.decode(result['encoding'])
                 soup = BeautifulSoup(detected_unicode)
@@ -53,3 +54,29 @@ class AbstractPlugin:
             except (LookupError, UnicodeDecodeError, TypeError, RuntimeError, HTMLParseError):
                 return None        
         return soup
+
+    def read_html(self, html_file):
+        html_source = os.path.join(self.html_dir, html_file)
+        self.input_bytes = ''
+        try:
+            assert os.path.exists(html_source)
+            with open(html_source, 'rb') as f:
+                self.input_bytes = f.read()
+                f.close()
+        except:
+            pass
+
+    def find_html(self, content):
+        try:
+            return self.input_bytes.find(content)
+        except:
+            return -1
+
+    def value_count(self, key):
+        total = len(self.input_bytes)
+        index = 0
+        found = 0
+        while index != -1:
+            found += 1
+            index = self.input_bytes.find(key, index + 1, total)
+        return found - 1

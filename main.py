@@ -25,12 +25,19 @@ from com.Plugins.IFrameRedirectionPlugin import IFrameRedirectionPlugin
 from com.Plugins.HiddenNumberPlugin import HiddenNumberPlugin
 from com.Plugins.IFrameToOtherDomain import IFrameToOtherDomain
 from com.Plugins.IcpPlugin import IcpPlugin
+from com.Plugins.HyperlinkColorWhite import HyperlinkColorWhite
+from com.Plugins.HyperlinkSizeSmall import HyperlinkSizeSmall
+from com.Plugins.ElementHide import ElementHide
+from com.Plugins.HrefHide1 import HrefHide1
+from com.Plugins.HrefHide2 import HrefHide2
+from com.Plugins.HrefHide3 import HrefHide3
+from com.Plugins.ElementBeyondArea import ElementBeyondArea
 from com.Common.HttpRequest import *
 
 if __name__ == "__main__":
     print "Hello question one"
-
     extraction_exector = ExtractionExector()
+    """
     extraction_exector.register_plugin(URL_PLUGIN, ThinyUrlPlugin())
     extraction_exector.register_plugin(URL_PLUGIN, DomainIpPlugin())
     # extraction_exector.register_plugin(URL_PLUGIN, Domain30dayPlugin())
@@ -42,6 +49,7 @@ if __name__ == "__main__":
     extraction_exector.register_plugin(URL_PLUGIN, DomainPortOtherPlugin())
     extraction_exector.register_plugin(URL_PLUGIN, UrlPathDepthPlugin())
     extraction_exector.register_plugin(URL_PLUGIN, DomainFakePayPlugin())
+
     extraction_exector.register_plugin(HTML_PLUGIN, RequestUrlPlugin())
     extraction_exector.register_plugin(HTML_PLUGIN, UrlOfAnchorPlugin())
     extraction_exector.register_plugin(HTML_PLUGIN, LinkNumberPlugin())
@@ -50,6 +58,13 @@ if __name__ == "__main__":
     extraction_exector.register_plugin(HTML_PLUGIN, IFrameToOtherDomain())
     extraction_exector.register_plugin(HTML_PLUGIN, IFrameRedirectionPlugin())
     extraction_exector.register_plugin(HTML_PLUGIN, IcpPlugin())
-
+    """
+    # extraction_exector.register_plugin(HTML_PLUGIN, HyperlinkColorWhite())
+    # extraction_exector.register_plugin(HTML_PLUGIN, HyperlinkSizeSmall())
+    # extraction_exector.register_plugin(HTML_PLUGIN, ElementHide())
+    # extraction_exector.register_plugin(HTML_PLUGIN, HrefHide1())
+    # extraction_exector.register_plugin(HTML_PLUGIN, HrefHide2())
+    # extraction_exector.register_plugin(HTML_PLUGIN, HrefHide3())
+    extraction_exector.register_plugin(HTML_PLUGIN, ElementBeyondArea())
     # MODE_TRAINING, MODE_TESTING
     extraction_exector.do_extract(MODE_TESTING, "com/Files/output.csv")
