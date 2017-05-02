@@ -32,12 +32,35 @@ from com.Plugins.HrefHide1 import HrefHide1
 from com.Plugins.HrefHide2 import HrefHide2
 from com.Plugins.HrefHide3 import HrefHide3
 from com.Plugins.ElementBeyondArea import ElementBeyondArea
+from com.Plugins.OutOfPagePlugin import OutOfPagePlugin
+from com.Plugins.MarqueeNumberPlugin import MarqueeNumberPlugin
+from com.Plugins.MarqueeNumberJsPlugin import MarqueeNumberJsPlugin
+from com.Plugins.HiddenLayerPlugin import HiddenLayerPlugin
+from com.Plugins.KeywordOfA import KeywordOfA
+from com.Plugins.UrlIncludeAspPlugin import UrlIncludeAspPlugin
 from com.Common.HttpRequest import *
 
-if __name__ == "__main__":
-    print "Hello question one"
+
+def question_dark_website():
     extraction_exector = ExtractionExector()
-    """
+    extraction_exector.register_plugin(HTML_PLUGIN, HyperlinkColorWhite())
+    extraction_exector.register_plugin(HTML_PLUGIN, HyperlinkSizeSmall())
+    extraction_exector.register_plugin(HTML_PLUGIN, ElementHide())
+    extraction_exector.register_plugin(HTML_PLUGIN, HrefHide1())
+    extraction_exector.register_plugin(HTML_PLUGIN, HrefHide2())
+    extraction_exector.register_plugin(HTML_PLUGIN, HrefHide3())
+    extraction_exector.register_plugin(HTML_PLUGIN, ElementBeyondArea())    
+    # extraction_exector.register_plugin(HTML_PLUGIN, OutOfPagePlugin())
+    extraction_exector.register_plugin(HTML_PLUGIN, MarqueeNumberPlugin())
+    extraction_exector.register_plugin(HTML_PLUGIN, MarqueeNumberJsPlugin())
+    extraction_exector.register_plugin(HTML_PLUGIN, KeywordOfA())
+    extraction_exector.register_plugin(URL_PLUGIN, UrlIncludeAspPlugin())
+    extraction_exector.register_plugin(HTML_PLUGIN, LinkNumberPlugin())
+    extraction_exector.register_plugin(HTML_PLUGIN, IFrameToOtherDomain())
+    extraction_exector.do_extract(MODE_TRAINING, "com/Files/output_TRAINING_dark_website.csv")
+
+def question_phishing_website():
+    extraction_exector = ExtractionExector()
     extraction_exector.register_plugin(URL_PLUGIN, ThinyUrlPlugin())
     extraction_exector.register_plugin(URL_PLUGIN, DomainIpPlugin())
     # extraction_exector.register_plugin(URL_PLUGIN, Domain30dayPlugin())
@@ -49,22 +72,20 @@ if __name__ == "__main__":
     extraction_exector.register_plugin(URL_PLUGIN, DomainPortOtherPlugin())
     extraction_exector.register_plugin(URL_PLUGIN, UrlPathDepthPlugin())
     extraction_exector.register_plugin(URL_PLUGIN, DomainFakePayPlugin())
-
     extraction_exector.register_plugin(HTML_PLUGIN, RequestUrlPlugin())
     extraction_exector.register_plugin(HTML_PLUGIN, UrlOfAnchorPlugin())
+    extraction_exector.register_plugin(HTML_PLUGIN, DisablingRightClickPlugin())
     extraction_exector.register_plugin(HTML_PLUGIN, LinkNumberPlugin())
     extraction_exector.register_plugin(HTML_PLUGIN, SubmittingToEmailPlugin())
-    extraction_exector.register_plugin(HTML_PLUGIN, DisablingRightClickPlugin())    
     extraction_exector.register_plugin(HTML_PLUGIN, IFrameToOtherDomain())
     extraction_exector.register_plugin(HTML_PLUGIN, IFrameRedirectionPlugin())
-    extraction_exector.register_plugin(HTML_PLUGIN, IcpPlugin())
-    """
-    # extraction_exector.register_plugin(HTML_PLUGIN, HyperlinkColorWhite())
-    # extraction_exector.register_plugin(HTML_PLUGIN, HyperlinkSizeSmall())
-    # extraction_exector.register_plugin(HTML_PLUGIN, ElementHide())
-    # extraction_exector.register_plugin(HTML_PLUGIN, HrefHide1())
-    # extraction_exector.register_plugin(HTML_PLUGIN, HrefHide2())
-    # extraction_exector.register_plugin(HTML_PLUGIN, HrefHide3())
-    extraction_exector.register_plugin(HTML_PLUGIN, ElementBeyondArea())
+    # extraction_exector.register_plugin(HTML_PLUGIN, IcpPlugin())
+
     # MODE_TRAINING, MODE_TESTING
-    extraction_exector.do_extract(MODE_TESTING, "com/Files/output.csv")
+    extraction_exector.do_extract(MODE_TRAINING, "com/Files/output_TRAINING.csv")    
+
+if __name__ == "__main__":
+    print "Hello question one"
+    # question_phishing_website()
+    question_dark_website()
+

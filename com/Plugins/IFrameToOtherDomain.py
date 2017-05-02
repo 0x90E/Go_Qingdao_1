@@ -36,7 +36,7 @@ class IFrameToOtherDomain(AbstractPlugin):
 
                 if is_phishing_website:
                     features.append(1)
-                    print "[Phishing] %s" %domin_main
+                    print "iframe[Phishing] %s" %domin_main
                 else:
                     features.append(0)
 

@@ -51,6 +51,7 @@ class RequestUrlPlugin(AbstractPlugin):
                             if domin_main not in track_tag['src']:
                                 outternal_src = outternal_src + 1
             
+            print "[request_url]%s %s" %(values[1], outternal_src)
             features.append(outternal_src)
 
         return Series(features)

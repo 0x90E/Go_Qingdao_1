@@ -22,7 +22,7 @@ class IFrameRedirectionPlugin(AbstractPlugin):
                 for tag_iframe in soup.findAll("iframe"):
                     if not tag_iframe.has_attr("frameborder"):
                         continue
-                    print "[Phishing] %s" %values[1]
+                    print "[redirection][Phishing] %s" %values[1]
                     features.append(1)
                     break
             except RuntimeError:
