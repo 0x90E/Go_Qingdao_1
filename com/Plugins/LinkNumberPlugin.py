@@ -12,8 +12,10 @@ class LinkNumberPlugin(AbstractPlugin):
 
     def do_extract(self, simple_data):
         features = []
+        count = 0
         for values in simple_data.values:
             outternal_link = 0
+            count = count + 1
 
             split_url = tldextract.extract(parse_url(values[1]).netloc)
             domin_main = split_url.domain
@@ -58,7 +60,7 @@ class LinkNumberPlugin(AbstractPlugin):
                     if "google.com" not in tag_meta['content']:
                         outternal_link = outternal_link + 1
 
+            print "[link_number][%s]%s %s" %(count, values[1], outternal_link)
             features.append(outternal_link)
-            # total_link -> dark
 
         return Series(features)

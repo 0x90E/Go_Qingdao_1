@@ -11,7 +11,10 @@ class SubmittingToEmailPlugin(AbstractPlugin):
 
     def do_extract(self, simple_data):
         features = []
+        count = 0
         for values in simple_data.values:
+            count = count + 1
+            print "[submitting_to_email][%s]" %count
             soup = self.get_soup(values[0])
             if soup is None:
                 features.append(0)
@@ -20,7 +23,7 @@ class SubmittingToEmailPlugin(AbstractPlugin):
             try:
                 if "mail(" in soup.prettify() and "?>" in soup.prettify():
                     features.append(1)
-                    print "[Phishing] %s" %values[1]
+                    print "[submitting_to_email][Phishing] %s" %values[1]
                     continue
 
                 is_phishing_website = False
@@ -35,7 +38,7 @@ class SubmittingToEmailPlugin(AbstractPlugin):
 
             if is_phishing_website:
                 features.append(1)
-                print "[Phishing] %s" %values[1]
+                print "[submitting_to_email][Phishing] %s" %values[1]
             else:
                 features.append(0)
 

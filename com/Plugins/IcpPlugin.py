@@ -16,13 +16,15 @@ class IcpPlugin(AbstractPlugin):
     def do_extract(self, simple_data):
         features = []
         chinaz_query = ChinazQuery()
-        is_get_icp_text = False
+        count = 0
         for values in simple_data.values:
+            count = count + 1
             soup = self.get_soup(values[0])
             if soup is None:
                 features.append(0)
                 continue
             try:
+                is_get_icp_text = False
                 for text in soup.strings:
                     if "ICP" in text.upper():
                         is_get_icp_text = True
@@ -35,11 +37,11 @@ class IcpPlugin(AbstractPlugin):
                         if domain_info.subdomain:
                             tmp_url = domain_info.subdomain + "." + domain
                         icp_info = chinaz_query.get_icp_info(tmp_url)
-                        
+
                         if icp_info is None:
                             if u"银行" in text:
                                 features.append(1)
-                                print "银行 [Phishing] %s" %values[1]
+                                print "银行 [Phishing][%s] %s" %(count, values[1])
                             else:
                                 features.append(0)
                             break
@@ -54,8 +56,8 @@ class IcpPlugin(AbstractPlugin):
                             features.append(0)
                         else:
                             features.append(1)
-                            print "[Phishing] %s" %values[1]
-                        break          
+                            print "[Phishing][%s] %s" %(count, values[1])
+                        break
 
             except RuntimeError:
                 print "RuntimeError!!"

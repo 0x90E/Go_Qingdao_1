@@ -36,6 +36,7 @@ class UrlOfAnchorPlugin(AbstractPlugin):
                     if domin_main not in href_attr:
                         suspicious_href = suspicious_href + 1
 
+            print "[url_of_anchor]%s %s" %(values[1], suspicious_href)
             features.append(suspicious_href)
 
         return Series(features)
