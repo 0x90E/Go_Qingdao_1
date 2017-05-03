@@ -43,19 +43,18 @@ from com.Common.HttpRequest import *
 
 def question_dark_website():
     extraction_exector = ExtractionExector()
+
     extraction_exector.register_plugin(HTML_PLUGIN, HyperlinkColorWhite())
     extraction_exector.register_plugin(HTML_PLUGIN, HyperlinkSizeSmall())
     extraction_exector.register_plugin(HTML_PLUGIN, ElementHide())
     extraction_exector.register_plugin(HTML_PLUGIN, HrefHide1())
     extraction_exector.register_plugin(HTML_PLUGIN, HrefHide2())
     extraction_exector.register_plugin(HTML_PLUGIN, HrefHide3())
-    extraction_exector.register_plugin(HTML_PLUGIN, ElementBeyondArea())    
+    extraction_exector.register_plugin(HTML_PLUGIN, ElementBeyondArea())
     # extraction_exector.register_plugin(HTML_PLUGIN, OutOfPagePlugin())
     extraction_exector.register_plugin(HTML_PLUGIN, MarqueeNumberPlugin())
     extraction_exector.register_plugin(HTML_PLUGIN, MarqueeNumberJsPlugin())
     extraction_exector.register_plugin(HTML_PLUGIN, KeywordOfA())
-    extraction_exector.register_plugin(URL_PLUGIN, UrlIncludeAspPlugin())
-    extraction_exector.register_plugin(HTML_PLUGIN, LinkNumberPlugin())
     extraction_exector.register_plugin(HTML_PLUGIN, IFrameToOtherDomain())
     extraction_exector.do_extract(MODE_TRAINING, "com/Files/output_TRAINING_dark_website.csv")
 
@@ -82,7 +81,7 @@ def question_phishing_website():
     # extraction_exector.register_plugin(HTML_PLUGIN, IcpPlugin())
 
     # MODE_TRAINING, MODE_TESTING
-    extraction_exector.do_extract(MODE_TRAINING, "com/Files/output_TRAINING.csv")    
+    extraction_exector.do_extract(MODE_TRAINING, "com/Files/output_TRAINING.csv")
 
 if __name__ == "__main__":
     print "Hello question one"
